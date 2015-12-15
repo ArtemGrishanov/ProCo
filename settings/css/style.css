@@ -1,0 +1,12 @@
+.black {
+    color: black;
+}
+input {
+    width: 212px;
+}
+form {
+    color: black;
+}
+form input {
+    width: auto;
+}

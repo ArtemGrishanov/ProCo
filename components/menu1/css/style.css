@@ -1,0 +1,62 @@
+/* Navigation
+-------------------------------------------------- */
+.nav {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    text-align: right;
+}
+.nav_tx {
+    margin-right: 50px;
+    text-transform: uppercase;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.nav_ac {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 18px;
+    height: 18px;
+    background: transparent url("../i/nav-ac.png") 50% no-repeat;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: -webkit-transform 0.5s;
+    transition: transform 0.5s;
+}
+.nav.__show .nav_ac {
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+.nav_cnt {
+    margin-right: 50px;
+    opacity: 0;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    transition: -webkit-transform 0.5s, opacity 0.2s;
+    transition: transform 0.5s, opacity 0.2s;
+}
+.nav.__show .nav_cnt {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+    opacity: 1;
+    transition: -webkit-transform 0.5s, opacity 0.7s;
+    transition: transform 0.5s, opacity 0.7s;
+}
+.nav_i {
+    cursor: pointer;
+    opacity: 0.5;
+    text-transform: uppercase;
+    transition: opacity 0.3s;
+}
+.nav_i:hover,
+.nav_i.__active {
+    opacity: 1;
+}
+/* /Navigation */

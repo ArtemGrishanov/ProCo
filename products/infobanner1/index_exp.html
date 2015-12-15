@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]>         <html class="ie8"> <![endif]-->
+<!--[if IE 9]>         <html class="ie9"> <![endif]-->
+<!--[if gt IE 9]><!--> <html> <!--<![endif]-->
+<head>
+    <title class="t pts_string pts_title"></title>
+    <meta charset="UTF-8">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="../../settings/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <div id="wrapper" class="wrapper">
+        <div id="container" class="container">
+            <div id="ornament" class="ornament"></div>
+            <div id="logo" class="logo"></div>
+            <div id="slogan" class="slogan">
+                <!-- Сюда программно подставляется текст, данные хранятся в js -->
+            </div>
+            <div id="nav" class="nav">
+                <div class="nav_tx"></div>
+                <div class="nav_ac"></div>
+                <div class="nav_cnt">
+                    <div id="item1" class="nav_i" data-nav="sights">Достопримечательности</div>
+                    <div id="item2" class="nav_i" data-nav="dress">Национальный костюм</div>
+                </div>
+            </div>
+            <div class="nation">
+                <a id="btn1" href="#333" class="nation_i __azer" data-nation="azer"></a>
+                <a id="btn2" href="#333" class="nation_i __kirgiz" data-nation="kirgiz"></a>
+            </div>
+        </div>
+    </div>
+    <div id="id-setting_content">
+
+    </div>
+    <div><button onclick="onApplySettingsClick();">Применить</button></div>
+
+    <script type="text/javascript" src="../../js/jquery.js"></script>
+    <script type="text/javascript" src="../../js/setting.js"></script>
+    <script type="text/javascript" src="js/model.js"></script>
+    <script type="text/javascript" src="js/engine.js"></script>
+    <script>
+        $nav = $('.nav');
+        $currentNav = $('.nav_tx');
+        $navItems = $nav.find('.nav_i');
+        $currentNav.html('Текущий стейт');
+
+        function onApplySettingsClick() {
+            applySettings();
+        }
+
+        $(document)
+
+            //
+            // navigation
+
+                .on('click', '.nav_ac, .nav_tx', function(){
+                    $nav.toggleClass("__show");
+                })
+                .on('click', '.nav_i', function(){
+//                    // change current state name
+//                    var nextState = $(this).data('nav');
+//                    $currentNav
+//                            .data('nav', nextState)
+//                            .text(getNavigationName(nextState));
+//                    // hide menu
+//                    $nav.removeClass("__show");
+//                    filterMenu();
+                })
+
+            //
+            // buttons
+
+//                .on('mouseover', '.nation_i', function(){
+//                    var nation = $(this).data('nation');
+//                    $container.addClass("__" + nation);
+//                })
+//                .on('mouseleave', '.nation_i', function(){
+//                    $container.attr('class', 'container');
+//                })
+        ;
+    </script>
+</body>
+</html>

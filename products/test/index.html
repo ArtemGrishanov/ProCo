@@ -1,0 +1,432 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]>         <html class="ie8"> <![endif]-->
+<!--[if IE 9]>         <html class="ie9"> <![endif]-->
+<!--[if gt IE 9]><!--> <html> <!--<![endif]-->
+<head>
+    <title class="t pts_string pts_title"></title>
+    <meta charset="UTF-8">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="../../settings/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <div id="wrapper" class="wrapper">
+        <div class="back_start"></div>
+        <div class="shadow"></div>
+        <div id="id-start_slide" class="slide">
+            <div class="cnt_wr">
+                <div class="start_txt">
+                    <h2 class="start_head">Где это находится?</h2>
+                    <span class="start_desc">Проверь свои знания в географии</span>
+                </div>
+                </br>
+                <div class="btn_wr">
+                    <span class="btn js-next">Начать</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="js-slides_cnt">
+            <!--<div class="slide js-slide" data-slide="2" style="display:none;">-->
+                <!--<div class="cnt_wr">-->
+                    <!--<div class="q_wr">-->
+                        <!--<span>-->
+                            <!--Какая самая большая страна?-->
+                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div class="a_wr js-answer js-answer_text">-->
+                        <!--<div class="a_text">-->
+                            <!--<div class="point"></div>-->
+                            <!--<span class="txt">Гренландия</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="a_wr js-answer js-answer_text">-->
+                        <!--<div class="a_text">-->
+                            <!--<div class="point"></div>-->
+                            <!--<span class="txt">Россия</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="a_wr js-answer js-answer_text">-->
+                        <!--<div class="a_text">-->
+                            <!--<div class="point"></div>-->
+                            <!--<span class="txt">Австралия</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="explain" style="display: none;">-->
+                        <!--<div>-->
+                            <!--Верно/неверно-->
+                        <!--</div>-->
+                        <!--</br>-->
+                        <!--</br>-->
+                        <!--<div>-->
+                            <!--<span class="btn js-next">Далее</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+
+        <div id="id-end_slide" class="slide">
+            <div class="cnt_wr">
+                <div class="start_txt">
+                    <h2 class="start_head">Конец</h2>
+                    <span class="start_desc">Ты ответил на все вопросы</span>
+                </div>
+                </br>
+                <div class="btn_wr">
+                    <span class="btn js-next">Заново</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="id-setting_content">
+
+    </div>
+    <div><button onclick="onApplySettingsClick();">Применить</button></div>
+
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="../../js/jquery.js"></script>
+    <script id="id-slide_template" type="text/template">
+        <div class="slide js-slide">
+            <div class="cnt_wr">
+                <div class="q_wr">
+                    <span>{{question_text}}</span>
+                </div>
+                <div class="js-answers_cnt"></div>
+                <div class="explain" style="display:none;">
+                    <div>{{result}}</div>
+                    </br>
+                    </br>
+                    <div><span class="btn js-next">Далее</span></div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script id="id-answer_template" type="text/template">
+        <div class="a_wr js-answer js-answer_text">
+            <div class="a_text">
+                <div class="point"></div>
+                <span class="txt">{{answer_options_text}}</span>
+            </div>
+        </div>
+    </script>
+    <script>
+        /**
+         * Например, можно объявить такой конфиг в контексте window страницы.
+         * Engine будет иметь возможность редактировать данные через этот интерфейс
+         *
+         * Здесь можно описать свойства типа ключ-значение, которые будут влиять на поведение теста
+         *
+         * На основани объекта app будут построены settings продукта. То, что можно редактировать.
+         *
+         * @type {{}}
+         */
+        var app = {
+            key1: 'value1',
+            key2: 'value2',
+
+            randomizeQuestions: false,
+            randomizeOptions: false,
+
+            /**
+             * Что и как хотим менять?
+             *
+             * Стиль класса?
+             * Стиль отдельного элемента html?
+             * Атрибут html
+             * Добавлять новый html элемент в указанное место
+             * Удалять html элемент
+             * Тексты в html
+             * Переменную в js
+             * переключатели между css свойствами, например, display
+             *
+             */
+            slide: {
+                canAdd: true,
+                comment: 'Добавить слайд',
+                templateId: 'id-slide_templ',
+                parent: '.js-questions_cnt'
+            },
+
+            /**
+             * Вопросы с ответами
+             */
+            d__quiz: 'editable=true;length={apps.tests.maxquizcount}',
+            quiz: [
+                {
+                    text: 'Мадагаскар -- это где?',
+                    options: [
+                        {
+                            text: 'Страна на западе Африки',
+                            type: 'text'
+                        },
+                        {
+                            text: 'Остров в Атлантическом океане',
+                            type: 'text'
+                        },
+                        {
+                            text: 'Остров на юге Африки',
+                            type: 'text',
+                            points: 1
+                        }
+                    ]
+                },
+                {
+                    text: 'Какая самая большая страна?',
+                    d__text: 'editable=true;ui=TextInput;default={config.textForTest};maxlength=10',
+                    options: [
+                        {
+                            text: 'Гренландия'
+                        },
+                        {
+                            text: 'Россия',
+                            points: 1
+                        },
+                        {
+                            text: 'Австралия'
+                        }
+                    ]
+                },
+                {
+                    text: 'Какого моря не существует?',
+                    options: [
+                        {
+                            text: 'Черное море'
+                        },
+                        {
+                            text: 'Синее море',
+                            points: 1,
+                            d__points: 'editable=true'
+                        },
+                        {
+                            text: 'Красное море'
+                        },
+                        {
+                            text: 'Желтое море'
+                        }
+                    ]
+                }
+            ],
+
+            // это-то однозначно хранить в виде объекта а не в dom дереве
+            /**
+             * Описание результатов, которые можно получить
+             */
+            results: [
+                {
+                    minPoints: 0,
+                    maxPoints: 1,
+                    title: 'Новичок',
+                    descripttion: 'Длинный текст типа неплохо для начала'
+                },
+                {
+                    minPoints: 2,
+                    maxPoints: 3,
+                    title: 'Средний',
+                    descripttion: 'Длинный текст типа уже лучше, давай ещё'
+                }
+            ]
+        };
+    </script>
+    <script>
+        var resultPoints = 0;
+        var currentQuestionIndex = -1;
+        var state = undefined; //'welcome', 'test', 'final'
+
+        function next() {
+            //TODO на основе модели переходов можно построить блок схему для пользователя (если лучше формализовать модель)
+            switch (state) {
+                case 'welcome': {
+                    resultPoints = 0;
+                    $('.explain').hide();
+                    // currentQuestionIndex устанавливается внутри
+                    renderQuestion(0);
+                    $('#id-start_slide').hide();
+                    $('.js-slides_cnt').show();
+                    state = 'test';
+                    break;
+                }
+                case 'test': {
+                    if (currentQuestionIndex < app.quiz.length-1) {
+                        renderQuestion(++currentQuestionIndex);
+                    }
+                    else {
+                        // конец теста, финальный скрин
+                        $('.js-slides_cnt').hide();
+                        //TODO посчитать результат
+                        $('#id-end_slide').show();
+                        state = 'final';
+                    }
+                    break;
+                }
+                case 'final': {
+                    $('#id-end_slide').hide();
+                    $('#id-start_slide').show();
+                    state = 'welcome';
+                    break;
+                }
+                default: {
+                    state = 'welcome';
+                    $('#id-start_slide').show();
+                    $('#id-end_slide').hide();
+                    $('.js-slides_cnt').hide();
+                }
+            }
+        }
+
+        $('.js-next').click(function() {
+            next();
+        });
+
+        $(document).ready(function() {
+            start();
+        });
+
+        function getResult(p) {
+            for (var i = 0; i < app.results.length; i++) {
+                var r = app.results[i];
+                if (r.minPoints <= p && p <=r.maxPoints) {
+                    return r;
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Автотесты, описанные разработчиком промо-прототипа. Свойство 'test' является обязательным.
+         * Это массив функций, каждая из которых производит проверки.
+         * Рекомендуется в рамках ондной функции реализовать одну логическую проверку.
+         *
+         * Функция должна принимать параметр 'app' - свойства приложения.
+         * Важно: не использовать параметры window.app, а пользоваться параметром
+         *
+         * Для выполнения проверок пользоваться функцией engine.test(actual, expected, message)
+         */
+        var tests = [
+            /**
+             * Минимальный результат меньше максимального
+             * @returns {boolean}
+             */
+            function resultMinMax(app) {
+                for (var i = 0; i < app.results.length; i++) {
+                    var r = app.results[i];
+                    if (r.minPoints <= r.maxPoints) {
+                        // QUnit included
+                        test(r.minPoints <= r.maxPoints, true, 'Минимальный результат меньше максимального');
+                    }
+                }
+            },
+            /**
+             * Вопросов должно быть хотя бы 1 штука
+             */
+            function questionsCount(app) {
+                test(questions.length > 0, true, 'Вопросов должно быть хотя бы 1 штука');
+            },
+
+            function test1(app) {
+                test(typeof app.randomizeQuestions == "boolean", true, 'true or false');
+            }
+        ];
+
+        /**
+         * Метод, который должен быть определен обязательно
+         *
+         * После обновления 'app' этот метод должен сделать всё нужное, чтобы приложение работало нормально.
+         *
+         * Обычно start зовется и после загрузки html страницы в первый раз.
+         */
+        function start() {
+            makeUidForQuiz();
+            state = undefined;
+            next();
+        }
+
+        //todo: дальше давай через setValue менять ответы и вопросы и результаты, как раз сложные свойства и сложные тесты
+
+        /**
+         * Сгенерировать уникальные идишки для вопросов и ответов
+         */
+        function makeUidForQuiz() {
+            for (var j = 0; j < app.quiz.length; j++) {
+                for (var i = 0; i < app.quiz[j].options.length; i++) {
+                    var o = app.quiz[j].options[i];
+                    o.id = MD5.calc(o.text + j + i);
+                }
+            }
+        }
+
+        function renderQuestion(index) {
+            currentQuestionIndex = index;
+            var q = app.quiz[currentQuestionIndex];
+            var $cnt = $('.js-slides_cnt');
+            $cnt.empty();
+            var templStr = $('#id-slide_template').html();
+            templStr = templStr.replace('{{question_text}}', q.text);
+            var $e = $(templStr);
+            $cnt.append($e);
+            renderAnswers();
+            $e.find('.js-next').click(function() {
+                next();
+            });
+        }
+
+        function renderAnswers() {
+            for (var i = 0; i < app.quiz[currentQuestionIndex].options.length; i++) {
+                var o = app.quiz[currentQuestionIndex].options[i];
+                var templStr = $('#id-answer_template').html();
+                templStr = templStr.replace('{{answer_options_text}}', o.text);
+                var $e = $(templStr);
+                $e.attr('data-id', o.id);
+                $e.click(function(e) {
+                    var id = $(e.currentTarget).attr('data-id');
+                    var success = answer(id);
+                    showExplanation(success);
+                });
+                $('.js-answers_cnt').append($e);
+            }
+        }
+
+        /**
+         * Ответить на текущий вопрос
+         * @param id - идентификатор выбранного ответа
+         * @returns {boolean}
+         */
+        function answer(id) {
+            for (var i = 0; i < app.quiz[currentQuestionIndex].options.length; i++) {
+                var o = app.quiz[currentQuestionIndex].options[i];
+                if (o.id === id) {
+                    if (o.points !== undefined && o.points > 0) {
+                        resultPoints += o.points;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /**
+         * Показать верен ли был ответ или нет
+         * Также появляется кнопка Далее, чтобы перейти к следующему вопросу
+         *
+         * @param success - верно или не тответил пользователь
+         */
+        function showExplanation(success) {
+            var $ex = $('.js-slides_cnt').find('.explain');
+            // add __err modifier if wrong
+            if ($ex) {
+                if (success !== true) {
+                    $ex.addClass('__err');
+                }
+                $ex.show();
+            }
+        }
+
+    </script>
+    <script type="text/javascript" src="../../js/setting.js"></script>
+    <script type="text/javascript" src="js/model.js"></script>
+    <script type="text/javascript" src="../../js/appProperty.js"></script>
+    <script type="text/javascript" src="../../js/engine.js"></script>
+</body>
+</html>
