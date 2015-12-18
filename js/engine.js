@@ -2,90 +2,83 @@
  * Created by alex on 29.10.15.
  */
 var consoleLogEnable = true;
-var ENTITY_ATTRS = ['text', 'css', 'link', 'visible', 'data'];
+//var ENTITY_ATTRS = ['text', 'css', 'link', 'visible', 'data'];
 var settings = [];
+/**
+ * В ней будут накапливаться результаты тестов
+ * @type {null}
+ */
+var testResults = null;
 
 //TODO надо наверное копию сделать массива entity а то как прототип использовать
 
 //TODO полезно модель валидировать с версткой: идишки все проверять, события, и много еще полезных проверок.
 // не повторения идишек и так далее, все ли setting существуют и допустимые
 
-if (entities) {
-    for (var i = 0; i < entities.length; i ++) {
-        if (entities[i].items !== undefined) {
-            // внутри групп тоже инитим всё
-            for (var j = 0; j < entities[i].items.length; j ++) {
-                initEntity(entities[i].items[j]);
-            }
-        }
-        initEntity(entities[i]);
-    }
-}
-
-if (states) {
-    for (var i = 0; i < states.length; i ++) {
-        initState(states[i]);
-    }
-}
-
-if (window.app === undefined) {
-    console.error('app object must be specified');
-}
-
-if (window.tests === undefined) {
-    console.error('tests array must be specified');
-}
-
-if (window.start === undefined) {
-    console.error('start function must be specified');
-}
-
-function initEntity(entity) {
-    if (entity.id) {
-        console.log('Creating entity:' + entity.id);
-        apply(entity, entity);
-        createSettingsForEntity(entity);
-    }
-    else {
-        console.error('Entity does not have id');
-    }
-}
-
-function initState(state) {
-    if (state.trigger) {
-        var a = state.trigger.split(':');
-        $(a[0]).on(a[1],function(){
-            activateState(state);
-        });
-    }
-    //TODO пока не делаю настройки для state, там ID не уникальные у entity. Пока не знаю как быть
-//    for (var j = 0; j < state.entities.length; j ++) {
-//        createSettingsForEntity(state.entities[j]);
+//if (entities) {
+//    for (var i = 0; i < entities.length; i ++) {
+//        if (entities[i].items !== undefined) {
+//            // внутри групп тоже инитим всё
+//            for (var j = 0; j < entities[i].items.length; j ++) {
+//                initEntity(entities[i].items[j]);
+//            }
+//        }
+//        initEntity(entities[i]);
 //    }
-}
+//}
+//
+//if (states) {
+//    for (var i = 0; i < states.length; i ++) {
+//        initState(states[i]);
+//    }
+//}
 
-/**
- * Поиск элемента по id
- * Включая поиск по группам, есил они есть
- *
- * @param id
- * @returns {*}
- */
-function getEntity(id) {
-    for (var i = 0; i < entities.length; i ++) {
-        if (entities[i].id == id) {
-            return entities[i];
-        }
-        else if (entities[i].items !== undefined) {
-            for (var j = 0; j < entities[i].items.length; j ++) {
-                if (entities[i].items[j].id == id) {
-                    return entities[i].items[j];
-                }
-            }
-        }
-    }
-    return null;
-}
+//function initEntity(entity) {
+//    if (entity.id) {
+//        console.log('Creating entity:' + entity.id);
+//        apply(entity, entity);
+//        createSettingsForEntity(entity);
+//    }
+//    else {
+//        console.error('Entity does not have id');
+//    }
+//}
+//
+//function initState(state) {
+//    if (state.trigger) {
+//        var a = state.trigger.split(':');
+//        $(a[0]).on(a[1],function(){
+//            activateState(state);
+//        });
+//    }
+//    //TODO пока не делаю настройки для state, там ID не уникальные у entity. Пока не знаю как быть
+////    for (var j = 0; j < state.entities.length; j ++) {
+////        createSettingsForEntity(state.entities[j]);
+////    }
+//}
+
+///**
+// * Поиск элемента по id
+// * Включая поиск по группам, есил они есть
+// *
+// * @param id
+// * @returns {*}
+// */
+//function getEntity(id) {
+//    for (var i = 0; i < entities.length; i ++) {
+//        if (entities[i].id == id) {
+//            return entities[i];
+//        }
+//        else if (entities[i].items !== undefined) {
+//            for (var j = 0; j < entities[i].items.length; j ++) {
+//                if (entities[i].items[j].id == id) {
+//                    return entities[i].items[j];
+//                }
+//            }
+//        }
+//    }
+//    return null;
+//}
 
 /**
  * Активировать состояние.
@@ -93,17 +86,17 @@ function getEntity(id) {
  *
  * @param state
  */
-function activateState(state) {
-    if (state.entities != undefined) {
-        var eid = null, ent = null, htmlId = null, entUpdate = null;
-        for (var i = 0; i < state.entities.length; i ++) {
-            entUpdate = state.entities[i];
-            eid = entUpdate.id;
-            ent = getEntity(eid);
-            apply(ent, entUpdate);
-        }
-    }
-}
+//function activateState(state) {
+//    if (state.entities != undefined) {
+//        var eid = null, ent = null, htmlId = null, entUpdate = null;
+//        for (var i = 0; i < state.entities.length; i ++) {
+//            entUpdate = state.entities[i];
+//            eid = entUpdate.id;
+//            ent = getEntity(eid);
+//            apply(ent, entUpdate);
+//        }
+//    }
+//}
 
 /**
  * Применить к элементу какое-то оновление
@@ -111,70 +104,70 @@ function activateState(state) {
  * @param entity
  * @param update
  */
-function apply(entity, update) {
-    var htmlId = '#'+(entity.htmlId || entity.id);
-    if (update.text !== undefined) {
-        $(htmlId).text(update.text.value);
-    }
-    if (update.css !== undefined) {
-        var a = update.css.value.split(':');
-        $(htmlId).css(a[0],a[1]);
-    }
-    if (update.link !== undefined) {
-        $(htmlId).attr('href',update.link.value);
-    }
-    if (update.visible !== undefined) {
-        //TODO надо скопировать начальные свойства при старте. И их потом восстанавливать уметь
-        $(htmlId).css('display',(update.visible.value === true)?'block':'none');
-        entity.visible.value = update.visible.value;
-    }
-    if (update.data !== undefined) {
-        //TODO do something
-        //update.data.value
-    }
-}
+//function apply(entity, update) {
+//    var htmlId = '#'+(entity.htmlId || entity.id);
+//    if (update.text !== undefined) {
+//        $(htmlId).text(update.text.value);
+//    }
+//    if (update.css !== undefined) {
+//        var a = update.css.value.split(':');
+//        $(htmlId).css(a[0],a[1]);
+//    }
+//    if (update.link !== undefined) {
+//        $(htmlId).attr('href',update.link.value);
+//    }
+//    if (update.visible !== undefined) {
+//        //TODO надо скопировать начальные свойства при старте. И их потом восстанавливать уметь
+//        $(htmlId).css('display',(update.visible.value === true)?'block':'none');
+//        entity.visible.value = update.visible.value;
+//    }
+//    if (update.data !== undefined) {
+//        //TODO do something
+//        //update.data.value
+//    }
+//}
+//
+////TODO задавать стейт по умолчанию уметь
+//if (states.length > 0) {
+//    activateState(states[0]);
+//}
 
-//TODO задавать стейт по умолчанию уметь
-if (states.length > 0) {
-    activateState(states[0]);
-}
+///**
+// * В одной сущности может быть несколько атрибутов, значит и несколько настроек.
+// *
+// * @param entity
+// */
+//function createSettingsForEntity(entity) {
+//    var sType = null;
+//    for (var i = 0; i < ENTITY_ATTRS.length; i++) {
+//        var propertyName = ENTITY_ATTRS[i];
+//        if (entity[propertyName] !== undefined) {
+//            //TODO может быть несколько свойств css. Сейчас предполагается только одно
+//            console.log('Setting creating for: ' + entity.id + '.' + propertyName);
+//            var s = new Setting(entity, propertyName);
+//            if (s && s.isError !== true) {
+//                settings.push(s);
+//            }
+//        }
+//    }
+//}
 
-/**
- * В одной сущности может быть несколько атрибутов, значит и несколько настроек.
- *
- * @param entity
- */
-function createSettingsForEntity(entity) {
-    var sType = null;
-    for (var i = 0; i < ENTITY_ATTRS.length; i++) {
-        var propertyName = ENTITY_ATTRS[i];
-        if (entity[propertyName] !== undefined) {
-            //TODO может быть несколько свойств css. Сейчас предполагается только одно
-            console.log('Setting creating for: ' + entity.id + '.' + propertyName);
-            var s = new Setting(entity, propertyName);
-            if (s && s.isError !== true) {
-                settings.push(s);
-            }
-        }
-    }
-}
-
-/**
- * Обновить настройки views -> entity
- */
-function applySettings() {
-    for (var i = 0; i < settings.length; i++) {
-        // компонента setting готовит обновление для entity
-        if (settings[i].isError !== true) {
-            //TODO проверка нужна вот зачем: UI загружается асинхронно и двжиок не ждет будет ли он загружен или нет
-            // а некоторых ui еще нет.
-            var updateInfo = settings[i].getUpdateFromView();
-            if (updateInfo !== null) {
-                apply(settings[i].entity, updateInfo)
-            }
-        }
-    }
-}
+///**
+// * Обновить настройки views -> entity
+// */
+//function applySettings() {
+//    for (var i = 0; i < settings.length; i++) {
+//        // компонента setting готовит обновление для entity
+//        if (settings[i].isError !== true) {
+//            //TODO проверка нужна вот зачем: UI загружается асинхронно и двжиок не ждет будет ли он загружен или нет
+//            // а некоторых ui еще нет.
+//            var updateInfo = settings[i].getUpdateFromView();
+//            if (updateInfo !== null) {
+//                apply(settings[i].entity, updateInfo)
+//            }
+//        }
+//    }
+//}
 
 /**
  * Создать entity и поместить её в массив entities
@@ -183,14 +176,14 @@ function applySettings() {
  *
  * @param prototypeId
  */
-function createEntity(prototypeId) {
-    var e = null;
-    var p = getPrototype(prototypeId);
-    if (p) {
-
-    }
-    return e;
-}
+//function createEntity(prototypeId) {
+//    var e = null;
+//    var p = getPrototype(prototypeId);
+//    if (p) {
+//
+//    }
+//    return e;
+//}
 
 /**
  * Найти и вернуть прототип с заданным prototypeId
@@ -198,16 +191,16 @@ function createEntity(prototypeId) {
  * @param prototypeId
  * @returns {*}
  */
-function getPrototype(prototypeId) {
-    if (prototypes) {
-        for (var i = 0; i < prototypes.length; i ++) {
-            if (prototypes[i].prototypeId == prototypeId) {
-                return prototypes[i];
-            }
-        }
-    }
-    return null;
-}
+//function getPrototype(prototypeId) {
+//    if (prototypes) {
+//        for (var i = 0; i < prototypes.length; i ++) {
+//            if (prototypes[i].prototypeId == prototypeId) {
+//                return prototypes[i];
+//            }
+//        }
+//    }
+//    return null;
+//}
 
 var testMode = false;
 /**
@@ -251,7 +244,7 @@ function test(actual, expected, message) {
 var DESC_PREFIX='d__';
 
 /**
- * Создать объекты с описанием для свойства
+ * Создать обертку для свойства app
  * Только для тех свойств у которых есть дескриптор
  *
  * @param obj
@@ -278,12 +271,6 @@ function createAppProperty(obj, strPrefix) {
         }
     }
 }
-
-/**
- * В ней будут накапливаться результаты тестов
- * @type {null}
- */
-var testResults = null;
 
 /**
  * Установить значение в продукт, в объект app[key] = value
@@ -386,10 +373,22 @@ function log(msg, isError) {
 
 /**
  * Запуск платформы
+ * Можно запустить, когда на в браузер загружен промо-проект
+ *
  */
 function startEngine() {
+    if (window.app === undefined) {
+        console.error('app object must be specified');
+    }
+
+    if (window.tests === undefined) {
+        console.error('tests array must be specified');
+    }
+
+    if (window.start === undefined) {
+        console.error('start function must be specified');
+    }
     this.appProperties = [];
+    this.testResults = [];
     createAppProperty(window.app);
 }
-
-startEngine();

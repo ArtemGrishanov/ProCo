@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Редактор</title>
+    <meta charset="UTF-8"/>
+    <link href="../settings/css/style.css" rel="stylesheet">
+    <style>
+        body {
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+        .proto_cnt {
+            display: block;
+            width: 600px;
+            height: 600px;
+            padding: 0;
+            border: #ff2211 solid 10px;
+        }
+        .btn {
+            background: #13f748;
+            background-image: -webkit-linear-gradient(top, #13f748, #168c0f);
+            background-image: -moz-linear-gradient(top, #13f748, #168c0f);
+            background-image: -ms-linear-gradient(top, #13f748, #168c0f);
+            background-image: -o-linear-gradient(top, #13f748, #168c0f);
+            background-image: linear-gradient(to bottom, #13f748, #168c0f);
+            -webkit-border-radius: 13;
+            -moz-border-radius: 13;
+            border-radius: 13px;
+            font-family: Arial;
+            color: #ffffff;
+            font-size: 20px;
+            padding: 8px 15px 8px 15px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        Это вроде редактора.<br>
+        В красную рамочку загружается промо-проект для редактирования
+    </p>
+    <a class="btn" onclick="onPublishClick();">Publish</a>
+    <br><br><br>
+    <iframe id="id-proto_app_cnt" class="proto_cnt">
+
+    </iframe>
+    <input type="file" id="file-chooser" />
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/utils.js"></script>
+    <script type="text/javascript" src="../js/engine.js"></script>
+    <script type="text/javascript" src="../js/setting.js"></script>
+    <script type="text/javascript" src="../js/appProperty.js"></script>
+    <script>
+        var appId = '515132035326687';
+        var roleArn = 'arn:aws:iam::520270155749:role/ProCo_FBUsers';
+        var bucketName = 'proconstructor';
+        AWS.config.region = 'eu-central-1';
+        var fbUserId;
+        var bucket = new AWS.S3({
+            params: {
+                Bucket: bucketName
+            }
+        });
+        $('#id-proto_app_cnt').attr('src','../products/test/index.html');
+        var fileChooser = document.getElementById('file-chooser');
+
+        function onPublishClick() {
+            var iframe = document.getElementById('id-proto_app_cnt');
+            var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+            var iframeWindow = iframe.contentWindow;
+
+            var bodyStr = iframeDocument.documentElement.innerHTML;
+            var appStr = JSON.stringify(iframeWindow.app);
+
+            log('Publishing: Body length=' + bodyStr.length + ' app length=' + appStr.length);
+
+            publish('testAppName', bodyStr);
+        }
+
+        function publish(promoAppName, str) {
+            var file = fileChooser.files[0];
+            if (file) {
+                var objKey = 'facebook-' + fbUserId + '/' + file.name;
+                var params = {
+                    Key: objKey,
+                    ContentType: file.type,
+                    Body: file,
+                    ACL: 'public-read'
+                };
+//                var objKey = 'facebookUserId-'+fbUserId;
+//                var params = {
+//                    Key: objKey,
+//                    ContentType: 'text',
+//                    Body: str,
+//                    ACL: 'public-read'
+//                };
+                bucket.putObject(params, function (err, data) {
+                    if (err) {
+                        //Not authorized to perform sts:AssumeRoleWithWebIdentity
+                        log('ERROR: ' + err, true);
+                    } else {
+                        listObjs();
+                    }
+                });
+            } if (str) {
+                // do this scenario
+                var objKey = 'facebook-' + fbUserId + '/' + promoAppName + '.html';
+                var params = {
+                    Key: objKey,
+                    ContentType: 'text/html',
+                    Body: str,
+                    ACL: 'public-read'
+                };
+                bucket.putObject(params, function (err, data) {
+                    if (err) {
+                        //Not authorized to perform sts:AssumeRoleWithWebIdentity
+                        log('ERROR: ' + err, true);
+                    } else {
+                        listObjs();
+                    }
+                });
+            } else {
+                log('Nothing to upload.');
+            }
+        }
+
+        function listObjs() {
+            var prefix = 'facebook-' + fbUserId;
+            bucket.listObjects({
+                Prefix: prefix
+            }, function (err, data) {
+                if (err) {
+                    log('ERROR: ' + err, true);
+                } else {
+                    var objKeys = "";
+                    data.Contents.forEach(function (obj) {
+                        objKeys += obj.Key + "<br>";
+                    });
+                    log('listObjects...');
+                    log(objKeys);
+                }
+            });
+        }
+
+        /*!
+         * Login to your application using Facebook.
+         * Uses the Facebook SDK for JavaScript available here:
+         * https://developers.facebook.com/docs/javascript/gettingstarted/
+         */
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: appId
+            });
+            FB.login(function (response) {
+                bucket.config.credentials = new AWS.WebIdentityCredentials({
+                    ProviderId: 'graph.facebook.com',
+                    RoleArn: roleArn,
+                    WebIdentityToken: response.authResponse.accessToken
+                });
+                fbUserId = response.authResponse.userID;
+            });
+        };
+        // Load the Facebook SDK asynchronously
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+</body>
+</html>

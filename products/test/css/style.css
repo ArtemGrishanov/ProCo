@@ -1,6 +1,8 @@
 body {
     font-family: Arial, sans-serif;
     color: #fff;
+    margin: 0;
+    padding: 0;
 }
 .wrapper {
     width: 600px;
