@@ -43,9 +43,9 @@
     </p>
     <a class="btn" onclick="onPublishClick();">Publish</a>
     <br><br><br>
-    <iframe id="id-proto_app_cnt" class="proto_cnt">
-
-    </iframe>
+    <div id="id-product_iframe_cnt">
+        <!-- Сюда добавляем программно айфрейм с прототипом для редактирования -->
+    </div>
     <input type="file" id="file-chooser" />
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
     <script type="text/javascript" src="../js/jquery.js"></script>
@@ -53,19 +53,47 @@
     <script type="text/javascript" src="../js/engine.js"></script>
     <script type="text/javascript" src="../js/setting.js"></script>
     <script type="text/javascript" src="../js/appProperty.js"></script>
+    <script type="text/javascript" src="../js/queue.js"></script>
     <script>
+        //TODO подумать над форматом, где должны храниться продукты всегда. Какое-то одно хранилище?
+        var promoProductUrl = '../products/test/index.html';
+        //TODO вычислять это по имени продукта
+        var baseProductUrl = '../products/test/';
+        var promoAppName = 'test1';
+        /**
+         * Статические ресурсы (скрипты, стили, картинки и прочее), которые надо зааплоадить при сохранении продукта
+         */
+        var productResources = [];
+        var appIframe = null;
+        var iframeWindow = null;
+        var productBodyStr = null;
         var appId = '515132035326687';
         var roleArn = 'arn:aws:iam::520270155749:role/ProCo_FBUsers';
         var bucketName = 'proconstructor';
         AWS.config.region = 'eu-central-1';
         var fbUserId;
+        var facebookAuthEnable = true;
         var bucket = new AWS.S3({
             params: {
                 Bucket: bucketName
             }
         });
-        $('#id-proto_app_cnt').attr('src','../products/test/index.html');
         var fileChooser = document.getElementById('file-chooser');
+
+        function initProduct() {
+            appIframe = document.createElement('iframe');
+            appIframe.onload = onProductIframeLoaded;
+            $(appIframe).addClass('proto_cnt');
+            //TODO set path
+            appIframe.src = promoProductUrl;
+            $('#id-product_iframe_cnt').append(appIframe);
+        }
+
+        function onProductIframeLoaded() {
+            var iframeDocument = appIframe.contentDocument || appIframe.contentWindow.document;
+            productBodyStr = iframeDocument.documentElement.innerHTML;
+            iframeWindow = appIframe.contentWindow;
+        }
 
         function onPublishClick() {
             var iframe = document.getElementById('id-proto_app_cnt');
@@ -80,51 +108,145 @@
             publish('testAppName', bodyStr);
         }
 
-        function publish(promoAppName, str) {
-            var file = fileChooser.files[0];
-            if (file) {
-                var objKey = 'facebook-' + fbUserId + '/' + file.name;
-                var params = {
-                    Key: objKey,
-                    ContentType: file.type,
-                    Body: file,
-                    ACL: 'public-read'
+        /**
+         * Найти все ресурсы, используемые в продукте, и подготовиться к их загрузке
+         */
+        function buildProductResourceList() {
+            productResources = [];
+            //TODO поиск предполагает что ресурсы находятся рядом с html в baseUrl
+            var scriptExp = /src=(?:\"|\')((?:\w)+\.js)(?:\"|\')/ig;
+            var match = null;
+            while ( (match = scriptExp.exec(productBodyStr)) !== null) {
+                productResources.push({
+                   type: 'text/javascript',
+                   url: match[1]
+                });
+            }
+
+            //TODO css
+
+            //TODO img
+
+        }
+
+        function setDataToResource(url, data) {
+            for (var i = 0; i < productResources.length; i++) {
+                if (productResources[i].url === url) {
+                    productResources[i].data = data;
+                }
+            }
+        }
+
+        function test1() {
+            var client = new XMLHttpRequest();
+            client.open('GET', 'http://localhost:63342/ProCo/products/test/utils.js');
+            client.onreadystatechange = function(e) {
+                log(e.target.responseText);
+            };
+            client.send();
+        }
+
+        function grabProductResources() {
+            productResources = [
+                {url:'utils.js'},
+                {url:'jquery.js'}
+            ];
+            for (var i = 0; i < productResources.length; i++) {
+                var t = {
+                    type: 'grabResTask',
+                    // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
+                    data: JSON.parse(JSON.stringify(productResources[i])),
+                    run: function() {
+                        var client = new XMLHttpRequest();
+                        log('Loading resource: ' + baseProductUrl + this.data.url);
+                        client.open('GET', baseProductUrl + this.data.url);
+                        client.onreadystatechange = (function(e) {
+                            if (e.target.readyState == 4) {
+                                if(e.target.status == 200) {
+                                    // task context
+                                    log('task done');
+                                    setDataToResource(this.data.url, e.target.responseText);
+                                }
+                                else {
+                                    log('Resource request failed: '+ myRequest.statusText, true);
+                                }
+                                // даем понять, что таск завершен
+                                Queue.release(this);
+                            }
+                        }).bind(this);
+                        client.send();
+                        log('client.send');
+                    },
+                    done: function(e) {
+                    }
                 };
-//                var objKey = 'facebookUserId-'+fbUserId;
+                Queue.push(t);
+            }
+
+            //TODO сделать поддержку таких событий
+            Queue.onComplete('grabResTask', function(){
+                log('All resources grabbed.');
+            })
+            // добавляем главный html файл
+            productResources.push({
+                url: 'index.html',
+                type: 'text/html',
+                data: productBodyStr
+            });
+        }
+
+        /**
+         * Сохранить все статические ресурсы проекта в хранилище
+         */
+        function uploadProductResources() {
+            for (var i = 0; i < productResources.length; i++) {
+                var t = {
+                    type: 'uploadResTask',
+                    // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
+                    data: JSON.parse(JSON.stringify(productResources[i])),
+                    run: function() {
+                        var objKey = 'facebook-'+fbUserId+'/'+promoAppName+'/'+this.data.url;
+                        var params = {
+                            Key: objKey,
+                            ContentType: this.data.type,
+                            Body: this.data.data,
+                            ACL: 'public-read'
+                        };
+                        bucket.putObject(params, (function (err, data) {
+                            // task object context
+                            if (err) {
+                                //Not authorized to perform sts:AssumeRoleWithWebIdentity
+                                log('ERROR: ' + err, true);
+                            } else {
+//                                listObjs();
+                            }
+                            Queue.release(this);
+                        }).bind(this));
+                    }
+                };
+                Queue.push(t);
+            }
+        }
+
+        function publish() {
+//            var file = fileChooser.files[0];
+//            if (file) {
+//                var objKey = 'facebook-' + fbUserId + '/' + file.name;
 //                var params = {
 //                    Key: objKey,
-//                    ContentType: 'text',
-//                    Body: str,
+//                    ContentType: file.type,
+//                    Body: file,
 //                    ACL: 'public-read'
 //                };
-                bucket.putObject(params, function (err, data) {
-                    if (err) {
-                        //Not authorized to perform sts:AssumeRoleWithWebIdentity
-                        log('ERROR: ' + err, true);
-                    } else {
-                        listObjs();
-                    }
-                });
-            } if (str) {
-                // do this scenario
-                var objKey = 'facebook-' + fbUserId + '/' + promoAppName + '.html';
-                var params = {
-                    Key: objKey,
-                    ContentType: 'text/html',
-                    Body: str,
-                    ACL: 'public-read'
-                };
-                bucket.putObject(params, function (err, data) {
-                    if (err) {
-                        //Not authorized to perform sts:AssumeRoleWithWebIdentity
-                        log('ERROR: ' + err, true);
-                    } else {
-                        listObjs();
-                    }
-                });
-            } else {
-                log('Nothing to upload.');
-            }
+//                bucket.putObject(params, function (err, data) {
+//                    if (err) {
+//                        //Not authorized to perform sts:AssumeRoleWithWebIdentity
+//                        log('ERROR: ' + err, true);
+//                    } else {
+//                        listObjs();
+//                    }
+//                });
+//            }
         }
 
         function listObjs() {
@@ -145,35 +267,41 @@
             });
         }
 
-        /*!
-         * Login to your application using Facebook.
-         * Uses the Facebook SDK for JavaScript available here:
-         * https://developers.facebook.com/docs/javascript/gettingstarted/
-         */
-        window.fbAsyncInit = function () {
-            FB.init({
-                appId: appId
-            });
-            FB.login(function (response) {
-                bucket.config.credentials = new AWS.WebIdentityCredentials({
-                    ProviderId: 'graph.facebook.com',
-                    RoleArn: roleArn,
-                    WebIdentityToken: response.authResponse.accessToken
+        if (facebookAuthEnable === true) {
+            /*!
+             * Login to your application using Facebook.
+             * Uses the Facebook SDK for JavaScript available here:
+             * https://developers.facebook.com/docs/javascript/gettingstarted/
+             */
+            window.fbAsyncInit = function () {
+                FB.init({
+                    appId: appId
                 });
-                fbUserId = response.authResponse.userID;
-            });
-        };
-        // Load the Facebook SDK asynchronously
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {
-                return;
-            }
-            js = d.createElement(s);
-            js.id = id;
-            js.src = "//connect.facebook.net/en_US/all.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
+                FB.login(function (response) {
+                    bucket.config.credentials = new AWS.WebIdentityCredentials({
+                        ProviderId: 'graph.facebook.com',
+                        RoleArn: roleArn,
+                        WebIdentityToken: response.authResponse.accessToken
+                    });
+                    fbUserId = response.authResponse.userID;
+                });
+            };
+            // Load the Facebook SDK asynchronously
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {
+                    return;
+                }
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//connect.facebook.net/en_US/all.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        }
+
+        $(document).ready(function(){
+            initProduct();
+        })
     </script>
 </body>
 </html>
