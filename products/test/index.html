@@ -5,7 +5,7 @@
 <head>
     <title class="Test"></title>
     <meta charset="UTF-8">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
 
@@ -146,6 +146,10 @@
                 templateId: 'id-slide_templ',
                 parent: '.js-questions_cnt'
             },
+
+            fontColor: '#fff',
+            fontFamily: 'Arial',
+            background: 'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg)',
 
             /**
              * Вопросы с ответами
@@ -329,12 +333,19 @@
 
         /**
          * Метод, который должен быть определен обязательно
-         *
          * После обновления 'app' этот метод должен сделать всё нужное, чтобы приложение работало нормально.
-         *
          * Обычно start зовется и после загрузки html страницы в первый раз.
          */
         function start() {
+            if (app.fontFamily) {
+                $('*').css('fontFamily',app.fontFamily);
+            }
+            if (app.background) {
+                $('.back_start').css('backgroundImage',app.background);
+            }
+            if (app.fontColor) {
+                $('.cnt_wr').css('color',app.fontColor);
+            }
             makeUidForQuiz();
             state = undefined;
             next();

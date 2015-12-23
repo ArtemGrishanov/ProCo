@@ -167,3 +167,14 @@ var MD5 = (function () {
         calc:calcMD5
     };
 }());
+
+/**
+ * Генерация случайного целого числа в диапазоне
+ * @param min
+ * @param max
+ * @returns {number}
+ */
+function getRandomArbitrary(min, max) {
+    "use strict";
+    return Math.round(Math.random() * (max - min) + min);
+}

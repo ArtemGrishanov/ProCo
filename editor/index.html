@@ -42,11 +42,12 @@
         В красную рамочку загружается промо-проект для редактирования
     </p>
     <a class="btn" onclick="onPublishClick();">Publish</a>
+    <a class="btn" onclick="onEditClick();">Мне повезет!</a>
     <br><br><br>
     <div id="id-product_iframe_cnt">
         <!-- Сюда добавляем программно айфрейм с прототипом для редактирования -->
     </div>
-    <input type="file" id="file-chooser" />
+    <!--<input type="file" id="file-chooser" />-->
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/utils.js"></script>
@@ -56,10 +57,11 @@
     <script type="text/javascript" src="../js/queue.js"></script>
     <script>
         //TODO подумать над форматом, где должны храниться продукты всегда. Какое-то одно хранилище?
-        var promoProductUrl = '../products/test/index.html';
-        //TODO вычислять это по имени продукта
         var baseProductUrl = '../products/test/';
+        var indexHtml = 'index.html';
         var promoAppName = 'test1';
+
+        var host = 'https://s3.eu-central-1.amazonaws.com/proconstructor/';
         /**
          * Статические ресурсы (скрипты, стили, картинки и прочее), которые надо зааплоадить при сохранении продукта
          */
@@ -80,12 +82,16 @@
         });
         var fileChooser = document.getElementById('file-chooser');
 
+        function getDistribUrl() {
+            return host+'facebook-'+fbUserId+'/'+promoAppName+'/';
+        }
+
         function initProduct() {
             appIframe = document.createElement('iframe');
             appIframe.onload = onProductIframeLoaded;
             $(appIframe).addClass('proto_cnt');
             //TODO set path
-            appIframe.src = promoProductUrl;
+            appIframe.src = baseProductUrl + indexHtml;
             $('#id-product_iframe_cnt').append(appIframe);
         }
 
@@ -95,40 +101,39 @@
             iframeWindow = appIframe.contentWindow;
         }
 
+        function onEditClick() {
+            //TODO смотреть по engine AppProperties что можно редактировать
+            var fontColors = ['#fff','rgb(177, 193, 155)','#00A651','rgb(195, 186, 186)'];
+            var fontFamilies = ['Arial, Helvetica, sans-serif','"Times New Roman", Times, serif','Impact, Charcoal, sans-serif','"Courier New", Courier, monospace'];
+            var backgrounds = [
+                'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/ny-regents-exam-global-history-and-geography-help-course_132147_large.jpg)',
+                'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg)',
+                'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/location.jpg.pagespeed.ce.wvqZyH3ZXu.jpg)',
+                'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Geography-1-landing.jpg)'
+            ];
+
+            //TODO устанавливать свойства через engine которая запускает тесты
+            iframeWindow.app.fontColor = fontColors[getRandomArbitrary(0,fontColors.length-1)];
+            iframeWindow.app.fontFamily = fontFamilies[getRandomArbitrary(0,fontFamilies.length-1)];
+            iframeWindow.app.background = backgrounds[getRandomArbitrary(0,backgrounds.length-1)];
+            // перезапускаем промо приложение
+            iframeWindow.start();
+        }
+
         function onPublishClick() {
-            var iframe = document.getElementById('id-proto_app_cnt');
-            var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-            var iframeWindow = iframe.contentWindow;
-
-            var bodyStr = iframeDocument.documentElement.innerHTML;
-            var appStr = JSON.stringify(iframeWindow.app);
-
-            log('Publishing: Body length=' + bodyStr.length + ' app length=' + appStr.length);
-
-            publish('testAppName', bodyStr);
+//            var iframe = document.getElementById('id-proto_app_cnt');
+//            var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+//            var iframeWindow = iframe.contentWindow;
+//            var bodyStr = iframeDocument.documentElement.innerHTML;
+//            var appStr = JSON.stringify(iframeWindow.app);
+//            log('Publishing: Body length=' + bodyStr.length + ' app length=' + appStr.length);
+//            publish('testAppName', bodyStr);
+            publish();
         }
 
         /**
-         * Найти все ресурсы, используемые в продукте, и подготовиться к их загрузке
+         * Для указанного имени ресурса задать загруженные данные
          */
-        function buildProductResourceList() {
-            productResources = [];
-            //TODO поиск предполагает что ресурсы находятся рядом с html в baseUrl
-            var scriptExp = /src=(?:\"|\')((?:\w)+\.js)(?:\"|\')/ig;
-            var match = null;
-            while ( (match = scriptExp.exec(productBodyStr)) !== null) {
-                productResources.push({
-                   type: 'text/javascript',
-                   url: match[1]
-                });
-            }
-
-            //TODO css
-
-            //TODO img
-
-        }
-
         function setDataToResource(url, data) {
             for (var i = 0; i < productResources.length; i++) {
                 if (productResources[i].url === url) {
@@ -137,62 +142,94 @@
             }
         }
 
-        function test1() {
-            var client = new XMLHttpRequest();
-            client.open('GET', 'http://localhost:63342/ProCo/products/test/utils.js');
-            client.onreadystatechange = function(e) {
-                log(e.target.responseText);
-            };
-            client.send();
+        /**
+         * Вернуть объект-ресурс по его url
+         */
+        function getResourceByUrl(url) {
+            for (var i = 0; i < productResources.length; i++) {
+                if (productResources[i].url === url) {
+                    return productResources[i];
+                }
+            }
+            return null;
         }
 
-        function grabProductResources() {
-            productResources = [
-                {url:'utils.js'},
-                {url:'jquery.js'}
-            ];
-            for (var i = 0; i < productResources.length; i++) {
-                var t = {
-                    type: 'grabResTask',
-                    // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
-                    data: JSON.parse(JSON.stringify(productResources[i])),
-                    run: function() {
-                        var client = new XMLHttpRequest();
-                        log('Loading resource: ' + baseProductUrl + this.data.url);
-                        client.open('GET', baseProductUrl + this.data.url);
-                        client.onreadystatechange = (function(e) {
-                            if (e.target.readyState == 4) {
-                                if(e.target.status == 200) {
-                                    // task context
-                                    log('task done');
-                                    setDataToResource(this.data.url, e.target.responseText);
-                                }
-                                else {
-                                    log('Resource request failed: '+ myRequest.statusText, true);
-                                }
-                                // даем понять, что таск завершен
-                                Queue.release(this);
-                            }
-                        }).bind(this);
-                        client.send();
-                        log('client.send');
-                    },
-                    done: function(e) {
-                    }
-                };
-                Queue.push(t);
+        /**
+         * Найти все ресурсы, используемые в продукте, и подготовиться к их загрузке
+         */
+        function buildProductResourceList(codeStr) {
+            productResources = [];
+            //TODO поиск предполагает что ресурсы находятся рядом с html в baseUrl
+            var scriptExp = /src=(?:\"|\')((?:\w)+\.js)(?:\"|\')/ig;
+            var jsMatch = null;
+            while ( (jsMatch = scriptExp.exec(codeStr)) !== null) {
+                productResources.push({
+                   type: 'text/javascript',
+                   url: jsMatch[1]
+                });
             }
+            var cssExp = /href=(?:\"|')((?:\w)+.css)(?:\"|')/ig;
+            var cssMatch = null;
+            while ( (cssMatch = cssExp.exec(codeStr)) !== null) {
+                productResources.push({
+                    type: 'text/css',
+                    url: cssMatch[1]
+                });
+            }
+            //TODO img (только "свои" картинки) Из инетов пока не рассматриваем варианты
 
+            // добавляем главный html файл
+            productResources.push({
+                url: indexHtml,
+                type: 'text/html'
+            });
+        }
+
+        /**
+         * Собрать все ресурсы промо-проекта и положить их в productResources
+         */
+        function grabProductResources() {
+//            productResources = [
+//                {url:'utils.js'},
+//                {url:'jquery.js'}
+//            ];
+            for (var i = 0; i < productResources.length; i++) {
+                if (!productResources[i].data) {
+                    var t = {
+                        type: 'grabResTask',
+                        // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
+                        data: JSON.parse(JSON.stringify(productResources[i])),
+                        run: function() {
+                            var client = new XMLHttpRequest();
+                            log('Loading resource: ' + baseProductUrl + this.data.url);
+                            client.open('GET', baseProductUrl + this.data.url);
+                            client.onreadystatechange = (function(e) {
+                                if (e.target.readyState == 4) {
+                                    if(e.target.status == 200) {
+                                        // task context
+                                        log('task done');
+                                        setDataToResource(this.data.url, e.target.responseText);
+                                    }
+                                    else {
+                                        log('Resource request failed: '+ myRequest.statusText, true);
+                                    }
+                                    // даем понять, что таск завершен
+                                    Queue.release(this);
+                                }
+                            }).bind(this);
+                            client.send();
+                            log('client.send');
+                        },
+                        done: function(e) {
+                        }
+                    };
+                    Queue.push(t);
+                }
+            }
             //TODO сделать поддержку таких событий
             Queue.onComplete('grabResTask', function(){
                 log('All resources grabbed.');
             })
-            // добавляем главный html файл
-            productResources.push({
-                url: 'index.html',
-                type: 'text/html',
-                data: productBodyStr
-            });
         }
 
         /**
@@ -215,10 +252,7 @@
                         bucket.putObject(params, (function (err, data) {
                             // task object context
                             if (err) {
-                                //Not authorized to perform sts:AssumeRoleWithWebIdentity
                                 log('ERROR: ' + err, true);
-                            } else {
-//                                listObjs();
                             }
                             Queue.release(this);
                         }).bind(this));
@@ -229,24 +263,44 @@
         }
 
         function publish() {
-//            var file = fileChooser.files[0];
-//            if (file) {
-//                var objKey = 'facebook-' + fbUserId + '/' + file.name;
-//                var params = {
-//                    Key: objKey,
-//                    ContentType: file.type,
-//                    Body: file,
-//                    ACL: 'public-read'
-//                };
-//                bucket.putObject(params, function (err, data) {
-//                    if (err) {
-//                        //Not authorized to perform sts:AssumeRoleWithWebIdentity
-//                        log('ERROR: ' + err, true);
-//                    } else {
-//                        listObjs();
-//                    }
-//                });
+            //TODO собираем ресурсы в несколько проходов
+            // например, для того чтобы забрать картинку, сначала надо скачать и распарсить файл css
+            buildProductResourceList(productBodyStr);
+            grabProductResources();
+
+            //TODO меняем ссылки на картинки
+//            var imgReg = /((?:\w)+\/(?:\w)+\.(?:jpg|jpeg|png))/ig;
+//            for (var i = 0; i < productResources.length; i++) {
+//                var imgMatch = null;
+//                while ( (imgMatch = imgReg.exec(productResources.data)) !== null) {
+//                    //imgMatch[1]
+//                }
 //            }
+
+            setTimeout(function(){
+                //TODO выделить в функцию
+                var indexResource = getResourceByUrl(indexHtml);
+                var startFuncReg = /(function(?:\s)+start(?:\s)*\((?:\w)*\)(?:\s)*\{)/ig;
+                var match = startFuncReg.exec(indexResource.data);
+                var positionToInsert = match.index+match[1].length;
+                var strAppProperties = JSON.stringify(iframeWindow.app);
+                var overrideParamsStr = '\nvar o='+strAppProperties+';'+'for(var key in o)if(o.hasOwnProperty(key))app[key]=o[key];\n'
+                indexResource.data = indexResource.data.slice(0,positionToInsert) + overrideParamsStr + indexResource.data.slice(positionToInsert);
+            },2000);
+
+            setTimeout(uploadProductResources, 2500);
+//            uploadProductResources();
+            //TODO ожидание завершения задач типа uploadResTask
+            setTimeout(showEmbedDialog, 3000);
+        }
+
+        /**
+         * Показать окно для вставки со ссылкой
+         */
+        function showEmbedDialog() {
+            var iframeUrl =  getDistribUrl()+indexHtml;
+            var embedLink = '<iframe src="'+iframeUrl+'" style="display:block;width:600px;height:600px;padding:0;border:none;"></iframe>';
+            alert(embedLink);
         }
 
         function listObjs() {
@@ -266,6 +320,25 @@
                 }
             });
         }
+
+        //            var file = fileChooser.files[0];
+        //            if (file) {
+        //                var objKey = 'facebook-' + fbUserId + '/' + file.name;
+        //                var params = {
+        //                    Key: objKey,
+        //                    ContentType: file.type,
+        //                    Body: file,
+        //                    ACL: 'public-read'
+        //                };
+        //                bucket.putObject(params, function (err, data) {
+        //                    if (err) {
+        //                        //Not authorized to perform sts:AssumeRoleWithWebIdentity
+        //                        log('ERROR: ' + err, true);
+        //                    } else {
+        //                        listObjs();
+        //                    }
+        //                });
+        //            }
 
         if (facebookAuthEnable === true) {
             /*!

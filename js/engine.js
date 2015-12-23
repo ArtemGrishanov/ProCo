@@ -392,3 +392,13 @@ function startEngine() {
     this.testResults = [];
     createAppProperty(window.app);
 }
+
+/**
+ * Приложение должно вызвать эту функцию, чтобы сообщить о запуске.
+ *
+ */
+function appStarted() {
+    if (this.appNew) {
+
+    }
+}
