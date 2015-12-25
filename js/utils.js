@@ -178,3 +178,20 @@ function getRandomArbitrary(min, max) {
     "use strict";
     return Math.round(Math.random() * (max - min) + min);
 }
+
+/**
+ * Обертка над console.log с рубильником
+ *
+ * @param {string} msg - сообщение для вывода
+ * @param {boolean} isError - ошибка или просто сообщение
+ */
+function log(msg, isError) {
+    if (config.local.consoleLogEnable === true) {
+        if (isError) {
+            console.error(msg);
+        }
+        else {
+            console.log(msg);
+        }
+    }
+}

@@ -1,7 +1,6 @@
 /**
  * Created by alex on 29.10.15.
  */
-var consoleLogEnable = true;
 //var ENTITY_ATTRS = ['text', 'css', 'link', 'visible', 'data'];
 var settings = [];
 /**
@@ -352,23 +351,6 @@ function isErrorInTestResults() {
         }
     }
     return false;
-}
-
-/**
- * Обертка над console.log с рубильником
- *
- * @param msg
- * @param isError
- */
-function log(msg, isError) {
-    if (consoleLogEnable === true) {
-        if (isError) {
-            console.error(msg);
-        }
-        else {
-            console.log(msg);
-        }
-    }
 }
 
 /**

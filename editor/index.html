@@ -59,8 +59,11 @@
         //TODO подумать над форматом, где должны храниться продукты всегда. Какое-то одно хранилище?
         var baseProductUrl = '../products/test/';
         var indexHtml = 'index.html';
+
+        //TODO ид каждого проекта должен быть уникален {id, name, author ....}
         var promoAppName = 'test1';
 
+        //TODO settings file
         var host = 'https://s3.eu-central-1.amazonaws.com/proconstructor/';
         /**
          * Статические ресурсы (скрипты, стили, картинки и прочее), которые надо зааплоадить при сохранении продукта
@@ -68,7 +71,6 @@
         var productResources = [];
         var appIframe = null;
         var iframeWindow = null;
-        var productBodyStr = null;
         var appId = '515132035326687';
         var roleArn = 'arn:aws:iam::520270155749:role/ProCo_FBUsers';
         var bucketName = 'proconstructor';
@@ -95,10 +97,12 @@
             $('#id-product_iframe_cnt').append(appIframe);
         }
 
+        /**
+         * iFrame промо проекта был загружен. Получаем из него document и window
+         */
         function onProductIframeLoaded() {
-            var iframeDocument = appIframe.contentDocument || appIframe.contentWindow.document;
-            productBodyStr = iframeDocument.documentElement.innerHTML;
             iframeWindow = appIframe.contentWindow;
+            //TODO редактирование становится доступным показать в интерфейсе
         }
 
         function onEditClick() {
@@ -121,13 +125,6 @@
         }
 
         function onPublishClick() {
-//            var iframe = document.getElementById('id-proto_app_cnt');
-//            var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-//            var iframeWindow = iframe.contentWindow;
-//            var bodyStr = iframeDocument.documentElement.innerHTML;
-//            var appStr = JSON.stringify(iframeWindow.app);
-//            log('Publishing: Body length=' + bodyStr.length + ' app length=' + appStr.length);
-//            publish('testAppName', bodyStr);
             publish();
         }
 
@@ -187,16 +184,14 @@
 
         /**
          * Собрать все ресурсы промо-проекта и положить их в productResources
+         * Ресурсы загружаются в помощью XMLHttpRequest
+         *
+         * @param param
          */
-        function grabProductResources() {
-//            productResources = [
-//                {url:'utils.js'},
-//                {url:'jquery.js'}
-//            ];
+        function grabProductResources(param) {
             for (var i = 0; i < productResources.length; i++) {
                 if (!productResources[i].data) {
                     var t = {
-                        type: 'grabResTask',
                         // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
                         data: JSON.parse(JSON.stringify(productResources[i])),
                         run: function() {
@@ -223,22 +218,54 @@
                         done: function(e) {
                         }
                     };
+                    if (param.taskType) {
+                        t.type = param.taskType;
+                    }
+                    if (param.priority) {
+                        t.priority = param.priority;
+                    }
                     Queue.push(t);
                 }
             }
-            //TODO сделать поддержку таких событий
-            Queue.onComplete('grabResTask', function(){
-                log('All resources grabbed.');
-            })
+        }
+
+        /**
+         * Переписать параметры промо-приложения прототипа на новые, которые получились в результате редактирования
+         *
+         * @param param
+         */
+        function overrideAppParams(param) {
+            var t = {
+                data: '',
+                run: function() {
+                    // здесь происходит подмена параметров промо приложения на новые. Те, которые были настроены пользователем.
+                    var indexResource = getResourceByUrl(indexHtml);
+                    var startFuncReg = /(function(?:\s)+start(?:\s)*\((?:\w)*\)(?:\s)*\{)/ig;
+                    var match = startFuncReg.exec(indexResource.data);
+                    var positionToInsert = match.index+match[1].length;
+                    var strAppProperties = JSON.stringify(iframeWindow.app);
+                    var overrideParamsStr = '\nvar o='+strAppProperties+';'+'for(var key in o)if(o.hasOwnProperty(key))app[key]=o[key];\n'
+                    indexResource.data = indexResource.data.slice(0,positionToInsert) + overrideParamsStr + indexResource.data.slice(positionToInsert);
+                    Queue.release(this);
+                }
+            };
+            if (param.taskType) {
+                t.type = param.taskType;
+            }
+            if (param.priority) {
+                t.priority = param.priority;
+            }
+            Queue.push(t);
         }
 
         /**
          * Сохранить все статические ресурсы проекта в хранилище
+         *
+         * @param param
          */
-        function uploadProductResources() {
+        function uploadProductResources(param) {
             for (var i = 0; i < productResources.length; i++) {
                 var t = {
-                    type: 'uploadResTask',
                     // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
                     data: JSON.parse(JSON.stringify(productResources[i])),
                     run: function() {
@@ -258,16 +285,32 @@
                         }).bind(this));
                     }
                 };
+                if (param.taskType) {
+                    t.type = param.taskType;
+                }
+                if (param.priority) {
+                    t.priority = param.priority;
+                }
                 Queue.push(t);
             }
         }
 
+        /**
+         * Сохранить промо проект на сервере
+         * 1) Для этого сначала составляется список всех ресурсов проекта: css, js, картинки
+         * 2) Затем они скачиваются
+         * 3) Загружаются в хранилище в персональный каталог пользователя
+         */
         function publish() {
             //TODO собираем ресурсы в несколько проходов
             // например, для того чтобы забрать картинку, сначала надо скачать и распарсить файл css
-            buildProductResourceList(productBodyStr);
-            grabProductResources();
-
+            var iframeDocument = appIframe.contentDocument || appIframe.contentWindow.document;
+            buildProductResourceList(iframeDocument.documentElement.innerHTML);
+            //подписка на окончания задач по сбору ресурсов для проекта
+            Queue.onComplete('grabResTask', function(){
+                log('All resources grabbed.');
+            });
+            grabProductResources({taskType:'grabResTask',priority:10});
             //TODO меняем ссылки на картинки
 //            var imgReg = /((?:\w)+\/(?:\w)+\.(?:jpg|jpeg|png))/ig;
 //            for (var i = 0; i < productResources.length; i++) {
@@ -276,22 +319,15 @@
 //                    //imgMatch[1]
 //                }
 //            }
-
-            setTimeout(function(){
-                //TODO выделить в функцию
-                var indexResource = getResourceByUrl(indexHtml);
-                var startFuncReg = /(function(?:\s)+start(?:\s)*\((?:\w)*\)(?:\s)*\{)/ig;
-                var match = startFuncReg.exec(indexResource.data);
-                var positionToInsert = match.index+match[1].length;
-                var strAppProperties = JSON.stringify(iframeWindow.app);
-                var overrideParamsStr = '\nvar o='+strAppProperties+';'+'for(var key in o)if(o.hasOwnProperty(key))app[key]=o[key];\n'
-                indexResource.data = indexResource.data.slice(0,positionToInsert) + overrideParamsStr + indexResource.data.slice(positionToInsert);
-            },2000);
-
-            setTimeout(uploadProductResources, 2500);
-//            uploadProductResources();
-            //TODO ожидание завершения задач типа uploadResTask
-            setTimeout(showEmbedDialog, 3000);
+            Queue.onComplete('grabResTask', function(){
+                log('App params were overrided.');
+            });
+            overrideAppParams({taskType:'overrideApp',priority:9});
+            uploadProductResources({taskType:'uploadRes',priority:8});
+            Queue.onComplete('grabResTask', function(){
+                log('All resources were uploaded.');
+                showEmbedDialog();
+            });
         }
 
         /**
