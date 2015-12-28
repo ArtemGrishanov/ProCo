@@ -33,7 +33,6 @@ var Queue = {};
                 // взяли таск в работу и сразу удаляем его их очереди
                 tasks.splice(inx,1);
                 if (typeof currentTask.run === 'function') {
-                    log('run task');
                     currentTask.run();
                 }
             }
@@ -181,8 +180,6 @@ var Queue = {};
             registrationTime: new Date().getTime()
         });
     };
-
-
 
 
 })(Queue);

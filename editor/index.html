@@ -50,6 +50,7 @@
     <!--<input type="file" id="file-chooser" />-->
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
     <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/config.js"></script>
     <script type="text/javascript" src="../js/utils.js"></script>
     <script type="text/javascript" src="../js/engine.js"></script>
     <script type="text/javascript" src="../js/setting.js"></script>
@@ -62,30 +63,25 @@
 
         //TODO ид каждого проекта должен быть уникален {id, name, author ....}
         var promoAppName = 'test1';
-
-        //TODO settings file
-        var host = 'https://s3.eu-central-1.amazonaws.com/proconstructor/';
         /**
          * Статические ресурсы (скрипты, стили, картинки и прочее), которые надо зааплоадить при сохранении продукта
          */
         var productResources = [];
         var appIframe = null;
         var iframeWindow = null;
-        var appId = '515132035326687';
-        var roleArn = 'arn:aws:iam::520270155749:role/ProCo_FBUsers';
-        var bucketName = 'proconstructor';
-        AWS.config.region = 'eu-central-1';
         var fbUserId;
         var facebookAuthEnable = true;
+        AWS.config.region = config.common.awsRegion;
         var bucket = new AWS.S3({
             params: {
-                Bucket: bucketName
+                Bucket: config.common.bucketName
             }
         });
         var fileChooser = document.getElementById('file-chooser');
+        var errorInPublish = false;
 
         function getDistribUrl() {
-            return host+'facebook-'+fbUserId+'/'+promoAppName+'/';
+            return config.common.hostName+config.common.bucketName+'/facebook-'+fbUserId+'/'+promoAppName+'/';
         }
 
         function initProduct() {
@@ -102,26 +98,21 @@
          */
         function onProductIframeLoaded() {
             iframeWindow = appIframe.contentWindow;
+            Engine.startEngine(iframeWindow);
             //TODO редактирование становится доступным показать в интерфейсе
         }
 
         function onEditClick() {
             //TODO смотреть по engine AppProperties что можно редактировать
-            var fontColors = ['#fff','rgb(177, 193, 155)','#00A651','rgb(195, 186, 186)'];
-            var fontFamilies = ['Arial, Helvetica, sans-serif','"Times New Roman", Times, serif','Impact, Charcoal, sans-serif','"Courier New", Courier, monospace'];
-            var backgrounds = [
-                'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/ny-regents-exam-global-history-and-geography-help-course_132147_large.jpg)',
-                'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg)',
-                'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/location.jpg.pagespeed.ce.wvqZyH3ZXu.jpg)',
-                'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Geography-1-landing.jpg)'
-            ];
-
-            //TODO устанавливать свойства через engine которая запускает тесты
-            iframeWindow.app.fontColor = fontColors[getRandomArbitrary(0,fontColors.length-1)];
-            iframeWindow.app.fontFamily = fontFamilies[getRandomArbitrary(0,fontFamilies.length-1)];
-            iframeWindow.app.background = backgrounds[getRandomArbitrary(0,backgrounds.length-1)];
+            //TODO устанавливать свойства через engine которая запускает тест
+            var fontColors = config.products.tests.fontColors;
+            var fontFamilies = config.products.tests.fontFamilies;
+            var backgrounds = config.products.tests.backgrounds;
+            Engine.setValue('fontColor',fontColors[getRandomArbitrary(0,fontColors.length-1)]);
+            Engine.setValue('fontFamily',fontFamilies[getRandomArbitrary(0,fontFamilies.length-1)]);
+            Engine.setValue('background',backgrounds[getRandomArbitrary(0,backgrounds.length-1)]);
             // перезапускаем промо приложение
-            iframeWindow.start();
+//            iframeWindow.start();
         }
 
         function onPublishClick() {
@@ -195,14 +186,14 @@
                         // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
                         data: JSON.parse(JSON.stringify(productResources[i])),
                         run: function() {
+                            log('Grab task run:' + baseProductUrl + this.data.url);
                             var client = new XMLHttpRequest();
-                            log('Loading resource: ' + baseProductUrl + this.data.url);
                             client.open('GET', baseProductUrl + this.data.url);
                             client.onreadystatechange = (function(e) {
                                 if (e.target.readyState == 4) {
                                     if(e.target.status == 200) {
                                         // task context
-                                        log('task done');
+                                        log('Grab task done:' + this.data.url);
                                         setDataToResource(this.data.url, e.target.responseText);
                                     }
                                     else {
@@ -213,7 +204,6 @@
                                 }
                             }).bind(this);
                             client.send();
-                            log('client.send');
                         },
                         done: function(e) {
                         }
@@ -269,6 +259,7 @@
                     // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
                     data: JSON.parse(JSON.stringify(productResources[i])),
                     run: function() {
+                        log('Upload task run:' + this.data.url);
                         var objKey = 'facebook-'+fbUserId+'/'+promoAppName+'/'+this.data.url;
                         var params = {
                             Key: objKey,
@@ -279,8 +270,10 @@
                         bucket.putObject(params, (function (err, data) {
                             // task object context
                             if (err) {
+                                errorInPublish = true;
                                 log('ERROR: ' + err, true);
                             }
+                            log('Upload task done:' + this.data.url);
                             Queue.release(this);
                         }).bind(this));
                     }
@@ -302,6 +295,7 @@
          * 3) Загружаются в хранилище в персональный каталог пользователя
          */
         function publish() {
+            errorInPublish = false;
             //TODO собираем ресурсы в несколько проходов
             // например, для того чтобы забрать картинку, сначала надо скачать и распарсить файл css
             var iframeDocument = appIframe.contentDocument || appIframe.contentWindow.document;
@@ -309,9 +303,8 @@
             //подписка на окончания задач по сбору ресурсов для проекта
             Queue.onComplete('grabResTask', function(){
                 log('All resources grabbed.');
-            });
-            grabProductResources({taskType:'grabResTask',priority:10});
-            //TODO меняем ссылки на картинки
+
+                //TODO меняем ссылки на картинки
 //            var imgReg = /((?:\w)+\/(?:\w)+\.(?:jpg|jpeg|png))/ig;
 //            for (var i = 0; i < productResources.length; i++) {
 //                var imgMatch = null;
@@ -319,14 +312,30 @@
 //                    //imgMatch[1]
 //                }
 //            }
-            Queue.onComplete('grabResTask', function(){
-                log('App params were overrided.');
+                Queue.onComplete('overrideApp', function(){
+                    log('Apps were overrided.');
+                });
+                overrideAppParams({
+                    taskType:'overrideApp',
+                    priority:9
+                });
+                Queue.onComplete('uploadRes', function(){
+                    if (errorInPublish === true) {
+                        alert('Ошибка')
+                    }
+                    else {
+                        log('All resources were uploaded.');
+                        showEmbedDialog();
+                    }
+                });
+                uploadProductResources({
+                    taskType:'uploadRes',
+                    priority:8
+                });
             });
-            overrideAppParams({taskType:'overrideApp',priority:9});
-            uploadProductResources({taskType:'uploadRes',priority:8});
-            Queue.onComplete('grabResTask', function(){
-                log('All resources were uploaded.');
-                showEmbedDialog();
+            grabProductResources({
+                taskType:'grabResTask',
+                priority:10
             });
         }
 
@@ -384,12 +393,12 @@
              */
             window.fbAsyncInit = function () {
                 FB.init({
-                    appId: appId
+                    appId: config.common.facebookAppId
                 });
                 FB.login(function (response) {
                     bucket.config.credentials = new AWS.WebIdentityCredentials({
                         ProviderId: 'graph.facebook.com',
-                        RoleArn: roleArn,
+                        RoleArn: config.common.roleArn,
                         WebIdentityToken: response.authResponse.accessToken
                     });
                     fbUserId = response.authResponse.userID;

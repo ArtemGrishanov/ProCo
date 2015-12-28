@@ -186,7 +186,7 @@ function getRandomArbitrary(min, max) {
  * @param {boolean} isError - ошибка или просто сообщение
  */
 function log(msg, isError) {
-    if (config.local.consoleLogEnable === true) {
+    if (config.common.consoleLogEnable === true) {
         if (isError) {
             console.error(msg);
         }

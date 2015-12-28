@@ -147,8 +147,11 @@
                 parent: '.js-questions_cnt'
             },
 
+            d__fontColor: 'editable=true',
             fontColor: '#fff',
+            d__fontFamily: 'editable=true',
             fontFamily: 'Arial',
+            d__background: 'editable=true',
             background: 'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg)',
 
             /**
@@ -310,24 +313,28 @@
              * Минимальный результат меньше максимального
              * @returns {boolean}
              */
-            function resultMinMax(app) {
+            function resultMinMax(app, engine) {
                 for (var i = 0; i < app.results.length; i++) {
                     var r = app.results[i];
                     if (r.minPoints <= r.maxPoints) {
                         // QUnit included
-                        test(r.minPoints <= r.maxPoints, true, 'Минимальный результат меньше максимального');
+                        engine.test(r.minPoints <= r.maxPoints, true, 'Минимальный результат меньше максимального');
                     }
                 }
             },
             /**
              * Вопросов должно быть хотя бы 1 штука
              */
-            function questionsCount(app) {
-                test(questions.length > 0, true, 'Вопросов должно быть хотя бы 1 штука');
+            function questionsCount(app, engine) {
+                engine.test(questions.length > 0, true, 'Вопросов должно быть хотя бы 1 штука');
             },
 
-            function test1(app) {
-                test(typeof app.randomizeQuestions == "boolean", true, 'true or false');
+            function test1(app, engine) {
+                engine.test(typeof app.randomizeQuestions == "boolean", true, 'true or false');
+            },
+
+            function test2(app, engine) {
+                engine.test(typeof app.background == 'string', true, 'background string url');
             }
         ];
 
