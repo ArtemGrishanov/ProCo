@@ -83,9 +83,9 @@ body {
 .txt {
     font-size: 16px;
 }
-.explain {
+.explain_blk {
     background-color: #00a651;
 }
-.explain.__err{
+.explain_blk.__err{
     background-color: #ff2211;
 }

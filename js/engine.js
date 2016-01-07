@@ -269,8 +269,8 @@ var Engine = {};
                     // смотрим, есть ли у него дескриптор
                     if (obj.hasOwnProperty(DESC_PREFIX+key)) {
                         var str = strPrefix + key;
-                        log('Property string: \''+ str + '\' and desc found: ' + obj[DESC_PREFIX+key]);
-                        var p = new AppProperty(str,obj[DESC_PREFIX+key]);
+                        log('Property propertyString: \''+ str + '\' and desc found: ' + obj[DESC_PREFIX+key]);
+                        var p = new AppProperty(obj[key],str,obj[DESC_PREFIX+key]);
                         appProperties.push(p);
                     }
                 }
@@ -283,29 +283,53 @@ var Engine = {};
     }
 
     /**
+     * Добавить элемент в массив
+     *
+     * @param key ключ массива в объекте productWindow
+     * @param value
+     */
+    function addArrayElement(key, value, position) {
+        // все методы работы с массивами должны сводиться к setValue
+        // подготовим новый массив и сделаем установку свойства
+        if (productWindow.app.hasOwnProperty(key) && Array.isArray(productWindow.app[key])) {
+            var newArray = JSON.parse(JSON.stringify(productWindow.app[key]));
+            if (position < 0) {
+                position = 0;
+            }
+            newArray.splice(position, -1, value);
+            // считается, что устанавливаем новый массив целиком
+            setValue(key, newArray);
+        }
+    }
+
+    function deleteArrayElement(index) {
+
+    }
+
+    /**
      * Установить значение в продукт, в объект app[key] = value
      * Будут выполнены необходимые проверки, описанные разработчиком прототипа в тестах
      *
      * @public
-     * @param key
-     * @param value
+     * @param {String} key - ссылка на свойства. Например, 'results[0].title' или 'randomizeQuestions'
+     * @param {*} value
      * @return {}
      */
     function setValue(key, value) {
+        //TODO как связать с AppProperty
         log('Changing property \''+key+'\'='+value);
         if (productWindow.app && productWindow.tests) {
             // обнуляем перед прогоном тестов
             testResults = [];
-            var needQuatas = (typeof value === 'string');
+            var needQuatas = (typeof value === 'propertyString');
             for (var i = 0; i < productWindow.tests.length; i++) {
                 var s = productWindow.tests[i].toString();
                 // запускаем тесты, в которых обнаружено данное свойство
                 if (s.indexOf('.'+key) >= 0 || s.indexOf('\''+key+'\'') >= 0) {
-                    // клонируем настройки приложения, чтобы не них произвести тест
+                    // клонируем настройки приложения, чтобы на них произвести тест
                     //TODO может быть не эффективно на сложных объектах
                     var appCopy = JSON.parse(JSON.stringify(productWindow.app));
                     // делаем изменение
-                    //appCopy[key] = value;
                     if (needQuatas === true) {
                         eval('appCopy.'+key+'=\''+value+'\'');
                     }
@@ -331,7 +355,6 @@ var Engine = {};
             // если тестов не было, то тоже считаем что всё успешно
             if (isErrorInTestResults() === false) {
                 // если всё хорошо завершилось, устанавливаем свойство, это безопасно
-    //            productWindow.app[key] = value;
                 if (needQuatas === true) {
                     eval('productWindow.app.'+key+'=\''+value+'\'');
                 }
@@ -388,7 +411,42 @@ var Engine = {};
         }
         appProperties = [];
         testResults = [];
+        // рекурсивно создает по всем свойствам app объекты AppProperty
         createAppProperty(productWindow.app);
+    }
+
+    /**
+     * Создать шаблон из прототипа. Это набор дескрипторов, который можно применить к прототипу.
+     * @returns {string} строка, сериализованный JSON объект
+     */
+    function exportTemplate() {
+        // ид прототипа показывает для какого прототипа подходит этот шаблон
+        var templObj = {
+            prototype: config.products.tests.prototypeId,
+            descriptors: {},
+            themes: ''
+        };
+        // записать дескрипторы в шаблон
+        for (var i = 0; i < appProperties.length; i++) {
+            var p = appProperties[i];
+            if (p.descriptor.editable === true) {
+                for (var key in p.descriptor) {
+                    if (p.descriptor.hasOwnProperty(key)) {
+                        templObj.descriptors[key] = p.descriptor[key];
+                    }
+                }
+            }
+        }
+        // TODO записать темы (возможно, на первое время это просто цвета)
+        var templStr = null;
+        try {
+            templStr = JSON.stringify(templObj);
+        }
+        catch(e) {
+            log('Error in serializing template error: ' + e, true);
+            return null;
+        }
+        return templStr;
     }
 
     /**
@@ -403,4 +461,5 @@ var Engine = {};
     global.setValue = setValue;
     global.test = test;
     global.getAppProperties = getAppProperties;
+    global.exportTemplate = exportTemplate;
 })(Engine);

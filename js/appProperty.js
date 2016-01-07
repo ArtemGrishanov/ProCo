@@ -5,17 +5,19 @@
 /**
  * Обертка вокруг свойства в объекте window.app
  *
+ * @param propertyValue - значение свойства
  * @param propertyString - Строка вида 'quiz.2.options.1.points'
  * Которая подразумевает свойство window.app.quiz[2].options[1].points
  * или иначе windows.app['quiz']['2']['options']['1']['points']
  * @param descString - строка-дескриптор, описывающая как работать со свойством
  */
 
-var AppProperty = function(propertyString, descString) {
-    this.string = propertyString;
+var AppProperty = function(propertyValue, propertyString, descString) {
+    this.propertyValue = propertyValue;
+    this.propertyString = propertyString;
     // в начале строки может быть запятая, отсекаем
-    if (this.string.charAt(0) === '.') {
-        this.string = this.string.substr(1);
+    if (this.propertyString.charAt(0) === '.') {
+        this.propertyString = this.propertyString.substr(1);
     }
     this.descString = descString;
     if (descString) {
@@ -27,7 +29,8 @@ var AppProperty = function(propertyString, descString) {
     if (!this.descriptor.hasOwnProperty('editable')) {
         this.descriptor.editable = false;
     }
-    this.arr = this.string.split('.');
+    this.path = this.propertyString.split('.');
+    this.isArray = Array.isArray(this.propertyValue);
 //    try {
 //        var a = str.split('.');
 //        for (var i = 0; i < a.length; i++) {
@@ -52,7 +55,7 @@ var AppProperty = function(propertyString, descString) {
 //        log('Cannot create appProperty: ' + e, true);
 //    }
 //    finally {
-        log('Property inited: ' + this.arr.toString());
+        log('Property inited: ' + this.path.toString());
 //    }
 };
 
@@ -67,7 +70,15 @@ AppProperty.prototype.parseDescriptor = function(descString) {
         var options = descString.split(';');
         for (var i = 0; i < options.length; i++) {
             var values = options[i].split('=');
-            d[values[0]] = values[1];
+            if (values[0] && values[1]) {
+                d[values[0]] = values[1];
+                if (d[values[0]] === 'false') {
+                    d[values[0]] = false;
+                }
+                if (d[values[0]] === 'true') {
+                    d[values[0]] = true;
+                }
+            }
         }
     }
     catch(e) {
@@ -78,4 +89,20 @@ AppProperty.prototype.parseDescriptor = function(descString) {
 }
 AppProperty.prototype.setToApp = function(app, val) {
 
+}
+/**
+ * Получить копию элемента массива.
+ * При добавлении нового элемента в редакторе сначала получаем и редактируем эту копию, а потом уже добавляем её в свойства app
+ * Если настройка не привязана к массиву, вернется null.
+ *
+ * @param [index] индекс элемента для копирования
+ *
+ * return {Object} копия элемента массива
+ */
+AppProperty.prototype.getArrayElementCopy = function(index) {
+    if (this.isArray === true && this.propertyValue.length > 0) {
+        var index = index || this.propertyValue.length-1;
+        return JSON.parse(JSON.stringify(this.propertyValue[index]));
+    }
+    return null;
 }

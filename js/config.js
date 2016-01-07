@@ -3,9 +3,12 @@
  */
 var config = {
     common: {
-        hostName: 'https://s3.eu-central-1.amazonaws.com/',
-        bucketName: 'proconstructor',
-        roleArn: 'arn:aws:iam::520270155749:role/ProCo_FBUsers',
+        /**
+         * Хост для сохранения данных
+         */
+        awsHostName: 'https://s3.eu-central-1.amazonaws.com/',
+        awsBucketName: 'proconstructor',
+        awsRoleArn: 'arn:aws:iam::520270155749:role/ProCo_FBUsers',
         awsRegion: 'eu-central-1',
         /**
          * Id приложения в facebook для логина
@@ -13,14 +16,37 @@ var config = {
         //facebookAppId: '515132035326687', //aws appId
         facebookAppId: '518819781624579', //localhost site
         /**
+         * Разрешать вход через FB
+         */
+        facebookAuthEnable: false,
+        /**
          * Разрешает вывод в консоль console.log
          */
-        consoleLogEnable: true
+        consoleLogEnable: true,
+        /**
+         * Имя get параметра для передачи ссылки открытие в редакторе
+         */
+        productSrcParamName: 'src',
+        /**
+         * урл на продукт который открываем по умолчанию, если не был указан продукт для открытия
+         */
+        defaultProductPrototype: null,
+        /**
+         * хост для загрузки прототипов на редактирование
+         * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
+         * при деплое на продакш оставить пустым
+         */
+        devPrototypesHostName: 'http://localhost:63342/ProCo',
+        /**
+         * Теги, которыми будет обрамлены новые параметры перезаписывании
+         */
+        tagsForOverridingParams: ['/*<overrideapp>*/','/*</overrideapp>*/']
     },
     products: {
         tests: {
+            prototypeId: 'test_v0.1',
             backgrounds: [
-                //TODO брать параметры из других параметров config.common.hostName
+                //TODO брать параметры из других параметров config.common.awsHostName
                 'url('+'https://s3.eu-central-1.amazonaws.com/'+'proconstructor/facebook-902609146442342/test1/i/ny-regents-exam-global-history-and-geography-help-course_132147_large.jpg)',
                 'url('+'https://s3.eu-central-1.amazonaws.com/'+'proconstructor/facebook-902609146442342/test1/i/Globe7.jpg)',
                 'url('+'https://s3.eu-central-1.amazonaws.com/'+'proconstructor/facebook-902609146442342/test1/i/location.jpg.pagespeed.ce.wvqZyH3ZXu.jpg)',

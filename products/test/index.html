@@ -68,8 +68,8 @@
         <div id="id-end_slide" class="slide">
             <div class="cnt_wr">
                 <div class="start_txt">
-                    <h2 class="start_head">Конец</h2>
-                    <span class="start_desc">Ты ответил на все вопросы</span>
+                    <h2 class="start_head js-result_title">Конец</h2>
+                    <span class="start_desc js-result_description">Ты ответил на все вопросы</span>
                 </div>
                 </br>
                 <div class="btn_wr">
@@ -92,8 +92,8 @@
                     <span>{{question_text}}</span>
                 </div>
                 <div class="js-answers_cnt"></div>
-                <div class="explain" style="display:none;">
-                    <div>{{result}}</div>
+                <div class="js-explain explain_blk" style="display:none;">
+                    <div class="js-explanation_text"></div>
                     </br>
                     </br>
                     <div><span class="btn js-next">Далее</span></div>
@@ -155,6 +155,14 @@
             background: 'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg)',
 
             /**
+             * Будет показано объяснения, если оно указано для вопроса.
+             * Причем есть возможность указать explanation для вопроса, так и для варианта ответа (option)
+             * Приоритетнее: для варианта ответа, а потом уже (если есть) для всего вопроса
+             */
+            showExplanation: true,
+            d__showExplanation: 'editable=true',
+
+            /**
              * Вопросы с ответами
              */
             d__quiz: 'editable=true;length={apps.tests.maxquizcount}',
@@ -164,18 +172,22 @@
                     options: [
                         {
                             text: 'Страна на западе Африки',
-                            type: 'text'
+                            type: 'text',
+                            explanation: 'Это страна, но не на западе.'
                         },
                         {
                             text: 'Остров в Атлантическом океане',
-                            type: 'text'
+                            type: 'text',
+                            explanation: 'Остров, но не в Атлантике.'
                         },
                         {
                             text: 'Остров на юге Африки',
                             type: 'text',
-                            points: 1
+                            points: 1,
+                            explanation: 'Да, верно'
                         }
-                    ]
+                    ],
+                    explanation: 'Конечно, это остров на юге Африки в индийском океане.'
                 },
                 {
                     text: 'Какая самая большая страна?',
@@ -191,7 +203,8 @@
                         {
                             text: 'Австралия'
                         }
-                    ]
+                    ],
+                    explanation: 'Это Россия, все знают.'
                 },
                 {
                     text: 'Какого моря не существует?',
@@ -214,7 +227,6 @@
                 }
             ],
 
-            // это-то однозначно хранить в виде объекта а не в dom дереве
             /**
              * Описание результатов, которые можно получить
              */
@@ -223,28 +235,49 @@
                     minPoints: 0,
                     maxPoints: 1,
                     title: 'Новичок',
-                    descripttion: 'Длинный текст типа неплохо для начала'
+                    description: 'Неплохо для начала.'
                 },
                 {
                     minPoints: 2,
                     maxPoints: 3,
                     title: 'Средний',
-                    descripttion: 'Длинный текст типа уже лучше, давай ещё'
+                    description: 'Уже лучше, давай ещё'
                 }
-            ]
+            ],
+            d__results: 'editable=true;'
         };
     </script>
     <script>
+        /**
+         * тайтал результата по умолчанию
+         */
+        var DEF_RESULT_TITLE = 'Конец теста';
+        /**
+         * Описание результата по умолчанию
+         */
+        var DEF_RESULT_DESCRIPTION = 'Ты ответил на все вопросы';
+        /**
+         *
+         */
         var resultPoints = 0;
         var currentQuestionIndex = -1;
+        /**
+         * Id опции, которую выбрал пользователь
+         */
+        var currentOptionId = '';
         var state = undefined; //'welcome', 'test', 'final'
+        /**
+         * {Object} Результат, полученный пользователем. Из массива app.results
+         */
+        var currentResult = null;
 
         function next() {
             //TODO на основе модели переходов можно построить блок схему для пользователя (если лучше формализовать модель)
             switch (state) {
                 case 'welcome': {
                     resultPoints = 0;
-                    $('.explain').hide();
+                    currentResult = null;
+                    $('.js-explain').hide();
                     // currentQuestionIndex устанавливается внутри
                     renderQuestion(0);
                     $('#id-start_slide').hide();
@@ -260,6 +293,8 @@
                         // конец теста, финальный скрин
                         $('.js-slides_cnt').hide();
                         //TODO посчитать результат
+                        currentResult = getResult(resultPoints);
+                        renderResult();
                         $('#id-end_slide').show();
                         state = 'final';
                     }
@@ -284,14 +319,14 @@
             next();
         });
 
-        $(document).ready(function() {
-            start();
-        });
-
-        function getResult(p) {
+        /**
+         * Найти результат в массиве app.results для указанного количества баллов.
+         * @param points - количество баллов, для которых найти результат
+         */
+        function getResult(points) {
             for (var i = 0; i < app.results.length; i++) {
                 var r = app.results[i];
-                if (r.minPoints <= p && p <=r.maxPoints) {
+                if (r.minPoints <= points && points <=r.maxPoints) {
                     return r;
                 }
             }
@@ -309,6 +344,11 @@
          * Для выполнения проверок пользоваться функцией engine.test(actual, expected, message)
          */
         var tests = [
+            //TODO можно универсальные сделать тесты для любого проекта на проверку app
+                //корректные дескрипторы
+                //наличие app tests start
+                //
+
             /**
              * Минимальный результат меньше максимального
              * @returns {boolean}
@@ -358,8 +398,6 @@
             next();
         }
 
-        //todo: дальше давай через setValue менять ответы и вопросы и результаты, как раз сложные свойства и сложные тесты
-
         /**
          * Сгенерировать уникальные идишки для вопросов и ответов
          */
@@ -379,15 +417,15 @@
             $cnt.empty();
             var templStr = $('#id-slide_template').html();
             templStr = templStr.replace('{{question_text}}', q.text);
-            var $e = $(templStr);
-            $cnt.append($e);
-            renderAnswers();
-            $e.find('.js-next').click(function() {
+            var $slide = $(templStr);
+            $cnt.append($slide);
+            renderAnswers($slide);
+            $slide.find('.js-next').click(function() {
                 next();
             });
         }
 
-        function renderAnswers() {
+        function renderAnswers($slide) {
             for (var i = 0; i < app.quiz[currentQuestionIndex].options.length; i++) {
                 var o = app.quiz[currentQuestionIndex].options[i];
                 var templStr = $('#id-answer_template').html();
@@ -395,11 +433,25 @@
                 var $e = $(templStr);
                 $e.attr('data-id', o.id);
                 $e.click(function(e) {
-                    var id = $(e.currentTarget).attr('data-id');
-                    var success = answer(id);
-                    showExplanation(success);
+                    currentOptionId = $(e.currentTarget).attr('data-id');
+                    var success = answer(currentOptionId);
+                    showExplanation($slide, success);
                 });
                 $('.js-answers_cnt').append($e);
+            }
+        }
+
+        /**
+         * Отрисовать результат теста
+         */
+        function renderResult() {
+            if (currentResult) {
+                $('.js-result_title').text(currentResult.title);
+                $('.js-result_description').text(currentResult.description);
+            }
+            else {
+                $('.js-result_title').text(DEF_RESULT_TITLE);
+                $('.js-result_description').text(DEF_RESULT_DESCRIPTION);
             }
         }
 
@@ -422,22 +474,53 @@
         }
 
         /**
+         * Вернуть по идентификатору опцию ответа
+         *
+         * @param {string} id - идентификатор опции
+         * @param {number} currentQuestionIndex - индекс вопроса
+         */
+        function getOptionById(id, currentQuestionIndex) {
+            for (var i = 0; i < app.quiz[currentQuestionIndex].options.length; i++) {
+                var o = app.quiz[currentQuestionIndex].options[i];
+                if (o.id === id) {
+                    return o;
+                }
+            }
+            return null;
+        }
+
+        /**
          * Показать верен ли был ответ или нет
          * Также появляется кнопка Далее, чтобы перейти к следующему вопросу
          *
-         * @param success - верно или не тответил пользователь
+         * @param success - верно ли ответил пользователь
          */
-        function showExplanation(success) {
-            var $ex = $('.js-slides_cnt').find('.explain');
+        function showExplanation($slide, success) {
+            var $ex = $('.js-slides_cnt').find('.js-explain');
             // add __err modifier if wrong
             if ($ex) {
                 if (success !== true) {
                     $ex.addClass('__err');
                 }
                 $ex.show();
+                if (app.showExplanation === true) {
+                    var $explText = $('.js-explanation_text');
+                    var option = getOptionById(currentOptionId, currentQuestionIndex);
+                    if (option.explanation) {
+                        // показать объяснение если есть в варианте ответа
+                        $explText.text(option.explanation);
+                    }
+                    else if (app.quiz[currentQuestionIndex].explanation) {
+                        // показать объяснение если есть в вопросе
+                        $explText.text(app.quiz[currentQuestionIndex].explanation);
+                    }
+                }
             }
         }
 
+        $(document).ready(function() {
+            start();
+        });
     </script>
 </body>
 </html>
