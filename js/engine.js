@@ -4,6 +4,8 @@
 
 var Engine = {};
 (function (global) {
+    var DESC_PREFIX='d__';
+    var PROTOTYPE_PREFIX='proto__';
     //var ENTITY_ATTRS = ['text', 'css', 'link', 'visible', 'data'];
     var settings = [];
     /**
@@ -19,6 +21,11 @@ var Engine = {};
      * Свойтва промо проекта, которые можно редактировать
      */
     var appProperties = [];
+    /**
+     * Прототипы для создания новых свойств
+     * Прототип клонируется сколько угодно раз и добавляется в productWindow.app
+     */
+    var propertyPrototypes = [];
 
     //TODO надо наверное копию сделать массива entity а то как прототип использовать
 
@@ -251,7 +258,24 @@ var Engine = {};
         return true;
     }
 
-    var DESC_PREFIX='d__';
+    /**
+     * Ищет и создает прототипы свойств в productWindow.app
+     * Прототипы нужны для того, чтобы создавать новые элементы в массивах
+     * Например, в тесте есть различные типы вопросов. Пользователь может создавать любое количество различных типов слайдов в одном массиве
+     *
+     * @param obj
+     */
+    function createAppPrototypes(obj) {
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                // если это не дескриптор, а просто свойство
+                if (key.indexOf(PROTOTYPE_PREFIX) === 0) {
+                    log('Property prototype: \''+ key + '\' found');
+                    propertyPrototypes.push(obj[key]);
+                }
+            }
+        }
+    }
 
     /**
      * Создать обертку для свойства app
@@ -263,13 +287,14 @@ var Engine = {};
         strPrefix = strPrefix || '';
         strPrefix += '.';
         for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
+            // прототипы не надо рассматривать и искать в них AppProperty
+            if (obj.hasOwnProperty(key) && key.indexOf(PROTOTYPE_PREFIX)!==0) {
                 // если это не дескриптор, а просто свойство
                 if (key.indexOf(DESC_PREFIX)!==0) {
                     // смотрим, есть ли у него дескриптор
                     if (obj.hasOwnProperty(DESC_PREFIX+key)) {
                         var str = strPrefix + key;
-                        log('Property propertyString: \''+ str + '\' and desc found: ' + obj[DESC_PREFIX+key]);
+                        log('Property string: \''+ str + '\' and desc found: ' + obj[DESC_PREFIX+key]);
                         var p = new AppProperty(obj[key],str,obj[DESC_PREFIX+key]);
                         appProperties.push(p);
                     }
@@ -286,7 +311,7 @@ var Engine = {};
      * Добавить элемент в массив
      *
      * @param key ключ массива в объекте productWindow
-     * @param value
+     * @param value значение элемента массива
      */
     function addArrayElement(key, value, position) {
         // все методы работы с массивами должны сводиться к setValue
@@ -298,7 +323,7 @@ var Engine = {};
             }
             newArray.splice(position, -1, value);
             // считается, что устанавливаем новый массив целиком
-            setValue(key, newArray);
+            this.setValue(key, newArray);
         }
     }
 
@@ -317,11 +342,12 @@ var Engine = {};
      */
     function setValue(key, value) {
         //TODO как связать с AppProperty
-        log('Changing property \''+key+'\'='+value);
+        var stringifiedValue = JSON.stringify(value);
+        log('Changing property \''+key+'\'='+stringifiedValue);
         if (productWindow.app && productWindow.tests) {
             // обнуляем перед прогоном тестов
             testResults = [];
-            var needQuatas = (typeof value === 'propertyString');
+//            var needQuatas = (typeof value === 'string');
             for (var i = 0; i < productWindow.tests.length; i++) {
                 var s = productWindow.tests[i].toString();
                 // запускаем тесты, в которых обнаружено данное свойство
@@ -330,12 +356,12 @@ var Engine = {};
                     //TODO может быть не эффективно на сложных объектах
                     var appCopy = JSON.parse(JSON.stringify(productWindow.app));
                     // делаем изменение
-                    if (needQuatas === true) {
-                        eval('appCopy.'+key+'=\''+value+'\'');
-                    }
-                    else {
-                        eval('appCopy.'+key+'='+value);
-                    }
+//                    if (needQuatas === true) {
+//                        eval('appCopy.'+key+'=\''+stringifiedValue+'\'');
+//                    }
+//                    else {
+                        eval('appCopy.'+key+'='+stringifiedValue);
+//                    }
                     try {
                         // запускаем тест на новых настройках, результаты собираются в переменную
                         log('Running test...');
@@ -355,23 +381,26 @@ var Engine = {};
             // если тестов не было, то тоже считаем что всё успешно
             if (isErrorInTestResults() === false) {
                 // если всё хорошо завершилось, устанавливаем свойство, это безопасно
-                if (needQuatas === true) {
-                    eval('productWindow.app.'+key+'=\''+value+'\'');
-                }
-                else {
-                    eval('productWindow.app.'+key+'='+value);
-                }
-                log('All tests was successful. Tests count='+testResults.length+'; \''+key+'\'='+value+' was set');
+//                if (needQuatas === true) {
+//                    eval('productWindow.app.'+key+'=\''+stringifiedValue+'\'');
+//                }
+//                else {
+                    eval('productWindow.app.'+key+'='+stringifiedValue);
+//                }
+                log('All tests was successful. Tests count='+testResults.length+'; \''+key+'\'='+stringifiedValue+' was set');
                 // дальше перезапустить приложение
                 if (typeof productWindow.start === 'function') {
-                   log('Restart app');
+                    log('Restart app');
                     productWindow.start.call(productWindow);
                 }
+                appProperties = [];
+                // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
+                //TODO нужен более умный алгоритм. Пересоздавать только то что надо и когда надо
+                createAppProperty(productWindow.app);
+                return {result: 'success', message: ''};
             }
-            else {
-                log('Tests contain errors. Cannot set \''+key+'\'='+value);
-            }
-            return {result: '', msg: ''};
+            log('Tests contain errors. Cannot set \''+key+'\'='+stringifiedValue);
+            return {result: 'error', message: ''};
         }
         else {
             log('You must set windows.app and windows.test properties in your promoapp', true);
@@ -413,6 +442,8 @@ var Engine = {};
         testResults = [];
         // рекурсивно создает по всем свойствам app объекты AppProperty
         createAppProperty(productWindow.app);
+        // находим и создаем шаблоны
+        createAppPrototypes(productWindow.app);
     }
 
     /**
@@ -457,9 +488,20 @@ var Engine = {};
         return appProperties;
     }
 
+    /**
+     * Вернуть доступные прототипы свойств
+     * @returns {Array}
+     */
+    function getPropertyPrototypes() {
+        return propertyPrototypes;
+    }
+
     global.startEngine = startEngine;
     global.setValue = setValue;
+    global.addArrayElement = addArrayElement;
+    global.deleteArrayElement = deleteArrayElement;
     global.test = test;
     global.getAppProperties = getAppProperties;
+    global.getPropertyPrototypes = getPropertyPrototypes;
     global.exportTemplate = exportTemplate;
 })(Engine);

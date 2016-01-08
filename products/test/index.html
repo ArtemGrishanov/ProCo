@@ -165,7 +165,7 @@
             /**
              * Вопросы с ответами
              */
-            d__quiz: 'editable=true;length={apps.tests.maxquizcount}',
+            d__quiz: 'editable=true;ui=Slides;length={apps.tests.maxquizcount};canAdd=proto__text_slide,proto__photo_question_slide',
             quiz: [
                 {
                     text: 'Мадагаскар -- это где?',
@@ -244,12 +244,49 @@
                     description: 'Уже лучше, давай ещё'
                 }
             ],
-            d__results: 'editable=true;'
+            d__results: 'editable=true;',
+
+            // шаблон текстового вопроса
+            proto__text_slide: {
+                uiTemplate: 'id-slide_template',
+                text: 'Текст вопроса?',
+                d__text: 'editable=true;',
+                options: [
+                    {
+                        text: 'Вариант ответа 1',
+                        points: 1
+                    },
+                    {
+                        text: 'Вариант ответа 2'
+                    }
+                ],
+                d__explanation: 'editable=true;',
+                explanation: 'Пояснение к ответу'
+            },
+
+            // шаблон фото вопроса
+            proto__photo_question_slide: {
+                uiTemplate: 'id-slide_photo_template',
+                text: 'Текст фото вопроса?',
+                d__text: 'editable=true;',
+                img: '',
+                options: [
+                    {
+                        text: 'Вариант ответа 1',
+                        points: 1
+                    },
+                    {
+                        text: 'Вариант ответа 2'
+                    }
+                ],
+                d__explanation: 'editable=true;',
+                explanation: 'Пояснение к ответу'
+            }
         };
     </script>
     <script>
         /**
-         * тайтал результата по умолчанию
+         * тайтл результата по умолчанию
          */
         var DEF_RESULT_TITLE = 'Конец теста';
         /**
