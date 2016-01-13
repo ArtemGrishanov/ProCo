@@ -40,7 +40,11 @@ var config = {
         /**
          * Теги, которыми будет обрамлены новые параметры перезаписывании
          */
-        tagsForOverridingParams: ['/*<overrideapp>*/','/*</overrideapp>*/']
+        tagsForOverridingParams: ['/*<overrideapp>*/','/*</overrideapp>*/'],
+        /**
+         *
+         */
+        angularAppName: 'procoApp'
     },
     products: {
         tests: {
@@ -62,6 +66,12 @@ var config = {
                 'Impact, Charcoal, sans-serif',
                 '"Courier New", Courier, monospace'
             ]
+        }
+    },
+    controls: {
+        TextQuickInput: {
+            className: 'TextQuickInput',
+            angularDirectiveName: 'textquickinput'
         }
     }
 };

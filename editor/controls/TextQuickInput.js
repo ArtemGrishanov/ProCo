@@ -3,7 +3,7 @@
  *
  * Контрол для быстрого редактирования текста "внутри" приложения.
  */
-var TextQuickInput = function(appProperty) {
+function TextQuickInput(appProperty) {
     this.appProperty = appProperty;
     this.textInput = document.createElement('textInput');
     if (this.appProperty.descriptor.domElemSelector) {
@@ -16,4 +16,8 @@ var TextQuickInput = function(appProperty) {
     function onClick() {
         // подменить элемент из промоприложения на контрол для редактирования
     }
+}
+
+function TextQuickInputController($scope) {
+    $scope.text = 'sdjhhjhf wfjwb  nkj';
 }

@@ -34,6 +34,47 @@ var uiControlsInfo = [
     // appProperty
     // isUsed
 ];
+/**
+ * Единый для всех контролов angular модуль
+ * @type {*}
+ */
+//var angUiControllers = angular.module('procoApp', []);
+//angular.module('procoApp', []).directive('TextQuickInput', function(){
+//    return {
+//        restrict: 'E',
+//        scope: false,
+//        templateUrl: 'controls/TextQuickInput.html'
+//    }
+//});
+//var procoApp = angular.module('procoApp', []);
+//procoApp.controller('editorController', function($scope) {
+//    $scope.test = {description: 'sdhgsgfhgfjhw eh'}
+//})
+//.directive('my-customer', function() {
+//    return {
+//        templateUrl: 'TextQuickInput.html'
+//    }
+//});
+function initControls() {
+    'use strict';
+    var controlName = 'TextQuickInput';
+    if (config.controls[controlName]) {
+        angular.module(config.common.angularAppName, [])
+            .controller(controlName, ['$scope',
+//                function($scope) {
+//                    $scope.text = 'text from controller';
+//                }
+                window[controlName+'Controller']
+            ])
+            .directive(config.controls[controlName].angularDirectiveName, function() {
+                return {
+                    templateUrl: 'controls/'+controlName+'.html'
+                };
+            });
+    }
+}
+//TODO при переносе в start - ошибка. Разобраться!
+initControls();
 //var fileChooser = document.getElementById('file-chooser');
 /**
  * Указывает, была ли публикация продукта успешной или нет
@@ -43,6 +84,14 @@ var errorInPublish = false;
 
 function getDistribUrl() {
     return config.common.awsHostName+config.common.awsBucketName+'/facebook-'+fbUserId+'/'+promoAppName+'/';
+}
+
+/**
+ * Функция запуска редактора
+ */
+function start() {
+    initProduct();
+//    initControls();
 }
 
 function initProduct() {
@@ -137,6 +186,13 @@ function createControlForAppProperty(appProperty) {
         switch(appProperty.descriptor.ui) {
             case 'TextQuickInput': {
                 var ctrl = new TextQuickInput(appProperty);
+                //angUiControllers.controller('TextQuickInput', ['$scope','$http', function($scope, $http) {
+//                    $http.get('controls/TextQuickInput.html').success(function(data) {
+                    // текст для редактирования
+//                        $scope.text = data;
+
+//                    });
+//                }]);
                 break;
             }
         }
