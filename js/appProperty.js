@@ -92,9 +92,9 @@ AppProperty.prototype.parseDescriptor = function(descString) {
     }
     return d;
 }
-AppProperty.prototype.setToApp = function(app, val) {
-
-}
+//AppProperty.prototype.setToApp = function(app, val) {
+//
+//}
 /**
  * Получить копию элемента массива.
  * При добавлении нового элемента в редакторе сначала получаем и редактируем эту копию, а потом уже добавляем её в свойства app
@@ -111,3 +111,9 @@ AppProperty.prototype.getArrayElementCopy = function(index) {
     }
     return null;
 }
+
+//AppProperty.prototype.getPrototypeNames = function() {
+//    if (isArray === true) {
+//
+//    }
+//}

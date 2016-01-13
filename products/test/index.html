@@ -15,7 +15,7 @@
         <div id="id-start_slide" class="slide">
             <div class="cnt_wr">
                 <div class="start_txt">
-                    <h2 class="start_head">Где это находится?</h2>
+                    <h2 id="id-start_header_text" class="start_head"></h2>
                     <span class="start_desc">Проверь свои знания в географии</span>
                 </div>
                 </br>
@@ -118,9 +118,15 @@
          *
          * На основани объекта app будут построены settings продукта. То, что можно редактировать.
          *
-         * @type {{}}
+         * @type {object}
          */
         var app = {
+
+            // domElemSelector=#id-start_header_text - вызов редактирования происходит по клику на dom элемент с указанным id
+            // указанному элементу будет задан атрибут data-app-property='...'
+            d__startHeaderText: 'editable=true;ui=TextQuickInput;domElemSelector=#id-start_header_text',
+            startHeaderText: 'Тест по географии',
+
             key1: 'value1',
             key2: 'value2',
 
@@ -430,6 +436,7 @@
             if (app.fontColor) {
                 $('.cnt_wr').css('color',app.fontColor);
             }
+            $('#id-start_header_text').text(app.startHeaderText);
             makeUidForQuiz();
             state = undefined;
             next();

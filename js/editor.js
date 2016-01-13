@@ -25,6 +25,15 @@ var bucket = new AWS.S3({
         Bucket: config.common.awsBucketName
     }
 });
+/**
+ * Массив контролов и свойств AppProperty продукта
+ * @type {Array.<object>}
+ */
+var uiControlsInfo = [
+    // control
+    // appProperty
+    // isUsed
+];
 //var fileChooser = document.getElementById('file-chooser');
 /**
  * Указывает, была ли публикация продукта успешной или нет
@@ -59,8 +68,96 @@ function initProduct() {
  */
 function onProductIframeLoaded() {
     iframeWindow = appIframe.contentWindow;
+    $(appIframe.contentDocument).click(onProductIframeClick);
     Engine.startEngine(iframeWindow);
+    syncUIControlsToAppProperties();
     //TODO редактирование становится доступным показать в интерфейсе
+}
+
+/**
+ * Привязать элементы управления к Engine.getAppProperties
+ * Создаются только новые элементы управления, которые необходимы.
+ * Может быть добавлен/удален слайд, поэтому надо только для него сделать обновление.
+ *
+ * Это могут быть следующие действия:
+ * 1) Добавление контролов на панель справа.
+ * 2) Обновление контрола слайдов (страниц) (один большой контрол)
+ * 3) Привязка контролов к dom-элементам в продукте, Для быстрого редактирования.
+ */
+function syncUIControlsToAppProperties() {
+    // подготовка к тому, чтобы удалить неиспользуемые контролы
+    for (var j = 0; j < uiControlsInfo.length; j++) {
+        uiControlsInfo[j].isUsed = false;
+    }
+    var appProperties = Engine.getAppProperties();
+    for (var i = 0; i < appProperties.length; i++) {
+        var ci = findControlInfo(appProperties[i]);
+        if (ci === null) {
+            // контрола пока ещё не существует для настройки, надо создать
+            var newControl = createControlForAppProperty(appProperties[i]);
+            uiControlsInfo.push({
+                appProperty: appProperties[i],
+                control: newControl,
+                isUsed: true
+            });
+        }
+        else {
+            // пересоздавать не надо. Просто помечаем, что контрол используется
+            ci.isUsed = true;
+        }
+    }
+    // неиспользуемые контролы надо удалить
+    for (var j = 0; j < uiControlsInfo.length;) {
+        if (uiControlsInfo[j].isUsed === false) {
+            deleteUIControl(j);
+        }
+        else {
+            j++;
+        }
+    }
+}
+
+/**
+ * Найти информацию об элементе управления
+ * @param appProperty свойство для которого ищем элемент управления
+ * @returns {object|null}
+ */
+function findControlInfo(appProperty) {
+    for (var j = 0; j < uiControlsInfo.length; j++) {
+        if (appProperty.propertyString === uiControlsInfo[j].propertyString) {
+            return uiControlsInfo[j];
+        }
+    }
+    return null;
+}
+
+function createControlForAppProperty(appProperty) {
+    //TODO для ui=TextQuick(id-start_header_text) надо связать dom элемент
+    if (appProperty.descriptor.ui) {
+        switch(appProperty.descriptor.ui) {
+            case 'TextQuickInput': {
+                var ctrl = new TextQuickInput(appProperty);
+                break;
+            }
+        }
+        log('Creating UI control for appProperty=' + appProperty.propertyString + ' ui=' + appProperty.descriptor.ui);
+    }
+}
+
+function deleteUIControl(index) {
+    //TODO removw from dom tree
+    uiControlsInfo.splice(j, 1);
+}
+
+/**
+ * Был клик по айфрейму продукта. Это может привести к началу операции редактирования.
+ *
+ * @param {MouseEvent} e
+ */
+function onProductIframeClick(e) {
+    var elem = e.target;
+
+    console.log(e.clientX + ' ' + e.clientY);
 }
 
 function onEditClick() {

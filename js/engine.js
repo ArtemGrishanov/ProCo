@@ -281,7 +281,7 @@ var Engine = {};
      * Создать обертку для свойства app
      * Только для тех свойств у которых есть дескриптор
      *
-     * @param obj
+     * @param {object} obj объект window.app у промо-приложения
      */
     function createAppProperty(obj, strPrefix) {
         strPrefix = strPrefix || '';
@@ -310,12 +310,13 @@ var Engine = {};
     /**
      * Добавить элемент в массив
      *
-     * @param key ключ массива в объекте productWindow
+     * @param appProperty обертка AppProperty для свойства
      * @param value значение элемента массива
      */
-    function addArrayElement(key, value, position) {
+    function addArrayElement(appProperty, value, position) {
         // все методы работы с массивами должны сводиться к setValue
         // подготовим новый массив и сделаем установку свойства
+        var key = appProperty.propertyString;
         if (productWindow.app.hasOwnProperty(key) && Array.isArray(productWindow.app[key])) {
             var newArray = JSON.parse(JSON.stringify(productWindow.app[key]));
             if (position < 0) {
@@ -323,11 +324,11 @@ var Engine = {};
             }
             newArray.splice(position, -1, value);
             // считается, что устанавливаем новый массив целиком
-            this.setValue(key, newArray);
+            this.setValue(appProperty, newArray);
         }
     }
 
-    function deleteArrayElement(index) {
+    function deleteArrayElement(appProperty, index) {
 
     }
 
@@ -336,12 +337,12 @@ var Engine = {};
      * Будут выполнены необходимые проверки, описанные разработчиком прототипа в тестах
      *
      * @public
-     * @param {String} key - ссылка на свойства. Например, 'results[0].title' или 'randomizeQuestions'
+     * @param {AppProperty} appProperty объект-обертка свойства в промо приложении. Например, 'results[0].title' или 'randomizeQuestions'
      * @param {*} value
      * @return {}
      */
-    function setValue(key, value) {
-        //TODO как связать с AppProperty
+    function setValue(appProperty, value) {
+        var key = appProperty.propertyString;
         var stringifiedValue = JSON.stringify(value);
         log('Changing property \''+key+'\'='+stringifiedValue);
         if (productWindow.app && productWindow.tests) {
@@ -481,6 +482,63 @@ var Engine = {};
     }
 
     /**
+     * Ищет доступные прототипы, которые можно было бы добавить в AppProperty
+     * Только для массивов. AppProperty должна обязательно представлять массив.
+     *
+     * @param appProperty app property для которого найти прототипы
+     * @returns {array<object>} например все прототипы слайдов, которые можно вставить в тест.
+     */
+    function getPrototypesForAppProperty(appProperty) {
+        if (appProperty.isArray === true && appProperty.descriptor.hasOwnProperty('canAdd')) {
+            var canAddArr = appProperty.descriptor.canAdd.split(',');
+            var result = null;
+            for (var i = 0; i < canAddArr.length; i++) {
+                if (productWindow.app.hasOwnProperty(canAddArr[i])) {
+                    if (result === null) {
+                        result = [];
+                    }
+                    // клонируем прототип. Нельзя отдавать наружу реальный объект из productWindow
+                    var c = JSON.parse(JSON.stringify(productWindow.app[canAddArr[i]]));
+                    result.push(c);
+                }
+            }
+            return result;
+        }
+        return null;
+    }
+
+    /**
+     * Найти свойство по строке
+     *
+     * @param propertyString строка свойства, например "background" или "quiz.2.options.1.points"
+     *
+     * @return {AppProperty}
+     */
+    function getAppProperty(propertyString) {
+        for (var i = 0; i < appProperties.length; i++) {
+            if (propertyString === appProperties[i].propertyString) {
+                return appProperties[i];
+            }
+        }
+        return null;
+    }
+
+//    /**
+//     * Найти прототип по имени
+//     * @param name имя прототипа
+//     * @return {object}
+//     */
+//    function getPropertyPrototype(name) {
+//        for (var i = 0; i < propertyPrototypes.length; i++) {
+//                name нет такого поля
+//            if (name === propertyPrototypes[i].name) {
+//                return propertyPrototypes[i];
+//            }
+//        }
+//        return null;
+//    }
+
+    /**
      * Вернуть свойства промо приложения
      * @returns {Array}
      */
@@ -503,5 +561,7 @@ var Engine = {};
     global.test = test;
     global.getAppProperties = getAppProperties;
     global.getPropertyPrototypes = getPropertyPrototypes;
+    global.getPrototypesForAppProperty = getPrototypesForAppProperty;
     global.exportTemplate = exportTemplate;
+    global.getAppProperty = getAppProperty;
 })(Engine);

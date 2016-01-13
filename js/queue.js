@@ -2,7 +2,36 @@
  * Created by artyom.grishanov on 21.12.15.
  *
  * Для выполнения сложных и тяжелых задач. Возможность "закинуть" в этот объект несколько задач и установить колбек на их завершение.
+ *
+ * @example
+            var t = {
+                // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
+                data: {url:'123'},
+                run: function() {
+                    // task body
+                    var client = new XMLHttpRequest();
+                    client.open('GET', baseProductUrl + this.data.url);
+                    client.onreadystatechange = (function(e) {
+                        if (e.target.readyState == 4) {
+                            if(e.target.status == 200) {
+                                // task context
+                                log('Grab task done:' + this.data.url);
+                            }
+                            else {
+                                log('Resource request failed: '+ myRequest.statusText, true);
+                            }
+                            // даем понять, что таск завершен
+                            Queue.release(this);
+                        }
+                    }).bind(this);
+                    client.send();
+                }
+            };
+            t.type = 'type1';
+            t.priority = 1;
+            Queue.push(t);
  */
+
 var Queue = {};
 (function(global) {
     var tasks = [];
