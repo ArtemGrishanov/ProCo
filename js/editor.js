@@ -55,22 +55,45 @@ var uiControlsInfo = [
 //        templateUrl: 'TextQuickInput.html'
 //    }
 //});
+var myApp = angular.module(config.common.angularAppName, []);
 function initControls() {
     'use strict';
-    var controlName = 'TextQuickInput';
-    if (config.controls[controlName]) {
-        angular.module(config.common.angularAppName, [])
-            .controller(controlName, ['$scope',
-//                function($scope) {
-//                    $scope.text = 'text from controller';
-//                }
-                window[controlName+'Controller']
-            ])
-            .directive(config.controls[controlName].angularDirectiveName, function() {
+    // создадим директивы для всех контролов
+    for (var controlName in config.controls) {
+        //TODO добавляем html c директивой и запускаем compile
+
+        //TODO как экземпляры класса делать с нужным appProperty?
+
+        if (config.controls.hasOwnProperty(controlName)) {
+            myApp.directive(config.controls[controlName].angularDirectiveName, function($compile) {
                 return {
-                    templateUrl: 'controls/'+controlName+'.html'
+                    restrict: 'A',
+                    templateUrl: 'controls/'+controlName+'.html',
+                    scope: {
+                        myScope: '=info'
+                    }
+//                    link: function (scope, ele, attrs) {
+//                        scope.$watch(attrs.dynamic, function(html) {
+//                            ele.html(html);
+//                            $compile(ele.contents())(scope);
+//                        });
+//                    }
+//                    ,
+//                    scope: {
+//                        customer: '='
+//                    },
+//                    link: function(scope, element, attr, controller) {
+//                        var startX = 0, startY = 0, x = 0, y = 0;
+//                    }
+//                    ,controller: ['$scope', function() {
+//                        var startX = 0, startY = 0, x = 0, y = 0;
+//                    }]
                 };
             });
+
+            // регистрируем angular-контроллер с именем контрола
+            myApp.controller(controlName, ['$scope', '$attrs', window[controlName+'Controller']]);
+        }
     }
 }
 //TODO при переносе в start - ошибка. Разобраться!
@@ -155,6 +178,14 @@ function syncUIControlsToAppProperties() {
             ci.isUsed = true;
         }
     }
+
+    // скомпилировать новые angular derictives (которые соответствуют контролам)
+    var $injector = angular.injector(['ng', 'procoApp']);
+    $injector.invoke(function ($rootScope, $compile) {
+        $compile($('#id-control_cnt')[0])($rootScope);
+        $rootScope.$digest();
+    });
+
     // неиспользуемые контролы надо удалить
     for (var j = 0; j < uiControlsInfo.length;) {
         if (uiControlsInfo[j].isUsed === false) {
@@ -185,7 +216,11 @@ function createControlForAppProperty(appProperty) {
     if (appProperty.descriptor.ui) {
         switch(appProperty.descriptor.ui) {
             case 'TextQuickInput': {
-                var ctrl = new TextQuickInput(appProperty);
+                var controlName = 'TextQuickInput';
+//                // регистрируем angular-контроллер с именем контрола
+                var ctrl = new TextQuickInput(appProperty, $('#id-control_cnt'), config.controls[controlName]);
+//                myApp.controller(controlName, ['$scope', ctrl.angularViewController]);
+
                 //angUiControllers.controller('TextQuickInput', ['$scope','$http', function($scope, $http) {
 //                    $http.get('controls/TextQuickInput.html').success(function(data) {
                     // текст для редактирования
