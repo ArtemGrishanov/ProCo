@@ -26,43 +26,7 @@
         </div>
 
         <div class="js-slides_cnt">
-            <!--<div class="slide js-slide" data-slide="2" style="display:none;">-->
-                <!--<div class="cnt_wr">-->
-                    <!--<div class="q_wr">-->
-                        <!--<span>-->
-                            <!--Какая самая большая страна?-->
-                        <!--</span>-->
-                    <!--</div>-->
-                    <!--<div class="a_wr js-answer js-answer_text">-->
-                        <!--<div class="a_text">-->
-                            <!--<div class="point"></div>-->
-                            <!--<span class="txt">Гренландия</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="a_wr js-answer js-answer_text">-->
-                        <!--<div class="a_text">-->
-                            <!--<div class="point"></div>-->
-                            <!--<span class="txt">Россия</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="a_wr js-answer js-answer_text">-->
-                        <!--<div class="a_text">-->
-                            <!--<div class="point"></div>-->
-                            <!--<span class="txt">Австралия</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="explain" style="display: none;">-->
-                        <!--<div>-->
-                            <!--Верно/неверно-->
-                        <!--</div>-->
-                        <!--</br>-->
-                        <!--</br>-->
-                        <!--<div>-->
-                            <!--<span class="btn js-next">Далее</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
+            <!-- Слайды с вопросами добавлятся программно сюда -->
         </div>
 
         <div id="id-end_slide" class="slide">
@@ -313,6 +277,10 @@
          * {Object} Результат, полученный пользователем. Из массива app.results
          */
         var currentResult = null;
+        /**
+         * Ссылка на движок, сохраняется если была передана в start
+         */
+        var engineInstance = null;
 
         function next() {
             //TODO на основе модели переходов можно построить блок схему для пользователя (если лучше формализовать модель)
@@ -425,8 +393,13 @@
          * Метод, который должен быть определен обязательно
          * После обновления 'app' этот метод должен сделать всё нужное, чтобы приложение работало нормально.
          * Обычно start зовется и после загрузки html страницы в первый раз.
+         *
+         * @param {object} params - когда проект запускается движком сюда будет передана ссылка на движок
          */
-        function start() {
+        function start(params) {
+            if (params) {
+                engineInstance = params.engine;
+            }
             if (app.fontFamily) {
                 $('*').css('fontFamily',app.fontFamily);
             }
@@ -464,6 +437,9 @@
             var $slide = $(templStr);
             $cnt.append($slide);
             renderAnswers($slide);
+            if (engineInstance) {
+                engineInstance.bind(['quiz',currentQuestionIndex,'text'], $slide.find('.q_wr'));
+            }
             $slide.find('.js-next').click(function() {
                 next();
             });

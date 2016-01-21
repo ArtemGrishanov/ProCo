@@ -19,12 +19,17 @@ var productResources = [];
 var appIframe = null;
 var iframeWindow = null;
 var fbUserId;
-AWS.config.region = config.common.awsRegion;
-var bucket = new AWS.S3({
-    params: {
-        Bucket: config.common.awsBucketName
-    }
-});
+var bucket = null;
+
+// инициализация апи для работы с хранилищем Amazon
+if (config.common.awsEnabled === true) {
+    AWS.config.region = config.common.awsRegion;
+    bucket = new AWS.S3({
+        params: {
+            Bucket: config.common.awsBucketName
+        }
+    });
+}
 /**
  * Массив контролов и свойств AppProperty продукта
  * @type {Array.<object>}
@@ -140,7 +145,6 @@ function initProduct() {
  */
 function onProductIframeLoaded() {
     iframeWindow = appIframe.contentWindow;
-    $(appIframe.contentDocument).click(onProductIframeClick);
     Engine.startEngine(iframeWindow);
     syncUIControlsToAppProperties();
     //TODO редактирование становится доступным показать в интерфейсе
@@ -167,11 +171,18 @@ function syncUIControlsToAppProperties() {
         if (ci === null) {
             // контрола пока ещё не существует для настройки, надо создать
             var newControl = createControlForAppProperty(appProperties[i]);
-            uiControlsInfo.push({
-                appProperty: appProperties[i],
-                control: newControl,
-                isUsed: true
-            });
+            if (newControl) {
+                // только если действительно получилось создать ui для настройки
+                // не все контролы могут быть реализованы или некорректно указаны
+                uiControlsInfo.push({
+                    appProperty: appProperties[i],
+                    control: newControl,
+                    isUsed: true
+                });
+            }
+            else {
+                log('Can not create control for appProperty: \'' + appProperties[i].propertyString + '\' ui: \'' + appProperties[i].descriptor.ui + '\'', true);
+            }
         }
         else {
             // пересоздавать не надо. Просто помечаем, что контрол используется
@@ -213,12 +224,13 @@ function findControlInfo(appProperty) {
 
 function createControlForAppProperty(appProperty) {
     //TODO для ui=TextQuick(id-start_header_text) надо связать dom элемент
+    var ctrl = null;
     if (appProperty.descriptor.ui) {
         switch(appProperty.descriptor.ui) {
             case 'TextQuickInput': {
                 var controlName = 'TextQuickInput';
 //                // регистрируем angular-контроллер с именем контрола
-                var ctrl = new TextQuickInput(appProperty, $('#id-control_cnt'), config.controls[controlName]);
+                ctrl = new TextQuickInput(appProperty, $('#id-control_cnt'), config.controls[controlName]);
 //                myApp.controller(controlName, ['$scope', ctrl.angularViewController]);
 
                 //angUiControllers.controller('TextQuickInput', ['$scope','$http', function($scope, $http) {
@@ -233,22 +245,12 @@ function createControlForAppProperty(appProperty) {
         }
         log('Creating UI control for appProperty=' + appProperty.propertyString + ' ui=' + appProperty.descriptor.ui);
     }
+    return ctrl;
 }
 
 function deleteUIControl(index) {
     //TODO removw from dom tree
     uiControlsInfo.splice(j, 1);
-}
-
-/**
- * Был клик по айфрейму продукта. Это может привести к началу операции редактирования.
- *
- * @param {MouseEvent} e
- */
-function onProductIframeClick(e) {
-    var elem = e.target;
-
-    console.log(e.clientX + ' ' + e.clientY);
 }
 
 function onEditClick() {

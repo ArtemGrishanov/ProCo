@@ -212,3 +212,46 @@ function getQueryParams(qs) {
     }
     return params;
 }
+
+/**
+ * Установить свойство используя object path
+ *
+ * var obj = {},
+ * assign(obj, "foo.bar.foobar", "Value");
+ *
+ * @param obj
+ * @param prop
+ * @param value
+ */
+function assign(obj, prop, value) {
+    if (typeof prop === "string") {
+        prop = prop.split(".");
+    }
+    if (prop.length > 1) {
+        var e = prop.shift();
+        assign(obj[e] =
+            Object.prototype.toString.call(obj[e]) === "[object Object]"
+                ? obj[e]
+                : {},
+            prop,
+            value);
+    }
+    else {
+        obj[prop[0]] = value;
+    }
+}
+
+/**
+ * Конвертировать objectPath в строку со скобками
+ *
+ * @param {string} objectPath - например quiz.1.text
+ * @returns {string} - например ["quiz"]["1"]["text"]
+ */
+function convertToBracedString(objectPath) {
+    var arr = objectPath.split('.');
+    var res = '';
+    for (var i = 0; i < arr.length; i++) {
+        res += '[\"'+ arr[i] +'\"]';
+    }
+    return res;
+}

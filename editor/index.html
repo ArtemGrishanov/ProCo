@@ -4,37 +4,28 @@
     <title>Редактор</title>
     <meta charset="UTF-8"/>
     <link href="../bootsrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../settings/css/style.css" rel="stylesheet">
     <style>
-        /*body {*/
-            /*color: #000;*/
-            /*margin: 0;*/
-            /*padding: 0;*/
-        /*}*/
+        /* TODO как определять размер промо-приложения? */
         .proto_cnt {
-            display: block;
+            position: absolute;
+            top:0;
+            left:0;
             width: 600px;
             height: 600px;
-            padding: 0;
             border: #ff2211 solid 10px;
+            padding: 0;
         }
-        /*.btn {*/
-            /*background: #13f748;*/
-            /*background-image: -webkit-linear-gradient(top, #13f748, #168c0f);*/
-            /*background-image: -moz-linear-gradient(top, #13f748, #168c0f);*/
-            /*background-image: -ms-linear-gradient(top, #13f748, #168c0f);*/
-            /*background-image: -o-linear-gradient(top, #13f748, #168c0f);*/
-            /*background-image: linear-gradient(to bottom, #13f748, #168c0f);*/
-            /*-webkit-border-radius: 13;*/
-            /*-moz-border-radius: 13;*/
-            /*border-radius: 13px;*/
-            /*font-family: Arial;*/
-            /*color: #ffffff;*/
-            /*font-size: 20px;*/
-            /*padding: 8px 15px 8px 15px;*/
-            /*text-decoration: none;*/
-            /*cursor: pointer;*/
-        /*}*/
+        .field_cnt {
+            position: relative;
+            padding: 0;
+        }
+        .quick_controls_cnt {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 <body ng-app="procoApp">
@@ -50,10 +41,6 @@
             <li>item2</li>
         </ul>
     </div>
-    <div id="id-control_cnt">
-        <!--<div textquickinput customer="1"></div>-->
-
-    </div>
     <p>
         Это вроде редактора.<br>
         В красную рамочку загружается промо-проект для редактирования
@@ -62,8 +49,13 @@
     <a class="btn" onclick="onPublishClick();">Publish</a>
     <a class="btn" onclick="onEditClick();">Мне повезет!</a>
     <br><br><br>
-    <div id="id-product_iframe_cnt">
-        <!-- Сюда добавляем программно айфрейм с прототипом для редактирования -->
+    <div class="field_cnt">
+        <div id="id-control_cnt" class="quick_controls_cnt">
+            <!-- Здесь располагаются "быстрые" контролы, которые показываются поверх продукта при клике или наведении куда-то -->
+        </div>
+        <div id="id-product_iframe_cnt">
+            <!-- Сюда добавляем программно айфрейм с прототипом для редактирования -->
+        </div>
     </div>
     <!--<input type="file" id="file-chooser" />-->
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>

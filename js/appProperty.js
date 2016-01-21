@@ -24,6 +24,8 @@ var AppProperty = function(propertyValue, propertyString, descString) {
     if (this.propertyString.charAt(0) === '.') {
         this.propertyString = this.propertyString.substr(1);
     }
+    // может быть привязан позднее
+    this.domElement = null;
     this.descString = descString;
     if (descString) {
         this.descriptor = this.parseDescriptor(descString);
@@ -92,9 +94,6 @@ AppProperty.prototype.parseDescriptor = function(descString) {
     }
     return d;
 }
-//AppProperty.prototype.setToApp = function(app, val) {
-//
-//}
 /**
  * Получить копию элемента массива.
  * При добавлении нового элемента в редакторе сначала получаем и редактируем эту копию, а потом уже добавляем её в свойства app
@@ -112,8 +111,22 @@ AppProperty.prototype.getArrayElementCopy = function(index) {
     return null;
 }
 
-//AppProperty.prototype.getPrototypeNames = function() {
-//    if (isArray === true) {
-//
-//    }
-//}
+AppProperty.prototype.addChangeCallback = function(clb) {
+    if (!this.changeCallbacks) {
+        this.changeCallbacks = [];
+    }
+    this.changeCallbacks.push(clb);
+}
+
+AppProperty.prototype.sendChangeEvent = function(field) {
+    if (this.changeCallbacks) {
+        for (var i = 0; i < this.changeCallbacks.length; i++) {
+            this.changeCallbacks[i].call(this, field);
+        }
+    }
+}
+
+AppProperty.prototype.set = function(key, value) {
+    this[key] = value;
+    this.sendChangeEvent(key);
+};

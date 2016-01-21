@@ -3,6 +3,7 @@
  */
 var config = {
     common: {
+        awsEnabled: false,
         /**
          * Хост для сохранения данных
          */
@@ -72,6 +73,15 @@ var config = {
         TextQuickInput: {
             className: 'TextQuickInput',
             angularDirectiveName: 'textquickinput'
+        }
+    },
+    editor: {
+        ui: {
+            /**
+             * z-index который ставится на контрол при его активации (показе).
+             * Это контролы которые показываются прямо в поле редактирования.
+             */
+            quickControlsZIndex: 10
         }
     }
 };

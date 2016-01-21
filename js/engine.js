@@ -349,6 +349,7 @@ var Engine = {};
             // обнуляем перед прогоном тестов
             testResults = [];
 //            var needQuatas = (typeof value === 'string');
+            //TODO для сложных строк типа quiz.1.text как определять тесты? Возможно, все таки явно указывать
             for (var i = 0; i < productWindow.tests.length; i++) {
                 var s = productWindow.tests[i].toString();
                 // запускаем тесты, в которых обнаружено данное свойство
@@ -386,13 +387,14 @@ var Engine = {};
 //                    eval('productWindow.app.'+key+'=\''+stringifiedValue+'\'');
 //                }
 //                else {
-                    eval('productWindow.app.'+key+'='+stringifiedValue);
+                    eval('productWindow.app'+convertToBracedString(key)+'='+stringifiedValue);
 //                }
                 log('All tests was successful. Tests count='+testResults.length+'; \''+key+'\'='+stringifiedValue+' was set');
                 // дальше перезапустить приложение
                 if (typeof productWindow.start === 'function') {
                     log('Restart app');
-                    productWindow.start.call(productWindow);
+                    // передает ссылку на себя при старте
+                    productWindow.start.call(productWindow, buildProductAppParams.call(this));
                 }
                 appProperties = [];
                 // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
@@ -421,6 +423,18 @@ var Engine = {};
     }
 
     /**
+     * Подготовить параметры для передачи в промо приложение при запуске
+     *
+     * @returns {{engine: buildProductAppParams, startSlide: number}}
+     */
+    function buildProductAppParams() {
+        return {
+            engine: this,
+            startSlide: 0
+        }
+    }
+
+    /**
      * Запуск платформы
      * Можно запустить, когда в браузер загружен промо-проект
      *
@@ -439,6 +453,8 @@ var Engine = {};
         if (productWindow.start === undefined) {
             console.error('start function must be specified');
         }
+        // вызываем start передавая в промо-приложение параметры
+        productWindow.start.call(productWindow, buildProductAppParams.call(this));
         appProperties = [];
         testResults = [];
         // рекурсивно создает по всем свойствам app объекты AppProperty
@@ -554,6 +570,35 @@ var Engine = {};
         return propertyPrototypes;
     }
 
+    /**
+     * Связать свойство промо-приложения и dom-элемент
+     * UI элементы часто создаются динамически и сразу привязать их в дескрипторе нет возможности.
+     * Разработчик промо-приложения сам должен за этим следить.
+     *
+     * @param {Array|string} objectPath
+     * @param {DOMElement} domElem
+     */
+    function bind(objectPath, domElem) {
+        if (!objectPath) {
+            log('objectPath is empty in binding.');
+            return;
+        }
+        var propStr = '';
+        if (Array.isArray(objectPath)) {
+            propStr = objectPath.join('.');
+        }
+        else if (typeof objectPath === 'string') {
+            propStr = objectPath;
+        }
+        var p = getAppProperty(propStr);
+        if (p) {
+            p.set('domElement', domElem);
+        }
+        else {
+            log('Could not find AppProperty for string: ' + propStr, true);
+        }
+    }
+
     global.startEngine = startEngine;
     global.setValue = setValue;
     global.addArrayElement = addArrayElement;
@@ -564,4 +609,5 @@ var Engine = {};
     global.getPrototypesForAppProperty = getPrototypesForAppProperty;
     global.exportTemplate = exportTemplate;
     global.getAppProperty = getAppProperty;
+    global.bind = bind;
 })(Engine);
