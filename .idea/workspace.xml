@@ -44,7 +44,7 @@
       <file leaf-file-name="editor.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/editor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="230" column="47" selection-start="7711" selection-end="7711" vertical-scroll-proportion="-11.4" vertical-offset="3165" max-vertical-offset="8895">
+            <state line="178" column="63" selection-start="6103" selection-end="6103" vertical-scroll-proportion="0.0" vertical-offset="2386" max-vertical-offset="8925">
               <folding />
             </state>
           </provider>
@@ -53,25 +53,7 @@
       <file leaf-file-name="TextQuickInput.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/editor/controls/TextQuickInput.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="5" selection-start="2006" selection-end="2006" vertical-scroll-proportion="-11.4" vertical-offset="420" max-vertical-offset="2310">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="notes.txt" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/temp/notes.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="28" selection-start="657" selection-end="657" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1005">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/config.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="26" selection-start="1704" selection-end="1704" vertical-scroll-proportion="0.0" vertical-offset="623" max-vertical-offset="1395">
+            <state line="24" column="49" selection-start="930" selection-end="930" vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="2445">
               <folding />
             </state>
           </provider>
@@ -80,7 +62,7 @@
       <file leaf-file-name="appProperty.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/appProperty.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="5" selection-start="1598" selection-end="1598" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2025">
+            <state line="118" column="3" selection-start="4244" selection-end="4244" vertical-scroll-proportion="0.0" vertical-offset="1298" max-vertical-offset="2010">
               <folding />
             </state>
           </provider>
@@ -89,7 +71,7 @@
       <file leaf-file-name="engine.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/engine.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="363" column="28" selection-start="12886" selection-end="12886" vertical-scroll-proportion="0.45655173" vertical-offset="5114" max-vertical-offset="9270">
+            <state line="231" column="73" selection-start="8559" selection-end="8559" vertical-scroll-proportion="0.62482756" vertical-offset="3012" max-vertical-offset="7470">
               <folding />
             </state>
           </provider>
@@ -123,14 +105,14 @@
         <option value="$PROJECT_DIR$/editor/controls/css/style.css" />
         <option value="$PROJECT_DIR$/editor/index.html" />
         <option value="$PROJECT_DIR$/js/config.js" />
-        <option value="$PROJECT_DIR$/js/editor.js" />
-        <option value="$PROJECT_DIR$/js/appProperty.js" />
         <option value="$PROJECT_DIR$/notes.txt" />
         <option value="$PROJECT_DIR$/temp/notes.txt" />
         <option value="$PROJECT_DIR$/products/test/index.html" />
-        <option value="$PROJECT_DIR$/editor/controls/TextQuickInput.js" />
         <option value="$PROJECT_DIR$/products/test/utils.js" />
         <option value="$PROJECT_DIR$/js/utils.js" />
+        <option value="$PROJECT_DIR$/js/appProperty.js" />
+        <option value="$PROJECT_DIR$/editor/controls/TextQuickInput.js" />
+        <option value="$PROJECT_DIR$/js/editor.js" />
         <option value="$PROJECT_DIR$/js/engine.js" />
       </list>
     </option>
@@ -480,13 +462,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="26" selection-start="1704" selection-end="1704" vertical-scroll-proportion="0.0" vertical-offset="623" max-vertical-offset="1395">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Readme.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="702">
@@ -494,23 +469,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/temp/notes.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="28" selection-start="657" selection-end="657" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1005">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/notes.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state line="19" column="0" selection-start="663" selection-end="663" vertical-scroll-proportion="0.39310345" vertical-offset="0" max-vertical-offset="725">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/appProperty.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="5" selection-start="1598" selection-end="1598" vertical-scroll-proportion="0.0" vertical-offset="218" max-vertical-offset="2025">
           <folding />
         </state>
       </provider>
@@ -549,23 +510,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/editor.js">
+    <entry file="file://$PROJECT_DIR$/temp/notes.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="230" column="47" selection-start="7711" selection-end="7711" vertical-scroll-proportion="-11.4" vertical-offset="3165" max-vertical-offset="8895">
+        <state line="18" column="28" selection-start="657" selection-end="657" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1005">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="52" column="26" selection-start="1704" selection-end="1704" vertical-scroll-proportion="0.22050563" vertical-offset="623" max-vertical-offset="1395">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/appProperty.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="118" column="3" selection-start="4244" selection-end="4244" vertical-scroll-proportion="0.0" vertical-offset="1298" max-vertical-offset="2010">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/editor/controls/TextQuickInput.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="5" selection-start="2006" selection-end="2006" vertical-scroll-proportion="-11.4" vertical-offset="420" max-vertical-offset="2310">
+        <state line="24" column="49" selection-start="930" selection-end="930" vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="2445">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/editor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="178" column="63" selection-start="6103" selection-end="6103" vertical-scroll-proportion="0.0" vertical-offset="2386" max-vertical-offset="8925">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/engine.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="363" column="28" selection-start="12886" selection-end="12886" vertical-scroll-proportion="0.45655173" vertical-offset="5114" max-vertical-offset="9270">
+        <state line="231" column="73" selection-start="8559" selection-end="8559" vertical-scroll-proportion="0.62482756" vertical-offset="3012" max-vertical-offset="7470">
           <folding />
         </state>
       </provider>

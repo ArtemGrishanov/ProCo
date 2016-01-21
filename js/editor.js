@@ -165,23 +165,24 @@ function syncUIControlsToAppProperties() {
     for (var j = 0; j < uiControlsInfo.length; j++) {
         uiControlsInfo[j].isUsed = false;
     }
-    var appProperties = Engine.getAppProperties();
-    for (var i = 0; i < appProperties.length; i++) {
-        var ci = findControlInfo(appProperties[i]);
+    // это строки-ключи
+    var appPropertiesStrings = Engine.getAppPropertiesObjectPathes();
+    for (var i = 0; i < appPropertiesStrings.length; i++) {
+        var ci = findControlInfo(appPropertiesStrings[i]);
         if (ci === null) {
             // контрола пока ещё не существует для настройки, надо создать
-            var newControl = createControlForAppProperty(appProperties[i]);
+            var newControl = createControlForAppProperty(appPropertiesStrings[i]);
             if (newControl) {
                 // только если действительно получилось создать ui для настройки
                 // не все контролы могут быть реализованы или некорректно указаны
                 uiControlsInfo.push({
-                    appProperty: appProperties[i],
+                    appPropertyString: appPropertiesStrings[i],
                     control: newControl,
                     isUsed: true
                 });
             }
             else {
-                log('Can not create control for appProperty: \'' + appProperties[i].propertyString + '\' ui: \'' + appProperties[i].descriptor.ui + '\'', true);
+                log('Can not create control for appProperty: \'' + appPropertiesStrings[i], true);
             }
         }
         else {
@@ -210,27 +211,28 @@ function syncUIControlsToAppProperties() {
 
 /**
  * Найти информацию об элементе управления
- * @param appProperty свойство для которого ищем элемент управления
+ * @param propertyString свойство для которого ищем элемент управления
  * @returns {object|null}
  */
-function findControlInfo(appProperty) {
+function findControlInfo(propertyString) {
     for (var j = 0; j < uiControlsInfo.length; j++) {
-        if (appProperty.propertyString === uiControlsInfo[j].propertyString) {
+        if (propertyString === uiControlsInfo[j].propertyString) {
             return uiControlsInfo[j];
         }
     }
     return null;
 }
 
-function createControlForAppProperty(appProperty) {
+function createControlForAppProperty(propertyString) {
     //TODO для ui=TextQuick(id-start_header_text) надо связать dom элемент
     var ctrl = null;
+    var appProperty = Engine.getAppProperty(propertyString);
     if (appProperty.descriptor.ui) {
         switch(appProperty.descriptor.ui) {
             case 'TextQuickInput': {
                 var controlName = 'TextQuickInput';
 //                // регистрируем angular-контроллер с именем контрола
-                ctrl = new TextQuickInput(appProperty, $('#id-control_cnt'), config.controls[controlName]);
+                ctrl = new TextQuickInput(propertyString, $('#id-control_cnt'), config.controls[controlName]);
 //                myApp.controller(controlName, ['$scope', ctrl.angularViewController]);
 
                 //angUiControllers.controller('TextQuickInput', ['$scope','$http', function($scope, $http) {

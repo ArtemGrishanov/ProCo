@@ -110,23 +110,22 @@ AppProperty.prototype.getArrayElementCopy = function(index) {
     }
     return null;
 }
-
-AppProperty.prototype.addChangeCallback = function(clb) {
-    if (!this.changeCallbacks) {
-        this.changeCallbacks = [];
-    }
-    this.changeCallbacks.push(clb);
-}
-
-AppProperty.prototype.sendChangeEvent = function(field) {
-    if (this.changeCallbacks) {
-        for (var i = 0; i < this.changeCallbacks.length; i++) {
-            this.changeCallbacks[i].call(this, field);
-        }
-    }
-}
-
-AppProperty.prototype.set = function(key, value) {
-    this[key] = value;
-    this.sendChangeEvent(key);
-};
+//
+//AppProperty.prototype.addChangeCallback = function(clb) {
+//    if (!this.changeCallbacks) {
+//        this.changeCallbacks = [];
+//    }
+//    this.changeCallbacks.push(clb);
+//}
+//AppProperty.prototype.sendChangeEvent = function(field) {
+//    if (this.changeCallbacks) {
+//        for (var i = 0; i < this.changeCallbacks.length; i++) {
+//            this.changeCallbacks[i].call(this, field);
+//        }
+//    }
+//}
+//
+//AppProperty.prototype.set = function(key, value) {
+//    this[key] = value;
+//    this.sendChangeEvent(key);
+//};

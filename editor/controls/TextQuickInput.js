@@ -10,34 +10,43 @@
  * 3) Возможно, работает с dom элементом из промо-приложения.
  *
  * @constructor
- * @param {AppProperty} appProperty
+ * @param {string} propertyString
  * @param {DOMElement} $parent
  * @param {object} controlConfig - объект из config.controls (config.js), конфигурация контрола
  */
-function TextQuickInput(appProperty, $parent, controlConfig) {
+function TextQuickInput(propertyString, $parent, controlConfig) {
     this.self = this;
-    this.appProperty = appProperty;
-    this.appProperty.addChangeCallback(onAppPropertyChanged.bind(this));
+    this.propertyString = propertyString;
     this.textInput = document.createElement('textInput');
     this.$parent = $parent;
     this.controlConfig = controlConfig;
     this.$directive = addDirective.call(this);
     this.$directive.hide();
-    var $e = null;
-    if (this.appProperty.domElem) {
-        $e = $(this.appProperty.domElem);
-    }
-    else if (this.appProperty.descriptor.domElemSelector) {
-        // контрол будет жестко связан с dom элементом для редактирования
-        // по клику на этот элемент будет начато редактирование (то есть не в панели)
-        $e = $($(appIframe.contentDocument).find(this.appProperty.descriptor.domElemSelector).attr('data-app-property', this.appProperty.propertyString));
-    }
-    if ($e) {
-        setProductDomElement.call(this, $e);
+    // подписка на изменение AppProperty по ключу
+    Engine.on('AppPropertyInited', this.propertyString, init.bind(this));
+    Engine.on('DOMElementChanged', this.propertyString, init.bind(this));
+    init.call(this);
+
+
+    function init() {
+        var p = Engine.getAppProperty(this.propertyString);
+        var $e = null;
+        if (p.domElem) {
+            $e = $(p.domElem);
+        }
+        else if (p.descriptor.domElemSelector) {
+            // контрол будет жестко связан с dom элементом для редактирования
+            // по клику на этот элемент будет начато редактирование (то есть не в панели)
+            $e = $($(appIframe.contentDocument).find(p.descriptor.domElemSelector));
+        }
+        if ($e) {
+            setProductDomElement.call(this, $e);
+        }
     }
 
     function setProductDomElement($elem) {
         this.$productDomElem = $elem;
+        this.$productDomElem.attr('data-app-property', this.propertyString);
         this.$productDomElem.click(onProductElementClick.bind(this));
         var offset = this.$productDomElem.offset();
         this.productDomElemLeft = offset.left;
@@ -70,16 +79,16 @@ function TextQuickInput(appProperty, $parent, controlConfig) {
         this.hide();
     }
 
-    /**
-     * Элемент был привязан/обновлен в процессе работы приложения
-     *
-     * @param key
-     */
-    function onAppPropertyChanged(key) {
-        if (key == 'domElement' && appProperty[key]) {
-            setProductDomElement.call(this, appProperty.domElement)
-        }
-    }
+//    /**
+//     * Элемент был привязан/обновлен в процессе работы приложения
+//     *
+//     * @param key
+//     */
+//    function onAppPropertyChanged(key) {
+//        if (key == 'domElement' && appProperty[key]) {
+//            setProductDomElement.call(this, appProperty.domElement)
+//        }
+//    }
 
     this.show = function(x, y) {
         this.$directive.css('top', this.productDomElemTop + 'px');
@@ -103,7 +112,7 @@ function TextQuickInput(appProperty, $parent, controlConfig) {
      * @return DOMElement
      */
     function addDirective() {
-        var $elem = $('<div '+controlConfig.angularDirectiveName+' data-app_property="'+this.appProperty.propertyString+'"></div>');
+        var $elem = $('<div '+controlConfig.angularDirectiveName+' data-app_property="'+this.propertyString+'"></div>');
         $parent.append($elem);
         return $elem;
     }

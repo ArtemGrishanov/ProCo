@@ -22,204 +22,32 @@ var Engine = {};
      */
     var appProperties = [];
     /**
+     * Ключи свойств appProperties[i].propertyString
+     * @type {Array.<string>}
+     */
+    var appPropertiesObjectPathes = [];
+    /**
      * Прототипы для создания новых свойств
      * Прототип клонируется сколько угодно раз и добавляется в productWindow.app
      */
     var propertyPrototypes = [];
-
-    //TODO надо наверное копию сделать массива entity а то как прототип использовать
-
-    //TODO полезно модель валидировать с версткой: идишки все проверять, события, и много еще полезных проверок.
-    // не повторения идишек и так далее, все ли setting существуют и допустимые
-
-    //if (entities) {
-    //    for (var i = 0; i < entities.length; i ++) {
-    //        if (entities[i].items !== undefined) {
-    //            // внутри групп тоже инитим всё
-    //            for (var j = 0; j < entities[i].items.length; j ++) {
-    //                initEntity(entities[i].items[j]);
-    //            }
-    //        }
-    //        initEntity(entities[i]);
-    //    }
-    //}
-    //
-    //if (states) {
-    //    for (var i = 0; i < states.length; i ++) {
-    //        initState(states[i]);
-    //    }
-    //}
-
-    //function initEntity(entity) {
-    //    if (entity.id) {
-    //        console.log('Creating entity:' + entity.id);
-    //        apply(entity, entity);
-    //        createSettingsForEntity(entity);
-    //    }
-    //    else {
-    //        console.error('Entity does not have id');
-    //    }
-    //}
-    //
-    //function initState(state) {
-    //    if (state.trigger) {
-    //        var a = state.trigger.split(':');
-    //        $(a[0]).on(a[1],function(){
-    //            activateState(state);
-    //        });
-    //    }
-    //    //TODO пока не делаю настройки для state, там ID не уникальные у entity. Пока не знаю как быть
-    ////    for (var j = 0; j < state.entities.length; j ++) {
-    ////        createSettingsForEntity(state.entities[j]);
-    ////    }
-    //}
-
-    ///**
-    // * Поиск элемента по id
-    // * Включая поиск по группам, есил они есть
-    // *
-    // * @param id
-    // * @returns {*}
-    // */
-    //function getEntity(id) {
-    //    for (var i = 0; i < entities.length; i ++) {
-    //        if (entities[i].id == id) {
-    //            return entities[i];
-    //        }
-    //        else if (entities[i].items !== undefined) {
-    //            for (var j = 0; j < entities[i].items.length; j ++) {
-    //                if (entities[i].items[j].id == id) {
-    //                    return entities[i].items[j];
-    //                }
-    //            }
-    //        }
-    //    }
-    //    return null;
-    //}
-
     /**
-     * Активировать состояние.
-     * Применить стили и данные ко всем элементам
-     *
-     * @param state
+     * типы поддерживаемых событий
      */
-    //function activateState(state) {
-    //    if (state.entities != undefined) {
-    //        var eid = null, ent = null, htmlId = null, entUpdate = null;
-    //        for (var i = 0; i < state.entities.length; i ++) {
-    //            entUpdate = state.entities[i];
-    //            eid = entUpdate.id;
-    //            ent = getEntity(eid);
-    //            apply(ent, entUpdate);
-    //        }
-    //    }
-    //}
-
+    var events = ['AppPropertyInited','DOMElementChanged'];
     /**
-     * Применить к элементу какое-то оновление
-     *
-     * @param entity
-     * @param update
+     * Зарегистрированные колбеки на события
+     * {object}
      */
-    //function apply(entity, update) {
-    //    var htmlId = '#'+(entity.htmlId || entity.id);
-    //    if (update.text !== undefined) {
-    //        $(htmlId).text(update.text.value);
-    //    }
-    //    if (update.css !== undefined) {
-    //        var a = update.css.value.split(':');
-    //        $(htmlId).css(a[0],a[1]);
-    //    }
-    //    if (update.link !== undefined) {
-    //        $(htmlId).attr('href',update.link.value);
-    //    }
-    //    if (update.visible !== undefined) {
-    //        //TODO надо скопировать начальные свойства при старте. И их потом восстанавливать уметь
-    //        $(htmlId).css('display',(update.visible.value === true)?'block':'none');
-    //        entity.visible.value = update.visible.value;
-    //    }
-    //    if (update.data !== undefined) {
-    //        //TODO do something
-    //        //update.data.value
-    //    }
-    //}
-    //
-    ////TODO задавать стейт по умолчанию уметь
-    //if (states.length > 0) {
-    //    activateState(states[0]);
-    //}
-
-    ///**
-    // * В одной сущности может быть несколько атрибутов, значит и несколько настроек.
-    // *
-    // * @param entity
-    // */
-    //function createSettingsForEntity(entity) {
-    //    var sType = null;
-    //    for (var i = 0; i < ENTITY_ATTRS.length; i++) {
-    //        var propertyName = ENTITY_ATTRS[i];
-    //        if (entity[propertyName] !== undefined) {
-    //            //TODO может быть несколько свойств css. Сейчас предполагается только одно
-    //            console.log('Setting creating for: ' + entity.id + '.' + propertyName);
-    //            var s = new Setting(entity, propertyName);
-    //            if (s && s.isError !== true) {
-    //                settings.push(s);
-    //            }
-    //        }
-    //    }
-    //}
-
-    ///**
-    // * Обновить настройки views -> entity
-    // */
-    //function applySettings() {
-    //    for (var i = 0; i < settings.length; i++) {
-    //        // компонента setting готовит обновление для entity
-    //        if (settings[i].isError !== true) {
-    //            //TODO проверка нужна вот зачем: UI загружается асинхронно и двжиок не ждет будет ли он загружен или нет
-    //            // а некоторых ui еще нет.
-    //            var updateInfo = settings[i].getUpdateFromView();
-    //            if (updateInfo !== null) {
-    //                apply(settings[i].entity, updateInfo)
-    //            }
-    //        }
-    //    }
-    //}
-
-    /**
-     * Создать entity и поместить её в массив entities
-     * уникальный id будет создан
-     * DOM элемент, если надо, будет создан
-     *
-     * @param prototypeId
-     */
-    //function createEntity(prototypeId) {
-    //    var e = null;
-    //    var p = getPrototype(prototypeId);
-    //    if (p) {
-    //
-    //    }
-    //    return e;
-    //}
-
-    /**
-     * Найти и вернуть прототип с заданным prototypeId
-     *
-     * @param prototypeId
-     * @returns {*}
-     */
-    //function getPrototype(prototypeId) {
-    //    if (prototypes) {
-    //        for (var i = 0; i < prototypes.length; i ++) {
-    //            if (prototypes[i].prototypeId == prototypeId) {
-    //                return prototypes[i];
-    //            }
-    //        }
-    //    }
-    //    return null;
-    //}
-
+    var eventCallbacks = {
+        // inited: {
+        //      'key1.value2': [func1, func2],
+        //      'key5.path5': [func3]
+        // }
+    };
     var testMode = false;
+
+
     /**
      * Проверяет выражение на верность.
      * Двойное назначение этой функции: проверка в модульных тестах, во-вторых проверка ограничений во время работы пользователя
@@ -297,12 +125,48 @@ var Engine = {};
                         log('Property string: \''+ str + '\' and desc found: ' + obj[DESC_PREFIX+key]);
                         var p = new AppProperty(obj[key],str,obj[DESC_PREFIX+key]);
                         appProperties.push(p);
+                        appPropertiesObjectPathes.push(p.propertyString);
+                        send('AppPropertyInited', p.propertyString);
                     }
                 }
                 if (obj[key] !== null && typeof obj[key] === 'object') {
                     // идем глубже
                     createAppProperty(obj[key], strPrefix + key);
                 }
+            }
+        }
+    }
+
+    /**
+     *
+     * @param {string} event
+     * @param {string} propertyString
+     * @param {Function} clb
+     */
+    function on(event, propertyString, clb) {
+        if (events.indexOf(event) > 0) {
+            if (eventCallbacks.hasOwnProperty(event) === false) {
+                eventCallbacks[event] = {};
+            }
+            if (eventCallbacks[event].hasOwnProperty(propertyString) === false) {
+                eventCallbacks[event][propertyString] = [];
+            }
+            eventCallbacks[event][propertyString].push(clb);
+        }
+        else {
+            log('Event ' + event + ' not exist', true);
+        }
+    }
+
+    /**
+     * Разослать события определенного типа и для определенного свойства
+     * @param event
+     * @param propertyString
+     */
+    function send(event, propertyString) {
+        if (eventCallbacks[event] && eventCallbacks[event][propertyString]) {
+            for (var i = 0; i < eventCallbacks[event][propertyString].length; i++) {
+                eventCallbacks[event][propertyString][i]();
             }
         }
     }
@@ -397,6 +261,7 @@ var Engine = {};
                     productWindow.start.call(productWindow, buildProductAppParams.call(this));
                 }
                 appProperties = [];
+                appPropertiesObjectPathes = [];
                 // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
                 //TODO нужен более умный алгоритм. Пересоздавать только то что надо и когда надо
                 createAppProperty(productWindow.app);
@@ -456,6 +321,7 @@ var Engine = {};
         // вызываем start передавая в промо-приложение параметры
         productWindow.start.call(productWindow, buildProductAppParams.call(this));
         appProperties = [];
+        appPropertiesObjectPathes = [];
         testResults = [];
         // рекурсивно создает по всем свойствам app объекты AppProperty
         createAppProperty(productWindow.app);
@@ -563,6 +429,16 @@ var Engine = {};
     }
 
     /**
+     * Вернуть массив строк - ключей свойств
+     * Вне Engine лучше работать с этими ключами, так как appProperties могут пересоздавать при изменении свойств
+     *
+     * @returns {Array.<string>}
+     */
+    function getAppPropertiesObjectPathes() {
+        return appPropertiesObjectPathes;
+    }
+
+    /**
      * Вернуть доступные прототипы свойств
      * @returns {Array}
      */
@@ -592,7 +468,9 @@ var Engine = {};
         }
         var p = getAppProperty(propStr);
         if (p) {
-            p.set('domElement', domElem);
+//            p.set('domElement', domElem);
+            p.domElem = domElem;
+            send('DOMElementChanged', p.propertyString);
         }
         else {
             log('Could not find AppProperty for string: ' + propStr, true);
@@ -604,10 +482,12 @@ var Engine = {};
     global.addArrayElement = addArrayElement;
     global.deleteArrayElement = deleteArrayElement;
     global.test = test;
+    global.getAppPropertiesObjectPathes = getAppPropertiesObjectPathes;
     global.getAppProperties = getAppProperties;
     global.getPropertyPrototypes = getPropertyPrototypes;
     global.getPrototypesForAppProperty = getPrototypesForAppProperty;
     global.exportTemplate = exportTemplate;
     global.getAppProperty = getAppProperty;
     global.bind = bind;
+    global.on = on;
 })(Engine);
