@@ -18,7 +18,7 @@ var Engine = {};
      */
     var productWindow = null;
     /**
-     * Свойтва промо проекта, которые можно редактировать
+     * Свойства промо проекта, которые можно редактировать
      */
     var appProperties = [];
     /**
@@ -31,6 +31,23 @@ var Engine = {};
      * Прототип клонируется сколько угодно раз и добавляется в productWindow.app
      */
     var propertyPrototypes = [];
+    /**
+     * Экраны (слайды) промо приложения
+     * Промо приложение сообщает о себе, сколько у него экранов и какие
+     * @type {Array}
+     */
+    var appScreens = [];
+    /**
+     * Идишки экранов отдельно в массиве
+     * @type {Array.<string>}
+     */
+    var appScreenIds = [];
+    /**
+     * Экран, для которого было показано превью;
+     * Нужно для того чтобы после перезапуска приложения его запоминать и восстанавливать.
+     * @type {string}
+     */
+    var currentPreviewScreen = null;
     /**
      * типы поддерживаемых событий
      */
@@ -135,6 +152,23 @@ var Engine = {};
                 }
             }
         }
+    }
+
+    /**
+     * Создать экраны в промоприложении.
+     * Движок запрашивает у промо приложения информацию об экранах с помощью getScreenPreviews()
+     */
+    function createAppSlides() {
+        appScreens = [];
+        appScreenIds = [];
+        if (typeof productWindow.getScreenPreviews === 'function') {
+            var ps = productWindow.getScreenPreviews();
+            for (var i = 0; i < ps.length; i++) {
+                appScreens.push(ps[i]);
+                appScreenIds.push(ps[i].id);
+            }
+        }
+
     }
 
     /**
@@ -265,6 +299,7 @@ var Engine = {};
                 // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
                 //TODO нужен более умный алгоритм. Пересоздавать только то что надо и когда надо
                 createAppProperty(productWindow.app);
+                createAppSlides();
                 return {result: 'success', message: ''};
             }
             log('Tests contain errors. Cannot set \''+key+'\'='+stringifiedValue);
@@ -293,10 +328,15 @@ var Engine = {};
      * @returns {{engine: buildProductAppParams, startSlide: number}}
      */
     function buildProductAppParams() {
-        return {
+        var result = {
             engine: this,
-            startSlide: 0
+            previewScreen: currentPreviewScreen
+        };
+        if (currentPreviewScreen) {
+            // если экран для запуска указан, то надо также передать его данные
+            result.previewScreenData = getAppScreen(currentPreviewScreen).data;
         }
+        return result;
     }
 
     /**
@@ -325,6 +365,8 @@ var Engine = {};
         testResults = [];
         // рекурсивно создает по всем свойствам app объекты AppProperty
         createAppProperty(productWindow.app);
+        // создать экраны (слайды) для промо приложения
+        createAppSlides();
         // находим и создаем шаблоны
         createAppPrototypes(productWindow.app);
     }
@@ -477,17 +519,67 @@ var Engine = {};
         }
     }
 
+    /**
+     * Запросить у промопродукта показ превью определенного экрана.
+     *
+     * @param screenId
+     */
+    function showScreenPreview(screenId) {
+        currentPreviewScreen = screenId;
+        if (typeof productWindow.showScreenPreview === 'function') {
+            for (var i = 0; i < appScreens.length; i++) {
+                if (screenId === appScreens[i].id) {
+                    productWindow.showScreenPreview(screenId, appScreens[i].data);
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Вернуть ид всех доступных экранов
+     * @returns {Array.<string>}
+     */
+    function getAppScreenIds() {
+        return appScreenIds;
+    }
+
+    /**
+     * Найти экран по его ид
+     * @param {string} id
+     * @returns {*}
+     */
+    function getAppScreen(id) {
+        for (var i = 0; i < appScreens.length; i++) {
+            if (id === appScreens[i].id) {
+                return appScreens[i];
+            }
+        }
+        return null;
+    }
+
     global.startEngine = startEngine;
-    global.setValue = setValue;
-    global.addArrayElement = addArrayElement;
-    global.deleteArrayElement = deleteArrayElement;
     global.test = test;
+
+    // методы для работы со свойствами appProperties
+    global.setValue = setValue;
     global.getAppPropertiesObjectPathes = getAppPropertiesObjectPathes;
     global.getAppProperties = getAppProperties;
     global.getPropertyPrototypes = getPropertyPrototypes;
     global.getPrototypesForAppProperty = getPrototypesForAppProperty;
-    global.exportTemplate = exportTemplate;
     global.getAppProperty = getAppProperty;
+    global.addArrayElement = addArrayElement;
+    global.deleteArrayElement = deleteArrayElement;
     global.bind = bind;
+
+    // events
     global.on = on;
+
+    // методы для работы с экранами(слайдами)
+    global.showScreenPreview = showScreenPreview;
+    global.getAppScreenIds = getAppScreenIds;
+    global.getAppScreen = getAppScreen;
+
+    // методы для работы с шаблонами и темами
+    global.exportTemplate = exportTemplate;
 })(Engine);

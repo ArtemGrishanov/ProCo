@@ -18,6 +18,10 @@
         .field_cnt {
             position: relative;
             padding: 0;
+            float: left;
+        }
+        .slides_cnt {
+            float: left;
         }
         .quick_controls_cnt {
             position: absolute;
@@ -49,6 +53,8 @@
     <a class="btn" onclick="onPublishClick();">Publish</a>
     <a class="btn" onclick="onEditClick();">Мне повезет!</a>
     <br><br><br>
+    <div id="id-slides_cnt" class="slides_cnt">
+    </div>
     <div class="field_cnt">
         <div id="id-control_cnt" class="quick_controls_cnt">
             <!-- Здесь располагаются "быстрые" контролы, которые показываются поверх продукта при клике или наведении куда-то -->
@@ -68,8 +74,8 @@
     <script type="text/javascript" src="../js/setting.js"></script>
     <script type="text/javascript" src="../js/appProperty.js"></script>
     <script type="text/javascript" src="../js/queue.js"></script>
-    <!--TODO load dunamically-->
     <script type="text/javascript" src="controls/TextQuickInput.js"></script>
+    <script type="text/javascript" src="controls/Slide.js"></script>
     <script type="text/javascript" src="../js/editor.js"></script>
     <script>
         $(document).ready(function(){

@@ -281,6 +281,11 @@
          * Ссылка на движок, сохраняется если была передана в start
          */
         var engineInstance = null;
+        /**
+         * Режим предпросмотра экранов. То есть приложение не запущено по настоящему. (?)
+         * Активируется при вызове функции showScreen
+         */
+        var previewMode = false;
 
         function next() {
             //TODO на основе модели переходов можно построить блок схему для пользователя (если лучше формализовать модель)
@@ -394,10 +399,12 @@
          * После обновления 'app' этот метод должен сделать всё нужное, чтобы приложение работало нормально.
          * Обычно start зовется и после загрузки html страницы в первый раз.
          *
-         * @param {object} params - когда проект запускается движком сюда будет передана ссылка на движок
+         * @param {object} [params.engine] - когда проект запускается движком сюда будет передана ссылка на движок
+         * @param {string} [params.previewScreen] - скрин который показать в режиме превью.
+         * @param {*} [params.previewScreenData] - данные о скрине
          */
         function start(params) {
-            if (params) {
+            if (params && params.engine) {
                 engineInstance = params.engine;
             }
             if (app.fontFamily) {
@@ -413,6 +420,63 @@
             makeUidForQuiz();
             state = undefined;
             next();
+            if (params && params.previewScreen) {
+                showScreenPreview(params.previewScreen, params.previewScreenData);
+            }
+        }
+
+        /**
+         * Метод, который должен быть определен для контрола Slides, чтобы переключаться по экранам.
+         * Важно отметить следующее: это показ определенного экрана "напрямую", а не в результате выполнения приложения.
+         *
+         * @param {string} screenId
+         * @param {*} data любые данные об экране, которые были отданы ранее в getScreenPreviews
+         */
+        function showScreenPreview(screenId, data) {
+            previewMode = true;
+            if (screenId === 'startScr') {
+                // стартовый экран
+                $('#id-start_slide').show();
+                $('#id-end_slide').hide();
+                $('.js-slides_cnt').hide();
+            } else if (screenId === 'resultScr') {
+                // экран результата
+                $('#id-start_slide').hide();
+                $('#id-end_slide').show();
+                $('.js-slides_cnt').hide();
+            } else {
+                $('#id-start_slide').hide();
+                $('#id-end_slide').hide();
+                $('.js-slides_cnt').show();
+                renderQuestion(data);
+            }
+        }
+
+        /**
+         * Метод который должен быть определен для контрола Slides, чтобы переключаться по экранам
+         *
+         * @return {Array}
+         */
+        function getScreenPreviews() {
+            var slides = [];
+            slides.push({
+                id: 'startScr',
+                preview: null,
+                data: ''
+            });
+            for (var i = 0; i < app.quiz.length; i++) {
+                slides.push({
+                    id: 'quiz'+i,
+                    preview: null, //?
+                    data: i
+                });
+            }
+            slides.push({
+                id: 'resultScr',
+                preview: null,
+                data: ''
+            });
+            return slides;
         }
 
         /**

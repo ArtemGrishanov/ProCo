@@ -70,31 +70,17 @@ function initControls() {
         //TODO как экземпляры класса делать с нужным appProperty?
 
         if (config.controls.hasOwnProperty(controlName)) {
-            myApp.directive(config.controls[controlName].angularDirectiveName, function($compile) {
-                return {
-                    restrict: 'A',
-                    templateUrl: 'controls/'+controlName+'.html',
-                    scope: {
-                        myScope: '=info'
-                    }
-//                    link: function (scope, ele, attrs) {
-//                        scope.$watch(attrs.dynamic, function(html) {
-//                            ele.html(html);
-//                            $compile(ele.contents())(scope);
-//                        });
-//                    }
-//                    ,
-//                    scope: {
-//                        customer: '='
-//                    },
-//                    link: function(scope, element, attr, controller) {
-//                        var startX = 0, startY = 0, x = 0, y = 0;
-//                    }
-//                    ,controller: ['$scope', function() {
-//                        var startX = 0, startY = 0, x = 0, y = 0;
-//                    }]
-                };
-            });
+            (function (cn) {
+                myApp.directive(config.controls[controlName].angularDirectiveName, function($compile) {
+                    return {
+                        restrict: 'A',
+                        templateUrl: 'controls/'+cn+'.html',
+                        scope: {
+                            myScope: '=info'
+                        }
+                    };
+                });
+            })(controlName);
 
             // регистрируем angular-контроллер с именем контрола
             myApp.controller(controlName, ['$scope', '$attrs', window[controlName+'Controller']]);
@@ -165,13 +151,13 @@ function syncUIControlsToAppProperties() {
     for (var j = 0; j < uiControlsInfo.length; j++) {
         uiControlsInfo[j].isUsed = false;
     }
-    // это строки-ключи
+    // это строки -- ключи appProperty
     var appPropertiesStrings = Engine.getAppPropertiesObjectPathes();
     for (var i = 0; i < appPropertiesStrings.length; i++) {
         var ci = findControlInfo(appPropertiesStrings[i]);
         if (ci === null) {
             // контрола пока ещё не существует для настройки, надо создать
-            var newControl = createControlForAppProperty(appPropertiesStrings[i]);
+            var newControl = createControl(appPropertiesStrings[i]);
             if (newControl) {
                 // только если действительно получилось создать ui для настройки
                 // не все контролы могут быть реализованы или некорректно указаны
@@ -191,10 +177,35 @@ function syncUIControlsToAppProperties() {
         }
     }
 
+    // теперь контроля для экранов
+    var appScreenIds = Engine.getAppScreenIds();
+    for (var i = 0; i < appScreenIds.length; i++) {
+        var ci = findControlInfo(appScreenIds[i]);
+        if (ci === null) {
+            var newControl = createControl(appScreenIds[i], 'Slide');
+            if (newControl) {
+                uiControlsInfo.push({
+                    appPropertyString: appScreenIds[i],
+                    control: newControl,
+                    isUsed: true
+                });
+            }
+            else {
+                log('Can not create control for appScreen: \'' + appScreenIds[i], true);
+            }        }
+        else {
+            ci.isUsed = true;
+        }
+    }
+
     // скомпилировать новые angular derictives (которые соответствуют контролам)
     var $injector = angular.injector(['ng', 'procoApp']);
     $injector.invoke(function ($rootScope, $compile) {
         $compile($('#id-control_cnt')[0])($rootScope);
+        $rootScope.$digest();
+    });
+    $injector.invoke(function ($rootScope, $compile) {
+        $compile($('#id-slides_cnt')[0])($rootScope);
         $rootScope.$digest();
     });
 
@@ -223,30 +234,40 @@ function findControlInfo(propertyString) {
     return null;
 }
 
-function createControlForAppProperty(propertyString) {
-    //TODO для ui=TextQuick(id-start_header_text) надо связать dom элемент
+/**
+ * Создать контрол для свойства промо приложения или его экрана
+ * На основе информации appProperty будет выбран ui компонент и создан его экземпляр
+ *
+ * @param propertyString
+ * @param controlName
+ * @returns {*}
+ */
+function createControl(propertyString, controlName) {
     var ctrl = null;
-    var appProperty = Engine.getAppProperty(propertyString);
-    if (appProperty.descriptor.ui) {
-        switch(appProperty.descriptor.ui) {
-            case 'TextQuickInput': {
-                var controlName = 'TextQuickInput';
-//                // регистрируем angular-контроллер с именем контрола
-                ctrl = new TextQuickInput(propertyString, $('#id-control_cnt'), config.controls[controlName]);
-//                myApp.controller(controlName, ['$scope', ctrl.angularViewController]);
-
-                //angUiControllers.controller('TextQuickInput', ['$scope','$http', function($scope, $http) {
+    if (!controlName) {
+        var appProperty = Engine.getAppProperty(propertyString);
+        controlName = appProperty.descriptor.ui;
+    }
+    switch(controlName) {
+        case 'TextQuickInput': {
+            // регистрируем angular-контроллер с именем контрола
+            ctrl = new TextQuickInput(propertyString, $('#'+config.controls[controlName].parentId), config.controls[controlName]);
+            //angUiControllers.controller('TextQuickInput', ['$scope','$http', function($scope, $http) {
 //                    $http.get('controls/TextQuickInput.html').success(function(data) {
-                    // текст для редактирования
+                // текст для редактирования
 //                        $scope.text = data;
 
 //                    });
 //                }]);
-                break;
-            }
+            break;
         }
-        log('Creating UI control for appProperty=' + appProperty.propertyString + ' ui=' + appProperty.descriptor.ui);
+        case 'Slide': {
+            //TODO контейнер надо наверное внутрь контрола? Или в конфиг?
+            ctrl = new Slide(propertyString, $('#'+config.controls[controlName].parentId), config.controls[controlName]);
+            break;
+        }
     }
+    log('Creating UI control for appProperty=' + propertyString + ' ui=' + controlName);
     return ctrl;
 }
 
