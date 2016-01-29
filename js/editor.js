@@ -11,6 +11,7 @@ var promoAppName = 'test1';
  * Создание и сохранение шаблонов. Запуск автотестов.
  * @type {boolean}
  */
+//TODO
 var devMode = true;
 /**
  * Статические ресурсы (скрипты, стили, картинки и прочее), которые надо зааплоадить при сохранении продукта
@@ -87,7 +88,7 @@ function initControls() {
         }
     }
 }
-//TODO при переносе в start - ошибка. Разобраться!
+//TODO
 initControls();
 //var fileChooser = document.getElementById('file-chooser');
 /**
@@ -105,7 +106,6 @@ function getDistribUrl() {
  */
 function start() {
     initProduct();
-//    initControls();
 }
 
 function initProduct() {
@@ -134,6 +134,51 @@ function onProductIframeLoaded() {
     Engine.startEngine(iframeWindow);
     syncUIControlsToAppProperties();
     //TODO редактирование становится доступным показать в интерфейсе
+}
+
+/**
+ * Показать экран(ы) промо приложения в редакторе.
+ * На экране нужно элементы с атрибутами data-app-property и проинициализировать контролы
+ *
+ * @param {Array.<string>} ids - массив ид экранов
+ */
+function showScreen(ids) {
+    var $screensCnt = $('#id-product_screens_cnt');
+    $screensCnt.empty();
+    var $scr = null;
+    for (var i = 0; i < ids.length; i++) {
+        $scr = Engine.getAppScreen(ids[i]);
+        if ($scr) {
+            $screensCnt.append($scr.view);
+            bindControlsForAppPropertiesOnScreen($scr.view, ids[i]);
+        }
+        else {
+            //TODO показать ошибку наверное
+        }
+    }
+}
+
+/**
+ * На добавленном view экрана скорее всего есть какие dom-элементы связанные с appProperties
+ * Найдем их и свяжем с контролами редактирования
+ *
+ * @param {HTMLElement} $view
+ * @param {string} scrId
+ */
+function bindControlsForAppPropertiesOnScreen($view, scrId) {
+    var elems = $view.find('[data-app-property]');
+    for (var i = 0; i < elems.length; i++) {
+        var pAtt = $(elems[i]).attr('data-app-property');
+        var c = findControlInfo(pAtt);
+        if (c) {
+            c.control.setProductDomElement(elems[i]);
+        }
+        else {
+            // нет свойства appProperty в Engine хотя во вью есть элемент с таким атрибутом data-app-property
+            // это значит ошибку в промо-продукте
+            log('AppProperty \''+pAtt+'\' not exist. But such attribute exists in the view: \''+scrId+'\'', true);
+        }
+    }
 }
 
 /**
@@ -177,25 +222,29 @@ function syncUIControlsToAppProperties() {
         }
     }
 
-    // теперь контроля для экранов
+    // теперь контролы для экранов
     var appScreenIds = Engine.getAppScreenIds();
-    for (var i = 0; i < appScreenIds.length; i++) {
-        var ci = findControlInfo(appScreenIds[i]);
-        if (ci === null) {
-            var newControl = createControl(appScreenIds[i], 'Slide');
-            if (newControl) {
-                uiControlsInfo.push({
-                    appPropertyString: appScreenIds[i],
-                    control: newControl,
-                    isUsed: true
-                });
-            }
+    if (appScreenIds.length > 0) {
+        for (var i = 0; i < appScreenIds.length; i++) {
+            var ci = findControlInfo(appScreenIds[i]);
+            if (ci === null) {
+                var newControl = createControl(appScreenIds[i], 'Slide');
+                if (newControl) {
+                    uiControlsInfo.push({
+                        appPropertyString: appScreenIds[i],
+                        control: newControl,
+                        isUsed: true
+                    });
+                }
+                else {
+                    log('Can not create control for appScreen: \'' + appScreenIds[i], true);
+                }        }
             else {
-                log('Can not create control for appScreen: \'' + appScreenIds[i], true);
-            }        }
-        else {
-            ci.isUsed = true;
+                ci.isUsed = true;
+            }
         }
+        // первый экран сразу показать
+        showScreen([appScreenIds[0]]);
     }
 
     // скомпилировать новые angular derictives (которые соответствуют контролам)
@@ -227,7 +276,7 @@ function syncUIControlsToAppProperties() {
  */
 function findControlInfo(propertyString) {
     for (var j = 0; j < uiControlsInfo.length; j++) {
-        if (propertyString === uiControlsInfo[j].propertyString) {
+        if (propertyString === uiControlsInfo[j].appPropertyString) {
             return uiControlsInfo[j];
         }
     }

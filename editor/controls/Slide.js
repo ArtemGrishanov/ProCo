@@ -44,6 +44,7 @@ function Slide(propertyString, $parent, controlConfig) {
 function SlideController(scope, attrs) {
     var appPropertyId = attrs.$$element.parent().attr('data-app_property');
     scope.slideClicked = function() {
-        Engine.showScreenPreview(appPropertyId);
+        // просим редактор показать скрин по его ид
+        showScreen([appPropertyId]);
     }
 }

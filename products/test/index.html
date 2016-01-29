@@ -9,58 +9,49 @@
 </head>
 <body>
 
-    <div id="wrapper" class="wrapper">
+    <div id="id-start_slide" class="wrapper">
         <div class="back_start"></div>
         <div class="shadow"></div>
-        <div id="id-start_slide" class="slide">
+        <div class="slide">
             <div class="cnt_wr">
                 <div class="start_txt">
-                    <h2 id="id-start_header_text" class="start_head"></h2>
-                    <span class="start_desc">Проверь свои знания в географии</span>
+                    <h2 id="id-start_header_text" data-app-property="startHeaderText" class="start_head"></h2>
+                    <span id="id-start_desc_text" data-app-property="startDescription" class="start_desc">Проверь свои знания в географии</span>
                 </div>
                 </br>
                 <div class="btn_wr">
-                    <span class="btn js-next">Начать</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="js-slides_cnt">
-            <!-- Слайды с вопросами добавлятся программно сюда -->
-        </div>
-
-        <div id="id-end_slide" class="slide">
-            <div class="cnt_wr">
-                <div class="start_txt">
-                    <h2 class="start_head js-result_title">Конец</h2>
-                    <span class="start_desc js-result_description">Ты ответил на все вопросы</span>
-                </div>
-                </br>
-                <div class="btn_wr">
-                    <span class="btn js-next">Заново</span>
+                    <span class="t_btn js-next">Начать</span>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <div id="id-setting_content">
-
+    <div class="js-slides_cnt">
+        <!-- Слайды с вопросами добавлятся программно сюда -->
     </div>
+
+    <div id="id-end_slide">
+        <!-- Сюда добавляется один из результатов. Который собирается из шаблона. -->
+    </div>
+
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript" src="jquery.js"></script>
     <script id="id-slide_template" type="text/template">
-        <div class="slide js-slide">
-            <div class="cnt_wr">
-                <div class="q_wr">
-                    <span>{{question_text}}</span>
-                </div>
-                <div class="js-answers_cnt"></div>
-                <div class="js-explain explain_blk" style="display:none;">
-                    <div class="js-explanation_text"></div>
-                    </br>
-                    </br>
-                    <div><span class="btn js-next">Далее</span></div>
+        <div class="wrapper">
+            <div class="back_start"></div>
+            <div class="shadow"></div>
+            <div class="slide js-slide">
+                <div class="cnt_wr">
+                    <div class="q_wr">
+                        <span data-app-property="quiz.{{currentQuestion}}.text">{{question_text}}</span>
+                    </div>
+                    <div class="js-answers_cnt"></div>
+                    <div class="js-explain explain_blk" style="display:none;">
+                        <div class="js-explanation_text"></div>
+                        </br>
+                        </br>
+                        <div><span class="btn js-next">Далее</span></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,6 +63,24 @@
                 <span class="txt">{{answer_options_text}}</span>
             </div>
         </div>
+    </script>
+    <script id="id-result_template" type="text/template">
+        <div class="wrapper">
+            <div class="back_start"></div>
+            <div class="shadow"></div>
+            <div class="slide">
+                <div class="cnt_wr">
+                    <div class="start_txt">
+                        <h2 class="start_head js-result_title">Конец</h2>
+                        <span class="start_desc js-result_description">Ты ответил на все вопросы</span>
+                    </div>
+                    </br>
+                    <div class="btn_wr">
+                        <span class="t_btn js-next">Заново</span>
+                    </div>
+                </div>
+            </div>
+        <div>
     </script>
     <script>
         /**
@@ -86,10 +95,11 @@
          */
         var app = {
 
-            // domElemSelector=#id-start_header_text - вызов редактирования происходит по клику на dom элемент с указанным id
-            // указанному элементу будет задан атрибут data-app-property='...'
-            d__startHeaderText: 'editable=true;ui=TextQuickInput;domElemSelector=#id-start_header_text',
+            d__startHeaderText: 'editable=true;ui=TextQuickInput',
             startHeaderText: 'Тест по географии',
+
+            d__startDescription: 'editable=true;ui=TextQuickInput',
+            startDescription: 'Проверь свои знания в географии',
 
             key1: 'value1',
             key2: 'value2',
@@ -138,6 +148,7 @@
             d__quiz: 'editable=true;ui=Slides;length={apps.tests.maxquizcount};canAdd=proto__text_slide,proto__photo_question_slide',
             quiz: [
                 {
+                    d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Мадагаскар -- это где?',
                     options: [
                         {
@@ -160,8 +171,9 @@
                     explanation: 'Конечно, это остров на юге Африки в индийском океане.'
                 },
                 {
-                    text: 'Какая самая большая страна?',
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
+                    text: 'Какая самая большая страна?',
+                    d__options: 'editable=true;ui=AddQuickButton(string|text);minlength=2;maxlength=4',
                     options: [
                         {
                             text: 'Гренландия'
@@ -177,6 +189,7 @@
                     explanation: 'Это Россия, все знают.'
                 },
                 {
+                    d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Какого моря не существует?',
                     options: [
                         {
@@ -253,8 +266,17 @@
                 explanation: 'Пояснение к ответу'
             }
         };
-    </script>
-    <script>
+        /**
+         * Экраны приложения;
+         * Настраивает разработчика на то, чтобы сразу работать с экранами
+         * Обязательное свойство, любое промо-приложение обладает конечным списком экранов.
+         * {
+         *      id: {string},
+         *      view: {HTMLDOMElement | string | jQueryHTMLDOMElement},
+         *      data: {*}
+         * }
+         */
+        var screens = [];
         /**
          * тайтл результата по умолчанию
          */
@@ -289,44 +311,46 @@
 
         function next() {
             //TODO на основе модели переходов можно построить блок схему для пользователя (если лучше формализовать модель)
-            switch (state) {
-                case 'welcome': {
-                    resultPoints = 0;
-                    currentResult = null;
-                    $('.js-explain').hide();
-                    // currentQuestionIndex устанавливается внутри
-                    renderQuestion(0);
-                    $('#id-start_slide').hide();
-                    $('.js-slides_cnt').show();
-                    state = 'test';
-                    break;
-                }
-                case 'test': {
-                    if (currentQuestionIndex < app.quiz.length-1) {
-                        renderQuestion(++currentQuestionIndex);
+            if (previewMode === false) {
+                switch (state) {
+                    case 'welcome': {
+                        resultPoints = 0;
+                        currentResult = null;
+                        $('.js-explain').hide();
+                        // currentQuestionIndex устанавливается внутри
+                        renderQuestion(0);
+                        $('#id-start_slide').hide();
+                        $('.js-slides_cnt').show();
+                        state = 'test';
+                        break;
                     }
-                    else {
-                        // конец теста, финальный скрин
+                    case 'test': {
+                        if (currentQuestionIndex < app.quiz.length-1) {
+                            renderQuestion(++currentQuestionIndex);
+                        }
+                        else {
+                            // конец теста, финальный скрин
+                            $('.js-slides_cnt').hide();
+                            //TODO посчитать результат
+                            currentResult = getResult(resultPoints);
+                            renderResult(currentResult);
+                            $('#id-end_slide').show();
+                            state = 'final';
+                        }
+                        break;
+                    }
+                    case 'final': {
+                        $('#id-end_slide').hide();
+                        $('#id-start_slide').show();
+                        state = 'welcome';
+                        break;
+                    }
+                    default: {
+                        state = 'welcome';
+                        $('#id-start_slide').show();
+                        $('#id-end_slide').hide();
                         $('.js-slides_cnt').hide();
-                        //TODO посчитать результат
-                        currentResult = getResult(resultPoints);
-                        renderResult();
-                        $('#id-end_slide').show();
-                        state = 'final';
                     }
-                    break;
-                }
-                case 'final': {
-                    $('#id-end_slide').hide();
-                    $('#id-start_slide').show();
-                    state = 'welcome';
-                    break;
-                }
-                default: {
-                    state = 'welcome';
-                    $('#id-start_slide').show();
-                    $('#id-end_slide').hide();
-                    $('.js-slides_cnt').hide();
                 }
             }
         }
@@ -400,13 +424,43 @@
          * Обычно start зовется и после загрузки html страницы в первый раз.
          *
          * @param {object} [params.engine] - когда проект запускается движком сюда будет передана ссылка на движок
-         * @param {string} [params.previewScreen] - скрин который показать в режиме превью.
-         * @param {*} [params.previewScreenData] - данные о скрине
          */
         function start(params) {
+            // параметры от движка
             if (params && params.engine) {
                 engineInstance = params.engine;
             }
+
+            // подготавливаем экраны
+            screens = [];
+            screens.push({
+                id: 'startScr',
+                view: $('#id-start_slide'),
+                data: {}
+            });
+            for (var i = 0; i < app.quiz.length; i++) {
+                screens.push({
+                    id: 'quizScr'+i,
+                    view: renderQuestion(i),
+                    // во view есть такие строки data-app-property="quiz.{{currentQuestion}}.text"
+                    // data нужно для того, чтобы отрендерить это
+                    data: {
+                        currentQuestion: i
+                    }
+                });
+            }
+            for (var i = 0; i < app.results.length; i++) {
+                // каждый резльтат считается отдельным экраном. Так проще управлять результатами
+                screens.push({
+                    id: 'resultScr'+i,
+                    view: renderResult(app.results[i]),
+                    data: {
+                        currentResult: i
+                    }
+                });
+            }
+
+            // инициализация по параметрам app
             if (app.fontFamily) {
                 $('*').css('fontFamily',app.fontFamily);
             }
@@ -417,66 +471,20 @@
                 $('.cnt_wr').css('color',app.fontColor);
             }
             $('#id-start_header_text').text(app.startHeaderText);
+            $('#id-start_desc_text').text(app.startDescription);
+
+            // запуск
             makeUidForQuiz();
             state = undefined;
             next();
-            if (params && params.previewScreen) {
-                showScreenPreview(params.previewScreen, params.previewScreenData);
-            }
         }
 
         /**
-         * Метод, который должен быть определен для контрола Slides, чтобы переключаться по экранам.
-         * Важно отметить следующее: это показ определенного экрана "напрямую", а не в результате выполнения приложения.
          *
-         * @param {string} screenId
-         * @param {*} data любые данные об экране, которые были отданы ранее в getScreenPreviews
+         * @param {string} id - ид экрана
          */
-        function showScreenPreview(screenId, data) {
-            previewMode = true;
-            if (screenId === 'startScr') {
-                // стартовый экран
-                $('#id-start_slide').show();
-                $('#id-end_slide').hide();
-                $('.js-slides_cnt').hide();
-            } else if (screenId === 'resultScr') {
-                // экран результата
-                $('#id-start_slide').hide();
-                $('#id-end_slide').show();
-                $('.js-slides_cnt').hide();
-            } else {
-                $('#id-start_slide').hide();
-                $('#id-end_slide').hide();
-                $('.js-slides_cnt').show();
-                renderQuestion(data);
-            }
-        }
+        function getScreen(id) {
 
-        /**
-         * Метод который должен быть определен для контрола Slides, чтобы переключаться по экранам
-         *
-         * @return {Array}
-         */
-        function getScreenPreviews() {
-            var slides = [];
-            slides.push({
-                id: 'startScr',
-                preview: null,
-                data: ''
-            });
-            for (var i = 0; i < app.quiz.length; i++) {
-                slides.push({
-                    id: 'quiz'+i,
-                    preview: null, //?
-                    data: i
-                });
-            }
-            slides.push({
-                id: 'resultScr',
-                preview: null,
-                data: ''
-            });
-            return slides;
         }
 
         /**
@@ -501,12 +509,13 @@
             var $slide = $(templStr);
             $cnt.append($slide);
             renderAnswers($slide);
-            if (engineInstance) {
-                engineInstance.bind(['quiz',currentQuestionIndex,'text'], $slide.find('.q_wr'));
-            }
+//            if (engineInstance) {
+//                engineInstance.bind(['quiz',currentQuestionIndex,'text'], $slide.find('.q_wr'));
+//            }
             $slide.find('.js-next').click(function() {
                 next();
             });
+            return $slide;
         }
 
         function renderAnswers($slide) {
@@ -517,9 +526,11 @@
                 var $e = $(templStr);
                 $e.attr('data-id', o.id);
                 $e.click(function(e) {
-                    currentOptionId = $(e.currentTarget).attr('data-id');
-                    var success = answer(currentOptionId);
-                    showExplanation($slide, success);
+                    if (previewMode === false) {
+                        currentOptionId = $(e.currentTarget).attr('data-id');
+                        var success = answer(currentOptionId);
+                        showExplanation($slide, success);
+                    }
                 });
                 $('.js-answers_cnt').append($e);
             }
@@ -527,16 +538,21 @@
 
         /**
          * Отрисовать результат теста
+         *
+         * @param {object} result - индекс результата из массива app.results
          */
-        function renderResult() {
-            if (currentResult) {
-                $('.js-result_title').text(currentResult.title);
-                $('.js-result_description').text(currentResult.description);
-            }
-            else {
-                $('.js-result_title').text(DEF_RESULT_TITLE);
-                $('.js-result_description').text(DEF_RESULT_DESCRIPTION);
-            }
+        function renderResult(result) {
+            var $cnt = $('#id-end_slide');
+            $cnt.empty();
+            var templStr = $('#id-result_template').html();
+            var $slide = $(templStr);
+            $slide.find('.js-result_title').text(result.title);
+            $slide.find('.js-result_description').text(result.description);
+            $cnt.append($slide);
+            $slide.find('.js-next').click(function() {
+                next();
+            });
+            return $slide;
         }
 
         /**

@@ -156,19 +156,41 @@ var Engine = {};
 
     /**
      * Создать экраны в промоприложении.
-     * Движок запрашивает у промо приложения информацию об экранах с помощью getScreenPreviews()
+     * Движок запрашивает у промо приложения информацию об экранах с помощью
      */
-    function createAppSlides() {
+    function createAppScreens() {
         appScreens = [];
         appScreenIds = [];
-        if (typeof productWindow.getScreenPreviews === 'function') {
-            var ps = productWindow.getScreenPreviews();
+        var ps = productWindow.screens;
+        if (ps) {
             for (var i = 0; i < ps.length; i++) {
+                if (ps[i].data) {
+                    // если имеются дополнительные данные их возможно вставить во view
+                    // например: data-app-property="quiz.{{currentQuestion}}.text"
+                    ps[i].view = parseView(ps[i].view, ps[i].data);
+                }
                 appScreens.push(ps[i]);
+                // идишники сохраняем отдельно для быстрой отдачи их редактору единым массивом
                 appScreenIds.push(ps[i].id);
             }
         }
+    }
 
+    /**
+     * вставить во view данные
+     *
+     * @param view
+     * @param data
+     * @returns {*|jQuery|HTMLElement}
+     */
+    function parseView(view, data) {
+        var newHtml = $(view).wrap('<div/>').parent().html();
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) {
+                newHtml = newHtml.replace('{{'+key+'}}', data[key].toString());
+            }
+        }
+        return $(newHtml);
     }
 
     /**
@@ -299,7 +321,7 @@ var Engine = {};
                 // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
                 //TODO нужен более умный алгоритм. Пересоздавать только то что надо и когда надо
                 createAppProperty(productWindow.app);
-                createAppSlides();
+                createAppScreens();
                 return {result: 'success', message: ''};
             }
             log('Tests contain errors. Cannot set \''+key+'\'='+stringifiedValue);
@@ -366,7 +388,7 @@ var Engine = {};
         // рекурсивно создает по всем свойствам app объекты AppProperty
         createAppProperty(productWindow.app);
         // создать экраны (слайды) для промо приложения
-        createAppSlides();
+        createAppScreens();
         // находим и создаем шаблоны
         createAppPrototypes(productWindow.app);
     }
@@ -519,22 +541,22 @@ var Engine = {};
         }
     }
 
-    /**
-     * Запросить у промопродукта показ превью определенного экрана.
-     *
-     * @param screenId
-     */
-    function showScreenPreview(screenId) {
-        currentPreviewScreen = screenId;
-        if (typeof productWindow.showScreenPreview === 'function') {
-            for (var i = 0; i < appScreens.length; i++) {
-                if (screenId === appScreens[i].id) {
-                    productWindow.showScreenPreview(screenId, appScreens[i].data);
-                    break;
-                }
-            }
-        }
-    }
+//    /**
+//     * Запросить у промопродукта показ превью определенного экрана.
+//     *
+//     * @param screenId
+//     */
+//    function showScreenPreview(screenId) {
+//        currentPreviewScreen = screenId;
+//        if (typeof productWindow.showScreenPreview === 'function') {
+//            for (var i = 0; i < appScreens.length; i++) {
+//                if (screenId === appScreens[i].id) {
+//                    productWindow.showScreenPreview(screenId, appScreens[i].data);
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Вернуть ид всех доступных экранов
@@ -576,7 +598,6 @@ var Engine = {};
     global.on = on;
 
     // методы для работы с экранами(слайдами)
-    global.showScreenPreview = showScreenPreview;
     global.getAppScreenIds = getAppScreenIds;
     global.getAppScreen = getAppScreen;
 
