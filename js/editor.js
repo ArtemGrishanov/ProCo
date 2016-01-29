@@ -36,8 +36,13 @@ if (config.common.awsEnabled === true) {
  * @type {Array.<object>}
  */
 var uiControlsInfo = [
+    // Контрол определяется парой: appProperty+domElement
+    //   - одного appProperty не достаточно, так как для одного и того же appProperty на экранах или даже одном экране могут быть дублирующие элементы
+    //   -
+
     // control
     // appProperty
+    // domElement
     // isUsed
 ];
 /**
@@ -149,7 +154,8 @@ function showScreen(ids) {
     for (var i = 0; i < ids.length; i++) {
         $scr = Engine.getAppScreen(ids[i]);
         if ($scr) {
-            $screensCnt.append($scr.view);
+            // каждый экран ещё оборачиваем в контейнер .screen_cnt
+            $('<div class="screen_cnt"></div>').append($scr.view).appendTo($screensCnt);
             bindControlsForAppPropertiesOnScreen($scr.view, ids[i]);
         }
         else {
@@ -169,14 +175,31 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
     var elems = $view.find('[data-app-property]');
     for (var i = 0; i < elems.length; i++) {
         var pAtt = $(elems[i]).attr('data-app-property');
-        var c = findControlInfo(pAtt);
+        var c = findControlInfo(pAtt, elems[i]);
         if (c) {
             c.control.setProductDomElement(elems[i]);
         }
         else {
+            // контрола пока ещё не существует для настройки, надо создать
+            var newControl = createControl(pAtt);
+            if (newControl) {
+                // только если действительно получилось создать ui для настройки
+                // не все контролы могут быть реализованы или некорректно указаны
+                uiControlsInfo.push({
+                    appPropertyString: pAtt,
+                    control: newControl,
+                    isUsed: true,
+                    domElement: elems[i]
+                });
+                newControl.setProductDomElement(elems[i]);
+            }
+            else {
+                log('Can not create control for appProperty: \'' + appPropertiesStrings[i], true);
+            }
+
             // нет свойства appProperty в Engine хотя во вью есть элемент с таким атрибутом data-app-property
             // это значит ошибку в промо-продукте
-            log('AppProperty \''+pAtt+'\' not exist. But such attribute exists in the view: \''+scrId+'\'', true);
+//            log('AppProperty \''+pAtt+'\' not exist. But such attribute exists in the view: \''+scrId+'\'', true);
         }
     }
 }
@@ -197,50 +220,84 @@ function syncUIControlsToAppProperties() {
         uiControlsInfo[j].isUsed = false;
     }
     // это строки -- ключи appProperty
-    var appPropertiesStrings = Engine.getAppPropertiesObjectPathes();
-    for (var i = 0; i < appPropertiesStrings.length; i++) {
-        var ci = findControlInfo(appPropertiesStrings[i]);
-        if (ci === null) {
-            // контрола пока ещё не существует для настройки, надо создать
-            var newControl = createControl(appPropertiesStrings[i]);
-            if (newControl) {
-                // только если действительно получилось создать ui для настройки
-                // не все контролы могут быть реализованы или некорректно указаны
-                uiControlsInfo.push({
-                    appPropertyString: appPropertiesStrings[i],
-                    control: newControl,
-                    isUsed: true
-                });
-            }
-            else {
-                log('Can not create control for appProperty: \'' + appPropertiesStrings[i], true);
-            }
-        }
-        else {
-            // пересоздавать не надо. Просто помечаем, что контрол используется
-            ci.isUsed = true;
-        }
-    }
+    //TODO подумать. Контролы для общих свойств создавать здесь сразу. А для экранов во время включения экрана.
+//    var appPropertiesStrings = Engine.getAppPropertiesObjectPathes();
+//    for (var i = 0; i < appPropertiesStrings.length; i++) {
+//        var ci = findControlInfo(appPropertiesStrings[i]);
+//        if (ci === null) {
+//            // контрола пока ещё не существует для настройки, надо создать
+//            var newControl = createControl(appPropertiesStrings[i]);
+//            if (newControl) {
+//                // только если действительно получилось создать ui для настройки
+//                // не все контролы могут быть реализованы или некорректно указаны
+//                uiControlsInfo.push({
+//                    appPropertyString: appPropertiesStrings[i],
+//                    control: newControl,
+//                    isUsed: true
+//                });
+//            }
+//            else {
+//                log('Can not create control for appProperty: \'' + appPropertiesStrings[i], true);
+//            }
+//        }
+//        else {
+//            // пересоздавать не надо. Просто помечаем, что контрол используется
+//            ci.isUsed = true;
+//        }
+//    }
 
     // теперь контролы для экранов
     var appScreenIds = Engine.getAppScreenIds();
+    // группы экранов на левой панели
+    var groups = {};
     if (appScreenIds.length > 0) {
+        // разобъем экраны на группы
         for (var i = 0; i < appScreenIds.length; i++) {
-            var ci = findControlInfo(appScreenIds[i]);
-            if (ci === null) {
-                var newControl = createControl(appScreenIds[i], 'Slide');
-                if (newControl) {
-                    uiControlsInfo.push({
-                        appPropertyString: appScreenIds[i],
-                        control: newControl,
-                        isUsed: true
-                    });
+            var s = appScreenIds[i];
+            var screen = Engine.getAppScreen(s);
+            if (typeof screen.group !== "string") {
+                // если группа не указана, экран будет один в своей группе
+                screen.group = screen.id;
+            }
+            if (groups.hasOwnProperty(screen.group) === false) {
+                // группа новая, создаем
+                groups[screen.group] = [];
+            }
+            groups[screen.group].push(s);
+        }
+        for (var groupName in groups) {
+            for (var i = 0; i < groups[groupName].length; i++) {
+                var s = groups[groupName][i];
+                var screen = Engine.getAppScreen(s);
+                var slideId = null;
+                if (screen.collapse === true) {
+                    // экраны представлены на левой панели одной единой иконкой и при клике на нее отображаются все вместе
+                    // например, результаты в тесте
+                    slideId = groups[groupName].join(',');
                 }
                 else {
-                    log('Can not create control for appScreen: \'' + appScreenIds[i], true);
-                }        }
-            else {
-                ci.isUsed = true;
+                    slideId = s;
+                }
+                var ci = findControlInfo(slideId);
+                if (ci === null) {
+                    var newControl = createControl(slideId, 'Slide');
+                    if (newControl) {
+                        uiControlsInfo.push({
+                            appPropertyString: slideId,
+                            control: newControl,
+                            isUsed: true
+                        });
+                    }
+                    else {
+                        log('Can not create control for appScreen: \'' + slideId, true);
+                    }        }
+                else {
+                    ci.isUsed = true;
+                }
+                if (screen.collapse === true) {
+                    // выходим, так как добавили всю группу разом в один контрол
+                    break;
+                }
             }
         }
         // первый экран сразу показать
@@ -272,12 +329,22 @@ function syncUIControlsToAppProperties() {
 /**
  * Найти информацию об элементе управления
  * @param propertyString свойство для которого ищем элемент управления
+ * @param domElement
  * @returns {object|null}
  */
-function findControlInfo(propertyString) {
+function findControlInfo(propertyString, domElement) {
     for (var j = 0; j < uiControlsInfo.length; j++) {
-        if (propertyString === uiControlsInfo[j].appPropertyString) {
-            return uiControlsInfo[j];
+        if (domElement) {
+            // если важен domElem
+            if (propertyString === uiControlsInfo[j].appPropertyString && domElement === uiControlsInfo[j].domElement) {
+                return uiControlsInfo[j];
+            }
+        }
+        else {
+            // если domElem не важен
+            if (propertyString === uiControlsInfo[j].appPropertyString) {
+                return uiControlsInfo[j];
+            }
         }
     }
     return null;

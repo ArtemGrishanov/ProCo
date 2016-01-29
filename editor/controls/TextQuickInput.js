@@ -31,11 +31,18 @@ function TextQuickInput(propertyString, $parent, controlConfig) {
         Engine.setValue(p, this.$productDomElem.text());
     }
 
+    this.onPropertyChanged = function() {
+        //TODO тот кто стал инициатором изменения не должен сам обрабатывать событие
+        if (this.$productDomElem) {
+            this.$productDomElem.text(Engine.getAppProperty(this.propertyString).propertyValue);
+        }
+    }
+
     this.setProductDomElement = function(elem) {
         this.$productDomElem = $(elem);
         this.$productDomElem.attr('contenteditable','true');
         this.$productDomElem.css('outline','none');
-        this.$productDomElem.on('input',this.onProductElementInput.bind(this));
+        this.$productDomElem.on('input', this.onProductElementInput.bind(this));
 //        this.$productDomElem.click(onProductElementClick.bind(this));
 //        var offset = this.$productDomElem.offset();
 //        this.productDomElemLeft = offset.left;
@@ -44,6 +51,8 @@ function TextQuickInput(propertyString, $parent, controlConfig) {
 //        this.productDomElemHeight = this.$productDomElem.height();
 //        $(document).click(onDocumentClick.bind(this));
     }
+
+    Engine.on('AppPropertyValueChanged', this.propertyString, this.onPropertyChanged.bind(this));
 
 //    var p = Engine.getAppProperty(this.propertyString);
 //    var $e = null;

@@ -8,7 +8,7 @@ body {
 }
 .wrapper {
     width: 600px;
-    height: 600px;
+    height: 400px;
     overflow: hidden;
     position: relative;
     font-family: Arial, sans-serif;

@@ -45,7 +45,9 @@
                     <div class="q_wr">
                         <span data-app-property="quiz.{{currentQuestion}}.text">{{question_text}}</span>
                     </div>
-                    <div class="js-answers_cnt"></div>
+                    <div class="js-answers_cnt">
+                        <!-- Сюда программно добавляются варианта ответов -->
+                    </div>
                     <div class="js-explain explain_blk" style="display:none;">
                         <div class="js-explanation_text"></div>
                         </br>
@@ -60,7 +62,7 @@
         <div class="a_wr js-answer js-answer_text">
             <div class="a_text">
                 <div class="point"></div>
-                <span class="txt">{{answer_options_text}}</span>
+                <span data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}.text" class="txt">{{answer_options_text}}</span>
             </div>
         </div>
     </script>
@@ -76,7 +78,7 @@
                     </div>
                     </br>
                     <div class="btn_wr">
-                        <span class="t_btn js-next">Заново</span>
+                        <span data-app-property="restartButtonText" class="t_btn js-next js-restart">Заново</span>
                     </div>
                 </div>
             </div>
@@ -100,6 +102,9 @@
 
             d__startDescription: 'editable=true;ui=TextQuickInput',
             startDescription: 'Проверь свои знания в географии',
+
+            d__restartButtonText: 'editable=true;ui=TextQuickInput',
+            restartButtonText: 'Заново',
 
             key1: 'value1',
             key2: 'value2',
@@ -145,23 +150,26 @@
             /**
              * Вопросы с ответами
              */
-            d__quiz: 'editable=true;ui=Slides;length={apps.tests.maxquizcount};canAdd=proto__text_slide,proto__photo_question_slide',
+            d__quiz: 'editable=true;length={apps.tests.maxquizcount};canAdd=proto__text_slide,proto__photo_question_slide',
             quiz: [
                 {
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Мадагаскар -- это где?',
                     options: [
                         {
+                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Страна на западе Африки',
                             type: 'text',
                             explanation: 'Это страна, но не на западе.'
                         },
                         {
+                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Остров в Атлантическом океане',
                             type: 'text',
                             explanation: 'Остров, но не в Атлантике.'
                         },
                         {
+                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Остров на юге Африки',
                             type: 'text',
                             points: 1,
@@ -176,13 +184,16 @@
                     d__options: 'editable=true;ui=AddQuickButton(string|text);minlength=2;maxlength=4',
                     options: [
                         {
+                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Гренландия'
                         },
                         {
+                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Россия',
                             points: 1
                         },
                         {
+                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Австралия'
                         }
                     ],
@@ -193,17 +204,20 @@
                     text: 'Какого моря не существует?',
                     options: [
                         {
+                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Черное море'
                         },
                         {
+                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Синее море',
-                            points: 1,
-                            d__points: 'editable=true'
+                            points: 1
                         },
                         {
+                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Красное море'
                         },
                         {
+                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Желтое море'
                         }
                     ]
@@ -431,6 +445,19 @@
                 engineInstance = params.engine;
             }
 
+            // инициализация по параметрам app
+            if (app.fontFamily) {
+                $('*').css('fontFamily',app.fontFamily);
+            }
+            if (app.background) {
+                $('.back_start').css('backgroundImage',app.background);
+            }
+            if (app.fontColor) {
+                $('.cnt_wr').css('color',app.fontColor);
+            }
+            $('#id-start_header_text').text(app.startHeaderText);
+            $('#id-start_desc_text').text(app.startDescription);
+
             // подготавливаем экраны
             screens = [];
             screens.push({
@@ -446,7 +473,8 @@
                     // data нужно для того, чтобы отрендерить это
                     data: {
                         currentQuestion: i
-                    }
+                    },
+                    group: 'questions'
                 });
             }
             for (var i = 0; i < app.results.length; i++) {
@@ -456,22 +484,11 @@
                     view: renderResult(app.results[i]),
                     data: {
                         currentResult: i
-                    }
+                    },
+                    group: 'results',
+                    collapse: true // показ экранов всех сразу на одном поле редактирования
                 });
             }
-
-            // инициализация по параметрам app
-            if (app.fontFamily) {
-                $('*').css('fontFamily',app.fontFamily);
-            }
-            if (app.background) {
-                $('.back_start').css('backgroundImage',app.background);
-            }
-            if (app.fontColor) {
-                $('.cnt_wr').css('color',app.fontColor);
-            }
-            $('#id-start_header_text').text(app.startHeaderText);
-            $('#id-start_desc_text').text(app.startDescription);
 
             // запуск
             makeUidForQuiz();
@@ -522,6 +539,10 @@
             for (var i = 0; i < app.quiz[currentQuestionIndex].options.length; i++) {
                 var o = app.quiz[currentQuestionIndex].options[i];
                 var templStr = $('#id-answer_template').html();
+
+                //TODO важно, костыль: пока нет возможности сделать это в движке, сформировать атрибуты при parseView
+                templStr = templStr.replace('{{currentOption}}', i);
+
                 templStr = templStr.replace('{{answer_options_text}}', o.text);
                 var $e = $(templStr);
                 $e.attr('data-id', o.id);
@@ -548,6 +569,7 @@
             var $slide = $(templStr);
             $slide.find('.js-result_title').text(result.title);
             $slide.find('.js-result_description').text(result.description);
+            $slide.find('.js-restart').text(app.restartButtonText);
             $cnt.append($slide);
             $slide.find('.js-next').click(function() {
                 next();

@@ -51,7 +51,7 @@ var Engine = {};
     /**
      * типы поддерживаемых событий
      */
-    var events = ['AppPropertyInited','DOMElementChanged'];
+    var events = ['AppPropertyInited','AppPropertyValueChanged','DOMElementChanged'];
     /**
      * Зарегистрированные колбеки на события
      * {object}
@@ -187,7 +187,8 @@ var Engine = {};
         var newHtml = $(view).wrap('<div/>').parent().html();
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
-                newHtml = newHtml.replace('{{'+key+'}}', data[key].toString());
+                var re = new RegExp('{{'+key+'}}','g');
+                newHtml = newHtml.replace(re, data[key].toString());
             }
         }
         return $(newHtml);
@@ -322,6 +323,8 @@ var Engine = {};
                 //TODO нужен более умный алгоритм. Пересоздавать только то что надо и когда надо
                 createAppProperty(productWindow.app);
                 createAppScreens();
+                // рассылка события для ключа key
+                send('AppPropertyValueChanged', key);
                 return {result: 'success', message: ''};
             }
             log('Tests contain errors. Cannot set \''+key+'\'='+stringifiedValue);
@@ -510,36 +513,36 @@ var Engine = {};
         return propertyPrototypes;
     }
 
-    /**
-     * Связать свойство промо-приложения и dom-элемент
-     * UI элементы часто создаются динамически и сразу привязать их в дескрипторе нет возможности.
-     * Разработчик промо-приложения сам должен за этим следить.
-     *
-     * @param {Array|string} objectPath
-     * @param {DOMElement} domElem
-     */
-    function bind(objectPath, domElem) {
-        if (!objectPath) {
-            log('objectPath is empty in binding.');
-            return;
-        }
-        var propStr = '';
-        if (Array.isArray(objectPath)) {
-            propStr = objectPath.join('.');
-        }
-        else if (typeof objectPath === 'string') {
-            propStr = objectPath;
-        }
-        var p = getAppProperty(propStr);
-        if (p) {
-//            p.set('domElement', domElem);
-            p.domElem = domElem;
-            send('DOMElementChanged', p.propertyString);
-        }
-        else {
-            log('Could not find AppProperty for string: ' + propStr, true);
-        }
-    }
+//    /**
+//     * Связать свойство промо-приложения и dom-элемент
+//     * UI элементы часто создаются динамически и сразу привязать их в дескрипторе нет возможности.
+//     * Разработчик промо-приложения сам должен за этим следить.
+//     *
+//     * @param {Array|string} objectPath
+//     * @param {DOMElement} domElem
+//     */
+//    function bind(objectPath, domElem) {
+//        if (!objectPath) {
+//            log('objectPath is empty in binding.');
+//            return;
+//        }
+//        var propStr = '';
+//        if (Array.isArray(objectPath)) {
+//            propStr = objectPath.join('.');
+//        }
+//        else if (typeof objectPath === 'string') {
+//            propStr = objectPath;
+//        }
+//        var p = getAppProperty(propStr);
+//        if (p) {
+////            p.set('domElement', domElem);
+//            p.domElem = domElem;
+//            send('DOMElementChanged', p.propertyString);
+//        }
+//        else {
+//            log('Could not find AppProperty for string: ' + propStr, true);
+//        }
+//    }
 
 //    /**
 //     * Запросить у промопродукта показ превью определенного экрана.
@@ -592,7 +595,7 @@ var Engine = {};
     global.getAppProperty = getAppProperty;
     global.addArrayElement = addArrayElement;
     global.deleteArrayElement = deleteArrayElement;
-    global.bind = bind;
+//    global.bind = bind;
 
     // events
     global.on = on;

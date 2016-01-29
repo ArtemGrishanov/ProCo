@@ -25,6 +25,15 @@
         }
         .slides_cnt {
             float: left;
+            padding-right: 10px;
+        }
+        .slide_thumb {
+            width: 172px;
+            height: 119px;
+            background-color: #eee;
+        }
+        .screen_cnt {
+            padding: 0 5px 15px 5px;
         }
         .quick_controls_cnt {
             position: absolute;
@@ -41,18 +50,13 @@
         <div class="bar bar-warning" style="width: 20%;"></div>
         <div class="bar bar-danger" style="width: 10%;"></div>
     </div>
-    <div class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Dropdown trigger</a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-            <li>item1</li>
-            <li>item2</li>
-        </ul>
-    </div>
-    <p>
-        Это вроде редактора.<br>
-        В красную рамочку загружается промо-проект для редактирования
-        {{test.description}}
-    </p>
+    <!--<div class="dropdown">-->
+        <!--<a class="dropdown-toggle" data-toggle="dropdown" href="#">Dropdown trigger</a>-->
+        <!--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">-->
+            <!--<li>item1</li>-->
+            <!--<li>item2</li>-->
+        <!--</ul>-->
+    <!--</div>-->
     <a class="btn" onclick="onPublishClick();">Publish</a>
     <a class="btn" onclick="onEditClick();">Мне повезет!</a>
     <br><br><br>
