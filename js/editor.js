@@ -31,6 +31,12 @@ if (config.common.awsEnabled === true) {
         }
     });
 }
+
+/**
+ * Контролы Slide экранов, которые показаны в данный момент
+ * @type {Array}
+ */
+var activeScreensControls = [];
 /**
  * Массив контролов и свойств AppProperty продукта
  * @type {Array.<object>}
@@ -150,6 +156,7 @@ function onProductIframeLoaded() {
 function showScreen(ids) {
     var $screensCnt = $('#id-product_screens_cnt');
     $screensCnt.empty();
+    activeScreensControls = [];
     var $scr = null;
     for (var i = 0; i < ids.length; i++) {
         $scr = Engine.getAppScreen(ids[i]);
@@ -157,6 +164,21 @@ function showScreen(ids) {
             // каждый экран ещё оборачиваем в контейнер .screen_cnt
             $('<div class="screen_cnt"></div>').append($scr.view).appendTo($screensCnt);
             bindControlsForAppPropertiesOnScreen($scr.view, ids[i]);
+
+            //TODO так не можем сделать, так как есть один контрол на два экрана resultScr0,resultScr1
+            //var info = findControlInfo(ids[i]);
+            // пока кастомная функция поиска
+            for (var j = 0; j < uiControlsInfo.length; j++) {
+                if (uiControlsInfo[j].control.constructor == Slide) {
+                    if (uiControlsInfo[j].control.propertyString.indexOf(ids[i]) >= 0) {
+                        uiControlsInfo[j].control.active = true;
+                        activeScreensControls.push(uiControlsInfo[j].control);
+                    }
+                    else {
+                        uiControlsInfo[j].control.active = false;
+                    }
+                }
+            }
         }
         else {
             //TODO показать ошибку наверное
@@ -170,6 +192,7 @@ function showScreen(ids) {
  *
  * @param {HTMLElement} $view
  * @param {string} scrId
+ *
  */
 function bindControlsForAppPropertiesOnScreen($view, scrId) {
     var elems = $view.find('[data-app-property]');

@@ -8,19 +8,27 @@
  */
 function Slide(propertyString, $parent, controlConfig) {
     this.self = this;
+    // значит что данный экран показан в данный момент пользователю
+    // ставится движком в showScreen
+    this.active = false;
     this.propertyString = propertyString;
-//    this.$parent = $parent;
-//    this.controlConfig = controlConfig;
     this.$directive = addDirective.call(this);
-    // подписка на изменение AppProperty по ключу
-//    Engine.on('AppPropertyInited', this.propertyString, init.bind(this));
-//    Engine.on('DOMElementChanged', this.propertyString, init.bind(this));
-//    init.call(this);
-//
-//
-//    function init() {
-//        //TODO so something
-//    }
+    this.onScreenUpdate = function(e) {
+        //TODO хорошо перерисовывать только когда экран реально виден пользователю, только активный экран
+        if (this.active === true) {
+            showScreen([this.propertyString]);
+        }
+    };
+
+    // помним, что контрол может отвечать сразу за несколько экранов
+    var arr = this.propertyString;
+    if (!Array.isArray(arr)) {
+        arr = [arr];
+    }
+    // подписка на обновления экрана в движке, контрол будет запрашивать у редактора перерисовку
+    for (var i = 0; i < arr.length; i++) {
+        Engine.on('ScreenUpdated', arr[i], this.onScreenUpdate.bind(this));
+    }
 
     /**
      * Добавить директиву в контейнер this.$parent

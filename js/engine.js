@@ -51,7 +51,7 @@ var Engine = {};
     /**
      * типы поддерживаемых событий
      */
-    var events = ['AppPropertyInited','AppPropertyValueChanged','DOMElementChanged'];
+    var events = ['AppPropertyInited','AppPropertyValueChanged','DOMElementChanged','ScreenUpdated'];
     /**
      * Зарегистрированные колбеки на события
      * {object}
@@ -156,7 +156,9 @@ var Engine = {};
 
     /**
      * Создать экраны в промоприложении.
-     * Движок запрашивает у промо приложения информацию об экранах с помощью
+     * Движок запрашивает у промо приложения информацию об экранах.
+     * Это происходит не только в начале
+     * Могут измениться свойства промоприложения, которые приведут к изменению вида экрана.
      */
     function createAppScreens() {
         appScreens = [];
@@ -172,6 +174,7 @@ var Engine = {};
                 appScreens.push(ps[i]);
                 // идишники сохраняем отдельно для быстрой отдачи их редактору единым массивом
                 appScreenIds.push(ps[i].id);
+                send('ScreenUpdated', ps[i].id);
             }
         }
     }
@@ -223,13 +226,19 @@ var Engine = {};
     function send(event, propertyString) {
         if (eventCallbacks[event] && eventCallbacks[event][propertyString]) {
             for (var i = 0; i < eventCallbacks[event][propertyString].length; i++) {
-                eventCallbacks[event][propertyString][i]();
+                eventCallbacks[event][propertyString][i]({
+                    propertyString: propertyString
+                });
             }
         }
     }
 
     /**
      * Добавить элемент в массив
+     * Полный цикл добавления элемента в массив будет выглядеть примерно так
+     * 1) var p = Engine.getAppProperty('quiz.1.options');
+     * 2) var c = p.getArrayElementCopy();
+     * 3) Engine.addArrayElement(p, c);
      *
      * @param appProperty обертка AppProperty для свойства
      * @param value значение элемента массива
@@ -238,10 +247,12 @@ var Engine = {};
         // все методы работы с массивами должны сводиться к setValue
         // подготовим новый массив и сделаем установку свойства
         var key = appProperty.propertyString;
-        if (productWindow.app.hasOwnProperty(key) && Array.isArray(productWindow.app[key])) {
-            var newArray = JSON.parse(JSON.stringify(productWindow.app[key]));
+        // проверяем что в промо проекте действительно есть такой массив
+        var obj = eval('productWindow.app'+convertToBracedString(key));
+        if (obj && Array.isArray(obj)) {
+            var newArray = JSON.parse(JSON.stringify(obj));
             if (position < 0) {
-                position = 0;
+                position = newArray.length;
             }
             newArray.splice(position, -1, value);
             // считается, что устанавливаем новый массив целиком
@@ -283,7 +294,7 @@ var Engine = {};
 //                        eval('appCopy.'+key+'=\''+stringifiedValue+'\'');
 //                    }
 //                    else {
-                        eval('appCopy.'+key+'='+stringifiedValue);
+                        eval('appCopy.'+convertToBracedString(key)+'='+stringifiedValue);
 //                    }
                     try {
                         // запускаем тест на новых настройках, результаты собираются в переменную

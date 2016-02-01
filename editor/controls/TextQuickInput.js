@@ -33,8 +33,9 @@ function TextQuickInput(propertyString, $parent, controlConfig) {
 
     this.onPropertyChanged = function() {
         //TODO тот кто стал инициатором изменения не должен сам обрабатывать событие
-        if (this.$productDomElem) {
-            this.$productDomElem.text(Engine.getAppProperty(this.propertyString).propertyValue);
+        var p = Engine.getAppProperty(this.propertyString);
+        if (this.$productDomElem && this.$productDomElem.text() !== p.propertyValue) {
+            this.$productDomElem.text(p.propertyValue);
         }
     }
 
