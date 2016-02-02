@@ -45,7 +45,7 @@
                     <div class="q_wr">
                         <span data-app-property="quiz.{{currentQuestion}}.text">{{question_text}}</span>
                     </div>
-                    <div class="js-answers_cnt">
+                    <div data-app-property="quiz.{{currentQuestion}}.options" class="js-answers_cnt">
                         <!-- Сюда программно добавляются варианта ответов -->
                     </div>
                     <div class="js-explain explain_blk" style="display:none;">
@@ -181,7 +181,7 @@
                 {
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Какая самая большая страна?',
-                    d__options: 'editable=true;ui=AddQuickButton(string|text);minlength=2;maxlength=4',
+                    d__options: 'editable=true;ui=AddQuickButton;minlength=2;maxlength=4',
                     options: [
                         {
                             d__text: 'editable=true;ui=TextQuickInput;',

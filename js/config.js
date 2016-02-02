@@ -71,14 +71,16 @@ var config = {
     },
     controls: {
         TextQuickInput: {
-            className: 'TextQuickInput',
             angularDirectiveName: 'textquickinput',
             parentId: 'id-control_cnt'
         },
         Slide: {
-            className: 'Slide',
             angularDirectiveName: 'slide',
             parentId: 'id-slides_cnt'
+        },
+        AddQuickButton: {
+            angularDirectiveName: 'addquickbutton',
+            parentId: 'id-control_cnt'
         }
     },
     editor: {

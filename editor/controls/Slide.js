@@ -7,10 +7,12 @@
  * @param {object} controlConfig - объект из config.controls (config.js), конфигурация контрола
  */
 function Slide(propertyString, $parent, controlConfig) {
+    this.type = 'permanent';
     this.self = this;
     // значит что данный экран показан в данный момент пользователю
     // ставится движком в showScreen
     this.active = false;
+    this.$parent = $parent;
     this.propertyString = propertyString;
     this.$directive = addDirective.call(this);
     this.onScreenUpdate = function(e) {

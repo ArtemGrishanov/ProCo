@@ -15,8 +15,10 @@
  * @param {object} controlConfig - объект из config.controls (config.js), конфигурация контрола
  */
 function TextQuickInput(propertyString, $parent, controlConfig) {
+    this.type = 'quick';
     this.self = this;
     this.propertyString = propertyString;
+    this.$parent = $parent;
 //    this.textInput = document.createElement('textInput');
 //    this.$parent = $parent;
 //    this.controlConfig = controlConfig;

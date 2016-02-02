@@ -44,12 +44,9 @@ var activeScreensControls = [];
 var uiControlsInfo = [
     // Контрол определяется парой: appProperty+domElement
     //   - одного appProperty не достаточно, так как для одного и того же appProperty на экранах или даже одном экране могут быть дублирующие элементы
-    //   -
-
     // control
     // appProperty
     // domElement
-    // isUsed
 ];
 /**
  * Единый для всех контролов angular модуль
@@ -154,6 +151,19 @@ function onProductIframeLoaded() {
  * @param {Array.<string>} ids - массив ид экранов
  */
 function showScreen(ids) {
+
+    // каждый раз удаляем quick-контролы и создаем их заново. Не слишком эффективно мб но просто и надежно
+    $('#id-control_cnt').empty();
+    for (var i = 0; i < uiControlsInfo.length;) {
+        var c = uiControlsInfo[i].control;
+        if (c.type == 'quick') {
+            uiControlsInfo.splice(i,1);
+        }
+        else {
+            i++;
+        }
+    }
+
     var $screensCnt = $('#id-product_screens_cnt');
     $screensCnt.empty();
     activeScreensControls = [];
@@ -211,13 +221,12 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
                 uiControlsInfo.push({
                     appPropertyString: pAtt,
                     control: newControl,
-                    isUsed: true,
                     domElement: elems[i]
                 });
                 newControl.setProductDomElement(elems[i]);
             }
             else {
-                log('Can not create control for appProperty: \'' + appPropertiesStrings[i], true);
+                log('Can not create control for appProperty: \'' + pAtt, true);
             }
 
             // нет свойства appProperty в Engine хотя во вью есть элемент с таким атрибутом data-app-property
@@ -225,6 +234,17 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
 //            log('AppProperty \''+pAtt+'\' not exist. But such attribute exists in the view: \''+scrId+'\'', true);
         }
     }
+
+    //TODO пока как-то выглядит запутанным управление контролами
+
+    //TODO надо удалять ненужные контролы
+
+    // скомпилировать новые angular derictives (которые соответствуют контролам)
+    var $injector = angular.injector(['ng', 'procoApp']);
+    $injector.invoke(function ($rootScope, $compile) {
+        $compile($('#id-control_cnt')[0])($rootScope);
+        $rootScope.$digest();
+    });
 }
 
 /**
@@ -238,10 +258,6 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
  * 3) Привязка контролов к dom-элементам в продукте, Для быстрого редактирования.
  */
 function syncUIControlsToAppProperties() {
-    // подготовка к тому, чтобы удалить неиспользуемые контролы
-    for (var j = 0; j < uiControlsInfo.length; j++) {
-        uiControlsInfo[j].isUsed = false;
-    }
     // это строки -- ключи appProperty
     //TODO подумать. Контролы для общих свойств создавать здесь сразу. А для экранов во время включения экрана.
 //    var appPropertiesStrings = Engine.getAppPropertiesObjectPathes();
@@ -256,7 +272,6 @@ function syncUIControlsToAppProperties() {
 //                uiControlsInfo.push({
 //                    appPropertyString: appPropertiesStrings[i],
 //                    control: newControl,
-//                    isUsed: true
 //                });
 //            }
 //            else {
@@ -265,7 +280,6 @@ function syncUIControlsToAppProperties() {
 //        }
 //        else {
 //            // пересоздавать не надо. Просто помечаем, что контрол используется
-//            ci.isUsed = true;
 //        }
 //    }
 
@@ -307,15 +321,12 @@ function syncUIControlsToAppProperties() {
                     if (newControl) {
                         uiControlsInfo.push({
                             appPropertyString: slideId,
-                            control: newControl,
-                            isUsed: true
+                            control: newControl
                         });
                     }
                     else {
                         log('Can not create control for appScreen: \'' + slideId, true);
-                    }        }
-                else {
-                    ci.isUsed = true;
+                    }
                 }
                 if (screen.collapse === true) {
                     // выходим, так как добавили всю группу разом в один контрол
@@ -330,23 +341,9 @@ function syncUIControlsToAppProperties() {
     // скомпилировать новые angular derictives (которые соответствуют контролам)
     var $injector = angular.injector(['ng', 'procoApp']);
     $injector.invoke(function ($rootScope, $compile) {
-        $compile($('#id-control_cnt')[0])($rootScope);
-        $rootScope.$digest();
-    });
-    $injector.invoke(function ($rootScope, $compile) {
         $compile($('#id-slides_cnt')[0])($rootScope);
         $rootScope.$digest();
     });
-
-    // неиспользуемые контролы надо удалить
-    for (var j = 0; j < uiControlsInfo.length;) {
-        if (uiControlsInfo[j].isUsed === false) {
-            deleteUIControl(j);
-        }
-        else {
-            j++;
-        }
-    }
 }
 
 /**
@@ -385,34 +382,37 @@ function createControl(propertyString, controlName) {
     var ctrl = null;
     if (!controlName) {
         var appProperty = Engine.getAppProperty(propertyString);
-        controlName = appProperty.descriptor.ui;
+        if (appProperty) {
+            controlName = appProperty.descriptor.ui;
+        }
     }
-    switch(controlName) {
-        case 'TextQuickInput': {
-            // регистрируем angular-контроллер с именем контрола
-            ctrl = new TextQuickInput(propertyString, $('#'+config.controls[controlName].parentId), config.controls[controlName]);
-            //angUiControllers.controller('TextQuickInput', ['$scope','$http', function($scope, $http) {
-//                    $http.get('controls/TextQuickInput.html').success(function(data) {
-                // текст для редактирования
-//                        $scope.text = data;
-
-//                    });
-//                }]);
-            break;
-        }
-        case 'Slide': {
-            //TODO контейнер надо наверное внутрь контрола? Или в конфиг?
-            ctrl = new Slide(propertyString, $('#'+config.controls[controlName].parentId), config.controls[controlName]);
-            break;
-        }
+    //TODO delete code below
+//    switch(controlName) {
+//        case 'TextQuickInput': {
+//            // регистрируем angular-контроллер с именем контрола
+//            ctrl = new TextQuickInput(propertyString, $('#'+config.controls[controlName].parentId), config.controls[controlName]);
+//            //angUiControllers.controller('TextQuickInput', ['$scope','$http', function($scope, $http) {
+////                    $http.get('controls/TextQuickInput.html').success(function(data) {
+//                // текст для редактирования
+////                        $scope.text = data;
+//
+////                    });
+////                }]);
+//            break;
+//        }
+//        case 'Slide': {
+//            ctrl = new Slide(propertyString, $('#'+config.controls[controlName].parentId), config.controls[controlName]);
+//            break;
+//        }
+//    }
+    try {
+        ctrl = new window[controlName](propertyString, $('#'+config.controls[controlName].parentId), config.controls[controlName]);
+    }
+    catch(e) {
+        log(e, true);
     }
     log('Creating UI control for appProperty=' + propertyString + ' ui=' + controlName);
     return ctrl;
-}
-
-function deleteUIControl(index) {
-    //TODO removw from dom tree
-    uiControlsInfo.splice(j, 1);
 }
 
 function onEditClick() {
