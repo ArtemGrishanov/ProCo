@@ -30,7 +30,9 @@ function TextQuickInput(propertyString, $parent, controlConfig) {
 
     this.onProductElementInput = function() {
         var p = Engine.getAppProperty(this.propertyString);
-        Engine.setValue(p, this.$productDomElem.text());
+        Engine.setValue(p, this.$productDomElem.text(), {
+            updateScreens: false
+        });
     }
 
     this.onPropertyChanged = function() {

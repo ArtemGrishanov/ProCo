@@ -208,36 +208,43 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
     var elems = $view.find('[data-app-property]');
     for (var i = 0; i < elems.length; i++) {
         var pAtt = $(elems[i]).attr('data-app-property');
+        //TODO этот поиск никогда не сработает, сейчас всегда чистим все контролы при переулючении экранов
         var c = findControlInfo(pAtt, elems[i]);
         if (c) {
             c.control.setProductDomElement(elems[i]);
         }
         else {
             // контрола пока ещё не существует для настройки, надо создать
-            var newControl = createControl(pAtt);
-            if (newControl) {
-                // только если действительно получилось создать ui для настройки
-                // не все контролы могут быть реализованы или некорректно указаны
-                uiControlsInfo.push({
-                    appPropertyString: pAtt,
-                    control: newControl,
-                    domElement: elems[i]
-                });
-                newControl.setProductDomElement(elems[i]);
+            var appProperty = Engine.getAppProperty(pAtt);
+            if (appProperty) {
+                // не забыть что может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
+                var controlNames = appProperty.descriptor.ui;
+                for (var j = 0; j < controlNames.length; j++) {
+                    var newControl = createControl(pAtt, controlNames[j]);
+                    if (newControl) {
+                        // только если действительно получилось создать ui для настройки
+                        // не все контролы могут быть реализованы или некорректно указаны
+                        uiControlsInfo.push({
+                            appPropertyString: pAtt,
+                            control: newControl,
+                            domElement: elems[i]
+                        });
+                        newControl.setProductDomElement(elems[i]);
+                    }
+                    else {
+                        log('Can not create control \''+controlNames[j]+'\' for appProperty: \''+pAtt+ '\' on the screen '+scrId, true);
+                    }
+                }
             }
             else {
-                log('Can not create control for appProperty: \'' + pAtt, true);
+                // нет свойства appProperty в Engine хотя во вью есть элемент с таким атрибутом data-app-property
+                // это значит ошибку в промо-продукте
+                log('AppProperty \''+pAtt+'\' not exist. But such attribute exists on the screen: \''+scrId+'\'', true);
             }
-
-            // нет свойства appProperty в Engine хотя во вью есть элемент с таким атрибутом data-app-property
-            // это значит ошибку в промо-продукте
-//            log('AppProperty \''+pAtt+'\' not exist. But such attribute exists in the view: \''+scrId+'\'', true);
         }
     }
 
     //TODO пока как-то выглядит запутанным управление контролами
-
-    //TODO надо удалять ненужные контролы
 
     // скомпилировать новые angular derictives (которые соответствуют контролам)
     var $injector = angular.injector(['ng', 'procoApp']);
@@ -380,31 +387,6 @@ function findControlInfo(propertyString, domElement) {
  */
 function createControl(propertyString, controlName) {
     var ctrl = null;
-    if (!controlName) {
-        var appProperty = Engine.getAppProperty(propertyString);
-        if (appProperty) {
-            controlName = appProperty.descriptor.ui;
-        }
-    }
-    //TODO delete code below
-//    switch(controlName) {
-//        case 'TextQuickInput': {
-//            // регистрируем angular-контроллер с именем контрола
-//            ctrl = new TextQuickInput(propertyString, $('#'+config.controls[controlName].parentId), config.controls[controlName]);
-//            //angUiControllers.controller('TextQuickInput', ['$scope','$http', function($scope, $http) {
-////                    $http.get('controls/TextQuickInput.html').success(function(data) {
-//                // текст для редактирования
-////                        $scope.text = data;
-//
-////                    });
-////                }]);
-//            break;
-//        }
-//        case 'Slide': {
-//            ctrl = new Slide(propertyString, $('#'+config.controls[controlName].parentId), config.controls[controlName]);
-//            break;
-//        }
-//    }
     try {
         ctrl = new window[controlName](propertyString, $('#'+config.controls[controlName].parentId), config.controls[controlName]);
     }

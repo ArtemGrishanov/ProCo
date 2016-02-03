@@ -81,6 +81,10 @@ var config = {
         AddQuickButton: {
             angularDirectiveName: 'addquickbutton',
             parentId: 'id-control_cnt'
+        },
+        DeleteQuickButton: {
+            angularDirectiveName: 'deletequickbutton',
+            parentId: 'id-control_cnt'
         }
     },
     editor: {

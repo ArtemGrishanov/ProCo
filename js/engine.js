@@ -242,8 +242,10 @@ var Engine = {};
      *
      * @param appProperty обертка AppProperty для свойства
      * @param value значение элемента массива
+     * @param {Number} [position] - позиция для вставки
+     * @param {object} [attrs] - описание смотри в setValue
      */
-    function addArrayElement(appProperty, value, position) {
+    function addArrayElement(appProperty, value, position, attrs) {
         // все методы работы с массивами должны сводиться к setValue
         // подготовим новый массив и сделаем установку свойства
         var key = appProperty.propertyString;
@@ -251,17 +253,38 @@ var Engine = {};
         var obj = eval('productWindow.app'+convertToBracedString(key));
         if (obj && Array.isArray(obj)) {
             var newArray = JSON.parse(JSON.stringify(obj));
-            if (position < 0) {
+            if (Number.isInteger(position) === false || position < 0) {
                 position = newArray.length;
             }
             newArray.splice(position, -1, value);
             // считается, что устанавливаем новый массив целиком
-            this.setValue(appProperty, newArray);
+            this.setValue(appProperty, newArray, attrs);
         }
     }
 
-    function deleteArrayElement(appProperty, index) {
-
+    /**
+     * Удалить элемент из массива
+     * Пример:
+     * 1) var p = Engine.getAppProperty('quiz.1.options');
+     * 2) Engine.deleteArrayElement(p, 1);
+     *
+     * @param appProperty
+     * @param index
+     * @param {object} [attrs] - описание смотри в setValue
+     */
+    function deleteArrayElement(appProperty, index, attrs) {
+        // подготовим новый массив и сделаем установку свойства
+        var key = appProperty.propertyString;
+        // проверяем что в промо проекте действительно есть такой массив
+        var obj = eval('productWindow.app'+convertToBracedString(key));
+        if (obj && Array.isArray(obj)) {
+            var newArray = JSON.parse(JSON.stringify(obj));
+            if (index >= 0 || index < newArray.length) {
+                newArray.splice(index,1);
+                // считается, что устанавливаем новый массив целиком
+                this.setValue(appProperty, newArray, attrs);
+            }
+        }
     }
 
     /**
@@ -271,16 +294,21 @@ var Engine = {};
      * @public
      * @param {AppProperty} appProperty объект-обертка свойства в промо приложении. Например, 'results[0].title' или 'randomizeQuestions'
      * @param {*} value
+     * @param {boolean} [attrs.updateScreens] - true by default. Надо ли апдейтить экраны после применения свойства.
+     * Например, при добавлении нового варианта ответа в тесте или вопроса -- конечно, надо.
+     * При изменении текста вопроса - нет, не надо.
      * @return {}
      */
-    function setValue(appProperty, value) {
+    function setValue(appProperty, value, attrs) {
+        var attributes = attrs || {
+            updateScreens: true
+        };
         var key = appProperty.propertyString;
         var stringifiedValue = JSON.stringify(value);
         log('Changing property \''+key+'\'='+stringifiedValue);
         if (productWindow.app && productWindow.tests) {
             // обнуляем перед прогоном тестов
             testResults = [];
-//            var needQuatas = (typeof value === 'string');
             //TODO для сложных строк типа quiz.1.text как определять тесты? Возможно, все таки явно указывать
             for (var i = 0; i < productWindow.tests.length; i++) {
                 var s = productWindow.tests[i].toString();
@@ -290,12 +318,7 @@ var Engine = {};
                     //TODO может быть не эффективно на сложных объектах
                     var appCopy = JSON.parse(JSON.stringify(productWindow.app));
                     // делаем изменение
-//                    if (needQuatas === true) {
-//                        eval('appCopy.'+key+'=\''+stringifiedValue+'\'');
-//                    }
-//                    else {
-                        eval('appCopy.'+convertToBracedString(key)+'='+stringifiedValue);
-//                    }
+                    eval('appCopy.'+convertToBracedString(key)+'='+stringifiedValue);
                     try {
                         // запускаем тест на новых настройках, результаты собираются в переменную
                         log('Running test...');
@@ -315,12 +338,7 @@ var Engine = {};
             // если тестов не было, то тоже считаем что всё успешно
             if (isErrorInTestResults() === false) {
                 // если всё хорошо завершилось, устанавливаем свойство, это безопасно
-//                if (needQuatas === true) {
-//                    eval('productWindow.app.'+key+'=\''+stringifiedValue+'\'');
-//                }
-//                else {
-                    eval('productWindow.app'+convertToBracedString(key)+'='+stringifiedValue);
-//                }
+                eval('productWindow.app'+convertToBracedString(key)+'='+stringifiedValue);
                 log('All tests was successful. Tests count='+testResults.length+'; \''+key+'\'='+stringifiedValue+' was set');
                 // дальше перезапустить приложение
                 if (typeof productWindow.start === 'function') {
@@ -333,7 +351,9 @@ var Engine = {};
                 // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
                 //TODO нужен более умный алгоритм. Пересоздавать только то что надо и когда надо
                 createAppProperty(productWindow.app);
-                createAppScreens();
+                if (attributes.updateScreens === true) {
+                    createAppScreens();
+                }
                 // рассылка события для ключа key
                 send('AppPropertyValueChanged', key);
                 return {result: 'success', message: ''};

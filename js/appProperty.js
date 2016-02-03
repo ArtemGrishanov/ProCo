@@ -36,6 +36,10 @@ var AppProperty = function(propertyValue, propertyString, descString) {
     if (!this.descriptor.hasOwnProperty('editable')) {
         this.descriptor.editable = false;
     }
+    if (this.descriptor.hasOwnProperty('ui')) {
+        // для одного свойства может быть несколько контролов, они будут в этом массиве
+        this.descriptor.ui = this.descriptor.ui.split(',');
+    }
     this.path = this.propertyString.split('.');
     this.isArray = Array.isArray(this.propertyValue);
 //    try {

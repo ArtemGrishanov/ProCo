@@ -59,7 +59,8 @@
         </div>
     </script>
     <script id="id-answer_template" type="text/template">
-        <div class="a_wr js-answer js-answer_text">
+        <!-- TODO: Атрибут есть во вью, а appProperty нет. Так как это нужно для связи DeleteQuickButton. Пока ничего лучше не придумал -->
+        <div class="a_wr js-answer js-answer_text" data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}">
             <div class="a_text">
                 <div class="point"></div>
                 <span data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}.text" class="txt">{{answer_options_text}}</span>
@@ -155,6 +156,7 @@
                 {
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Мадагаскар -- это где?',
+                    d__options: 'editable=true;ui=AddQuickButton,DeleteQuickButton',
                     options: [
                         {
                             d__text: 'editable=true;ui=TextQuickInput;',
@@ -181,7 +183,7 @@
                 {
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Какая самая большая страна?',
-                    d__options: 'editable=true;ui=AddQuickButton;minlength=2;maxlength=4',
+                    d__options: 'editable=true;ui=AddQuickButton',
                     options: [
                         {
                             d__text: 'editable=true;ui=TextQuickInput;',
@@ -202,6 +204,7 @@
                 {
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Какого моря не существует?',
+                    d__options: 'editable=true;ui=AddQuickButton',
                     options: [
                         {
                             d__text: 'editable=true;ui=TextQuickInput;',
@@ -541,7 +544,10 @@
                 var templStr = $('#id-answer_template').html();
 
                 //TODO важно, костыль: пока нет возможности сделать это в движке, сформировать атрибуты при parseView
-                templStr = templStr.replace('{{currentOption}}', i);
+                // потому что это надо заменять при рендере ответа
+//                templStr = templStr.replace('{{currentOption}}', i);
+                var re = new RegExp('{{currentOption}}','g');
+                templStr = templStr.replace(re, i);
 
                 templStr = templStr.replace('{{answer_options_text}}', o.text);
                 var $e = $(templStr);

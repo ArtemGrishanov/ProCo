@@ -16,3 +16,10 @@ form input {
     height: 36px;
     cursor: pointer;
 }
+.delete_quick_btn {
+    background-image: url(../i/i-delete.png);
+    background-size: contain;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}

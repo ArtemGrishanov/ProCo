@@ -41,7 +41,7 @@ function AddQuickButton(propertyString, $parent, controlConfig) {
         var offset = this.$productDomElem.position();
         var h = this.$productDomElem.height();
         //TODO позиционирование пока не понятно как делать
-        this.$directive.css('left', 0);
+        this.$directive.css('left', '10px');
         this.$directive.css('top', offset.top+h+'px')
     }
 }
