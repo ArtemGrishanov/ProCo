@@ -76,7 +76,7 @@ var config = {
         },
         Slide: {
             angularDirectiveName: 'slide',
-            parentId: 'id-slides_cnt'
+            parentId: null // вставляется в группу контролов Slide
         },
         AddQuickButton: {
             angularDirectiveName: 'addquickbutton',
@@ -85,6 +85,10 @@ var config = {
         DeleteQuickButton: {
             angularDirectiveName: 'deletequickbutton',
             parentId: 'id-control_cnt'
+        },
+        AddScreenButton: {
+            angularDirectiveName: 'addscreenbutton',
+            parentId: null // вставляется в группу контролов Slide
         }
     },
     editor: {

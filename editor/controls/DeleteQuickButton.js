@@ -3,6 +3,7 @@
  *
  * Контрол удаления, привязан к свойству массиву
  * Он отвечает за удаление всех элементов массива
+ * Кнопка сама перемещается вслед за наведением
 
  * @constructor
  * @param {string} propertyString
@@ -39,6 +40,7 @@ function DeleteQuickButton(propertyString, $parent, controlConfig) {
         $parent.append($elem);
         $elem.css('zIndex',config.editor.ui.quickControlsZIndex);
         $elem.css('position','absolute');
+        $elem.css('display','none');
         $elem.on('click', this.onDeleteQuickButtonClick.bind(this));
         return $elem;
     }
@@ -59,8 +61,10 @@ function DeleteQuickButton(propertyString, $parent, controlConfig) {
     this.onElementOver = function(e) {
         this.overedArrayElement = e. currentTarget;
         var pos = $(this.overedArrayElement).position();
-        this.$directive.css('left', '100px');
-        this.$directive.css('top', pos.top+'px')
+        //TODO непонятно как позиционировать
+        this.$directive.css('display','block');
+        this.$directive.css('left', '300px');
+        this.$directive.css('top', (pos.top+14)+'px')
     }
 }
 

@@ -140,6 +140,7 @@ function initProduct() {
 function onProductIframeLoaded() {
     iframeWindow = appIframe.contentWindow;
     Engine.startEngine(iframeWindow);
+    showEditor();
     syncUIControlsToAppProperties();
     //TODO редактирование становится доступным показать в интерфейсе
 }
@@ -290,6 +291,10 @@ function syncUIControlsToAppProperties() {
 //        }
 //    }
 
+    uiControlsInfo = [];
+    $('#id-slides_cnt').empty();
+    $('#id-control_cnt').empty();
+
     // теперь контролы для экранов
     var appScreenIds = Engine.getAppScreenIds();
     // группы экранов на левой панели
@@ -310,6 +315,8 @@ function syncUIControlsToAppProperties() {
             groups[screen.group].push(s);
         }
         for (var groupName in groups) {
+            // создаем вью для группы экранов
+            var $groupView = $($('#id-slide_group_template').html()).attr('data-screen-group-name', groupName);
             for (var i = 0; i < groups[groupName].length; i++) {
                 var s = groups[groupName][i];
                 var screen = Engine.getAppScreen(s);
@@ -324,7 +331,7 @@ function syncUIControlsToAppProperties() {
                 }
                 var ci = findControlInfo(slideId);
                 if (ci === null) {
-                    var newControl = createControl(slideId, 'Slide');
+                    var newControl = createControl(slideId, 'Slide', $groupView.find('.js-slides_cnt'));
                     if (newControl) {
                         uiControlsInfo.push({
                             appPropertyString: slideId,
@@ -340,9 +347,41 @@ function syncUIControlsToAppProperties() {
                     break;
                 }
             }
+            var groupLabel = Engine.getAppScreen(s).name;
+            if (groupLabel) {
+                $groupView.find('.js-slide_group_name').text(groupLabel);
+            }
+            //TODO контрол для группы слайдов. Добавление экрана кнопка
+            $('#id-slides_cnt').append($groupView);
         }
         // первый экран сразу показать
         showScreen([appScreenIds[0]]);
+    }
+
+    // задача здесь: создать постоянные контролы, которые не будут меняться при переключении экранов
+    var appPropertiesStrings = Engine.getAppPropertiesObjectPathes();
+    for (var i = 0; i < appPropertiesStrings.length; i++) {
+        var ps = appPropertiesStrings[i];
+        var ap = Engine.getAppProperty(ps);
+        //TODO сейчас нет понимания какие контролы являются "постоянными" а какие нет.
+        //TODO после введения Engine.compile станет понятным
+        if (ap.descriptor.ui && ap.descriptor.ui.indexOf('AddScreenButton') >= 0) {
+            var parent = null;
+            var sg = ap.descriptor.screenGroup;
+            if (sg) {
+                parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
+            }
+            var newControl = createControl(ps, 'AddScreenButton', parent);
+            if (newControl) {
+                uiControlsInfo.push({
+                    appPropertyString: ps,
+                    control: newControl
+                });
+            }
+            else {
+                log('Can not create control for appProperty: \'' + ps, true);
+            }
+        }
     }
 
     // скомпилировать новые angular derictives (которые соответствуют контролам)
@@ -383,12 +422,21 @@ function findControlInfo(propertyString, domElement) {
  *
  * @param propertyString
  * @param controlName
+ * @param [controlParentView] для некоторых контролов место выбирается динамически. Например для групп слайдов
  * @returns {*}
  */
-function createControl(propertyString, controlName) {
+function createControl(propertyString, controlName, controlParentView) {
     var ctrl = null;
     try {
-        ctrl = new window[controlName](propertyString, $('#'+config.controls[controlName].parentId), config.controls[controlName]);
+        // задается по параметру или по дефолту из конфига
+        var cpv = null;
+        if (controlParentView) {
+            cpv = $(controlParentView);
+        }
+        else {
+            cpv = $('#'+config.controls[controlName].parentId);
+        }
+        ctrl = new window[controlName](propertyString, cpv, config.controls[controlName]);
     }
     catch(e) {
         log(e, true);
@@ -653,6 +701,18 @@ function publish() {
     });
 }
 
+function showEditor() {
+    $(appIframe).css('top','-9999px');
+    $('#id-editor_view').show();
+    $('#id-preview_view').hide();
+}
+
+function showPreview() {
+    $(appIframe).css('top',0);
+    $('#id-editor_view').hide();
+    $('#id-preview_view').show();
+}
+
 /**
  * Показать окно для вставки со ссылкой
  */
@@ -660,6 +720,20 @@ function showEmbedDialog() {
     var iframeUrl =  getDistribUrl()+indexHtml;
     var embedLink = '<iframe src="'+iframeUrl+'" style="display:block;width:600px;height:600px;padding:0;border:none;"></iframe>';
     alert(embedLink);
+}
+
+/**
+ * Запустить промо приложение в iframe
+ */
+function onPreviewClick() {
+    showPreview();
+}
+
+/**
+ * Клик по кнопке Назад в предпросмотре
+ */
+function onBackToEditorClick() {
+    showEditor();
 }
 
 function listObjs() {

@@ -57,13 +57,13 @@ body {
     text-align: center;
 }
 .t_btn {
+    display: inline-block;
     padding: 12px;
-    width: 160px;
-    height: 60px;
     border: 2px solid hsla(154,48%,54%,1);
     border-radius: 20px;
     color: hsla(154,48%,54%,1);
     background-color: #fff;
+    cursor: pointer;
 }
 .t_btn:hover {
     color: #fff;
@@ -75,6 +75,7 @@ body {
     font-weight: 900;
 }
 .a_wr {
+    cursor: pointer;
     margin: 10px 0 10px;
 }
 .a_wr:hover {

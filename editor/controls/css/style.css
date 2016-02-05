@@ -12,8 +12,8 @@ form input {
 }
 .add_quick_btn {
     background-image: url(../i/i-add.png);
-    width: 36px;
-    height: 36px;
+    width: 24px;
+    height: 24px;
     cursor: pointer;
 }
 .delete_quick_btn {
@@ -22,4 +22,7 @@ form input {
     width: 18px;
     height: 18px;
     cursor: pointer;
+}
+.add_screen_btn {
+
 }

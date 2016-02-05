@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <link href="style.css" rel="stylesheet">
 </head>
-<body>
+<body style="padding:0;margin:0">
 
     <div id="id-start_slide" class="wrapper">
         <div class="back_start"></div>
@@ -52,7 +52,7 @@
                         <div class="js-explanation_text"></div>
                         </br>
                         </br>
-                        <div><span class="btn js-next">Далее</span></div>
+                        <div><span class="t_btn js-next">Далее</span></div>
                     </div>
                 </div>
             </div>
@@ -74,8 +74,8 @@
             <div class="slide">
                 <div class="cnt_wr">
                     <div class="start_txt">
-                        <h2 class="start_head js-result_title">Конец</h2>
-                        <span class="start_desc js-result_description">Ты ответил на все вопросы</span>
+                        <h2 class="start_head js-result_title" data-app-property="results.{{currentResult}}.title">Конец</h2>
+                        <span class="start_desc js-result_description" data-app-property="results.{{currentResult}}.description">Ты ответил на все вопросы</span>
                     </div>
                     </br>
                     <div class="btn_wr">
@@ -151,7 +151,8 @@
             /**
              * Вопросы с ответами
              */
-            d__quiz: 'editable=true;length={apps.tests.maxquizcount};canAdd=proto__text_slide,proto__photo_question_slide',
+            //TODO screenGroup=questions и прочее сделать параметрами в AddScreenButton(screenGroup=questions;type=static;...)
+            d__quiz: 'editable=true;ui=AddScreenButton;screenGroup=questions;length={apps.tests.maxquizcount};canAdd=proto__text_slide,proto__photo_question_slide',
             quiz: [
                 {
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
@@ -183,7 +184,7 @@
                 {
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Какая самая большая страна?',
-                    d__options: 'editable=true;ui=AddQuickButton',
+                    d__options: 'editable=true;ui=AddQuickButton,DeleteQuickButton',
                     options: [
                         {
                             d__text: 'editable=true;ui=TextQuickInput;',
@@ -204,7 +205,7 @@
                 {
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Какого моря не существует?',
-                    d__options: 'editable=true;ui=AddQuickButton',
+                    d__options: 'editable=true;ui=AddQuickButton,DeleteQuickButton',
                     options: [
                         {
                             d__text: 'editable=true;ui=TextQuickInput;',
@@ -234,13 +235,17 @@
                 {
                     minPoints: 0,
                     maxPoints: 1,
+                    d__title: 'editable=true;ui=TextQuickInput;',
                     title: 'Новичок',
+                    d__description: 'editable=true;ui=TextQuickInput;',
                     description: 'Неплохо для начала.'
                 },
                 {
                     minPoints: 2,
                     maxPoints: 3,
+                    d__title: 'editable=true;ui=TextQuickInput;',
                     title: 'Средний',
+                    d__description: 'editable=true;ui=TextQuickInput;',
                     description: 'Уже лучше, давай ещё'
                 }
             ],
@@ -249,8 +254,9 @@
             // шаблон текстового вопроса
             proto__text_slide: {
                 uiTemplate: 'id-slide_template',
+                d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                 text: 'Текст вопроса?',
-                d__text: 'editable=true;',
+                d__options: 'editable=true;ui=AddQuickButton,DeleteQuickButton',
                 options: [
                     {
                         text: 'Вариант ответа 1',
@@ -267,9 +273,10 @@
             // шаблон фото вопроса
             proto__photo_question_slide: {
                 uiTemplate: 'id-slide_photo_template',
+                d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                 text: 'Текст фото вопроса?',
-                d__text: 'editable=true;',
                 img: '',
+                d__options: 'editable=true;ui=AddQuickButton',
                 options: [
                     {
                         text: 'Вариант ответа 1',
@@ -466,7 +473,8 @@
             screens.push({
                 id: 'startScr',
                 view: $('#id-start_slide'),
-                data: {}
+                data: {},
+                name: 'Стартовый экран'
             });
             for (var i = 0; i < app.quiz.length; i++) {
                 screens.push({
@@ -477,7 +485,8 @@
                     data: {
                         currentQuestion: i
                     },
-                    group: 'questions'
+                    group: 'questions',
+                    name: 'Вопросы'
                 });
             }
             for (var i = 0; i < app.results.length; i++) {
@@ -489,7 +498,8 @@
                         currentResult: i
                     },
                     group: 'results',
-                    collapse: true // показ экранов всех сразу на одном поле редактирования
+                    collapse: true, // показ экранов всех сразу на одном поле редактирования
+                    name: 'Результаты'
                 });
             }
 
