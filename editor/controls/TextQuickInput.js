@@ -11,12 +11,14 @@
  *
  * @constructor
  * @param {string} propertyString
+ * @param {string} directiveName - имя вью, имя директивы angular которая его загружает
  * @param {HTMLElement} $parent
  * @param {string} name
  * @param {object} params
  */
-function TextQuickInput(propertyString, $parent, name, params) {
+function TextQuickInput(propertyString, directiveName, $parent, name, params) {
     this.self = this;
+    this.directiveName = directiveName;
     this.name = name;
     this.params = params;
     this.propertyString = propertyString;
@@ -131,7 +133,7 @@ function TextQuickInput(propertyString, $parent, name, params) {
      * @return DOMElement
      */
     function addDirective() {
-        var $elem = $('<div '+config.controls[this.name].angularDirectiveName+' data-app-property="'+this.propertyString+'"></div>');
+        var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyString+'"></div>');
         $parent.append($elem);
         return $elem;
     }

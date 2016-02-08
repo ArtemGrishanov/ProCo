@@ -72,11 +72,13 @@ var config = {
     },
     controls: {
         TextQuickInput: {
-            angularDirectiveName: 'textquickinput',
+            defaultDirectiveIndex: 0,
+            directives: ['textquickinput'],
             parentId: 'id-control_cnt'
         },
         Slide: {
-            angularDirectiveName: 'slide',
+            defaultDirectiveIndex: 0,
+            directives: ['slide'],
             parentId: null, // вставляется в группу контролов Slide
             overrideProductParams: {
                 // параметры для контролы этого типа, которые будут установлены в любом случае поверх описанных в промо-приложении
@@ -84,17 +86,15 @@ var config = {
                 static: true
             }
         },
-        AddQuickButton: {
-            angularDirectiveName: 'addquickbutton',
+        AddArrayElementControl: {
+            defaultDirectiveIndex: 0,
+            directives: ['addquickbutton','addscreenbutton'],
             parentId: 'id-control_cnt'
         },
         DeleteQuickButton: {
-            angularDirectiveName: 'deletequickbutton',
+            defaultDirectiveIndex: 0,
+            directives: ['deletequickbutton'],
             parentId: 'id-control_cnt'
-        },
-        AddScreenButton: {
-            angularDirectiveName: 'addscreenbutton',
-            parentId: null // вставляется в группу контролов Slide
         }
     },
     editor: {

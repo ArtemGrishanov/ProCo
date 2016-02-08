@@ -99,11 +99,10 @@ AppProperty.prototype.parseControl = function(str) {
     while (match = reg.exec(str)) {
         // match[0] string itself
         var n = match[1];
-        var p = null;
+        var p = {};
         if (match[2]) {
             // есть какие то параметры в описании контрола
             var preg = /((?:\w)+)\=((?:\w)+)/ig;
-            p = {};
             var pmatch = null;
             while (pmatch = preg.exec(match[2])) {
                 // булиновкие типы лучше сразу сделать, чтобы удобнее было потом работать

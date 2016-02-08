@@ -151,12 +151,12 @@
             /**
              * Вопросы с ответами
              */
-            d__quiz: 'editable=true;ui=AddScreenButton(static=true,updateScreens=true,screenGroup=questions);length={apps.tests.maxquizcount};canAdd=proto__text_slide,proto__photo_question_slide',
+            d__quiz: 'editable=true;ui=AddArrayElementControl(viewName=AddScreenButton,static=true,updateScreens=true,screenGroup=questions);length={apps.tests.maxquizcount};canAdd=proto__text_slide,proto__photo_question_slide',
             quiz: [
                 {
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Мадагаскар -- это где?',
-                    d__options: 'editable=true;ui=AddQuickButton,DeleteQuickButton',
+                    d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
                     options: [
                         {
                             d__text: 'editable=true;ui=TextQuickInput;',
@@ -183,7 +183,7 @@
                 {
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Какая самая большая страна?',
-                    d__options: 'editable=true;ui=AddQuickButton,DeleteQuickButton',
+                    d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
                     options: [
                         {
                             d__text: 'editable=true;ui=TextQuickInput;',
@@ -204,7 +204,7 @@
                 {
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Какого моря не существует?',
-                    d__options: 'editable=true;ui=AddQuickButton,DeleteQuickButton',
+                    d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
                     options: [
                         {
                             d__text: 'editable=true;ui=TextQuickInput;',
@@ -255,7 +255,7 @@
                 uiTemplate: 'id-slide_template',
                 d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                 text: 'Текст вопроса?',
-                d__options: 'editable=true;ui=AddQuickButton,DeleteQuickButton',
+                d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton',
                 options: [
                     {
                         d__text: 'editable=true;ui=TextQuickInput;',
@@ -277,7 +277,7 @@
                 d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                 text: 'Текст фото вопроса?',
                 img: '',
-                d__options: 'editable=true;ui=AddQuickButton',
+                d__options: 'editable=true;ui=AddArrayElementControl',
                 options: [
                     {
                         d__text: 'editable=true;ui=TextQuickInput;',
@@ -291,6 +291,11 @@
                 ],
                 d__explanation: 'editable=true;',
                 explanation: 'Пояснение к ответу'
+            },
+
+            proto__option_text: {
+                d__text: 'editable=true;ui=TextQuickInput;',
+                text: 'Вариант ответа'
             }
         };
         /**

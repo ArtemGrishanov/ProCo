@@ -74,23 +74,21 @@ function initControls() {
     'use strict';
     // создадим директивы для всех контролов
     for (var controlName in config.controls) {
-        //TODO добавляем html c директивой и запускаем compile
-
-        //TODO как экземпляры класса делать с нужным appProperty?
-
         if (config.controls.hasOwnProperty(controlName)) {
-            (function (cn) {
-                myApp.directive(config.controls[controlName].angularDirectiveName, function($compile) {
-                    return {
-                        restrict: 'A',
-                        templateUrl: 'controls/'+cn+'.html',
-                        scope: {
-                            myScope: '=info'
-                        }
-                    };
-                });
-            })(controlName);
-
+            for (var i = 0; i < config.controls[controlName].directives.length; i++) {
+                var directiveName = config.controls[controlName].directives[i];
+                (function (dn) {
+                    myApp.directive(dn, function($compile) {
+                        return {
+                            restrict: 'A',
+                            templateUrl: 'controls/view/'+dn+'.html',
+                            scope: {
+                                myScope: '=info'
+                            }
+                        };
+                    });
+                })(directiveName);
+            }
             // регистрируем angular-контроллер с именем контрола
             myApp.controller(controlName, ['$scope', '$attrs', window[controlName+'Controller']]);
         }
@@ -221,7 +219,9 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
                 // не забыть что может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
                 var controlsInfo = appProperty.descriptor.controls;
                 for (var j = 0; j < controlsInfo.length; j++) {
-                    var newControl = createControl(pAtt, controlsInfo[j].name, controlsInfo[j].params);
+                    // имя вью для контрола
+                    var viewName = controlsInfo[j].params.viewName;
+                    var newControl = createControl(pAtt, viewName, controlsInfo[j].name, controlsInfo[j].params);
                     if (newControl) {
                         // только если действительно получилось создать ui для настройки
                         // не все контролы могут быть реализованы или некорректно указаны
@@ -306,7 +306,7 @@ function syncUIControlsToAppProperties() {
                 }
                 var ci = findControlInfo(slideId);
                 if (ci === null) {
-                    var newControl = createControl(slideId, 'Slide', {}, $groupView.find('.js-slides_cnt'));
+                    var newControl = createControl(slideId, null, 'Slide', {}, $groupView.find('.js-slides_cnt'));
                     if (newControl) {
                         uiControlsInfo.push({
                             appPropertyString: slideId,
@@ -349,7 +349,8 @@ function syncUIControlsToAppProperties() {
                     if (sg) {
                         parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
                     }
-                    var newControl = createControl(ps, c.name, c.params, parent);
+                    // в случае с вью регистр важен, в конфиге директивы прописаны малым регистром
+                    var newControl = createControl(ps, c.params.viewName.toLowerCase(), c.name, c.params, parent);
                     if (newControl) {
                         uiControlsInfo.push({
                             appPropertyString: ps,
@@ -403,13 +404,19 @@ function findControlInfo(propertyString, domElement) {
  * На основе информации appProperty будет выбран ui компонент и создан его экземпляр
  *
  * @param propertyString
- * @param controlInfo {name, param}
+ * @param {string} viewName - имя вью, который будет использован для контрола
+ * @param {string} name
+ * @param {object} params
  * @param [controlParentView] для некоторых контролов место выбирается динамически. Например для групп слайдов
  * @returns {*}
  */
-function createControl(propertyString, name, params, controlParentView) {
+function createControl(propertyString, viewName, name, params, controlParentView) {
     var ctrl = null;
     try {
+        // существует ли такой вью, если нет, берем по умолчанию
+        if (!viewName || config.controls[name].directives.indexOf(viewName) < 0) {
+            viewName = config.controls[name].directives[config.controls[name].defaultDirectiveIndex];
+        }
         // задается по параметру или по дефолту из конфига
         var cpv = null;
         if (controlParentView) {
@@ -424,7 +431,7 @@ function createControl(propertyString, name, params, controlParentView) {
                 params[key] = config.controls[name].overrideProductParams[key];
             }
         }
-        ctrl = new window[name](propertyString, cpv, name, params);
+        ctrl = new window[name](propertyString, viewName, cpv, name, params);
     }
     catch(e) {
         log(e, true);

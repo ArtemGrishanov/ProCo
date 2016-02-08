@@ -23,28 +23,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/config.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="79" column="33" selection-start="3073" selection-end="3094" vertical-scroll-proportion="0.0" vertical-offset="975" max-vertical-offset="1725">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TextQuickInput.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/editor/controls/TextQuickInput.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="29" column="29" selection-start="1063" selection-end="1063" vertical-scroll-proportion="0.0" vertical-offset="130" max-vertical-offset="2760">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="editor.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/editor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="77" column="0" selection-start="2266" selection-end="2266" vertical-scroll-proportion="0.3551674" vertical-offset="911" max-vertical-offset="11985">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AddQuickButton.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/editor/controls/AddQuickButton.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="50" selection-start="689" selection-end="689" vertical-scroll-proportion="0.0" vertical-offset="115" max-vertical-offset="960">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AddScreenButton.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/editor/controls/AddScreenButton.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="48" selection-start="1007" selection-end="1007" vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="1020">
+            <state line="356" column="47" selection-start="13895" selection-end="13923" vertical-scroll-proportion="0.44250363" vertical-offset="5036" max-vertical-offset="12090">
               <folding />
             </state>
           </provider>
@@ -53,25 +53,57 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/products/test/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="266" column="48" selection-start="11375" selection-end="11375" vertical-scroll-proportion="-10.25" vertical-offset="3744" max-vertical-offset="10080">
+            <state line="153" column="86" selection-start="6293" selection-end="6308" vertical-scroll-proportion="-14.625" vertical-offset="1944" max-vertical-offset="10155">
               <folding>
                 <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <marker date="1454935522000" expanded="true" signature="1457:2358" placeholder="..." />
-                <marker date="1454935522000" expanded="true" signature="1580:2343" placeholder="..." />
-                <marker date="1454935522000" expanded="true" signature="1617:2324" placeholder="..." />
-                <marker date="1454935522000" expanded="true" signature="1656:1788" placeholder="..." />
-                <marker date="1454935522000" expanded="true" signature="1890:1995" placeholder="..." />
-                <marker date="1454935522000" expanded="false" signature="2060:2073" placeholder="..." />
-                <marker date="1454935522000" expanded="true" signature="2074:2301" placeholder="..." />
-                <marker date="1454935522000" expanded="true" signature="2693:2943" placeholder="..." />
-                <marker date="1454935522000" expanded="true" signature="2726:2928" placeholder="..." />
-                <marker date="1454935522000" expanded="true" signature="3045:3825" placeholder="..." />
-                <marker date="1454935522000" expanded="true" signature="3159:3806" placeholder="..." />
-                <marker date="1454935522000" expanded="true" signature="3196:3787" placeholder="..." />
-                <marker date="1454935522000" expanded="true" signature="3240:3555" placeholder="..." />
-                <marker date="1454935522000" expanded="true" signature="3622:3764" placeholder="..." />
-                <marker date="1454935522000" expanded="true" signature="3820:3825" placeholder="..." />
+                <marker date="1454946924000" expanded="true" signature="1457:2358" placeholder="..." />
+                <marker date="1454946924000" expanded="true" signature="1580:2343" placeholder="..." />
+                <marker date="1454946924000" expanded="true" signature="1617:2324" placeholder="..." />
+                <marker date="1454946924000" expanded="true" signature="1656:1788" placeholder="..." />
+                <marker date="1454946924000" expanded="true" signature="1890:1995" placeholder="..." />
+                <marker date="1454946924000" expanded="false" signature="2060:2073" placeholder="..." />
+                <marker date="1454946924000" expanded="true" signature="2074:2301" placeholder="..." />
+                <marker date="1454946924000" expanded="true" signature="2693:2943" placeholder="..." />
+                <marker date="1454946924000" expanded="true" signature="2726:2928" placeholder="..." />
+                <marker date="1454946924000" expanded="true" signature="3045:3825" placeholder="..." />
+                <marker date="1454946924000" expanded="true" signature="3159:3806" placeholder="..." />
+                <marker date="1454946924000" expanded="true" signature="3196:3787" placeholder="..." />
+                <marker date="1454946924000" expanded="true" signature="3240:3555" placeholder="..." />
+                <marker date="1454946924000" expanded="true" signature="3622:3764" placeholder="..." />
+                <marker date="1454946924000" expanded="true" signature="3820:3825" placeholder="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/editor/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="103" column="18" selection-start="3898" selection-end="3898" vertical-scroll-proportion="-8.583333" vertical-offset="1339" max-vertical-offset="2040">
+              <folding>
+                <marker date="1454946446000" expanded="true" signature="3518:3912" placeholder="..." />
+                <marker date="1454946446000" expanded="true" signature="3564:3624" placeholder="..." />
+                <marker date="1454946446000" expanded="true" signature="3664:3738" placeholder="..." />
+                <marker date="1454946446000" expanded="true" signature="3788:3897" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AddArrayElementControl.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/editor/controls/AddArrayElementControl.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="16" column="27" selection-start="497" selection-end="497" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1245">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="appProperty.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/appProperty.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="95" column="0" selection-start="3381" selection-end="3433" vertical-scroll-proportion="0.0" vertical-offset="1155" max-vertical-offset="2445">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -86,22 +118,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/editor/index.html" />
-        <option value="$PROJECT_DIR$/editor/controls/AddQuickButton.html" />
-        <option value="$PROJECT_DIR$/editor/controls/css/style.css" />
-        <option value="$PROJECT_DIR$/Gruntfile.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/js/engine.js" />
         <option value="$PROJECT_DIR$/editor/controls/AddArrayElement.js" />
         <option value="$PROJECT_DIR$/editor/controls/AddScreenButton.js" />
+        <option value="$PROJECT_DIR$/editor/controls/AddQuickButton.js" />
         <option value="$PROJECT_DIR$/js/config.js" />
+        <option value="$PROJECT_DIR$/editor/controls/AddArrayElementControl.js" />
+        <option value="$PROJECT_DIR$/editor/controls/DeleteQuickButton.js" />
         <option value="$PROJECT_DIR$/editor/controls/Slide.js" />
         <option value="$PROJECT_DIR$/editor/controls/TextQuickInput.js" />
-        <option value="$PROJECT_DIR$/editor/controls/DeleteQuickButton.js" />
         <option value="$PROJECT_DIR$/js/appProperty.js" />
-        <option value="$PROJECT_DIR$/editor/controls/AddQuickButton.js" />
-        <option value="$PROJECT_DIR$/js/editor.js" />
+        <option value="$PROJECT_DIR$/editor/index.html" />
+        <option value="$PROJECT_DIR$/editor/controls/view/AddQuickButton.html" />
+        <option value="$PROJECT_DIR$/editor/controls/view/AddScreenButton.html" />
         <option value="$PROJECT_DIR$/products/test/index.html" />
+        <option value="$PROJECT_DIR$/js/editor.js" />
       </list>
     </option>
   </component>
@@ -233,6 +265,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controls" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -323,7 +377,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17073171" sideWeight="0.6706507" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16571018" sideWeight="0.6706507" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -350,128 +404,136 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+    <entry file="file://$PROJECT_DIR$/editor/controls/view/TextInput.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="69" selection-start="249" selection-end="249" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="465" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="12" selection-start="17" selection-end="17" vertical-scroll-proportion="0.021367522" vertical-offset="0" max-vertical-offset="702" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/editor/controls/TextInput.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="725" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/editor/controls/YesNo.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="6" selection-start="222" selection-end="222" vertical-scroll-proportion="0.12838802" vertical-offset="0" max-vertical-offset="701" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/engine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="609" column="39" selection-start="22357" selection-end="22357" vertical-scroll-proportion="0.8137931" vertical-offset="8545" max-vertical-offset="9675">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="725">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/editor/index.html">
+    <entry file="file://$PROJECT_DIR$/editor/controls/view/YesNo.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="28" selection-start="1452" selection-end="1452" vertical-scroll-proportion="0.42035398" vertical-offset="495" max-vertical-offset="2040">
-          <folding>
-            <marker date="1454660241000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1454660241000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1454660241000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1454660241000" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/editor/controls/Slide.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="34" selection-start="985" selection-end="985" vertical-scroll-proportion="0.4" vertical-offset="115" max-vertical-offset="1050">
+        <state line="6" column="6" selection-start="222" selection-end="222" vertical-scroll-proportion="0.12838802" vertical-offset="0" max-vertical-offset="701">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/editor/controls/TextQuickInput.html">
+    <entry file="file://$PROJECT_DIR$/editor/controls/view/TextQuickInput.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="702">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/editor/controls/TextQuickInput.js">
+    <entry file="file://$PROJECT_DIR$/js/engine.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="133" column="55" selection-start="4972" selection-end="4972" vertical-scroll-proportion="1.737931" vertical-offset="735" max-vertical-offset="2730">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/editor/controls/DeleteQuickButton.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="3" selection-start="334" selection-end="334" vertical-scroll-proportion="0.24827586" vertical-offset="0" max-vertical-offset="1305">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="16" selection-start="3030" selection-end="3030" vertical-scroll-proportion="0.0" vertical-offset="945" max-vertical-offset="1725">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/appProperty.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="21" selection-start="3625" selection-end="3625" vertical-scroll-proportion="0.0" vertical-offset="1238" max-vertical-offset="2460">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/editor/controls/AddQuickButton.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="50" selection-start="689" selection-end="689" vertical-scroll-proportion="0.0" vertical-offset="115" max-vertical-offset="960">
+        <state line="616" column="37" selection-start="22488" selection-end="22488" vertical-scroll-proportion="0.0" vertical-offset="8950" max-vertical-offset="9675">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/editor/controls/AddScreenButton.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="48" selection-start="1007" selection-end="1007" vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="1020">
+        <state line="36" column="7" selection-start="1197" selection-end="1197" vertical-scroll-proportion="0.3258427" vertical-offset="308" max-vertical-offset="1020">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/editor/controls/DeleteQuickButton.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="48" selection-start="1334" selection-end="1334" vertical-scroll-proportion="0.6689655" vertical-offset="145" max-vertical-offset="1335">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/editor/controls/Slide.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="48" selection-start="1696" selection-end="1696" vertical-scroll-proportion="0.7034483" vertical-offset="165" max-vertical-offset="1080">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="79" column="33" selection-start="3073" selection-end="3094" vertical-scroll-proportion="0.0" vertical-offset="975" max-vertical-offset="1725">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/editor/controls/TextQuickInput.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="29" selection-start="1063" selection-end="1063" vertical-scroll-proportion="0.0" vertical-offset="130" max-vertical-offset="2760">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/editor/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="103" column="18" selection-start="3898" selection-end="3898" vertical-scroll-proportion="-8.583333" vertical-offset="1339" max-vertical-offset="2040">
+          <folding>
+            <marker date="1454946446000" expanded="true" signature="3518:3912" placeholder="..." />
+            <marker date="1454946446000" expanded="true" signature="3564:3624" placeholder="..." />
+            <marker date="1454946446000" expanded="true" signature="3664:3738" placeholder="..." />
+            <marker date="1454946446000" expanded="true" signature="3788:3897" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/editor/controls/view/AddQuickButton.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="42" selection-start="20" selection-end="42" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="701">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/editor/controls/view/AddScreenButton.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="42" selection-start="42" selection-end="42" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="701">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/editor/controls/AddArrayElementControl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="27" selection-start="497" selection-end="497" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1245">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/appProperty.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="95" column="0" selection-start="3381" selection-end="3433" vertical-scroll-proportion="0.0" vertical-offset="1155" max-vertical-offset="2445">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/products/test/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="266" column="48" selection-start="11375" selection-end="11375" vertical-scroll-proportion="-10.25" vertical-offset="3744" max-vertical-offset="10080">
+        <state line="153" column="86" selection-start="6293" selection-end="6308" vertical-scroll-proportion="-14.625" vertical-offset="1944" max-vertical-offset="10155">
           <folding>
             <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <marker date="1454935522000" expanded="true" signature="1457:2358" placeholder="..." />
-            <marker date="1454935522000" expanded="true" signature="1580:2343" placeholder="..." />
-            <marker date="1454935522000" expanded="true" signature="1617:2324" placeholder="..." />
-            <marker date="1454935522000" expanded="true" signature="1656:1788" placeholder="..." />
-            <marker date="1454935522000" expanded="true" signature="1890:1995" placeholder="..." />
-            <marker date="1454935522000" expanded="false" signature="2060:2073" placeholder="..." />
-            <marker date="1454935522000" expanded="true" signature="2074:2301" placeholder="..." />
-            <marker date="1454935522000" expanded="true" signature="2693:2943" placeholder="..." />
-            <marker date="1454935522000" expanded="true" signature="2726:2928" placeholder="..." />
-            <marker date="1454935522000" expanded="true" signature="3045:3825" placeholder="..." />
-            <marker date="1454935522000" expanded="true" signature="3159:3806" placeholder="..." />
-            <marker date="1454935522000" expanded="true" signature="3196:3787" placeholder="..." />
-            <marker date="1454935522000" expanded="true" signature="3240:3555" placeholder="..." />
-            <marker date="1454935522000" expanded="true" signature="3622:3764" placeholder="..." />
-            <marker date="1454935522000" expanded="true" signature="3820:3825" placeholder="..." />
+            <marker date="1454946924000" expanded="true" signature="1457:2358" placeholder="..." />
+            <marker date="1454946924000" expanded="true" signature="1580:2343" placeholder="..." />
+            <marker date="1454946924000" expanded="true" signature="1617:2324" placeholder="..." />
+            <marker date="1454946924000" expanded="true" signature="1656:1788" placeholder="..." />
+            <marker date="1454946924000" expanded="true" signature="1890:1995" placeholder="..." />
+            <marker date="1454946924000" expanded="false" signature="2060:2073" placeholder="..." />
+            <marker date="1454946924000" expanded="true" signature="2074:2301" placeholder="..." />
+            <marker date="1454946924000" expanded="true" signature="2693:2943" placeholder="..." />
+            <marker date="1454946924000" expanded="true" signature="2726:2928" placeholder="..." />
+            <marker date="1454946924000" expanded="true" signature="3045:3825" placeholder="..." />
+            <marker date="1454946924000" expanded="true" signature="3159:3806" placeholder="..." />
+            <marker date="1454946924000" expanded="true" signature="3196:3787" placeholder="..." />
+            <marker date="1454946924000" expanded="true" signature="3240:3555" placeholder="..." />
+            <marker date="1454946924000" expanded="true" signature="3622:3764" placeholder="..." />
+            <marker date="1454946924000" expanded="true" signature="3820:3825" placeholder="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="0" selection-start="2266" selection-end="2266" vertical-scroll-proportion="0.3551674" vertical-offset="911" max-vertical-offset="11985">
+        <state line="356" column="47" selection-start="13895" selection-end="13923" vertical-scroll-proportion="0.44250363" vertical-offset="5036" max-vertical-offset="12090">
           <folding />
         </state>
       </provider>
