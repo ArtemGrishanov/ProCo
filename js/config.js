@@ -77,7 +77,12 @@ var config = {
         },
         Slide: {
             angularDirectiveName: 'slide',
-            parentId: null // вставляется в группу контролов Slide
+            parentId: null, // вставляется в группу контролов Slide
+            overrideProductParams: {
+                // параметры для контролы этого типа, которые будут установлены в любом случае поверх описанных в промо-приложении
+                //
+                static: true
+            }
         },
         AddQuickButton: {
             angularDirectiveName: 'addquickbutton',

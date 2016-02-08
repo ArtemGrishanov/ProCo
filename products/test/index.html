@@ -151,8 +151,7 @@
             /**
              * Вопросы с ответами
              */
-            //TODO screenGroup=questions и прочее сделать параметрами в AddScreenButton(screenGroup=questions;type=static;...)
-            d__quiz: 'editable=true;ui=AddScreenButton;screenGroup=questions;length={apps.tests.maxquizcount};canAdd=proto__text_slide,proto__photo_question_slide',
+            d__quiz: 'editable=true;ui=AddScreenButton(static=true,updateScreens=true,screenGroup=questions);length={apps.tests.maxquizcount};canAdd=proto__text_slide,proto__photo_question_slide',
             quiz: [
                 {
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
@@ -259,10 +258,12 @@
                 d__options: 'editable=true;ui=AddQuickButton,DeleteQuickButton',
                 options: [
                     {
+                        d__text: 'editable=true;ui=TextQuickInput;',
                         text: 'Вариант ответа 1',
                         points: 1
                     },
                     {
+                        d__text: 'editable=true;ui=TextQuickInput;',
                         text: 'Вариант ответа 2'
                     }
                 ],
@@ -279,10 +280,12 @@
                 d__options: 'editable=true;ui=AddQuickButton',
                 options: [
                     {
+                        d__text: 'editable=true;ui=TextQuickInput;',
                         text: 'Вариант ответа 1',
                         points: 1
                     },
                     {
+                        d__text: 'editable=true;ui=TextQuickInput;',
                         text: 'Вариант ответа 2'
                     }
                 ],

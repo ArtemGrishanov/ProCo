@@ -6,11 +6,12 @@
  * @constructor
  * @param {string} propertyString
  * @param {HTMLElement} $parent
- * @param {object} controlConfig - объект из config.controls (config.js), конфигурация контрола
+ * @param {string} name
+ * @param {object} params
  */
-function AddQuickButton(propertyString, $parent, controlConfig) {
-    this.type = 'quick';
+function AddQuickButton(propertyString, $parent, name, params) {
     this.self = this;
+    this.name = name;
     this.$parent = $parent;
     this.propertyString = propertyString;
 
@@ -28,7 +29,7 @@ function AddQuickButton(propertyString, $parent, controlConfig) {
      * @return DOMElement
      */
     function addDirective() {
-        var $elem = $('<div '+controlConfig.angularDirectiveName+' data-app-property="'+this.propertyString+'"></div>');
+        var $elem = $('<div '+config.controls[this.name].angularDirectiveName+' data-app-property="'+this.propertyString+'"></div>');
         $parent.append($elem);
         $elem.css('zIndex',config.editor.ui.quickControlsZIndex);
         $elem.css('position','absolute');

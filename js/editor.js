@@ -142,7 +142,6 @@ function onProductIframeLoaded() {
     Engine.startEngine(iframeWindow);
     showEditor();
     syncUIControlsToAppProperties();
-    //TODO редактирование становится доступным показать в интерфейсе
 }
 
 /**
@@ -154,10 +153,11 @@ function onProductIframeLoaded() {
 function showScreen(ids) {
 
     // каждый раз удаляем quick-контролы и создаем их заново. Не слишком эффективно мб но просто и надежно
-    $('#id-control_cnt').empty();
+    // то что контролы привязаны к одному экрану определяется только на основании контейнера, в который они помещены
+    var $controlCnt = $('#id-control_cnt').empty();
     for (var i = 0; i < uiControlsInfo.length;) {
         var c = uiControlsInfo[i].control;
-        if (c.type == 'quick') {
+        if (c.$parent === $controlCnt) {
             uiControlsInfo.splice(i,1);
         }
         else {
@@ -219,9 +219,9 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
             var appProperty = Engine.getAppProperty(pAtt);
             if (appProperty) {
                 // не забыть что может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
-                var controlNames = appProperty.descriptor.ui;
-                for (var j = 0; j < controlNames.length; j++) {
-                    var newControl = createControl(pAtt, controlNames[j]);
+                var controlsInfo = appProperty.descriptor.controls;
+                for (var j = 0; j < controlsInfo.length; j++) {
+                    var newControl = createControl(pAtt, controlsInfo[j].name, controlsInfo[j].params);
                     if (newControl) {
                         // только если действительно получилось создать ui для настройки
                         // не все контролы могут быть реализованы или некорректно указаны
@@ -233,7 +233,7 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
                         newControl.setProductDomElement(elems[i]);
                     }
                     else {
-                        log('Can not create control \''+controlNames[j]+'\' for appProperty: \''+pAtt+ '\' on the screen '+scrId, true);
+                        log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+pAtt+ '\' on the screen '+scrId, true);
                     }
                 }
             }
@@ -266,31 +266,6 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
  * 3) Привязка контролов к dom-элементам в продукте, Для быстрого редактирования.
  */
 function syncUIControlsToAppProperties() {
-    // это строки -- ключи appProperty
-    //TODO подумать. Контролы для общих свойств создавать здесь сразу. А для экранов во время включения экрана.
-//    var appPropertiesStrings = Engine.getAppPropertiesObjectPathes();
-//    for (var i = 0; i < appPropertiesStrings.length; i++) {
-//        var ci = findControlInfo(appPropertiesStrings[i]);
-//        if (ci === null) {
-//            // контрола пока ещё не существует для настройки, надо создать
-//            var newControl = createControl(appPropertiesStrings[i]);
-//            if (newControl) {
-//                // только если действительно получилось создать ui для настройки
-//                // не все контролы могут быть реализованы или некорректно указаны
-//                uiControlsInfo.push({
-//                    appPropertyString: appPropertiesStrings[i],
-//                    control: newControl,
-//                });
-//            }
-//            else {
-//                log('Can not create control for appProperty: \'' + appPropertiesStrings[i], true);
-//            }
-//        }
-//        else {
-//            // пересоздавать не надо. Просто помечаем, что контрол используется
-//        }
-//    }
-
     uiControlsInfo = [];
     $('#id-slides_cnt').empty();
     $('#id-control_cnt').empty();
@@ -331,7 +306,7 @@ function syncUIControlsToAppProperties() {
                 }
                 var ci = findControlInfo(slideId);
                 if (ci === null) {
-                    var newControl = createControl(slideId, 'Slide', $groupView.find('.js-slides_cnt'));
+                    var newControl = createControl(slideId, 'Slide', {}, $groupView.find('.js-slides_cnt'));
                     if (newControl) {
                         uiControlsInfo.push({
                             appPropertyString: slideId,
@@ -363,23 +338,30 @@ function syncUIControlsToAppProperties() {
     for (var i = 0; i < appPropertiesStrings.length; i++) {
         var ps = appPropertiesStrings[i];
         var ap = Engine.getAppProperty(ps);
-        //TODO сейчас нет понимания какие контролы являются "постоянными" а какие нет.
-        //TODO после введения Engine.compile станет понятным
-        if (ap.descriptor.ui && ap.descriptor.ui.indexOf('AddScreenButton') >= 0) {
-            var parent = null;
-            var sg = ap.descriptor.screenGroup;
-            if (sg) {
-                parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
-            }
-            var newControl = createControl(ps, 'AddScreenButton', parent);
-            if (newControl) {
-                uiControlsInfo.push({
-                    appPropertyString: ps,
-                    control: newControl
-                });
-            }
-            else {
-                log('Can not create control for appProperty: \'' + ps, true);
+        if (ap.descriptor.controls) {
+            // у свойства может быть несколько контролов
+            for (var j = 0; j < ap.descriptor.controls.length; j++) {
+                var c = ap.descriptor.controls[j];
+                if (c.params && c.params.static === true) {
+                    // контрол помечен как постоянный в дескрипторе, то есть его надо создать сразу и навсегда (пересоздастся только вместе с экранами)
+                    var parent = null;
+                    var sg = c.params.screenGroup;
+                    if (sg) {
+                        parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
+                    }
+                    var newControl = createControl(ps, c.name, c.params, parent);
+                    if (newControl) {
+                        uiControlsInfo.push({
+                            appPropertyString: ps,
+                            control: newControl
+                        });
+                    }
+                    else {
+                        log('Can not create control for appProperty: \'' + ps, true);
+                    }
+
+                    //TODO здесь же будут добавлены другие постоянные контролы, например на правой панели
+                }
             }
         }
     }
@@ -421,11 +403,11 @@ function findControlInfo(propertyString, domElement) {
  * На основе информации appProperty будет выбран ui компонент и создан его экземпляр
  *
  * @param propertyString
- * @param controlName
+ * @param controlInfo {name, param}
  * @param [controlParentView] для некоторых контролов место выбирается динамически. Например для групп слайдов
  * @returns {*}
  */
-function createControl(propertyString, controlName, controlParentView) {
+function createControl(propertyString, name, params, controlParentView) {
     var ctrl = null;
     try {
         // задается по параметру или по дефолту из конфига
@@ -434,14 +416,20 @@ function createControl(propertyString, controlName, controlParentView) {
             cpv = $(controlParentView);
         }
         else {
-            cpv = $('#'+config.controls[controlName].parentId);
+            cpv = $('#'+config.controls[name].parentId);
         }
-        ctrl = new window[controlName](propertyString, cpv, config.controls[controlName]);
+        // для контрола могут быть прописаны форсированные параметры, которые приоритетнее клиентских установок
+        if (config.controls[name] && config.controls[name].overrideProductParams) {
+            for (var key in config.controls[name].overrideProductParams) {
+                params[key] = config.controls[name].overrideProductParams[key];
+            }
+        }
+        ctrl = new window[name](propertyString, cpv, name, params);
     }
     catch(e) {
         log(e, true);
     }
-    log('Creating UI control for appProperty=' + propertyString + ' ui=' + controlName);
+    log('Creating UI control for appProperty='+propertyString+' ui='+name);
     return ctrl;
 }
 

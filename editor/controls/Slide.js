@@ -4,11 +4,13 @@
  * @constructor
  * @param {string | Array.<string>} propertyString - здесь также может быть массив, так как экранов несколько
  * @param {DOMElement} $parent
- * @param {object} controlConfig - объект из config.controls (config.js), конфигурация контрола
+ * @param {string} name
+ * @param {object} params
  */
-function Slide(propertyString, $parent, controlConfig) {
-    this.type = 'permanent';
+function Slide(propertyString, $parent, name, params) {
     this.self = this;
+    this.name = name;
+    this.params = params;
     // значит что данный экран показан в данный момент пользователю
     // ставится движком в showScreen
     this.active = false;
@@ -39,7 +41,7 @@ function Slide(propertyString, $parent, controlConfig) {
      */
     function addDirective() {
         var p = (Array.isArray(this.propertyString)) ? this.propertyString.join(',') : this.propertyString;
-        var $elem = $('<div '+controlConfig.angularDirectiveName+' data-app-property="'+p+'"></div>');
+        var $elem = $('<div '+config.controls[this.name].angularDirectiveName+' data-app-property="'+p+'"></div>');
         $parent.append($elem);
         return $elem;
     }

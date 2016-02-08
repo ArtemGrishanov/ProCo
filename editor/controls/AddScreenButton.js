@@ -6,12 +6,15 @@
  * @constructor
  * @param {string} propertyString
  * @param {HTMLElement} $parent
- * @param {object} controlConfig - объект из config.controls (config.js), конфигурация контрола
+ * @param {string} name
+ * @param {object} params - параметры контрола, которые описаны в дескрипторе. Может быть указано специальное поведение.
  */
-function AddScreenButton(propertyString, $parent, controlConfig) {
+function AddScreenButton(propertyString, $parent, name, params) {
     this.self = this;
+    this.name = name;
     this.$parent = $parent;
     this.propertyString = propertyString;
+    this.params = params;
 
     this.onAddScreenButtonClick = function(e) {
         var ap = Engine.getAppProperty(this.propertyString);
@@ -20,7 +23,9 @@ function AddScreenButton(propertyString, $parent, controlConfig) {
             //TODO будет выбор какой именно экран добавить
             Engine.addArrayElement(ap, pp[0]);
             //TODO тут реально только надо пересобрать контролы Slide
-            syncUIControlsToAppProperties();
+            if (this.params && this.params.updateScreens === true) {
+                syncUIControlsToAppProperties();
+            }
         }
         else {
             log('There is no prototypes for \''+this.appProperty+'\'', true);
@@ -35,7 +40,7 @@ function AddScreenButton(propertyString, $parent, controlConfig) {
      * @return DOMElement
      */
     function addDirective() {
-        var $elem = $('<div '+controlConfig.angularDirectiveName+' data-app-property="'+this.propertyString+'"></div>');
+        var $elem = $('<div '+config.controls[name].angularDirectiveName+' data-app-property="'+this.propertyString+'"></div>');
         $parent.append($elem);
         $elem.on('click', this.onAddScreenButtonClick.bind(this));
         return $elem;

@@ -38,36 +38,11 @@ var AppProperty = function(propertyValue, propertyString, descString) {
     }
     if (this.descriptor.hasOwnProperty('ui')) {
         // для одного свойства может быть несколько контролов, они будут в этом массиве
-        this.descriptor.ui = this.descriptor.ui.split(',');
+        this.descriptor.controls = this.parseControl(this.descriptor.ui);
     }
     this.path = this.propertyString.split('.');
     this.isArray = Array.isArray(this.propertyValue);
-//    try {
-//        var a = str.split('.');
-//        for (var i = 0; i < a.length; i++) {
-//            var part = a[i];
-//            var ab1 = part.indexOf('[');
-//            if (ab1 >= 0) {
-//                this.arr.push(part.substring(0,ab1));
-//                // далее блок обработки серии скобок, их может быть много
-//                while (ab1 >= 0) {
-//                    var ab2 = part.indexOf(']');
-//                    this.arr.push(part.substring(ab1+1, ab2));
-//                    part = part.substring(ab2+1, part.length);
-//                    ab1 = part.indexOf('[');
-//                }
-//            }
-//            else {
-//                this.arr.push(part);
-//            }
-//        }
-//    }
-//    catch(e) {
-//        log('Cannot create appProperty: ' + e, true);
-//    }
-//    finally {
-        log('Property inited: ' + this.path.toString());
-//    }
+    log('Property inited: ' + this.path.toString());
 };
 
 /**
@@ -78,19 +53,31 @@ var AppProperty = function(propertyValue, propertyString, descString) {
 AppProperty.prototype.parseDescriptor = function(descString) {
     try {
         var d = {};
-        var options = descString.split(';');
-        for (var i = 0; i < options.length; i++) {
-            var values = options[i].split('=');
-            if (values[0] && values[1]) {
-                d[values[0]] = values[1];
-                if (d[values[0]] === 'false') {
-                    d[values[0]] = false;
-                }
-                if (d[values[0]] === 'true') {
-                    d[values[0]] = true;
-                }
+        var reg = /((?:\w)+)\=((?:\w|\(|\)|\=|\,)+)/ig;
+        var match = null;
+        while (match = reg.exec(descString)) {
+            if (match[2] === 'false') {
+                match[2] = false;
             }
+            if (match[2] === 'true') {
+                match[2] = true;
+            }
+            d[match[1]] = match[2];
         }
+//        var options = descString.split(';');
+//        for (var i = 0; i < options.length; i++) {
+//
+//            var values = options[i].split('=');
+//            if (values[0] && values[1]) {
+//                d[values[0]] = values[1];
+//                if (d[values[0]] === 'false') {
+//                    d[values[0]] = false;
+//                }
+//                if (d[values[0]] === 'true') {
+//                    d[values[0]] = true;
+//                }
+//            }
+//        }
     }
     catch(e) {
         d = null;
@@ -98,6 +85,45 @@ AppProperty.prototype.parseDescriptor = function(descString) {
     }
     return d;
 }
+
+/**
+ * Парсинг строки вида с описанием контролов
+ * AddScreenButton(updateScreens=true,screenGroup=questions),DeleteQuickButton
+ *
+ * @param str
+ * @returns {Array}
+ */
+AppProperty.prototype.parseControl = function(str) {
+    var reg = /((?:\w)+)(?:\(((?:\w|\,|=)*)\)){0,1}/ig;
+    var res = [];
+    while (match = reg.exec(str)) {
+        // match[0] string itself
+        var n = match[1];
+        var p = null;
+        if (match[2]) {
+            // есть какие то параметры в описании контрола
+            var preg = /((?:\w)+)\=((?:\w)+)/ig;
+            p = {};
+            var pmatch = null;
+            while (pmatch = preg.exec(match[2])) {
+                // булиновкие типы лучше сразу сделать, чтобы удобнее было потом работать
+                if (pmatch[2] === 'false') {
+                    pmatch[2] = false;
+                }
+                if (pmatch[2] === 'true') {
+                    pmatch[2] = true;
+                }
+                p[pmatch[1]] = pmatch[2];
+            }
+        }
+        res.push({
+            name: n,
+            params: p
+        });
+    }
+    return res;
+}
+
 /**
  * Получить копию элемента массива.
  * При добавлении нового элемента в редакторе сначала получаем и редактируем эту копию, а потом уже добавляем её в свойства app
