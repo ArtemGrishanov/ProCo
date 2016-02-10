@@ -53,7 +53,7 @@ var AppProperty = function(propertyValue, propertyString, descString) {
 AppProperty.prototype.parseDescriptor = function(descString) {
     try {
         var d = {};
-        var reg = /((?:\w)+)\=((?:\w|\(|\)|\=|\,)+)/ig;
+        var reg = /((?:\w)+)\=((?:\w|\(|\)|\=|\,|[А-я]|\s)+)/ig;
         var match = null;
         while (match = reg.exec(descString)) {
             if (match[2] === 'false') {

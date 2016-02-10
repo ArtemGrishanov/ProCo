@@ -95,6 +95,16 @@ var config = {
             defaultDirectiveIndex: 0,
             directives: ['deletequickbutton'],
             parentId: 'id-control_cnt'
+        },
+        OnOff: {
+            defaultDirectiveIndex: 0,
+            directives: ['onoffswitcher'],
+            parentId: 'id-static_controls_cnt'
+        },
+        TextInput: {
+            defaultDirectiveIndex: 0,
+            directives: ['colorpicker'],
+            parentId: 'id-static_controls_cnt'
         }
     },
     editor: {

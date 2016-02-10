@@ -4,6 +4,8 @@
     <title>Редактор</title>
     <meta charset="UTF-8"/>
     <link href="../bootsrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bootsrap/css/checkbox-radio-switch.css" rel="stylesheet">
+    <link href="../bootsrap/css/colorpicker.css" rel="stylesheet">
     <link href="controls/css/style.css" rel="stylesheet">
     <!--TODO стили подгружать локально, только для экрана промо приложения -->
     <link href="../products/test/style.css" rel="stylesheet">
@@ -18,6 +20,11 @@
             border: #ff2211 solid 10px;
             padding: 0;
             margin: 0;
+        }
+        .scr {
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
         .field_cnt {
             position: relative;
@@ -46,10 +53,19 @@
         .slide_group {
             padding: 10px 0 10px 7px;
         }
+        .static_controls_cnt {
+            width: 200px;
+            background-color: #eee;
+            border: 1px solid #bbb;
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-height: 400px;
+        }
     </style>
 </head>
 <body ng-app="procoApp">
-    <div id="id-editor_view" style="display:none;">
+    <div id="id-editor_view" class="scr" style="display:none;">
         <!--<div class="progress">-->
             <!--<div class="bar bar-success" style="width: 35%;"></div>-->
             <!--<div class="bar bar-warning" style="width: 20%;"></div>-->
@@ -78,6 +94,9 @@
                 <!-- Сюда добавляем программно view различных экранов промо приложения -->
             </div>
         </div>
+        <div id="id-static_controls_cnt" class="static_controls_cnt">
+            <!-- Сюда попадают контролы которые показываются постоянно -->
+        </div>
     </div>
     <div id="id-preview_view" style="display:none">
         <div style="margin: 5px">
@@ -105,9 +124,21 @@
         </div>
     </script>
 
+    <script id="id-static_control_cnt_template" type="text/template">
+        <div>
+            <p class="js-label"></p>
+            <div class="js-control_cnt">
+
+            </div>
+        </div>
+    </script>
+
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../bootsrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../bootsrap/js/ace.min.js"></script>
+    <script type="text/javascript" src="../bootsrap/js/ace-elements.min.js"></script>
+    <script type="text/javascript" src="../bootsrap/js/bootstrap-colorpicker.min.js"></script>
     <script type="text/javascript" src="../js/angular.min.js"></script>
     <script type="text/javascript" src="../js/config.js"></script>
     <script type="text/javascript" src="../js/utils.js"></script>
@@ -121,6 +152,8 @@
     <script type="text/javascript" src="controls/AddArrayElementControl.js"></script>
     <script type="text/javascript" src="controls/DeleteQuickButton.js"></script>
     <script type="text/javascript" src="controls/AddScreenButton.js"></script>
+    <script type="text/javascript" src="controls/OnOff.js"></script>
+    <script type="text/javascript" src="controls/TextInput.js"></script>
     <script type="text/javascript" src="../js/editor.js"></script>
     <script>
         $(document).ready(function(){

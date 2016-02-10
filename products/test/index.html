@@ -107,9 +107,8 @@
             d__restartButtonText: 'editable=true;ui=TextQuickInput',
             restartButtonText: 'Заново',
 
-            key1: 'value1',
-            key2: 'value2',
-
+            //TODO по идее это не контрол статик, а свойство статик!
+            d__randomizeQuestions: 'editable=true;ui=OnOff(static=true,viewName=OnOffSwitcher);label=Перемешать вопросы',
             randomizeQuestions: false,
             randomizeOptions: false,
 
@@ -133,11 +132,17 @@
                 parent: '.js-questions_cnt'
             },
 
+            //TODO rename ui->control
+            d__backgroundColor: 'editable=true;ui=TextInput(viewName=ColorPicker,static=true,updateScreens=true);label=Цвет фона',
+            backgroundColor: '#aaa',
             d__fontColor: 'editable=true',
             fontColor: '#fff',
             d__fontFamily: 'editable=true',
             fontFamily: 'Arial',
-            d__background: 'editable=true',
+
+            d__showBackgroundImage: 'editable=true;ui=OnOff(static=true,updateScreens=true);label=Картинка',
+            showBackgroundImage: true,
+
             background: 'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg)',
 
             /**
@@ -348,6 +353,10 @@
                     case 'welcome': {
                         resultPoints = 0;
                         currentResult = null;
+                        // перемещать вопросы при переходе к тесту
+                        if (app.randomizeQuestions === true) {
+                            shuffle(app.quiz);
+                        }
                         $('.js-explain').hide();
                         // currentQuestionIndex устанавливается внутри
                         renderQuestion(0);
@@ -467,9 +476,7 @@
             if (app.fontFamily) {
                 $('*').css('fontFamily',app.fontFamily);
             }
-            if (app.background) {
-                $('.back_start').css('backgroundImage',app.background);
-            }
+            applyStyles(app);
             if (app.fontColor) {
                 $('.cnt_wr').css('color',app.fontColor);
             }
@@ -482,7 +489,8 @@
                 id: 'startScr',
                 view: $('#id-start_slide'),
                 data: {},
-                name: 'Стартовый экран'
+                name: 'Стартовый экран',
+                doWhenInDOM: applyStyles
             });
             for (var i = 0; i < app.quiz.length; i++) {
                 screens.push({
@@ -494,7 +502,8 @@
                         currentQuestion: i
                     },
                     group: 'questions',
-                    name: 'Вопросы'
+                    name: 'Вопросы',
+                    doWhenInDOM: applyStyles
                 });
             }
             for (var i = 0; i < app.results.length; i++) {
@@ -507,7 +516,8 @@
                     },
                     group: 'results',
                     collapse: true, // показ экранов всех сразу на одном поле редактирования
-                    name: 'Результаты'
+                    name: 'Результаты',
+                    doWhenInDOM: applyStyles
                 });
             }
 
@@ -515,6 +525,32 @@
             makeUidForQuiz();
             state = undefined;
             next();
+        }
+
+        /**
+         * Функция каждый раз выполняется, когда создается вью из шаблоны
+         * для применения динамических стилей
+         * Временное решение, не очень хорошее
+         *
+         */
+        //TODO надо рещать эту задачу только на стороне промо-продукта, чтобы вставить стили строкой инлайн <style>
+        function applyStyles(appObject, $elem) {
+            var $elem = $elem || document;
+            var $w = ($elem.hasClass && $elem.hasClass('wrapper')) ? $elem: $($elem).find('.wrapper');
+            if (appObject.showBackgroundImage === true) {
+                if (appObject.background) {
+                    $w.css('backgroundImage',appObject.background);
+                }
+                else {
+                    $w.css('backgroundImage','none');
+                }
+            }
+            else {
+                $w.css('backgroundImage','none');
+            }
+            if (appObject.backgroundColor) {
+                $w.css('backgroundColor',appObject.backgroundColor);
+            }
         }
 
         /**
@@ -553,6 +589,7 @@
             $slide.find('.js-next').click(function() {
                 next();
             });
+            applyStyles(app, $slide);
             return $slide;
         }
 
@@ -598,6 +635,7 @@
             $slide.find('.js-next').click(function() {
                 next();
             });
+            applyStyles(app, $slide);
             return $slide;
         }
 
@@ -662,6 +700,26 @@
                     }
                 }
             }
+        }
+
+        /**
+         * Перемешивает элементу массива
+         * @param array
+         * @returns {*}
+         */
+        function shuffle(array) {
+            var currentIndex = array.length, temporaryValue, randomIndex;
+            // While there remain elements to shuffle...
+            while (0 !== currentIndex) {
+                // Pick a remaining element...
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex -= 1;
+                // And swap it with the current element.
+                temporaryValue = array[currentIndex];
+                array[currentIndex] = array[randomIndex];
+                array[randomIndex] = temporaryValue;
+            }
+            return array;
         }
 
         $(document).ready(function() {

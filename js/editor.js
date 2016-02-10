@@ -166,13 +166,17 @@ function showScreen(ids) {
     var $screensCnt = $('#id-product_screens_cnt');
     $screensCnt.empty();
     activeScreensControls = [];
-    var $scr = null;
+    var appScreen = null;
     for (var i = 0; i < ids.length; i++) {
-        $scr = Engine.getAppScreen(ids[i]);
-        if ($scr) {
+        appScreen = Engine.getAppScreen(ids[i]);
+        if (appScreen) {
             // каждый экран ещё оборачиваем в контейнер .screen_cnt
-            $('<div class="screen_cnt"></div>').append($scr.view).appendTo($screensCnt);
-            bindControlsForAppPropertiesOnScreen($scr.view, ids[i]);
+            $('<div class="screen_cnt"></div>').append(appScreen.view).appendTo($screensCnt);
+            //TODO это временное решения проблемы, как применять настройки ко вью которые ещё не были добавлены
+            if (typeof appScreen.doWhenInDOM === 'function') {
+                appScreen.doWhenInDOM(iframeWindow.app, appScreen.view);
+            }
+            bindControlsForAppPropertiesOnScreen(appScreen.view, ids[i]);
 
             //TODO так не можем сделать, так как есть один контрол на два экрана resultScr0,resultScr1
             //var info = findControlInfo(ids[i]);
@@ -349,8 +353,15 @@ function syncUIControlsToAppProperties() {
                     if (sg) {
                         parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
                     }
-                    // в случае с вью регистр важен, в конфиге директивы прописаны малым регистром
-                    var newControl = createControl(ps, c.params.viewName.toLowerCase(), c.name, c.params, parent);
+                    else {
+                        // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на правую панель
+                        var $cc = $($('#id-static_control_cnt_template').html()).appendTo('#id-static_controls_cnt');
+                        if (ap.descriptor.label) {
+                            $cc.find('.js-label').text(ap.descriptor.label);
+                        }
+                        parent = $cc.find('.js-control_cnt');
+                    }
+                    var newControl = createControl(ps, c.params.viewName, c.name, c.params, parent);
                     if (newControl) {
                         uiControlsInfo.push({
                             appPropertyString: ps,
@@ -371,6 +382,10 @@ function syncUIControlsToAppProperties() {
     var $injector = angular.injector(['ng', 'procoApp']);
     $injector.invoke(function ($rootScope, $compile) {
         $compile($('#id-slides_cnt')[0])($rootScope);
+        $rootScope.$digest();
+    });
+    $injector.invoke(function ($rootScope, $compile) {
+        $compile($('#id-static_controls_cnt')[0])($rootScope);
         $rootScope.$digest();
     });
 }
@@ -414,6 +429,10 @@ function createControl(propertyString, viewName, name, params, controlParentView
     var ctrl = null;
     try {
         // существует ли такой вью, если нет, берем по умолчанию
+        if (viewName) {
+            // в случае с вью регистр важен, в конфиге директивы прописаны малым регистром
+            viewName = viewName.toLowerCase();
+        }
         if (!viewName || config.controls[name].directives.indexOf(viewName) < 0) {
             viewName = config.controls[name].directives[config.controls[name].defaultDirectiveIndex];
         }
