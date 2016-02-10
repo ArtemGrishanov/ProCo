@@ -7,12 +7,16 @@
 
  * @constructor
  * @param {string} propertyString
+ * @param {string} directiveName - имя вью, имя директивы angular которая его загружает
  * @param {HTMLElement} $parent
- * @param {object} controlConfig - объект из config.controls (config.js), конфигурация контрола
+ * @param {string} name
+ * @param {object} params
  */
-function DeleteQuickButton(propertyString, $parent, controlConfig) {
-    this.type = 'quick';
+function DeleteQuickButton(propertyString, directiveName, $parent, name, params) {
     this.self = this;
+    this.directiveName = directiveName;
+    this.name = name;
+    this.params = params;
     this.arrayDomElements = null;
     this.overedArrayElement = null;
     this.$parent = $parent;
@@ -36,7 +40,7 @@ function DeleteQuickButton(propertyString, $parent, controlConfig) {
      * @return DOMElement
      */
     function addDirective() {
-        var $elem = $('<div '+controlConfig.angularDirectiveName+' data-app-property="'+this.propertyString+'"></div>');
+        var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyString+'"></div>');
         $parent.append($elem);
         $elem.css('zIndex',config.editor.ui.quickControlsZIndex);
         $elem.css('position','absolute');

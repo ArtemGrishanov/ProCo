@@ -318,7 +318,7 @@ var Engine = {};
                     //TODO может быть не эффективно на сложных объектах
                     var appCopy = JSON.parse(JSON.stringify(productWindow.app));
                     // делаем изменение
-                    eval('appCopy.'+convertToBracedString(key)+'='+stringifiedValue);
+                    eval('appCopy'+convertToBracedString(key)+'='+stringifiedValue);
                     try {
                         // запускаем тест на новых настройках, результаты собираются в переменную
                         log('Running test...');
