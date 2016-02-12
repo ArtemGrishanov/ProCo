@@ -36,7 +36,7 @@
 
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript" src="jquery.js"></script>
-    <script id="id-slide_template" type="text/template">
+    <script id="id-slide_text_template" type="text/template">
         <div class="wrapper">
             <div class="back_start"></div>
             <div class="shadow"></div>
@@ -50,8 +50,29 @@
                     </div>
                     <div class="js-explain explain_blk" style="display:none;">
                         <div class="js-explanation_text"></div>
-                        </br>
-                        </br>
+                        <div><span class="t_btn js-next">Далее</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script id="id-slide_photo_template" type="text/template">
+        <div class="wrapper">
+            <div class="back_start"></div>
+            <div class="shadow"></div>
+            <div class="slide js-slide">
+                <div class="cnt_wr">
+                    <div class="q_wr __photo">
+                        <span data-app-property="quiz.{{currentQuestion}}.text">{{question_text}}</span>
+                    </div>
+                    <div class="photo_wr js-photo">
+                        <!-- Сюда ставится фото через background так как там есть более удобный алгоритм размещения -->
+                    </div>
+                    <div data-app-property="quiz.{{currentQuestion}}.options" class="js-answers_cnt">
+                        <!-- Сюда программно добавляются варианта ответов -->
+                    </div>
+                    <div class="js-explain explain_blk" style="display:none;">
+                        <div class="js-explanation_text"></div>
                         <div><span class="t_btn js-next">Далее</span></div>
                     </div>
                 </div>
@@ -135,7 +156,7 @@
             //TODO rename ui->control
             d__backgroundColor: 'editable=true;ui=TextInput(viewName=ColorPicker,static=true,updateScreens=true);label=Цвет фона',
             backgroundColor: '#aaa',
-            d__fontColor: 'editable=true',
+            d__fontColor: 'editable=true;ui=TextInput(viewName=ColorPicker,static=true,updateScreens=true);label=Цвет шрифта',
             fontColor: '#fff',
             d__fontFamily: 'editable=true',
             fontFamily: 'Arial',
@@ -156,9 +177,10 @@
             /**
              * Вопросы с ответами
              */
-            d__quiz: 'editable=true;ui=AddArrayElementControl(viewName=AddScreenButton,static=true,updateScreens=true,screenGroup=questions);length={apps.tests.maxquizcount};canAdd=proto__text_slide,proto__photo_question_slide',
+            d__quiz: 'editable=true;ui=AddArrayElementControl(viewName=AddScreenButton,static=true,updateScreens=true,screenGroup=questions,prototypeIndex=0),AddArrayElementControl(viewName=AddScreenButton,static=true,updateScreens=true,screenGroup=questions,prototypeIndex=1);length={apps.tests.maxquizcount};canAdd=proto__text_slide,proto__photo_question_slide',
             quiz: [
                 {
+                    uiTemplate: 'id-slide_text_template',
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Мадагаскар -- это где?',
                     d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
@@ -186,6 +208,28 @@
                     explanation: 'Конечно, это остров на юге Африки в индийском океане.'
                 },
                 {
+                    uiTemplate: 'id-slide_photo_template',
+                    d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
+                    text: 'Текст фото вопроса?',
+                    //TODO base64 data
+                    img: 'http://localhost:63342/ProCo/products/test/i/picture1.jpg',
+                    d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
+                    options: [
+                        {
+                            d__text: 'editable=true;ui=TextQuickInput;',
+                            text: 'Вариант ответа 1',
+                            points: 1
+                        },
+                        {
+                            d__text: 'editable=true;ui=TextQuickInput;',
+                            text: 'Вариант ответа 2'
+                        }
+                    ],
+                    d__explanation: 'editable=true;',
+                    explanation: 'Пояснение к ответу'
+                },
+                {
+                    uiTemplate: 'id-slide_text_template',
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Какая самая большая страна?',
                     d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
@@ -207,6 +251,7 @@
                     explanation: 'Это Россия, все знают.'
                 },
                 {
+                    uiTemplate: 'id-slide_text_template',
                     d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Какого моря не существует?',
                     d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
@@ -234,33 +279,35 @@
 
             /**
              * Описание результатов, которые можно получить
+             * Результаты рассчитываются динамически. Сколько вопросов столько и результатов
              */
-            results: [
-                {
-                    minPoints: 0,
-                    maxPoints: 1,
-                    d__title: 'editable=true;ui=TextQuickInput;',
-                    title: 'Новичок',
-                    d__description: 'editable=true;ui=TextQuickInput;',
-                    description: 'Неплохо для начала.'
-                },
-                {
-                    minPoints: 2,
-                    maxPoints: 3,
-                    d__title: 'editable=true;ui=TextQuickInput;',
-                    title: 'Средний',
-                    d__description: 'editable=true;ui=TextQuickInput;',
-                    description: 'Уже лучше, давай ещё'
-                }
-            ],
-            d__results: 'editable=true;',
+            results: [],
+//            results: [
+//                {
+//                    minPoints: 0,
+//                    maxPoints: 1,
+//                    d__title: 'editable=true;ui=TextQuickInput;',
+//                    title: 'Новичок',
+//                    d__description: 'editable=true;ui=TextQuickInput;',
+//                    description: 'Неплохо для начала.'
+//                },
+//                {
+//                    minPoints: 2,
+//                    maxPoints: 3,
+//                    d__title: 'editable=true;ui=TextQuickInput;',
+//                    title: 'Средний',
+//                    d__description: 'editable=true;ui=TextQuickInput;',
+//                    description: 'Уже лучше, давай ещё'
+//                }
+//            ],
+//            d__results: 'editable=true;',
 
             // шаблон текстового вопроса
             proto__text_slide: {
-                uiTemplate: 'id-slide_template',
+                uiTemplate: 'id-slide_text_template',
                 d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                 text: 'Текст вопроса?',
-                d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton',
+                d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
                 options: [
                     {
                         d__text: 'editable=true;ui=TextQuickInput;',
@@ -281,8 +328,8 @@
                 uiTemplate: 'id-slide_photo_template',
                 d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                 text: 'Текст фото вопроса?',
-                img: '',
-                d__options: 'editable=true;ui=AddArrayElementControl',
+                img: 'http://localhost:63342/ProCo/products/test/i/picture1.jpg',
+                d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
                 options: [
                     {
                         d__text: 'editable=true;ui=TextQuickInput;',
@@ -373,7 +420,7 @@
                             // конец теста, финальный скрин
                             $('.js-slides_cnt').hide();
                             //TODO посчитать результат
-                            currentResult = getResult(resultPoints);
+                            currentResult = getResultByPoints(resultPoints);
                             renderResult(currentResult);
                             $('#id-end_slide').show();
                             state = 'final';
@@ -404,7 +451,7 @@
          * Найти результат в массиве app.results для указанного количества баллов.
          * @param points - количество баллов, для которых найти результат
          */
-        function getResult(points) {
+        function getResultByPoints(points) {
             for (var i = 0; i < app.results.length; i++) {
                 var r = app.results[i];
                 if (r.minPoints <= points && points <=r.maxPoints) {
@@ -412,6 +459,36 @@
                 }
             }
             return null;
+        }
+
+        /**
+         *
+         */
+        function updateResults() {
+            var r = {
+                minPoints: 0,
+                maxPoints: 1,
+                d__title: 'editable=true;ui=TextQuickInput;',
+                title: 'Название результата',
+                d__description: 'editable=true;ui=TextQuickInput;',
+                description: 'Неплохо для начала.'
+            };
+            for (var i = 0; i < app.quiz.length; i++) {
+                // если такого результата не существует, то создать.
+                // это может случиться после добавления нового вопроса в тест
+                if (!app.results[i]) {
+                    // этот результат значит "ответил правильно на i вопросов"
+                    app.results[i] = {
+                        minPoints: i,
+                        maxPoints: i+1,
+                        d__title: 'editable=true;ui=TextQuickInput;',
+                        title: 'Название результата ' + (i+1),
+                        d__description: 'editable=true;ui=TextQuickInput;',
+                        description: 'Неплохо для начала.'
+                    };
+                }
+            }
+            //TODO при удалении соответственно надо уменьшить количество результатов
         }
 
         /**
@@ -473,13 +550,7 @@
             }
 
             // инициализация по параметрам app
-            if (app.fontFamily) {
-                $('*').css('fontFamily',app.fontFamily);
-            }
             applyStyles(app);
-            if (app.fontColor) {
-                $('.cnt_wr').css('color',app.fontColor);
-            }
             $('#id-start_header_text').text(app.startHeaderText);
             $('#id-start_desc_text').text(app.startDescription);
 
@@ -506,6 +577,10 @@
                     doWhenInDOM: applyStyles
                 });
             }
+
+            // обновить количество результатов исходя из нового количества вопросов
+            updateResults();
+
             for (var i = 0; i < app.results.length; i++) {
                 // каждый резльтат считается отдельным экраном. Так проще управлять результатами
                 screens.push({
@@ -521,7 +596,6 @@
                 });
             }
 
-            // запуск
             makeUidForQuiz();
             state = undefined;
             next();
@@ -533,7 +607,7 @@
          * Временное решение, не очень хорошее
          *
          */
-        //TODO надо рещать эту задачу только на стороне промо-продукта, чтобы вставить стили строкой инлайн <style>
+        //TODO надо решать эту задачу только на стороне промо-продукта, чтобы вставить стили строкой инлайн <style>
         function applyStyles(appObject, $elem) {
             var $elem = $elem || document;
             var $w = ($elem.hasClass && $elem.hasClass('wrapper')) ? $elem: $($elem).find('.wrapper');
@@ -550,6 +624,12 @@
             }
             if (appObject.backgroundColor) {
                 $w.css('backgroundColor',appObject.backgroundColor);
+            }
+            if (app.fontColor) {
+                $('.cnt_wr').css('color',app.fontColor);
+            }
+            if (app.fontFamily) {
+                $('.cnt_wr').css('fontFamily',app.fontFamily);
             }
         }
 
@@ -578,14 +658,14 @@
             var q = app.quiz[currentQuestionIndex];
             var $cnt = $('.js-slides_cnt');
             $cnt.empty();
-            var templStr = $('#id-slide_template').html();
+            var templStr = $('#'+q.uiTemplate).html();
             templStr = templStr.replace('{{question_text}}', q.text);
             var $slide = $(templStr);
+            if (q.img) {
+                $slide.find('.js-photo').css('backgroundImage', 'url('+q.img+')');
+            }
             $cnt.append($slide);
             renderAnswers($slide);
-//            if (engineInstance) {
-//                engineInstance.bind(['quiz',currentQuestionIndex,'text'], $slide.find('.q_wr'));
-//            }
             $slide.find('.js-next').click(function() {
                 next();
             });

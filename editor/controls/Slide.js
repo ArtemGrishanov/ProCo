@@ -2,7 +2,7 @@
  * Created by artyom.grishanov on 24.01.16.
  *
  * @constructor
- * @param {string | Array.<string>} propertyString - здесь также может быть массив, так как экранов несколько
+ * @param {string} propertyString - экрано может быть несколько, через запятую
  * @param {string} directiveName - имя вью, имя директивы angular которая его загружает
  * @param {DOMElement} $parent
  * @param {string} name
@@ -22,15 +22,12 @@ function Slide(propertyString, directiveName, $parent, name, params) {
     this.onScreenUpdate = function(e) {
         //TODO хорошо перерисовывать только когда экран реально виден пользователю, только активный экран
         if (this.active === true) {
-            showScreen([this.propertyString]);
+            showScreen(this.propertyString.split(','));
         }
     };
 
     // помним, что контрол может отвечать сразу за несколько экранов
-    var arr = this.propertyString;
-    if (!Array.isArray(arr)) {
-        arr = [arr];
-    }
+    var arr = this.propertyString.split(',');
     // подписка на обновления экрана в движке, контрол будет запрашивать у редактора перерисовку
     for (var i = 0; i < arr.length; i++) {
         Engine.on('ScreenUpdated', arr[i], this.onScreenUpdate.bind(this));
@@ -42,7 +39,7 @@ function Slide(propertyString, directiveName, $parent, name, params) {
      * @return DOMElement
      */
     function addDirective() {
-        var p = (Array.isArray(this.propertyString)) ? this.propertyString.join(',') : this.propertyString;
+        var p = this.propertyString;
         var $elem = $('<div '+this.directiveName+' data-app-property="'+p+'"></div>');
         $parent.append($elem);
         return $elem;

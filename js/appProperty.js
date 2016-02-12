@@ -42,7 +42,7 @@ var AppProperty = function(propertyValue, propertyString, descString) {
     }
     this.path = this.propertyString.split('.');
     this.isArray = Array.isArray(this.propertyValue);
-    log('Property inited: ' + this.path.toString());
+    log('Property inited: ' + this.path.toString(), false, false);
 };
 
 /**

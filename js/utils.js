@@ -183,16 +183,23 @@ function getRandomArbitrary(min, max) {
  * Обертка над console.log с рубильником
  *
  * @param {string} msg - сообщение для вывода
- * @param {boolean} isError - ошибка или просто сообщение
+ * @param {boolean} [isError] - ошибка или просто сообщение
+ * @param {boolean} [showInConsole] - печатать ли в консоль или просто сохранять лог
  */
-function log(msg, isError) {
-    if (config.common.consoleLogEnable === true) {
+function log(msg, isError, showInConsole) {
+    if (typeof showInConsole !== "boolean") {
+        showInConsole = true;
+    }
+    if (config.common.consoleLogEnable === true && showInConsole === true) {
         if (isError) {
             console.error(msg);
         }
         else {
             console.log(msg);
         }
+    }
+    else {
+        //TODO можно сохранять строку просто для отладки
     }
 }
 

@@ -30,6 +30,7 @@ var Engine = {};
      * Прототипы для создания новых свойств
      * Прототип клонируется сколько угодно раз и добавляется в productWindow.app
      */
+    //TODO кандидат на удаление так как негде не используется
     var propertyPrototypes = [];
     /**
      * Экраны (слайды) промо приложения
@@ -139,7 +140,7 @@ var Engine = {};
                     // смотрим, есть ли у него дескриптор
                     if (obj.hasOwnProperty(DESC_PREFIX+key)) {
                         var str = strPrefix + key;
-                        log('Property string: \''+ str + '\' and desc found: ' + obj[DESC_PREFIX+key]);
+                        log('Property string: \''+ str + '\' and desc found: ' + obj[DESC_PREFIX+key], false, false);
                         var p = new AppProperty(obj[key],str,obj[DESC_PREFIX+key]);
                         appProperties.push(p);
                         appPropertiesObjectPathes.push(p.propertyString);

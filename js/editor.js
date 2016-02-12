@@ -31,7 +31,11 @@ if (config.common.awsEnabled === true) {
         }
     });
 }
-
+/**
+ * Ид экранов которые показаны в данный момент в рабочем поле
+ * @type {Array.<string>}
+ */
+var activeScreens = [];
 /**
  * Контролы Slide экранов, которые показаны в данный момент
  * @type {Array}
@@ -150,12 +154,16 @@ function onProductIframeLoaded() {
  */
 function showScreen(ids) {
 
+    // запоминаем, если потребуется восстановление показа экранов.
+    // Например, произойдет пересборка экранов и надо будет вернуться к показу последних активных
+    activeScreens = ids;
+
     // каждый раз удаляем quick-контролы и создаем их заново. Не слишком эффективно мб но просто и надежно
     // то что контролы привязаны к одному экрану определяется только на основании контейнера, в который они помещены
     var $controlCnt = $('#id-control_cnt').empty();
     for (var i = 0; i < uiControlsInfo.length;) {
         var c = uiControlsInfo[i].control;
-        if (c.$parent === $controlCnt) {
+        if (c.$parent.selector === $controlCnt.selector) {
             uiControlsInfo.splice(i,1);
         }
         else {
@@ -215,6 +223,7 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
         var c = findControlInfo(pAtt, elems[i]);
         if (c) {
             c.control.setProductDomElement(elems[i]);
+            $('#id-control_cnt').append(c.control.$directive);
         }
         else {
             // контрола пока ещё не существует для настройки, надо создать
@@ -270,11 +279,88 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
  * 3) Привязка контролов к dom-элементам в продукте, Для быстрого редактирования.
  */
 function syncUIControlsToAppProperties() {
+    //TODO название метода не соответствует тому что здесь: полное пересоздание всех контролов
     uiControlsInfo = [];
     $('#id-slides_cnt').empty();
+    $('#id-static_controls_cnt').empty();
     $('#id-control_cnt').empty();
 
     // теперь контролы для экранов
+    createScreenControls();
+
+    // задача здесь: создать постоянные контролы, которые не будут меняться при переключении экранов
+    var appPropertiesStrings = Engine.getAppPropertiesObjectPathes();
+    for (var i = 0; i < appPropertiesStrings.length; i++) {
+        var ps = appPropertiesStrings[i];
+        var ap = Engine.getAppProperty(ps);
+        if (ap.descriptor.controls) {
+            // у свойства может быть несколько контролов
+            for (var j = 0; j < ap.descriptor.controls.length; j++) {
+                var c = ap.descriptor.controls[j];
+                if (c.params && c.params.static === true) {
+                    // контрол помечен как постоянный в дескрипторе, то есть его надо создать сразу и навсегда (пересоздастся только вместе с экранами)
+                    var parent = null;
+                    var sg = c.params.screenGroup;
+                    if (sg) {
+                        parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
+                    }
+                    else {
+                        // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на правую панель
+                        var $cc = $($('#id-static_control_cnt_template').html()).appendTo('#id-static_controls_cnt');
+                        if (ap.descriptor.label) {
+                            $cc.find('.js-label').text(ap.descriptor.label);
+                        }
+                        parent = $cc.find('.js-control_cnt');
+                    }
+                    var newControl = createControl(ps, c.params.viewName, c.name, c.params, parent);
+                    if (newControl) {
+                        uiControlsInfo.push({
+                            appPropertyString: ps,
+                            control: newControl
+                        });
+                    }
+                    else {
+                        log('Can not create control for appProperty: \'' + ps, true);
+                    }
+
+                    //TODO здесь же будут добавлены другие постоянные контролы, например на правой панели
+                }
+            }
+        }
+    }
+
+    //TODO жесткий хак: данная инициализация не поддерживается на нескольких колорпикерах
+    setTimeout(function() {
+        // стараемся выполнить после загрузки всех колорпикеров
+        $('.colorpicker').colorpicker();
+        $('.colorpicker input').click(function() {
+            $(this).parents('.colorpicker').colorpicker('show');
+        })
+    }, 2000);
+
+    // скомпилировать новые angular derictives (которые соответствуют контролам)
+    var $injector = angular.injector(['ng', 'procoApp']);
+    $injector.invoke(function ($rootScope, $compile) {
+        $compile($('#id-slides_cnt')[0])($rootScope);
+        $rootScope.$digest();
+    });
+    $injector.invoke(function ($rootScope, $compile) {
+        $compile($('#id-static_controls_cnt')[0])($rootScope);
+        $rootScope.$digest();
+    });
+
+    if (activeScreens.length > 0) {
+        // восстановить показ экранов, которые видели ранее
+        showScreen(activeScreens);
+    }
+    else {
+        // первый экран показать по умолчанию
+        showScreen([Engine.getAppScreenIds()[0]]);
+    }
+}
+
+//TODO конечно не надо пересоздавать каждый раз всё при добавл-удал экрана. Но так пока проще
+function createScreenControls() {
     var appScreenIds = Engine.getAppScreenIds();
     // группы экранов на левой панели
     var groups = {};
@@ -333,61 +419,7 @@ function syncUIControlsToAppProperties() {
             //TODO контрол для группы слайдов. Добавление экрана кнопка
             $('#id-slides_cnt').append($groupView);
         }
-        // первый экран сразу показать
-        showScreen([appScreenIds[0]]);
     }
-
-    // задача здесь: создать постоянные контролы, которые не будут меняться при переключении экранов
-    var appPropertiesStrings = Engine.getAppPropertiesObjectPathes();
-    for (var i = 0; i < appPropertiesStrings.length; i++) {
-        var ps = appPropertiesStrings[i];
-        var ap = Engine.getAppProperty(ps);
-        if (ap.descriptor.controls) {
-            // у свойства может быть несколько контролов
-            for (var j = 0; j < ap.descriptor.controls.length; j++) {
-                var c = ap.descriptor.controls[j];
-                if (c.params && c.params.static === true) {
-                    // контрол помечен как постоянный в дескрипторе, то есть его надо создать сразу и навсегда (пересоздастся только вместе с экранами)
-                    var parent = null;
-                    var sg = c.params.screenGroup;
-                    if (sg) {
-                        parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
-                    }
-                    else {
-                        // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на правую панель
-                        var $cc = $($('#id-static_control_cnt_template').html()).appendTo('#id-static_controls_cnt');
-                        if (ap.descriptor.label) {
-                            $cc.find('.js-label').text(ap.descriptor.label);
-                        }
-                        parent = $cc.find('.js-control_cnt');
-                    }
-                    var newControl = createControl(ps, c.params.viewName, c.name, c.params, parent);
-                    if (newControl) {
-                        uiControlsInfo.push({
-                            appPropertyString: ps,
-                            control: newControl
-                        });
-                    }
-                    else {
-                        log('Can not create control for appProperty: \'' + ps, true);
-                    }
-
-                    //TODO здесь же будут добавлены другие постоянные контролы, например на правой панели
-                }
-            }
-        }
-    }
-
-    // скомпилировать новые angular derictives (которые соответствуют контролам)
-    var $injector = angular.injector(['ng', 'procoApp']);
-    $injector.invoke(function ($rootScope, $compile) {
-        $compile($('#id-slides_cnt')[0])($rootScope);
-        $rootScope.$digest();
-    });
-    $injector.invoke(function ($rootScope, $compile) {
-        $compile($('#id-static_controls_cnt')[0])($rootScope);
-        $rootScope.$digest();
-    });
 }
 
 /**

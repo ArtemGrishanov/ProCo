@@ -21,9 +21,9 @@ function AddArrayElementControl(propertyString, directiveName, $parent, name, pa
     this.onAddQuickButtonClick = function(e) {
         var ap = Engine.getAppProperty(this.propertyString);
         var pp = Engine.getPrototypesForAppProperty(ap);
-//        var c = p.getArrayElementCopy();
         if (pp && pp.length > 0) {
-            Engine.addArrayElement(ap, pp[0]);
+            var protoIndex = params.prototypeIndex || 0;
+            Engine.addArrayElement(ap, pp[protoIndex]);
             if (this.params && this.params.updateScreens === true) {
                 syncUIControlsToAppProperties();
             }
