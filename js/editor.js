@@ -40,7 +40,7 @@ var activeScreens = [];
  * Контролы Slide экранов, которые показаны в данный момент
  * @type {Array}
  */
-var activeScreensControls = [];
+//var activeScreensControls = [];
 /**
  * Массив контролов и свойств AppProperty продукта
  * @type {Array.<object>}
@@ -173,7 +173,7 @@ function showScreen(ids) {
 
     var $screensCnt = $('#id-product_screens_cnt');
     $screensCnt.empty();
-    activeScreensControls = [];
+//    activeScreensControls = [];
     var appScreen = null;
     for (var i = 0; i < ids.length; i++) {
         appScreen = Engine.getAppScreen(ids[i]);
@@ -191,9 +191,10 @@ function showScreen(ids) {
             // пока кастомная функция поиска
             for (var j = 0; j < uiControlsInfo.length; j++) {
                 if (uiControlsInfo[j].control.constructor == Slide) {
-                    if (uiControlsInfo[j].control.propertyString.indexOf(ids[i]) >= 0) {
+                    // Для контролов Slide отмечаем активные и неактивные контролы с целью того, что после пересборки экранов восстановить показ активного экрана
+                    if (uiControlsInfo[j].control.propertyStringsArray.indexOf(ids[i]) >= 0) {
                         uiControlsInfo[j].control.active = true;
-                        activeScreensControls.push(uiControlsInfo[j].control);
+//                        activeScreensControls.push(uiControlsInfo[j].control);
                     }
                     else {
                         uiControlsInfo[j].control.active = false;
@@ -227,7 +228,9 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
         }
         else {
             // контрола пока ещё не существует для настройки, надо создать
-            var appProperty = Engine.getAppProperty(pAtt);
+            var appProperty = Engine.getAppProperty(pAtt.split(',')[0]);
+            // иногда в атрибуте data-app-property содержится несколько ссылок на appProperty через запятую
+            // в этом случае берем описание из дескриптора первого элемента [0]. Свойства должны быть идентичными, иначе это не имеет смысла
             if (appProperty) {
                 // не забыть что может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
                 var controlsInfo = appProperty.descriptor.controls;
@@ -482,7 +485,8 @@ function createControl(propertyString, viewName, name, params, controlParentView
                 params[key] = config.controls[name].overrideProductParams[key];
             }
         }
-        ctrl = new window[name](propertyString, viewName, cpv, name, params);
+        // свойств может быть несколько, передаем массив
+        ctrl = new window[name](propertyString.split(','), viewName, cpv, name, params);
     }
     catch(e) {
         log(e, true);

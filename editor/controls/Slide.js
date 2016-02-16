@@ -2,13 +2,13 @@
  * Created by artyom.grishanov on 24.01.16.
  *
  * @constructor
- * @param {string} propertyString - экрано может быть несколько, через запятую
+ * @param {Array.<string>} propertyStringsArray - экрано может быть несколько, через запятую
  * @param {string} directiveName - имя вью, имя директивы angular которая его загружает
  * @param {DOMElement} $parent
  * @param {string} name
  * @param {object} params
  */
-function Slide(propertyString, directiveName, $parent, name, params) {
+function Slide(propertyStringsArray, directiveName, $parent, name, params) {
     this.self = this;
     this.directiveName = directiveName;
     this.name = name;
@@ -17,20 +17,19 @@ function Slide(propertyString, directiveName, $parent, name, params) {
     // ставится движком в showScreen
     this.active = false;
     this.$parent = $parent;
-    this.propertyString = propertyString;
+    this.propertyStringsArray = propertyStringsArray;
     this.$directive = addDirective.call(this);
     this.onScreenUpdate = function(e) {
         //TODO хорошо перерисовывать только когда экран реально виден пользователю, только активный экран
         if (this.active === true) {
-            showScreen(this.propertyString.split(','));
+            showScreen(this.propertyStringsArray);
         }
     };
 
     // помним, что контрол может отвечать сразу за несколько экранов
-    var arr = this.propertyString.split(',');
     // подписка на обновления экрана в движке, контрол будет запрашивать у редактора перерисовку
-    for (var i = 0; i < arr.length; i++) {
-        Engine.on('ScreenUpdated', arr[i], this.onScreenUpdate.bind(this));
+    for (var i = 0; i < this.propertyStringsArray.length; i++) {
+        Engine.on('ScreenUpdated', this.propertyStringsArray[i], this.onScreenUpdate.bind(this));
     }
 
     /**
@@ -39,8 +38,7 @@ function Slide(propertyString, directiveName, $parent, name, params) {
      * @return DOMElement
      */
     function addDirective() {
-        var p = this.propertyString;
-        var $elem = $('<div '+this.directiveName+' data-app-property="'+p+'"></div>');
+        var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyStringsArray.join(',')+'"></div>');
         $parent.append($elem);
         return $elem;
     }

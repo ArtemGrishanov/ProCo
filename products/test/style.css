@@ -110,3 +110,13 @@ body {
 .explain_blk.__err{
     background-color: #ff2211;
 }
+.logo {
+    position: absolute;
+    width: 100px;
+    height: 60px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    top: 0;
+    left: 0;
+}

@@ -10,18 +10,18 @@
  * 3) Возможно, работает с dom элементом из промо-приложения.
  *
  * @constructor
- * @param {string} propertyString
+ * @param {Array.<string>} propertyStringArray
  * @param {string} directiveName - имя вью, имя директивы angular которая его загружает
  * @param {HTMLElement} $parent
  * @param {string} name
  * @param {object} params
  */
-function TextQuickInput(propertyString, directiveName, $parent, name, params) {
+function TextQuickInput(propertyStringArray, directiveName, $parent, name, params) {
     this.self = this;
     this.directiveName = directiveName;
     this.name = name;
     this.params = params;
-    this.propertyString = propertyString;
+    this.propertyStringArray = propertyStringArray;
     this.$parent = $parent;
 //    this.textInput = document.createElement('textInput');
 //    this.$parent = $parent;
@@ -33,17 +33,21 @@ function TextQuickInput(propertyString, directiveName, $parent, name, params) {
 //    Engine.on('DOMElementChanged', this.propertyString, init.bind(this));
 
     this.onProductElementInput = function() {
-        var p = Engine.getAppProperty(this.propertyString);
-        Engine.setValue(p, this.$productDomElem.text(), {
-            updateScreens: false
-        });
+        for (var i = 0; i < this.propertyStringArray.length; i++) {
+            var p = Engine.getAppProperty(this.propertyStringArray[i]);
+            Engine.setValue(p, this.$productDomElem.text(), {
+                updateScreens: false
+            });
+        }
     }
 
     this.onPropertyChanged = function() {
         //TODO тот кто стал инициатором изменения не должен сам обрабатывать событие
-        var p = Engine.getAppProperty(this.propertyString);
-        if (this.$productDomElem && this.$productDomElem.text() !== p.propertyValue) {
-            this.$productDomElem.text(p.propertyValue);
+        for (var i = 0; i < this.propertyStringArray.length; i++) {
+            var p = Engine.getAppProperty(this.propertyStringArray[i]);
+            if (this.$productDomElem && this.$productDomElem.text() !== p.propertyValue) {
+                this.$productDomElem.text(p.propertyValue);
+            }
         }
     }
 
@@ -133,7 +137,7 @@ function TextQuickInput(propertyString, directiveName, $parent, name, params) {
      * @return DOMElement
      */
     function addDirective() {
-        var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyString+'"></div>');
+        var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyStringsArray.join(',')+'"></div>');
         $parent.append($elem);
         return $elem;
     }

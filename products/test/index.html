@@ -24,6 +24,7 @@
                 </div>
             </div>
         </div>
+        <div class="logo js-logo js-start_logo" data-app-property="logoStartLeft,logoStartTop"></div>
     </div>
 
     <div class="js-slides_cnt">
@@ -104,6 +105,7 @@
                     </div>
                 </div>
             </div>
+            <div class="logo js-logo js-result_logo" data-app-property="logoResultLeft,logoResultTop"></div>
         <div>
     </script>
     <script>
@@ -165,6 +167,21 @@
             showBackgroundImage: true,
 
             background: 'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg)',
+
+            /**
+             * Логотип бренда, размещенный в тесте. Лого один, но позиции на разных экранах могут быть различные
+             *
+             */
+            d__logoUrl: 'editable=true;ui=ChooseImage(maxWidth=100,maxHeight=50)',
+            logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
+            d__logoStartLeft: 'editable=true;ui=Drag(update=none)',
+            logoStartLeft: 10,
+            d__logoStartTop: 'editable=true;ui=Drag(update=none)',
+            logoStartTop: 320,
+            d__logoResultLeft: 'editable=true;ui=Drag(update=none)',
+            logoResultLeft: 10,
+            d__logoResultTop: 'editable=true;ui=Drag(update=none)',
+            logoResultTop: 320,
 
             /**
              * Будет показано объяснения, если оно указано для вопроса.
@@ -631,6 +648,9 @@
             if (app.fontFamily) {
                 $('.cnt_wr').css('fontFamily',app.fontFamily);
             }
+            $('.js-logo').css('backgroundImage','url('+app.logoUrl+')');
+            $('.js-start_logo').css('top',app.logoStartTop+'px').css('left',app.logoStartLeft+'px');
+            $('.js-result_logo').css('top',app.logoResultTop+'px').css('left',app.logoResultLeft+'px');
         }
 
         /**

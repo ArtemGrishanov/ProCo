@@ -105,6 +105,11 @@ var config = {
             defaultDirectiveIndex: 0,
             directives: ['colorpicker'],
             parentId: 'id-static_controls_cnt'
+        },
+        Drag: {
+            defaultDirectiveIndex: 0,
+            directives: ['drag'],
+            parentId: 'id-control_cnt'
         }
     },
     editor: {

@@ -295,15 +295,20 @@ var Engine = {};
      * @public
      * @param {AppProperty} appProperty объект-обертка свойства в промо приложении. Например, 'results[0].title' или 'randomizeQuestions'
      * @param {*} value
-     * @param {boolean} [attrs.updateScreens] - true by default. Надо ли апдейтить экраны после применения свойства.
+     * @param {boolean} [attrs.updateScreens] - false by default. Надо ли апдейтить экраны после применения свойства.
+     * @param {boolean} [attrs.updateAppProperties] - true by default. Надо ли апдейтить список свойств
      * Например, при добавлении нового варианта ответа в тесте или вопроса -- конечно, надо.
      * При изменении текста вопроса - нет, не надо.
      * @return {}
      */
     function setValue(appProperty, value, attrs) {
-        var attributes = attrs || {
-            updateScreens: true
-        };
+        var attributes = attrs || {};
+        if (attributes.hasOwnProperty('updateScreens') === false) {
+            attributes.updateScreens = false;
+        }
+        if (attributes.hasOwnProperty('updateAppProperties') === false) {
+            attributes.updateAppProperties = true;
+        }
         var key = appProperty.propertyString;
         var stringifiedValue = JSON.stringify(value);
         log('Changing property \''+key+'\'='+stringifiedValue);
@@ -347,11 +352,13 @@ var Engine = {};
                     // передает ссылку на себя при старте
                     productWindow.start.call(productWindow, buildProductAppParams.call(this));
                 }
-                appProperties = [];
-                appPropertiesObjectPathes = [];
                 // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
-                //TODO нужен более умный алгоритм. Пересоздавать только то что надо и когда надо
-                createAppProperty(productWindow.app);
+                //TODO нужен более умный алгоритм. Пересоздавать только свойства в массиве. Есть ли другие случаи?
+                if (attributes.updateAppProperties === true) {
+                    appProperties = [];
+                    appPropertiesObjectPathes = [];
+                    createAppProperty(productWindow.app);
+                }
                 if (attributes.updateScreens === true) {
                     createAppScreens();
                 }

@@ -6,13 +6,13 @@
  * Кнопка сама перемещается вслед за наведением
 
  * @constructor
- * @param {string} propertyString
+ * @param {Array.<string>} propertyStringsArray
  * @param {string} directiveName - имя вью, имя директивы angular которая его загружает
  * @param {HTMLElement} $parent
  * @param {string} name
  * @param {object} params
  */
-function DeleteQuickButton(propertyString, directiveName, $parent, name, params) {
+function DeleteQuickButton(propertyStringsArray, directiveName, $parent, name, params) {
     this.self = this;
     this.directiveName = directiveName;
     this.name = name;
@@ -20,14 +20,16 @@ function DeleteQuickButton(propertyString, directiveName, $parent, name, params)
     this.arrayDomElements = null;
     this.overedArrayElement = null;
     this.$parent = $parent;
-    this.propertyString = propertyString;
+    this.propertyStringsArray = propertyStringsArray;
 
     this.onDeleteQuickButtonClick = function(e) {
         if (this.overedArrayElement) {
             var index = this.arrayDomElements.indexOf(this.overedArrayElement);
             if (index >= 0) {
-                var p = Engine.getAppProperty(this.propertyString);
-                Engine.deleteArrayElement(p, index);
+                for (var i = 0; i < this.propertyStringsArray.length; i++) {
+                    var p = Engine.getAppProperty(this.propertyStringsArray[i]);
+                    Engine.deleteArrayElement(p, index);
+                }
             }
         }
     }
@@ -40,7 +42,7 @@ function DeleteQuickButton(propertyString, directiveName, $parent, name, params)
      * @return DOMElement
      */
     function addDirective() {
-        var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyString+'"></div>');
+        var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyStringsArray.join(',')+'"></div>');
         $parent.append($elem);
         $elem.css('zIndex',config.editor.ui.quickControlsZIndex);
         $elem.css('position','absolute');
@@ -52,9 +54,10 @@ function DeleteQuickButton(propertyString, directiveName, $parent, name, params)
     this.setProductDomElement = function(elem) {
         this.arrayDomElements = []
         this.$productDomElem = $(elem);
-        var p = Engine.getAppProperty(this.propertyString);
+        //TODO
+        var p = Engine.getAppProperty(this.propertyStringsArray[0]);
         for (var i = 0; i < p.propertyValue.length; i++) {
-            var e = this.$productDomElem.find('[data-app-property=\"'+this.propertyString+'.'+i+'\"]');
+            var e = this.$productDomElem.find('[data-app-property=\"'+this.propertyStringsArray.join(',')+'.'+i+'\"]');
             if (e) {
                 this.arrayDomElements.push(e[0]);
                 $(e).mouseover(this.onElementOver.bind(this));

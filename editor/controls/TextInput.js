@@ -4,18 +4,18 @@
  * Контрол управления строкой
 
  * @constructor
- * @param {string} propertyString
+ * @param {Array.<string>} propertyStringsArray
  * @param {string} directiveName - имя вью, имя директивы angular которая его загружает
  * @param {HTMLElement} $parent
  * @param {string} name
  * @param {object} params
  */
-function TextInput(propertyString, directiveName, $parent, name, params) {
+function TextInput(propertyStringsArray, directiveName, $parent, name, params) {
     this.self = this;
     this.directiveName = directiveName;
     this.name = name;
     this.$parent = $parent;
-    this.propertyString = propertyString;
+    this.propertyStringsArray = propertyStringsArray;
     this.params = params;
 
     this.$directive = addDirective.call(this);
@@ -26,7 +26,7 @@ function TextInput(propertyString, directiveName, $parent, name, params) {
      * @return DOMElement
      */
     function addDirective() {
-        var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyString+'"></div>');
+        var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyStringsArray.join(',')+'"></div>');
         $parent.append($elem);
         return $elem;
     }
@@ -51,6 +51,7 @@ function TextInput(propertyString, directiveName, $parent, name, params) {
  */
 function TextInputController(scope, attrs) {
     var $e = attrs.$$element;
+    //TODO обрабатывается не массив, а одно свойство
     var propertyString = $e.parent().attr('data-app-property');
     var appProperty = Engine.getAppProperty(propertyString);
     if (appProperty) {
@@ -61,7 +62,9 @@ function TextInputController(scope, attrs) {
             if (scope.savedVal != v) {
                 scope.savedVal = v;
                 var ap = Engine.getAppProperty(propertyString);
-                Engine.setValue(ap, v);
+                if (ap.propertyValue !== v) {
+                    Engine.setValue(ap, v);
+                }
             }
         },500);
 //        $input.change('change',function (e) {

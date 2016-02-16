@@ -4,7 +4,7 @@
  * Контрол добавления
 
  * @constructor
- * @param {string} propertyString
+ * @param {Array.<string>} propertyString
  * @param {string} directiveName - имя вью, имя директивы angular которая его загружает
  * @param {HTMLElement} $parent
  * @param {string} name
