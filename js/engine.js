@@ -130,29 +130,71 @@ var Engine = {};
      * @param {object} obj объект window.app у промо-приложения
      */
     function createAppProperty(obj, strPrefix) {
-        strPrefix = strPrefix || '';
-        strPrefix += '.';
+        strPrefix = (strPrefix) ?(strPrefix+'.'): '';
         for (var key in obj) {
-            // прототипы не надо рассматривать и искать в них AppProperty
-            if (obj.hasOwnProperty(key) && key.indexOf(PROTOTYPE_PREFIX)!==0) {
-                // если это не дескриптор, а просто свойство
-                if (key.indexOf(DESC_PREFIX)!==0) {
-                    // смотрим, есть ли у него дескриптор
-                    if (obj.hasOwnProperty(DESC_PREFIX+key)) {
-                        var str = strPrefix + key;
-                        log('Property string: \''+ str + '\' and desc found: ' + obj[DESC_PREFIX+key], false, false);
-                        var p = new AppProperty(obj[key],str,obj[DESC_PREFIX+key]);
-                        appProperties.push(p);
-                        appPropertiesObjectPathes.push(p.propertyString);
-                        send('AppPropertyInited', p.propertyString);
-                    }
+            var str = strPrefix+key;
+            var descInfo = findDescription(str);
+            if (descInfo) {
+                if (descInfo.isPrototype === true) {
+                    // не нужно анализировать прототипы как appProperty
+                    continue;
                 }
-                if (obj[key] !== null && typeof obj[key] === 'object') {
-                    // идем глубже
-                    createAppProperty(obj[key], strPrefix + key);
+                log('Found AppProperty: \''+ str + '\'', false, true);
+                var p = new AppProperty(obj[key],str,descInfo);
+                appProperties.push(p);
+                appPropertiesObjectPathes.push(p.propertyString);
+                send('AppPropertyInited', p.propertyString);
+            }
+            if (obj[key] !== null && typeof obj[key] === 'object') {
+                // идем глубже в дочерние объекты
+                createAppProperty(obj[key], str);
+            }
+        }
+    }
+
+    /**
+     * Найти все описания для свойства objectString в объекте descriptor
+     *
+     * @param objectString
+     * @returns {*} null если ничего не найдено
+     */
+    function findDescription(objectString) {
+        var descInfo = null;
+        // в app.descriptor может быть несколько селекторов, которые соответствуют свойству
+        for (var selector in iframeWindow.descriptor) {
+            if (matchSelector(objectString,selector) === true) {
+                descInfo = descInfo || {};
+                // добавляем найденную конфигурацию в описание
+                for (var key in iframeWindow.descriptor[selector]) {
+                    descInfo[key] = iframeWindow.descriptor[selector][key];
                 }
             }
         }
+        return descInfo;
+    }
+
+    /**
+     * Сопоставить селектор и object-path свойства
+     *
+     * @param objectString например "quiz.0.options.1.text"
+     * @param selector например "quiz.{{number}}.options.{{number}}.text"
+     * @returns {boolean}
+     */
+    function matchSelector(objectString, selector) {
+        if (objectString === selector) {
+            return true;
+        }
+        else if (selector.indexOf('.') >= 0 || selector.indexOf('{{') >= 0) {
+            // Пример: selector "quiz.{{number}}.text" превращается в регулярку "quiz\.\d+\.text" и сравнивается с objectString на соответствие
+            var s = selector.replace(new RegExp('\\.','g'),'\\.').replace(new RegExp('{{number}}','ig'),'\\d+');
+            var reg = new RegExp(s,'ig');
+            var match = reg.exec(objectString);
+            if (match && match[0] == objectString) {
+                // match[0] string itself
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -295,9 +337,9 @@ var Engine = {};
      * @public
      * @param {AppProperty} appProperty объект-обертка свойства в промо приложении. Например, 'results[0].title' или 'randomizeQuestions'
      * @param {*} value
-     * @param {boolean} [attrs.updateScreens] - false by default. Надо ли апдейтить экраны после применения свойства.
-     * @param {boolean} [attrs.updateAppProperties] - true by default. Надо ли апдейтить список свойств
-     * @param {boolean} [attrs.runTests] - true by default. Надо ли искать и запускать тесты
+     * @param {boolean} [attrs.updateScreens] - Надо ли апдейтить экраны после применения свойства.
+     * @param {boolean} [attrs.updateAppProperties] - Надо ли апдейтить список свойств
+     * @param {boolean} [attrs.runTests] - Надо ли искать и запускать тесты
      * Например, при добавлении нового варианта ответа в тесте или вопроса -- конечно, надо.
      * При изменении текста вопроса - нет, не надо.
      * @return {}
@@ -305,13 +347,13 @@ var Engine = {};
     function setValue(appProperty, value, attrs) {
         var attributes = attrs || {};
         if (attributes.hasOwnProperty('updateScreens') === false) {
-            attributes.updateScreens = false;
+            attributes.updateScreens = appProperty.updateScreens;
         }
         if (attributes.hasOwnProperty('updateAppProperties') === false) {
-            attributes.updateAppProperties = true;
+            attributes.updateAppProperties = appProperty.updateAppProperties;
         }
         if (attributes.hasOwnProperty('runTests') === false) {
-            attributes.runTests = true;
+            attributes.runTests = appProperty.runTests;
         }
         var key = appProperty.propertyString;
         var stringifiedValue = JSON.stringify(value);
@@ -483,8 +525,8 @@ var Engine = {};
      * @returns {array<object>} например все прототипы слайдов, которые можно вставить в тест.
      */
     function getPrototypesForAppProperty(appProperty) {
-        if (appProperty.isArray === true && appProperty.descriptor.hasOwnProperty('canAdd')) {
-            var canAddArr = appProperty.descriptor.canAdd.split(',');
+        if (appProperty.isArray === true && appProperty.hasOwnProperty('canAdd')) {
+            var canAddArr = appProperty.canAdd;
             var result = null;
             for (var i = 0; i < canAddArr.length; i++) {
                 if (productWindow.app.hasOwnProperty(canAddArr[i])) {

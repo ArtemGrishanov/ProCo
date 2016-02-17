@@ -3,6 +3,21 @@
  */
 
 /**
+ * Допустимые свойства и их значения по умолчанию
+ *
+ * @type {{canAdd: null, editable: boolean, updateScreens: boolean, updateAppProperties: boolean, label: string, runTests: boolean}}
+ */
+var validAttributes = {
+    canAdd: null,
+    editable: false,
+    updateScreens: false,
+    updateAppProperties: true,
+    label: '',
+    runTests: true,
+    static: false
+};
+
+/**
  * Обертка вокруг одного свойства в объекте window.app
  * То, что можно менять в промо проекте.
  * Например, app.randomQuestions в тесте - для него будет создана обертка AppProperty, так как у этого свойства есть дескриптор и оно помечено для редактирования.
@@ -10,14 +25,13 @@
  * AppProperty показывает что свойство можно редактировать и каким образом. Например, через дескриптор можно указать UI для редактирования этого поля
  * Для массивов AppProperty предоставляет возможность клонирования элемента.
  *
- * @param propertyValue - значение свойства
- * @param propertyString - Строка вида 'quiz.2.options.1.points'
+ * @param {*} propertyValue - значение свойства
+ * @param {string} propertyString - Строка вида 'quiz.2.options.1.points'
  * Которая подразумевает свойство window.app.quiz[2].options[1].points
  * или иначе windows.app['quiz']['2']['options']['1']['points']
- * @param descString - строка-дескриптор, описывающая как работать со свойством
+ * @param {object} descriptor - строка-дескриптор, описывающая как работать со свойством
  */
-
-var AppProperty = function(propertyValue, propertyString, descString) {
+var AppProperty = function(propertyValue, propertyString, descriptor) {
     this.propertyValue = propertyValue;
     this.propertyString = propertyString;
     // в начале строки может быть запятая, отсекаем
@@ -26,20 +40,43 @@ var AppProperty = function(propertyValue, propertyString, descString) {
     }
     // может быть привязан позднее
     this.domElement = null;
-    this.descString = descString;
-    if (descString) {
-        this.descriptor = this.parseDescriptor(descString);
+    //TODO рефакторинг условия и параметры в цикле
+    // декскриптор и его нормализация
+
+    for (var key in validAttributes) {
+        if (descriptor.hasOwnProperty(key)) {
+            this[key] = descriptor[key];
+        }
+        else {
+            this[key] = validAttributes[key];
+        }
     }
-    else {
-        this.descriptor = null;
-    }
-    if (!this.descriptor.hasOwnProperty('editable')) {
-        this.descriptor.editable = false;
-    }
-    if (this.descriptor.hasOwnProperty('ui')) {
-        // для одного свойства может быть несколько контролов, они будут в этом массиве
-        this.descriptor.controls = this.parseControl(this.descriptor.ui);
-    }
+
+//    if (descriptor.hasOwnProperty('editable') === false) {
+//        this.editable = false;
+//    }
+//    else {
+//        this.editable = descriptor.editable;
+//    }
+//    if (descriptor.hasOwnProperty('updateScreens') === false) {
+//        this.updateScreens = false;
+//    }
+//    else {
+//        this.updateScreens = descriptor.updateScreens;
+//    }
+//    if (descriptor.hasOwnProperty('updateAppProperties') === false) {
+//        this.updateAppProperties = true;
+//    }
+//    else {
+//        this.updateAppProperties = descriptor.updateAppProperties;
+//    }
+//    if (descriptor.hasOwnProperty('runTests') === false) {
+//        this.runTests = true;
+//    }
+//    else {
+//        this.runTests = descriptor.runTests;
+//    }
+    this.parseControls(descriptor);
     this.path = this.propertyString.split('.');
     this.isArray = Array.isArray(this.propertyValue);
     log('Property inited: ' + this.path.toString(), false, false);
@@ -64,20 +101,6 @@ AppProperty.prototype.parseDescriptor = function(descString) {
             }
             d[match[1]] = match[2];
         }
-//        var options = descString.split(';');
-//        for (var i = 0; i < options.length; i++) {
-//
-//            var values = options[i].split('=');
-//            if (values[0] && values[1]) {
-//                d[values[0]] = values[1];
-//                if (d[values[0]] === 'false') {
-//                    d[values[0]] = false;
-//                }
-//                if (d[values[0]] === 'true') {
-//                    d[values[0]] = true;
-//                }
-//            }
-//        }
     }
     catch(e) {
         d = null;
@@ -93,34 +116,58 @@ AppProperty.prototype.parseDescriptor = function(descString) {
  * @param str
  * @returns {Array}
  */
-AppProperty.prototype.parseControl = function(str) {
-    var reg = /((?:\w)+)(?:\(((?:\w|\,|=)*)\)){0,1}/ig;
-    var res = [];
-    while (match = reg.exec(str)) {
-        // match[0] string itself
-        var n = match[1];
-        var p = {};
-        if (match[2]) {
-            // есть какие то параметры в описании контрола
-            var preg = /((?:\w)+)\=((?:\w)+)/ig;
-            var pmatch = null;
-            while (pmatch = preg.exec(match[2])) {
-                // булиновкие типы лучше сразу сделать, чтобы удобнее было потом работать
-                if (pmatch[2] === 'false') {
-                    pmatch[2] = false;
+AppProperty.prototype.parseControls = function(descriptor) {
+    // контрол может быть объявлен в двух вариантах. Массив и объект
+    if (descriptor.controls) {
+        if (Array.isArray(descriptor.controls) === true) {
+            // формат уже должен соответствовать тому что требуется
+            for (var i = 0; i < descriptor.controls.length; i++) {
+                if (!descriptor.controls[i].params) {
+                    // вдруг где-то забылы хотябы пустые параметры задать
+                    desctiptor.controls[i].params = {};
                 }
-                if (pmatch[2] === 'true') {
-                    pmatch[2] = true;
-                }
-                p[pmatch[1]] = pmatch[2];
             }
+            this.controls = descriptor.controls;
         }
-        res.push({
-            name: n,
-            params: p
-        });
+        else {
+            descriptor.controlParams = descriptor.controlParams || {};
+            // сделать массив контролов из одного контрола
+            this.controls = [{
+                name: descriptor.controls,
+                params: descriptor.controlParams
+            }];
+        }
     }
-    return res;
+    else {
+        this.controls = [];
+    }
+//    var reg = /((?:\w)+)(?:\(((?:\w|\,|=)*)\)){0,1}/ig;
+//    var res = [];
+//    while (match = reg.exec(str)) {
+//        // match[0] string itself
+//        var n = match[1];
+//        var p = {};
+//        if (match[2]) {
+//            // есть какие то параметры в описании контрола
+//            var preg = /((?:\w)+)\=((?:\w)+)/ig;
+//            var pmatch = null;
+//            while (pmatch = preg.exec(match[2])) {
+//                // булиновкие типы лучше сразу сделать, чтобы удобнее было потом работать
+//                if (pmatch[2] === 'false') {
+//                    pmatch[2] = false;
+//                }
+//                if (pmatch[2] === 'true') {
+//                    pmatch[2] = true;
+//                }
+//                p[pmatch[1]] = pmatch[2];
+//            }
+//        }
+//        res.push({
+//            name: n,
+//            params: p
+//        });
+//    }
+//    return res;
 }
 
 /**
@@ -139,22 +186,3 @@ AppProperty.prototype.getArrayElementCopy = function(index) {
     }
     return null;
 }
-//
-//AppProperty.prototype.addChangeCallback = function(clb) {
-//    if (!this.changeCallbacks) {
-//        this.changeCallbacks = [];
-//    }
-//    this.changeCallbacks.push(clb);
-//}
-//AppProperty.prototype.sendChangeEvent = function(field) {
-//    if (this.changeCallbacks) {
-//        for (var i = 0; i < this.changeCallbacks.length; i++) {
-//            this.changeCallbacks[i].call(this, field);
-//        }
-//    }
-//}
-//
-//AppProperty.prototype.set = function(key, value) {
-//    this[key] = value;
-//    this.sendChangeEvent(key);
-//};

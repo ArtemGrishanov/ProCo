@@ -10,8 +10,8 @@ function AddArrayElementControl(propertyString, directiveName, $parent, productD
         var pp = Engine.getPrototypesForAppProperty(ap);
         if (pp && pp.length > 0) {
             var protoIndex = params.prototypeIndex || 0;
-            Engine.addArrayElement(ap, pp[protoIndex], undefined, {updateScreens:true});
-            if (this.params && this.params.updateScreens === true) {
+            Engine.addArrayElement(ap, pp[protoIndex]);
+            if (ap.updateScreens === true) {
                 syncUIControlsToAppProperties();
             }
         }

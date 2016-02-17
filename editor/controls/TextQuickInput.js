@@ -8,9 +8,7 @@ function TextQuickInput(propertyString, directiveName, $parent, productDOMElemen
 
     this.onProductElementInput = function() {
         var p = Engine.getAppProperty(this.propertyString);
-        Engine.setValue(p, this.$productDomElement.text(), {
-            updateScreens: false
-        });
+        Engine.setValue(p, this.$productDomElement.text());
     }
 
     this.onPropertyChanged = function() {

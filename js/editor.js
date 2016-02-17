@@ -216,7 +216,7 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
             // в этом случае берем описание из дескриптора первого элемента [0]. Свойства должны быть идентичными, иначе это не имеет смысла
             if (appProperty) {
                 // не забыть что может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
-                var controlsInfo = appProperty.descriptor.controls;
+                var controlsInfo = appProperty.controls;
                 for (var j = 0; j < controlsInfo.length; j++) {
                     // имя вью для контрола
                     var viewName = controlsInfo[j].params.viewName;
@@ -278,11 +278,11 @@ function syncUIControlsToAppProperties() {
     for (var i = 0; i < appPropertiesStrings.length; i++) {
         var ps = appPropertiesStrings[i];
         var ap = Engine.getAppProperty(ps);
-        if (ap.descriptor.controls) {
+        if (ap.controls) {
             // у свойства может быть несколько контролов
-            for (var j = 0; j < ap.descriptor.controls.length; j++) {
-                var c = ap.descriptor.controls[j];
-                if (c.params && c.params.static === true) {
+            for (var j = 0; j < ap.controls.length; j++) {
+                var c = ap.controls[j];
+                if (ap.static === true) {
                     // контрол помечен как постоянный в дескрипторе, то есть его надо создать сразу и навсегда (пересоздастся только вместе с экранами)
                     var parent = null;
                     var sg = c.params.screenGroup;
@@ -292,8 +292,8 @@ function syncUIControlsToAppProperties() {
                     else {
                         // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на правую панель
                         var $cc = $($('#id-static_control_cnt_template').html()).appendTo('#id-static_controls_cnt');
-                        if (ap.descriptor.label) {
-                            $cc.find('.js-label').text(ap.descriptor.label);
+                        if (ap.label) {
+                            $cc.find('.js-label').text(ap.label);
                         }
                         parent = $cc.find('.js-control_cnt');
                     }

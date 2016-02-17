@@ -15,7 +15,7 @@ function DeleteQuickButton(propertyString, directiveName, $parent, productDOMEle
             var index = this.arrayDomElements.indexOf(this.overedArrayElement);
             if (index >= 0) {
                 var p = Engine.getAppProperty(this.propertyString);
-                Engine.deleteArrayElement(p, index, {updateScreens:true});
+                Engine.deleteArrayElement(p, index);
             }
         }
     }

@@ -121,49 +121,29 @@
          */
         var app = {
 
-            d__startHeaderText: 'editable=true;ui=TextQuickInput',
+//            d__startHeaderText: 'editable=true;ui=TextQuickInput',
             startHeaderText: 'Тест по географии',
 
-            d__startDescription: 'editable=true;ui=TextQuickInput',
+//            d__startDescription: 'editable=true;ui=TextQuickInput',
             startDescription: 'Проверь свои знания в географии',
 
-            d__restartButtonText: 'editable=true;ui=TextQuickInput',
+//            d__restartButtonText: 'editable=true;ui=TextQuickInput',
             restartButtonText: 'Заново',
 
             //TODO по идее это не контрол статик, а свойство статик!
-            d__randomizeQuestions: 'editable=true;ui=OnOff(static=true,viewName=OnOffSwitcher);label=Перемешать вопросы',
+//            d__randomizeQuestions: 'editable=true;ui=OnOff(static=true,viewName=OnOffSwitcher);label=Перемешать вопросы',
             randomizeQuestions: false,
             randomizeOptions: false,
 
-            /**
-             * Что и как хотим менять?
-             *
-             * Стиль класса?
-             * Стиль отдельного элемента html?
-             * Атрибут html
-             * Добавлять новый html элемент в указанное место
-             * Удалять html элемент
-             * Тексты в html
-             * Переменную в js
-             * переключатели между css свойствами, например, display
-             *
-             */
-            slide: {
-                canAdd: true,
-                comment: 'Добавить слайд',
-                templateId: 'id-slide_templ',
-                parent: '.js-questions_cnt'
-            },
-
             //TODO rename ui->control
-            d__backgroundColor: 'editable=true;ui=TextInput(viewName=ColorPicker,static=true,updateScreens=true);label=Цвет фона',
+//            d__backgroundColor: 'editable=true;ui=TextInput(viewName=ColorPicker,static=true,updateScreens=true);label=Цвет фона',
             backgroundColor: '#aaa',
-            d__fontColor: 'editable=true;ui=TextInput(viewName=ColorPicker,static=true,updateScreens=true);label=Цвет шрифта',
+//            d__fontColor: 'editable=true;ui=TextInput(viewName=ColorPicker,static=true,updateScreens=true);label=Цвет шрифта',
             fontColor: '#fff',
-            d__fontFamily: 'editable=true',
+//            d__fontFamily: 'editable=true',
             fontFamily: 'Arial',
 
-            d__showBackgroundImage: 'editable=true;ui=OnOff(static=true,updateScreens=true);label=Картинка',
+//            d__showBackgroundImage: 'editable=true;ui=OnOff(static=true,updateScreens=true);label=Картинка',
             showBackgroundImage: true,
 
             background: 'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg)',
@@ -172,14 +152,14 @@
              * Логотип бренда, размещенный в тесте. Лого один, но позиции на разных экранах могут быть различные
              *
              */
-            d__logoUrl: 'editable=true;ui=ChooseImage(maxWidth=100,maxHeight=50)',
+//            d__logoUrl: 'editable=true;ui=ChooseImage(maxWidth=100,maxHeight=50)',
             logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
-            d__logoStartPosition: 'editable=true;ui=Drag(update=none)',
+//            d__logoStartPosition: 'editable=true;ui=Drag(update=none)',
             logoStartPosition: {
                 left: 10,
                 top: 320
             },
-            d__logoResultPosition: 'editable=true;ui=Drag(update=none)',
+//            d__logoResultPosition: 'editable=true;ui=Drag(update=none)',
             logoResultPosition: {
                 left: 10,
                 top: 320
@@ -191,33 +171,33 @@
              * Приоритетнее: для варианта ответа, а потом уже (если есть) для всего вопроса
              */
             showExplanation: true,
-            d__showExplanation: 'editable=true',
+//            d__showExplanation: 'editable=true',
 
             /**
              * Вопросы с ответами
              */
-            d__quiz: 'editable=true;ui=AddArrayElementControl(viewName=AddScreenButton,static=true,updateScreens=true,screenGroup=questions,prototypeIndex=0),AddArrayElementControl(viewName=AddScreenButton,static=true,updateScreens=true,screenGroup=questions,prototypeIndex=1);length={apps.tests.maxquizcount};canAdd=proto__text_slide,proto__photo_question_slide',
+//            d__quiz: 'editable=true;ui=AddArrayElementControl(viewName=AddScreenButton,static=true,updateScreens=true,screenGroup=questions,prototypeIndex=0),AddArrayElementControl(viewName=AddScreenButton,static=true,updateScreens=true,screenGroup=questions,prototypeIndex=1);length={apps.tests.maxquizcount};canAdd=proto__text_slide,proto__photo_question_slide',
             quiz: [
                 {
                     uiTemplate: 'id-slide_text_template',
-                    d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
+//                    d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Мадагаскар -- это где?',
-                    d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
+//                    d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
                     options: [
                         {
-                            d__text: 'editable=true;ui=TextQuickInput;',
+//                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Страна на западе Африки',
                             type: 'text',
                             explanation: 'Это страна, но не на западе.'
                         },
                         {
-                            d__text: 'editable=true;ui=TextQuickInput;',
+//                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Остров в Атлантическом океане',
                             type: 'text',
                             explanation: 'Остров, но не в Атлантике.'
                         },
                         {
-                            d__text: 'editable=true;ui=TextQuickInput;',
+//                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Остров на юге Африки',
                             type: 'text',
                             points: 1,
@@ -228,42 +208,42 @@
                 },
                 {
                     uiTemplate: 'id-slide_photo_template',
-                    d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
+//                    d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Текст фото вопроса?',
                     //TODO base64 data
                     img: 'http://localhost:63342/ProCo/products/test/i/picture1.jpg',
-                    d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
+//                    d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
                     options: [
                         {
-                            d__text: 'editable=true;ui=TextQuickInput;',
+//                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Вариант ответа 1',
                             points: 1
                         },
                         {
-                            d__text: 'editable=true;ui=TextQuickInput;',
+//                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Вариант ответа 2'
                         }
                     ],
-                    d__explanation: 'editable=true;',
+//                    d__explanation: 'editable=true;',
                     explanation: 'Пояснение к ответу'
                 },
                 {
                     uiTemplate: 'id-slide_text_template',
-                    d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
+//                    d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Какая самая большая страна?',
-                    d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
+//                    d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
                     options: [
                         {
-                            d__text: 'editable=true;ui=TextQuickInput;',
+//                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Гренландия'
                         },
                         {
-                            d__text: 'editable=true;ui=TextQuickInput;',
+//                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Россия',
                             points: 1
                         },
                         {
-                            d__text: 'editable=true;ui=TextQuickInput;',
+//                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Австралия'
                         }
                     ],
@@ -271,25 +251,25 @@
                 },
                 {
                     uiTemplate: 'id-slide_text_template',
-                    d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
+//                    d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                     text: 'Какого моря не существует?',
-                    d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
+//                    d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
                     options: [
                         {
-                            d__text: 'editable=true;ui=TextQuickInput;',
+//                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Черное море'
                         },
                         {
-                            d__text: 'editable=true;ui=TextQuickInput;',
+//                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Синее море',
                             points: 1
                         },
                         {
-                            d__text: 'editable=true;ui=TextQuickInput;',
+//                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Красное море'
                         },
                         {
-                            d__text: 'editable=true;ui=TextQuickInput;',
+//                            d__text: 'editable=true;ui=TextQuickInput;',
                             text: 'Желтое море'
                         }
                     ]
@@ -324,48 +304,48 @@
             // шаблон текстового вопроса
             proto__text_slide: {
                 uiTemplate: 'id-slide_text_template',
-                d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
+//                d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                 text: 'Текст вопроса?',
-                d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
+//                d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
                 options: [
                     {
-                        d__text: 'editable=true;ui=TextQuickInput;',
+//                        d__text: 'editable=true;ui=TextQuickInput;',
                         text: 'Вариант ответа 1',
                         points: 1
                     },
                     {
-                        d__text: 'editable=true;ui=TextQuickInput;',
+//                        d__text: 'editable=true;ui=TextQuickInput;',
                         text: 'Вариант ответа 2'
                     }
                 ],
-                d__explanation: 'editable=true;',
+//                d__explanation: 'editable=true;',
                 explanation: 'Пояснение к ответу'
             },
 
             // шаблон фото вопроса
             proto__photo_question_slide: {
                 uiTemplate: 'id-slide_photo_template',
-                d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
+//                d__text: 'editable=true;ui=TextQuickInput;default={config.textForTest};maxlength=10',
                 text: 'Текст фото вопроса?',
                 img: 'http://localhost:63342/ProCo/products/test/i/picture1.jpg',
-                d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
+//                d__options: 'editable=true;ui=AddArrayElementControl,DeleteQuickButton;canAdd=proto__option_text',
                 options: [
                     {
-                        d__text: 'editable=true;ui=TextQuickInput;',
+//                        d__text: 'editable=true;ui=TextQuickInput;',
                         text: 'Вариант ответа 1',
                         points: 1
                     },
                     {
-                        d__text: 'editable=true;ui=TextQuickInput;',
+//                        d__text: 'editable=true;ui=TextQuickInput;',
                         text: 'Вариант ответа 2'
                     }
                 ],
-                d__explanation: 'editable=true;',
+//                d__explanation: 'editable=true;',
                 explanation: 'Пояснение к ответу'
             },
 
             proto__option_text: {
-                d__text: 'editable=true;ui=TextQuickInput;',
+//                d__text: 'editable=true;ui=TextQuickInput;',
                 text: 'Вариант ответа'
             }
         };
@@ -484,14 +464,6 @@
          *
          */
         function updateResults() {
-            var r = {
-                minPoints: 0,
-                maxPoints: 1,
-                d__title: 'editable=true;ui=TextQuickInput;',
-                title: 'Название результата',
-                d__description: 'editable=true;ui=TextQuickInput;',
-                description: 'Неплохо для начала.'
-            };
             for (var i = 0; i < app.quiz.length; i++) {
                 // если такого результата не существует, то создать.
                 // это может случиться после добавления нового вопроса в тест
@@ -500,9 +472,7 @@
                     app.results[i] = {
                         minPoints: i,
                         maxPoints: i+1,
-                        d__title: 'editable=true;ui=TextQuickInput;',
                         title: 'Название результата ' + (i+1),
-                        d__description: 'editable=true;ui=TextQuickInput;',
                         description: 'Неплохо для начала.'
                     };
                 }
@@ -828,5 +798,6 @@
             start();
         });
     </script>
+    <script type="text/javascript" src="descriptor.js"></script>
 </body>
 </html>

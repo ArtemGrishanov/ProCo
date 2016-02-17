@@ -17,7 +17,6 @@ TextInput.prototype = AbstractControl;
  */
 function TextInputController(scope, attrs) {
     var $e = attrs.$$element;
-    //TODO обрабатывается не массив, а одно свойство
     var propertyString = $e.parent().attr('data-app-property');
     var appProperty = Engine.getAppProperty(propertyString);
     if (appProperty) {

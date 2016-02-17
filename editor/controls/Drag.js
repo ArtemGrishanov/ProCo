@@ -14,7 +14,7 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
             // апдейт экранов нужен в том случае, когда показано несколько экранов сразу
             // обновлять экраны не надо, так как обновления происхоит по подписке на свойство для скорости
             var ap1 = Engine.getAppProperty(this.propertyString);
-            Engine.setValue(ap1, this.elemPosition, {updateScreens: false, runTests: false});
+            Engine.setValue(ap1, this.elemPosition);
         }
         this.isDragging = false;
     };
@@ -28,7 +28,7 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
             this.$productDomElement.css('top', this.elemPosition.top+'px');
             this.$productDomElement.css('left', this.elemPosition.left+'px');
             var ap1 = Engine.getAppProperty(this.propertyString);
-            Engine.setValue(ap1, this.elemPosition, {updateScreens: false, runTests: false});
+            Engine.setValue(ap1, this.elemPosition);
         }
     };
 
