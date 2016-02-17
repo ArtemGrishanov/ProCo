@@ -72,8 +72,8 @@ var config = {
     },
     controls: {
         TextQuickInput: {
-            defaultDirectiveIndex: 0,
-            directives: ['textquickinput'],
+            defaultDirectiveIndex: -1, // view не используется
+            directives: [/*'textquickinput'*/],
             parentId: 'id-control_cnt'
         },
         Slide: {

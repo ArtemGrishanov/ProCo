@@ -2,53 +2,12 @@
  * Created by artyom.grishanov on 02.02.16.
  *
  * Контрол типа Вкл/Выкл
-
- * @constructor
- * @param {Array.<string>} propertyStringsArray
- * @param {string} directiveName - имя вью, имя директивы angular которая его загружает
- * @param {HTMLElement} $parent
- * @param {string} name
- * @param {object} params
+ * Хорошо подходит для редактирования свойства типа boolean
  */
-function OnOff(propertyStringsArray, directiveName, $parent, name, params) {
-    this.self = this;
-    this.directiveName = directiveName;
-    this.name = name;
-    this.$parent = $parent;
-    this.propertyStringsArray = propertyStringsArray;
-    this.params = params;
-
-    this.onChange = function(e) {
-        for (var i = 0; i < this.propertyStringsArray.length; i++) {
-            var ap = Engine.getAppProperty(this.propertyStringsArray[i]);
-            console.log('Change');
-        }
-    }
-
-    this.$directive = addDirective.call(this);
-
-    /**
-     * Добавить директиву в контейнер this.$parent
-     *
-     * @return DOMElement
-     */
-    function addDirective() {
-        var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyStringsArray.join(',')+'"></div>');
-        $parent.append($elem);
-        return $elem;
-    }
-
-    /**
-     * Подразумевается, что этот метод может вызваться только,
-     * когда контрол находится в поверх промо проекта при редактировании
-     * Так называемый "быстрый контрол".
-     *
-     * @param elem
-     */
-    this.setProductDomElement = function(elem) {
-    }
+function OnOff(propertyString, directiveName, $parent, productDOMElement, params) {
+    this.init(propertyString, directiveName, $parent, productDOMElement, params);
 }
-
+OnOff.prototype = AbstractControl;
 /**
  * Angular контроллер, для управления view
  * имя состоит из двух частей: 'Имя контрола'+'Controller'

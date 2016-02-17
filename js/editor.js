@@ -173,7 +173,6 @@ function showScreen(ids) {
 
     var $screensCnt = $('#id-product_screens_cnt');
     $screensCnt.empty();
-//    activeScreensControls = [];
     var appScreen = null;
     for (var i = 0; i < ids.length; i++) {
         appScreen = Engine.getAppScreen(ids[i]);
@@ -185,22 +184,6 @@ function showScreen(ids) {
                 appScreen.doWhenInDOM(iframeWindow.app, appScreen.view);
             }
             bindControlsForAppPropertiesOnScreen(appScreen.view, ids[i]);
-
-            //TODO так не можем сделать, так как есть один контрол на два экрана resultScr0,resultScr1
-            //var info = findControlInfo(ids[i]);
-            // пока кастомная функция поиска
-            for (var j = 0; j < uiControlsInfo.length; j++) {
-                if (uiControlsInfo[j].control.constructor == Slide) {
-                    // Для контролов Slide отмечаем активные и неактивные контролы с целью того, что после пересборки экранов восстановить показ активного экрана
-                    if (uiControlsInfo[j].control.propertyStringsArray.indexOf(ids[i]) >= 0) {
-                        uiControlsInfo[j].control.active = true;
-//                        activeScreensControls.push(uiControlsInfo[j].control);
-                    }
-                    else {
-                        uiControlsInfo[j].control.active = false;
-                    }
-                }
-            }
         }
         else {
             //TODO показать ошибку наверное
@@ -237,7 +220,7 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
                 for (var j = 0; j < controlsInfo.length; j++) {
                     // имя вью для контрола
                     var viewName = controlsInfo[j].params.viewName;
-                    var newControl = createControl(pAtt, viewName, controlsInfo[j].name, controlsInfo[j].params);
+                    var newControl = createControl(pAtt, viewName, controlsInfo[j].name, controlsInfo[j].params, null, elems[i]);
                     if (newControl) {
                         // только если действительно получилось создать ui для настройки
                         // не все контролы могут быть реализованы или некорректно указаны
@@ -246,7 +229,6 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
                             control: newControl,
                             domElement: elems[i]
                         });
-                        newControl.setProductDomElement(elems[i]);
                     }
                     else {
                         log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+pAtt+ '\' on the screen '+scrId, true);
@@ -399,7 +381,7 @@ function createScreenControls() {
                 }
                 var ci = findControlInfo(slideId);
                 if (ci === null) {
-                    var newControl = createControl(slideId, null, 'Slide', {}, $groupView.find('.js-slides_cnt'));
+                    var newControl = createControl(slideId, null, 'Slide', {}, $groupView.find('.js-slides_cnt'), null);
                     if (newControl) {
                         uiControlsInfo.push({
                             appPropertyString: slideId,
@@ -453,14 +435,15 @@ function findControlInfo(propertyString, domElement) {
  * Создать контрол для свойства промо приложения или его экрана
  * На основе информации appProperty будет выбран ui компонент и создан его экземпляр
  *
- * @param propertyString
+ * @param {string} propertyString
  * @param {string} viewName - имя вью, который будет использован для контрола
  * @param {string} name
  * @param {object} params
  * @param [controlParentView] для некоторых контролов место выбирается динамически. Например для групп слайдов
+ * @param {HTMLElement} [productDOMElement] элемент на экране продукта к которому будет привязан контрол
  * @returns {*}
  */
-function createControl(propertyString, viewName, name, params, controlParentView) {
+function createControl(propertyString, viewName, name, params, controlParentView, productDOMElement) {
     var ctrl = null;
     try {
         // существует ли такой вью, если нет, берем по умолчанию
@@ -469,7 +452,11 @@ function createControl(propertyString, viewName, name, params, controlParentView
             viewName = viewName.toLowerCase();
         }
         if (!viewName || config.controls[name].directives.indexOf(viewName) < 0) {
-            viewName = config.controls[name].directives[config.controls[name].defaultDirectiveIndex];
+            var dirIndex = config.controls[name].defaultDirectiveIndex;
+            if (dirIndex>=0) {
+                // некоторые контролы могут не иметь визуальной части
+                viewName = config.controls[name].directives[dirIndex];
+            }
         }
         // задается по параметру или по дефолту из конфига
         var cpv = null;
@@ -486,7 +473,8 @@ function createControl(propertyString, viewName, name, params, controlParentView
             }
         }
         // свойств может быть несколько, передаем массив
-        ctrl = new window[name](propertyString.split(','), viewName, cpv, name, params);
+        var propertyStrArg = (propertyString.indexOf(',')>=0)?propertyString.split(','):propertyString;
+        ctrl = new window[name](propertyStrArg, viewName, cpv, productDOMElement, params);
     }
     catch(e) {
         log(e, true);

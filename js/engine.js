@@ -297,6 +297,7 @@ var Engine = {};
      * @param {*} value
      * @param {boolean} [attrs.updateScreens] - false by default. Надо ли апдейтить экраны после применения свойства.
      * @param {boolean} [attrs.updateAppProperties] - true by default. Надо ли апдейтить список свойств
+     * @param {boolean} [attrs.runTests] - true by default. Надо ли искать и запускать тесты
      * Например, при добавлении нового варианта ответа в тесте или вопроса -- конечно, надо.
      * При изменении текста вопроса - нет, не надо.
      * @return {}
@@ -309,34 +310,39 @@ var Engine = {};
         if (attributes.hasOwnProperty('updateAppProperties') === false) {
             attributes.updateAppProperties = true;
         }
+        if (attributes.hasOwnProperty('runTests') === false) {
+            attributes.runTests = true;
+        }
         var key = appProperty.propertyString;
         var stringifiedValue = JSON.stringify(value);
         log('Changing property \''+key+'\'='+stringifiedValue);
         if (productWindow.app && productWindow.tests) {
             // обнуляем перед прогоном тестов
             testResults = [];
-            //TODO для сложных строк типа quiz.1.text как определять тесты? Возможно, все таки явно указывать
-            for (var i = 0; i < productWindow.tests.length; i++) {
-                var s = productWindow.tests[i].toString();
-                // запускаем тесты, в которых обнаружено данное свойство
-                if (s.indexOf('.'+key) >= 0 || s.indexOf('\''+key+'\'') >= 0) {
-                    // клонируем настройки приложения, чтобы на них произвести тест
-                    //TODO может быть не эффективно на сложных объектах
-                    var appCopy = JSON.parse(JSON.stringify(productWindow.app));
-                    // делаем изменение
-                    eval('appCopy'+convertToBracedString(key)+'='+stringifiedValue);
-                    try {
-                        // запускаем тест на новых настройках, результаты собираются в переменную
-                        log('Running test...');
-                        productWindow.tests[i].call(productWindow, appCopy, this);
-                    }
-                    catch(e) {
-                        // что-то непредвиденное тоже обрабатываем, так как запускаются клиентские тесты
-                        testResults.push({
-                            result: 'error',
-                            message: e
-                        });
-                        log(e, true);
+            if (attributes.runTests === true) {
+                //TODO для сложных строк типа quiz.1.text как определять тесты? Возможно, все таки явно указывать
+                for (var i = 0; i < productWindow.tests.length; i++) {
+                    var s = productWindow.tests[i].toString();
+                    // запускаем тесты, в которых обнаружено данное свойство
+                    if (s.indexOf('.'+key) >= 0 || s.indexOf('\''+key+'\'') >= 0) {
+                        // клонируем настройки приложения, чтобы на них произвести тест
+                        //TODO может быть не эффективно на сложных объектах
+                        var appCopy = JSON.parse(JSON.stringify(productWindow.app));
+                        // делаем изменение
+                        eval('appCopy'+convertToBracedString(key)+'='+stringifiedValue);
+                        try {
+                            // запускаем тест на новых настройках, результаты собираются в переменную
+                            log('Running test...');
+                            productWindow.tests[i].call(productWindow, appCopy, this);
+                        }
+                        catch(e) {
+                            // что-то непредвиденное тоже обрабатываем, так как запускаются клиентские тесты
+                            testResults.push({
+                                result: 'error',
+                                message: e
+                            });
+                            log(e, true);
+                        }
                     }
                 }
             }

@@ -1,29 +1,16 @@
 /**
  * Created by artyom.grishanov on 02.02.16.
  *
- * Контрол добавления
-
- * @constructor
- * @param {Array.<string>} propertyString
- * @param {string} directiveName - имя вью, имя директивы angular которая его загружает
- * @param {HTMLElement} $parent
- * @param {string} name
- * @param {object} params
+ * Контрол добавления элемента в массив
  */
-function AddArrayElementControl(propertyString, directiveName, $parent, name, params) {
-    this.self = this;
-    this.directiveName = directiveName;
-    this.name = name;
-    this.$parent = $parent;
-    this.propertyString = propertyString;
-    this.params = params;
-
+function AddArrayElementControl(propertyString, directiveName, $parent, productDOMElement, params) {
+    this.init(propertyString, directiveName, $parent, productDOMElement, params);
     this.onAddQuickButtonClick = function(e) {
         var ap = Engine.getAppProperty(this.propertyString);
         var pp = Engine.getPrototypesForAppProperty(ap);
         if (pp && pp.length > 0) {
             var protoIndex = params.prototypeIndex || 0;
-            Engine.addArrayElement(ap, pp[protoIndex]);
+            Engine.addArrayElement(ap, pp[protoIndex], undefined, {updateScreens:true});
             if (this.params && this.params.updateScreens === true) {
                 syncUIControlsToAppProperties();
             }
@@ -32,40 +19,19 @@ function AddArrayElementControl(propertyString, directiveName, $parent, name, pa
             log('There is no prototypes for \''+this.propertyString+'\'', true);
         }
     }
-
-    this.$directive = addDirective.call(this);
-
-    /**
-     * Добавить директиву в контейнер this.$parent
-     *
-     * @return DOMElement
-     */
-    function addDirective() {
-        var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyString+'"></div>');
-        $parent.append($elem);
-        $elem.on('click', this.onAddQuickButtonClick.bind(this));
-        return $elem;
-    }
-
-    /**
-     * Подразумевается, что этот метод может вызваться только,
-     * когда контрол находится в поверх промо проекта при редактировании
-     * Так называемый "быстрый контрол".
-     *
-     * @param elem
-     */
-    this.setProductDomElement = function(elem) {
-        this.$productDomElem = $(elem);
-        var offset = this.$productDomElem.position();
-        var h = this.$productDomElem.height();
+    this.$directive.on('click', this.onAddQuickButtonClick.bind(this));
+    if (this.$productDomElement) {
+        var offset = this.$productDomElement.position();
+        var h = this.$productDomElement.height();
         //TODO позиционирование пока не понятно как делать
+        //TODO в панеле экранов одно, а на рабочем поле - другое
         this.$directive.css('position','absolute');
         this.$directive.css('left', '10px');
         this.$directive.css('top', offset.top+h+'px')
         this.$directive.css('zIndex',config.editor.ui.quickControlsZIndex);
     }
 }
-
+AddArrayElementControl.prototype = AbstractControl;
 /**
  * Angular контроллер, для управления view
  * имя состоит из двух частей: 'Имя контрола'+'Controller'

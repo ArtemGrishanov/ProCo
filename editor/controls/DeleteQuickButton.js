@@ -2,69 +2,23 @@
  * Created by artyom.grishanov on 03.02.16.
  *
  * Контрол удаления, привязан к свойству массиву
- * Он отвечает за удаление всех элементов массива
+ * Он отвечает за удаление элементов массива
  * Кнопка сама перемещается вслед за наведением
-
- * @constructor
- * @param {Array.<string>} propertyStringsArray
- * @param {string} directiveName - имя вью, имя директивы angular которая его загружает
- * @param {HTMLElement} $parent
- * @param {string} name
- * @param {object} params
  */
-function DeleteQuickButton(propertyStringsArray, directiveName, $parent, name, params) {
-    this.self = this;
-    this.directiveName = directiveName;
-    this.name = name;
-    this.params = params;
+function DeleteQuickButton(propertyString, directiveName, $parent, productDOMElement, params) {
+    this.init(propertyString, directiveName, $parent, productDOMElement, params);
     this.arrayDomElements = null;
     this.overedArrayElement = null;
-    this.$parent = $parent;
-    this.propertyStringsArray = propertyStringsArray;
 
     this.onDeleteQuickButtonClick = function(e) {
         if (this.overedArrayElement) {
             var index = this.arrayDomElements.indexOf(this.overedArrayElement);
             if (index >= 0) {
-                for (var i = 0; i < this.propertyStringsArray.length; i++) {
-                    var p = Engine.getAppProperty(this.propertyStringsArray[i]);
-                    Engine.deleteArrayElement(p, index);
-                }
+                var p = Engine.getAppProperty(this.propertyString);
+                Engine.deleteArrayElement(p, index, {updateScreens:true});
             }
         }
     }
-
-    this.$directive = addDirective.call(this);
-
-    /**
-     * Добавить директиву в контейнер this.$parent
-     *
-     * @return DOMElement
-     */
-    function addDirective() {
-        var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyStringsArray.join(',')+'"></div>');
-        $parent.append($elem);
-        $elem.css('zIndex',config.editor.ui.quickControlsZIndex);
-        $elem.css('position','absolute');
-        $elem.css('display','none');
-        $elem.on('click', this.onDeleteQuickButtonClick.bind(this));
-        return $elem;
-    }
-
-    this.setProductDomElement = function(elem) {
-        this.arrayDomElements = []
-        this.$productDomElem = $(elem);
-        //TODO
-        var p = Engine.getAppProperty(this.propertyStringsArray[0]);
-        for (var i = 0; i < p.propertyValue.length; i++) {
-            var e = this.$productDomElem.find('[data-app-property=\"'+this.propertyStringsArray.join(',')+'.'+i+'\"]');
-            if (e) {
-                this.arrayDomElements.push(e[0]);
-                $(e).mouseover(this.onElementOver.bind(this));
-            }
-        }
-    }
-
     this.onElementOver = function(e) {
         this.overedArrayElement = e. currentTarget;
         var pos = $(this.overedArrayElement).position();
@@ -73,8 +27,22 @@ function DeleteQuickButton(propertyStringsArray, directiveName, $parent, name, p
         this.$directive.css('left', '300px');
         this.$directive.css('top', (pos.top+14)+'px')
     }
+    this.$directive.css('zIndex', config.editor.ui.quickControlsZIndex);
+    this.$directive.css('position','absolute');
+    this.$directive.css('display','none');
+    this.$directive.on('click', this.onDeleteQuickButtonClick.bind(this));
+    this.arrayDomElements = []
+    //TODO
+    var p = Engine.getAppProperty(this.propertyString);
+    for (var i = 0; i < p.propertyValue.length; i++) {
+        var e = this.$productDomElement.find('[data-app-property=\"'+this.propertyString+'.'+i+'\"]');
+        if (e) {
+            this.arrayDomElements.push(e[0]);
+            $(e).mouseover(this.onElementOver.bind(this));
+        }
+    }
 }
-
+DeleteQuickButton.prototype = AbstractControl;
 /**
  * Angular контроллер, для управления view
  * имя состоит из двух частей: 'Имя контрола'+'Controller'
