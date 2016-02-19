@@ -27,11 +27,13 @@ var Engine = {};
      */
     var appPropertiesObjectPathes = [];
     /**
-     * Прототипы для создания новых свойств
-     * Прототип клонируется сколько угодно раз и добавляется в productWindow.app
+     * Темы
+     * Тема - это набор значений для некоторых appProperty
+     * Обычно стилистических
+     *
+     * @type {Array}
      */
-    //TODO кандидат на удаление так как негде не используется
-    var propertyPrototypes = [];
+    var themes = [];
     /**
      * Экраны (слайды) промо приложения
      * Промо приложение сообщает о себе, сколько у него экранов и какие
@@ -105,23 +107,27 @@ var Engine = {};
     }
 
     /**
-     * Ищет и создает прототипы свойств в productWindow.app
-     * Прототипы нужны для того, чтобы создавать новые элементы в массивах
-     * Например, в тесте есть различные типы вопросов. Пользователь может создавать любое количество различных типов слайдов в одном массиве
+     * Ищет в дексрипторе темы
+     * Создаем один раз при старте движка
      *
-     * @param obj
+     * @param descriptor
      */
-    function createAppPrototypes(obj) {
-        for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                // если это не дескриптор, а просто свойство
-                if (key.indexOf(PROTOTYPE_PREFIX) === 0) {
-                    log('Property prototype: \''+ key + '\' found');
-                    propertyPrototypes.push(obj[key]);
-                }
+    function createAppThemes(descriptor) {
+        themes = [];
+        // для работы с темами создается специальное appProperty
+        // с точки зрения редактора и контролов работа будет выглядеть незаметно
+        themeAppProperty = new AppProperty();
+        themeAppProperty.possibleValues = [];
+        //TODO
+        for (var key in descriptor) {
+            if (descriptor[key].isThemes === true) {
+                themes.push(descriptor[key]);
             }
         }
     }
+    //TODO для всех контролов надо делать регистрацию события на изменение свойства. При выборе темы так будет
+    //TODO как приспособить контрол Alternative для выбора темы
+    //TODO множественный setValue(Array,Array,object)?
 
     /**
      * Создать обертку для свойства app
@@ -135,8 +141,9 @@ var Engine = {};
             var str = strPrefix+key;
             var descInfo = findDescription(str);
             if (descInfo) {
-                if (descInfo.isPrototype === true) {
+                if (descInfo.isPrototype === true || descInfo.isTheme === true) {
                     // не нужно анализировать прототипы как appProperty
+                    // и темы пропускаем
                     continue;
                 }
                 log('Found AppProperty: \''+ str + '\'', false, true);
@@ -479,8 +486,8 @@ var Engine = {};
         createAppProperty(productWindow.app);
         // создать экраны (слайды) для промо приложения
         createAppScreens();
-        // находим и создаем шаблоны
-        createAppPrototypes(productWindow.app);
+        // находим и создаем темы
+        createAppThemes(productWindow.descriptor);
     }
 
     /**
@@ -592,14 +599,6 @@ var Engine = {};
         return appPropertiesObjectPathes;
     }
 
-    /**
-     * Вернуть доступные прототипы свойств
-     * @returns {Array}
-     */
-    function getPropertyPrototypes() {
-        return propertyPrototypes;
-    }
-
 //    /**
 //     * Связать свойство промо-приложения и dom-элемент
 //     * UI элементы часто создаются динамически и сразу привязать их в дескрипторе нет возможности.
@@ -677,7 +676,6 @@ var Engine = {};
     global.setValue = setValue;
     global.getAppPropertiesObjectPathes = getAppPropertiesObjectPathes;
     global.getAppProperties = getAppProperties;
-    global.getPropertyPrototypes = getPropertyPrototypes;
     global.getPrototypesForAppProperty = getPrototypesForAppProperty;
     global.getAppProperty = getAppProperty;
     global.addArrayElement = addArrayElement;

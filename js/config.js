@@ -110,6 +110,11 @@ var config = {
             defaultDirectiveIndex: 0,
             directives: ['drag'],
             parentId: 'id-control_cnt'
+        },
+        Alternative: {
+            defaultDirectiveIndex: 0,
+            directives: ['dropdown','radiobutton'],
+            parentId: 'id-static_controls_cnt'
         }
     },
     editor: {

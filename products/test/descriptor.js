@@ -44,7 +44,16 @@ var descriptor = {
         label: "Цвет шрифта"
     },
     fontFamily: {
-        editable: true
+        editable: true,
+        controls: "Alternative",
+        controlParams: {
+            viewName: "Dropdown"
+        },
+        //TODO standart font names source?
+        possibleValues: ["Arial","Times New Roman"],
+        static: true,
+        updateScreens: true,
+        label: "Шрифт"
     },
     showBackgroundImage: {
         editable: true,
@@ -155,5 +164,18 @@ var descriptor = {
     },
     proto__option_text: {
         isPrototype: true
+    },
+    theme_1: {
+        isTheme: true,
+        // свойства ниже тоже appProperty
+        // их конкретные значения были сохранены
+        label: 'Деловой стиль',
+        fontColor: "#333",
+        fontFamily: "Arial",
+        backgroundColor: "#eee",
+        logoStartPosition: {
+            left: 340,
+            top: 320
+        }
     }
 };

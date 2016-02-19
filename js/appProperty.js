@@ -14,7 +14,8 @@ var validAttributes = {
     updateAppProperties: true,
     label: '',
     runTests: true,
-    static: false
+    static: false,
+    possibleValues: []
 };
 
 /**
