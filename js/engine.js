@@ -27,13 +27,12 @@ var Engine = {};
      */
     var appPropertiesObjectPathes = [];
     /**
-     * Темы
-     * Тема - это набор значений для некоторых appProperty
+     * Пресеты - это набор значений для некоторых appProperty
      * Обычно стилистических
      *
      * @type {Array}
      */
-    var themes = [];
+    var presets = [];
     /**
      * Экраны (слайды) промо приложения
      * Промо приложение сообщает о себе, сколько у него экранов и какие
@@ -107,24 +106,31 @@ var Engine = {};
     }
 
     /**
-     * Ищет в дексрипторе темы
+     * Ищет в дексрипторе пресеты, то есть наборы свойств, которые применяются разом.
      * Создаем один раз при старте движка
      *
      * @param descriptor
      */
-    function createAppThemes(descriptor) {
-        themes = [];
-        // для работы с темами создается специальное appProperty
-        // с точки зрения редактора и контролов работа будет выглядеть незаметно
-        themeAppProperty = new AppProperty();
-        themeAppProperty.possibleValues = [];
-        //TODO
+    function createAppPresets(descriptor) {
+        presets = [];
+//        // с точки зрения редактора и контролов работа будет выглядеть незаметно
+//        themeAppProperty = new AppProperty(descriptor[key],'themes',{
+//
+//        });
+//        // обязательно должна быть "пустой" пресет, так как по умолчанию он выбран
+//        themeAppProperty.possibleValues = [];
         for (var key in descriptor) {
-            if (descriptor[key].isThemes === true) {
-                themes.push(descriptor[key]);
+            if (descriptor[key].isPreset === true) {
+                var pre = new AppProperty(null,key,descriptor[key]);
+                appProperties.push(pre);
+                appPropertiesObjectPathes.push(key);
+                presets.push(pre);
+//                themes.push(descriptor[key]);
+//                presets.possibleValues.push(descriptor[key]);
             }
         }
     }
+    //TODO сейчас апппроперти пресета очистится при обновлении свойств и всё
     //TODO для всех контролов надо делать регистрацию события на изменение свойства. При выборе темы так будет
     //TODO как приспособить контрол Alternative для выбора темы
     //TODO множественный setValue(Array,Array,object)?
@@ -487,7 +493,7 @@ var Engine = {};
         // создать экраны (слайды) для промо приложения
         createAppScreens();
         // находим и создаем темы
-        createAppThemes(productWindow.descriptor);
+        createAppPresets(productWindow.descriptor);
     }
 
     /**

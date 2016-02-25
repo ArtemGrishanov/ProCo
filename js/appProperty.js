@@ -12,10 +12,11 @@ var validAttributes = {
     editable: false,
     updateScreens: false,
     updateAppProperties: true,
-    label: '',
+    label: null,
     runTests: true,
     static: false,
-    possibleValues: []
+    possibleValues: [],
+    isPreset: false
 };
 
 /**
@@ -41,9 +42,7 @@ var AppProperty = function(propertyValue, propertyString, descriptor) {
     }
     // может быть привязан позднее
     this.domElement = null;
-    //TODO рефакторинг условия и параметры в цикле
     // декскриптор и его нормализация
-
     for (var key in validAttributes) {
         if (descriptor.hasOwnProperty(key)) {
             this[key] = descriptor[key];
@@ -52,31 +51,6 @@ var AppProperty = function(propertyValue, propertyString, descriptor) {
             this[key] = validAttributes[key];
         }
     }
-
-//    if (descriptor.hasOwnProperty('editable') === false) {
-//        this.editable = false;
-//    }
-//    else {
-//        this.editable = descriptor.editable;
-//    }
-//    if (descriptor.hasOwnProperty('updateScreens') === false) {
-//        this.updateScreens = false;
-//    }
-//    else {
-//        this.updateScreens = descriptor.updateScreens;
-//    }
-//    if (descriptor.hasOwnProperty('updateAppProperties') === false) {
-//        this.updateAppProperties = true;
-//    }
-//    else {
-//        this.updateAppProperties = descriptor.updateAppProperties;
-//    }
-//    if (descriptor.hasOwnProperty('runTests') === false) {
-//        this.runTests = true;
-//    }
-//    else {
-//        this.runTests = descriptor.runTests;
-//    }
     this.parseControls(descriptor);
     this.path = this.propertyString.split('.');
     this.isArray = Array.isArray(this.propertyValue);

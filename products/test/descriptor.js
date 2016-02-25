@@ -155,27 +155,48 @@ var descriptor = {
         editable: true,
         controls: "TextQuickInput"
     },
-    proto__text_slide: {
-        // прототип, значит свойтво используется для клонирования и создания новых элементов в массиве
-        isPrototype: true
-    },
-    proto__photo_question_slide: {
-        isPrototype: true
-    },
-    proto__option_text: {
-        isPrototype: true
-    },
-    theme_1: {
-        isTheme: true,
-        // свойства ниже тоже appProperty
-        // их конкретные значения были сохранены
-        label: 'Деловой стиль',
-        fontColor: "#333",
-        fontFamily: "Arial",
-        backgroundColor: "#eee",
-        logoStartPosition: {
-            left: 340,
-            top: 320
+//    proto__text_slide: {
+//        // прототип, значит свойтво используется для клонирования и создания новых элементов в массиве
+//        isPrototype: true
+//    },
+//    proto__photo_question_slide: {
+//        isPrototype: true
+//    },
+//    proto__option_text: {
+//        isPrototype: true
+//    },
+    stylePresets: {
+        isPreset: true,
+        editable: true,
+        updateScreens: true,
+        //TODO можно расширить типы. "final" Это свойство надо создать только один раз при старте и никогда не пересоздавать
+        static: true,
+        label: 'Тема',
+        possibleValues: [
+            {
+                label: 'Деловой стиль',
+                fontColor: "#333",
+                fontFamily: "Arial",
+                backgroundColor: "#eee",
+                logoStartPosition: {
+                    left: 340,
+                    top: 320
+                }
+            },
+            {
+                label: 'Романтика',
+                fontColor: "#3а0303",
+                fontFamily: "Times New Roman",
+                backgroundColor: "#888",
+                logoStartPosition: {
+                    left: 340,
+                    top: 320
+                }
+            }
+        ],
+        controls: "Alternative",
+        controlParams: {
+            viewName: "Dropdown"
         }
     }
 };
