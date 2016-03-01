@@ -23,7 +23,6 @@ var AbstractControl = {
     init: function(propertyString, directiveName, parent, productDOMElement, params) {
         this.self = this;
         this.directiveName = directiveName;
-        this.name = name;
         if (parent) {
             this.$parent = $(parent);
         }
@@ -45,10 +44,27 @@ var AbstractControl = {
      * @return DOMElement
      */
     addDirective: function() {
-        if (this.$parent) {
+        //TODO refactor
+        if (this.$parent && this.directiveName != 'arraycontrol' && this.directiveName != 'slide') {
             var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyString+'"></div>');
             this.$parent.append($elem);
             return $elem;
+        }
+    },
+
+    /**
+     * Загружает html вьюхи и добавляет его в родительский элемент
+     */
+    loadDirective: function(callback) {
+        if (this.directiveName) {
+            var $d = $('<div></div>').load('controls/view/'+this.directiveName+'.html', (function(response, status, xhr) {
+                if (this.$parent) {
+                    this.$directive = $($d.html());
+                    this.$directive.attr('data-app-property',this.propertyString);
+                    this.$parent.append(this.$directive);
+                    callback.call(this);
+                }
+            }).bind(this));
         }
     }
 };

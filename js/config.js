@@ -115,6 +115,11 @@ var config = {
             defaultDirectiveIndex: 0,
             directives: ['dropdown','radiobutton'],
             parentId: 'id-static_controls_cnt'
+        },
+        ArrayControl: {
+            defaultDirectiveIndex: 0,
+            directives: ['arraycontrol'],
+            parentId: null
         }
     },
     editor: {
@@ -123,7 +128,16 @@ var config = {
              * z-index который ставится на контрол при его активации (показе).
              * Это контролы которые показываются прямо в поле редактирования.
              */
-            quickControlsZIndex: 10
+            quickControlsZIndex: 10,
+            /**
+             * z-index который ставится элементу при перетаскивании внутри контрола ArrayControl
+             */
+            arrayControlDragZIndex: 20,
+            /**
+             * Отступы, насколько можно вынести перетаскиваемый элемент за границы группы
+             */
+            slideGroupLeftDragMargin: 10,
+            slideGroupRightDragMargin: 10
         }
     }
 };

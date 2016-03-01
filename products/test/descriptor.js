@@ -97,6 +97,12 @@ var descriptor = {
         updateScreens: true,
         canAdd: ["proto__text_slide","proto__photo_question_slide"],
         controls: [
+//            {
+//                name: "ArrayControl",
+//                params: {
+//                    viewName: "ArrayControl"
+//                }
+//            },
             {
                 name: "AddArrayElementControl",
                 params: {
