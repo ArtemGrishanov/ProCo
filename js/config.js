@@ -137,7 +137,11 @@ var config = {
              * Отступы, насколько можно вынести перетаскиваемый элемент за границы группы
              */
             slideGroupLeftDragMargin: 10,
-            slideGroupRightDragMargin: 10
+            slideGroupRightDragMargin: 10,
+            /**
+             * Утступы слева и справа от промежуточных кнопок в слайдереэ экранов
+             */
+            slideInterimBtnMargins: 6
         }
     }
 };

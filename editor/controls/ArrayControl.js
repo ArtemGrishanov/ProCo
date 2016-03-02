@@ -18,9 +18,10 @@ function ArrayControl(propertyString, directiveName, $parent, productDOMElement,
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
 
     //TODO надо высчитать вместе с отступами
-    var elemWidth = 176;
+    var elemWidth = 166;
     //TODO ширина промежуточной кнопки, надо высчитьывать программно
     var btnWidth = 23;
+    this.insertButtons = [];
 
     // свойства необходимые для перетаскивания
     this.originZIndex = undefined;
@@ -42,6 +43,7 @@ function ArrayControl(propertyString, directiveName, $parent, productDOMElement,
             var l = 0;
             this.leftPositions = [];
             this.items = [];
+            this.insertButtons = [];
             for (var i = 0; i < this.params.items.length; i++) {
                 // обертка для элемента, чтобы его можно было перетаскивать
                 var $wr = $('<div></div>').addClass('slide_directive_wr').attr('data-id',Math.random().toString());
@@ -53,19 +55,56 @@ function ArrayControl(propertyString, directiveName, $parent, productDOMElement,
                 l += elemWidth;
                 // добавляем промежуточные кнопки для быстрого добавления элемента в нужную позицию
                 if (i < this.params.items.length-1) {
-                    var $ib = $(interimBtnTemplate).css('left',l+'px');
+                    l += config.editor.ui.slideInterimBtnMargins;
+                    var $ib = $(interimBtnTemplate).css('left',l+'px').attr('data-insert-index',i+1).click(this.onInsertButtonClick.bind(this));
                     $cnt.append($ib);
-                    l += btnWidth
+                    this.insertButtons.push($ib);
+                    l += (btnWidth+config.editor.ui.slideInterimBtnMargins);
                 }
             }
             $(document).mousemove(this.onMouseMove.bind(this));
             $(document).mouseup(this.onMouseUp.bind(this));
             $cnt.css('width',l);
-            //TODO констранты в конфиг
             // границы координаты left в рамках который позволен drag
             this.bounds = {minLeft:-config.editor.ui.slideGroupLeftDragMargin, maxLeft:l-elemWidth+config.editor.ui.slideGroupRightDragMargin};
         }
+        var $addBtn = this.$directive.find('.js-add');
+        if (this.params.showAddButton === true) {
+            // показывать ли кнопку добавления в конце
+            $addBtn.show().click((function(){
+                var ap = Engine.getAppProperty(this.propertyString);
+                var pp = Engine.getPrototypesForAppProperty(ap);
+                if (pp && pp.length > 0) {
+                    //TODO выбор прототипа
+                    Engine.addArrayElement(ap, pp[0]);
+                    if (ap.updateScreens === true) {
+                        syncUIControlsToAppProperties();
+                    }
+                }
+                else {
+                    log('There is no prototypes for \''+this.propertyString+'\'', true);
+                }
+            }).bind(this));
+        }
+        else {
+            $addBtn.hide();
+        }
     });
+    this.onInsertButtonClick = function(e) {
+        var insertIndex = parseInt($(e.currentTarget).attr('data-insert-index'));
+        var ap = Engine.getAppProperty(this.propertyString);
+        var pp = Engine.getPrototypesForAppProperty(ap);
+        if (pp && pp.length > 0) {
+            //TODO выбор прототипа
+            Engine.addArrayElement(ap, pp[0], insertIndex);
+            if (ap.updateScreens === true) {
+                syncUIControlsToAppProperties();
+            }
+        }
+        else {
+            log('There is no prototypes for \''+this.propertyString+'\'', true);
+        }
+    };
     this.onMouseDown = function(e) {
         this.draggingElement = $(e.currentTarget);
         this.draggingElementId = this.draggingElement.attr('data-id');
@@ -229,7 +268,9 @@ function ArrayControl(propertyString, directiveName, $parent, productDOMElement,
             }
         }
         var ap = Engine.getAppProperty(this.propertyString);
-        Engine.setValue(ap, newValue);
+        //TODO важно: здесь должно быть updateScreens:false, иначе произойдет пересборка экранов и перемещения заметно не будет
+        // а делать пересборку такого большого контрола ArrayControl невозможно
+        Engine.setValue(ap, newValue, {updateScreens:false});
     }
 }
 ArrayControl.prototype = AbstractControl;

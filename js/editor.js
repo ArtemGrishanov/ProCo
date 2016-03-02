@@ -421,7 +421,8 @@ function createScreenControls() {
                 groupLabel: Engine.getAppScreen(groups[groupName][0]).name,
                 // это массив html-элементов, которые служат хранилищем например для Slide
                 items: slidesParents,
-                allowDragY: true
+                allowDragY: true,
+                showAddButton: true
             }, $('#id-slides_cnt'));
         }
     }

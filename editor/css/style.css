@@ -37,13 +37,16 @@ body {
 .slide_group {
     display: inline-block;
     vertical-align: top;
-    padding: 17px 30px 0 30px;
+    padding: 17px 10px 0 30px;
     height: 177px;
     border-right: solid 1px #343434;
 }
 .slide_group_label {
     margin-left: 5px;
     margin-bottom: 5px;
+}
+.slide_group_items {
+
 }
 .slide_group_item {
     /* width рассчитывается и задается из кода по количеству добавленных внутрь компонентов */
@@ -68,6 +71,9 @@ body {
 }
 .slides_mt2 {
     margin-top: 30px;
+}
+.slides_ml1 {
+    margin-left: 10px;
 }
 .screen_controls_cnt {
     display: inline-block;
