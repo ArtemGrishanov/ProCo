@@ -37,8 +37,8 @@ var config = {
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
          * При деплое на продакш оставить пустым
          */
-        devPrototypesHostName: 'http://localhost:63342/ProCo',
-//        devPrototypesHostName: 'http://proco.surge.sh/',
+//        devPrototypesHostName: 'http://localhost:63342/ProCo',
+        devPrototypesHostName: 'http://proco.surge.sh/',
         /**
          * Теги, которыми будет обрамлены новые параметры перезаписывании
          */

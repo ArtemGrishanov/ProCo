@@ -15,7 +15,9 @@ body {
     margin: 0;
 }
 .scr {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
 }
@@ -149,4 +151,79 @@ body {
 .i_eye {
     width: 30px;
     height: 22px;
+}
+.select_dialog_back {
+    margin: 0 auto;
+    position: relative;
+    width: 800px;
+    height: 500px;
+    background-color: #fff;
+    border-radius: 4px;
+    padding-top: 44px;
+    color: #545454;
+}
+.select_dialog_caption {
+    font-family: Roboto-Regular, Arial, san-serif;
+    font-size: 32px;
+    text-align: center;
+}
+.select_dialog_options_cnt {
+    width: 100%;
+    height: 326px;
+    margin-top: 50px;
+    text-align: center;
+}
+.select_dialog_option {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+    box-sizing: content-box;
+}
+.select_dialog_option_thumb_cnt {
+    position: relative;
+    width: 273px;
+    height: 168px;
+    border: #bfbfbf solid 2px;
+    background: url("../../products/test/i/editor/t1.jpg") no-repeat center;
+}
+.select_dialog_option_thumb_cnt:before {
+    display: none;
+    content: '';
+    background: url(../i/check.jpg) no-repeat;
+    position: absolute;
+    width: 42px;
+    height: 33px;
+    top: 17px;
+    right: 19px;
+}
+.select_dialog_option.__active .select_dialog_option_thumb_cnt:before {
+    display: block;
+}
+.select_dialog_option.__active .select_dialog_option_thumb_cnt {
+    border: #1cbf61 solid 3px;
+}
+.select_dialog_option_label {
+    margin-top: 9px;
+}
+.select_dialog_button_cnt {
+    text-align: center;
+}
+.pbtn {
+    display: inline-block;
+    border: #979797 solid 1px;
+    border-radius: 4px;
+    min-width: 171px;
+    height: 47;
+    padding: 12px;
+    color: #979797;
+    background-color: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+.pbtn.__green {
+    background-color: #1cbf61;
+    color: #fff;
+    border-color: #1cbf61;
 }

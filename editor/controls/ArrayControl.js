@@ -97,21 +97,48 @@ function ArrayControl(propertyString, directiveName, $parent, productDOMElement,
         if (!newItem) {
             // нужно выбрать прототип для нового элемента
             if (pp && pp.length > 0) {
-                //TODO выбор прототипа
-                newItem = pp[0];
+                //TODO если доступен один прототип то не надо диалога, сразу добавить
+                var selectOptions = [];
+                for (var i = 0; i < pp.length; i++) {
+                    selectOptions.push({
+                        id: pp[i].uiTemplate,
+                        label: 'Вариант ' + i
+                    });
+                }
+                showSelectDialog({
+                    caption: 'Новый слайд',
+                    options: selectOptions,
+                    callback: (function(selectedOptionId) {
+                        if (selectedOptionId) {
+                            //TODO refactor
+                            for (var j = 0; j < pp.length; j++) {
+                                if (pp[j].uiTemplate == selectedOptionId) {
+                                    Engine.addArrayElement(ap, pp[j], p);
+                                    if (ap.updateScreens === true) {
+                                        activeScreens = [];
+                                        syncUIControlsToAppProperties();
+                                    }
+                                }
+                            }
+                        }
+                    }).bind(this)
+                });
+                //newItem = pp[0];
             }
             else {
                 log('There is no prototypes for \''+this.propertyString+'\'', true);
                 return;
             }
         }
-        // newItem определили (из прототипа либо склонировали)
-        Engine.addArrayElement(ap, newItem, p);
-        if (ap.updateScreens === true) {
-            //TODO запросить показ нового добавленного экрана, сейчас старый активен
-            activeScreens = [];
-            //TODO почему этот синк руками нельзя вызвать?
-            syncUIControlsToAppProperties();
+        if (newItem) {
+            // newItem определили (из прототипа либо склонировали)
+            Engine.addArrayElement(ap, newItem, p);
+            if (ap.updateScreens === true) {
+                //TODO запросить показ нового добавленного экрана, сейчас старый активен
+                activeScreens = [];
+                //TODO почему этот синк руками нельзя вызвать?
+                syncUIControlsToAppProperties();
+            }
         }
     };
     /**

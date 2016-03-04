@@ -6,39 +6,39 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body style="background-color: #888">
-    <div ng-controller="ArrayControl">
-        <div class="slide_group" data-screen-group-name="">
-            <div class="slide_group_label js-slide_group_name">Название группы</div>
-            <div class="slide_group_items">
-                <div class="slide_group_item js-slides_cnt">
-                    <!-- Сюда вставляем контролы Slide -->
-
-                    <!--<div class="slide_directive_wr">-->
-                        <!--<div slide="" data-app-property="quizScr0" class="ng-isolate-scope">-->
-                            <!--<div ng-controller="Slide" class="ng-scope">-->
-                                <!--<div class="slide_thumb" ng-click="slideClicked()"></div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-
-                    <!--<div class="slide_directive_wr">-->
-                        <!--<div class="btn_class_gray slides_mt1 js-add"></div>-->
-                    <!--</div>-->
-
-                    <!--<div class="slide_directive_wr">-->
-                        <!--<div slide="" data-app-property="quizScr0" class="ng-isolate-scope">-->
-                            <!--<div ng-controller="Slide" class="ng-scope">-->
-                                <!--<div class="slide_thumb" ng-click="slideClicked()"></div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                </div>
-                <div class="slide_group_item js-slide_group_controls">
-                    <!-- Какие то контролы для группы экранов, например добавление нового -->
-                    <div class="btn_plus_green slides_mt2 js-add"></div>
-                </div>
-            </div>
+    <div class="select_dialog_back">
+        <div class="select_dialog_caption">
+            <span class="js-caption">Выбрать</span>
+        </div>
+        <div class="select_dialog_options_cnt">
+            <!-- Сюда будут программно добавлять опции -->
+            <!--<div class="select_dialog_option js-option">-->
+                <!--<div class="select_dialog_option_thumb_cnt">-->
+                <!--</div>-->
+                <!--<div class="select_dialog_option_label">-->
+                    <!--<span>Картинка и текст</span>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="select_dialog_option js-option">-->
+                <!--<div class="select_dialog_option_thumb_cnt">-->
+                    <!--&lt;!&ndash; Этому элементу надо указать backgroundImage &ndash;&gt;-->
+                <!--</div>-->
+                <!--<div class="select_dialog_option_label">-->
+                    <!--<span>Картинка и текст</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+        <div class="select_dialog_button_cnt">
+            <a class="btn js-confirm">Отмена</a>
+            <a class="btn __green js-cancel">Добавить</a>
         </div>
     </div>
 </body>
+<script src="../js/jquery.js" type="text/javascript"></script>
+<script>
+    $('.js-option').click(function(e){
+        $('.js-option').removeClass('__active');
+        $(e.currentTarget).addClass('__active');
+    });
+</script>
 </html>
