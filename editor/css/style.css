@@ -84,7 +84,7 @@ body {
     overflow-y: hidden;
     overflow-x: scroll;
 }
-.slide_directive_wr {
+.item_wr {
     position: absolute;
     left: 0;
     top: 0;
@@ -92,7 +92,26 @@ body {
     vertical-align: top;
     margin: 0 5px 0 5px;
 }
-
+.item_controls{
+    display: none;
+}
+.item_wr:hover .item_controls{
+    display : block;
+}
+.item_control {
+    display: inline-block;
+    vertical-align: top;
+    width: 82px;
+    height: 29px;
+    background-color: #343434;
+    cursor: pointer;
+}
+.item_control.__red:hover {
+    background-color: #ff5f5f;
+}
+.item_control.__green:hover {
+    background-color: #1cbf61;
+}
 
 .static_controls_cnt {
     float: right;

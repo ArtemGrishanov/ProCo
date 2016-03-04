@@ -31,8 +31,24 @@
         </div>
     </div>
 
+    <!-- Шаблон для обертки элемента массива -->
+    <div class="js-item_wr_template" style="display:none;">
+        <div class="item_wr">
+            <div class="js-item">
+                <!-- Сюда будет добавлен вью элемента массива -->
+            </div>
+            <div class="item_controls">
+                <!-- Здесь контролы для управления одним элементом массива -->
+                <div class="item_control __red js-delete">
+                </div><div class="item_control __green js-clone">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Шаблон для промежуточной кнопки добавления -->
     <div class="js-interim_btn_template" style="display:none">
-        <div class="slide_directive_wr">
+        <div class="item_wr">
             <div class="btn_class_gray slides_mt1 js-insert"></div>
         </div>
     </div>

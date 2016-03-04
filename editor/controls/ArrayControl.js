@@ -38,6 +38,7 @@ function ArrayControl(propertyString, directiveName, $parent, productDOMElement,
             this.$directive.find('.js-slide_group_name').text(this.params.groupLabel);
         }
         if (this.params.items) {
+            var itemWrapperTemplate = this.$directive.find('.js-item_wr_template').html();
             var interimBtnTemplate = this.$directive.find('.js-interim_btn_template').html();
             var $cnt = this.$directive.find('.js-slides_cnt');
             var l = 0;
@@ -45,13 +46,17 @@ function ArrayControl(propertyString, directiveName, $parent, productDOMElement,
             this.items = [];
             this.insertButtons = [];
             for (var i = 0; i < this.params.items.length; i++) {
+                var dataId = Math.random().toString();
                 // обертка для элемента, чтобы его можно было перетаскивать
-                var $wr = $('<div></div>').addClass('slide_directive_wr').attr('data-id',Math.random().toString());
+                var $wr = $(itemWrapperTemplate).attr('data-id',dataId);
                 // надо запомнить все позиции на которых стоят слайды, потом будет двигать по ним
                 this.leftPositions.push(l);
                 this.items.push($wr);
-                $wr.css('left',l+'px').append(this.params.items[i]).appendTo($cnt);
+                $wr.css('left',l+'px').find('.js-item').append(this.params.items[i]);
+                $wr.appendTo($cnt);
                 $wr.mousedown(this.onMouseDown.bind(this));
+                $wr.find('.js-delete').attr('data-id',dataId).click(this.onDeleteItemClick.bind(this));
+                $wr.find('.js-clone').attr('data-id',dataId).click(this.onCloneItemClick.bind(this));
                 l += elemWidth;
                 // добавляем промежуточные кнопки для быстрого добавления элемента в нужную позицию
                 if (i < this.params.items.length-1) {
@@ -72,37 +77,78 @@ function ArrayControl(propertyString, directiveName, $parent, productDOMElement,
         if (this.params.showAddButton === true) {
             // показывать ли кнопку добавления в конце
             $addBtn.show().click((function(){
-                var ap = Engine.getAppProperty(this.propertyString);
-                var pp = Engine.getPrototypesForAppProperty(ap);
-                if (pp && pp.length > 0) {
-                    //TODO выбор прототипа
-                    Engine.addArrayElement(ap, pp[0]);
-                    if (ap.updateScreens === true) {
-                        syncUIControlsToAppProperties();
-                    }
-                }
-                else {
-                    log('There is no prototypes for \''+this.propertyString+'\'', true);
-                }
+                this.addNewItem();
             }).bind(this));
         }
         else {
             $addBtn.hide();
         }
     });
-    this.onInsertButtonClick = function(e) {
-        var insertIndex = parseInt($(e.currentTarget).attr('data-insert-index'));
+    /**
+     *
+     * @param position
+     * @param newItem может быть указан (при клонировании) или не указан
+     */
+    this.addNewItem = function(position, newItem) {
+        // если позиция не задана элемент будет добавлен в конец массива
+        var p = (Number.isInteger(position)===true)?position:undefined;
         var ap = Engine.getAppProperty(this.propertyString);
         var pp = Engine.getPrototypesForAppProperty(ap);
-        if (pp && pp.length > 0) {
-            //TODO выбор прототипа
-            Engine.addArrayElement(ap, pp[0], insertIndex);
-            if (ap.updateScreens === true) {
-                syncUIControlsToAppProperties();
+        if (!newItem) {
+            // нужно выбрать прототип для нового элемента
+            if (pp && pp.length > 0) {
+                //TODO выбор прототипа
+                newItem = pp[0];
+            }
+            else {
+                log('There is no prototypes for \''+this.propertyString+'\'', true);
+                return;
             }
         }
-        else {
-            log('There is no prototypes for \''+this.propertyString+'\'', true);
+        // newItem определили (из прототипа либо склонировали)
+        Engine.addArrayElement(ap, newItem, p);
+        if (ap.updateScreens === true) {
+            //TODO запросить показ нового добавленного экрана, сейчас старый активен
+            activeScreens = [];
+            //TODO почему этот синк руками нельзя вызвать?
+            syncUIControlsToAppProperties();
+        }
+    };
+    /**
+     * Клонирование - создание нового без выбора прототипа, копирование существующего элемента
+     * В самом AppProperty есть функция получения копии
+     * @param itemId
+     */
+    this.cloneItem = function(itemId) {
+        var clonedItemIndex = this.getItemIndexById(itemId);
+        var ap = Engine.getAppProperty(this.propertyString);
+        // копируем указанный элемент массива
+        var newItem = ap.getArrayElementCopy(clonedItemIndex);
+        // далее обычное добавление, но без выбора прототипа
+        this.addNewItem(clonedItemIndex+1, newItem);
+    };
+    this.onInsertButtonClick = function(e) {
+        var insertIndex = parseInt($(e.currentTarget).attr('data-insert-index'));
+        this.addNewItem(insertIndex);
+    };
+    this.onDeleteItemClick = function(e) {
+        var dataId = $(e.currentTarget).attr('data-id');
+        var deleteIndex = this.getItemIndexById(dataId);
+        this.deleteItem(deleteIndex);
+    };
+    this.onCloneItemClick = function(e) {
+        var dataId = $(e.currentTarget).attr('data-id');
+        this.cloneItem(dataId);
+    };
+    this.deleteItem = function(position) {
+        if (position >= 0) {
+            var p = Engine.getAppProperty(this.propertyString);
+            Engine.deleteArrayElement(p, position);
+            if (ap.updateScreens === true) {
+                //TODO запросить показ ближайшего экрана, предыдущего от удаленного
+                activeScreens = [];
+                syncUIControlsToAppProperties();
+            }
         }
     };
     this.onMouseDown = function(e) {

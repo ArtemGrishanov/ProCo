@@ -147,7 +147,7 @@ AppProperty.prototype.parseControls = function(descriptor) {
 
 /**
  * Получить копию элемента массива.
- * При добавлении нового элемента в редакторе сначала получаем и редактируем эту копию, а потом уже добавляем её в свойства app
+ * В редакторе встречается функция клонирования элемента массива, например, экрана.
  * Если настройка не привязана к массиву, вернется null.
  *
  * @param [index] индекс элемента для копирования
@@ -156,7 +156,9 @@ AppProperty.prototype.parseControls = function(descriptor) {
  */
 AppProperty.prototype.getArrayElementCopy = function(index) {
     if (this.isArray === true && this.propertyValue.length > 0) {
-        var index = index || this.propertyValue.length-1;
+        if (Number.isInteger(index) === false) {
+            index = this.propertyValue.length-1;
+        }
         return JSON.parse(JSON.stringify(this.propertyValue[index]));
     }
     return null;
