@@ -189,6 +189,11 @@ function showScreen(ids) {
             //TODO показать ошибку наверное
         }
     }
+
+    //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
+    // подсветка контрола Slide по которому кликнули
+    $('#id-slides_cnt').find('.slide_thumb').removeClass('__active');
+    $('#id-slides_cnt').find('[data-app-property=\"'+activeScreens.join(',')+'\"]').addClass('__active');
 }
 
 /**
@@ -287,6 +292,7 @@ function syncUIControlsToAppProperties() {
                     var parent = null;
                     var sg = c.params.screenGroup;
                     if (sg) {
+                        // контрол привязан в группе экранов, а значит его родитель другой, так себе решение.
                         parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
                     }
                     else {
@@ -344,13 +350,16 @@ function syncUIControlsToAppProperties() {
     }
 }
 
-//TODO конечно не надо пересоздавать каждый раз всё при добавл-удал экрана. Но так пока проще
+/**
+ * Конролы управления экранами специфичные, поэтому существует отдельная функция для их создания
+ */
 function createScreenControls() {
+    //TODO конечно не надо пересоздавать каждый раз всё при добавл-удал экрана. Но так пока проще
     var appScreenIds = Engine.getAppScreenIds();
-    // группы экранов на левой панели
+    // экраны могут быть поделены на группы
     var groups = {};
     if (appScreenIds.length > 0) {
-        // разобъем экраны на группы
+        // подготовительная часть: разобъем экраны на группы
         for (var i = 0; i < appScreenIds.length; i++) {
             var s = appScreenIds[i];
             var screen = Engine.getAppScreen(s);
@@ -364,9 +373,11 @@ function createScreenControls() {
             }
             groups[screen.group].push(s);
         }
+        // далее начнем создать контролы и вью для групп экранов
         for (var groupName in groups) {
+            var slidesParents = [];
             // создаем вью для группы экранов
-            var $groupView = $($('#id-slide_group_template').html()).attr('data-screen-group-name', groupName);
+//            var $groupView = $($('#id-slide_group_template').html()).attr('data-screen-group-name', groupName);
             for (var i = 0; i < groups[groupName].length; i++) {
                 var s = groups[groupName][i];
                 var screen = Engine.getAppScreen(s);
@@ -379,30 +390,40 @@ function createScreenControls() {
                 else {
                     slideId = s;
                 }
-                var ci = findControlInfo(slideId);
-                if (ci === null) {
-                    var newControl = createControl(slideId, null, 'Slide', {}, $groupView.find('.js-slides_cnt'), null);
-                    if (newControl) {
-                        uiControlsInfo.push({
-                            appPropertyString: slideId,
-                            control: newControl
-                        });
-                    }
-                    else {
-                        log('Can not create control for appScreen: \'' + slideId, true);
-                    }
-                }
+//                var ci = findControlInfo(slideId);
+//                if (ci === null) {
+//                    // каждый контрол помещаем в inline-block обертку slide_directive_wr для показа в одну линию
+//                    var $d = $('<div></div>').addClass('slide_directive_wr');
+//                    $groupView.find('.js-slides_cnt').append($d);
+                var $d = $('<div></div>');
+                slidesParents.push($d);
+                var newControl = createControl(slideId, null, 'Slide', {}, $d, null);
+//                    if (newControl) {
+//                        uiControlsInfo.push({
+//                            appPropertyString: slideId,
+//                            control: newControl
+//                        });
+//                    }
+//                    else {
+//                        log('Can not create control for appScreen: \'' + slideId, true);
+//                    }
+//                }
                 if (screen.collapse === true) {
                     // выходим, так как добавили всю группу разом в один контрол
                     break;
                 }
             }
-            var groupLabel = Engine.getAppScreen(s).name;
-            if (groupLabel) {
-                $groupView.find('.js-slide_group_name').text(groupLabel);
-            }
-            //TODO контрол для группы слайдов. Добавление экрана кнопка
-            $('#id-slides_cnt').append($groupView);
+
+            //TODO непонятно к какому appProperty привязать. Надо quiz
+            var aps = (groupName == 'questions') ? 'quiz': '';
+            var arrayControl = createControl(aps, 'ArrayControl', 'ArrayControl', {
+                // имя забираем у первого экрана группы, в группе минимум один экран, а все имена одинаковые конечно
+                groupLabel: Engine.getAppScreen(groups[groupName][0]).name,
+                // это массив html-элементов, которые служат хранилищем например для Slide
+                items: slidesParents,
+                allowDragY: true,
+                showAddButton: true
+            }, $('#id-slides_cnt'));
         }
     }
 }
@@ -841,4 +862,49 @@ if (config.common.facebookAuthEnable === true) {
         js.src = "//connect.facebook.net/en_US/all.js";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
+}
+
+function showSelectDialog(params) {
+    var dialog = new SelectDialog(params);
+    $('#id-dialogs_view').empty().append(dialog.view).show();
+}
+
+/**
+ * Универсальный диалог для выбора чего-то
+ * Например, используется для выбор какой вопрос в тест добавить (их несколько видов)
+ *
+ * @param params
+ * @param {string} params.caption - заголовок леера
+ * @param {Array.<object>} params.options - {icon, label, id} список вариантов для выбора.
+ * @param {function} params.callback - вызывается, когда выбор сделан. Передается либо id выбранного итема, либо null если пользователь просто закрыл диалог
+ */
+function SelectDialog(params) {
+    this.selectedOptionId = null;
+    this.view = null;
+
+    var html = $('#id-select_dialog_template').html();
+    this.view = $(html);
+    this.view.find('.js-caption').text(params.caption);
+    var optionHtml = $('#id-select_dialog_option_template').html();
+    var $cnt = this.view.find('.js-options_cnt');
+    for (var i = 0; i < params.options.length; i++) {
+        var $e = $(optionHtml).click((function(e){
+            $('.js-option').removeClass('__active');
+            // оборачиваем элемент по которому кликнули
+            var $t = $(e.currentTarget);
+            $t.addClass('__active');
+            this.selectedOptionId = $t.attr('data-id');
+        }).bind(this));
+        $e.attr('data-id',params.options[i].id).find('.js-option_label').text(params.options[i].label);
+        $cnt.append($e);
+    }
+
+    this.view.find('.js-confirm').click((function(e) {
+        params.callback(this.selectedOptionId);
+        $('#id-dialogs_view').empty().hide();
+    }).bind(this));
+    this.view.find('.js-cancel').click((function(e) {
+        params.callback(null);
+        $('#id-dialogs_view').empty().hide();
+    }).bind(this));
 }

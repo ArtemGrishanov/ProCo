@@ -3,6 +3,11 @@
  */
 function Slide(propertyString, directiveName, $parent, productDOMElement, params) {
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
+    this.loadDirective(function(response, status, xhr){
+        this.$directive.click(function(){
+            showScreen(Array.isArray(propertyString)?propertyString:propertyString.split(','));
+        });
+    });
     this.onScreenUpdate = function(e) {
         //перерисовывать только когда экран реально виден пользователю, только активный экран
         //activeScreens - последние показанные экраны
@@ -28,11 +33,11 @@ Slide.prototype = AbstractControl;
  * @param $attrs дополнительные атрибуты, например dom элемент внутри
  */
 function SlideController(scope, attrs) {
-    // может быть указано несколько экрано для одного контрола Slide
-    var appProperties = attrs.$$element.parent().attr('data-app-property');
-    var scrIds = appProperties.split(',');
-    scope.slideClicked = function() {
-        // просим редактор показать скрин по его ид
-        showScreen(scrIds);
-    }
+//    // может быть указано несколько экрано для одного контрола Slide
+//    var appProperties = attrs.$$element.parent().attr('data-app-property');
+//    var scrIds = appProperties.split(',');
+//    scope.slideClicked = function() {
+//        // просим редактор показать скрин по его ид
+//        showScreen(scrIds);
+//    }
 }

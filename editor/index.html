@@ -9,110 +9,51 @@
     <link href="controls/css/style.css" rel="stylesheet">
     <!--TODO стили подгружать локально, только для экрана промо приложения -->
     <link href="../products/test/style.css" rel="stylesheet">
-    <style>
-        /* TODO как определять размер промо-приложения? */
-        .proto_cnt {
-            position: absolute;
-            top:-9999px; /* makes it invisible */
-            left:0;
-            width: 600px;
-            height: 400px;
-            border: #ff2211 solid 10px;
-            padding: 0;
-            margin: 0;
-        }
-        .scr {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-        .field_cnt {
-            position: relative;
-            padding: 0;
-            float: left;
-        }
-        .slides_cnt {
-            float: left;
-            padding-right: 10px;
-        }
-        .slide_thumb {
-            width: 172px;
-            height: 70px;
-            background-color: #eee;
-        }
-        .screen_cnt {
-            padding: 0 5px 15px 5px;
-        }
-        .quick_controls_cnt {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .slide_group {
-            padding: 10px 0 10px 7px;
-        }
-        .static_controls_cnt {
-            width: 200px;
-            background-color: #eee;
-            border: 1px solid #bbb;
-            position: absolute;
-            top: 0;
-            right: 0;
-            min-height: 400px;
-        }
-    </style>
+    <link href="css/style.css" rel="stylesheet">
 </head>
 <body ng-app="procoApp">
-    <div id="id-editor_view" class="scr" style="display:none;">
-        <!--<div class="progress">-->
-            <!--<div class="bar bar-success" style="width: 35%;"></div>-->
-            <!--<div class="bar bar-warning" style="width: 20%;"></div>-->
-            <!--<div class="bar bar-danger" style="width: 10%;"></div>-->
-        <!--</div>-->
-        <!--<div class="dropdown">-->
-            <!--<a class="dropdown-toggle" data-toggle="dropdown" href="#">Dropdown trigger</a>-->
-            <!--<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">-->
-                <!--<li>item1</li>-->
-                <!--<li>item2</li>-->
-            <!--</ul>-->
-        <!--</div>-->
-        <a class="btn" onclick="onPreviewClick();">Предпросмотр</a>
-        <!--<a class="btn" onclick="onPublishClick();">Publish</a>-->
-        <!--<a class="btn" onclick="onEditClick();">Мне повезет!</a>-->
-        <br><br><br>
-        <div id="id-slides_cnt" class="slides_cnt">
-            <!-- Сюда добавляются контролы Slide для переключения экранов -->
-            <!-- Используется шаблон для оформления групп, если нужно -->
-        </div>
-        <div class="field_cnt">
-            <div id="id-control_cnt" class="quick_controls_cnt">
-                <!-- Здесь располагаются "быстрые" контролы, которые показываются поверх продукта при клике или наведении куда-то -->
+    <div>
+        <div id="id-editor_view" class="scr" style="display:none;">
+            <div class="top_toolbar">
+                <span class="tico" onclick="onPreviewClick();"><i class="tico_img i_eye"><img src="i/i_eye.png"/></i>Предпросмотр</span>
+                <!--<a class="btn" onclick="onPublishClick();">Publish</a>-->
+                <!--<a class="btn" onclick="onEditClick();">Мне повезет!</a>-->
             </div>
-            <div id="id-product_screens_cnt" class="">
-                <!-- Сюда добавляем программно view различных экранов промо приложения -->
+            <div id="id-slides_cnt" class="screen_controls_cnt">
+                <!-- Сюда добавляются контролы Slide для переключения экранов -->
+                <!-- Используется шаблон для оформления групп, если нужно -->
+            </div>
+            <div class="field_cnt">
+                <div id="id-control_cnt" class="quick_controls_cnt">
+                    <!-- Здесь располагаются "быстрые" контролы, которые показываются поверх продукта при клике или наведении куда-то -->
+                </div>
+                <div id="id-product_screens_cnt" class="">
+                    <!-- Сюда добавляем программно view различных экранов промо приложения -->
+                </div>
+            </div>
+            <div id="id-static_controls_cnt" class="static_controls_cnt">
+                <!-- Сюда попадают контролы которые показываются постоянно -->
             </div>
         </div>
-        <div id="id-static_controls_cnt" class="static_controls_cnt">
-            <!-- Сюда попадают контролы которые показываются постоянно -->
-        </div>
-    </div>
-    <div id="id-preview_view" style="display:none">
-        <div style="margin: 5px">
-            <a class="btn" onclick="onBackToEditorClick();">Назад</a>
-        </div>
-        <div style="position:relative;margin: 5px">
-            <div id="id-product_iframe_cnt" class="">
-                <!-- Сюда добавляем программно айфрейм с прототипом для редактирования -->
+        <div id="id-preview_view" style="display:none">
+            <div style="margin: 5px">
+                <a class="btn" onclick="onBackToEditorClick();">Назад</a>
             </div>
+            <div style="position:relative;margin: 5px">
+                <div id="id-product_iframe_cnt" class="">
+                    <!-- Сюда добавляем программно айфрейм с прототипом для редактирования -->
+                </div>
+            </div>
+        </div>
+        <div id="id-dialogs_view" class="scr" style="display: none; z-index: 99; background-color: rgba(0,0,0,0.5); padding-top: 100px">
+            <!-- для показа диалогов поверх остальных вью -->
         </div>
     </div>
 
     <!-- Шаблон для группы Slide соответствующх группе экранов -->
     <script id="id-slide_group_template" type="text/template">
         <div class="slide_group">
-            <div class="js-slide_group_name">
+            <div class="slide_group_label js-slide_group_name">
                 <!-- Название группы -->
             </div>
             <div class="js-slides_cnt">
@@ -129,6 +70,48 @@
             <p class="js-label"></p>
             <div class="js-control_cnt">
 
+            </div>
+        </div>
+    </script>
+
+    <!-- Шаблон для группы Slide соответствующх группе экранов -->
+    <script id="id-select_dialog_template" type="text/template">
+        <div class="select_dialog_back">
+            <div class="select_dialog_caption">
+                <span class="js-caption">Выбрать</span>
+            </div>
+            <div class="select_dialog_options_cnt js-options_cnt">
+                <!-- Сюда будут программно добавлять опции -->
+                <!--<div class="select_dialog_option js-option">-->
+                <!--<div class="select_dialog_option_thumb_cnt">-->
+                <!--</div>-->
+                <!--<div class="select_dialog_option_label">-->
+                <!--<span>Картинка и текст</span>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="select_dialog_option js-option">-->
+                <!--<div class="select_dialog_option_thumb_cnt">-->
+                <!--&lt;!&ndash; Этому элементу надо указать backgroundImage &ndash;&gt;-->
+                <!--</div>-->
+                <!--<div class="select_dialog_option_label">-->
+                <!--<span>Картинка и текст</span>-->
+                <!--</div>-->
+                <!--</div>-->
+            </div>
+            <div class="select_dialog_button_cnt">
+                <a class="pbtn js-cancel">Отмена</a>
+                <a class="pbtn __green js-confirm">Добавить</a>
+            </div>
+        </div>
+    </script>
+
+    <script id="id-select_dialog_option_template" type="text/template">
+        <div class="select_dialog_option js-option">
+            <div class="select_dialog_option_thumb_cnt">
+            <!-- Этому элементу надо указать backgroundImage -->
+            </div>
+            <div class="select_dialog_option_label">
+                <span class="js-option_label">Картинка и текст</span>
             </div>
         </div>
     </script>
@@ -156,6 +139,7 @@
     <script type="text/javascript" src="controls/TextInput.js"></script>
     <script type="text/javascript" src="controls/Drag.js"></script>
     <script type="text/javascript" src="controls/Alternative.js"></script>
+    <script type="text/javascript" src="controls/ArrayControl.js"></script>
     <script type="text/javascript" src="../js/editor.js"></script>
     <script>
         $(document).ready(function(){

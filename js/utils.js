@@ -262,3 +262,18 @@ function convertToBracedString(objectPath) {
     }
     return res;
 }
+
+function swapArrayElements(arr, indexA, indexB) {
+    var temp = arr[indexA];
+    arr[indexA] = arr[indexB];
+    arr[indexB] = temp;
+}
+
+Array.prototype.swap = function(indexA, indexB) {
+    swapArrayElements(this, indexA, indexB);
+};
+
+function getUniqId(str) {
+    str = str || '';
+    return MD5.calc(str+Math.random());
+}

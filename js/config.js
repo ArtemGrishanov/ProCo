@@ -37,8 +37,8 @@ var config = {
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
          * При деплое на продакш оставить пустым
          */
-        devPrototypesHostName: 'http://localhost:63342/ProCo',
-//        devPrototypesHostName: 'http://proco.surge.sh/',
+//        devPrototypesHostName: 'http://localhost:63342/ProCo',
+        devPrototypesHostName: 'http://proco.surge.sh/',
         /**
          * Теги, которыми будет обрамлены новые параметры перезаписывании
          */
@@ -115,6 +115,11 @@ var config = {
             defaultDirectiveIndex: 0,
             directives: ['dropdown','radiobutton'],
             parentId: 'id-static_controls_cnt'
+        },
+        ArrayControl: {
+            defaultDirectiveIndex: 0,
+            directives: ['arraycontrol'],
+            parentId: null
         }
     },
     editor: {
@@ -123,7 +128,20 @@ var config = {
              * z-index который ставится на контрол при его активации (показе).
              * Это контролы которые показываются прямо в поле редактирования.
              */
-            quickControlsZIndex: 10
+            quickControlsZIndex: 10,
+            /**
+             * z-index который ставится элементу при перетаскивании внутри контрола ArrayControl
+             */
+            arrayControlDragZIndex: 20,
+            /**
+             * Отступы, насколько можно вынести перетаскиваемый элемент за границы группы
+             */
+            slideGroupLeftDragMargin: 10,
+            slideGroupRightDragMargin: 10,
+            /**
+             * Утступы слева и справа от промежуточных кнопок в слайдереэ экранов
+             */
+            slideInterimBtnMargins: 6
         }
     }
 };

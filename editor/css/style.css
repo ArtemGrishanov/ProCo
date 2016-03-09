@@ -1,0 +1,229 @@
+body {
+    font-family: Roboto-Regular, Arial, san-serif;
+    font-size: 16px;
+    color: #fff;
+}
+/* TODO как определять размер промо-приложения? */
+.proto_cnt {
+    position: absolute;
+    top:-9999px; /* makes it invisible */
+    left:0;
+    width: 600px;
+    height: 400px;
+    border: #ff2211 solid 10px;
+    padding: 0;
+    margin: 0;
+}
+.scr {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.field_cnt {
+    position: relative;
+    padding: 0;
+    float: left;
+}
+.screen_cnt {
+    padding: 0 5px 15px 5px;
+}
+.quick_controls_cnt {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.slide_group {
+    display: inline-block;
+    vertical-align: top;
+    padding: 17px 10px 0 30px;
+    height: 177px;
+    border-right: solid 1px #343434;
+}
+.slide_group_label {
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+.slide_group_items {
+
+}
+.slide_group_item {
+    /* width рассчитывается и задается из кода по количеству добавленных внутрь компонентов */
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+}
+.btn_plus_green {
+    background: url("../i/i_plus_green.png");
+    width: 41px;
+    height: 41px;
+    cursor: pointer;
+}
+.btn_class_gray {
+    background: url("../i/i_plus_gray.png");
+    width: 23px;
+    height: 22px;
+    cursor: pointer;
+}
+.slides_mt1 {
+    margin-top: 40px;
+}
+.slides_mt2 {
+    margin-top: 30px;
+}
+.slides_ml1 {
+    margin-left: 10px;
+}
+.screen_controls_cnt {
+    display: inline-block;
+    width: 100%;
+    white-space: nowrap;
+    height: 191px; /* 177 + 14 - scroll height */
+    background-color: #545454;
+    overflow-y: hidden;
+    overflow-x: scroll;
+}
+.item_wr {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 5px 0 5px;
+}
+.item_controls{
+    display: none;
+}
+.item_wr:hover .item_controls{
+    display : block;
+}
+.item_control {
+    display: inline-block;
+    vertical-align: top;
+    width: 82px;
+    height: 29px;
+    background-color: #343434;
+    cursor: pointer;
+}
+.item_control.__red:hover {
+    background-color: #ff5f5f;
+}
+.item_control.__green:hover {
+    background-color: #1cbf61;
+}
+
+.static_controls_cnt {
+    float: right;
+    width: 200px;
+    background-color: #eee;
+    border: 1px solid #bbb;
+    min-height: 400px;
+}
+.static_controls_cnt input{
+    width: 146px
+}
+.top_toolbar {
+    width: 100%;
+    height: 50px;
+    background-color: #343434;
+}
+.tico {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    min-height: 16px;
+    padding-left: 32px;
+    line-height: 1.5;
+}
+.tico_img {
+    position: absolute;
+    top: 1px;
+    left: 0;
+    display: block;
+    overflow: hidden;
+    text-decoration: none;
+    font-style: normal;
+    background-repeat: no-repeat;
+}
+.i_eye {
+    width: 30px;
+    height: 22px;
+}
+.select_dialog_back {
+    margin: 0 auto;
+    position: relative;
+    width: 800px;
+    height: 500px;
+    background-color: #fff;
+    border-radius: 4px;
+    padding-top: 44px;
+    color: #545454;
+}
+.select_dialog_caption {
+    font-family: Roboto-Regular, Arial, san-serif;
+    font-size: 32px;
+    text-align: center;
+}
+.select_dialog_options_cnt {
+    width: 100%;
+    height: 326px;
+    margin-top: 50px;
+    text-align: center;
+}
+.select_dialog_option {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+    box-sizing: content-box;
+}
+.select_dialog_option_thumb_cnt {
+    position: relative;
+    width: 273px;
+    height: 168px;
+    border: #bfbfbf solid 2px;
+    background: url("../../products/test/i/editor/t1.jpg") no-repeat center;
+}
+.select_dialog_option_thumb_cnt:before {
+    display: none;
+    content: '';
+    background: url(../i/check.jpg) no-repeat;
+    position: absolute;
+    width: 42px;
+    height: 33px;
+    top: 17px;
+    right: 19px;
+}
+.select_dialog_option.__active .select_dialog_option_thumb_cnt:before {
+    display: block;
+}
+.select_dialog_option.__active .select_dialog_option_thumb_cnt {
+    border: #1cbf61 solid 3px;
+}
+.select_dialog_option_label {
+    margin-top: 9px;
+}
+.select_dialog_button_cnt {
+    text-align: center;
+}
+.pbtn {
+    display: inline-block;
+    border: #979797 solid 1px;
+    border-radius: 4px;
+    min-width: 171px;
+    height: 47;
+    padding: 12px;
+    color: #979797;
+    background-color: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+.pbtn.__green {
+    background-color: #1cbf61;
+    color: #fff;
+    border-color: #1cbf61;
+}

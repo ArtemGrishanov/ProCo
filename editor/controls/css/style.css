@@ -26,3 +26,13 @@ form input {
 .add_screen_btn {
 
 }
+.slide_thumb {
+    width: 166px;
+    height: 102px;
+    background-color: #fff;
+    cursor: pointer;
+}
+.slide_thumb.__active {
+    border: 5px solid #1cbf61;
+    box-sizing: border-box;
+}
