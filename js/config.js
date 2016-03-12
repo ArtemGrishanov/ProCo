@@ -3,7 +3,10 @@
  */
 var config = {
     common: {
-        awsEnabled: false,
+        /**
+         * Проводить ли при старте инициализацию для работы с хранилищем амазона
+         */
+        awsEnabled: true,
         /**
          * Хост для сохранения данных
          */
@@ -17,28 +20,29 @@ var config = {
         //facebookAppId: '515132035326687', //aws appId
         facebookAppId: '518819781624579', //localhost site
         /**
-         * Разрешать вход через FB
+         * Разрешать вход через FB автоматически при запуске приложения
          */
-        facebookAuthEnable: false,
+        facebookAutoAuthEnable: true,
         /**
          * Разрешает вывод в консоль console.log
          */
         consoleLogEnable: true,
         /**
+         * Имя get параметра для передачи ссылки на шаблон
+         * если указан этот параметр то app-параметр игнорируется
+         */
+        templateUrlParamName: 'template',
+        /**
          * Имя get параметра для передачи ссылки открытие в редакторе
          */
-        productSrcParamName: 'src',
-        /**
-         * урл на продукт который открываем по умолчанию, если не был указан продукт для открытия
-         */
-        defaultProductPrototype: null,
+        appNameParamName: 'app',
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
          * При деплое на продакш оставить пустым
          */
-//        devPrototypesHostName: 'http://localhost:63342/ProCo',
-        devPrototypesHostName: 'http://proco.surge.sh/',
+        devPrototypesHostName: 'http://localhost:63342/ProCo',
+//        devPrototypesHostName: 'http://proco.surge.sh/',
         /**
          * Теги, которыми будет обрамлены новые параметры перезаписывании
          */
@@ -49,8 +53,10 @@ var config = {
         angularAppName: 'procoApp'
     },
     products: {
-        tests: {
+        // конфигурация для каждого типа промо-приложений
+        test: {
             prototypeId: 'test_v0.1',
+            src: '/products/test/index.html',
             backgrounds: [
                 //TODO брать параметры из других параметров config.common.awsHostName
                 'url('+'https://s3.eu-central-1.amazonaws.com/'+'proconstructor/facebook-902609146442342/test1/i/ny-regents-exam-global-history-and-geography-help-course_132147_large.jpg)',
@@ -68,6 +74,12 @@ var config = {
                 'Impact, Charcoal, sans-serif',
                 '"Courier New", Courier, monospace'
             ]
+        },
+        timeline: {
+
+        },
+        smartimage: {
+
         }
     },
     controls: {

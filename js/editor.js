@@ -5,8 +5,23 @@
 var baseProductUrl = '../products/test/';
 var indexHtml = 'index.html';
 
-//TODO ид каждого проекта должен быть уникален {id, name, author ....}
-var promoAppName = 'test1';
+/**
+ * Строковый идентификатор открытого проекта: test, timeline и тд
+ * @type {string}
+ */
+var appName = null;
+/**
+ * текущий шаблон, который открыт. Шаблона может не быть, тогда используются свойства из кода проекта
+ * @type {object} {appName: <string>, app: <object>, descriptor: <object>}
+ */
+var appTemplate = null;
+/**
+ * Список проектов текущего пользователя. Запрашивается когда пользователь заходит в "Мои Проекты"
+ * null - список еще не был запрошен.
+ * [] - запрошен, и у пользователя нет проектов
+ * @type {Array.<object>}
+ */
+var userTemplates = null;
 /**
  * Создание и сохранение шаблонов. Запуск автотестов.
  * @type {boolean}
@@ -115,15 +130,35 @@ function getDistribUrl() {
  * Функция запуска редактора
  */
 function start() {
-    initProduct();
+    appTemplate = null;
+    appName = null;
+    // сначала смотрим, есть ли ссылка на шаблон
+    var t = getQueryParams(document.location.search)[config.common.templateUrlParamName];
+    if (t) {
+        openTemplate(t);
+    }
+    else {
+        // если ссылки на шаблон нет, то открываем по имени промо-проекта, если оно есть
+        var n = getQueryParams(document.location.search)[config.common.appNameParamName];
+        if (n) {
+            loadAppSrc(n);
+        }
+        else {
+            alert('Выберите шаблон для открытия');
+        }
+    }
 }
 
-function initProduct() {
-    var src = getQueryParams(document.location.search)[config.common.productSrcParamName];
-    if (!src) {
-        src = config.common.defaultProductPrototype;
-    }
+/**
+ * Загрузить код промо проекта
+ * @param loadedAppName - одно из множества доступных имен промопроектов
+ */
+function loadAppSrc(loadedAppName) {
+    // по имени промо приложения получаем ссылку на его код
+    var src = config.products[loadedAppName].src;
     if (src) {
+        appName = loadedAppName;
+        iframeWindow = null;
         appIframe = document.createElement('iframe');
         appIframe.onload = onProductIframeLoaded;
         $(appIframe).addClass('proto_cnt');
@@ -132,7 +167,7 @@ function initProduct() {
         $('#id-product_iframe_cnt').append(appIframe);
     }
     else {
-        alert('Выберите шаблон для редактирования');
+        log('Cannot find src for: \''+loadedAppName+'\'', true);
     }
 }
 
@@ -141,7 +176,15 @@ function initProduct() {
  */
 function onProductIframeLoaded() {
     iframeWindow = appIframe.contentWindow;
-    Engine.startEngine(iframeWindow);
+    // запуск движка с передачей информации о шаблоне
+    var params = null;
+    if (appTemplate) {
+        params = {
+            app: appTemplate.app,
+            descriptor: appTemplate.descriptor
+        };
+    }
+    Engine.startEngine(iframeWindow, params);
     showEditor();
     syncUIControlsToAppProperties();
 }
@@ -760,6 +803,112 @@ function publish() {
     });
 }
 
+/**
+ * Сохранение проекта над которым работает пользователь
+ * Сохраняет текущее состояние app+desc в сторадж
+ */
+function saveTemplate() {
+    //TODO автосохранение
+    //TODO project id and name
+    var projectId = 'abc123';
+    //TODO возможно шифрование
+    var data = {
+        appName: appName,
+        app: iframeWindow.app,
+        descriptor: iframeWindow.descriptor
+    };
+    log('Saving project:' + projectId);
+    var objKey = 'facebook-'+fbUserId+'/app/'+projectId+'.txt';
+    var params = {
+        Key: objKey,
+        ContentType: 'text/plain',
+        Body: JSON.stringify(data),
+        ACL: 'public-read'
+    };
+    bucket.putObject(params, (function (err, data) {
+        // task object context
+        if (err) {
+            log('ERROR: ' + err, true);
+        }
+        log('Saving task done:' + projectId);
+    }).bind(this));
+}
+
+/**
+ * Открыть в редакторе на редактирование проект
+ * ид пользователя мы уже знаем в этот момент, пользователь должен быть авторизован
+ * По сути это функция "Открыть шаблон" из витрины или "Открыть мой ранее сохраненный проект". В этих случаях проект открывается на основе файла шаблона
+ * сохраненных app+desc+appName
+ *
+ * @param templateUrl
+ */
+function openTemplate(templateUrl) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(e) {
+        if (e.target.readyState == 4) {
+            if(e.target.status == 200) {
+                var obj = JSON.parse(e.target.responseText);
+                if (obj.appName && obj.app && obj.descriptor) {
+                    appName = obj.appName;
+                    appTemplate = obj;
+                    // после загрузки шаблона надо загрузить код самого промо проекта
+                    // там далее в колбеке на загрузку iframe есть запуск движка
+                    loadAppSrc(appName);
+                }
+                else {
+                    log('Data not valid. Template url: \''+templateUrl+'\'', true);
+                }
+            }
+            else {
+                log('Resource request failed: '+ e.target.statusText, true);
+            }
+        }
+    };
+    xhr.open('GET',templateUrl);
+    xhr.send();
+
+//    var pInfo = null;
+//    for (var i = 0; i < userProjects.length; i++) {
+//        if (projectId === userProjects[i].projectId) {
+//            pInfo = userProjects[i];
+//            break;
+//        }
+//    }
+}
+
+/**
+ * Получить список проектов авторизованного пользователя
+ *
+ */
+function requestUserTemplates() {
+    if (fbUserId) {
+        var prefix = 'facebook-' + fbUserId + '/app';
+        bucket.listObjects({
+            Prefix: prefix
+        }, function (err, data) {
+            if (err) {
+                log('ERROR: ' + err, true);
+            } else {
+                userTemplates = [];
+                data.Contents.forEach(function (obj) {
+                    var reg = new RegExp('facebook-'+fbUserId+'\/app\/([A-z0-9]+)\.txt','g');
+                    var match = reg.exec(obj.Key);
+                    if (match && match[1]) {
+                        var id = match[1];
+                        userTemplates.push({
+                            // key example facebook-902609146442342/app/abc123.txt
+                            key: obj.Key,
+                            id: id,
+                            lastModified: obj.LastModified
+                        });
+                    }
+                });
+                log('Objects in dir '+prefix+':');
+            }
+        });
+    }
+}
+
 function showEditor() {
     $(appIframe).css('top','-9999px');
     $('#id-editor_view').show();
@@ -795,24 +944,6 @@ function onBackToEditorClick() {
     showEditor();
 }
 
-function listObjs() {
-    var prefix = 'facebook-' + fbUserId;
-    bucket.listObjects({
-        Prefix: prefix
-    }, function (err, data) {
-        if (err) {
-            log('ERROR: ' + err, true);
-        } else {
-            var objKeys = "";
-            data.Contents.forEach(function (obj) {
-                objKeys += obj.Key + "<br>";
-            });
-            log('listObjects...');
-            log(objKeys);
-        }
-    });
-}
-
 //            var file = fileChooser.files[0];
 //            if (file) {
 //                var objKey = 'facebook-' + fbUserId + '/' + file.name;
@@ -832,7 +963,7 @@ function listObjs() {
 //                });
 //            }
 
-if (config.common.facebookAuthEnable === true) {
+if (config.common.facebookAutoAuthEnable === true) {
     /*!
      * Login to your application using Facebook.
      * Uses the Facebook SDK for JavaScript available here:

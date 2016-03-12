@@ -145,8 +145,10 @@ var Engine = {};
         strPrefix = (strPrefix) ?(strPrefix+'.'): '';
         for (var key in obj) {
             var str = strPrefix+key;
+            // в объекте descriptor найти описания свойства
             var descInfo = findDescription(str);
             if (descInfo) {
+                //TODO remove. isPrototype isTheme arent used
                 if (descInfo.isPrototype === true || descInfo.isTheme === true) {
                     // не нужно анализировать прототипы как appProperty
                     // и темы пропускаем
@@ -174,12 +176,12 @@ var Engine = {};
     function findDescription(objectString) {
         var descInfo = null;
         // в app.descriptor может быть несколько селекторов, которые соответствуют свойству
-        for (var selector in iframeWindow.descriptor) {
+        for (var selector in productWindow.descriptor) {
             if (matchSelector(objectString,selector) === true) {
                 descInfo = descInfo || {};
                 // добавляем найденную конфигурацию в описание
-                for (var key in iframeWindow.descriptor[selector]) {
-                    descInfo[key] = iframeWindow.descriptor[selector][key];
+                for (var key in productWindow.descriptor[selector]) {
+                    descInfo[key] = productWindow.descriptor[selector][key];
                 }
             }
         }
@@ -469,13 +471,22 @@ var Engine = {};
      * Можно запустить, когда в браузер загружен промо-проект
      *
      * @param prodWindow объект window промо проекта для его редактирования
+     * @param {object} [params.app] свойства из шаблона
+     * @param {object} [params.descriptor] дескриптор из шаблона
      */
-    function startEngine(prodWindow) {
+    function startEngine(prodWindow, params) {
         productWindow = prodWindow;
+        if (params && params.app) {
+            // переписываем свойствами из шаблона
+            productWindow.app = params.app;
+        }
+        if (params && params.descriptor) {
+            // переписываем десриптором из шаблона
+            productWindow.descriptor = params.descriptor;
+        }
         if (productWindow.app === undefined) {
             console.error('app object must be specified');
         }
-
         if (productWindow.tests === undefined) {
             console.error('tests array must be specified');
         }
@@ -494,40 +505,6 @@ var Engine = {};
         createAppScreens();
         // находим и создаем темы
         createAppPresets(productWindow.descriptor);
-    }
-
-    /**
-     * Создать шаблон из прототипа. Это набор дескрипторов, который можно применить к прототипу.
-     * @returns {string} строка, сериализованный JSON объект
-     */
-    function exportTemplate() {
-        // ид прототипа показывает для какого прототипа подходит этот шаблон
-        var templObj = {
-            prototype: config.products.tests.prototypeId,
-            descriptors: {},
-            themes: ''
-        };
-        // записать дескрипторы в шаблон
-        for (var i = 0; i < appProperties.length; i++) {
-            var p = appProperties[i];
-            if (p.descriptor.editable === true) {
-                for (var key in p.descriptor) {
-                    if (p.descriptor.hasOwnProperty(key)) {
-                        templObj.descriptors[key] = p.descriptor[key];
-                    }
-                }
-            }
-        }
-        // TODO записать темы (возможно, на первое время это просто цвета)
-        var templStr = null;
-        try {
-            templStr = JSON.stringify(templObj);
-        }
-        catch(e) {
-            log('Error in serializing template error: ' + e, true);
-            return null;
-        }
-        return templStr;
     }
 
     /**
@@ -675,6 +652,40 @@ var Engine = {};
         return null;
     }
 
+    /**
+     * Создать шаблон из прототипа. Это набор дескрипторов, который можно применить к прототипу.
+     * @deprecated
+     * @returns {string} строка, сериализованный JSON объект
+     */
+    function exportTemplate() {
+        // ид прототипа показывает для какого прототипа подходит этот шаблон
+        var templObj = {
+            prototype: config.products.tests.prototypeId,
+            descriptors: {},
+            themes: ''
+        };
+        // записать дескрипторы в шаблон
+        for (var i = 0; i < appProperties.length; i++) {
+            var p = appProperties[i];
+            if (p.descriptor.editable === true) {
+                for (var key in p.descriptor) {
+                    if (p.descriptor.hasOwnProperty(key)) {
+                        templObj.descriptors[key] = p.descriptor[key];
+                    }
+                }
+            }
+        }
+        var templStr = null;
+        try {
+            templStr = JSON.stringify(templObj);
+        }
+        catch(e) {
+            log('Error in serializing template error: ' + e, true);
+            return null;
+        }
+        return templStr;
+    }
+
     global.startEngine = startEngine;
     global.test = test;
 
@@ -695,6 +706,6 @@ var Engine = {};
     global.getAppScreenIds = getAppScreenIds;
     global.getAppScreen = getAppScreen;
 
-    // методы для работы с шаблонами и темами
+    // методы для работы с шаблонами
     global.exportTemplate = exportTemplate;
 })(Engine);
