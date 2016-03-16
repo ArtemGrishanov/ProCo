@@ -274,6 +274,9 @@ Array.prototype.swap = function(indexA, indexB) {
 };
 
 function getUniqId(str) {
+    var rand = function() {
+        return Math.random().toString(36).substr(2); // remove `0.`
+    };
     str = str || '';
-    return MD5.calc(str+Math.random());
+    return MD5.calc(rand()+str+rand());
 }

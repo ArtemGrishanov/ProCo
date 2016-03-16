@@ -16,6 +16,7 @@
         <div id="id-editor_view" class="scr" style="display:none;">
             <div class="top_toolbar">
                 <span class="tico" onclick="onPreviewClick();"><i class="tico_img i_eye"><img src="i/i_eye.png"/></i>Предпросмотр</span>
+                <span class="tico" onclick="onMyTemplatesClick();"><i class="tico_img i_eye"><img src="i/i_eye.png"/></i>Мои проекты</span>
                 <!--<a class="btn" onclick="onPublishClick();">Publish</a>-->
                 <!--<a class="btn" onclick="onEditClick();">Мне повезет!</a>-->
             </div>
@@ -82,21 +83,6 @@
             </div>
             <div class="select_dialog_options_cnt js-options_cnt">
                 <!-- Сюда будут программно добавлять опции -->
-                <!--<div class="select_dialog_option js-option">-->
-                <!--<div class="select_dialog_option_thumb_cnt">-->
-                <!--</div>-->
-                <!--<div class="select_dialog_option_label">-->
-                <!--<span>Картинка и текст</span>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--<div class="select_dialog_option js-option">-->
-                <!--<div class="select_dialog_option_thumb_cnt">-->
-                <!--&lt;!&ndash; Этому элементу надо указать backgroundImage &ndash;&gt;-->
-                <!--</div>-->
-                <!--<div class="select_dialog_option_label">-->
-                <!--<span>Картинка и текст</span>-->
-                <!--</div>-->
-                <!--</div>-->
             </div>
             <div class="select_dialog_button_cnt">
                 <a class="pbtn js-cancel">Отмена</a>
@@ -105,13 +91,23 @@
         </div>
     </script>
 
+    <!-- шаблон элемента который вставляются в диалг выбора -->
     <script id="id-select_dialog_option_template" type="text/template">
         <div class="select_dialog_option js-option">
             <div class="select_dialog_option_thumb_cnt">
-            <!-- Этому элементу надо указать backgroundImage -->
+                <!-- Этому элементу надо указать backgroundImage -->
             </div>
             <div class="select_dialog_option_label">
                 <span class="js-option_label">Картинка и текст</span>
+            </div>
+        </div>
+    </script>
+
+    <!-- Элемент для добавления в диалог проекта -->
+    <script id="id-select_dialog_myproject_template" type="text/template">
+        <div class="select_dialog_option js-option" style="display:block">
+            <div class="select_dialog_option_label">
+                <span class="js-option_label">имя проекта</span>
             </div>
         </div>
     </script>
@@ -129,6 +125,8 @@
     <script type="text/javascript" src="../js/setting.js"></script>
     <script type="text/javascript" src="../js/appProperty.js"></script>
     <script type="text/javascript" src="../js/queue.js"></script>
+    <script type="text/javascript" src="../js/selectDialog.js"></script>
+    <script type="text/javascript" src="../js/selectUserTemplateDialog.js"></script>
     <!-- Все скрипты будут объединены при сборке проекта, так что забить что их много -->
     <script type="text/javascript" src="controls/AbstractControl.js"></script>
     <script type="text/javascript" src="controls/TextQuickInput.js"></script>

@@ -4,7 +4,12 @@
 //TODO подумать над форматом, где должны храниться продукты всегда. Какое-то одно хранилище?
 var baseProductUrl = '../products/test/';
 var indexHtml = 'index.html';
-
+/**
+ * Уникальный ид проекта
+ * Также это имя файла, которое будет использовано при сохранении
+ * @type {string}
+ */
+var appId = null;
 /**
  * Строковый идентификатор открытого проекта: test, timeline и тд
  * @type {string}
@@ -130,6 +135,7 @@ function getDistribUrl() {
  * Функция запуска редактора
  */
 function start() {
+    appId = getUniqId().substr(22);
     appTemplate = null;
     appName = null;
     // сначала смотрим, есть ли ссылка на шаблон
@@ -809,16 +815,15 @@ function publish() {
  */
 function saveTemplate() {
     //TODO автосохранение
-    //TODO project id and name
-    var projectId = 'abc123';
+    //TODO name
     //TODO возможно шифрование
     var data = {
         appName: appName,
         app: iframeWindow.app,
         descriptor: iframeWindow.descriptor
     };
-    log('Saving project:' + projectId);
-    var objKey = 'facebook-'+fbUserId+'/app/'+projectId+'.txt';
+    log('Saving project:' + appId);
+    var objKey = 'facebook-'+fbUserId+'/app/'+appId+'.txt';
     var params = {
         Key: objKey,
         ContentType: 'text/plain',
@@ -830,7 +835,7 @@ function saveTemplate() {
         if (err) {
             log('ERROR: ' + err, true);
         }
-        log('Saving task done:' + projectId);
+        log('Saving task done:' + appId);
     }).bind(this));
 }
 
@@ -847,10 +852,17 @@ function openTemplate(templateUrl) {
     xhr.onreadystatechange = function(e) {
         if (e.target.readyState == 4) {
             if(e.target.status == 200) {
+                var newId = null;
+                var reg = new RegExp('facebook-'+fbUserId+'\/app\/([A-z0-9]+)\.txt','g');
+                var match = reg.exec(templateUrl);
+                if (match && match[1]) {
+                    newId = match[1];
+                }
                 var obj = JSON.parse(e.target.responseText);
-                if (obj.appName && obj.app && obj.descriptor) {
+                if (obj.appName && obj.app && obj.descriptor && newId) {
                     appName = obj.appName;
                     appTemplate = obj;
+                    appId = newId;
                     // после загрузки шаблона надо загрузить код самого промо проекта
                     // там далее в колбеке на загрузку iframe есть запуск движка
                     loadAppSrc(appName);
@@ -866,21 +878,14 @@ function openTemplate(templateUrl) {
     };
     xhr.open('GET',templateUrl);
     xhr.send();
-
-//    var pInfo = null;
-//    for (var i = 0; i < userProjects.length; i++) {
-//        if (projectId === userProjects[i].projectId) {
-//            pInfo = userProjects[i];
-//            break;
-//        }
-//    }
 }
 
 /**
  * Получить список проектов авторизованного пользователя
  *
+ * @param {function} [callback] - функция для обратного вызова, когда шаблоны будут загружены
  */
-function requestUserTemplates() {
+function requestUserTemplates(callback) {
     if (fbUserId) {
         var prefix = 'facebook-' + fbUserId + '/app';
         bucket.listObjects({
@@ -905,6 +910,7 @@ function requestUserTemplates() {
                 });
                 log('Objects in dir '+prefix+':');
             }
+            callback();
         });
     }
 }
@@ -935,6 +941,10 @@ function showEmbedDialog() {
  */
 function onPreviewClick() {
     showPreview();
+}
+
+function onMyTemplatesClick() {
+    showMyTemplates();
 }
 
 /**
@@ -1001,41 +1011,32 @@ function showSelectDialog(params) {
 }
 
 /**
- * Универсальный диалог для выбора чего-то
- * Например, используется для выбор какой вопрос в тест добавить (их несколько видов)
+ * Показать диалог с выбором своих сохраненных проектов
  *
  * @param params
- * @param {string} params.caption - заголовок леера
- * @param {Array.<object>} params.options - {icon, label, id} список вариантов для выбора.
- * @param {function} params.callback - вызывается, когда выбор сделан. Передается либо id выбранного итема, либо null если пользователь просто закрыл диалог
  */
-function SelectDialog(params) {
-    this.selectedOptionId = null;
-    this.view = null;
-
-    var html = $('#id-select_dialog_template').html();
-    this.view = $(html);
-    this.view.find('.js-caption').text(params.caption);
-    var optionHtml = $('#id-select_dialog_option_template').html();
-    var $cnt = this.view.find('.js-options_cnt');
-    for (var i = 0; i < params.options.length; i++) {
-        var $e = $(optionHtml).click((function(e){
-            $('.js-option').removeClass('__active');
-            // оборачиваем элемент по которому кликнули
-            var $t = $(e.currentTarget);
-            $t.addClass('__active');
-            this.selectedOptionId = $t.attr('data-id');
-        }).bind(this));
-        $e.attr('data-id',params.options[i].id).find('.js-option_label').text(params.options[i].label);
-        $cnt.append($e);
+function showMyTemplates() {
+    if (!userTemplates) {
+        requestUserTemplates(function(){
+            var selectOptions = [];
+            for (var i = 0; i < userTemplates.length; i++) {
+                selectOptions.push({
+                    id: userTemplates[i].key,
+                    label: userTemplates[i].id
+                });
+            }
+            var params = {};
+            params.options = selectOptions;
+            params.callback = function(selectedOptionId) {
+                if (selectedOptionId) {
+                    //TODO open saved template
+                    // в качестве ид передавали сразу ссылку на проект
+                    var tUrl = config.common.awsHostName+config.common.awsBucketName+'/'+selectedOptionId;
+                    openTemplate(tUrl);
+                }
+            };
+            var dialog = new SelectUserTemplateDialog(params);
+            $('#id-dialogs_view').empty().append(dialog.view).show();
+        });
     }
-
-    this.view.find('.js-confirm').click((function(e) {
-        params.callback(this.selectedOptionId);
-        $('#id-dialogs_view').empty().hide();
-    }).bind(this));
-    this.view.find('.js-cancel').click((function(e) {
-        params.callback(null);
-        $('#id-dialogs_view').empty().hide();
-    }).bind(this));
 }
