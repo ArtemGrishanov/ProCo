@@ -65,7 +65,82 @@ var Engine = {};
         // }
     };
     var testMode = false;
+    /**
+     * Некоторые app проперти имеют связанные css правила, которые описываются в дескрипторы.
+     * В этом случае при изменени app проперти происходит создание правила и запись его в body промо-проекта
+     * Пример элемента: {selector: '.t_btn', rules: [{property: 'background-color', value: '#000'}, ...]}
+     *
+     * @type {Array}
+     */
+    var customCssRules = [];
 
+
+    /**
+     * Сохранить кастомный css стиль для промо проекта.
+     * Потом он будет встроен в body тегом <style>
+     *
+     * @param selector
+     * @param property
+     * @param value
+     */
+    function saveCssRule(selector, property, value) {
+        var selectorFound = false;
+        for (var i = 0; i < customCssRules.length; i++) {
+            var r = customCssRules[i];
+            if (r.selector === selector) {
+                var propertyFound = false;
+                for (var j = 0; j < r.rules.length; j++) {
+                    if (r.rules[j].property === property) {
+                        // перезаписываем существующее css проперти
+                        r.rules[j].value = value;
+                        propertyFound = true;
+                        break;
+                    }
+                }
+                if (propertyFound === false) {
+                    // новое проперти для этого селектора, добавить в массив
+                    r.rules.push({
+                        property: property,
+                        value: value
+                    });
+                }
+                selectorFound = true;
+                break;
+            }
+        }
+        if (selectorFound === false) {
+            // селектор новый, добавить
+            customCssRules.push({
+                selector: selector,
+                rules: [{
+                    property: property,
+                    value: value
+                }]
+            });
+        }
+    }
+
+    /**
+     * Записать стили в указанный элемент
+     * @param elem
+     */
+    function writeCssRulesTo(elem) {
+        var cssStr = '';
+        for (var i = 0; i < customCssRules.length; i++) {
+            var r = customCssRules[i];
+            cssStr += r.selector+'{\n';
+            for (var j = 0; j < r.rules.length; j++) {
+                cssStr += '\t'+r.rules[j].property+':'+r.rules[j].value+'\n';
+            }
+            cssStr += '}\n';
+        }
+        var $style = $(elem).find('#id-custom_style');
+        if ($style.length === 0) {
+            $style = $('<style></style>').attr('id','id-custom_style').appendTo(elem);
+        }
+        $style.html(cssStr);
+
+    }
 
     /**
      * Проверяет выражение на верность.
@@ -228,6 +303,7 @@ var Engine = {};
                     // если имеются дополнительные данные их возможно вставить во view
                     // например: data-app-property="quiz.{{currentQuestion}}.text"
                     ps[i].view = parseView(ps[i].view, ps[i].data);
+                    writeCssRulesTo(ps[i].view);
                 }
                 appScreens.push(ps[i]);
                 // идишники сохраняем отдельно для быстрой отдачи их редактору единым массивом
@@ -414,6 +490,11 @@ var Engine = {};
                     log('Restart app');
                     // передает ссылку на себя при старте
                     productWindow.start.call(productWindow, buildProductAppParams.call(this));
+                }
+                // если с изменямым appProperty связаны css свойства, то записываем их
+                if (appProperty.cssSelector && appProperty.cssProperty) {
+                    saveCssRule(appProperty.cssSelector, appProperty.cssProperty, value);
+                    writeCssRulesTo(productWindow.document.body);
                 }
                 // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
                 //TODO нужен более умный алгоритм. Пересоздавать только свойства в массиве. Есть ли другие случаи?

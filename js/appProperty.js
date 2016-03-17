@@ -4,8 +4,6 @@
 
 /**
  * Допустимые свойства и их значения по умолчанию
- *
- * @type {{canAdd: null, editable: boolean, updateScreens: boolean, updateAppProperties: boolean, label: string, runTests: boolean}}
  */
 var validAttributes = {
     canAdd: null,
@@ -16,7 +14,9 @@ var validAttributes = {
     runTests: true,
     static: false,
     possibleValues: [],
-    isPreset: false
+    isPreset: false,
+    cssProperty: null,
+    cssSelector: null
 };
 
 /**

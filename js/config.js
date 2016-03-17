@@ -6,7 +6,7 @@ var config = {
         /**
          * Проводить ли при старте инициализацию для работы с хранилищем амазона
          */
-        awsEnabled: true,
+        awsEnabled: false,
         /**
          * Хост для сохранения данных
          */
@@ -22,7 +22,7 @@ var config = {
         /**
          * Разрешать вход через FB автоматически при запуске приложения
          */
-        facebookAutoAuthEnable: true,
+        facebookAutoAuthEnable: false,
         /**
          * Разрешает вывод в консоль console.log
          */
@@ -115,7 +115,7 @@ var config = {
         },
         TextInput: {
             defaultDirectiveIndex: 0,
-            directives: ['colorpicker'],
+            directives: ['textinput', 'colorpicker'],
             parentId: 'id-static_controls_cnt'
         },
         Drag: {
