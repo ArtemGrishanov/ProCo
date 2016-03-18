@@ -16,7 +16,8 @@ var validAttributes = {
     possibleValues: [],
     isPreset: false,
     cssProperty: null,
-    cssSelector: null
+    cssSelector: null,
+    cssValuePattern: null
 };
 
 /**

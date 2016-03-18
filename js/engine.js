@@ -125,12 +125,12 @@ var Engine = {};
      * @param elem
      */
     function writeCssRulesTo(elem) {
-        var cssStr = '';
+        var cssStr = '\n';
         for (var i = 0; i < customCssRules.length; i++) {
             var r = customCssRules[i];
             cssStr += r.selector+'{\n';
             for (var j = 0; j < r.rules.length; j++) {
-                cssStr += '\t'+r.rules[j].property+':'+r.rules[j].value+'\n';
+                cssStr += '\t'+r.rules[j].property+':'+r.rules[j].value+';\n';
             }
             cssStr += '}\n';
         }
@@ -493,7 +493,15 @@ var Engine = {};
                 }
                 // если с изменямым appProperty связаны css свойства, то записываем их
                 if (appProperty.cssSelector && appProperty.cssProperty) {
-                    saveCssRule(appProperty.cssSelector, appProperty.cssProperty, value);
+                    //
+                    var cssV = null;
+                    if (appProperty.cssValuePattern) {
+                        cssV = appProperty.cssValuePattern.replace('{{value}}',value);
+                    }
+                    else {
+                        cssV = value;
+                    }
+                    saveCssRule(appProperty.cssSelector, appProperty.cssProperty, cssV);
                     writeCssRulesTo(productWindow.document.body);
                 }
                 // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется

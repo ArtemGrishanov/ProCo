@@ -192,6 +192,8 @@ var descriptor = {
     questionProgressPosition: {
         editable: true,
         updateScreens: false,
+        // updateAppProperties: false, - тогда не перетаскивается
+        //TODO при перетаскивании все равно пересоздаются свойства appProperties
         runTests: false,
         controls: "Drag",
         controlParams: {
@@ -229,6 +231,123 @@ var descriptor = {
         controlParams: {
         },
         label: 'Размер шрифта номера вопроса'
+    },
+
+    /**
+     * Буллиты опций ответа
+     *
+     */
+    showBullits: {
+        editable: true,
+        updateScreens: true,
+        runTests: false,
+        controls: "OnOff",
+        static: true,
+        controlParams: {
+            viewName: "OnOffSwitcher"
+        },
+        label: "Показывать буллит варианта ответа"
+    },
+    bullitsBorderWidth: {
+        editable: true,
+        updateScreens: true,
+        runTests: false,
+        controls: "TextInput",
+        static: true,
+        controlParams: {
+            viewName: "TextField"
+        },
+        //TODO format cssValue: '{value}px' чтобы было понятно как формировать проперти
+        cssSelector: '.bullit',
+        cssProperty: 'border-width',
+        cssValuePattern: '{{value}}px',
+        label: "Толщина буллита"
+    },
+    bullitHoverBorderWidth: {
+        editable: true,
+        updateScreens: true,
+        runTests: false,
+        controls: "TextInput",
+        static: true,
+        controlParams: {
+            viewName: "TextField"
+        },
+        cssSelector: '.a_wr:hover .bullit',
+        cssProperty: 'border-width',
+        cssValuePattern: '{{value}}px',
+        label: "Толщина буллита при наведении на вопрос"
+    },
+    bullitsBorderColor: {
+        editable: true,
+        updateScreens: true,
+        runTests: false,
+        controls: "TextInput",
+        static: true,
+        controlParams: {
+            viewName: "ColorPicker"
+        },
+        label: "Цвет обводки буллита",
+        cssSelector: '.bullit',
+        cssProperty: 'border-color'
+    },
+
+    /**
+     * Верхний колонтитул
+     *
+     */
+    showTopColontitle: {
+        editable: true,
+        updateScreens: true,
+        runTests: false,
+        controls: "OnOff",
+        static: true,
+        controlParams: {
+            viewName: "OnOffSwitcher"
+        },
+        label: "Верхний колонтитул"
+    },
+    topColontitleLineColor: {
+        editable: true,
+        updateScreens: true,
+        runTests: false,
+        controls: "TextInput",
+        static: true,
+        controlParams: {
+            viewName: "ColorPicker"
+        },
+        label: "Цвет линии колонтитула",
+        cssSelector: '.topColontitle',
+        cssProperty: 'border-bottom-color'
+    },
+    topColontitleBackgroundColor: {
+        editable: true,
+        updateScreens: true,
+        runTests: false,
+        controls: "TextInput",
+        static: true,
+        controlParams: {
+            viewName: "ColorPicker"
+        },
+        label: "Цвет фона колонтитула",
+        cssSelector: '.topColontitle',
+        cssProperty: 'background-color'
+    },
+    topColontitleFontColor: {
+        editable: true,
+        updateScreens: true,
+        runTests: false,
+        controls: "TextInput",
+        static: true,
+        controlParams: {
+            viewName: "ColorPicker"
+        },
+        label: "Цвет шрифта колонтитула",
+        cssSelector: '.topColontitle',
+        cssProperty: 'color'
+    },
+    topColontitleText: {
+        editable: true,
+        controls: 'TextQuickInput'
     },
 
     /**
