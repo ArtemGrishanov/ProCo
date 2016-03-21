@@ -4,10 +4,6 @@
 var config = {
     common: {
         /**
-         * Проводить ли при старте инициализацию для работы с хранилищем амазона
-         */
-        awsEnabled: false,
-        /**
          * Хост для сохранения данных
          */
         awsHostName: 'https://s3.eu-central-1.amazonaws.com/',
@@ -15,14 +11,18 @@ var config = {
         awsRoleArn: 'arn:aws:iam::520270155749:role/ProCo_FBUsers',
         awsRegion: 'eu-central-1',
         /**
+         * Проводить ли при старте инициализацию для работы с хранилищем амазона
+         */
+        awsEnabled: true,
+        /**
          * Id приложения в facebook для логина
          */
-        //facebookAppId: '515132035326687', //aws appId
-        facebookAppId: '518819781624579', //localhost site
+        facebookAppId: '515132035326687', //aws appId
+//        facebookAppId: '518819781624579', //localhost site
         /**
          * Разрешать вход через FB автоматически при запуске приложения
          */
-        facebookAutoAuthEnable: false,
+        facebookAutoAuthEnable: true,
         /**
          * Разрешает вывод в консоль console.log
          */
@@ -41,8 +41,8 @@ var config = {
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
          * При деплое на продакш оставить пустым
          */
-        devPrototypesHostName: 'http://localhost:63342/ProCo',
-//        devPrototypesHostName: 'http://proco.surge.sh/',
+//        devPrototypesHostName: 'http://localhost:63342/ProCo',
+        devPrototypesHostName: 'http://proco.surge.sh/',
         /**
          * Теги, которыми будет обрамлены новые параметры перезаписывании
          */

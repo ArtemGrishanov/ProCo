@@ -121,6 +121,7 @@ body {
     background-color: #eee;
     border: 1px solid #bbb;
     min-height: 400px;
+    color: #000;
 }
 .static_controls_cnt input{
     width: 146px
