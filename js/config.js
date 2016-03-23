@@ -13,16 +13,16 @@ var config = {
         /**
          * Проводить ли при старте инициализацию для работы с хранилищем амазона
          */
-        awsEnabled: true,
+        awsEnabled: false,
         /**
          * Id приложения в facebook для логина
          */
-        facebookAppId: '515132035326687', //aws appId
-//        facebookAppId: '518819781624579', //localhost site
+//        facebookAppId: '515132035326687', //aws appId
+        facebookAppId: '518819781624579', //localhost site
         /**
          * Разрешать вход через FB автоматически при запуске приложения
          */
-        facebookAutoAuthEnable: true,
+        facebookAutoAuthEnable: false,
         /**
          * Разрешает вывод в консоль console.log
          */
@@ -41,8 +41,8 @@ var config = {
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
          * При деплое на продакш оставить пустым
          */
-//        devPrototypesHostName: 'http://localhost:63342/ProCo',
-        devPrototypesHostName: 'http://proco.surge.sh/',
+        devPrototypesHostName: 'http://localhost:63342/ProCo',
+//        devPrototypesHostName: 'http://proco.surge.sh/',
         /**
          * Теги, которыми будет обрамлены новые параметры перезаписывании
          */
@@ -86,34 +86,32 @@ var config = {
         TextQuickInput: {
             defaultDirectiveIndex: -1, // view не используется
             directives: [/*'textquickinput'*/],
-            parentId: 'id-control_cnt'
+            parentId: 'id-control_cnt',
+            type: 'workspace' // контрол появляется на поле для редактиования, когда показывается экран приложения
         },
         Slide: {
             defaultDirectiveIndex: 0,
             directives: ['slide'],
-            parentId: null, // вставляется в группу контролов Slide
-            overrideProductParams: {
-                // параметры для контролы этого типа, которые будут установлены в любом случае поверх описанных в промо-приложении
-                //
-                static: true
-            }
+            parentId: null // вставляется в группу контролов Slide
         },
         AddArrayElementControl: {
             defaultDirectiveIndex: 0,
             directives: ['addquickbutton','addscreenbutton'],
-            parentId: 'id-control_cnt'
+            parentId: 'id-control_cnt',
+            type: 'workspace' // контрол появляется на поле для редактиования, когда показывается экран приложения
         },
         DeleteQuickButton: {
             defaultDirectiveIndex: 0,
             directives: ['deletequickbutton'],
-            parentId: 'id-control_cnt'
+            parentId: 'id-control_cnt',
+            type: 'workspace' // контрол появляется на поле для редактиования, когда показывается экран приложения
         },
         OnOff: {
             defaultDirectiveIndex: 0,
             directives: ['onoffswitcher'],
             parentId: 'id-static_controls_cnt'
         },
-        TextInput: {
+        StringControl: {
             defaultDirectiveIndex: 0,
             directives: ['textinput', 'colorpicker'],
             parentId: 'id-static_controls_cnt'
@@ -121,7 +119,8 @@ var config = {
         Drag: {
             defaultDirectiveIndex: 0,
             directives: ['drag'],
-            parentId: 'id-control_cnt'
+            parentId: 'id-control_cnt',
+            type: 'workspace' // контрол появляется на поле для редактиования, когда показывается экран приложения
         },
         Alternative: {
             defaultDirectiveIndex: 0,

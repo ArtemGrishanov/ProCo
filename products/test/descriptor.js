@@ -6,6 +6,16 @@ var descriptor = {
         editable: true,
         controls: "TextQuickInput"
     },
+    startHeaderTextFontSize: {
+        editable: true,
+        updateScreens: true,
+        controls: "StringControl",
+        controlParams: {
+            viewName: 'textinput'
+        },
+        view: 'js-startHeader',
+        label: 'Размер шрифта'
+    },
     startDescription: {
         editable: true,
         controls: "TextQuickInput"
@@ -17,7 +27,6 @@ var descriptor = {
     randomizeQuestions: {
         editable: true,
         controls: "OnOff",
-        static: true,
         controlParams: {
             viewName: "OnOffSwitcher"
         },
@@ -26,8 +35,7 @@ var descriptor = {
     backgroundColor: {
         editable: true,
         updateScreens: true,
-        static: true,
-        controls: "TextInput",
+        controls: "StringControl",
         controlParams: {
             viewName: "ColorPicker"
         },
@@ -36,8 +44,7 @@ var descriptor = {
     fontColor: {
         editable: true,
         updateScreens: true,
-        static: true,
-        controls: "TextInput",
+        controls: "StringControl",
         controlParams: {
             viewName: "ColorPicker"
         },
@@ -58,7 +65,6 @@ var descriptor = {
     showBackgroundImage: {
         editable: true,
         updateScreens: true,
-        static: true,
         controls: "OnOff",
         controlParams: {
         },
@@ -72,8 +78,7 @@ var descriptor = {
     buttonBackgroundColor: {
         editable: true,
         updateScreens: true,
-        static: true,
-        controls: 'TextInput',
+        controls: 'StringControl',
         controlParams: {
             viewName: 'ColorPicker'
         },
@@ -84,8 +89,7 @@ var descriptor = {
     buttonHoverBackgroundColor: {
         editable: true,
         updateScreens: true,
-        static: true,
-        controls: 'TextInput',
+        controls: 'StringControl',
         controlParams: {
             viewName: 'ColorPicker'
         },
@@ -98,8 +102,7 @@ var descriptor = {
     buttonFontColor: {
         editable: true,
         updateScreens: true,
-        static: true,
-        controls: 'TextInput',
+        controls: 'StringControl',
         controlParams: {
             viewName: 'ColorPicker'
         },
@@ -110,8 +113,7 @@ var descriptor = {
     buttonHoverFontColor: {
         editable: true,
         updateScreens: true,
-        static: true,
-        controls: 'TextInput',
+        controls: 'StringControl',
         controlParams: {
             viewName: 'ColorPicker'
         },
@@ -122,8 +124,7 @@ var descriptor = {
     buttonBorderColor: {
         editable: true,
         updateScreens: true,
-        static: true,
-        controls: 'TextInput',
+        controls: 'StringControl',
         controlParams: {
             viewName: 'ColorPicker'
         },
@@ -134,8 +135,7 @@ var descriptor = {
     buttonHoverBorderColor: {
         editable: true,
         updateScreens: true,
-        static: true,
-        controls: 'TextInput',
+        controls: 'StringControl',
         controlParams: {
             viewName: 'ColorPicker'
         },
@@ -146,8 +146,7 @@ var descriptor = {
     buttonBorderRadius: {
         editable: true,
         updateScreens: true,
-        static: true,
-        controls: 'TextInput',
+        controls: 'StringControl',
         controlParams: {
         },
         label: 'Радиус бордера кнопок'
@@ -155,8 +154,7 @@ var descriptor = {
     buttonFontSize: {
         editable: true,
         updateScreens: true,
-        static: true,
-        controls: 'TextInput',
+        controls: 'StringControl',
         controlParams: {
         },
         label: 'Размер шрифта кнопок'
@@ -164,7 +162,6 @@ var descriptor = {
     buttonFontFamily: {
         editable: true,
         updateScreens: true,
-        static: true,
         controls: "Alternative",
         controlParams: {
             viewName: "Dropdown"
@@ -183,7 +180,6 @@ var descriptor = {
         updateScreens: true,
         runTests: false,
         controls: "OnOff",
-        static: true,
         controlParams: {
             viewName: "OnOffSwitcher"
         },
@@ -202,8 +198,7 @@ var descriptor = {
     questionProgressFontColor: {
         editable: true,
         updateScreens: true,
-        static: true,
-        controls: 'TextInput',
+        controls: 'StringControl',
         controlParams: {
             viewName: 'ColorPicker'
         },
@@ -214,7 +209,6 @@ var descriptor = {
     questionProgressFontFamily: {
         editable: true,
         updateScreens: true,
-        static: true,
         controls: "Alternative",
         controlParams: {
             viewName: "Dropdown"
@@ -226,8 +220,7 @@ var descriptor = {
     questionProgressFontSize: {
         editable: true,
         updateScreens: true,
-        static: true,
-        controls: 'TextInput',
+        controls: 'StringControl',
         controlParams: {
         },
         label: 'Размер шрифта номера вопроса'
@@ -242,7 +235,6 @@ var descriptor = {
         updateScreens: true,
         runTests: false,
         controls: "OnOff",
-        static: true,
         controlParams: {
             viewName: "OnOffSwitcher"
         },
@@ -252,10 +244,9 @@ var descriptor = {
         editable: true,
         updateScreens: true,
         runTests: false,
-        controls: "TextInput",
-        static: true,
+        controls: "StringControl",
         controlParams: {
-            viewName: "TextField"
+            viewName: "textinput"
         },
         //TODO format cssValue: '{value}px' чтобы было понятно как формировать проперти
         cssSelector: '.bullit',
@@ -267,10 +258,9 @@ var descriptor = {
         editable: true,
         updateScreens: true,
         runTests: false,
-        controls: "TextInput",
-        static: true,
+        controls: "StringControl",
         controlParams: {
-            viewName: "TextField"
+            viewName: "textinput"
         },
         cssSelector: '.a_wr:hover .bullit',
         cssProperty: 'border-width',
@@ -281,8 +271,7 @@ var descriptor = {
         editable: true,
         updateScreens: true,
         runTests: false,
-        controls: "TextInput",
-        static: true,
+        controls: "StringControl",
         controlParams: {
             viewName: "ColorPicker"
         },
@@ -300,7 +289,6 @@ var descriptor = {
         updateScreens: true,
         runTests: false,
         controls: "OnOff",
-        static: true,
         controlParams: {
             viewName: "OnOffSwitcher"
         },
@@ -310,8 +298,7 @@ var descriptor = {
         editable: true,
         updateScreens: true,
         runTests: false,
-        controls: "TextInput",
-        static: true,
+        controls: "StringControl",
         controlParams: {
             viewName: "ColorPicker"
         },
@@ -323,8 +310,7 @@ var descriptor = {
         editable: true,
         updateScreens: true,
         runTests: false,
-        controls: "TextInput",
-        static: true,
+        controls: "StringControl",
         controlParams: {
             viewName: "ColorPicker"
         },
@@ -336,8 +322,7 @@ var descriptor = {
         editable: true,
         updateScreens: true,
         runTests: false,
-        controls: "TextInput",
-        static: true,
+        controls: "StringControl",
         controlParams: {
             viewName: "ColorPicker"
         },
@@ -383,16 +368,9 @@ var descriptor = {
     },
     quiz: {
         editable: true,
-        static: true,
         updateScreens: true,
         canAdd: ["proto__text_slide","proto__photo_question_slide"],
         controls: [
-//            {
-//                name: "ArrayControl",
-//                params: {
-//                    viewName: "ArrayControl"
-//                }
-//            },
             {
                 name: "AddArrayElementControl",
                 params: {
@@ -451,16 +429,6 @@ var descriptor = {
         editable: true,
         controls: "TextQuickInput"
     },
-//    proto__text_slide: {
-//        // прототип, значит свойтво используется для клонирования и создания новых элементов в массиве
-//        isPrototype: true
-//    },
-//    proto__photo_question_slide: {
-//        isPrototype: true
-//    },
-//    proto__option_text: {
-//        isPrototype: true
-//    },
     stylePresets: {
         isPreset: true,
         editable: true,

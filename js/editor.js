@@ -336,34 +336,39 @@ function syncUIControlsToAppProperties() {
             // у свойства может быть несколько контролов
             for (var j = 0; j < ap.controls.length; j++) {
                 var c = ap.controls[j];
-                if (ap.static === true) {
-                    // контрол помечен как постоянный в дескрипторе, то есть его надо создать сразу и навсегда (пересоздастся только вместе с экранами)
-                    var parent = null;
-                    var sg = c.params.screenGroup;
-                    if (sg) {
-                        // контрол привязан в группе экранов, а значит его родитель другой, так себе решение.
-                        parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
-                    }
-                    else {
-                        // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на правую панель
-                        var $cc = $($('#id-static_control_cnt_template').html()).appendTo('#id-static_controls_cnt');
-                        if (ap.label) {
-                            $cc.find('.js-label').text(ap.label);
+                if (config.controls[c.name]) {
+                    if (config.controls[c.name].type !== 'workspace') {
+                        // контрол помечен как постоянный в дескрипторе, то есть его надо создать сразу и навсегда (пересоздастся только вместе с экранами)
+                        var parent = null;
+                        var sg = c.params.screenGroup;
+                        if (sg) {
+                            // контрол привязан в группе экранов, а значит его родитель другой, так себе решение.
+                            parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
                         }
-                        parent = $cc.find('.js-control_cnt');
-                    }
-                    var newControl = createControl(ps, c.params.viewName, c.name, c.params, parent);
-                    if (newControl) {
-                        uiControlsInfo.push({
-                            appPropertyString: ps,
-                            control: newControl
-                        });
-                    }
-                    else {
-                        log('Can not create control for appProperty: \'' + ps, true);
-                    }
+                        else {
+                            // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на правую панель
+                            var $cc = $($('#id-static_control_cnt_template').html()).appendTo('#id-static_controls_cnt');
+                            if (ap.label) {
+                                $cc.find('.js-label').text(ap.label);
+                            }
+                            parent = $cc.find('.js-control_cnt');
+                        }
+                        var newControl = createControl(ps, c.params.viewName, c.name, c.params, parent);
+                        if (newControl) {
+                            uiControlsInfo.push({
+                                appPropertyString: ps,
+                                control: newControl
+                            });
+                        }
+                        else {
+                            log('Can not create control for appProperty: \'' + ps, true);
+                        }
 
-                    //TODO здесь же будут добавлены другие постоянные контролы, например на правой панели
+                        //TODO здесь же будут добавлены другие постоянные контролы, например на правой панели
+                    }
+                }
+                else {
+                    log('Control: \'' + c.name + '\' isn\'t descripted in config.js' , true);
                 }
             }
         }
@@ -535,12 +540,6 @@ function createControl(propertyString, viewName, name, params, controlParentView
         }
         else {
             cpv = $('#'+config.controls[name].parentId);
-        }
-        // для контрола могут быть прописаны форсированные параметры, которые приоритетнее клиентских установок
-        if (config.controls[name] && config.controls[name].overrideProductParams) {
-            for (var key in config.controls[name].overrideProductParams) {
-                params[key] = config.controls[name].overrideProductParams[key];
-            }
         }
         // свойств может быть несколько, передаем массив
         var propertyStrArg = (propertyString.indexOf(',')>=0)?propertyString.split(','):propertyString;

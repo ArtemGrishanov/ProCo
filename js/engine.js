@@ -229,7 +229,7 @@ var Engine = {};
                     // и темы пропускаем
                     continue;
                 }
-                log('Found AppProperty: \''+ str + '\'', false, true);
+                log('Found AppProperty: \''+ str + '\'', false, false);
                 var p = new AppProperty(obj[key],str,descInfo);
                 appProperties.push(p);
                 appPropertiesObjectPathes.push(p.propertyString);
