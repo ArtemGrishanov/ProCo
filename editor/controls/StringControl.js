@@ -4,10 +4,10 @@
  * Контрол управления строкой
  * Это может быть: цвет, url, текст
  */
-function TextInput(propertyString, directiveName, $parent, productDOMElement, params) {
+function StringControl(propertyString, directiveName, $parent, productDOMElement, params) {
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
 }
-TextInput.prototype = AbstractControl;
+StringControl.prototype = AbstractControl;
 /**
  * Angular контроллер, для управления view
  * имя состоит из двух частей: 'Имя контрола'+'Controller'
@@ -15,7 +15,7 @@ TextInput.prototype = AbstractControl;
  * @param $scope область видимости из angular
  * @param $attrs дополнительные атрибуты, например dom элемент внутри
  */
-function TextInputController(scope, attrs) {
+function StringControlController(scope, attrs) {
     var $e = attrs.$$element;
     var propertyString = $e.parent().attr('data-app-property');
     var appProperty = Engine.getAppProperty(propertyString);
