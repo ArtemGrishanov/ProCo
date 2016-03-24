@@ -25,6 +25,7 @@ body {
     position: relative;
     padding: 0;
     float: left;
+    width: 75%;
 }
 .screen_cnt {
     padding: 0 5px 15px 5px;

@@ -39,7 +39,8 @@ var descriptor = {
         controlParams: {
             viewName: "ColorPicker"
         },
-        label: "Цвет фона"
+        label: "Цвет фона",
+        filter: true
     },
     fontColor: {
         editable: true,
@@ -68,7 +69,8 @@ var descriptor = {
         controls: "OnOff",
         controlParams: {
         },
-        label: "Картинка"
+        label: "Картинка",
+        filter: true
     },
 
     /**
@@ -84,7 +86,8 @@ var descriptor = {
         },
         label: 'Цвет фона кнопок',
         cssSelector: '.t_btn',
-        cssProperty: 'background-color'
+        cssProperty: 'background-color',
+        filter: true
     },
     buttonHoverBackgroundColor: {
         editable: true,
@@ -97,7 +100,8 @@ var descriptor = {
         // значение свойства app.buttonHoverBackgroundColor будет записано вот в это css-правило
         // потом эти правила будут дописаны в кастомные стили для body промо-проекта при сериализации
         cssSelector: '.t_btn:hover',
-        cssProperty: 'background-color'
+        cssProperty: 'background-color',
+        filter: true
     },
     buttonFontColor: {
         editable: true,
@@ -108,7 +112,8 @@ var descriptor = {
         },
         label: 'Цвет шрифта кнопок',
         cssSelector: '.t_btn',
-        cssProperty: 'color'
+        cssProperty: 'color',
+        filter: true
     },
     buttonHoverFontColor: {
         editable: true,
@@ -119,7 +124,8 @@ var descriptor = {
         },
         label: 'Цвет шрифта кнопок',
         cssSelector: '.t_btn:hover',
-        cssProperty: 'color'
+        cssProperty: 'color',
+        filter: true
     },
     buttonBorderColor: {
         editable: true,
@@ -130,7 +136,8 @@ var descriptor = {
         },
         label: 'Цвет бордера кнопок',
         cssSelector: '.t_btn',
-        cssProperty: 'border-color'
+        cssProperty: 'border-color',
+        filter: true
     },
     buttonHoverBorderColor: {
         editable: true,
@@ -141,7 +148,8 @@ var descriptor = {
         },
         label: 'Цвет бордера кнопок при наведении',
         cssSelector: '.t_btn:hover',
-        cssProperty: 'border-color'
+        cssProperty: 'border-color',
+        filter: true
     },
     buttonBorderRadius: {
         editable: true,
@@ -149,7 +157,8 @@ var descriptor = {
         controls: 'StringControl',
         controlParams: {
         },
-        label: 'Радиус бордера кнопок'
+        label: 'Радиус бордера кнопок',
+        filter: true
     },
     buttonFontSize: {
         editable: true,
@@ -157,7 +166,8 @@ var descriptor = {
         controls: 'StringControl',
         controlParams: {
         },
-        label: 'Размер шрифта кнопок'
+        label: 'Размер шрифта кнопок',
+        filter: true
     },
     buttonFontFamily: {
         editable: true,
@@ -168,7 +178,8 @@ var descriptor = {
         },
         //TODO standart font names source?
         possibleValues: ["Arial","Times New Roman"],
-        label: 'Шрифт кнопок'
+        label: 'Шрифт кнопок',
+        filter: true
     },
 
     /**

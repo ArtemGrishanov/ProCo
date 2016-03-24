@@ -153,6 +153,10 @@ function start() {
             alert('Выберите шаблон для открытия');
         }
     }
+    $('#id-workspace').click(function(){
+        // любой клик по документы сбрасывает фильтр контролов
+        filterControls();
+    });
 }
 
 /**
@@ -255,9 +259,20 @@ function showScreen(ids) {
  */
 function bindControlsForAppPropertiesOnScreen($view, scrId) {
     var elems = $view.find('[data-app-property]');
+    // для всех элементов data-app-property надо создать событие по клику.
+    // в этот момент будет происходить фильтрация контролов на боковой панели
+    elems.click(function(e){
+        // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
+        // задача - отфильтровать настройки на правой панели
+        var dataAppProperty = $(e.currentTarget).attr('data-app-property');
+        log(dataAppProperty + ' clicked');
+        filterControls(dataAppProperty);
+        e.preventDefault();
+        e.stopPropagation();
+    });
     for (var i = 0; i < elems.length; i++) {
         var pAtt = $(elems[i]).attr('data-app-property');
-        //TODO этот поиск никогда не сработает, сейчас всегда чистим все контролы при переулючении экранов
+        //TODO этот поиск никогда не сработает, сейчас всегда чистим все контролы при переключении экранов
         var c = findControlInfo(pAtt, elems[i]);
         if (c) {
             c.control.setProductDomElement(elems[i]);
@@ -272,20 +287,26 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
                 // не забыть что может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
                 var controlsInfo = appProperty.controls;
                 for (var j = 0; j < controlsInfo.length; j++) {
-                    // имя вью для контрола
-                    var viewName = controlsInfo[j].params.viewName;
-                    var newControl = createControl(pAtt, viewName, controlsInfo[j].name, controlsInfo[j].params, null, elems[i]);
-                    if (newControl) {
-                        // только если действительно получилось создать ui для настройки
-                        // не все контролы могут быть реализованы или некорректно указаны
-                        uiControlsInfo.push({
-                            appPropertyString: pAtt,
-                            control: newControl,
-                            domElement: elems[i]
-                        });
-                    }
-                    else {
-                        log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+pAtt+ '\' on the screen '+scrId, true);
+                    var cn = controlsInfo[j].name;
+                    // здесь надо создавать только контролы которые находятся на рабочем поле, например textquickinput
+                    // они пересоздаются каждый раз при переключении экрана
+                    // "обычные" контролы создаются иначе
+                    if (config.controls[cn].type === 'workspace') {
+                        // имя вью для контрола
+                        var viewName = controlsInfo[j].params.viewName;
+                        var newControl = createControl(pAtt, viewName, controlsInfo[j].name, controlsInfo[j].params, null, elems[i]);
+                        if (newControl) {
+                            // только если действительно получилось создать ui для настройки
+                            // не все контролы могут быть реализованы или некорректно указаны
+                            uiControlsInfo.push({
+                                appPropertyString: pAtt,
+                                control: newControl,
+                                domElement: elems[i]
+                            });
+                        }
+                        else {
+                            log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+pAtt+ '\' on the screen '+scrId, true);
+                        }
                     }
                 }
             }
@@ -305,6 +326,40 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
         $compile($('#id-control_cnt')[0])($rootScope);
         $rootScope.$digest();
     });
+}
+
+/**
+ * Показать на боковой панели только те контролы, appPropertyString которых есть в dataAppPropertyString
+ *
+ * @param {string} dataAppPropertyString например 'backgroundColor,showBackgroundImage'
+ */
+function filterControls(dataAppPropertyString) {
+    if (dataAppPropertyString) {
+        $('#id-static_controls_cnt').children().hide();
+        // может быть несколько свойств через запятую: фон кнопки, ее бордер, цвет шрифта кнопки и так далее
+        var keys = dataAppPropertyString.split(',');
+        for (var i = 0; i < keys.length; i++) {
+            var c = findControlInfo(keys[i]);
+            // wrapper - это обертка в которой находится контрол на боковой панели
+            // надо скрыть его целиком, включая label
+            if (c && c.wrapper) {
+                c.wrapper.show();
+            }
+        }
+    }
+    else {
+        // сбрасываем фильтр - показываем всё что не имеет filter=true
+        for (var i = 0; i < uiControlsInfo.length; i++) {
+            if (uiControlsInfo[i].type && uiControlsInfo[i].type === 'controlpanel') {
+                if (uiControlsInfo[i].filter === true) {
+                    uiControlsInfo[i].wrapper.hide();
+                }
+                else {
+                    uiControlsInfo[i].wrapper.show();
+                }
+            }
+        }
+    }
 }
 
 /**
@@ -337,7 +392,7 @@ function syncUIControlsToAppProperties() {
             for (var j = 0; j < ap.controls.length; j++) {
                 var c = ap.controls[j];
                 if (config.controls[c.name]) {
-                    if (config.controls[c.name].type !== 'workspace') {
+                    if (config.controls[c.name].type === 'controlpanel') {
                         // контрол помечен как постоянный в дескрипторе, то есть его надо создать сразу и навсегда (пересоздастся только вместе с экранами)
                         var parent = null;
                         var sg = c.params.screenGroup;
@@ -351,13 +406,21 @@ function syncUIControlsToAppProperties() {
                             if (ap.label) {
                                 $cc.find('.js-label').text(ap.label);
                             }
+                            if (ap.filter === true) {
+                                // свойства с этим атрибутом filter=true показываются только при клике на соответствующих элемент в промо-приложении
+                                // который помечен data-app-property
+                                $cc.hide();
+                            }
                             parent = $cc.find('.js-control_cnt');
                         }
                         var newControl = createControl(ps, c.params.viewName, c.name, c.params, parent);
                         if (newControl) {
                             uiControlsInfo.push({
                                 appPropertyString: ps,
-                                control: newControl
+                                control: newControl,
+                                wrapper: $cc, // контейнер, в котором контрол находится на боковой панели контролов
+                                filter: ap.filter, // чтобы потом не искать этот признак во время фильтрации
+                                type: config.controls[c.name].type // также для быстрого поиска
                             });
                         }
                         else {
@@ -485,7 +548,7 @@ function createScreenControls() {
 /**
  * Найти информацию об элементе управления
  * @param propertyString свойство для которого ищем элемент управления
- * @param domElement
+ * @param [domElement]
  * @returns {object|null}
  */
 function findControlInfo(propertyString, domElement) {

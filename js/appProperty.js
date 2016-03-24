@@ -17,7 +17,8 @@ var validAttributes = {
     isPreset: false,
     cssProperty: null,
     cssSelector: null,
-    cssValuePattern: null
+    cssValuePattern: null,
+    filter: false
 };
 
 /**

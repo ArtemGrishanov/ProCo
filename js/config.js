@@ -109,12 +109,14 @@ var config = {
         OnOff: {
             defaultDirectiveIndex: 0,
             directives: ['onoffswitcher'],
-            parentId: 'id-static_controls_cnt'
+            parentId: 'id-static_controls_cnt',
+            type: 'controlpanel'
         },
         StringControl: {
             defaultDirectiveIndex: 0,
             directives: ['textinput', 'colorpicker'],
-            parentId: 'id-static_controls_cnt'
+            parentId: 'id-static_controls_cnt',
+            type: 'controlpanel'
         },
         Drag: {
             defaultDirectiveIndex: 0,
@@ -125,7 +127,8 @@ var config = {
         Alternative: {
             defaultDirectiveIndex: 0,
             directives: ['dropdown','radiobutton'],
-            parentId: 'id-static_controls_cnt'
+            parentId: 'id-static_controls_cnt',
+            type: 'controlpanel'
         },
         ArrayControl: {
             defaultDirectiveIndex: 0,
