@@ -157,6 +157,10 @@ function start() {
         // любой клик по документы сбрасывает фильтр контролов
         filterControls();
     });
+//    $('#id-workspace').mousedown(function(){
+//        // сейчас для простоты удаляются все выделения перед показом следующего
+//        deleteSelections();
+//    });
 }
 
 /**
@@ -262,10 +266,14 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
     // для всех элементов data-app-property надо создать событие по клику.
     // в этот момент будет происходить фильтрация контролов на боковой панели
     elems.click(function(e){
+        //TODO надо сделать объект выделение прозрачным для событий мыши и тп
+        // сейчас для простоты удаляются все выделения перед показом следующего
+        deleteSelections();
         // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
         // задача - отфильтровать настройки на правой панели
         var dataAppProperty = $(e.currentTarget).attr('data-app-property');
         log(dataAppProperty + ' clicked');
+        showSelection($(e.currentTarget));
         filterControls(dataAppProperty);
         e.preventDefault();
         e.stopPropagation();
@@ -1065,6 +1073,24 @@ if (config.common.facebookAutoAuthEnable === true) {
         js.src = "//connect.facebook.net/en_US/all.js";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
+}
+
+var selectionBorders = [];
+function deleteSelections() {
+    selectionBorders.forEach(function(e){
+        e.remove();
+    });
+}
+function showSelection($elem) {
+    var $seletionBorder = $($('#id-elem_selection_template').html());
+    var position = $elem.position();
+    $seletionBorder.css('top',position.top+'px');
+    $seletionBorder.css('left',position.left+'px');
+    $seletionBorder.css('width',$elem.width()+'px');
+    $seletionBorder.css('height',$elem.height()+'px');
+    $seletionBorder.css('zIndex', config.editor.ui.selectionBorderZIndex);
+    $('#id-control_cnt').append($seletionBorder);
+    selectionBorders.push($seletionBorder);
 }
 
 function showSelectDialog(params) {
