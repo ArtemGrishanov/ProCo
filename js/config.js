@@ -4,6 +4,25 @@
 var config = {
     common: {
         /**
+         * хост для загрузки прототипов на редактирование
+         * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
+         * При деплое на продакш оставить пустым
+         */
+        devPrototypesHostName: 'http://localhost:63342/ProCo',
+//        devPrototypesHostName: 'http://proco.surge.sh/',
+        /**
+         * Проводить ли при старте инициализацию для работы с хранилищем амазона
+         */
+        awsEnabled: true,
+        /**
+         * Разрешать вход через FB автоматически при запуске приложения
+         */
+        facebookAutoAuthEnable: true,
+
+        //==================================================
+        //==================================================
+
+        /**
          * Хост для сохранения данных
          */
         awsHostName: 'https://s3.eu-central-1.amazonaws.com/',
@@ -11,18 +30,10 @@ var config = {
         awsRoleArn: 'arn:aws:iam::520270155749:role/ProCo_FBUsers',
         awsRegion: 'eu-central-1',
         /**
-         * Проводить ли при старте инициализацию для работы с хранилищем амазона
-         */
-        awsEnabled: false,
-        /**
          * Id приложения в facebook для логина
          */
 //        facebookAppId: '515132035326687', //aws appId
         facebookAppId: '518819781624579', //localhost site
-        /**
-         * Разрешать вход через FB автоматически при запуске приложения
-         */
-        facebookAutoAuthEnable: false,
         /**
          * Разрешает вывод в консоль console.log
          */
@@ -36,13 +47,6 @@ var config = {
          * Имя get параметра для передачи ссылки открытие в редакторе
          */
         appNameParamName: 'app',
-        /**
-         * хост для загрузки прототипов на редактирование
-         * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
-         * При деплое на продакш оставить пустым
-         */
-        devPrototypesHostName: 'http://localhost:63342/ProCo',
-//        devPrototypesHostName: 'http://proco.surge.sh/',
         /**
          * Теги, которыми будет обрамлены новые параметры перезаписывании
          */

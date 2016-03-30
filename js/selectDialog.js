@@ -3,33 +3,66 @@
  *
  * Универсальный диалог для выбора чего-то
  * Например, используется для выбор какой вопрос в тест добавить (их несколько видов)
+ * или для выбора картинки
  *
  * @param params
  * @param {string} params.caption - заголовок леера
- * @param {Array.<object>} params.options - {icon, label, id} список вариантов для выбора.
+ * @param {string} params.showLoader - показывать ли лоадер пока не установлены опции
+ * @param {Array.<object>} params.options - {icon, label, id, htmlElement, selectable} список вариантов для выбора.
  * @param {function} params.callback - вызывается, когда выбор сделан. Передается либо id выбранного итема, либо null если пользователь просто закрыл диалог
  */
 function SelectDialog(params) {
     this.selectedOptionId = null;
     this.view = null;
+    this.loader = null;
+    /**
+     * Установить опции для выбора
+     * Можно установить в любой момент, прежние опции удалятся
+     * @param {Array.<object>} params.options - {icon, label, id, htmlElement, selectable} список вариантов для выбора.
+     */
+    this.setOptions = function(options) {
+        var optionHtml = $('#id-select_dialog_option_template').html();
+        var $cnt = this.view.find('.js-options_cnt').empty();
+        if (options) {
+            $(this.loader).hide();
+            for (var i = 0; i < options.length; i++) {
+                // htmlElement - это когда уже указано что вставлять в элемент выбора, готовый html элемент
+                //    например кнопка "Загрузить" в списке картинок явно отличается от них
+                // optionHtml - стандартный шаблн
+                var t = (options[i].htmlElement) ? options[i].htmlElement : optionHtml;
+                var $e = $(t);
+                // если опция помечана как selectable=false, то не надо ее выделить кликом
+                if (!(options[i].hasOwnProperty('selectable') && options[i].selectable === false)) {
+                    $e.click((function(e){
+                        $('.js-option').removeClass('__active');
+                        // оборачиваем элемент по которому кликнули
+                        var $t = $(e.currentTarget);
+                        $t.addClass('__active');
+                        this.selectedOptionId = $t.attr('data-id');
+                    }).bind(this));
+                }
+                $e.attr('data-id',options[i].id).find('.js-option_label').text(options[i].label);
+                if (options[i].icon) {
+                    $e.find('.js-option_icon').css('backgroundImage','url('+options[i].icon+')');
+                }
+                $cnt.append($e);
+            }
+        }
+        else {
+            if (params.showLoader === true) {
+                $(this.loader).show();
+            }
+            else {
+                $(this.loader).hide();
+            }
+        }
+    };
 
+    // init section
     var html = $('#id-select_dialog_template').html();
     this.view = $(html);
+    this.loader = this.view.find('.js-loader');
     this.view.find('.js-caption').text(params.caption);
-    var optionHtml = $('#id-select_dialog_option_template').html();
-    var $cnt = this.view.find('.js-options_cnt');
-    for (var i = 0; i < params.options.length; i++) {
-        var $e = $(optionHtml).click((function(e){
-            $('.js-option').removeClass('__active');
-            // оборачиваем элемент по которому кликнули
-            var $t = $(e.currentTarget);
-            $t.addClass('__active');
-            this.selectedOptionId = $t.attr('data-id');
-        }).bind(this));
-        $e.attr('data-id',params.options[i].id).find('.js-option_label').text(params.options[i].label);
-        $cnt.append($e);
-    }
-
     this.view.find('.js-confirm').click((function(e) {
         params.callback(this.selectedOptionId);
         $('#id-dialogs_view').empty().hide();
@@ -38,4 +71,15 @@ function SelectDialog(params) {
         params.callback(null);
         $('#id-dialogs_view').empty().hide();
     }).bind(this));
+    if (params.options) {
+        this.setOptions(params.options);
+    }
+    else {
+        if (params.showLoader === true) {
+            $(this.loader).show();
+        }
+        else {
+            $(this.loader).hide();
+        }
+    }
 }

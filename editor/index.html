@@ -92,6 +92,7 @@
             <div class="select_dialog_caption">
                 <span class="js-caption">Выбрать</span>
             </div>
+            <div class="select_dialog_loading_anim js-loader" style="display:none;"></div>
             <div class="select_dialog_options_cnt js-options_cnt">
                 <!-- Сюда будут программно добавлять опции -->
             </div>
@@ -105,11 +106,25 @@
     <!-- шаблон элемента который вставляются в диалг выбора -->
     <script id="id-select_dialog_option_template" type="text/template">
         <div class="select_dialog_option js-option">
-            <div class="select_dialog_option_thumb_cnt">
+            <div class="select_dialog_option_thumb_cnt js-option_icon">
                 <!-- Этому элементу надо указать backgroundImage -->
             </div>
             <div class="select_dialog_option_label">
                 <span class="js-option_label">Картинка и текст</span>
+            </div>
+        </div>
+    </script>
+
+    <!-- шаблон элемента для аплоада файла который вставляются в диалг выбора -->
+    <script id="id-fileChooser_option_template" type="text/template">
+        <div class="select_dialog_option js-option">
+            <div class="select_dialog_option_thumb_cnt __upload">
+            </div>
+            <div class="select_dialog_option_label">
+                <span class="js-option_label"></span>
+            </div>
+            <div class="file_input_wr">
+                <input class="file_input" type="file" accept="image/*"/>
             </div>
         </div>
     </script>
@@ -138,6 +153,7 @@
     <script type="text/javascript" src="../js/queue.js"></script>
     <script type="text/javascript" src="../js/selectDialog.js"></script>
     <script type="text/javascript" src="../js/selectUserTemplateDialog.js"></script>
+    <script type="text/javascript" src="../js/resourceManager.js"></script>
     <!-- Все скрипты будут объединены при сборке проекта, так что забить что их много -->
     <script type="text/javascript" src="controls/AbstractControl.js"></script>
     <script type="text/javascript" src="controls/TextQuickInput.js"></script>

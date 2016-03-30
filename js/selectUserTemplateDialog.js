@@ -1,6 +1,8 @@
 /**
  * Created by artyom.grishanov on 12.03.16.
  *
+ * Диалог для выбора ранее сохраненных проектор
+ * TODO объединить с универсальным диалогом
  */
 function SelectUserTemplateDialog(params) {
     this.selectedOptionId = null;

@@ -41,6 +41,11 @@ var appIframe = null;
 var iframeWindow = null;
 var fbUserId;
 var bucket = null;
+/**
+ * Диалог с выбором ресурсов (картинки). Можно зааплоадить, запросить список с сервера и выбрать картинку
+ * @type {object}
+ */
+var resourceManager = null;
 
 // инициализация апи для работы с хранилищем Amazon
 if (config.common.awsEnabled === true) {
@@ -161,6 +166,7 @@ function start() {
 //        // сейчас для простоты удаляются все выделения перед показом следующего
 //        deleteSelections();
 //    });
+    resourceManager = new ResourceManager();
 }
 
 /**
@@ -966,6 +972,7 @@ function requestUserTemplates(callback) {
             } else {
                 userTemplates = [];
                 data.Contents.forEach(function (obj) {
+                    // вырезаем имя файла, чтобы использовать его в качестве id для дальнейшей работы
                     var reg = new RegExp('facebook-'+fbUserId+'\/app\/([A-z0-9]+)\.txt','g');
                     var match = reg.exec(obj.Key);
                     if (match && match[1]) {
@@ -1023,25 +1030,6 @@ function onMyTemplatesClick() {
 function onBackToEditorClick() {
     showEditor();
 }
-
-//            var file = fileChooser.files[0];
-//            if (file) {
-//                var objKey = 'facebook-' + fbUserId + '/' + file.name;
-//                var params = {
-//                    Key: objKey,
-//                    ContentType: file.type,
-//                    Body: file,
-//                    ACL: 'public-read'
-//                };
-//                bucket.putObject(params, function (err, data) {
-//                    if (err) {
-//                        //Not authorized to perform sts:AssumeRoleWithWebIdentity
-//                        log('ERROR: ' + err, true);
-//                    } else {
-//                        listObjs();
-//                    }
-//                });
-//            }
 
 if (config.common.facebookAutoAuthEnable === true) {
     /*!
