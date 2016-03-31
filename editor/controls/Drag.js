@@ -9,8 +9,8 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
     this.elemPosition = null;
 
     this.onMouseUp = function(e) {
-        if (this.isDragging === true) {
-//            for (var i = 0; i < this.propertyStringsArray.length; i++) {
+        // this.elemPosition - изначально =null, и определится только в onMouseMove
+        if (this.isDragging === true && this.elemPosition) {
             // апдейт экранов нужен в том случае, когда показано несколько экранов сразу
             // обновлять экраны не надо, так как обновления происхоит по подписке на свойство для скорости
             var ap1 = Engine.getAppProperty(this.propertyString);

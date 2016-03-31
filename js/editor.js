@@ -293,41 +293,47 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
             $('#id-control_cnt').append(c.control.$directive);
         }
         else {
-            // контрола пока ещё не существует для настройки, надо создать
-            var appProperty = Engine.getAppProperty(pAtt.split(',')[0]);
-            // иногда в атрибуте data-app-property содержится несколько ссылок на appProperty через запятую
-            // в этом случае берем описание из дескриптора первого элемента [0]. Свойства должны быть идентичными, иначе это не имеет смысла
-            if (appProperty) {
-                // не забыть что может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
-                var controlsInfo = appProperty.controls;
-                for (var j = 0; j < controlsInfo.length; j++) {
-                    var cn = controlsInfo[j].name;
-                    // здесь надо создавать только контролы которые находятся на рабочем поле, например textquickinput
-                    // они пересоздаются каждый раз при переключении экрана
-                    // "обычные" контролы создаются иначе
-                    if (config.controls[cn].type === 'workspace') {
-                        // имя вью для контрола
-                        var viewName = controlsInfo[j].params.viewName;
-                        var newControl = createControl(pAtt, viewName, controlsInfo[j].name, controlsInfo[j].params, null, elems[i]);
-                        if (newControl) {
-                            // только если действительно получилось создать ui для настройки
-                            // не все контролы могут быть реализованы или некорректно указаны
-                            uiControlsInfo.push({
-                                appPropertyString: pAtt,
-                                control: newControl,
-                                domElement: elems[i]
-                            });
-                        }
-                        else {
-                            log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+pAtt+ '\' on the screen '+scrId, true);
+            // через запятую может быть перечислено несколько appProperty для одного и того же элемента
+            // например для логотипа data-app-property="logoStartPosition,logoUrl"
+            var propertyStrings = pAtt.split(',');
+            for (var k = 0; k < propertyStrings.length; k++) {
+                // контрола пока ещё не существует для настройки, надо создать
+                var appProperty = Engine.getAppProperty(propertyStrings[k]);
+                //TODO объяснение снизу не понятно
+                //TODO remove иногда в атрибуте data-app-property содержится несколько ссылок на appProperty через запятую
+                //TODO remove в этом случае берем описание из дескриптора первого элемента [0]. Свойства должны быть идентичными, иначе это не имеет смысла
+                if (appProperty) {
+                    // не забыть что может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
+                    var controlsInfo = appProperty.controls;
+                    for (var j = 0; j < controlsInfo.length; j++) {
+                        var cn = controlsInfo[j].name;
+                        // здесь надо создавать только контролы которые находятся на рабочем поле, например textquickinput
+                        // они пересоздаются каждый раз при переключении экрана
+                        // "обычные" контролы создаются иначе
+                        if (config.controls[cn].type === 'workspace') {
+                            // имя вью для контрола
+                            var viewName = controlsInfo[j].params.viewName;
+                            var newControl = createControl(appProperty.propertyString, viewName, controlsInfo[j].name, controlsInfo[j].params, null, elems[i]);
+                            if (newControl) {
+                                // только если действительно получилось создать ui для настройки
+                                // не все контролы могут быть реализованы или некорректно указаны
+                                uiControlsInfo.push({
+                                    appPropertyString: pAtt,
+                                    control: newControl,
+                                    domElement: elems[i]
+                                });
+                            }
+                            else {
+                                log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+pAtt+ '\' on the screen '+scrId, true);
+                            }
                         }
                     }
                 }
-            }
-            else {
-                // нет свойства appProperty в Engine хотя во вью есть элемент с таким атрибутом data-app-property
-                // это значит ошибку в промо-продукте
-                log('AppProperty \''+pAtt+'\' not exist. But such attribute exists on the screen: \''+scrId+'\'', true);
+                else {
+                    // нет свойства appProperty в Engine хотя во вью есть элемент с таким атрибутом data-app-property
+                    // это значит ошибку в промо-продукте
+                    log('AppProperty \''+pAtt+'\' not exist. But such attribute exists on the screen: \''+scrId+'\'', true);
+                }
             }
         }
     }

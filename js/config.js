@@ -1,5 +1,6 @@
 /**
- * Created by artyom.grishanov on 25.12.15.
+ * Created by artyom.grishanov on 25.12.15
+ * Простой объект с конфигурацией
  */
 var config = {
     common: {
@@ -138,6 +139,12 @@ var config = {
             defaultDirectiveIndex: 0,
             directives: ['arraycontrol'],
             parentId: null
+        },
+        ChooseImageQuick: {
+            defaultDirectiveIndex: -1, // view не используется
+            directives: [],
+            parentId: 'id-control_cnt',
+            type: 'workspace' // контрол появляется на поле для редактиования, когда показывается экран приложения
         }
     },
     editor: {

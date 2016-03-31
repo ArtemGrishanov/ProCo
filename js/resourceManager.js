@@ -18,6 +18,8 @@ function ResourceManager(params) {
     this.fileChooseOption = null;
     // последняя актуальная метаинформация о списке ресурсов из aws bucket
     this.resourcesList = null;
+    // колбек который будет вызван после выбора ресурса, передается в show
+    this.selectCallback = null;
 
     /**
      * Загрузить список ресурсов пользователя в this.resourcesList
@@ -95,59 +97,78 @@ function ResourceManager(params) {
      * Показать диалог с выбором ресурсов
      * Предварительно нужно загрузить ресурсы loadResources
      */
-    this.show = function() {
+    this.show = function(clb) {
+        this.selectCallback = clb;
+        // сейчас инитим каждый раз, так как диалог удаляется из DOM и все обработчики слетают
+        // ничего более умного не делал пока
+        this.initDialog();
         $('#id-dialogs_view').empty().append(this.dialog.view).show();
         if (fbUserId) {
             if (this.resourcesList === null) {
                 this.loadResources((function() {
-                    var selectOptions = [];
-                    // добавить fileChooseOption отдельно первой кнопкой
-                    // то есть вью собираем сами, а не диалог делает стандартную кнопочку
-                    if (this.fileChooseOption === null) {
-                        // создаем один раз далее переиспользуем эту кнопку
-                        this.fileChooseOption = $($('#id-fileChooser_option_template').html());
-                    }
-                    selectOptions.push({
-                        id: 'fileChooseOption',
-                        label: 'Загрузить',
-                        // icon: resourcesList[i].src,
-                        // element приоритнее чем icon внутри selectDialog
-                        htmlElement: this.fileChooseOption,
-                        selectable: false
-                    });
-                    if (this.resourcesList) {
-                        for (var i = 0; i < this.resourcesList.length; i++) {
-                            selectOptions.push({
-                                id: this.resourcesList[i].key,
-                                label: this.resourcesList[i].id,
-                                icon: this.getUserResourceBaseUrl()+this.resourcesList[i].key,
-                            });
-                        }
-                    }
-                    this.dialog.setOptions(selectOptions);
-                    this.fileChooseOption.find('input[type=\'file\']').change((function() {
-                        // сразу без превью - аплоад
-                        this.uploadResource()
-                    }).bind(this));
+                    this.setDialogOptions();
                 }).bind(this));
             }
             else {
-                //TODO ресурсы уже есть и заново запрошен показ. Зачем?
+                this.setDialogOptions();
             }
         }
     };
 
-    // инициализация
-    var params = {
-        showLoader: true,
-        caption: 'Выберите ресурс',
-        // пока не указываем ресурсы, они будут подгружены позднее
-        options: null,
-        callback: (function(selectedOptionId) {
-            if (selectedOptionId) {
-                //TODO возвращать куда-то дальше во внешний колбек для установки картинки
-            }
-        }).bind(this)
+    /**
+     * Создает вью для менеджера ресурсов
+     */
+    this.initDialog = function() {
+        // инициализация
+        var params = {
+            showLoader: true,
+            caption: 'Выберите ресурс',
+            // пока не указываем ресурсы, они будут подгружены позднее
+            options: null,
+            callback: (function(selectedOptionId) {
+                if (selectedOptionId) {
+                    if (this.selectCallback) {
+                        // пока возвращается просто url выбранной картинки, возможно надо будет доделывать на object
+                        this.selectCallback(this.getUserResourceBaseUrl()+selectedOptionId);
+                    }
+                }
+            }).bind(this)
+        };
+        this.dialog = new SelectDialog(params);
     };
-    this.dialog = new SelectDialog(params);
+
+    /**
+     * Устанавливает уже подготовленный this.resourcesList внутрь вью (this.dialog)
+     */
+    this.setDialogOptions = function() {
+        var selectOptions = [];
+        // добавить fileChooseOption отдельно первой кнопкой
+        // то есть вью собираем сами, а не диалог делает стандартную кнопочку
+        if (this.fileChooseOption === null) {
+            // создаем один раз далее переиспользуем эту кнопку
+            this.fileChooseOption = $($('#id-fileChooser_option_template').html());
+        }
+        selectOptions.push({
+            id: 'fileChooseOption',
+            label: 'Загрузить',
+            // icon: resourcesList[i].src,
+            // element приоритнее чем icon внутри selectDialog
+            htmlElement: this.fileChooseOption,
+            selectable: false
+        });
+        if (this.resourcesList) {
+            for (var i = 0; i < this.resourcesList.length; i++) {
+                selectOptions.push({
+                    id: this.resourcesList[i].key,
+                    label: this.resourcesList[i].id,
+                    icon: this.getUserResourceBaseUrl()+this.resourcesList[i].key,
+                });
+            }
+        }
+        this.dialog.setOptions(selectOptions);
+        this.fileChooseOption.find('input[type=\'file\']').change((function() {
+            // сразу без превью - аплоад
+            this.uploadResource()
+        }).bind(this));
+    };
 }

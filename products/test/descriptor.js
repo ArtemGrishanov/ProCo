@@ -352,7 +352,8 @@ var descriptor = {
      */
     logoUrl: {
         editable: true,
-        controls: "ChooseImage",
+        controls: "ChooseImageQuick",
+        updateScreens: true,
         controlParams: {
             maxWidth: 100,
             maxHeight: 50
