@@ -253,15 +253,15 @@ body {
     position: absolute;
     width: 20px;
     height: 20px;
-    border: 1px solid green;
+    border: 1px solid #7f7f7f;
     pointer-events: none;
 }
 .selection_border_bullit {
     position: absolute;
     width: 7px;
     height: 7px;
-    background-color: #ffffcc;
-    border: 1px solid green;
+    background-color: #1cbf61;
+    border: 1px solid #7f7f7f;
 }
 .selection_border_bullit.__1 {
     top: -3px;

@@ -37,6 +37,7 @@ function ResourceManager(params) {
                 } else {
                     data.Contents.forEach((function (obj) {
                         // вырезаем имя файла, чтобы использовать его в качестве id для дальнейшей работы
+                        //TODO Файл с точками в имени тоже бывают и они не отображаются
                         var reg = new RegExp('facebook-'+fbUserId+'\/res\/([^\.]+\.[A-z]+)','g');
                         var match = reg.exec(obj.Key);
                         if (match && match[1]) {

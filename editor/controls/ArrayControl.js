@@ -15,6 +15,9 @@ function ArrayControl(propertyString, directiveName, $parent, productDOMElement,
             return;
         }
     }
+    else {
+        log('AppProperty doesnot exist', true);
+    }
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
 
     //TODO надо высчитать вместе с отступами

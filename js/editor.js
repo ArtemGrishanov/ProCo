@@ -62,6 +62,12 @@ if (config.common.awsEnabled === true) {
  */
 var activeScreens = [];
 /**
+ * Объект с информации о координатах рабочего поля.
+ * Нужен для позиционирования рамок selections
+ * @type {left: 0, top: 0}
+ */
+var workspaceOffset = null;
+/**
  * Контролы Slide экранов, которые показаны в данный момент
  * @type {Array}
  */
@@ -207,6 +213,7 @@ function onProductIframeLoaded() {
     Engine.startEngine(iframeWindow, params);
     showEditor();
     syncUIControlsToAppProperties();
+    workspaceOffset = $('#id-workspace').offset();
 }
 
 /**
@@ -1070,18 +1077,21 @@ if (config.common.facebookAutoAuthEnable === true) {
 }
 
 var selectionBorders = [];
+var selectedElem = null;
 function deleteSelections() {
+    selectedElem = null;
     selectionBorders.forEach(function(e){
         e.remove();
     });
 }
 function showSelection($elem) {
+    selectedElem = $elem;
     var $seletionBorder = $($('#id-elem_selection_template').html());
-    var position = $elem.position();
-    $seletionBorder.css('top',position.top+'px');
-    $seletionBorder.css('left',position.left+'px');
-    $seletionBorder.css('width',$elem.width()+'px');
-    $seletionBorder.css('height',$elem.height()+'px');
+    var eo = $elem.offset(); // position() не подходит в данном случае
+    $seletionBorder.css('top',eo.top-workspaceOffset.top+'px');
+    $seletionBorder.css('left',eo.left-workspaceOffset.left+'px');
+    $seletionBorder.css('width',$elem.outerWidth(false)-1+'px'); // false - not including margins
+    $seletionBorder.css('height',$elem.outerHeight(false)-1+'px');
     $seletionBorder.css('zIndex', config.editor.ui.selectionBorderZIndex);
     $('#id-control_cnt').append($seletionBorder);
     selectionBorders.push($seletionBorder);

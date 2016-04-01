@@ -6,6 +6,26 @@ var descriptor = {
         editable: true,
         controls: "TextQuickInput"
     },
+    startHeaderPaddingTop: {
+        editable: true,
+        updateScreens: true,
+        controls: "StringControl",
+        label: 'Отступ сверху',
+        cssSelector: '.js-startHeader',
+        cssProperty: 'padding-top',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    },
+    startHeaderPaddingBottom: {
+        editable: true,
+        updateScreens: true,
+        controls: "StringControl",
+        label: 'Отступ снизу',
+        cssSelector: '.js-startHeader',
+        cssProperty: 'padding-bottom',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    },
     startHeaderTextFontSize: {
         editable: true,
         updateScreens: true,
@@ -13,7 +33,7 @@ var descriptor = {
         controlParams: {
             viewName: 'textinput'
         },
-        view: 'js-startHeader',
+//        view: 'js-startHeader',
         label: 'Размер шрифта'
     },
     startDescription: {
