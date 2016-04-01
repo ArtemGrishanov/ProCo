@@ -446,6 +446,11 @@ var descriptor = {
         updateScreens: true,
         canAdd: ["proto__option_text"]
     },
+    "quiz.{{number}}.img": {
+        editable: true,
+        updateScreens: true,
+        controls: "ChooseImageQuick",
+    },
     "quiz.{{number}}.options.{{number}}.text": {
         editable: true,
         controls: "TextQuickInput"
