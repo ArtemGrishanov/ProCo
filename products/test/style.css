@@ -52,13 +52,16 @@ body {
     margin: 0 auto;
 }
 .start_txt {
-
+    margin: 0;
+    padding: 0;
 }
 .start_head {
-
+    margin: 0;
+    padding: 0;
 }
 .start_desc {
-
+    margin: 0;
+    padding: 0;
 }
 .btn_wr {
     width: 100%;

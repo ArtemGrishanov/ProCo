@@ -33,12 +33,75 @@ var descriptor = {
         controlParams: {
             viewName: 'textinput'
         },
-//        view: 'js-startHeader',
         label: 'Размер шрифта'
+    },
+    startHeaderAlign: {
+        editable: true,
+        controls: "Alternative",
+        controlParams: {
+            viewName: "Dropdown"
+        },
+        cssSelector: '.js-startHeader',
+        cssProperty: 'text-align',
+        possibleValues: ["left","center","right"],
+        updateScreens: true,
+        label: "Выравнивание"
     },
     startDescription: {
         editable: true,
         controls: "TextQuickInput"
+    },
+    startDescriptionAlign: {
+        editable: true,
+        controls: "Alternative",
+        controlParams: {
+            viewName: "Dropdown"
+        },
+        cssSelector: '.js-start_description',
+        cssProperty: 'text-align',
+        possibleValues: ["left","center","right"],
+        updateScreens: true,
+        label: "Выравнивание"
+    },
+    startDescriptionPaddingTop: {
+        editable: true,
+        updateScreens: true,
+        controls: "StringControl",
+        label: 'Отступ сверху',
+        cssSelector: '.js-start_description',
+        cssProperty: 'padding-top',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    },
+    startDescriptionPaddingBottom: {
+        editable: true,
+        updateScreens: true,
+        controls: "StringControl",
+        label: 'Отступ снизу',
+        cssSelector: '.js-start_description',
+        cssProperty: 'padding-bottom',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    },
+    startButtonPaddingTop: {
+        editable: true,
+        updateScreens: true,
+        controls: "StringControl",
+        label: 'Отступ сверху',
+        cssSelector: '.js-start_btn_wr',
+        cssProperty: 'padding-top',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    },
+    startButtonPaddingBottom: {
+        editable: true,
+        updateScreens: true,
+        controls: "StringControl",
+        label: 'Отступ снизу',
+        cssSelector: '.js-start_btn_wr',
+        cssProperty: 'padding-bottom',
+        cssValuePattern: '{{value}}px',
+        filter: true
     },
     restartButtonText: {
         editable: true,
@@ -79,7 +142,6 @@ var descriptor = {
         },
         //TODO standart font names source?
         possibleValues: ["Arial","Times New Roman"],
-        static: true,
         updateScreens: true,
         label: "Шрифт"
     },
@@ -471,7 +533,6 @@ var descriptor = {
         editable: true,
         updateScreens: true,
         //TODO можно расширить типы. "final" Это свойство надо создать только один раз при старте и никогда не пересоздавать
-        static: true,
         label: 'Тема',
         possibleValues: [
             {
