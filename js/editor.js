@@ -191,6 +191,8 @@ function loadAppSrc(loadedAppName) {
         var host = config.common.devPrototypesHostName || (config.common.awsHostName+config.common.awsBucketName);
         appIframe.src = host+src;
         $('#id-product_iframe_cnt').append(appIframe);
+        //TODO надо точно знать размеры продукта в этот момент
+        $('#id-product_cnt').width(600).height(400);
     }
     else {
         log('Cannot find src for: \''+loadedAppName+'\'', true);
@@ -213,7 +215,7 @@ function onProductIframeLoaded() {
     Engine.startEngine(iframeWindow, params);
     showEditor();
     syncUIControlsToAppProperties();
-    workspaceOffset = $('#id-workspace').offset();
+    workspaceOffset = $('#id-product_cnt').offset();
 }
 
 /**
@@ -248,7 +250,8 @@ function showScreen(ids) {
         appScreen = Engine.getAppScreen(ids[i]);
         if (appScreen) {
             // каждый экран ещё оборачиваем в контейнер .screen_cnt
-            $('<div class="screen_cnt"></div>').append(appScreen.view).appendTo($screensCnt);
+//            $('<div class="screen_cnt"></div>').append(appScreen.view).appendTo($screensCnt);
+            $screensCnt.append(appScreen.view);
             //TODO это временное решения проблемы, как применять настройки ко вью которые ещё не были добавлены
             if (typeof appScreen.doWhenInDOM === 'function') {
                 appScreen.doWhenInDOM(iframeWindow.app, appScreen.view);
@@ -520,8 +523,6 @@ function createScreenControls() {
         // далее начнем создать контролы и вью для групп экранов
         for (var groupName in groups) {
             var slidesParents = [];
-            // создаем вью для группы экранов
-//            var $groupView = $($('#id-slide_group_template').html()).attr('data-screen-group-name', groupName);
             for (var i = 0; i < groups[groupName].length; i++) {
                 var s = groups[groupName][i];
                 var screen = Engine.getAppScreen(s);
@@ -534,31 +535,20 @@ function createScreenControls() {
                 else {
                     slideId = s;
                 }
-//                var ci = findControlInfo(slideId);
-//                if (ci === null) {
-//                    // каждый контрол помещаем в inline-block обертку slide_directive_wr для показа в одну линию
-//                    var $d = $('<div></div>').addClass('slide_directive_wr');
-//                    $groupView.find('.js-slides_cnt').append($d);
                 var $d = $('<div></div>');
                 slidesParents.push($d);
+                // контрол никуда не сохраняется ?! Но он нужен для использования в ArrayControl
                 var newControl = createControl(slideId, null, 'Slide', {}, $d, null);
-//                    if (newControl) {
-//                        uiControlsInfo.push({
-//                            appPropertyString: slideId,
-//                            control: newControl
-//                        });
-//                    }
-//                    else {
-//                        log('Can not create control for appScreen: \'' + slideId, true);
-//                    }
-//                }
                 if (screen.collapse === true) {
                     // выходим, так как добавили всю группу разом в один контрол
                     break;
                 }
             }
 
-            //TODO непонятно к какому appProperty привязать. Надо quiz
+            //TODO есть группа экранов и непонятно к какому appProperty надо ее привязать. Надо quiz для questions
+            // нужно сделать createControl для пустого aps для экрана старт и результат только чтоы показалось группы экранов
+            // коряво!
+            // а для questions надо делать контрол - тут логично
             var aps = (groupName == 'questions') ? 'quiz': '';
             var arrayControl = createControl(aps, 'ArrayControl', 'ArrayControl', {
                 // имя забираем у первого экрана группы, в группе минимум один экран, а все имена одинаковые конечно
