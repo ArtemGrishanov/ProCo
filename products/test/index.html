@@ -17,8 +17,8 @@
                     <h2 id="id-start_header_text" data-app-property="startHeaderText,startHeaderPaddingTop,startHeaderPaddingBottom,startHeaderAlign" class="js-startHeader start_head"></h2>
                     <p id="id-start_desc_text" data-app-property="startDescription,startDescriptionAlign,startDescriptionPaddingTop,startDescriptionPaddingBottom" class="js-start_description start_desc">Проверь свои знания в географии</p>
                 </div>
-                <div class="btn_wr js-start_btn_wr" data-app-property="buttonBackgroundColor,buttonHoverBackgroundColor,buttonFontColor,buttonHoverFontColor,buttonBorderColor,buttonHoverBorderColor,buttonBorderRadius,buttonFontSize,buttonFontFamily,startButtonPaddingTop,startButtonPaddingBottom">
-                    <span class="t_btn js-next">Начать</span>
+                <div class="btn_wr js-start_btn_wr" data-app-property="buttonBackgroundColor,buttonHoverBackgroundColor,buttonFontColor,buttonHoverFontColor,buttonBorderColor,buttonHoverBorderColor,buttonBorderRadius,buttonFontSize,buttonFontFamily,startButtonPaddingTop,startButtonPaddingBottom,startButtonAlign">
+                    <span class="t_btn js-next" data-app-property="startButtonText">Начать</span>
                 </div>
             </div>
         </div>
@@ -41,8 +41,8 @@
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
                 <div class="cnt_wr">
-                    <div class="q_wr">
-                        <span data-app-property="quiz.{{currentQuestion}}.text">{{question_text}}</span>
+                    <div class="q_wr" data-app-property="quizQuestionTextAlign,quiz.{{currentQuestion}}.text">
+                        {{question_text}}
                     </div>
                     <div data-app-property="quiz.{{currentQuestion}}.options" class="js-answers_cnt">
                         <!-- Сюда программно добавляются варианта ответов -->
@@ -63,8 +63,8 @@
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
                 <div class="cnt_wr" style="margin-top: 30px;">
-                    <div class="q_wr __photo">
-                        <span data-app-property="quiz.{{currentQuestion}}.text">{{question_text}}</span>
+                    <div class="q_wr __photo" data-app-property="quizQuestionTextAlign,quiz.{{currentQuestion}}.text">
+                        {{question_text}}
                     </div>
                     <div class="photo_wr js-photo" data-app-property="quiz.{{currentQuestion}}.img">
                         <!-- Сюда ставится фото через background так как там есть более удобный алгоритм размещения -->
@@ -132,6 +132,8 @@
             startDescriptionPaddingBottom: 0,
             startButtonPaddingTop: 0,
             startButtonPaddingBottom: 0,
+            startButtonText: 'Начать',
+            startButtonAlign: 'center',
             restartButtonText: 'Заново',
             randomizeQuestions: false,
             randomizeOptions: false,
@@ -140,7 +142,7 @@
             fontFamily: 'Arial',
             showBackgroundImage: true,
             background: 'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg)',
-
+            quizQuestionTextAlign: 'left',
             /**
              * Логотип бренда, размещенный в тесте. Лого один, но позиции на разных экранах могут быть различные
              *

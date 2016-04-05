@@ -251,12 +251,13 @@ var Engine = {};
     function findDescription(objectString) {
         var descInfo = null;
         // в app.descriptor может быть несколько селекторов, которые соответствуют свойству
-        for (var selector in productWindow.descriptor) {
+        for (var i = 0; i < productWindow.descriptor.length; i++) {
+            var selector = productWindow.descriptor[i].selector;
             if (matchSelector(objectString,selector) === true) {
                 descInfo = descInfo || {};
                 // добавляем найденную конфигурацию в описание
-                for (var key in productWindow.descriptor[selector]) {
-                    descInfo[key] = productWindow.descriptor[selector][key];
+                for (var key in productWindow.descriptor[i]) {
+                    descInfo[key] = productWindow.descriptor[i][key];
                 }
             }
         }
@@ -266,22 +267,25 @@ var Engine = {};
     /**
      * Сопоставить селектор и object-path свойства
      *
-     * @param objectString например "quiz.0.options.1.text"
-     * @param selector например "quiz.{{number}}.options.{{number}}.text"
+     * @param {string} objectString например "quiz.0.options.1.text"
+     * @param Array.<string> selector например "[startHeaderText, quiz.{{number}}.options.{{number}}.text, resultText]"
      * @returns {boolean}
      */
     function matchSelector(objectString, selector) {
-        if (objectString === selector) {
-            return true;
-        }
-        else if (selector.indexOf('.') >= 0 || selector.indexOf('{{') >= 0) {
-            // Пример: selector "quiz.{{number}}.text" превращается в регулярку "quiz\.\d+\.text" и сравнивается с objectString на соответствие
-            var s = selector.replace(new RegExp('\\.','g'),'\\.').replace(new RegExp('{{number}}','ig'),'\\d+');
-            var reg = new RegExp(s,'ig');
-            var match = reg.exec(objectString);
-            if (match && match[0] == objectString) {
-                // match[0] string itself
+        var selectorArr = selector.split(' ');
+        for (var i = 0; i < selectorArr.length; i++) {
+            if (objectString === selectorArr[i].trim()) {
                 return true;
+            }
+            else if (selectorArr[i].indexOf('.') >= 0 || selectorArr[i].indexOf('{{') >= 0) {
+                // Пример: selector "quiz.{{number}}.text" превращается в регулярку "quiz\.\d+\.text" и сравнивается с objectString на соответствие
+                var s = selectorArr[i].replace(new RegExp('\\.','g'),'\\.').replace(new RegExp('{{number}}','ig'),'\\d+');
+                var reg = new RegExp(s,'ig');
+                var match = reg.exec(objectString);
+                if (match && match[0] == objectString) {
+                    // match[0] string itself
+                    return true;
+                }
             }
         }
         return false;
@@ -303,6 +307,7 @@ var Engine = {};
                     // если имеются дополнительные данные их возможно вставить во view
                     // например: data-app-property="quiz.{{currentQuestion}}.text"
                     ps[i].view = parseView(ps[i].view, ps[i].data);
+                    setDataAppPropertyClasses(ps[i].view);
                     writeCssRulesTo(ps[i].view);
                 }
                 appScreens.push(ps[i]);
@@ -329,6 +334,22 @@ var Engine = {};
             }
         }
         return $(newHtml);
+    }
+
+    /**
+     * Для view промо-приложения найдем все все элементы с атрибутом data-app-property, в котором содержатся appPropertyStrings
+     * Пометим классами js-app_{{appPropertyString}} такие элементы
+     * @param view
+     */
+    function setDataAppPropertyClasses(view) {
+        var elems = $(view).find('[data-app-property]');
+        for (var j = 0; j < elems.length; j++) {
+            var v = $(elems[j]).attr('data-app-property');
+            var aps = v.split(',');
+            for (var i = 0; i < aps.length; i++) {
+                $(elems[j]).addClass('js-app_'+aps[i]);
+            }
+        }
     }
 
     /**
