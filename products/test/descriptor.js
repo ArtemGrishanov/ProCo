@@ -64,27 +64,33 @@ var descriptor = [
         },
         label: "Картинка"
     },
+    {
+        selector: 'startHeaderTextFontSize startDescriptionTextFontSize',
+        editable: true,
+        updateScreens: true,
+        controls: "StringControl",
+        controlParams: {
+            viewName: 'textinput'
+        },
+        label: 'Размер шрифта',
+        cssProperty: 'font-size',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    },
+    {
+        selector: 'backgroundColor',
+        editable: true,
+        updateScreens: true,
+        controls: "StringControl",
+        controlParams: {
+            viewName: "ColorPicker"
+        },
+        label: "Цвет фона",
+        cssProperty: 'background-color',
+    },
 ];
 //var descriptor = {
-//    startHeaderTextFontSize: {
-//        editable: true,
-//        updateScreens: true,
-//        controls: "StringControl",
-//        controlParams: {
-//            viewName: 'textinput'
-//        },
-//        label: 'Размер шрифта'
-//    },
-//    backgroundColor: {
-//        editable: true,
-//        updateScreens: true,
-//        controls: "StringControl",
-//        controlParams: {
-//            viewName: "ColorPicker"
-//        },
-//        label: "Цвет фона",
-//        filter: true
-//    },
+//
 //    fontColor: {
 //        editable: true,
 //        updateScreens: true,

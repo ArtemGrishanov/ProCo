@@ -97,6 +97,7 @@ var Engine = {};
                         break;
                     }
                 }
+                // надо проверить что value определено
                 if (propertyFound === false) {
                     // новое проперти для этого селектора, добавить в массив
                     r.rules.push({
@@ -229,11 +230,15 @@ var Engine = {};
                     // и темы пропускаем
                     continue;
                 }
-                log('Found AppProperty: \''+ str + '\'', false, false);
-                var p = new AppProperty(obj[key],str,descInfo);
-                appProperties.push(p);
-                appPropertiesObjectPathes.push(p.propertyString);
-                send('AppPropertyInited', p.propertyString);
+                var existedProperty = getAppProperty(str);
+                // проперти уже может быть создана, так как разрешено создание провертей из data-app-property атрибутов, которые встречаются многократно
+                if (existedProperty === null) {
+                    log('Found AppProperty: \''+ str + '\'', false, false);
+                    var p = new AppProperty(obj[key],str,descInfo);
+                    appProperties.push(p);
+                    appPropertiesObjectPathes.push(p.propertyString);
+                    send('AppPropertyInited', p.propertyString);
+                }
             }
             if (obj[key] !== null && typeof obj[key] === 'object') {
                 // идем глубже в дочерние объекты
@@ -307,7 +312,9 @@ var Engine = {};
                     // если имеются дополнительные данные их возможно вставить во view
                     // например: data-app-property="quiz.{{currentQuestion}}.text"
                     ps[i].view = parseView(ps[i].view, ps[i].data);
-                    setDataAppPropertyClasses(ps[i].view);
+                    var propertiesFromView = setDataAppPropertyClasses(ps[i].view);
+                    // возможно, нашли какие-то ключи на вью, которые не были оъявлены в productWindow.app
+                    createAppProperty(propertiesFromView);
                     writeCssRulesTo(ps[i].view);
                 }
                 appScreens.push(ps[i]);
@@ -340,16 +347,26 @@ var Engine = {};
      * Для view промо-приложения найдем все все элементы с атрибутом data-app-property, в котором содержатся appPropertyStrings
      * Пометим классами js-app_{{appPropertyString}} такие элементы
      * @param view
+     *
+     * @return {object} - объект с ключами appPropertyStrings, которые были найдены.
+     * Это могут быть ссылки на свойства, которых еще не было в productWindow.app
      */
     function setDataAppPropertyClasses(view) {
+        var res = {};
         var elems = $(view).find('[data-app-property]');
+        if ($(view).attr('data-app-property')) {
+            // непосредственно сам view надо тоже проанализировать, так как он в поиске find не участвует
+            elems.push(view);
+        }
         for (var j = 0; j < elems.length; j++) {
             var v = $(elems[j]).attr('data-app-property');
             var aps = v.split(',');
             for (var i = 0; i < aps.length; i++) {
                 $(elems[j]).addClass('js-app_'+aps[i]);
+                res[aps[i]] = undefined;
             }
         }
+        return res;
     }
 
     /**
@@ -513,8 +530,8 @@ var Engine = {};
                     productWindow.start.call(productWindow, buildProductAppParams.call(this));
                 }
                 // если с изменямым appProperty связаны css свойства, то записываем их
-                if (appProperty.cssSelector && appProperty.cssProperty) {
-                    //
+                // Проверки на null и так далее: дескрипторе это нормально - описать редактирование свойства, а значения нет, пока первый раз его не задашь
+                if (appProperty.cssSelector && appProperty.cssProperty && value !== undefined && value !== null && value !== '') {
                     var cssV = null;
                     if (appProperty.cssValuePattern) {
                         cssV = appProperty.cssValuePattern.replace('{{value}}',value);

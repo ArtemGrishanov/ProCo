@@ -8,14 +8,14 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body style="padding:0;margin:0">
-    <div id="id-start_slide" class="wrapper">
-        <div class="back_start" data-app-property="backgroundColor,showBackgroundImage"></div>
+    <div id="id-start_slide" class="wrapper" data-app-property="backgroundColor">
+        <div class="back_start"></div>
         <!--<div class="shadow"></div>-->
         <div class="slide">
             <div class="cnt_wr">
                 <div class="start_txt">
-                    <h2 id="id-start_header_text" data-app-property="startHeaderText,startHeaderPaddingTop,startHeaderPaddingBottom,startHeaderAlign" class="js-startHeader start_head"></h2>
-                    <p id="id-start_desc_text" data-app-property="startDescription,startDescriptionAlign,startDescriptionPaddingTop,startDescriptionPaddingBottom" class="js-start_description start_desc">Проверь свои знания в географии</p>
+                    <h2 id="id-start_header_text" data-app-property="startHeaderText,startHeaderPaddingTop,startHeaderPaddingBottom,startHeaderAlign,startHeaderTextFontSize" class="js-startHeader start_head">Тест</h2>
+                    <p id="id-start_desc_text" data-app-property="startDescription,startDescriptionAlign,startDescriptionPaddingTop,startDescriptionPaddingBottom,startDescriptionTextFontSize" class="js-start_description start_desc">Проверь свои знания в географии</p>
                 </div>
                 <div class="btn_wr js-start_btn_wr" data-app-property="buttonBackgroundColor,buttonHoverBackgroundColor,buttonFontColor,buttonHoverFontColor,buttonBorderColor,buttonHoverBorderColor,buttonBorderRadius,buttonFontSize,buttonFontFamily,startButtonPaddingTop,startButtonPaddingBottom,startButtonAlign">
                     <span class="t_btn js-next" data-app-property="startButtonText">Начать</span>
@@ -36,7 +36,7 @@
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript" src="jquery.js"></script>
     <script id="id-slide_text_template" type="text/template">
-        <div class="wrapper">
+        <div class="wrapper" data-app-property="backgroundColor">
             <div class="back_start"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
@@ -58,7 +58,7 @@
         </div>
     </script>
     <script id="id-slide_photo_template" type="text/template">
-        <div class="wrapper">
+        <div class="wrapper" data-app-property="backgroundColor">
             <div class="back_start"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
@@ -92,7 +92,7 @@
         </div>
     </script>
     <script id="id-result_template" type="text/template">
-        <div class="wrapper">
+        <div class="wrapper" data-app-property="backgroundColor">
             <div class="back_start"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide">
@@ -123,23 +123,15 @@
          */
         var app = {
             startHeaderText: 'Тест по географии',
-            startHeaderPaddingTop: 0,
-            startHeaderPaddingBottom: 0,
-            startHeaderAlign: 'left',
             startDescription: 'Проверь свои знания в географии',
-            startDescriptionAlign: 'center',
-            startDescriptionPaddingTop: 0,
-            startDescriptionPaddingBottom: 0,
-            startButtonPaddingTop: 0,
-            startButtonPaddingBottom: 0,
             startButtonText: 'Начать',
             startButtonAlign: 'center',
             restartButtonText: 'Заново',
             randomizeQuestions: false,
             randomizeOptions: false,
-            backgroundColor: '#aaa',
             fontColor: '#fff',
             fontFamily: 'Arial',
+            backgroundColor: '#eee',
             showBackgroundImage: true,
             background: 'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg)',
             quizQuestionTextAlign: 'left',
@@ -610,9 +602,9 @@
             else {
                 $w.css('backgroundImage','none');
             }
-            if (appObject.backgroundColor) {
-                $w.css('backgroundColor',appObject.backgroundColor);
-            }
+//            if (appObject.backgroundColor) {
+//                $w.css('backgroundColor',appObject.backgroundColor);
+//            }
             if (app.fontColor) {
                 $('.cnt_wr').css('color',app.fontColor);
             }
