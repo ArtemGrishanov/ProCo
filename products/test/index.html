@@ -14,10 +14,10 @@
         <div class="slide">
             <div class="cnt_wr">
                 <div class="start_txt">
-                    <h2 id="id-start_header_text" data-app-property="startHeaderText,startHeaderPaddingTop,startHeaderPaddingBottom,startHeaderAlign,startHeaderTextFontSize,startHeaderTextFontColor" class="js-startHeader start_head">Тест</h2>
-                    <p id="id-start_desc_text" data-app-property="startDescription,startDescriptionAlign,startDescriptionPaddingTop,startDescriptionPaddingBottom,startDescriptionTextFontSize,startDescriptionTextFontColor" class="js-start_description start_desc">Проверь свои знания в географии</p>
+                    <h2 id="id-start_header_text" data-app-property="startHeaderText" class="js-startHeader start_head">Тест</h2>
+                    <p id="id-start_desc_text" data-app-property="startDescription" class="js-start_description start_desc">Проверь свои знания в географии</p>
                 </div>
-                <div class="btn_wr js-start_btn_wr" data-app-property="buttonBackgroundColor,buttonHoverBackgroundColor,buttonFontColor,buttonHoverFontColor,buttonBorderColor,buttonHoverBorderColor,buttonBorderRadius,buttonFontSize,buttonFontFamily,startButtonPaddingTop,startButtonPaddingBottom,startButtonAlign">
+                <div class="btn_wr js-start_btn_wr">
                     <span class="t_btn js-next" data-app-property="startButtonText">Начать</span>
                 </div>
             </div>
@@ -41,7 +41,7 @@
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
                 <div class="cnt_wr">
-                    <div class="q_wr" data-app-property="quizQuestionTextAlign,quiz.{{currentQuestion}}.text,quizQuestionTextColor,quizQuestionPaddingTop,quizQuestionPaddingBottom">
+                    <div class="q_wr" data-app-property="quiz.{{currentQuestion}}.text">
                         {{question_text}}
                     </div>
                     <div data-app-property="quiz.{{currentQuestion}}.options" class="js-answers_cnt">
@@ -49,7 +49,7 @@
                     </div>
                     <div class="js-explain explain_blk" style="display:none;">
                         <div class="js-explanation_text"></div>
-                        <div><span class="t_btn js-next" data-app-property="buttonFontColor">Далее</span></div>
+                        <div><span class="t_btn js-next">Далее</span></div>
                     </div>
                 </div>
             </div>
@@ -63,7 +63,7 @@
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
                 <div class="cnt_wr" style="margin-top: 30px;">
-                    <div class="q_wr __photo" data-app-property="quizQuestionTextAlign,quiz.{{currentQuestion}}.text,quizQuestionTextColor,quizQuestionPaddingTop,quizQuestionPaddingBottom">
+                    <div class="q_wr __photo" data-app-property="quiz.{{currentQuestion}}.text">
                         {{question_text}}
                     </div>
                     <div class="photo_wr js-photo" data-app-property="quiz.{{currentQuestion}}.img">
@@ -74,7 +74,7 @@
                     </div>
                     <div class="js-explain explain_blk" style="display:none;">
                         <div class="js-explanation_text"></div>
-                        <div><span class="t_btn js-next" data-app-property="buttonFontColor">Далее</span></div>
+                        <div><span class="t_btn js-next">Далее</span></div>
                     </div>
                 </div>
             </div>
@@ -98,12 +98,12 @@
             <div class="slide">
                 <div class="cnt_wr">
                     <div class="start_txt">
-                        <h2 class="start_head js-result_title" data-app-property="results.{{currentResult}}.title,resultTitleFontColor,resultTitlePaddingTop,resultTitlePaddingBottom,resultTitleAlign">Конец</h2>
-                        <span class="start_desc js-result_description" data-app-property="results.{{currentResult}}.description,resultDescriptionFontColor">Ты ответил на все вопросы</span>
+                        <h2 class="start_head js-result_title" data-app-property="results.{{currentResult}}.title">Конец</h2>
+                        <span class="start_desc js-result_description" data-app-property="results.{{currentResult}}.description">Ты ответил на все вопросы</span>
                     </div>
                     </br>
                     <div class="btn_wr">
-                        <span data-app-property="restartButtonText buttonFontColor" class="t_btn js-next js-restart">Заново</span>
+                        <span data-app-property="restartButtonText" class="t_btn js-next js-restart">Заново</span>
                     </div>
                 </div>
             </div>

@@ -138,7 +138,7 @@ descriptor.css = [
     {
         // все кнопки
         selector: '.t_btn',
-        rules: 'backgroundColor textalign fontColor fontSize fontFamily borderColor borderRadius'
+        rules: 'backgroundColor textAlign fontColor fontSize fontFamily borderColor borderRadius'
     },
     {
         // все кнопки в состоянии навеения
@@ -350,7 +350,8 @@ descriptor.rules = {
         //TODO format cssValue: '{value}px' чтобы было понятно как формировать проперти
         cssProperty: 'border-width',
         cssValuePattern: '{{value}}px',
-        label: "Толщина бордера"
+        label: "Толщина бордера",
+        filter: true
     },
     hoverBorderWidth: {
         updateScreens: true,
@@ -361,7 +362,8 @@ descriptor.rules = {
         },
         cssProperty: 'border-width',
         cssValuePattern: '{{value}}px',
-        label: "Толщина бордера при наведении"
+        label: "Толщина бордера при наведении",
+        filter: true
     },
     topColontitleBottomBorderColor: {
         updateScreens: true,
@@ -371,7 +373,8 @@ descriptor.rules = {
             viewName: "ColorPicker"
         },
         label: "Цвет линии",
-        cssProperty: 'border-bottom-color'
+        cssProperty: 'border-bottom-color',
+        filter: true
     },
     quizAddRule: {
         updateScreens: true,

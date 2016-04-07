@@ -45,10 +45,10 @@ var AppProperty = function(propertyValue, propertyString, descriptor) {
     }
     // может быть привязан позднее
     this.domElement = null;
-    // если css селектор не указан, то автоматически формируем его из имени propertyString
-    if (!descriptor.cssSelector) {
-        descriptor.cssSelector = '.js-app_'+propertyString;
-    }
+//    // если css селектор не указан, то автоматически формируем его из имени propertyString
+//    if (!descriptor.cssSelector) {
+//        descriptor.cssSelector = '.js-app_'+propertyString;
+//    }
     // декскриптор и его нормализация
     for (var key in validAttributes) {
         if (descriptor.hasOwnProperty(key)) {

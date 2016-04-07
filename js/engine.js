@@ -300,6 +300,7 @@ var Engine = {};
             }
         }
         // собрали все селекторы. Теперь нужно зарезолвить такие селекторы quiz.{{number}}.img
+        var count = 0;
         for (var selector in calculatedAppDescriptor) {
             // проверяем существуют ли в productWindow такие свойства отвечающие селектору
             // например: selector==quiz.{{number}}.text
@@ -307,33 +308,100 @@ var Engine = {};
             var pp = getPropertiesBySelector(productWindow.app, selector);
             for (var q = 0; q < pp.length; q++) {
                 if (getAppProperty(pp[q].path) === null) {
+                    count++;
                     var p = new AppProperty(pp[q].value,
                         pp[q].path,
                         calculatedAppDescriptor[selector]);
+                    p.type = 'app';
                     appProperties.push(p);
                     appPropertiesObjectPathes.push(p.propertyString);
                     send('AppPropertyInited', p.propertyString);
-                    log('AppProperty created: \''+ p.propertyString + '\'', false, false);
+//                    log('AppProperty created: \''+ p.propertyString + '\'', false, false);
                 }
             }
         }
+        log('AppProperties created (type=app) ' + count, false);
+    }
 
+    /**
+     * Создание appProperty для управления css-промо проекта вынесено в отдельную функцию
+     * Оно достаточно отличается от создания обычных свойств
+     * Однако в конечном итоге должен получиться единый массив appProperty для
+     * монолитной работы редактора и контролов.
+     *
+     * @param desc
+     */
+    function createCssProperties(desc) {
+        var calculatedCssDescriptor = {};
+        for (var i = 0; i < desc.css.length; i++) {
+            // получаем текущую запись в дескрипторе
+            var curRec = desc.css[i];
+            if (!curRec.selector) {
+                log('Descriptor property index\''+i+'\' has not selector',true);
+                continue;
+            }
+            //TODO удалить двойные пробелы
+            var selectorArr = curRec.selector.split(' ');
+            for (var j = 0; j < selectorArr.length; j++) {
+                if (curRec.rules) {
+                    // несколько правил может быть, они перечислены через пробел
+                    //TODO удалить двойные пробелы
+                    var ruleNames = curRec.rules.split(' ');
+                    for (var k = 0; k < ruleNames.length; k++) {
+                        var appPropertyString = selectorArr[j]+'_'+ruleNames[k];
+                        if (calculatedCssDescriptor.hasOwnProperty(appPropertyString)===false) {
+                            // первый раз столкнулись с таким свойством-селектором, надо создать
+                            calculatedCssDescriptor[appPropertyString] = {cssSelector:selectorArr[j]};
+                        }
+                        var rn = ruleNames[k];
+                        if (desc.rules.hasOwnProperty(rn)) {
+                            mergeProperties(desc.rules[rn], calculatedCssDescriptor[appPropertyString]);
+                        }
+                        else {
+                            log('Rule \''+rn+'\' is not exist in descriptor.rules',true);
+                        }
+                        // мердж со свойствами curInfo стоит после мерджа правил, так как они более приоритетны
+                        mergeProperties(curRec, calculatedCssDescriptor[appPropertyString]);
+                    }
+                }
+            }
+        }
+        // все готово, теперь создаем appPropery
+        var count = 0;
+        for (var selector in calculatedCssDescriptor) {
+            // пустая строка в качество начального значения
+            var p = new AppProperty('',
+                selector,
+                calculatedCssDescriptor[selector]);
+            p.type = 'css';
+            appProperties.push(p);
+            appPropertiesObjectPathes.push(p.propertyString);
+            send('AppPropertyInited', p.propertyString);
+            log('AppProperty created: \''+ p.propertyString + '\'', false, false);
+            count++;
+        }
+        log('AppProperties created (type=css) ' + count, false);
+    }
 
-//        // К этому моменту мы имеем calculatedDescriptor и готовы создать appProperties
-//        for (var appPropertyString in calculatedDescriptor) {
-//            //TODO найти value для appProperty в window.app
-//            var p = new AppProperty(/*obj[key]*/null,
-//                appPropertyString,
-//                calculatedDescriptor[appPropertyString]);
-//            appProperties.push(p);
-//            appPropertiesObjectPathes.push(p.propertyString);
-//            send('AppPropertyInited', p.propertyString);
-//            log('AppProperty created: \''+ appPropertyString + '\'', false, false);
-//        }
+    function clearAppProperties() {
+        var newPathes = [];
+        for (var k = 0; k < appProperties.length;) {
+            if (appProperties[k].type==='app') {
+                // удалить этот элемент
+                appProperties.splice(k,1);
+                continue;
+            }
+            newPathes.push(appProperties[k].propertyString);
+            k++;
+        }
+        appPropertiesObjectPathes = [];
     }
 
     /**
      * Проверить в объекте obj, содержит ли он свойства соответствующие selector
+     * Например: selector==quiz.{{number}}.text
+     * получаем 4-е свойства со своими значениями: quiz.0.text quiz.1.text quiz.2.text quiz.3.text
+     *
      * @param obj
      * @param selector
      * @return {Array} result
@@ -383,16 +451,6 @@ var Engine = {};
             }
         }
         return result;
-    }
-
-    /**
-     * Создание appProperty для управления css-промо проекта вынесено в отдельную функцию
-     * Оно достаточно отличается от создания обычных свойств
-     * Однако в конечном итоге должен получиться единый массив appProperty для
-     * монолитной работы редактора и контролов.
-     */
-    function createCssProperties() {
-
     }
 
     /**
@@ -465,6 +523,32 @@ var Engine = {};
                     createAppProperty(propertiesFromView);
                     writeCssRulesTo(ps[i].view);
                 }
+                // мы знаем сss классы для редактирования, так как дескриптор был разобран
+                // можно сразу найти классы и data-app-property на view
+                ps[i].appPropertyStrings = [];
+                for (var j = 0; j < appProperties.length; j++) {
+                    if (appProperties[j].type === 'css') {
+                        var r = $(ps[i].view).find(appProperties[j].cssSelector);
+                        if (r.length > 0) {
+                            ps[i].appPropertyStrings.push(appProperties[j].propertyString);
+                        }
+                    }
+                }
+                // далее ищем data-app-property атрибуты, чтобы сразу привязать к экрану app property
+                var dataElems = $(ps[i].view).find('[data-app-property]');
+                if (dataElems.length > 0) {
+                    for (var j = 0; j < dataElems.length; j++) {
+                        var atr = $(dataElems[j]).attr('data-app-property');
+                        var psArr = atr.split(',');
+                        for (var k = 0; k < psArr.length; k++) {
+                            var tspAtr = psArr[k].trim();
+                            if (getAppProperty(tspAtr)!==null && ps[i].appPropertyStrings.indexOf(tspAtr)<0) {
+                                ps[i].appPropertyStrings.push(tspAtr);
+                            }
+                        }
+                    }
+                }
+
                 appScreens.push(ps[i]);
                 // идишники сохраняем отдельно для быстрой отдачи их редактору единым массивом
                 appScreenIds.push(ps[i].id);
@@ -693,8 +777,7 @@ var Engine = {};
                 // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
                 //TODO нужен более умный алгоритм. Пересоздавать только свойства в массиве. Есть ли другие случаи?
                 if (attributes.updateAppProperties === true) {
-                    appProperties = [];
-                    appPropertiesObjectPathes = [];
+                    clearAppProperties();
                     createAppProperty(productWindow.app);
                 }
                 if (attributes.updateScreens === true) {
@@ -776,6 +859,7 @@ var Engine = {};
         testResults = [];
         // рекурсивно создает по всем свойствам app объекты AppProperty
         createAppProperty(productWindow.app);
+        createCssProperties(productWindow.descriptor);
         // создать экраны (слайды) для промо приложения
         createAppScreens();
         // находим и создаем темы
