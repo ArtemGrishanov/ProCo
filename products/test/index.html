@@ -14,8 +14,8 @@
         <div class="slide">
             <div class="cnt_wr">
                 <div class="start_txt">
-                    <h2 id="id-start_header_text" data-app-property="startHeaderText,startHeaderPaddingTop,startHeaderPaddingBottom,startHeaderAlign,startHeaderTextFontSize" class="js-startHeader start_head">Тест</h2>
-                    <p id="id-start_desc_text" data-app-property="startDescription,startDescriptionAlign,startDescriptionPaddingTop,startDescriptionPaddingBottom,startDescriptionTextFontSize" class="js-start_description start_desc">Проверь свои знания в географии</p>
+                    <h2 id="id-start_header_text" data-app-property="startHeaderText,startHeaderPaddingTop,startHeaderPaddingBottom,startHeaderAlign,startHeaderTextFontSize,startHeaderTextFontColor" class="js-startHeader start_head">Тест</h2>
+                    <p id="id-start_desc_text" data-app-property="startDescription,startDescriptionAlign,startDescriptionPaddingTop,startDescriptionPaddingBottom,startDescriptionTextFontSize,startDescriptionTextFontColor" class="js-start_description start_desc">Проверь свои знания в географии</p>
                 </div>
                 <div class="btn_wr js-start_btn_wr" data-app-property="buttonBackgroundColor,buttonHoverBackgroundColor,buttonFontColor,buttonHoverFontColor,buttonBorderColor,buttonHoverBorderColor,buttonBorderRadius,buttonFontSize,buttonFontFamily,startButtonPaddingTop,startButtonPaddingBottom,startButtonAlign">
                     <span class="t_btn js-next" data-app-property="startButtonText">Начать</span>
@@ -41,7 +41,7 @@
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
                 <div class="cnt_wr">
-                    <div class="q_wr" data-app-property="quizQuestionTextAlign,quiz.{{currentQuestion}}.text">
+                    <div class="q_wr" data-app-property="quizQuestionTextAlign,quiz.{{currentQuestion}}.text,quizQuestionTextColor,quizQuestionPaddingTop,quizQuestionPaddingBottom">
                         {{question_text}}
                     </div>
                     <div data-app-property="quiz.{{currentQuestion}}.options" class="js-answers_cnt">
@@ -49,11 +49,11 @@
                     </div>
                     <div class="js-explain explain_blk" style="display:none;">
                         <div class="js-explanation_text"></div>
-                        <div><span class="t_btn js-next">Далее</span></div>
+                        <div><span class="t_btn js-next" data-app-property="buttonFontColor">Далее</span></div>
                     </div>
                 </div>
             </div>
-            <div data-app-property="topColontitleText" class="topColontitle">Верхний колонтитул</div>
+            <div data-app-property="topColontitleText" class="js-topColontitleText topColontitle">Верхний колонтитул</div>
             <div data-app-property="questionProgressPosition" class="js-question_progress question_progress"></div>
         </div>
     </script>
@@ -63,7 +63,7 @@
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
                 <div class="cnt_wr" style="margin-top: 30px;">
-                    <div class="q_wr __photo" data-app-property="quizQuestionTextAlign,quiz.{{currentQuestion}}.text">
+                    <div class="q_wr __photo" data-app-property="quizQuestionTextAlign,quiz.{{currentQuestion}}.text,quizQuestionTextColor,quizQuestionPaddingTop,quizQuestionPaddingBottom">
                         {{question_text}}
                     </div>
                     <div class="photo_wr js-photo" data-app-property="quiz.{{currentQuestion}}.img">
@@ -74,11 +74,11 @@
                     </div>
                     <div class="js-explain explain_blk" style="display:none;">
                         <div class="js-explanation_text"></div>
-                        <div><span class="t_btn js-next">Далее</span></div>
+                        <div><span class="t_btn js-next" data-app-property="buttonFontColor">Далее</span></div>
                     </div>
                 </div>
             </div>
-            <div data-app-property="topColontitleText" class="topColontitle">Верхний колонтитул</div>
+            <div data-app-property="topColontitleText" class="js-topColontitleText topColontitle">Верхний колонтитул</div>
             <div data-app-property="questionProgressPosition" class="js-question_progress question_progress"></div>
         </div>
     </script>
@@ -98,12 +98,12 @@
             <div class="slide">
                 <div class="cnt_wr">
                     <div class="start_txt">
-                        <h2 class="start_head js-result_title" data-app-property="results.{{currentResult}}.title">Конец</h2>
-                        <span class="start_desc js-result_description" data-app-property="results.{{currentResult}}.description">Ты ответил на все вопросы</span>
+                        <h2 class="start_head js-result_title" data-app-property="results.{{currentResult}}.title,resultTitleFontColor,resultTitlePaddingTop,resultTitlePaddingBottom,resultTitleAlign">Конец</h2>
+                        <span class="start_desc js-result_description" data-app-property="results.{{currentResult}}.description,resultDescriptionFontColor">Ты ответил на все вопросы</span>
                     </div>
                     </br>
                     <div class="btn_wr">
-                        <span data-app-property="restartButtonText" class="t_btn js-next js-restart">Заново</span>
+                        <span data-app-property="restartButtonText buttonFontColor" class="t_btn js-next js-restart">Заново</span>
                     </div>
                 </div>
             </div>
@@ -125,7 +125,6 @@
             startHeaderText: 'Тест по географии',
             startDescription: 'Проверь свои знания в географии',
             startButtonText: 'Начать',
-            startButtonAlign: 'center',
             restartButtonText: 'Заново',
             randomizeQuestions: false,
             randomizeOptions: false,
@@ -134,7 +133,6 @@
             backgroundColor: '#eee',
             showBackgroundImage: true,
             background: 'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg)',
-            quizQuestionTextAlign: 'left',
             /**
              * Логотип бренда, размещенный в тесте. Лого один, но позиции на разных экранах могут быть различные
              *
@@ -602,6 +600,7 @@
             else {
                 $w.css('backgroundImage','none');
             }
+            $('.js-topColontitleText').text(app.topColontitleText);
 //            if (appObject.backgroundColor) {
 //                $w.css('backgroundColor',appObject.backgroundColor);
 //            }
@@ -614,18 +613,18 @@
             $('.js-logo').css('backgroundImage','url('+app.logoUrl+')');
             $('.js-start_logo').css('top',app.logoStartPosition.top+'px').css('left',app.logoStartPosition.left+'px');
             $('.js-result_logo').css('top',app.logoResultPosition.top+'px').css('left',app.logoResultPosition.left+'px');
-            $('.t_btn').css('borderRadius',app.buttonBorderRadius+'px');
-            $('.t_btn').css('fontSize',app.buttonFontSize+'px');
-            $('.t_btn').css('fontFamily',app.buttonFontFamily);
+//            $('.t_btn').css('borderRadius',app.buttonBorderRadius+'px');
+//            $('.t_btn').css('fontSize',app.buttonFontSize+'px');
+//            $('.t_btn').css('fontFamily',app.buttonFontFamily);
             if (app.showQuestionProgress === true) {
                 $('.js-question_progress').show();
             }
             else {
                 $('.js-question_progress').hide();
             }
-            $('.js-question_progress').css('fontFamily',app.questionProgressFontFamily);
-            $('.js-question_progress').css('top',app.questionProgressPosition.top+'px').css('left',app.questionProgressPosition.left+'px');
-            $('.js-question_progress').css('fontSize',app.questionProgressFontSize+'px');
+//            $('.js-question_progress').css('fontFamily',app.questionProgressFontFamily);
+//            $('.js-question_progress').css('top',app.questionProgressPosition.top+'px').css('left',app.questionProgressPosition.left+'px');
+//            $('.js-question_progress').css('fontSize',app.questionProgressFontSize+'px');
             if (app.showBullits === true) {
                 $('.bullit').show();
             }

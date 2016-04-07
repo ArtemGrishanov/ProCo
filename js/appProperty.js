@@ -8,7 +8,7 @@
 var validAttributes = {
     selector: null,
     canAdd: null,
-    editable: false,
+    editable: true,
     updateScreens: false,
     updateAppProperties: true,
     label: null,

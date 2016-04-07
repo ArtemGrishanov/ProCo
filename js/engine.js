@@ -218,32 +218,96 @@ var Engine = {};
      * @param {object} obj объект window.app у промо-приложения
      */
     function createAppProperty(obj, strPrefix) {
-        strPrefix = (strPrefix) ?(strPrefix+'.'): '';
-        for (var key in obj) {
-            var str = strPrefix+key;
-            // в объекте descriptor найти описания свойства
-            var descInfo = findDescription(str);
-            if (descInfo) {
-                //TODO remove. isPrototype isTheme arent used
-                if (descInfo.isPrototype === true || descInfo.isTheme === true) {
-                    // не нужно анализировать прототипы как appProperty
-                    // и темы пропускаем
-                    continue;
-                }
-                var existedProperty = getAppProperty(str);
-                // проперти уже может быть создана, так как разрешено создание провертей из data-app-property атрибутов, которые встречаются многократно
-                if (existedProperty === null) {
-                    log('Found AppProperty: \''+ str + '\'', false, false);
-                    var p = new AppProperty(obj[key],str,descInfo);
-                    appProperties.push(p);
-                    appPropertiesObjectPathes.push(p.propertyString);
-                    send('AppPropertyInited', p.propertyString);
-                }
+        parseDescriptor(productWindow.descriptor);
+//        strPrefix = (strPrefix) ?(strPrefix+'.'): '';
+//        for (var key in obj) {
+//            var str = strPrefix+key;
+//            // в объекте descriptor найти описания свойства
+//            var descInfo = findDescription(str);
+//            if (descInfo) {
+//                //TODO remove. isPrototype isTheme arent used
+//                if (descInfo.isPrototype === true || descInfo.isTheme === true) {
+//                    // не нужно анализировать прототипы как appProperty
+//                    // и темы пропускаем
+//                    continue;
+//                }
+//                var existedProperty = getAppProperty(str);
+//                // проперти уже может быть создана, так как разрешено создание провертей из data-app-property атрибутов, которые встречаются многократно
+//                if (existedProperty === null) {
+//                    log('Found AppProperty: \''+ str + '\'', false, false);
+//                    var p = new AppProperty(obj[key],str,descInfo);
+//                    appProperties.push(p);
+//                    appPropertiesObjectPathes.push(p.propertyString);
+//                    send('AppPropertyInited', p.propertyString);
+//                }
+//            }
+//            if (obj[key] !== null && typeof obj[key] === 'object') {
+//                // идем глубже в дочерние объекты
+//                createAppProperty(obj[key], str);
+//            }
+//        }
+    }
+
+    /**
+     * Разобрать декскриптор на правила
+     * Именно эта информация определяющая
+     * window.app больше не является определяющим.
+     *
+     * @param desc
+     */
+    function parseDescriptor(desc) {
+        // в этот объект положим все вычисленные свойства для каждого селектора
+        var calculatedDescriptor = {};
+        for (var i = 0; i < desc.info.length; i++) {
+            // получаем текущую запись в дескрипторе
+            var curInfo = desc.info[i];
+            var selector = null;
+            if (curInfo.cssSelector) {
+                selector = curInfo.cssSelector;
             }
-            if (obj[key] !== null && typeof obj[key] === 'object') {
-                // идем глубже в дочерние объекты
-                createAppProperty(obj[key], str);
+            else if (curInfo.appSelector) {
+                selector = curInfo.appSelector;
             }
+            else {
+                log('Descriptor property index\''+i+'\' has not selector',true);
+            }
+            //TODO удалить двойные пробелы
+            var selectorArr = selector.split(' ');
+            for (var j = 0; j < selectorArr.length; j++) {
+                var str = selectorArr[j];
+                if (calculatedDescriptor.hasOwnProperty(str)===false) {
+                    // первый раз столкнулись с таким свойством-селектором, надо создать
+                    calculatedDescriptor[str] = {};
+                }
+                if (curInfo.rules) {
+                    // несколько правил может быть, они перечислены через пробел
+                    //TODO удалить двойные пробелы
+                    var ruleNames = curInfo.rules.split(' ');
+                    for (var k = 0; k < ruleNames.length; k++) {
+                        var rn = ruleNames[k];
+                        if (desc.rules.hasOwnProperty(rn)) {
+                            mergeProperties(desc.rules[rn], calculatedDescriptor[str]);
+                        }
+                        else {
+                            log('Rule \''+rn+'\' is not exist in descriptor.rules',true);
+                        }
+                    }
+                    mergeProperties(curInfo.rules, calculatedDescriptor[str]);
+                }
+                // мердж со свойствами curInfo стоит после мерджа правил, так как они более приоритетны
+                mergeProperties(curInfo, calculatedDescriptor[str]);
+            }
+        }
+        // К этому моменту мы имеем calculatedDescriptor и готовы создать appProperties
+        for (var appPropertyString in calculatedDescriptor) {
+            //TODO value
+            var p = new AppProperty(/*obj[key]*/null,
+                appPropertyString,
+                calculatedDescriptor[appPropertyString]);
+            appProperties.push(p);
+            appPropertiesObjectPathes.push(p.propertyString);
+            send('AppPropertyInited', p.propertyString);
+            log('AppProperty created: \''+ appPropertyString + '\'', false, false);
         }
     }
 
