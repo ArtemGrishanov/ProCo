@@ -122,6 +122,8 @@ descriptor.css = [
         filter: true
     },*/
     {
+        // на самом деле тут 8 appProperty: .js-startHeader_fontFamily .js-startHeader_fontColor .js-startHeader_fontSize .js-startHeader_textAlign
+        //   .js-startDescription_fontFamily .js-startDescription_fontColor .js-startDescription_fontSize .js-startDescription_textAlign
         // перечислил все классы к которым применять правила
         selector: '.js-startHeader .js-startDescription',
         // можно прописать сразу несколько правил, получается отношение "многие ко многим"
@@ -160,7 +162,7 @@ descriptor.css = [
 descriptor.app = [
     {
         selector: 'showBackgroundImage',
-        rules: 'showBackgroundImage'
+        rules: 'trueFalse'
     },
     {
         selector: 'logoStartPosition logoResultPosition questionProgressPosition',
@@ -172,6 +174,7 @@ descriptor.app = [
     },
     {
         selector: 'showQuestionProgress showBullits showTopColontitle showBackgroundImage',
+        filter: true,
         rules: 'trueFalse'
     },
     {
