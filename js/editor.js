@@ -266,7 +266,7 @@ function showScreen(ids) {
     //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
     // подсветка контрола Slide по которому кликнули
     $('#id-slides_cnt').find('.slide_thumb').removeClass('__active');
-    $('#id-slides_cnt').find('[data-app-property=\"'+activeScreens.join(',')+'\"]').addClass('__active');
+    $('#id-slides_cnt').find('[data-app-property=\"'+activeScreens.join(' ')+'\"]').addClass('__active');
 }
 
 /**
@@ -278,37 +278,39 @@ function showScreen(ids) {
  *
  */
 function bindControlsForAppPropertiesOnScreen($view, scrId) {
-    var elems = $view.find('[data-app-property]');
-    // для всех элементов data-app-property надо создать событие по клику.
-    // в этот момент будет происходить фильтрация контролов на боковой панели
-    elems.click(function(e){
-        //TODO надо сделать объект выделение прозрачным для событий мыши и тп
-        // сейчас для простоты удаляются все выделения перед показом следующего
-        deleteSelections();
-        // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
-        // задача - отфильтровать настройки на правой панели
-        var dataAppProperty = $(e.currentTarget).attr('data-app-property');
-        log(dataAppProperty + ' clicked');
-        showSelection($(e.currentTarget));
-        filterControls(dataAppProperty);
-        e.preventDefault();
-        e.stopPropagation();
-    });
-    for (var i = 0; i < elems.length; i++) {
-        var pAtt = $(elems[i]).attr('data-app-property');
-        //TODO этот поиск никогда не сработает, сейчас всегда чистим все контролы при переключении экранов
-        var c = findControlInfo(pAtt, elems[i]);
-        if (c) {
-            c.control.setProductDomElement(elems[i]);
-            $('#id-control_cnt').append(c.control.$directive);
-        }
-        else {
+//    var elems = $view.find('[data-app-property]');
+//    for (var i = 0; i < elems.length; i++) {
+//        var pAtt = $(elems[i]).attr('data-app-property');
+//        //TODO этот поиск никогда не сработает, сейчас всегда чистим все контролы при переключении экранов
+//        var c = findControlInfo(pAtt, elems[i]);
+//        if (c) {
+//            c.control.setProductDomElement(elems[i]);
+//            $('#id-control_cnt').append(c.control.$directive);
+//        }
+//        else {
             // через запятую может быть перечислено несколько appProperty для одного и того же элемента
             // например для логотипа data-app-property="logoStartPosition,logoUrl"
-            var propertyStrings = pAtt.split(',');
-            for (var k = 0; k < propertyStrings.length; k++) {
+//            var propertyStrings = pAtt.split(',');
+//            for (var k = 0; k < propertyStrings.length; k++) {
+            var appScreen = Engine.getAppScreen(scrId);
+            for (var k = 0; k < appScreen.appPropertyElements.length; k++) {
+                // для всех элементов связанных с appProperty надо создать событие по клику.
+                // в этот момент будет происходить фильтрация контролов на боковой панели
+                $(appScreen.appPropertyElements[k].domElement).click(function(e){
+                    // сейчас для простоты удаляются все выделения перед показом следующего
+                    deleteSelections();
+                    // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
+                    // задача - отфильтровать настройки на правой панели
+                    var dataAppPropertyString = $(e.currentTarget).attr('data-app-property');
+                    log(dataAppPropertyString + ' clicked');
+                    showSelection($(e.currentTarget));
+                    filterControls(dataAppPropertyString);
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
                 // контрола пока ещё не существует для настройки, надо создать
-                var appProperty = Engine.getAppProperty(propertyStrings[k]);
+                var propertyString = appScreen.appPropertyElements[k].propertyString;
+                var appProperty = Engine.getAppProperty(propertyString);
                 //TODO объяснение снизу не понятно
                 //TODO remove иногда в атрибуте data-app-property содержится несколько ссылок на appProperty через запятую
                 //TODO remove в этом случае берем описание из дескриптора первого элемента [0]. Свойства должны быть идентичными, иначе это не имеет смысла
@@ -323,18 +325,23 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
                         if (config.controls[cn].type === 'workspace') {
                             // имя вью для контрола
                             var viewName = controlsInfo[j].params.viewName;
-                            var newControl = createControl(appProperty.propertyString, viewName, controlsInfo[j].name, controlsInfo[j].params, null, elems[i]);
+                            var newControl = createControl(appProperty.propertyString,
+                                viewName,
+                                controlsInfo[j].name,
+                                controlsInfo[j].params,
+                                null,
+                                appScreen.appPropertyElements[k].domElement);
                             if (newControl) {
                                 // только если действительно получилось создать ui для настройки
                                 // не все контролы могут быть реализованы или некорректно указаны
                                 uiControlsInfo.push({
-                                    appPropertyString: pAtt,
+                                    appPropertyString: propertyString,
                                     control: newControl,
-                                    domElement: elems[i]
+                                    domElement: appScreen.appPropertyElements[k].domElement
                                 });
                             }
                             else {
-                                log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+pAtt+ '\' on the screen '+scrId, true);
+                                log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+propertyString+ '\' on the screen '+scrId, true);
                             }
                         }
                     }
@@ -342,11 +349,11 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
                 else {
                     // нет свойства appProperty в Engine хотя во вью есть элемент с таким атрибутом data-app-property
                     // это значит ошибку в промо-продукте
-                    log('AppProperty \''+pAtt+'\' not exist. But such attribute exists on the screen: \''+scrId+'\'', true);
+                    log('AppProperty \''+propertyString+'\' not exist. But such attribute exists on the screen: \''+scrId+'\'', true);
                 }
             }
-        }
-    }
+//        }
+//    }
 
     //TODO пока как-то выглядит запутанным управление контролами
 
@@ -367,9 +374,9 @@ function filterControls(dataAppPropertyString) {
     if (dataAppPropertyString) {
         $('#id-static_controls_cnt').children().hide();
         // может быть несколько свойств через запятую: фон кнопки, ее бордер, цвет шрифта кнопки и так далее
-        var keys = dataAppPropertyString.split(',');
+        var keys = dataAppPropertyString.split(' ');
         for (var i = 0; i < keys.length; i++) {
-            var c = findControlInfo(keys[i]);
+            var c = findControlInfo(keys[i].trim());
             // wrapper - это обертка в которой находится контрол на боковой панели
             // надо скрыть его целиком, включая label
             if (c && c.wrapper) {
@@ -456,8 +463,6 @@ function syncUIControlsToAppProperties() {
                         else {
                             log('Can not create control for appProperty: \'' + ps, true);
                         }
-
-                        //TODO здесь же будут добавлены другие постоянные контролы, например на правой панели
                     }
                 }
                 else {
@@ -530,7 +535,7 @@ function createScreenControls() {
                 if (screen.collapse === true) {
                     // экраны представлены на левой панели одной единой иконкой и при клике на нее отображаются все вместе
                     // например, результаты в тесте
-                    slideId = groups[groupName].join(',');
+                    slideId = groups[groupName].join(' ');
                 }
                 else {
                     slideId = s;
@@ -622,7 +627,7 @@ function createControl(propertyString, viewName, name, params, controlParentView
             cpv = $('#'+config.controls[name].parentId);
         }
         // свойств может быть несколько, передаем массив
-        var propertyStrArg = (propertyString.indexOf(',')>=0)?propertyString.split(','):propertyString;
+        var propertyStrArg = (propertyString.indexOf(' ')>=0)?propertyString.split(' '):propertyString;
         ctrl = new window[name](propertyStrArg, viewName, cpv, productDOMElement, params);
     }
     catch(e) {

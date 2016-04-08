@@ -1,48 +1,8 @@
 /**
  * Created by artyom.grishanov on 17.02.16.
  *
- *
- * // selector как задать? То есть надо указать элемент к которому применять стили
- // если по атрибуту data-app-property найти то все равно не удобно
- // но можно классы навесить самому js-{appPropname}! Вот что! если нет selector
- // а selector оставить как вариант
  */
 var descriptor = {};
-//    [
-//    {
-//        // сюда добавляем все свойства, для которых надо задать верхний отступ
-//        selector: 'startHeaderPaddingTop startDescriptionPaddingTop startButtonPaddingTop quizQuestionPaddingTop resultTitlePaddingTop',
-//        label: 'Отступ сверху',
-//        controls: 'StringControl',
-//        updateScreens: true,
-//        cssProperty: 'padding-top',
-//        cssValuePattern: '{{value}}px',
-//        filter: true
-//    },
-//    // не нравится что есть повторение: padding-bottom, padding-left и так далее
-//    // это можно решить разделением, только название отдельно описать
-//    {
-//        selector: 'startHeaderPaddingBottom startDescriptionPaddingBottom startButtonPaddingBottom quizQuestionPaddingBottom resultTitlePaddingBottom',
-//        label: 'Отступ снизу',
-//        controls: 'StringControl',
-//        updateScreens: true,
-//        cssProperty: 'padding-bottom',
-//        cssValuePattern: '{{value}}px',
-//        filter: true
-//    },
-//    {
-//        selector: 'startHeaderAlign startDescriptionAlign startButtonAlign quizQuestionTextAlign resultTitleAlign',
-//        editable: true,
-//        controls: "Alternative",
-//        controlParams: {
-//            viewName: "Dropdown"
-//        },
-//        cssProperty: 'text-align',
-//        possibleValues: ["left","center","right"],
-//        updateScreens: true,
-//        label: "Выравнивание",
-//        filter: true
-//    },
 //    {
 //        selector: 'randomizeQuestions',
 //        editable: true,
@@ -51,55 +11,6 @@ var descriptor = {};
 //            viewName: "OnOffSwitcher"
 //        },
 //        label: "Перемешать вопросы"
-//    },
-//    {
-//        selector: 'startHeaderText startDescription startButtonText restartButtonText quiz.{{number}}.text topColontitleText',
-//        controls: "TextQuickInput"
-//    },
-//    {
-//        selector: 'showBackgroundImage',
-//        editable: true,
-//        updateScreens: true,
-//        controls: "OnOff",
-//        controlParams: {
-//        },
-//        label: "Картинка"
-//    },
-//    {
-//        selector: 'startHeaderTextFontSize startDescriptionTextFontSize',
-//        editable: true,
-//        updateScreens: true,
-//        controls: "StringControl",
-//        controlParams: {
-//            viewName: 'textinput'
-//        },
-//        label: 'Размер шрифта',
-//        cssProperty: 'font-size',
-//        cssValuePattern: '{{value}}px',
-//        filter: true
-//    },
-//    {
-//        selector: 'startHeaderTextFontColor startDescriptionTextFontColor buttonFontColor quizQuestionTextColor resultTitleFontColor resultDescriptionFontColor',
-//        editable: true,
-//        updateScreens: true,
-//        controls: "StringControl",
-//        controlParams: {
-//            viewName: "ColorPicker"
-//        },
-//        cssProperty: 'color',
-//        label: "Цвет шрифта",
-//        filter: true
-//    },
-//    {
-//        selector: 'backgroundColor',
-//        editable: true,
-//        updateScreens: true,
-//        controls: "StringControl",
-//        controlParams: {
-//            viewName: "ColorPicker"
-//        },
-//        label: "Цвет фона",
-//        cssProperty: 'background-color',
 //    }
 //];
 
@@ -125,10 +36,10 @@ descriptor.css = [
         // на самом деле тут 8 appProperty: .js-startHeader_fontFamily .js-startHeader_fontColor .js-startHeader_fontSize .js-startHeader_textAlign
         //   .js-startDescription_fontFamily .js-startDescription_fontColor .js-startDescription_fontSize .js-startDescription_textAlign
         // перечислил все классы к которым применять правила
-        selector: '.js-startHeader .js-startDescription',
+        selector: '.js-startHeader .js-start_description .js-question_text .js-answer .js-result_title .js-result_description',
         // можно прописать сразу несколько правил, получается отношение "многие ко многим"
         // это позволит делать наборы правил
-        rules: 'fontFamily fontColor fontSize textAlign'
+        rules: 'fontFamily fontColor fontSize textAlign paddingTop paddingBottom'
     },
     {
         // не объединяем с остальными текстами, так как нельзя выравнивать
@@ -138,7 +49,11 @@ descriptor.css = [
     {
         // все кнопки
         selector: '.t_btn',
-        rules: 'backgroundColor textAlign fontColor fontSize fontFamily borderColor borderRadius'
+        rules: 'backgroundColor textAlign fontColor fontSize fontFamily borderColor borderRadius paddingTop paddingBottom'
+    },
+    {
+        selector: '.js-photo',
+        rules: 'textAlign marginTop marginBottom'
     },
     {
         // все кнопки в состоянии навеения
@@ -155,7 +70,13 @@ descriptor.css = [
     },
     {
         selector: '.topColontitle',
-        rules: 'text topColontitleBottomBorderColor fontColor fontSize fontFamily textAlign backgroundColor'
+        rules: 'text topColontitleBottomBorderColor fontColor fontSize fontFamily textAlign backgroundColor paddingTop paddingBottom'
+    },
+    {
+        selector: '.js-back',
+        label: 'Цвет фона теста',
+        filter: false,
+        rules: 'backgroundColor'
     }
 ];
 
@@ -165,7 +86,12 @@ descriptor.app = [
         rules: 'trueFalse'
     },
     {
-        selector: 'logoStartPosition logoResultPosition questionProgressPosition',
+        selector: 'logoStartPosition logoResultPosition',
+        rules: 'drag'
+    },
+    {
+        selector: 'questionProgressPosition',
+        updateScreens: true,
         rules: 'drag'
     },
     {
@@ -174,7 +100,6 @@ descriptor.app = [
     },
     {
         selector: 'showQuestionProgress showBullits showTopColontitle showBackgroundImage',
-        filter: true,
         rules: 'trueFalse'
     },
     {
@@ -242,6 +167,7 @@ descriptor.rules = {
         },
         //TODO standart font names source?
         possibleValues: ["Arial","Times New Roman"],
+        cssProperty: 'font-family',
         label: 'Шрифт',
         filter: true
     },
@@ -425,6 +351,38 @@ descriptor.rules = {
             viewName: "OnOffSwitcher"
         },
         label: "Вкл/Откл"
+    },
+    paddingTop: {
+        label: 'Паддинг сверху',
+        controls: 'StringControl',
+        updateScreens: true,
+        cssProperty: 'padding-top',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    },
+    paddingBottom: {
+        label: 'Паддинг снизу',
+        controls: 'StringControl',
+        updateScreens: true,
+        cssProperty: 'padding-bottom',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    },
+    marginTop: {
+        label: 'Маргин сверху',
+        controls: 'StringControl',
+        updateScreens: true,
+        cssProperty: 'margin-top',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    },
+    marginBottom: {
+        label: 'Маргин снизу',
+        controls: 'StringControl',
+        updateScreens: true,
+        cssProperty: 'margin-bottom',
+        cssValuePattern: '{{value}}px',
+        filter: true
     },
 };
 //var descriptor = {

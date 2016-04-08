@@ -8,7 +8,7 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body style="padding:0;margin:0">
-    <div id="id-start_slide" class="wrapper" data-app-property="backgroundColor">
+    <div id="id-start_slide" class="wrapper js-back" data-app-property="backgroundColor">
         <div class="back_start"></div>
         <!--<div class="shadow"></div>-->
         <div class="slide">
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div class="logo js-logo js-start_logo" data-app-property="logoStartPosition,logoUrl"></div>
+        <div class="logo js-logo js-start_logo" data-app-property="logoStartPosition logoUrl"></div>
     </div>
 
     <div class="js-slides_cnt">
@@ -36,12 +36,12 @@
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript" src="jquery.js"></script>
     <script id="id-slide_text_template" type="text/template">
-        <div class="wrapper" data-app-property="backgroundColor">
+        <div class="wrapper js-back" data-app-property="backgroundColor">
             <div class="back_start"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
                 <div class="cnt_wr">
-                    <div class="q_wr" data-app-property="quiz.{{currentQuestion}}.text">
+                    <div class="q_wr js-question_text" data-app-property="quiz.{{currentQuestion}}.text">
                         {{question_text}}
                     </div>
                     <div data-app-property="quiz.{{currentQuestion}}.options" class="js-answers_cnt">
@@ -58,12 +58,12 @@
         </div>
     </script>
     <script id="id-slide_photo_template" type="text/template">
-        <div class="wrapper" data-app-property="backgroundColor">
+        <div class="wrapper js-back" data-app-property="backgroundColor">
             <div class="back_start"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
                 <div class="cnt_wr" style="margin-top: 30px;">
-                    <div class="q_wr __photo" data-app-property="quiz.{{currentQuestion}}.text">
+                    <div class="q_wr __photo js-question_text" data-app-property="quiz.{{currentQuestion}}.text">
                         {{question_text}}
                     </div>
                     <div class="photo_wr js-photo" data-app-property="quiz.{{currentQuestion}}.img">
@@ -87,19 +87,19 @@
         <div class="a_wr js-answer js-answer_text" data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}">
             <div class="a_text">
                 <div class="bullit"></div>
-                <span data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}.text" class="txt">{{answer_options_text}}</span>
+                <span data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}.text">{{answer_options_text}}</span>
             </div>
         </div>
     </script>
     <script id="id-result_template" type="text/template">
-        <div class="wrapper" data-app-property="backgroundColor">
+        <div class="wrapper js-back" data-app-property="backgroundColor">
             <div class="back_start"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide">
                 <div class="cnt_wr">
                     <div class="start_txt">
                         <h2 class="start_head js-result_title" data-app-property="results.{{currentResult}}.title">Конец</h2>
-                        <span class="start_desc js-result_description" data-app-property="results.{{currentResult}}.description">Ты ответил на все вопросы</span>
+                        <p class="start_desc js-result_description" data-app-property="results.{{currentResult}}.description">Ты ответил на все вопросы</p>
                     </div>
                     </br>
                     <div class="btn_wr">
@@ -107,7 +107,7 @@
                     </div>
                 </div>
             </div>
-            <div class="logo js-logo js-result_logo" data-app-property="logoResultPosition,logoUrl"></div>
+            <div class="logo js-logo js-result_logo" data-app-property="logoResultPosition logoUrl"></div>
         <div>
     </script>
     <script>
@@ -600,6 +600,12 @@
             else {
                 $w.css('backgroundImage','none');
             }
+            if (app.showTopColontitle === true) {
+                $('.topColontitle').show();
+            }
+            else {
+                $('.topColontitle').hide();
+            }
             $('.js-topColontitleText').text(app.topColontitleText);
 //            if (appObject.backgroundColor) {
 //                $w.css('backgroundColor',appObject.backgroundColor);
@@ -623,7 +629,7 @@
                 $('.js-question_progress').hide();
             }
 //            $('.js-question_progress').css('fontFamily',app.questionProgressFontFamily);
-//            $('.js-question_progress').css('top',app.questionProgressPosition.top+'px').css('left',app.questionProgressPosition.left+'px');
+            $('.js-question_progress').css('top',app.questionProgressPosition.top+'px').css('left',app.questionProgressPosition.left+'px');
 //            $('.js-question_progress').css('fontSize',app.questionProgressFontSize+'px');
             if (app.showBullits === true) {
                 $('.bullit').show();

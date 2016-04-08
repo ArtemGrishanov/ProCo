@@ -518,19 +518,27 @@ var Engine = {};
                     // если имеются дополнительные данные их возможно вставить во view
                     // например: data-app-property="quiz.{{currentQuestion}}.text"
                     ps[i].view = parseView(ps[i].view, ps[i].data);
-                    var propertiesFromView = setDataAppPropertyClasses(ps[i].view);
+//                    var propertiesFromView = setDataAppPropertyClasses(ps[i].view);
                     // возможно, нашли какие-то ключи на вью, которые не были оъявлены в productWindow.app
-                    createAppProperty(propertiesFromView);
+//                    createAppProperty(propertiesFromView);
                     writeCssRulesTo(ps[i].view);
                 }
                 // мы знаем сss классы для редактирования, так как дескриптор был разобран
                 // можно сразу найти классы и data-app-property на view
-                ps[i].appPropertyStrings = [];
+                ps[i].appPropertyElements = [];
+                // id нужен для соотнесения клика по элементу с нужным апп проперти в массиве appPropertyElements
+                //TODO нужно подумать о таком кейсе: когда один и тот же элемент помечен как data-app-property и каким-то классом одновременно
                 for (var j = 0; j < appProperties.length; j++) {
                     if (appProperties[j].type === 'css') {
-                        var r = $(ps[i].view).find(appProperties[j].cssSelector);
-                        if (r.length > 0) {
-                            ps[i].appPropertyStrings.push(appProperties[j].propertyString);
+                        var elemsOnView = $(ps[i].view).find(appProperties[j].cssSelector);
+                        for (var k = 0; k < elemsOnView.length; k++) {
+                            // добавить проперти в data-app-property атрибут, так как css свойств там нет
+                            // они понадобятся чтобы по клику а этот элемент показать все проперти которые нужны
+                            addDataAttribute(elemsOnView[k], appProperties[j].propertyString);
+                            ps[i].appPropertyElements.push({
+                                propertyString: appProperties[j].propertyString,
+                                domElement: elemsOnView[k]
+                            });
                         }
                     }
                 }
@@ -539,11 +547,14 @@ var Engine = {};
                 if (dataElems.length > 0) {
                     for (var j = 0; j < dataElems.length; j++) {
                         var atr = $(dataElems[j]).attr('data-app-property');
-                        var psArr = atr.split(',');
+                        var psArr = atr.split(' ');
                         for (var k = 0; k < psArr.length; k++) {
                             var tspAtr = psArr[k].trim();
-                            if (getAppProperty(tspAtr)!==null && ps[i].appPropertyStrings.indexOf(tspAtr)<0) {
-                                ps[i].appPropertyStrings.push(tspAtr);
+                            if (getAppProperty(tspAtr)!==null) {
+                                ps[i].appPropertyElements.push({
+                                    propertyString: tspAtr,
+                                    domElement: dataElems[j]
+                                });
                             }
                         }
                     }
@@ -554,6 +565,26 @@ var Engine = {};
                 appScreenIds.push(ps[i].id);
                 send('ScreenUpdated', ps[i].id);
             }
+        }
+    }
+
+    /**
+     * Добавить новое значение в data-app-property избегая дублирования
+     * prop3 -> data-app-property="prop1 prop2" = data-app-property="prop1 prop2 prop3"
+     *
+     * @param {DOMElement} elem html element
+     * @param {string} attribute
+     */
+    function addDataAttribute(elem, attribute) {
+        var exAtr = $(elem).attr('data-app-property');
+        if (exAtr) {
+            if (exAtr.indexOf(attribute) < 0) {
+                // избегаем дублирования
+                $(elem).attr('data-app-property', exAtr + ' ' + attribute);
+            }
+        }
+        else {
+            $(elem).attr('data-app-property', attribute);
         }
     }
 
@@ -592,7 +623,7 @@ var Engine = {};
         }
         for (var j = 0; j < elems.length; j++) {
             var v = $(elems[j]).attr('data-app-property');
-            var aps = v.split(',');
+            var aps = v.split(' ');
             for (var i = 0; i < aps.length; i++) {
                 $(elems[j]).addClass('js-app_'+aps[i]);
                 res[aps[i]] = undefined;
