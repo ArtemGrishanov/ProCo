@@ -7,9 +7,12 @@
     <link href="../bootsrap/css/checkbox-radio-switch.css" rel="stylesheet">
     <link href="../bootsrap/css/colorpicker.css" rel="stylesheet">
     <link href="controls/css/style.css" rel="stylesheet">
-    <!--TODO стили подгружать локально, только для экрана промо приложения -->
-    <link href="../products/test/style.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <!-- TODO для исключения влияния бутстрапа на превью используются файл очистки
+    в идеале должен быть iframe но там есть сложности с редактированием свойств его -->
+    <!--<link href="css/clearbootstrap.css" rel="stylesheet">-->
+    <!--TODO стили подгружать локально, только для экрана промо приложения -->
+
 </head>
 <body ng-app="procoApp">
     <div>
@@ -31,9 +34,13 @@
                         <div id="id-control_cnt" class="quick_controls_cnt">
                             <!-- Здесь располагаются "быстрые" контролы, которые показываются поверх продукта при клике или наведении куда-то -->
                         </div>
-                        <div id="id-product_screens_cnt">
+                        <!--<div id="id-product_screens_cnt">-->
+                            <!--&lt;!&ndash; Сюда добавляем программно view различных экранов промо приложения &ndash;&gt;-->
+                        <!--</div>-->
+                        <!-- Эксперимент с iframe чтобы изолировать стили промо проекта -->
+                        <iframe id="id-product_screens_cnt" src="product_cnt.html" style="position: absolute; top: 20px; width: 100%;padding: 0;margin: 0;border: 0;height: 100%;">
                             <!-- Сюда добавляем программно view различных экранов промо приложения -->
-                        </div>
+                        </iframe>
                     </div>
                 </div>
                 <div class="settings_panel">

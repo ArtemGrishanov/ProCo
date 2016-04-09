@@ -61,8 +61,8 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
         top: this.$productDomElement.css('top')
     };
     this.$productDomElement.mousedown(this.onMouseDown.bind(this));
-    $(document).mousemove(this.onMouseMove.bind(this));
-    $(document).mouseup(this.onMouseUp.bind(this));
+    $(productScreensCnt).mousemove(this.onMouseMove.bind(this));
+    $(productScreensCnt).mouseup(this.onMouseUp.bind(this));
     Engine.on('AppPropertyValueChanged', this.propertyString, this.onPropertyChanged.bind(this));
 }
 Drag.prototype = AbstractControl;

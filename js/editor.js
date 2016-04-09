@@ -84,6 +84,17 @@ var uiControlsInfo = [
     // domElement
 ];
 /**
+ * Элемент внутри айФрейма куда добавляем экраны промо приложения
+ * @type {null}
+ */
+var productScreensCnt = null;
+//TODO calculate appSize
+/**
+ *
+ * @type {{width: number}}
+ */
+var appSize = {width: 600, height: 400};
+/**
  * Единый для всех контролов angular модуль
  * @type {*}
  */
@@ -243,16 +254,20 @@ function showScreen(ids) {
         }
     }
 
-    var $screensCnt = $('#id-product_screens_cnt');
-    $screensCnt.empty();
+    $(productScreensCnt).empty();
     var appScreen = null;
+    var previewHeight = 0;
     for (var i = 0; i < ids.length; i++) {
         appScreen = Engine.getAppScreen(ids[i]);
         if (appScreen) {
-            // каждый экран ещё оборачиваем в контейнер .screen_cnt
-//            $('<div class="screen_cnt"></div>').append(appScreen.view).appendTo($screensCnt);
-            $screensCnt.append(appScreen.view);
-            //TODO это временное решения проблемы, как применять настройки ко вью которые ещё не были добавлены
+            $(productScreensCnt).append(appScreen.view);
+            previewHeight += appSize.height;
+
+//            var screenHtml = '<link href="../products/test/style.css" rel="stylesheet"/>'+appScreen.view.html();
+//            $screensCnt.html(screenHtml);
+
+//            var screenHtml = '<head><link href="../products/test/style.css" rel="stylesheet"></head><body>'+appScreen.view.html()+'</body>';
+//            $screensCnt.attr('srcdoc',screenHtml);
             if (typeof appScreen.doWhenInDOM === 'function') {
                 appScreen.doWhenInDOM(iframeWindow.app, appScreen.view);
             }
@@ -262,6 +277,8 @@ function showScreen(ids) {
             //TODO показать ошибку наверное
         }
     }
+    // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
+    $('#id-product_screens_cnt').width(appSize.width).height(previewHeight);
 
     //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
     // подсветка контрола Slide по которому кликнули
@@ -498,7 +515,11 @@ function syncUIControlsToAppProperties() {
     }
     else {
         // первый экран показать по умолчанию
-        showScreen([Engine.getAppScreenIds()[0]]);
+        //TODO первый старт: надо дождаться загрузки этого айфрема и нормально проинициализировать после
+        setTimeout(function(){
+            productScreensCnt = $("#id-product_screens_cnt").contents().find('body');
+            showScreen([Engine.getAppScreenIds()[0]]);
+        },1000);
     }
 }
 
@@ -633,7 +654,7 @@ function createControl(propertyString, viewName, name, params, controlParentView
     catch(e) {
         log(e, true);
     }
-    log('Creating UI control for appProperty='+propertyString+' ui='+name);
+//    log('Creating UI control for appProperty='+propertyString+' ui='+name);
     return ctrl;
 }
 
@@ -1083,8 +1104,12 @@ function showSelection($elem) {
     selectedElem = $elem;
     var $seletionBorder = $($('#id-elem_selection_template').html());
     var eo = $elem.offset(); // position() не подходит в данном случае
-    $seletionBorder.css('top',eo.top-workspaceOffset.top+'px');
-    $seletionBorder.css('left',eo.left-workspaceOffset.left+'px');
+//    $seletionBorder.css('top',eo.top-workspaceOffset.top+'px');
+//    $seletionBorder.css('left',eo.left-workspaceOffset.left+'px');
+//    $seletionBorder.css('width',$elem.outerWidth(false)-1+'px'); // false - not including margins
+//    $seletionBorder.css('height',$elem.outerHeight(false)-1+'px');
+    $seletionBorder.css('top',eo.top+'px');
+    $seletionBorder.css('left',eo.left+'px');
     $seletionBorder.css('width',$elem.outerWidth(false)-1+'px'); // false - not including margins
     $seletionBorder.css('height',$elem.outerHeight(false)-1+'px');
     $seletionBorder.css('zIndex', config.editor.ui.selectionBorderZIndex);
