@@ -44,12 +44,11 @@ body {
     font-family: Arial;
 }
 .photo_wr {
+    display: inline-block;
     width: 300px;
     height: 200px;
-    padding: 10px;
     background-size: cover;
     background-position: center;
-    margin: 0 auto;
 }
 .start_txt {
     margin: 0;

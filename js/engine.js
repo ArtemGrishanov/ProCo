@@ -73,6 +73,12 @@ var Engine = {};
      * @type {Array}
      */
     var customCssRules = [];
+    /**
+     * Проанализированная и собранная информация из descriptor.app
+     * Собирается один раз при старте приложения
+     * @type {null}
+     */
+    var calculatedAppDescriptor = null;
 
 
     /**
@@ -97,6 +103,7 @@ var Engine = {};
                         break;
                     }
                 }
+                // надо проверить что value определено
                 if (propertyFound === false) {
                     // новое проперти для этого селектора, добавить в массив
                     r.rules.push({
@@ -217,29 +224,233 @@ var Engine = {};
      * @param {object} obj объект window.app у промо-приложения
      */
     function createAppProperty(obj, strPrefix) {
-        strPrefix = (strPrefix) ?(strPrefix+'.'): '';
-        for (var key in obj) {
-            var str = strPrefix+key;
-            // в объекте descriptor найти описания свойства
-            var descInfo = findDescription(str);
-            if (descInfo) {
-                //TODO remove. isPrototype isTheme arent used
-                if (descInfo.isPrototype === true || descInfo.isTheme === true) {
-                    // не нужно анализировать прототипы как appProperty
-                    // и темы пропускаем
+        createAppProperties(productWindow.descriptor);
+//        strPrefix = (strPrefix) ?(strPrefix+'.'): '';
+//        for (var key in obj) {
+//            var str = strPrefix+key;
+//            // в объекте descriptor найти описания свойства
+//            var descInfo = findDescription(str);
+//            if (descInfo) {
+//                //TODO remove. isPrototype isTheme arent used
+//                if (descInfo.isPrototype === true || descInfo.isTheme === true) {
+//                    // не нужно анализировать прототипы как appProperty
+//                    // и темы пропускаем
+//                    continue;
+//                }
+//                var existedProperty = getAppProperty(str);
+//                // проперти уже может быть создана, так как разрешено создание провертей из data-app-property атрибутов, которые встречаются многократно
+//                if (existedProperty === null) {
+//                    log('Found AppProperty: \''+ str + '\'', false, false);
+//                    var p = new AppProperty(obj[key],str,descInfo);
+//                    appProperties.push(p);
+//                    appPropertiesObjectPathes.push(p.propertyString);
+//                    send('AppPropertyInited', p.propertyString);
+//                }
+//            }
+//            if (obj[key] !== null && typeof obj[key] === 'object') {
+//                // идем глубже в дочерние объекты
+//                createAppProperty(obj[key], str);
+//            }
+//        }
+    }
+
+    /**
+     * Разобрать декскриптор на правила
+     * Именно эта информация определяющая
+     * По селекторам из дескриптора ищутся подходящие свойства в в productWindow.app
+     *
+     * @param desc
+     */
+    function createAppProperties(desc) {
+        // в этот объект положим все вычисленные свойства для каждого селектора
+        if (calculatedAppDescriptor===null) {
+            calculatedAppDescriptor = {};
+            for (var i = 0; i < desc.app.length; i++) {
+                // получаем текущую запись в дескрипторе
+                var curRec = desc.app[i];
+                if (!curRec.selector) {
+                    log('Descriptor property index\''+i+'\' has not selector',true);
                     continue;
                 }
-                log('Found AppProperty: \''+ str + '\'', false, false);
-                var p = new AppProperty(obj[key],str,descInfo);
-                appProperties.push(p);
-                appPropertiesObjectPathes.push(p.propertyString);
-                send('AppPropertyInited', p.propertyString);
-            }
-            if (obj[key] !== null && typeof obj[key] === 'object') {
-                // идем глубже в дочерние объекты
-                createAppProperty(obj[key], str);
+                //TODO удалить двойные пробелы
+                var selectorArr = curRec.selector.split(' ');
+                for (var j = 0; j < selectorArr.length; j++) {
+                    var appPropertyString = selectorArr[j];
+                    if (calculatedAppDescriptor.hasOwnProperty(appPropertyString)===false) {
+                        // первый раз столкнулись с таким свойством-селектором, надо создать
+                        calculatedAppDescriptor[appPropertyString] = {};
+                    }
+                    if (curRec.rules) {
+                        // несколько правил может быть, они перечислены через пробел
+                        //TODO удалить двойные пробелы
+                        var ruleNames = curRec.rules.split(' ');
+                        for (var k = 0; k < ruleNames.length; k++) {
+                            var rn = ruleNames[k];
+                            if (desc.rules.hasOwnProperty(rn)) {
+                                mergeProperties(desc.rules[rn], calculatedAppDescriptor[appPropertyString]);
+                            }
+                            else {
+                                log('Rule \''+rn+'\' is not exist in descriptor.rules',true);
+                            }
+                        }
+                    }
+                    // мердж со свойствами curInfo стоит после мерджа правил, так как они более приоритетны
+                    mergeProperties(curRec, calculatedAppDescriptor[appPropertyString]);
+                }
             }
         }
+        // собрали все селекторы. Теперь нужно зарезолвить такие селекторы quiz.{{number}}.img
+        var count = 0;
+        for (var selector in calculatedAppDescriptor) {
+            // проверяем существуют ли в productWindow такие свойства отвечающие селектору
+            // например: selector==quiz.{{number}}.text
+            // получаем 4-е свойства со своими значениями: quiz.0.text quiz.1.text quiz.2.text quiz.3.text
+            var pp = getPropertiesBySelector(productWindow.app, selector);
+            for (var q = 0; q < pp.length; q++) {
+                if (getAppProperty(pp[q].path) === null) {
+                    count++;
+                    var p = new AppProperty(pp[q].value,
+                        pp[q].path,
+                        calculatedAppDescriptor[selector]);
+                    p.type = 'app';
+                    appProperties.push(p);
+                    appPropertiesObjectPathes.push(p.propertyString);
+                    send('AppPropertyInited', p.propertyString);
+//                    log('AppProperty created: \''+ p.propertyString + '\'', false, false);
+                }
+            }
+        }
+        log('AppProperties created (type=app) ' + count, false);
+    }
+
+    /**
+     * Создание appProperty для управления css-промо проекта вынесено в отдельную функцию
+     * Оно достаточно отличается от создания обычных свойств
+     * Однако в конечном итоге должен получиться единый массив appProperty для
+     * монолитной работы редактора и контролов.
+     *
+     * @param desc
+     */
+    function createCssProperties(desc) {
+        var calculatedCssDescriptor = {};
+        for (var i = 0; i < desc.css.length; i++) {
+            // получаем текущую запись в дескрипторе
+            var curRec = desc.css[i];
+            if (!curRec.selector) {
+                log('Descriptor property index\''+i+'\' has not selector',true);
+                continue;
+            }
+            //TODO удалить двойные пробелы
+            var selectorArr = curRec.selector.split(' ');
+            for (var j = 0; j < selectorArr.length; j++) {
+                if (curRec.rules) {
+                    // несколько правил может быть, они перечислены через пробел
+                    //TODO удалить двойные пробелы
+                    var ruleNames = curRec.rules.split(' ');
+                    for (var k = 0; k < ruleNames.length; k++) {
+                        var appPropertyString = selectorArr[j]+'_'+ruleNames[k];
+                        if (calculatedCssDescriptor.hasOwnProperty(appPropertyString)===false) {
+                            // первый раз столкнулись с таким свойством-селектором, надо создать
+                            calculatedCssDescriptor[appPropertyString] = {cssSelector:selectorArr[j]};
+                        }
+                        var rn = ruleNames[k];
+                        if (desc.rules.hasOwnProperty(rn)) {
+                            mergeProperties(desc.rules[rn], calculatedCssDescriptor[appPropertyString]);
+                        }
+                        else {
+                            log('Rule \''+rn+'\' is not exist in descriptor.rules',true);
+                        }
+                        // мердж со свойствами curInfo стоит после мерджа правил, так как они более приоритетны
+                        mergeProperties(curRec, calculatedCssDescriptor[appPropertyString]);
+                    }
+                }
+            }
+        }
+        // все готово, теперь создаем appPropery
+        var count = 0;
+        for (var selector in calculatedCssDescriptor) {
+            // пустая строка в качество начального значения
+            var p = new AppProperty('',
+                selector,
+                calculatedCssDescriptor[selector]);
+            p.type = 'css';
+            appProperties.push(p);
+            appPropertiesObjectPathes.push(p.propertyString);
+            send('AppPropertyInited', p.propertyString);
+            log('AppProperty created: \''+ p.propertyString + '\'', false, false);
+            count++;
+        }
+        log('AppProperties created (type=css) ' + count, false);
+    }
+
+    function clearAppProperties() {
+        var newPathes = [];
+        for (var k = 0; k < appProperties.length;) {
+            if (appProperties[k].type==='app') {
+                // удалить этот элемент
+                appProperties.splice(k,1);
+                continue;
+            }
+            newPathes.push(appProperties[k].propertyString);
+            k++;
+        }
+        appPropertiesObjectPathes = [];
+    }
+
+    /**
+     * Проверить в объекте obj, содержит ли он свойства соответствующие selector
+     * Например: selector==quiz.{{number}}.text
+     * получаем 4-е свойства со своими значениями: quiz.0.text quiz.1.text quiz.2.text quiz.3.text
+     *
+     * @param obj
+     * @param selector
+     * @return {Array} result
+     */
+    function getPropertiesBySelector(obj, selector, path) {
+        if (path) {
+            path = path+'.';
+        }
+        else {
+            path = '';
+        }
+        var result = [];
+        var parts = selector.split('.');
+        // селектор постепенно уменьшается и передается вглубь рекурсии
+        var restSelector = parts.slice(1,a.length).join('.');
+        if (parts[0]==='{{number}}') {
+            // найти все числовые свойтсва в объекте
+            for (var objkey in obj) {
+                if (obj.hasOwnProperty(objkey) && isNaN(objkey)===false) {
+                    // нашли совпадение. Например, это индекс массива
+                    if (restSelector.length > 0) {
+                        // смотрим дальше вглубь пока не закончится селектор
+                        result=result.concat(getPropertiesBySelector(obj[objkey], restSelector, path+objkey));
+                    }
+                    else {
+                        // дошли до конца, весь селектор сопоставлен
+                        result.push({
+                            path: path+objkey,
+                            value: obj[objkey]
+                        });
+                    }
+                }
+            }
+        }
+        if (obj.hasOwnProperty(parts[0])) {
+            // нашли совпадение. Например, это индекс массива
+            if (restSelector.length > 0) {
+                // смотрим дальше вглубь пока не закончится селектор
+                result=result.concat(getPropertiesBySelector(obj[parts[0]], restSelector, path+parts[0]));
+            }
+            else {
+                // дошли до конца, весь селектор сопоставлен
+                result.push({
+                    path: path+parts[0],
+                    value: obj[parts[0]]
+                });
+            }
+        }
+        return result;
     }
 
     /**
@@ -248,40 +459,44 @@ var Engine = {};
      * @param objectString
      * @returns {*} null если ничего не найдено
      */
-    function findDescription(objectString) {
-        var descInfo = null;
-        // в app.descriptor может быть несколько селекторов, которые соответствуют свойству
-        for (var selector in productWindow.descriptor) {
-            if (matchSelector(objectString,selector) === true) {
-                descInfo = descInfo || {};
-                // добавляем найденную конфигурацию в описание
-                for (var key in productWindow.descriptor[selector]) {
-                    descInfo[key] = productWindow.descriptor[selector][key];
-                }
-            }
-        }
-        return descInfo;
-    }
+//    function findDescription(objectString) {
+//        var descInfo = null;
+//        // в app.descriptor может быть несколько селекторов, которые соответствуют свойству
+//        for (var i = 0; i < productWindow.descriptor.length; i++) {
+//            var selector = productWindow.descriptor[i].selector;
+//            if (matchSelector(objectString,selector) === true) {
+//                descInfo = descInfo || {};
+//                // добавляем найденную конфигурацию в описание
+//                for (var key in productWindow.descriptor[i]) {
+//                    descInfo[key] = productWindow.descriptor[i][key];
+//                }
+//            }
+//        }
+//        return descInfo;
+//    }
 
     /**
      * Сопоставить селектор и object-path свойства
      *
-     * @param objectString например "quiz.0.options.1.text"
-     * @param selector например "quiz.{{number}}.options.{{number}}.text"
+     * @param {string} objectString например "quiz.0.options.1.text"
+     * @param Array.<string> selector например "[startHeaderText, quiz.{{number}}.options.{{number}}.text, resultText]"
      * @returns {boolean}
      */
     function matchSelector(objectString, selector) {
-        if (objectString === selector) {
-            return true;
-        }
-        else if (selector.indexOf('.') >= 0 || selector.indexOf('{{') >= 0) {
-            // Пример: selector "quiz.{{number}}.text" превращается в регулярку "quiz\.\d+\.text" и сравнивается с objectString на соответствие
-            var s = selector.replace(new RegExp('\\.','g'),'\\.').replace(new RegExp('{{number}}','ig'),'\\d+');
-            var reg = new RegExp(s,'ig');
-            var match = reg.exec(objectString);
-            if (match && match[0] == objectString) {
-                // match[0] string itself
+        var selectorArr = selector.split(' ');
+        for (var i = 0; i < selectorArr.length; i++) {
+            if (objectString === selectorArr[i].trim()) {
                 return true;
+            }
+            else if (selectorArr[i].indexOf('.') >= 0 || selectorArr[i].indexOf('{{') >= 0) {
+                // Пример: selector "quiz.{{number}}.text" превращается в регулярку "quiz\.\d+\.text" и сравнивается с objectString на соответствие
+                var s = selectorArr[i].replace(new RegExp('\\.','g'),'\\.').replace(new RegExp('{{number}}','ig'),'\\d+');
+                var reg = new RegExp(s,'ig');
+                var match = reg.exec(objectString);
+                if (match && match[0] == objectString) {
+                    // match[0] string itself
+                    return true;
+                }
             }
         }
         return false;
@@ -303,13 +518,73 @@ var Engine = {};
                     // если имеются дополнительные данные их возможно вставить во view
                     // например: data-app-property="quiz.{{currentQuestion}}.text"
                     ps[i].view = parseView(ps[i].view, ps[i].data);
+//                    var propertiesFromView = setDataAppPropertyClasses(ps[i].view);
+                    // возможно, нашли какие-то ключи на вью, которые не были оъявлены в productWindow.app
+//                    createAppProperty(propertiesFromView);
                     writeCssRulesTo(ps[i].view);
                 }
+                // мы знаем сss классы для редактирования, так как дескриптор был разобран
+                // можно сразу найти классы и data-app-property на view
+                ps[i].appPropertyElements = [];
+                // id нужен для соотнесения клика по элементу с нужным апп проперти в массиве appPropertyElements
+                //TODO нужно подумать о таком кейсе: когда один и тот же элемент помечен как data-app-property и каким-то классом одновременно
+                for (var j = 0; j < appProperties.length; j++) {
+                    if (appProperties[j].type === 'css') {
+                        var elemsOnView = $(ps[i].view).find(appProperties[j].cssSelector);
+                        for (var k = 0; k < elemsOnView.length; k++) {
+                            // добавить проперти в data-app-property атрибут, так как css свойств там нет
+                            // они понадобятся чтобы по клику а этот элемент показать все проперти которые нужны
+                            addDataAttribute(elemsOnView[k], appProperties[j].propertyString);
+                            ps[i].appPropertyElements.push({
+                                propertyString: appProperties[j].propertyString,
+                                domElement: elemsOnView[k]
+                            });
+                        }
+                    }
+                }
+                // далее ищем data-app-property атрибуты, чтобы сразу привязать к экрану app property
+                var dataElems = $(ps[i].view).find('[data-app-property]');
+                if (dataElems.length > 0) {
+                    for (var j = 0; j < dataElems.length; j++) {
+                        var atr = $(dataElems[j]).attr('data-app-property');
+                        var psArr = atr.split(' ');
+                        for (var k = 0; k < psArr.length; k++) {
+                            var tspAtr = psArr[k].trim();
+                            if (getAppProperty(tspAtr)!==null) {
+                                ps[i].appPropertyElements.push({
+                                    propertyString: tspAtr,
+                                    domElement: dataElems[j]
+                                });
+                            }
+                        }
+                    }
+                }
+
                 appScreens.push(ps[i]);
                 // идишники сохраняем отдельно для быстрой отдачи их редактору единым массивом
                 appScreenIds.push(ps[i].id);
                 send('ScreenUpdated', ps[i].id);
             }
+        }
+    }
+
+    /**
+     * Добавить новое значение в data-app-property избегая дублирования
+     * prop3 -> data-app-property="prop1 prop2" = data-app-property="prop1 prop2 prop3"
+     *
+     * @param {DOMElement} elem html element
+     * @param {string} attribute
+     */
+    function addDataAttribute(elem, attribute) {
+        var exAtr = $(elem).attr('data-app-property');
+        if (exAtr) {
+            if (exAtr.indexOf(attribute) < 0) {
+                // избегаем дублирования
+                $(elem).attr('data-app-property', exAtr + ' ' + attribute);
+            }
+        }
+        else {
+            $(elem).attr('data-app-property', attribute);
         }
     }
 
@@ -329,6 +604,32 @@ var Engine = {};
             }
         }
         return $(newHtml);
+    }
+
+    /**
+     * Для view промо-приложения найдем все все элементы с атрибутом data-app-property, в котором содержатся appPropertyStrings
+     * Пометим классами js-app_{{appPropertyString}} такие элементы
+     * @param view
+     *
+     * @return {object} - объект с ключами appPropertyStrings, которые были найдены.
+     * Это могут быть ссылки на свойства, которых еще не было в productWindow.app
+     */
+    function setDataAppPropertyClasses(view) {
+        var res = {};
+        var elems = $(view).find('[data-app-property]');
+        if ($(view).attr('data-app-property')) {
+            // непосредственно сам view надо тоже проанализировать, так как он в поиске find не участвует
+            elems.push(view);
+        }
+        for (var j = 0; j < elems.length; j++) {
+            var v = $(elems[j]).attr('data-app-property');
+            var aps = v.split(' ');
+            for (var i = 0; i < aps.length; i++) {
+                $(elems[j]).addClass('js-app_'+aps[i]);
+                res[aps[i]] = undefined;
+            }
+        }
+        return res;
     }
 
     /**
@@ -492,8 +793,8 @@ var Engine = {};
                     productWindow.start.call(productWindow, buildProductAppParams.call(this));
                 }
                 // если с изменямым appProperty связаны css свойства, то записываем их
-                if (appProperty.cssSelector && appProperty.cssProperty) {
-                    //
+                // Проверки на null и так далее: дескрипторе это нормально - описать редактирование свойства, а значения нет, пока первый раз его не задашь
+                if (appProperty.cssSelector && appProperty.cssProperty && value !== undefined && value !== null && value !== '') {
                     var cssV = null;
                     if (appProperty.cssValuePattern) {
                         cssV = appProperty.cssValuePattern.replace('{{value}}',value);
@@ -507,8 +808,7 @@ var Engine = {};
                 // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
                 //TODO нужен более умный алгоритм. Пересоздавать только свойства в массиве. Есть ли другие случаи?
                 if (attributes.updateAppProperties === true) {
-                    appProperties = [];
-                    appPropertiesObjectPathes = [];
+                    clearAppProperties();
                     createAppProperty(productWindow.app);
                 }
                 if (attributes.updateScreens === true) {
@@ -590,6 +890,7 @@ var Engine = {};
         testResults = [];
         // рекурсивно создает по всем свойствам app объекты AppProperty
         createAppProperty(productWindow.app);
+        createCssProperties(productWindow.descriptor);
         // создать экраны (слайды) для промо приложения
         createAppScreens();
         // находим и создаем темы

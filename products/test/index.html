@@ -8,21 +8,21 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body style="padding:0;margin:0">
-    <div id="id-start_slide" class="wrapper">
-        <div class="back_start" data-app-property="backgroundColor,showBackgroundImage"></div>
+    <div id="id-start_slide" class="wrapper js-back" data-app-property="backgroundColor">
+        <div class="back_start"></div>
         <!--<div class="shadow"></div>-->
         <div class="slide">
             <div class="cnt_wr">
                 <div class="start_txt">
-                    <h2 id="id-start_header_text" data-app-property="startHeaderText,startHeaderPaddingTop,startHeaderPaddingBottom,startHeaderAlign" class="js-startHeader start_head"></h2>
-                    <p id="id-start_desc_text" data-app-property="startDescription,startDescriptionAlign,startDescriptionPaddingTop,startDescriptionPaddingBottom" class="js-start_description start_desc">Проверь свои знания в географии</p>
+                    <h2 id="id-start_header_text" data-app-property="startHeaderText" class="js-startHeader start_head">Тест</h2>
+                    <p id="id-start_desc_text" data-app-property="startDescription" class="js-start_description start_desc">Проверь свои знания в географии</p>
                 </div>
-                <div class="btn_wr js-start_btn_wr" data-app-property="buttonBackgroundColor,buttonHoverBackgroundColor,buttonFontColor,buttonHoverFontColor,buttonBorderColor,buttonHoverBorderColor,buttonBorderRadius,buttonFontSize,buttonFontFamily,startButtonPaddingTop,startButtonPaddingBottom">
-                    <span class="t_btn js-next">Начать</span>
+                <div class="btn_wr js-start_btn_wr">
+                    <span class="t_btn js-next" data-app-property="startButtonText">Начать</span>
                 </div>
             </div>
         </div>
-        <div class="logo js-logo js-start_logo" data-app-property="logoStartPosition,logoUrl"></div>
+        <div class="logo js-logo js-start_logo" data-app-property="logoStartPosition logoUrl"></div>
     </div>
 
     <div class="js-slides_cnt">
@@ -36,13 +36,13 @@
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript" src="jquery.js"></script>
     <script id="id-slide_text_template" type="text/template">
-        <div class="wrapper">
+        <div class="wrapper js-back" data-app-property="backgroundColor">
             <div class="back_start"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
                 <div class="cnt_wr">
-                    <div class="q_wr">
-                        <span data-app-property="quiz.{{currentQuestion}}.text">{{question_text}}</span>
+                    <div class="q_wr js-question_text" data-app-property="quiz.{{currentQuestion}}.text">
+                        {{question_text}}
                     </div>
                     <div data-app-property="quiz.{{currentQuestion}}.options" class="js-answers_cnt">
                         <!-- Сюда программно добавляются варианта ответов -->
@@ -53,22 +53,20 @@
                     </div>
                 </div>
             </div>
-            <div data-app-property="topColontitleText" class="topColontitle">Верхний колонтитул</div>
+            <div data-app-property="topColontitleText" class="js-topColontitleText topColontitle">Верхний колонтитул</div>
             <div data-app-property="questionProgressPosition" class="js-question_progress question_progress"></div>
         </div>
     </script>
     <script id="id-slide_photo_template" type="text/template">
-        <div class="wrapper">
+        <div class="wrapper js-back" data-app-property="backgroundColor">
             <div class="back_start"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
                 <div class="cnt_wr" style="margin-top: 30px;">
-                    <div class="q_wr __photo">
-                        <span data-app-property="quiz.{{currentQuestion}}.text">{{question_text}}</span>
+                    <div class="q_wr __photo js-question_text" data-app-property="quiz.{{currentQuestion}}.text">
+                        {{question_text}}
                     </div>
-                    <div class="photo_wr js-photo" data-app-property="quiz.{{currentQuestion}}.img">
-                        <!-- Сюда ставится фото через background так как там есть более удобный алгоритм размещения -->
-                    </div>
+                    <div class="js-photo_cnt"><div class="photo_wr js-photo" data-app-property="quiz.{{currentQuestion}}.img"></div></div>
                     <div data-app-property="quiz.{{currentQuestion}}.options" class="js-answers_cnt">
                         <!-- Сюда программно добавляются варианта ответов -->
                     </div>
@@ -78,7 +76,7 @@
                     </div>
                 </div>
             </div>
-            <div data-app-property="topColontitleText" class="topColontitle">Верхний колонтитул</div>
+            <div data-app-property="topColontitleText" class="js-topColontitleText topColontitle">Верхний колонтитул</div>
             <div data-app-property="questionProgressPosition" class="js-question_progress question_progress"></div>
         </div>
     </script>
@@ -87,19 +85,19 @@
         <div class="a_wr js-answer js-answer_text" data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}">
             <div class="a_text">
                 <div class="bullit"></div>
-                <span data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}.text" class="txt">{{answer_options_text}}</span>
+                <span data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}.text">{{answer_options_text}}</span>
             </div>
         </div>
     </script>
     <script id="id-result_template" type="text/template">
-        <div class="wrapper">
+        <div class="wrapper js-back" data-app-property="backgroundColor">
             <div class="back_start"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide">
                 <div class="cnt_wr">
                     <div class="start_txt">
                         <h2 class="start_head js-result_title" data-app-property="results.{{currentResult}}.title">Конец</h2>
-                        <span class="start_desc js-result_description" data-app-property="results.{{currentResult}}.description">Ты ответил на все вопросы</span>
+                        <p class="start_desc js-result_description" data-app-property="results.{{currentResult}}.description">Ты ответил на все вопросы</p>
                     </div>
                     </br>
                     <div class="btn_wr">
@@ -107,7 +105,7 @@
                     </div>
                 </div>
             </div>
-            <div class="logo js-logo js-result_logo" data-app-property="logoResultPosition,logoUrl"></div>
+            <div class="logo js-logo js-result_logo" data-app-property="logoResultPosition logoUrl"></div>
         <div>
     </script>
     <script>
@@ -123,24 +121,16 @@
          */
         var app = {
             startHeaderText: 'Тест по географии',
-            startHeaderPaddingTop: 0,
-            startHeaderPaddingBottom: 0,
-            startHeaderAlign: 'left',
             startDescription: 'Проверь свои знания в географии',
-            startDescriptionAlign: 'center',
-            startDescriptionPaddingTop: 0,
-            startDescriptionPaddingBottom: 0,
-            startButtonPaddingTop: 0,
-            startButtonPaddingBottom: 0,
+            startButtonText: 'Начать',
             restartButtonText: 'Заново',
             randomizeQuestions: false,
             randomizeOptions: false,
-            backgroundColor: '#aaa',
             fontColor: '#fff',
             fontFamily: 'Arial',
+            backgroundColor: '#eee',
             showBackgroundImage: true,
             background: 'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg)',
-
             /**
              * Логотип бренда, размещенный в тесте. Лого один, но позиции на разных экранах могут быть различные
              *
@@ -608,9 +598,16 @@
             else {
                 $w.css('backgroundImage','none');
             }
-            if (appObject.backgroundColor) {
-                $w.css('backgroundColor',appObject.backgroundColor);
+            if (app.showTopColontitle === true) {
+                $('.topColontitle').show();
             }
+            else {
+                $('.topColontitle').hide();
+            }
+            $('.js-topColontitleText').text(app.topColontitleText);
+//            if (appObject.backgroundColor) {
+//                $w.css('backgroundColor',appObject.backgroundColor);
+//            }
             if (app.fontColor) {
                 $('.cnt_wr').css('color',app.fontColor);
             }
@@ -620,18 +617,18 @@
             $('.js-logo').css('backgroundImage','url('+app.logoUrl+')');
             $('.js-start_logo').css('top',app.logoStartPosition.top+'px').css('left',app.logoStartPosition.left+'px');
             $('.js-result_logo').css('top',app.logoResultPosition.top+'px').css('left',app.logoResultPosition.left+'px');
-            $('.t_btn').css('borderRadius',app.buttonBorderRadius+'px');
-            $('.t_btn').css('fontSize',app.buttonFontSize+'px');
-            $('.t_btn').css('fontFamily',app.buttonFontFamily);
+//            $('.t_btn').css('borderRadius',app.buttonBorderRadius+'px');
+//            $('.t_btn').css('fontSize',app.buttonFontSize+'px');
+//            $('.t_btn').css('fontFamily',app.buttonFontFamily);
             if (app.showQuestionProgress === true) {
                 $('.js-question_progress').show();
             }
             else {
                 $('.js-question_progress').hide();
             }
-            $('.js-question_progress').css('fontFamily',app.questionProgressFontFamily);
+//            $('.js-question_progress').css('fontFamily',app.questionProgressFontFamily);
             $('.js-question_progress').css('top',app.questionProgressPosition.top+'px').css('left',app.questionProgressPosition.left+'px');
-            $('.js-question_progress').css('fontSize',app.questionProgressFontSize+'px');
+//            $('.js-question_progress').css('fontSize',app.questionProgressFontSize+'px');
             if (app.showBullits === true) {
                 $('.bullit').show();
             }

@@ -280,3 +280,30 @@ function getUniqId(str) {
     str = str || '';
     return MD5.calc(rand()+str+rand());
 }
+
+/**
+ * Берет свойства из первого объекта и пишет их во второй.
+ *
+ * @param {object} from
+ * @param {object} to
+ * @param {boolean} [overwrite]
+ */
+function mergeProperties(from, to, overwrite) {
+    if (overwrite === undefined) {
+        overwrite = true;
+    }
+    for (var key in from) {
+        if (from.hasOwnProperty(key) === true) {
+            if (overwrite === true) {
+                // перезаписываем и не смотрим что там в объекте to
+                to[key] = from[key];
+            }
+            else {
+                // проверяем, чтобы избежать перезаписи
+                if (to.hasOwnProperty(key) === false) {
+                    to[key] = from[key];
+                }
+            }
+        }
+    }
+}

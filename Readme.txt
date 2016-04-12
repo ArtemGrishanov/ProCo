@@ -45,3 +45,24 @@ config
 
 Требования к промо проектам
 Паддинги и маргины всех элементов должны быть сброшены в 0. Чтобы не конфликтовать с настройками.
+
+Плохо:
+<div class="q_wr __photo" data-app-property="quizQuestionTextAlign quiz.{{currentQuestion}}.text">
+<span data-app-property="">{{question_text}}</span>
+</div>
+Как надо:
+<div class="q_wr __photo" data-app-property="quizQuestionTextAlign quiz.{{currentQuestion}}.text">
+{{question_text}}
+</div>
+
+Содержимое с контейнером для выравнивания:
+<div class="js-photo_cnt"><div class="photo_wr js-photo" data-app-property="quiz.{{currentQuestion}}.img"></div></div>
+Дескриптор:
+{
+    selector: '.js-photo_cnt',
+    rules: 'textAlign'
+},
+{
+    selector: '.js-photo',
+    rules: 'marginTop marginBottom'
+}

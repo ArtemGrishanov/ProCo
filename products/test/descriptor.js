@@ -1,275 +1,266 @@
 /**
  * Created by artyom.grishanov on 17.02.16.
+ *
  */
-var descriptor = {
-    startHeaderText: {
-        editable: true,
-        controls: "TextQuickInput"
+var descriptor = {};
+//    {
+//        selector: 'randomizeQuestions',
+//        editable: true,
+//        controls: "OnOff",
+//        controlParams: {
+//            viewName: "OnOffSwitcher"
+//        },
+//        label: "Перемешать вопросы"
+//    }
+//];
+
+
+descriptor.css = [
+    /*{
+        // такая конструкция не имеет смысла
+        selector: '.js-startHeader',
+        label: 'Верхний заголовок',
     },
-    startHeaderPaddingTop: {
-        editable: true,
+    {
+        //  так можно, определять свойства сразу здесь
+        selector: '.js-startHeader',
         updateScreens: true,
-        controls: "StringControl",
-        label: 'Отступ сверху',
-        cssSelector: '.js-startHeader',
-        cssProperty: 'padding-top',
-        cssValuePattern: '{{value}}px',
+        controls: 'StringControl',
+        controlParams: {
+        },
+        label: 'Скругление углов',
+        cssProperty: 'border-radius',
+        filter: true
+    },*/
+    {
+        // на самом деле тут 8 appProperty: .js-startHeader_fontFamily .js-startHeader_fontColor .js-startHeader_fontSize .js-startHeader_textAlign
+        //   .js-startDescription_fontFamily .js-startDescription_fontColor .js-startDescription_fontSize .js-startDescription_textAlign
+        // перечислил все классы к которым применять правила
+        selector: '.js-startHeader .js-start_description .js-question_text .js-answer .js-result_title .js-result_description',
+        // можно прописать сразу несколько правил, получается отношение "многие ко многим"
+        // это позволит делать наборы правил
+        rules: 'fontFamily fontColor fontSize textAlign paddingTop paddingBottom'
+    },
+    {
+        // не объединяем с остальными текстами, так как нельзя выравнивать
+        selector: '.js-question_progress',
+        rules: 'fontFamily fontColor fontSize'
+    },
+    {
+        // все кнопки
+        selector: '.t_btn',
+        rules: 'backgroundColor textAlign fontColor fontSize fontFamily borderColor borderRadius paddingTop paddingBottom'
+    },
+    {
+        selector: '.js-photo_cnt',
+        rules: 'textAlign marginTop marginBottom'
+    },
+    {
+        selector: '.js-photo',
+        rules: ''
+    },
+    {
+        // все кнопки в состоянии навеения
+        selector: '.t_btn:hover',
+        rules: 'hoverBackgroundColor hoverFontColor hoverBorderColor'
+    },
+    {
+        selector: '.bullit',
+        rules: 'borderWidth borderColor'
+    },
+    {
+        selector: '.a_wr:hover .bullit',
+        rules: 'hoverBorderWidth hoverBorderColor'
+    },
+    {
+        selector: '.topColontitle',
+        rules: 'text topColontitleBottomBorderColor fontColor fontSize fontFamily textAlign backgroundColor paddingTop paddingBottom'
+    },
+    {
+        selector: '.js-back',
+        label: 'Цвет фона теста',
+        filter: false,
+        rules: 'backgroundColor'
+    }
+];
+
+descriptor.app = [
+    {
+        selector: 'showBackgroundImage',
+        rules: 'trueFalse'
+    },
+    {
+        selector: 'logoStartPosition logoResultPosition',
+        rules: 'drag'
+    },
+    {
+        selector: 'questionProgressPosition',
+        updateScreens: true,
+        rules: 'drag'
+    },
+    {
+        selector: 'logoUrl quiz.{{number}}.img',
+        rules: 'imgUrl'
+    },
+    {
+        selector: 'showQuestionProgress showBullits showTopColontitle showBackgroundImage',
+        rules: 'trueFalse'
+    },
+    {
+        selector: 'showBackgroundImage',
+        label: 'Показывать фоновую картинку'
+    },
+    {
+        selector: 'showBullits',
+        label: 'Показывать буллиты вариантов ответа'
+    },
+    {
+        selector: 'showQuestionProgress',
+        label: 'Показывать прогресс вопросов'
+    },
+    {
+        selector: 'showTopColontitle',
+        label: 'Верхний колонтитул'
+    },
+    {
+        selector: 'quiz.{{number}}.text quiz.{{number}}.options.{{number}}.text results.{{number}}.title results.{{number}}.description startHeaderText startDescription startButtonText restartButtonText topColontitleText',
+        rules: 'text'
+    },
+    {
+        selector: 'quiz',
+        rules: 'quizAddRule'
+    },
+    {
+        selector: "quiz.{{number}}.options",
+        rules: 'quizOptionEditRule'
+    }
+];
+
+// правила, как редактировать свойства
+descriptor.rules = {
+    text: {
+        controls: 'TextQuickInput'
+    },
+    textAlign: {
+        updateScreens: true,
+        controls: "Alternative",
+        controlParams: {
+            viewName: "Dropdown"
+        },
+        cssProperty: 'text-align',
+        possibleValues: ["left","center","right"],
+        label: "Выравнивание",
         filter: true
     },
-    startHeaderPaddingBottom: {
-        editable: true,
-        updateScreens: true,
-        controls: "StringControl",
-        label: 'Отступ снизу',
-        cssSelector: '.js-startHeader',
-        cssProperty: 'padding-bottom',
-        cssValuePattern: '{{value}}px',
-        filter: true
-    },
-    startHeaderTextFontSize: {
-        editable: true,
+    fontSize: {
         updateScreens: true,
         controls: "StringControl",
         controlParams: {
             viewName: 'textinput'
         },
-        label: 'Размер шрифта'
+        label: 'Размер шрифта',
+        cssProperty: 'font-size',
+        cssValuePattern: '{{value}}px',
+        filter: true
     },
-    startHeaderAlign: {
-        editable: true,
+    fontFamily: {
+        updateScreens: true,
         controls: "Alternative",
         controlParams: {
             viewName: "Dropdown"
         },
-        cssSelector: '.js-startHeader',
-        cssProperty: 'text-align',
-        possibleValues: ["left","center","right"],
-        updateScreens: true,
-        label: "Выравнивание"
-    },
-    startDescription: {
-        editable: true,
-        controls: "TextQuickInput"
-    },
-    startDescriptionAlign: {
-        editable: true,
-        controls: "Alternative",
-        controlParams: {
-            viewName: "Dropdown"
-        },
-        cssSelector: '.js-start_description',
-        cssProperty: 'text-align',
-        possibleValues: ["left","center","right"],
-        updateScreens: true,
-        label: "Выравнивание"
-    },
-    startDescriptionPaddingTop: {
-        editable: true,
-        updateScreens: true,
-        controls: "StringControl",
-        label: 'Отступ сверху',
-        cssSelector: '.js-start_description',
-        cssProperty: 'padding-top',
-        cssValuePattern: '{{value}}px',
-        filter: true
-    },
-    startDescriptionPaddingBottom: {
-        editable: true,
-        updateScreens: true,
-        controls: "StringControl",
-        label: 'Отступ снизу',
-        cssSelector: '.js-start_description',
-        cssProperty: 'padding-bottom',
-        cssValuePattern: '{{value}}px',
-        filter: true
-    },
-    startButtonPaddingTop: {
-        editable: true,
-        updateScreens: true,
-        controls: "StringControl",
-        label: 'Отступ сверху',
-        cssSelector: '.js-start_btn_wr',
-        cssProperty: 'padding-top',
-        cssValuePattern: '{{value}}px',
-        filter: true
-    },
-    startButtonPaddingBottom: {
-        editable: true,
-        updateScreens: true,
-        controls: "StringControl",
-        label: 'Отступ снизу',
-        cssSelector: '.js-start_btn_wr',
-        cssProperty: 'padding-bottom',
-        cssValuePattern: '{{value}}px',
-        filter: true
-    },
-    restartButtonText: {
-        editable: true,
-        controls: "TextQuickInput"
-    },
-    randomizeQuestions: {
-        editable: true,
-        controls: "OnOff",
-        controlParams: {
-            viewName: "OnOffSwitcher"
-        },
-        label: "Перемешать вопросы"
-    },
-    backgroundColor: {
-        editable: true,
-        updateScreens: true,
-        controls: "StringControl",
-        controlParams: {
-            viewName: "ColorPicker"
-        },
-        label: "Цвет фона",
+        //TODO standart font names source?
+        possibleValues: ["Arial","Times New Roman"],
+        cssProperty: 'font-family',
+        label: 'Шрифт',
         filter: true
     },
     fontColor: {
-        editable: true,
         updateScreens: true,
         controls: "StringControl",
         controlParams: {
-            viewName: "ColorPicker"
-        },
-        label: "Цвет шрифта"
-    },
-    fontFamily: {
-        editable: true,
-        controls: "Alternative",
-        controlParams: {
-            viewName: "Dropdown"
-        },
-        //TODO standart font names source?
-        possibleValues: ["Arial","Times New Roman"],
-        updateScreens: true,
-        label: "Шрифт"
-    },
-    showBackgroundImage: {
-        editable: true,
-        updateScreens: true,
-        controls: "OnOff",
-        controlParams: {
-        },
-        label: "Картинка",
-        filter: true
-    },
-
-    /**
-     * Кнопки
-     *
-     */
-    buttonBackgroundColor: {
-        editable: true,
-        updateScreens: true,
-        controls: 'StringControl',
-        controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет фона кнопок',
-        cssSelector: '.t_btn',
-        cssProperty: 'background-color',
-        filter: true
-    },
-    buttonHoverBackgroundColor: {
-        editable: true,
-        updateScreens: true,
-        controls: 'StringControl',
-        controlParams: {
-            viewName: 'ColorPicker'
-        },
-        label: 'Цвет фона кнопок при наведении',
-        // значение свойства app.buttonHoverBackgroundColor будет записано вот в это css-правило
-        // потом эти правила будут дописаны в кастомные стили для body промо-проекта при сериализации
-        cssSelector: '.t_btn:hover',
-        cssProperty: 'background-color',
-        filter: true
-    },
-    buttonFontColor: {
-        editable: true,
-        updateScreens: true,
-        controls: 'StringControl',
-        controlParams: {
-            viewName: 'ColorPicker'
-        },
-        label: 'Цвет шрифта кнопок',
-        cssSelector: '.t_btn',
+        label: 'Цвет шрифта',
         cssProperty: 'color',
         filter: true
     },
-    buttonHoverFontColor: {
-        editable: true,
+    hoverFontColor: {
         updateScreens: true,
-        controls: 'StringControl',
+        controls: "StringControl",
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет шрифта кнопок',
-        cssSelector: '.t_btn:hover',
+        label: 'Цвет шрифта при наведении',
         cssProperty: 'color',
         filter: true
     },
-    buttonBorderColor: {
+    drag: {
+        updateScreens: false,
+        runTests: false,
+        controls: "Drag",
+        controlParams: {
+        }
+    },
+    imgUrl: {
         editable: true,
+        controls: "ChooseImageQuick",
+        updateScreens: true,
+        controlParams: {
+        }
+    },
+    backgroundColor: {
         updateScreens: true,
         controls: 'StringControl',
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет бордера кнопок',
-        cssSelector: '.t_btn',
-        cssProperty: 'border-color',
+        label: 'Цвет фона',
+        cssProperty: 'background-color',
         filter: true
     },
-    buttonHoverBorderColor: {
-        editable: true,
+    // TODO не придумал как объединить с backgroundColor
+    hoverBackgroundColor: {
         updateScreens: true,
         controls: 'StringControl',
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет бордера кнопок при наведении',
-        cssSelector: '.t_btn:hover',
+        label: 'Цвет фона при наведении',
+        cssProperty: 'background-color',
+        filter: true
+    },
+    borderColor: {
+        updateScreens: true,
+        controls: 'StringControl',
+        controlParams: {
+            viewName: 'ColorPicker'
+        },
+        label: 'Цвет бордера',
         cssProperty: 'border-color',
         filter: true
     },
-    buttonBorderRadius: {
-        editable: true,
+    hoverBorderColor: {
+        updateScreens: true,
+        controls: 'StringControl',
+        controlParams: {
+            viewName: 'ColorPicker'
+        },
+        label: 'Цвет бордера при наведении',
+        cssProperty: 'border-color',
+        filter: true
+    },
+    // TODO эти стандартные правила можно вынести в движок
+    borderRadius: {
         updateScreens: true,
         controls: 'StringControl',
         controlParams: {
         },
-        label: 'Радиус бордера кнопок',
+        label: 'Скругление углов',
+        cssProperty: 'border-radius',
         filter: true
     },
-    buttonFontSize: {
-        editable: true,
-        updateScreens: true,
-        controls: 'StringControl',
-        controlParams: {
-        },
-        label: 'Размер шрифта кнопок',
-        filter: true
-    },
-    buttonFontFamily: {
-        editable: true,
-        updateScreens: true,
-        controls: "Alternative",
-        controlParams: {
-            viewName: "Dropdown"
-        },
-        //TODO standart font names source?
-        possibleValues: ["Arial","Times New Roman"],
-        label: 'Шрифт кнопок',
-        filter: true
-    },
-
-    /**
-     * Прогресс вопросов
-     *
-     */
     showQuestionProgress: {
-        editable: true,
         updateScreens: true,
         runTests: false,
         controls: "OnOff",
@@ -278,63 +269,8 @@ var descriptor = {
         },
         label: "Показывать номер вопроса"
     },
-    questionProgressPosition: {
-        editable: true,
-        updateScreens: false,
-        // updateAppProperties: false, - тогда не перетаскивается
-        //TODO при перетаскивании все равно пересоздаются свойства appProperties
-        runTests: false,
-        controls: "Drag",
-        controlParams: {
-        }
-    },
-    questionProgressFontColor: {
-        editable: true,
-        updateScreens: true,
-        controls: 'StringControl',
-        controlParams: {
-            viewName: 'ColorPicker'
-        },
-        label: 'Цвет номера вопроса',
-        cssSelector: '.js-question_progress',
-        cssProperty: 'color'
-    },
-    questionProgressFontFamily: {
-        editable: true,
-        updateScreens: true,
-        controls: "Alternative",
-        controlParams: {
-            viewName: "Dropdown"
-        },
-        //TODO standart font names source?
-        possibleValues: ["Arial","Times New Roman"],
-        label: 'Шрифт номера вопроса'
-    },
-    questionProgressFontSize: {
-        editable: true,
-        updateScreens: true,
-        controls: 'StringControl',
-        controlParams: {
-        },
-        label: 'Размер шрифта номера вопроса'
-    },
-
-    /**
-     * Буллиты опций ответа
-     *
-     */
-    showBullits: {
-        editable: true,
-        updateScreens: true,
-        runTests: false,
-        controls: "OnOff",
-        controlParams: {
-            viewName: "OnOffSwitcher"
-        },
-        label: "Показывать буллит варианта ответа"
-    },
-    bullitsBorderWidth: {
-        editable: true,
+    //TODO не придумал как объединить borderWidth+hoverBorderWidth
+    borderWidth: {
         updateScreens: true,
         runTests: false,
         controls: "StringControl",
@@ -342,126 +278,35 @@ var descriptor = {
             viewName: "textinput"
         },
         //TODO format cssValue: '{value}px' чтобы было понятно как формировать проперти
-        cssSelector: '.bullit',
         cssProperty: 'border-width',
         cssValuePattern: '{{value}}px',
-        label: "Толщина буллита"
+        label: "Толщина бордера",
+        filter: true
     },
-    bullitHoverBorderWidth: {
-        editable: true,
+    hoverBorderWidth: {
         updateScreens: true,
         runTests: false,
         controls: "StringControl",
         controlParams: {
             viewName: "textinput"
         },
-        cssSelector: '.a_wr:hover .bullit',
         cssProperty: 'border-width',
         cssValuePattern: '{{value}}px',
-        label: "Толщина буллита при наведении на вопрос"
+        label: "Толщина бордера при наведении",
+        filter: true
     },
-    bullitsBorderColor: {
-        editable: true,
+    topColontitleBottomBorderColor: {
         updateScreens: true,
         runTests: false,
         controls: "StringControl",
         controlParams: {
             viewName: "ColorPicker"
         },
-        label: "Цвет обводки буллита",
-        cssSelector: '.bullit',
-        cssProperty: 'border-color'
+        label: "Цвет линии",
+        cssProperty: 'border-bottom-color',
+        filter: true
     },
-
-    /**
-     * Верхний колонтитул
-     *
-     */
-    showTopColontitle: {
-        editable: true,
-        updateScreens: true,
-        runTests: false,
-        controls: "OnOff",
-        controlParams: {
-            viewName: "OnOffSwitcher"
-        },
-        label: "Верхний колонтитул"
-    },
-    topColontitleLineColor: {
-        editable: true,
-        updateScreens: true,
-        runTests: false,
-        controls: "StringControl",
-        controlParams: {
-            viewName: "ColorPicker"
-        },
-        label: "Цвет линии колонтитула",
-        cssSelector: '.topColontitle',
-        cssProperty: 'border-bottom-color'
-    },
-    topColontitleBackgroundColor: {
-        editable: true,
-        updateScreens: true,
-        runTests: false,
-        controls: "StringControl",
-        controlParams: {
-            viewName: "ColorPicker"
-        },
-        label: "Цвет фона колонтитула",
-        cssSelector: '.topColontitle',
-        cssProperty: 'background-color'
-    },
-    topColontitleFontColor: {
-        editable: true,
-        updateScreens: true,
-        runTests: false,
-        controls: "StringControl",
-        controlParams: {
-            viewName: "ColorPicker"
-        },
-        label: "Цвет шрифта колонтитула",
-        cssSelector: '.topColontitle',
-        cssProperty: 'color'
-    },
-    topColontitleText: {
-        editable: true,
-        controls: 'TextQuickInput'
-    },
-
-    /**
-     * Логотипы
-     *
-     */
-    logoUrl: {
-        editable: true,
-        controls: "ChooseImageQuick",
-        updateScreens: true,
-        controlParams: {
-            maxWidth: 100,
-            maxHeight: 50
-        }
-    },
-    logoStartPosition: {
-        editable: true,
-        updateScreens: false,
-        runTests: false,
-        controls: "Drag",
-        controlParams: {
-        }
-    },
-    logoResultPosition: {
-        editable: true,
-        updateScreens: false,
-        runTests: false,
-        controls: "Drag",
-        controlParams: {
-        }
-    },
-    showExplanation: {
-        editable: true
-    },
-    quiz: {
-        editable: true,
+    quizAddRule: {
         updateScreens: true,
         canAdd: ["proto__text_slide","proto__photo_question_slide"],
         controls: [
@@ -483,12 +328,7 @@ var descriptor = {
             }
         ]
     },
-    "quiz.{{number}}.text": {
-        editable: true,
-        controls: "TextQuickInput"
-    },
-    "quiz.{{number}}.options": {
-        editable: true,
+    quizOptionEditRule: {
         // несколько контролов, альтернативная форма объявления
         controls: [
             {
@@ -504,61 +344,83 @@ var descriptor = {
                 }
             }
         ],
-        //TODO по идее это разное: апдейтить один активный скрин или все...
         updateScreens: true,
         canAdd: ["proto__option_text"]
     },
-    "quiz.{{number}}.img": {
-        editable: true,
+    trueFalse: {
         updateScreens: true,
-        controls: "ChooseImageQuick",
-    },
-    "quiz.{{number}}.options.{{number}}.text": {
-        editable: true,
-        controls: "TextQuickInput"
-    },
-    "quiz.{{number}}.options.{{number}}": {
-        // для каждого элемента массива, а не самого массива
-    },
-    "results.{{number}}.title": {
-        editable: true,
-        controls: "TextQuickInput"
-    },
-    "results.{{number}}.description": {
-        editable: true,
-        controls: "TextQuickInput"
-    },
-    stylePresets: {
-        isPreset: true,
-        editable: true,
-        updateScreens: true,
-        //TODO можно расширить типы. "final" Это свойство надо создать только один раз при старте и никогда не пересоздавать
-        label: 'Тема',
-        possibleValues: [
-            {
-                label: 'Деловой стиль',
-                fontColor: "#333",
-                fontFamily: "Arial",
-                backgroundColor: "#eee",
-                logoStartPosition: {
-                    left: 340,
-                    top: 320
-                }
-            },
-            {
-                label: 'Романтика',
-                fontColor: "#3а0303",
-                fontFamily: "Times New Roman",
-                backgroundColor: "#888",
-                logoStartPosition: {
-                    left: 340,
-                    top: 320
-                }
-            }
-        ],
-        controls: "Alternative",
+        runTests: false,
+        controls: "OnOff",
         controlParams: {
-            viewName: "Dropdown"
-        }
-    }
+            viewName: "OnOffSwitcher"
+        },
+        label: "Вкл/Откл"
+    },
+    paddingTop: {
+        label: 'Паддинг сверху',
+        controls: 'StringControl',
+        updateScreens: true,
+        cssProperty: 'padding-top',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    },
+    paddingBottom: {
+        label: 'Паддинг снизу',
+        controls: 'StringControl',
+        updateScreens: true,
+        cssProperty: 'padding-bottom',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    },
+    marginTop: {
+        label: 'Маргин сверху',
+        controls: 'StringControl',
+        updateScreens: true,
+        cssProperty: 'margin-top',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    },
+    marginBottom: {
+        label: 'Маргин снизу',
+        controls: 'StringControl',
+        updateScreens: true,
+        cssProperty: 'margin-bottom',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    },
 };
+//var descriptor = {
+//    stylePresets: {
+//        isPreset: true,
+//        editable: true,
+//        updateScreens: true,
+//        //TODO можно расширить типы. "final" Это свойство надо создать только один раз при старте и никогда не пересоздавать
+//        label: 'Тема',
+//        possibleValues: [
+//            {
+//                label: 'Деловой стиль',
+//                fontColor: "#333",
+//                fontFamily: "Arial",
+//                backgroundColor: "#eee",
+//                logoStartPosition: {
+//                    left: 340,
+//                    top: 320
+//                }
+//            },
+//            {
+//                label: 'Романтика',
+//                fontColor: "#3а0303",
+//                fontFamily: "Times New Roman",
+//                backgroundColor: "#888",
+//                logoStartPosition: {
+//                    left: 340,
+//                    top: 320
+//                }
+//            }
+//        ],
+//        controls: "Alternative",
+//        controlParams: {
+//            viewName: "Dropdown"
+//        }
+//    }
+//};
