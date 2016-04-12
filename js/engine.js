@@ -132,6 +132,19 @@ var Engine = {};
      * @param elem
      */
     function writeCssRulesTo(elem) {
+        var cssStr = getCustomStylesString();
+        var $style = $(elem).find('#id-custom_style');
+        if ($style.length === 0) {
+            $style = $('<style></style>').attr('id','id-custom_style').appendTo(elem);
+        }
+        $style.html(cssStr);
+    }
+
+    /**
+     * Собирает все измененные css стили и возвращает их одной строкой
+     * @returns {string}
+     */
+    function getCustomStylesString() {
         var cssStr = '\n';
         for (var i = 0; i < customCssRules.length; i++) {
             var r = customCssRules[i];
@@ -141,12 +154,7 @@ var Engine = {};
             }
             cssStr += '}\n';
         }
-        var $style = $(elem).find('#id-custom_style');
-        if ($style.length === 0) {
-            $style = $('<style></style>').attr('id','id-custom_style').appendTo(elem);
-        }
-        $style.html(cssStr);
-
+        return cssStr;
     }
 
     /**
@@ -1098,4 +1106,6 @@ var Engine = {};
 
     // методы для работы с шаблонами
     global.exportTemplate = exportTemplate;
+    global.getCustomStylesString = getCustomStylesString;
+    global.getAppString = function() { JSON.stringify(productWindow.app); };
 })(Engine);

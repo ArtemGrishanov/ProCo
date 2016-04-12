@@ -3,7 +3,6 @@
  */
 //TODO подумать над форматом, где должны храниться продукты всегда. Какое-то одно хранилище?
 var baseProductUrl = '../products/test/';
-var indexHtml = 'index.html';
 /**
  * Уникальный ид проекта
  * Также это имя файла, которое будет использовано при сохранении
@@ -33,10 +32,6 @@ var userTemplates = null;
  */
 //TODO
 var devMode = true;
-/**
- * Статические ресурсы (скрипты, стили, картинки и прочее), которые надо зааплоадить при сохранении продукта
- */
-var productResources = [];
 var appIframe = null;
 var iframeWindow = null;
 var fbUserId;
@@ -46,16 +41,6 @@ var bucket = null;
  * @type {object}
  */
 var resourceManager = null;
-
-// инициализация апи для работы с хранилищем Amazon
-if (config.common.awsEnabled === true) {
-    AWS.config.region = config.common.awsRegion;
-    bucket = new AWS.S3({
-        params: {
-            Bucket: config.common.awsBucketName
-        }
-    });
-}
 /**
  * Ид экранов которые показаны в данный момент в рабочем поле
  * @type {Array.<string>}
@@ -143,15 +128,6 @@ function initControls() {
 //TODO
 initControls();
 //var fileChooser = document.getElementById('file-chooser');
-/**
- * Указывает, была ли публикация продукта успешной или нет
- * @type {boolean}
- */
-var errorInPublish = false;
-
-function getDistribUrl() {
-    return config.common.awsHostName+config.common.awsBucketName+'/facebook-'+fbUserId+'/'+promoAppName+'/';
-}
 
 /**
  * Функция запуска редактора
@@ -179,11 +155,20 @@ function start() {
         // любой клик по документы сбрасывает фильтр контролов
         filterControls();
     });
-//    $('#id-workspace').mousedown(function(){
-//        // сейчас для простоты удаляются все выделения перед показом следующего
-//        deleteSelections();
-//    });
     resourceManager = new ResourceManager();
+    // инициализация апи для работы с хранилищем Amazon
+    if (config.common.awsEnabled === true) {
+        AWS.config.region = config.common.awsRegion;
+        bucket = new AWS.S3({
+            params: {
+                Bucket: config.common.awsBucketName
+            }
+        });
+        Publisher.init({
+            awsBucket:bucket,
+            callback: showEmbedDialog
+        });
+    }
 }
 
 /**
@@ -670,248 +655,16 @@ function onEditClick() {
 
 function onPublishClick() {
     //TODO отделить пользовательскую зону для сохранения. другой домен например
-    //TODO прототипы для витрины и прочие ресу лежат в нашей доверенной зоне
-    publish();
-}
-
-/**
- * Для указанного имени ресурса задать загруженные данные
- */
-function setDataToResource(url, data) {
-    for (var i = 0; i < productResources.length; i++) {
-        if (productResources[i].url === url) {
-            productResources[i].data = data;
-        }
-    }
-}
-
-/**
- * Вернуть объект-ресурс по его url
- */
-function getResourceByUrl(url) {
-    for (var i = 0; i < productResources.length; i++) {
-        if (productResources[i].url === url) {
-            return productResources[i];
-        }
-    }
-    return null;
-}
-
-/**
- * Найти все ресурсы, используемые в продукте, и подготовиться к их загрузке
- */
-function buildProductResourceList(codeStr) {
-    productResources = [];
-    //TODO поиск предполагает что ресурсы находятся рядом с html в baseUrl
-    var scriptExp = /src=(?:\"|\')((?:\w)+\.js)(?:\"|\')/ig;
-    var jsMatch = null;
-    while ( (jsMatch = scriptExp.exec(codeStr)) !== null) {
-        productResources.push({
-            type: 'text/javascript',
-            url: jsMatch[1]
+    //TODO прототипы для витрины и прочие ресы лежат в нашей доверенной зоне
+    if (Publisher.isInited() === true) {
+        // appId - уникальный ид проекта, например appId
+        Publisher.publish({
+            appId: appId,
+            appStr: Engine.getAppString(),
+            cssStr: Engine.getCustomStylesString(),
+            promoIframe: appIframe //TODO возможно айрейм спрятать в engine тоже
         });
     }
-    var cssExp = /href=(?:\"|')((?:\w)+.css)(?:\"|')/ig;
-    var cssMatch = null;
-    while ( (cssMatch = cssExp.exec(codeStr)) !== null) {
-        productResources.push({
-            type: 'text/css',
-            url: cssMatch[1]
-        });
-    }
-    //TODO img (только "свои" картинки) Из инетов пока не рассматриваем варианты
-
-    // добавляем главный html файл
-    productResources.push({
-        url: indexHtml,
-        type: 'text/html'
-    });
-}
-
-/**
- * Собрать все ресурсы промо-проекта и положить их в productResources
- * Ресурсы загружаются в помощью XMLHttpRequest
- *
- * @param param
- */
-function grabProductResources(param) {
-    for (var i = 0; i < productResources.length; i++) {
-        if (!productResources[i].data) {
-            var t = {
-                // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
-                data: JSON.parse(JSON.stringify(productResources[i])),
-                run: function() {
-                    log('Grab task run:' + baseProductUrl + this.data.url);
-                    var client = new XMLHttpRequest();
-                    client.open('GET', baseProductUrl + this.data.url);
-                    client.onreadystatechange = (function(e) {
-                        if (e.target.readyState == 4) {
-                            if(e.target.status == 200) {
-                                // task context
-                                log('Grab task done:' + this.data.url);
-                                setDataToResource(this.data.url, e.target.responseText);
-                            }
-                            else {
-                                log('Resource request failed: '+ myRequest.statusText, true);
-                            }
-                            // даем понять, что таск завершен
-                            Queue.release(this);
-                        }
-                    }).bind(this);
-                    client.send();
-                },
-                done: function(e) {
-                }
-            };
-            if (param.taskType) {
-                t.type = param.taskType;
-            }
-            if (param.priority) {
-                t.priority = param.priority;
-            }
-            Queue.push(t);
-        }
-    }
-}
-
-/**
- * Удаляет из промо проекта перезаписанные параметры, если они там есть
- */
-function deleteOverridedAppParams(str) {
-    var tags = config.common.tagsForOverridingParams;
-    var p1 = str.indexOf(tags[0]);
-    var p2 = str.indexOf(tags[1]);
-    if (p1 >= 0 && p2 >= 0) {
-        return str.replace(str.substring(p1,p2+tags[1].length),'');
-    }
-    return str;
-}
-
-/**
- * Переписать параметры промо-приложения прототипа на новые, которые получились в результате редактирования
- *
- * @param param
- */
-function overrideAppParams(param) {
-    var t = {
-        data: '',
-        run: function() {
-            // здесь происходит подмена параметров промо приложения на новые. Те, которые были настроены пользователем.
-            var indexResource = getResourceByUrl(indexHtml);
-            var startFuncReg = /(function(?:\s)+start(?:\s)*\((?:\w)*\)(?:\s)*\{)/ig;
-            var match = startFuncReg.exec(indexResource.data);
-            var positionToInsert = match.index+match[1].length;
-            var strAppProperties = JSON.stringify(iframeWindow.app);
-            var overrideParamsStr = '\n'+config.common.tagsForOverridingParams[0]+'var o='+strAppProperties+';'+'for(var key in o)if(o.hasOwnProperty(key))app[key]=o[key];'+config.common.tagsForOverridingParams[1]+'\n'
-            indexResource.data = indexResource.data.slice(0,positionToInsert) + overrideParamsStr + indexResource.data.slice(positionToInsert);
-            Queue.release(this);
-        }
-    };
-    if (param.taskType) {
-        t.type = param.taskType;
-    }
-    if (param.priority) {
-        t.priority = param.priority;
-    }
-    Queue.push(t);
-}
-
-/**
- * Сохранить все статические ресурсы проекта в хранилище
- *
- * @param param
- */
-function uploadProductResources(param) {
-    for (var i = 0; i < productResources.length; i++) {
-        var t = {
-            // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
-            data: JSON.parse(JSON.stringify(productResources[i])),
-            run: function() {
-                log('Upload task run:' + this.data.url);
-                var objKey = 'facebook-'+fbUserId+'/'+promoAppName+'/'+this.data.url;
-                var params = {
-                    Key: objKey,
-                    ContentType: this.data.type,
-                    Body: this.data.data,
-                    ACL: 'public-read'
-                };
-                bucket.putObject(params, (function (err, data) {
-                    // task object context
-                    if (err) {
-                        errorInPublish = true;
-                        log('ERROR: ' + err, true);
-                    }
-                    log('Upload task done:' + this.data.url);
-                    Queue.release(this);
-                }).bind(this));
-            }
-        };
-        if (param.taskType) {
-            t.type = param.taskType;
-        }
-        if (param.priority) {
-            t.priority = param.priority;
-        }
-        Queue.push(t);
-    }
-}
-
-/**
- * Сохранить промо проект на сервере
- * 1) Для этого сначала составляется список всех ресурсов проекта: css, js, картинки
- * 2) Затем они скачиваются
- * 3) Загружаются в хранилище в персональный каталог пользователя
- */
-function publish() {
-    errorInPublish = false;
-    //TODO собираем ресурсы в несколько проходов
-    // например, для того чтобы забрать картинку, сначала надо скачать и распарсить файл css
-    var iframeDocument = appIframe.contentDocument || appIframe.contentWindow.document;
-    buildProductResourceList(iframeDocument.documentElement.innerHTML);
-    //подписка на окончания задач по сбору ресурсов для проекта
-    Queue.onComplete('grabResTask', function(){
-        log('All resources grabbed.');
-
-        //TODO меняем ссылки на картинки
-//            var imgReg = /((?:\w)+\/(?:\w)+\.(?:jpg|jpeg|png))/ig;
-//            for (var i = 0; i < productResources.length; i++) {
-//                var imgMatch = null;
-//                while ( (imgMatch = imgReg.exec(productResources.data)) !== null) {
-//                    //imgMatch[1]
-//                }
-//            }
-
-        // удалим лишние параметры внутри приложения если они там есть
-        var indexRes = getResourceByUrl(indexHtml);
-        indexRes.data = deleteOverridedAppParams(indexRes.data);
-
-        Queue.onComplete('overrideApp', function(){
-            log('Apps were overrided.');
-
-            Queue.onComplete('uploadRes', function(){
-                if (errorInPublish === true) {
-                    alert('Ошибка')
-                }
-                else {
-                    log('All resources were uploaded.');
-                    showEmbedDialog();
-                }
-            });
-            uploadProductResources({
-                taskType:'uploadRes',
-                priority:8
-            });
-        });
-        overrideAppParams({
-            taskType:'overrideApp',
-            priority:9
-        });
-
-    });
-    grabProductResources({
-        taskType:'grabResTask',
-        priority:10
-    });
 }
 
 /**
@@ -1036,10 +789,15 @@ function showPreview() {
 /**
  * Показать окно для вставки со ссылкой
  */
-function showEmbedDialog() {
-    var iframeUrl =  getDistribUrl()+indexHtml;
-    var embedLink = '<iframe src="'+iframeUrl+'" style="display:block;width:600px;height:600px;padding:0;border:none;"></iframe>';
-    alert(embedLink);
+function showEmbedDialog(result, data) {
+    if (result === 'success') {
+        var iframeUrl = data.src;
+        var embedLink = '<iframe src="'+iframeUrl+'" style="display:block;width:600px;height:400px;padding:0;border:none;"></iframe>';
+        alert(embedLink);
+    }
+    else {
+        alert('Publishing Error');
+    }
 }
 
 /**
