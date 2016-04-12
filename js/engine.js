@@ -1084,6 +1084,14 @@ var Engine = {};
         return templStr;
     }
 
+    /**
+     * Вернуть актуальные свойства приложения в виде строки
+     * @return {string}
+     */
+    function getAppString() {
+        return JSON.stringify(productWindow.app);
+    }
+
     global.startEngine = startEngine;
     global.test = test;
 
@@ -1107,5 +1115,5 @@ var Engine = {};
     // методы для работы с шаблонами
     global.exportTemplate = exportTemplate;
     global.getCustomStylesString = getCustomStylesString;
-    global.getAppString = function() { JSON.stringify(productWindow.app); };
+    global.getAppString = getAppString;
 })(Engine);

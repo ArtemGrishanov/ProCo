@@ -262,6 +262,14 @@ var Publisher = {};
                 var positionToInsert = match.index+match[1].length;
                 var overrideParamsStr = '\n'+config.common.tagsForOverridingParams[0]+'var o='+appStr+';'+'for(var key in o)if(o.hasOwnProperty(key))app[key]=o[key];'+config.common.tagsForOverridingParams[1]+'\n'
                 indexResource.data = indexResource.data.slice(0,positionToInsert) + overrideParamsStr + indexResource.data.slice(positionToInsert);
+
+                // вставка кастомных css стилей
+                var endHeadReg = /<\/head>/ig;
+                var matchHead = endHeadReg.exec(indexResource.data);
+                var positionToInsertCss = matchHead.index;
+                var csss = '\n<style>'+cssStr+'</style>\n';
+                indexResource.data = indexResource.data.slice(0,positionToInsertCss) + csss + indexResource.data.slice(positionToInsertCss);
+
                 Queue.release(this);
             }
         };
