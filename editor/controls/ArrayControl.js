@@ -57,7 +57,10 @@ function ArrayControl(propertyString, directiveName, $parent, productDOMElement,
                 this.items.push($wr);
                 $wr.css('left',l+'px').find('.js-item').append(this.params.items[i]);
                 $wr.appendTo($cnt);
-                $wr.mousedown(this.onMouseDown.bind(this));
+                if (this.propertyString) {
+                    // одиночные экраны, например, стартовый экран, не привязан к массиву, не нужно перетаскивание
+                    $wr.mousedown(this.onMouseDown.bind(this));
+                }
                 $wr.find('.js-delete').attr('data-id',dataId).click(this.onDeleteItemClick.bind(this));
                 $wr.find('.js-clone').attr('data-id',dataId).click(this.onCloneItemClick.bind(this));
                 l += elemWidth;
@@ -70,8 +73,11 @@ function ArrayControl(propertyString, directiveName, $parent, productDOMElement,
                     l += (btnWidth+config.editor.ui.slideInterimBtnMargins);
                 }
             }
-            $(document).mousemove(this.onMouseMove.bind(this));
-            $(document).mouseup(this.onMouseUp.bind(this));
+            if (this.propertyString) {
+                // одиночные экраны, например, стартовый экран, не привязан к массиву, не нужно перетаскивание
+                $(document).mousemove(this.onMouseMove.bind(this));
+                $(document).mouseup(this.onMouseUp.bind(this));
+            }
             $cnt.css('width',l);
             // границы координаты left в рамках который позволен drag
             this.bounds = {minLeft:-config.editor.ui.slideGroupLeftDragMargin, maxLeft:l-elemWidth+config.editor.ui.slideGroupRightDragMargin};

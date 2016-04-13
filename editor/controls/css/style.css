@@ -31,6 +31,7 @@ form input {
     height: 102px;
     background-color: #fff;
     cursor: pointer;
+    overflow: hidden;
 }
 .slide_thumb.__active {
     border: 5px solid #1cbf61;

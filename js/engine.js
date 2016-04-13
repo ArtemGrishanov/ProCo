@@ -158,6 +158,47 @@ var Engine = {};
     }
 
     /**
+     * Возвращает объект ключ-значения со свойствами
+     * propertyString:propertyValue
+     * Например {"t_btn_paddingTop":"20","js-question_progress_fontColor":"#eee","showBackgroundImage":true,...}
+     * Нужно при сериализации шаблона
+     *
+     * @return {string}
+     */
+    function getAppPropertiesValues() {
+        var result = {};
+        for (var i = 0; i < appProperties.length; i++) {
+            result[appProperties[i].propertyString]=appProperties[i].propertyValue;
+        }
+        return result;
+    }
+
+    /**
+     * Устанавливает быстро значения appProperty
+     * propertyString:propertyValue
+     * Например {"t_btn_paddingTop":"20","js-question_progress_fontColor":"#eee","showBackgroundImage":true,...}
+     * Нужно при загрузке шаблона
+     */
+    function setAppPropertiesValues(values) {
+        for (var key in values) {
+            if (values.hasOwnProperty(key)) {
+                var p = getAppProperty(key);
+                if (p) {
+                    //TODO ускорить как-то. Занимает 2-3 секунды
+                    setValue(p, values[key], {
+                        updateScreens:false,
+                        updateAppProperties:false,
+                        runTests:false
+                    });
+                }
+                else {
+                    log('Property is not exist \''+key+'\'. Maybe it came from descriptor', true);
+                }
+            }
+        }
+    }
+
+    /**
      * Проверяет выражение на верность.
      * Двойное назначение этой функции: проверка в модульных тестах, во-вторых проверка ограничений во время работы пользователя
      * Для модульных тестов требуется подключение QUnit
@@ -224,43 +265,6 @@ var Engine = {};
     //TODO для всех контролов надо делать регистрацию события на изменение свойства. При выборе темы так будет
     //TODO как приспособить контрол Alternative для выбора темы
     //TODO множественный setValue(Array,Array,object)?
-
-    /**
-     * Создать обертку для свойства app
-     * Только для тех свойств у которых есть дескриптор
-     *
-     * @param {object} obj объект window.app у промо-приложения
-     */
-    function createAppProperty(obj, strPrefix) {
-        createAppProperties(productWindow.descriptor);
-//        strPrefix = (strPrefix) ?(strPrefix+'.'): '';
-//        for (var key in obj) {
-//            var str = strPrefix+key;
-//            // в объекте descriptor найти описания свойства
-//            var descInfo = findDescription(str);
-//            if (descInfo) {
-//                //TODO remove. isPrototype isTheme arent used
-//                if (descInfo.isPrototype === true || descInfo.isTheme === true) {
-//                    // не нужно анализировать прототипы как appProperty
-//                    // и темы пропускаем
-//                    continue;
-//                }
-//                var existedProperty = getAppProperty(str);
-//                // проперти уже может быть создана, так как разрешено создание провертей из data-app-property атрибутов, которые встречаются многократно
-//                if (existedProperty === null) {
-//                    log('Found AppProperty: \''+ str + '\'', false, false);
-//                    var p = new AppProperty(obj[key],str,descInfo);
-//                    appProperties.push(p);
-//                    appPropertiesObjectPathes.push(p.propertyString);
-//                    send('AppPropertyInited', p.propertyString);
-//                }
-//            }
-//            if (obj[key] !== null && typeof obj[key] === 'object') {
-//                // идем глубже в дочерние объекты
-//                createAppProperty(obj[key], str);
-//            }
-//        }
-    }
 
     /**
      * Разобрать декскриптор на правила
@@ -337,7 +341,7 @@ var Engine = {};
      * Однако в конечном итоге должен получиться единый массив appProperty для
      * монолитной работы редактора и контролов.
      *
-     * @param desc
+     * @param {object} desc - объект дескриптор
      */
     function createCssProperties(desc) {
         var calculatedCssDescriptor = {};
@@ -526,9 +530,6 @@ var Engine = {};
                     // если имеются дополнительные данные их возможно вставить во view
                     // например: data-app-property="quiz.{{currentQuestion}}.text"
                     ps[i].view = parseView(ps[i].view, ps[i].data);
-//                    var propertiesFromView = setDataAppPropertyClasses(ps[i].view);
-                    // возможно, нашли какие-то ключи на вью, которые не были оъявлены в productWindow.app
-//                    createAppProperty(propertiesFromView);
                     writeCssRulesTo(ps[i].view);
                 }
                 // мы знаем сss классы для редактирования, так как дескриптор был разобран
@@ -791,6 +792,7 @@ var Engine = {};
             // после прогонов всех тестов (если они были) можно сделать вывод о том, были ли ошибки
             // если тестов не было, то тоже считаем что всё успешно
             if (isErrorInTestResults() === false) {
+                appProperty.propertyValue = value;
                 // если всё хорошо завершилось, устанавливаем свойство, это безопасно
                 eval('productWindow.app'+convertToBracedString(key)+'='+stringifiedValue);
                 log('All tests was successful. Tests count='+testResults.length+'; \''+key+'\'='+stringifiedValue+' was set');
@@ -811,13 +813,15 @@ var Engine = {};
                         cssV = value;
                     }
                     saveCssRule(appProperty.cssSelector, appProperty.cssProperty, cssV);
+                    //TODO здесь наверное не обязательно каждый раз писать.
+                    // это мы пишем в productWindow - то есть в скрытый iframe с промо приложением, который показывается только в предпросмотре
                     writeCssRulesTo(productWindow.document.body);
                 }
                 // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
                 //TODO нужен более умный алгоритм. Пересоздавать только свойства в массиве. Есть ли другие случаи?
                 if (attributes.updateAppProperties === true) {
                     clearAppProperties();
-                    createAppProperty(productWindow.app);
+                    createAppProperties(productWindow.descriptor);
                 }
                 if (attributes.updateScreens === true) {
                     createAppScreens();
@@ -869,14 +873,12 @@ var Engine = {};
      *
      * @param prodWindow объект window промо проекта для его редактирования
      * @param {object} [params.app] свойства из шаблона
+     * @param {object} [params.values] свойства из шаблона например {"t_btn_paddingTop":"20","js-question_progress_fontColor":"#eee",...}
+     * это объект ключ значение, чтобы установить его в appProperty
      * @param {object} [params.descriptor] дескриптор из шаблона
      */
     function startEngine(prodWindow, params) {
         productWindow = prodWindow;
-        if (params && params.app) {
-            // переписываем свойствами из шаблона
-            productWindow.app = params.app;
-        }
         if (params && params.descriptor) {
             // переписываем десриптором из шаблона
             productWindow.descriptor = params.descriptor;
@@ -897,8 +899,14 @@ var Engine = {};
         appPropertiesObjectPathes = [];
         testResults = [];
         // рекурсивно создает по всем свойствам app объекты AppProperty
-        createAppProperty(productWindow.app);
+        createAppProperties(productWindow.descriptor);
         createCssProperties(productWindow.descriptor);
+
+        // установить css свойства, например, они могут быть взяты из шаблона
+        if (params && params.values) {
+            setAppPropertiesValues(params.values);
+        }
+
         // создать экраны (слайды) для промо приложения
         createAppScreens();
         // находим и создаем темы
@@ -1116,4 +1124,5 @@ var Engine = {};
     global.exportTemplate = exportTemplate;
     global.getCustomStylesString = getCustomStylesString;
     global.getAppString = getAppString;
+    global.getAppPropertiesValues = getAppPropertiesValues;
 })(Engine);

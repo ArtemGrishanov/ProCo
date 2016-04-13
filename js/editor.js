@@ -204,7 +204,9 @@ function onProductIframeLoaded() {
     var params = null;
     if (appTemplate) {
         params = {
-            app: appTemplate.app,
+//            app: appTemplate.app,
+//            css: appTemplate.css,
+            values: appTemplate.propertyValues,
             descriptor: appTemplate.descriptor
         };
     }
@@ -221,7 +223,6 @@ function onProductIframeLoaded() {
  * @param {Array.<string>} ids - массив ид экранов
  */
 function showScreen(ids) {
-
     // запоминаем, если потребуется восстановление показа экранов.
     // Например, произойдет пересборка экранов и надо будет вернуться к показу последних активных
     activeScreens = ids;
@@ -677,7 +678,9 @@ function saveTemplate() {
     //TODO возможно шифрование
     var data = {
         appName: appName,
-        app: iframeWindow.app,
+//        app: Engine.getAppString(),
+//        css: Engine.getCustomStylesString(),
+        propertyValues: Engine.getAppPropertiesValues(),
         descriptor: iframeWindow.descriptor
     };
     log('Saving project:' + appId);
@@ -717,7 +720,7 @@ function openTemplate(templateUrl) {
                     newId = match[1];
                 }
                 var obj = JSON.parse(e.target.responseText);
-                if (obj.appName && obj.app && obj.descriptor && newId) {
+                if (obj.appName && obj.propertyValues && obj.descriptor && newId) {
                     appName = obj.appName;
                     appTemplate = obj;
                     appId = newId;
