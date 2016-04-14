@@ -80,26 +80,16 @@ var productScreensCnt = null;
  */
 var appSize = {width: 600, height: 400};
 /**
+ * Количество сделанный операция по редактированию пользователем
+ * При сохранении шаблона синхронизируется с таким же счетччиком engine
+ * если этот четчик меньше чем в engine то будет блокировка при закрытии страницы
+ * @type {number}
+ */
+var operationsCount = 0;
+/**
  * Единый для всех контролов angular модуль
  * @type {*}
  */
-//var angUiControllers = angular.module('procoApp', []);
-//angular.module('procoApp', []).directive('TextQuickInput', function(){
-//    return {
-//        restrict: 'E',
-//        scope: false,
-//        templateUrl: 'controls/TextQuickInput.html'
-//    }
-//});
-//var procoApp = angular.module('procoApp', []);
-//procoApp.controller('editorController', function($scope) {
-//    $scope.test = {description: 'sdhgsgfhgfjhw eh'}
-//})
-//.directive('my-customer', function() {
-//    return {
-//        templateUrl: 'TextQuickInput.html'
-//    }
-//});
 var myApp = angular.module(config.common.angularAppName, []);
 function initControls() {
     'use strict';
@@ -125,9 +115,8 @@ function initControls() {
         }
     }
 }
-//TODO
+//TODO remove
 initControls();
-//var fileChooser = document.getElementById('file-chooser');
 
 /**
  * Функция запуска редактора
@@ -168,6 +157,17 @@ function start() {
             awsBucket:bucket,
             callback: showEmbedDialog
         });
+    }
+    window.onbeforeunload = confirmExit;
+}
+
+/**
+ * Предупреждение случайный закрытий страницы без сохранения
+ * @returns {string}
+ */
+function confirmExit() {
+    if (config.common.awsEnabled === true && Engine.getOperationsCount() > operationsCount) {
+        return "У вас есть несохраненные изменения.";
     }
 }
 
@@ -695,8 +695,11 @@ function saveTemplate() {
         // task object context
         if (err) {
             log('ERROR: ' + err, true);
+            alert('Не удалось сохранить проект');
         }
         log('Saving task done:' + appId);
+        operationsCount = Engine.getOperationsCount();
+        alert('Сохранено');
     }).bind(this));
 }
 

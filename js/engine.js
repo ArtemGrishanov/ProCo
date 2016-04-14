@@ -79,7 +79,11 @@ var Engine = {};
      * @type {null}
      */
     var calculatedAppDescriptor = null;
-
+    /**
+     * Когда происходит редактирования свойства через setValue счетчик накручивается
+     * @type {number}
+     */
+    var operationsCount = 0;
 
     /**
      * Сохранить кастомный css стиль для промо проекта.
@@ -792,6 +796,7 @@ var Engine = {};
             // после прогонов всех тестов (если они были) можно сделать вывод о том, были ли ошибки
             // если тестов не было, то тоже считаем что всё успешно
             if (isErrorInTestResults() === false) {
+                operationsCount++;
                 appProperty.propertyValue = value;
                 // если всё хорошо завершилось, устанавливаем свойство, это безопасно
                 eval('productWindow.app'+convertToBracedString(key)+'='+stringifiedValue);
@@ -1125,4 +1130,5 @@ var Engine = {};
     global.getCustomStylesString = getCustomStylesString;
     global.getAppString = getAppString;
     global.getAppPropertiesValues = getAppPropertiesValues;
+    global.getOperationsCount = function() { return operationsCount; }
 })(Engine);

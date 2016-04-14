@@ -44,8 +44,10 @@
                     <div class="q_wr js-question_text" data-app-property="quiz.{{currentQuestion}}.text">
                         {{question_text}}
                     </div>
-                    <div data-app-property="quiz.{{currentQuestion}}.options" class="js-answers_cnt">
-                        <!-- Сюда программно добавляются варианта ответов -->
+                    <div data-app-property="quiz.{{currentQuestion}}.options" class="js-answers_wr">
+                        <div class="js-answers_cnt">
+                            <!-- Сюда программно добавляются варианта ответов -->
+                        </div>
                     </div>
                     <div class="js-explain explain_blk" style="display:none;">
                         <div class="js-explanation_text"></div>
@@ -67,8 +69,10 @@
                         {{question_text}}
                     </div>
                     <div class="js-photo_cnt"><div class="photo_wr js-photo" data-app-property="quiz.{{currentQuestion}}.img"></div></div>
-                    <div data-app-property="quiz.{{currentQuestion}}.options" class="js-answers_cnt">
-                        <!-- Сюда программно добавляются варианта ответов -->
+                    <div data-app-property="quiz.{{currentQuestion}}.options" class="js-answers_wr">
+                        <div class="js-answers_cnt">
+                            <!-- Сюда программно добавляются варианта ответов -->
+                        </div>
                     </div>
                     <div class="js-explain explain_blk" style="display:none;">
                         <div class="js-explanation_text"></div>
@@ -82,7 +86,7 @@
     </script>
     <script id="id-answer_template" type="text/template">
         <!-- TODO: Атрибут есть во вью, а appProperty нет. Так как это нужно для связи DeleteQuickButton. Пока ничего лучше не придумал -->
-        <div class="a_wr js-answer js-answer_text" data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}">
+        <div class="a_wr" data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}">
             <div class="a_text">
                 <div class="bullit"></div>
                 <span data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}.text">{{answer_options_text}}</span>

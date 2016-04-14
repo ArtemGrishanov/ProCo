@@ -42,6 +42,7 @@ body {
     left: 0;
     color: #fff;
     font-family: Arial;
+    text-align:center;
 }
 .photo_wr {
     display: inline-block;

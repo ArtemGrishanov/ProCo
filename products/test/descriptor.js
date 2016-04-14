@@ -36,10 +36,14 @@ descriptor.css = [
         // на самом деле тут 8 appProperty: .js-startHeader_fontFamily .js-startHeader_fontColor .js-startHeader_fontSize .js-startHeader_textAlign
         //   .js-startDescription_fontFamily .js-startDescription_fontColor .js-startDescription_fontSize .js-startDescription_textAlign
         // перечислил все классы к которым применять правила
-        selector: '.js-startHeader .js-start_description .js-question_text .js-answer .js-result_title .js-result_description',
+        selector: '.js-startHeader .js-start_description .js-question_text .js-result_title .js-result_description',
         // можно прописать сразу несколько правил, получается отношение "многие ко многим"
         // это позволит делать наборы правил
         rules: 'fontFamily fontColor fontSize textAlign paddingTop paddingBottom'
+    },
+    {
+        selector: '.js-answers_wr',
+        rules: 'textAlign fontFamily fontColor fontSize marginTop marginBottom'
     },
     {
         // не объединяем с остальными текстами, так как нельзя выравнивать
