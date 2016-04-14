@@ -812,7 +812,7 @@ var Engine = {};
                     else {
                         cssV = value;
                     }
-                    saveCssRule(appProperty.cssSelector, appProperty.cssProperty, cssV);
+                    saveCssRule(appProperty.applyCssTo || appProperty.cssSelector, appProperty.cssProperty, cssV);
                     //TODO здесь наверное не обязательно каждый раз писать.
                     // это мы пишем в productWindow - то есть в скрытый iframe с промо приложением, который показывается только в предпросмотре
                     writeCssRulesTo(productWindow.document.body);

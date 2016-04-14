@@ -17,9 +17,16 @@ var validAttributes = {
     possibleValues: [],
     isPreset: false,
     cssProperty: null,
+
+    // это селектор элемента с которым работаем. То есть кликаем в него, риусем выделение, применяем к нему свойства.
+    // но иногда применять свойства надо к родителю или еще как-то. Тогда поможет applyCssTo
     cssSelector: null,
     cssValuePattern: null,
-    filter: false
+    filter: false,
+
+    // селектор dom-элемент к которому применяем свойства. Обычно это cssSelector, но например text-align надо применять к родителю.
+    // вот тут и указываем родителя в этом свойства
+    applyCssTo: null
 };
 
 /**

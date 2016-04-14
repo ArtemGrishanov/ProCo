@@ -49,15 +49,19 @@ descriptor.css = [
     {
         // все кнопки
         selector: '.t_btn',
-        rules: 'backgroundColor textAlign fontColor fontSize fontFamily borderColor borderRadius paddingTop paddingBottom'
+        rules: 'backgroundColor fontColor fontSize fontFamily borderColor borderRadius paddingTop paddingBottom'
     },
     {
-        selector: '.js-photo_cnt',
+        selector: '.t_btn',
+        applyCssTo: '.js-btn_wr',
         rules: 'textAlign marginTop marginBottom'
     },
     {
         selector: '.js-photo',
-        rules: ''
+        rules: 'textAlign marginTop marginBottom',
+        // выделяться будет .js-photo, пользователь работает как-бы с ним
+        // но на самом деле свойства применяются к .js-photo_cnt
+        applyCssTo: '.js-photo_cnt'
     },
     {
         // все кнопки в состоянии навеения
