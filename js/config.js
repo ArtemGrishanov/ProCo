@@ -131,7 +131,7 @@ var config = {
         },
         Alternative: {
             defaultDirectiveIndex: 0,
-            directives: ['dropdown','radiobutton'],
+            directives: ['dropdown','radiobutton','altbuttons'],
             parentId: 'id-static_controls_cnt',
             type: 'controlpanel'
         },

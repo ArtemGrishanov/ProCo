@@ -21,14 +21,20 @@ function StringControlController(scope, attrs) {
     var appProperty = Engine.getAppProperty(propertyString);
     if (appProperty) {
         var $input = $e.find('[type="text"]');
+        $input.keypress(function() {
+            scope.needCheckDifference = true;
+        });
         $input.val(appProperty.propertyValue);
         setInterval(function(){
-            var v = $input.val();
-            if (scope.savedVal != v) {
-                scope.savedVal = v;
-                var ap = Engine.getAppProperty(propertyString);
-                if (ap.propertyValue !== v) {
-                    Engine.setValue(ap, v);
+            if (scope.needCheckDifference === true) {
+                scope.needCheckDifference = false;
+                var v = $input.val();
+                if (scope.savedVal != v) {
+                    scope.savedVal = v;
+                    var ap = Engine.getAppProperty(propertyString);
+                    if (ap.propertyValue !== v) {
+                        Engine.setValue(ap, v);
+                    }
                 }
             }
         },500);

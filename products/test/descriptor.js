@@ -39,11 +39,11 @@ descriptor.css = [
         selector: '.js-startHeader .js-start_description .js-question_text .js-result_title .js-result_description',
         // можно прописать сразу несколько правил, получается отношение "многие ко многим"
         // это позволит делать наборы правил
-        rules: 'fontFamily fontColor fontSize textAlign paddingTop paddingBottom'
+        rules: 'fontFamily fontColor fontSize textAlign paddingTop paddingBottom paddingLeft'
     },
     {
         selector: '.js-answers_wr',
-        rules: 'textAlign fontFamily fontColor fontSize marginTop marginBottom'
+        rules: 'textAlign fontFamily fontColor fontSize marginTop marginBottom paddingLeft'
     },
     {
         // не объединяем с остальными текстами, так как нельзя выравнивать
@@ -58,7 +58,7 @@ descriptor.css = [
     {
         selector: '.t_btn',
         applyCssTo: '.js-btn_wr',
-        rules: 'textAlign marginTop marginBottom'
+        rules: 'textAlign marginTop marginBottom paddingLeft'
     },
     {
         selector: '.js-photo',
@@ -82,7 +82,7 @@ descriptor.css = [
     },
     {
         selector: '.topColontitle',
-        rules: 'text topColontitleBottomBorderColor fontColor fontSize fontFamily textAlign backgroundColor paddingTop paddingBottom'
+        rules: 'topColontitleBottomBorderColor fontColor fontSize fontFamily textAlign backgroundColor paddingTop paddingBottom'
     },
     {
         selector: '.js-back',
@@ -93,10 +93,6 @@ descriptor.css = [
 ];
 
 descriptor.app = [
-    {
-        selector: 'showBackgroundImage',
-        rules: 'trueFalse'
-    },
     {
         selector: 'logoStartPosition logoResultPosition',
         rules: 'drag'
@@ -111,25 +107,30 @@ descriptor.app = [
         rules: 'imgUrl'
     },
     {
-        selector: 'showQuestionProgress showBullits showTopColontitle showBackgroundImage',
+        selector: 'showQuestionProgress showBullits showTopColontitle showBackgroundImage randomizeQuestions',
         rules: 'trueFalse'
     },
-    {
-        selector: 'showBackgroundImage',
-        label: 'Показывать фоновую картинку'
-    },
-    {
-        selector: 'showBullits',
-        label: 'Показывать буллиты вариантов ответа'
-    },
-    {
-        selector: 'showQuestionProgress',
-        label: 'Показывать прогресс вопросов'
-    },
-    {
-        selector: 'showTopColontitle',
-        label: 'Верхний колонтитул'
-    },
+            {
+                selector: 'showBackgroundImage',
+                label: 'Показывать фоновую картинку',
+                rules: 'trueFalse'
+            },
+            {
+                selector: 'showBullits',
+                label: 'Показывать буллиты вариантов ответа'
+            },
+            {
+                selector: 'showQuestionProgress',
+                label: 'Показывать прогресс вопросов'
+            },
+            {
+                selector: 'showTopColontitle',
+                label: 'Верхний колонтитул'
+            },
+            {
+                selector: 'randomizeQuestions',
+                label: 'Перемешивать вопросы'
+            },
     {
         selector: 'quiz.{{number}}.text quiz.{{number}}.options.{{number}}.text results.{{number}}.title results.{{number}}.description startHeaderText startDescription startButtonText restartButtonText topColontitleText',
         rules: 'text'
@@ -153,10 +154,14 @@ descriptor.rules = {
         updateScreens: true,
         controls: "Alternative",
         controlParams: {
-            viewName: "Dropdown"
+            viewName: "AltButtons"
         },
         cssProperty: 'text-align',
-        possibleValues: ["left","center","right"],
+        possibleValues: [
+            {value:"left",icon:"i/align-left.png"},
+            {value:"center",icon:"i/align-center.png"},
+            {value:"right",icon:"i/align-right.png"}
+        ],
         label: "Выравнивание",
         filter: true
     },
@@ -380,6 +385,14 @@ descriptor.rules = {
         cssValuePattern: '{{value}}px',
         filter: true
     },
+    paddingLeft: {
+        label: 'Паддинг слева',
+        controls: 'StringControl',
+        updateScreens: true,
+        cssProperty: 'padding-left',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    },
     marginTop: {
         label: 'Маргин сверху',
         controls: 'StringControl',
@@ -396,6 +409,14 @@ descriptor.rules = {
         cssValuePattern: '{{value}}px',
         filter: true
     },
+    marginLeft: {
+        label: 'Маргин слева',
+        controls: 'StringControl',
+        updateScreens: true,
+        cssProperty: 'margin-left',
+        cssValuePattern: '{{value}}px',
+        filter: true
+    }
 };
 //var descriptor = {
 //    stylePresets: {

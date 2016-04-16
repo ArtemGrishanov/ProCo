@@ -22,12 +22,29 @@ function AlternativeController(scope, attrs) {
     var $dropDownValue = $e.find('.js-value');
     for (var i = 0; i < appProperty.possibleValues.length; i++) {
         var pv = appProperty.possibleValues[i];
-        // {{option}} - это визуальная часть, что видит пользователь
-        // {{value}} - это само значение propertyValue, может отличаться
-        var $newElem = $(templateHtml.replace('{{option}}',pv).replace('{{value}}',pv)).appendTo($cnt);
+        var $newElem = null;
+        if (typeof pv === 'string') {
+            // {{option}} - это визуальная часть, что видит пользователь
+            // {{value}} - это само значение propertyValue, может отличаться
+            $newElem = $(templateHtml.replace('{{option}}',pv).replace('{{value}}',pv)).appendTo($cnt);
+            // устанавливаем начальное значение
+            if (pv === appProperty.propertyValue) {
+                $newElem.addClass('__selected');
+            }
+        }
+        else if (typeof pv === 'object') {
+            $newElem = $(templateHtml.replace('{{option}}',pv.value).replace('{{value}}',pv.value)).appendTo($cnt);
+            $newElem.css('backgroundImage', 'url('+pv.icon+')');
+            // устанавливаем начальное значение
+            if (pv.value === appProperty.propertyValue) {
+                $newElem.addClass('__selected');
+            }
+        }
         $newElem.click(function(e) {
             //нажатие на клик и смена значения во вью и в движке
             var v = $(e.currentTarget).attr('data-value');
+            $cnt.find('.js-option').removeClass('__selected');
+            $(e.currentTarget).addClass('__selected')
             $dropDownValue.text(v);
             Engine.setValue(appProperty, v);
         });

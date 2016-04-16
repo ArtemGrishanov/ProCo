@@ -553,6 +553,22 @@ var Engine = {};
                                 domElement: elemsOnView[k]
                             });
                         }
+                        if (appProperties[j].propertyValue === '' || appProperties[j].propertyValue === null || appProperties[j].propertyValue === undefined) {
+                            // прочитать актуальное значение свойства и сохранить его
+                            // если свойство ни разу не задавали, то сначала надо взять его из приложения и записать
+                            // TODO далее могут быть разные сценарии: изменено где-то вовне, например самим промо приложением согласно его логике,
+                            // TODO эти случаи не рассматриваем пока...
+                            var actualSelector = appProperties[j].applyCssTo || appProperties[j].cssSelector;
+                            if (appProperties[j].cssProperty) {
+                                //$(ps[i].view).find('.js-startHeader').css('text-align')
+                                //$("#id-product_iframe_cnt").find('iframe').contents().find('.js-startHeader').css('font-family');
+                                appProperties[j].propertyValue = $("#id-product_iframe_cnt").find('iframe').contents().find(actualSelector).css(appProperties[j].cssProperty)
+//                                appProperties[j].propertyValue = $(productScreensCnt).find(actualSelector).css(appProperties[j].cssProperty);
+                            }
+                            else {
+                                log('No cssProperty: ' + appProperties[j].propertyString, true);
+                            }
+                        }
                     }
                 }
                 // далее ищем data-app-property атрибуты, чтобы сразу привязать к экрану app property

@@ -129,7 +129,8 @@ html, body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 200px;
+    width: 180px;
+    padding: 12px;
     background-color: #eee;
     border: 1px solid #bbb;
     min-height: 600px;
@@ -314,4 +315,13 @@ html, body {
     filter: alpha(opacity=0);
     font-size: 500px;
     height: initial !important; /* в bootstrap есть правило на input[type="file"] height:30px */
+}
+.control_cnt {
+    margin-bottom: 7px;
+}
+.control_label {
+    margin: 0;
+    font-size: 14px;
+    font-family: Roboto-Regular, Arial, san-serif;
+    color: #636363;
 }

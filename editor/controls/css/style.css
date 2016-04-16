@@ -37,3 +37,21 @@ form input {
     border: 5px solid #1cbf61;
     box-sizing: border-box;
 }
+.alt_cnt {
+    padding-left: 4px;
+}
+.alt_item {
+    display: inline-block;
+    width: 57px;
+    height: 28px;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-left: -4px;
+    border: 1px solid #979797;
+    cursor: pointer;
+}
+.alt_item.__selected {
+    background-color: #1cbf61;
+    border-color: #16914a;
+}
