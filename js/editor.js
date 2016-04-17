@@ -798,8 +798,11 @@ function showPreview() {
 function showEmbedDialog(result, data) {
     if (result === 'success') {
         var iframeUrl = data.src;
-        var embedLink = '<iframe src="'+iframeUrl+'" style="display:block;width:600px;height:400px;padding:0;border:none;"></iframe>';
-        alert(embedLink);
+        var ec = '<iframe src="'+iframeUrl+'" style="display:block;width:600px;height:400px;padding:0;border:none;"></iframe>';
+        showPublishDialog({
+            link: iframeUrl,
+            embedCode: ec
+        });
     }
     else {
         alert('Publishing Error');
@@ -883,6 +886,11 @@ function showSelection($elem) {
 
 function showSelectDialog(params) {
     var dialog = new SelectDialog(params);
+    $('#id-dialogs_view').empty().append(dialog.view).show();
+}
+
+function showPublishDialog(params) {
+    var dialog = new PublishDialog(params);
     $('#id-dialogs_view').empty().append(dialog.view).show();
 }
 

@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <title>Редактор</title>
     <meta charset="UTF-8"/>
@@ -152,6 +153,64 @@
         </div>
     </script>
 
+    <!-- Шаблон для диалога публикации -->
+    <script id="id-publish_dialog_template" type="text/template">
+        <div class="pd_wr">
+            <div class="pd_top">
+                <p class="pd_header">Ваш тест готов!</p>
+                <div class="pd_tab_switcher js-tab_btns">
+                    <div class="pd_tab_btn js-tab_btn __selected" data-tab-id="1">
+                        <div><span class="pd_icon_link"></span></div>
+                        <div>Ссылка на проект</div>
+                    </div>
+                    <div class="pd_tab_btn js-tab_btn" data-tab-id="2">
+                        <div><span class="pd_icon_embed"></span></div>
+                        <div>Код для вставки на сайт или блог</div>
+                    </div>
+                </div>
+            </div>
+            <div class="pd_tab_cnt js-tabs">
+                <div class="pd_tab js-tab" data-tab-id="1">
+                    <br><br>
+                    <div>
+                        <input class="pd_link_input js-project_link" readonly="readonly" value="http://example.com"/>
+                        <span class="pbtn __green js-copy_link">Копировать</span>
+                        <a href="#" target="_blank" class="pbtn js-view">Посмотреть</a>
+                    </div>
+                    <div class="pd_annotation_wr">
+                        <p class="pd_ann">Поделитесь вашим тестом в социальный сетях</p>
+                        <div class="pd_social_wr">
+                            <a href="#" class="social_btn __ok"></a>
+                            <a href="#" class="social_btn __vk ml12"></a>
+                            <a href="#" class="social_btn __fb ml12"></a>
+                            <a href="#" class="social_btn __twitter ml12"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="pd_tab js-tab" data-tab-id="2">
+                    <br><br>
+                    <div class="pd_col">
+                        <textarea class="pd_embed_area js-embed_code" readonly="readonly"></textarea>
+                    </div>
+                    <div class="pd_col __w150">
+                        <span class="pbtn __green js-copy_embed_code">Копировать</span>
+                        <div class="pd_annotation_wr __b0">
+                            <span class="tx">Не получается?</span>
+                            <a href="#" class="link">Свяжитесь с нами</a>
+                        </div>
+                    </div>
+                    <div class="pd_annotation_wr">
+                        <!--<div class="pd_social_wr">-->
+                        <!--<a href="#" class="social_btn __q"></a>-->
+                        <!--</div>-->
+                        <p class="pd_ann">Как вставить тест на сайт или в блог</p>
+                    </div>
+                </div>
+            </div>
+            <div class="close_dialog_btn js-close"></div>
+        </div>
+    </script>
+
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
     <script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/html2canvas.js"></script>
@@ -168,6 +227,7 @@
     <script type="text/javascript" src="../js/queue.js"></script>
     <script type="text/javascript" src="../js/selectDialog.js"></script>
     <script type="text/javascript" src="../js/selectUserTemplateDialog.js"></script>
+    <script type="text/javascript" src="../js/publishDialog.js"></script>
     <script type="text/javascript" src="../js/resourceManager.js"></script>
     <script type="text/javascript" src="../js/publisher.js"></script>
     <!-- Все скрипты будут объединены при сборке проекта, так что забить что их много -->

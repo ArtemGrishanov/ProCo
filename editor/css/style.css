@@ -1,5 +1,5 @@
 html, body {
-    font-family: Roboto-Regular, Arial, san-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
     color: #fff;
     background-color: #c3c3c3;
@@ -252,9 +252,8 @@ html, body {
     display: inline-block;
     border: #979797 solid 1px;
     border-radius: 4px;
-    min-width: 171px;
-    height: 47;
-    padding: 12px;
+    min-width: 128px;
+    padding: 12px 7px 12px 7px;
     color: #979797;
     background-color: #fff;
     text-align: center;
@@ -324,4 +323,170 @@ html, body {
     font-size: 14px;
     font-family: Roboto-Regular, Arial, san-serif;
     color: #636363;
+}
+.close_dialog_btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 30px;
+    height: 30px;
+    background: url(../i/Krestik-white.png) center no-repeat;
+    cursor: pointer;
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform:rotate(0deg);
+}
+.close_dialog_btn.__grey {
+    background-image: url(../i/Krestik-dark.png);
+}
+.close_dialog_btn:hover {
+    -webkit-animation:spin 0.3s linear;
+    -moz-animation:spin 0.3s linear;
+    animation:spin 0.3s linear;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(90deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(90deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(90deg); transform:rotate(90deg); } }
+
+
+/* Диалог публикации */
+.pd_wr {
+    width: 800px;
+    height: 500px;
+    position: relative;
+    margin: 0 auto;
+    padding: 0;
+    background-color: #fff;
+    text-align: center;
+    overflow: hidden;
+}
+.pd_top {
+    position: relative;
+    height: 158px;
+    background-color: #1cbf61;
+    border-bottom: 1px solid #4c77b8;
+}
+.pd_tab_cnt {
+
+}
+.pd_header {
+    margin: 0;
+    padding-top: 28px;
+    font-size: 28px;
+}
+.pd_tab_switcher {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+.pd_tab_btn {
+    display: inline-block;
+    width: 400px;
+    height: 60px;
+    padding: 0;
+    margin: 0;
+    margin-left: -4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    cursor: pointer;
+}
+.pd_tab_btn.__selected {
+    border-bottom: 8px solid #4c77b8;
+}
+.pd_icon_link {
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    background: url(../i/icon-link.png) center no-repeat;
+}
+.pd_icon_embed {
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    background: url(../i/icon-code.png) center no-repeat;
+}
+.pd_col {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    min-height: 112px;
+    padding: 0 3px;
+    text-align: left;
+}
+.pd_col.__w150 {
+    width: 150px;
+}
+.pd_link_input {
+    width: 360px;
+    height: 44px;
+    background-color: #e4e4e4;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    color: #414141;
+    font-size: 14px;
+    padding-left: 10px;
+}
+.pd_annotation_wr {
+    position: absolute;
+    bottom: 32px;
+    width: 100%;
+    color: #979797;
+}
+.pd_annotation_wr.__b0 {
+    bottom: 0;
+}
+.pd_ann {
+    width: 210px;
+    margin: 0 auto 18px;
+}
+.pd_social_wr {
+    margin: 0 auto;
+}
+.pd_embed_area {
+    width: 511px;
+    height: 107px;
+    background-color: #e4e4e4;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    color: #414141;
+    font-size: 14px;
+    resize: none;
+}
+.social_btn {
+    display: inline-block;
+    width: 44px;
+    height: 44px;
+    background: url(../i/share-facebook.png) center no-repeat;
+    cursor: pointer;
+}
+.social_btn.__fb {
+    background-image: url(../i/share-facebook.png);
+}
+.social_btn.__vk {
+    background-image: url(../i/share-vk.png);
+}
+.social_btn.__ok {
+    background-image: url(../i/share-ok.png);
+}
+.social_btn.__twitter {
+    background-image: url(../i/share-twitter.png);
+}
+.social_btn.__q {
+    background-image: url(../i/q);
+}
+.link {
+    color: #0000ff;
+    text-decoration: underline;
+}
+.tx {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #979797;
+}
+.tx.__white {
+}
+.ml12 {
+    margin-left: 12px;
 }
