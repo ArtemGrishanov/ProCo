@@ -143,25 +143,84 @@ html, body {
 .settings_panel input{
     width: 146px
 }
-.top_toolbar {
+.top {
     width: 100%;
     height: 50px;
     background-color: #343434;
 }
+.top_proj_name {
+    display: inline-block;
+    color: #b8b8b8;
+    font-size: 18px;
+    padding-top: 6px;
+}
+.delimeter {
+    display: inline-block;
+    vertical-align: top;
+    height: 28px;
+    border-left: 1px solid #929292;
+    margin: 3px 16px;
+}
+.logo {
+    display: inline-block;
+    vertical-align: top;
+    background: url(../i/share-vk.png) center no-repeat;
+    width: 44px;
+    height: 34px;
+    background-size: contain;
+}
+.top_toolbar {
+    display: inline-block;
+    vertical-align: top;
+    width: 88%;
+    padding-top: 8px;
+}
+.toolbar_left {
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    width: 49%;
+}
+.toolbar_btns {
+    display: inline-block;
+    vertical-align: top;
+    text-align: right;
+    width: 49%;
+}
+.toolbar_user {
+    display: inline-block;
+    vertical-align: top;
+    min-width: 80px;
+    width: 10%;
+    padding-top: 5px;
+    cursor: pointer;
+}
+.user_avatar {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: #eee;
+    border-radius: 999px;
+    overflow: hidden;
+}
+.dropdown_btn {
+    display: inline-block;
+    position: relative;
+    background: url(../i/drop-down-2.png) no-repeat center;
+    width: 20px;
+    height: 40px;
+    cursor: pointer;
+}
 .tico {
     position: relative;
     display: inline-block;
-    vertical-align: top;
     min-height: 16px;
-    padding-left: 32px;
     line-height: 1.5;
+    cursor: pointer;
 }
 .tico_img {
-    position: absolute;
-    top: 1px;
-    left: 0;
-    display: block;
-    overflow: hidden;
+    display: inline-block;
+    padding-right: 7px;
     text-decoration: none;
     font-style: normal;
     background-repeat: no-repeat;
@@ -263,6 +322,9 @@ html, body {
     background-color: #1cbf61;
     color: #fff;
     border-color: #1cbf61;
+}
+.pbtn.__small {
+    padding: 5px 7px 5px 7px;
 }
 .selection_border {
     position: absolute;
@@ -489,4 +551,25 @@ html, body {
 }
 .ml12 {
     margin-left: 12px;
+}
+.ml24 {
+    margin-left: 24px;
+}
+.ctx_menu_wr {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    width: 219px;
+    background-color: #434343;
+    padding: 15px 0;
+    z-index: 9;
+}
+.ctx_menu_item {
+    padding: 10px 19px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+.ctx_menu_item:hover {
+    background-color: #343434;
 }

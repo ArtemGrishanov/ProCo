@@ -17,11 +17,36 @@
 </head>
 <body ng-app="procoApp">
     <div id="id-editor_view" class="scr" style="display:none;">
-        <div class="top_toolbar">
-            <span class="tico" onclick="onPreviewClick();"><i class="tico_img i_eye"><img src="i/i_eye.png"/></i>Предпросмотр</span>
-            <span class="tico" onclick="onMyTemplatesClick();"><i class="tico_img i_eye"><img src="i/i_eye.png"/></i>Мои проекты</span>
-            <span class="tico" onclick="saveTemplate();"><i class="tico_img i_eye"><img src="i/i_eye.png"/></i>Сохранить</span>
-            <span class="tico" onclick="onPublishClick();"><i class="tico_img i_eye"><img src="i/i_eye.png"/></i>Опубликовать</span>
+        <div class="top">
+            <div class="top_toolbar">
+                <div class="toolbar_left">
+                    <div class="logo ml24"></div>
+                    <div class="delimeter"></div>
+                    <div class="top_proj_name">"Тест выставка Серова"</div>
+                </div>
+                <div class="toolbar_btns">
+                    <span class="tico" onclick="saveTemplate();"><i class="tico_img i_eye"><img src="i/save.png"/></i>Сохранить</span>
+                    <div class="delimeter"></div>
+                    <span class="tico" onclick="onPreviewClick();"><i class="tico_img"><img src="i/i_eye.png"/></i>Просмотр</span>
+                    <span class="pbtn __green __small ml24" onclick="onPublishClick();"><i class="tico_img"><img src="i/publish.png"/></i>Опубликовать</span>
+                </div>
+            </div>
+            <div id="id-user_toolbar" class="toolbar_user">
+                <div id="id-fb_profile_picture" class="user_avatar"></div>
+                <div class="dropdown_btn">
+                    <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
+                        <div class="ctx_menu_item" onclick="onMyTemplatesClick();">
+                            Мои проекты
+                        </div>
+                        <div class="ctx_menu_item">
+                            Настройки профиля
+                        </div>
+                        <div class="ctx_menu_item">
+                            Выйти
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="id-slides_cnt" class="screen_controls_cnt">
             <!-- Сюда добавляются контролы Slide для переключения экранов -->

@@ -844,6 +844,8 @@ if (config.common.facebookAutoAuthEnable === true) {
                 WebIdentityToken: response.authResponse.accessToken
             });
             fbUserId = response.authResponse.userID;
+
+            requestFBUssrInfo();
         });
     };
     // Load the Facebook SDK asynchronously
@@ -858,6 +860,31 @@ if (config.common.facebookAutoAuthEnable === true) {
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 }
+
+function requestFBUssrInfo() {
+    FB.api('/me',
+        {fields: "id,about,age_range,picture,bio,birthday,context,email,first_name,gender,hometown,link,location,middle_name,name,timezone,website,work"},
+        function(response) {
+            console.log('API response', response);
+            $("#id-fb_profile_picture").append('<img src="' + response.picture.data.url + '"> ');
+//            $("#name").append(response.name);
+//            $("#user-id").append(response.id);
+//            $("#work").append(response.gender);
+//            $("#birthday").append(response.birthday);
+//            $("#education").append(response.hometown);
+        }
+    );
+}
+
+$('#id-user_toolbar').click(function() {
+    var e = $('#id-user_ctx_menu');
+    if (e.css('display') === 'none') {
+        e.show();
+    }
+    else {
+        e.hide();
+    }
+});
 
 var selectionBorders = [];
 var selectedElem = null;

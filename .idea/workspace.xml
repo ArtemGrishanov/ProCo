@@ -22,40 +22,22 @@
     <favorites_list name="ProCo" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.5642553">
       <split-first>
         <leaf>
-          <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/editor/index.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="177" column="34" selection-start="8624" selection-end="8624" vertical-scroll-proportion="0.33333334" vertical-offset="2434" max-vertical-offset="3855">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="editor.js" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/js/editor.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="801" column="27" selection-start="32577" selection-end="32577" vertical-scroll-proportion="-11.56" vertical-offset="11726" max-vertical-offset="13965">
+                <state line="134" column="39" selection-start="4111" selection-end="4119" vertical-scroll-proportion="-31.36" vertical-offset="1226" max-vertical-offset="14370">
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/js/config.js">
+          <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/editor/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="24" column="42" selection-start="853" selection-end="853" vertical-scroll-proportion="0.0" vertical-offset="120" max-vertical-offset="2730">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="publishDialog.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/js/publishDialog.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="12" column="25" selection-start="488" selection-end="495" vertical-scroll-proportion="-5.28" vertical-offset="48" max-vertical-offset="765">
+                <state line="29" column="35" selection-start="1556" selection-end="1556" vertical-scroll-proportion="0.37936047" vertical-offset="174" max-vertical-offset="4230">
                   <folding />
                 </state>
               </provider>
@@ -65,10 +47,10 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="style.css" pinned="false" current="false" current-in-tab="true">
+          <file leaf-file-name="style.css" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/editor/css/style.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="356" column="19" selection-start="7349" selection-end="7349" vertical-scroll-proportion="0.4206696" vertical-offset="5051" max-vertical-offset="7455">
+                <state line="217" column="21" selection-start="4134" selection-end="4134" vertical-scroll-proportion="0.41713482" vertical-offset="2958" max-vertical-offset="8700">
                   <folding />
                 </state>
               </provider>
@@ -96,12 +78,12 @@
         <option value="$PROJECT_DIR$/editor/controls/css/style.css" />
         <option value="$PROJECT_DIR$/editor/controls/Alternative.js" />
         <option value="$PROJECT_DIR$/products/test/descriptor.js" />
-        <option value="$PROJECT_DIR$/editor/test_index.html" />
-        <option value="$PROJECT_DIR$/editor/css/style.css" />
-        <option value="$PROJECT_DIR$/js/editor.js" />
-        <option value="$PROJECT_DIR$/js/config.js" />
         <option value="$PROJECT_DIR$/js/publishDialog.js" />
+        <option value="$PROJECT_DIR$/js/config.js" />
+        <option value="$PROJECT_DIR$/editor/test_index.html" />
+        <option value="$PROJECT_DIR$/js/editor.js" />
         <option value="$PROJECT_DIR$/editor/index.html" />
+        <option value="$PROJECT_DIR$/editor/css/style.css" />
       </list>
     </option>
   </component>
@@ -167,24 +149,6 @@
               <option name="myItemId" value="products" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="products" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -211,6 +175,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="i" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -337,7 +319,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20185924" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14275466" sideWeight="0.79814076" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15710187" sideWeight="0.79814076" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -350,6 +332,26 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20185924" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.095408894" sideWeight="0.79814076" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -365,56 +367,9 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/editor/i/new-slide-img.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/editor/i/preview.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/editor/i/publish.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/editor/i/upload_icon.png">
       <provider selected="true" editor-type-id="images">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/editor/i/upload-photo.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/editor/i/share-twitter.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/editor/i/undo-active.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/editor/i/icon-link.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/editor/i/icon-code.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/editor/test_index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="20" selection-start="870" selection-end="870" vertical-scroll-proportion="0.518797" vertical-offset="0" max-vertical-offset="665">
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/selectDialog.js">
@@ -424,37 +379,88 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/editor/css/style.css">
+    <entry file="file://$PROJECT_DIR$/editor/controls/StringControl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="356" column="19" selection-start="7349" selection-end="7349" vertical-scroll-proportion="0.4206696" vertical-offset="5051" max-vertical-offset="7455">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="705">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="801" column="27" selection-start="32577" selection-end="32577" vertical-scroll-proportion="-11.56" vertical-offset="11726" max-vertical-offset="13965">
-          <folding />
-        </state>
+    <entry file="file://$PROJECT_DIR$/editor/i/arrow-left.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/config.js">
+    <entry file="file://$PROJECT_DIR$/editor/i/close.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/editor/i/delete-slide.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/editor/i/drop-down-2.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/editor/i/drop-down.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/editor/controls/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="42" selection-start="853" selection-end="853" vertical-scroll-proportion="0.0" vertical-offset="120" max-vertical-offset="2730">
+        <state line="35" column="23" selection-start="557" selection-end="557" vertical-scroll-proportion="0.4413793" vertical-offset="205" max-vertical-offset="930">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/publishDialog.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="25" selection-start="488" selection-end="495" vertical-scroll-proportion="-5.28" vertical-offset="48" max-vertical-offset="765">
+        <state line="12" column="25" selection-start="488" selection-end="495" vertical-scroll-proportion="0.19213974" vertical-offset="48" max-vertical-offset="765">
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="25" selection-start="605" selection-end="605" vertical-scroll-proportion="0.31601125" vertical-offset="15" max-vertical-offset="2730">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/editor/test_index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="10" selection-start="386" selection-end="669" vertical-scroll-proportion="0.4360465" vertical-offset="0" max-vertical-offset="795">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/editor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="134" column="39" selection-start="4111" selection-end="4119" vertical-scroll-proportion="-31.36" vertical-offset="1226" max-vertical-offset="14370">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/editor/i/share-vk.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/editor/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="177" column="34" selection-start="8624" selection-end="8624" vertical-scroll-proportion="0.33333334" vertical-offset="2434" max-vertical-offset="3855">
+        <state line="29" column="35" selection-start="1556" selection-end="1556" vertical-scroll-proportion="0.37936047" vertical-offset="174" max-vertical-offset="4230">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/editor/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="217" column="21" selection-start="4134" selection-end="4134" vertical-scroll-proportion="0.41713482" vertical-offset="2958" max-vertical-offset="8700">
           <folding />
         </state>
       </provider>
