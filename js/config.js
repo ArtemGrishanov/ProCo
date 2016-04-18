@@ -9,21 +9,21 @@ var config = {
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
          * При деплое на продакш оставить пустым
          */
-        devPrototypesHostName: 'http://localhost:63342/ProCo',
-//        devPrototypesHostName: 'http://proco.surge.sh/',
+//        devPrototypesHostName: 'http://localhost:63342/ProCo',
+        devPrototypesHostName: 'http://proco.surge.sh/',
         /**
          * Проводить ли при старте инициализацию для работы с хранилищем амазона
          */
-        awsEnabled: false,
+        awsEnabled: true,
         /**
          * Разрешать вход через FB автоматически при запуске приложения
          */
-        facebookAutoAuthEnable: false,
+        facebookAutoAuthEnable: true,
         /**
          * Id приложения в facebook для логина
          */
-//        facebookAppId: '515132035326687', //aws appId
-        facebookAppId: '518819781624579', //localhost site
+        facebookAppId: '515132035326687', //aws appId
+//        facebookAppId: '518819781624579', //localhost site
 
         //==================================================
         //==================================================

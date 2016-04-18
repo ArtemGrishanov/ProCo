@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Витрина шаблонов</title>
+    <meta charset="UTF-8"/>
+    <link href="../bootsrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../bootsrap/css/checkbox-radio-switch.css" rel="stylesheet"/>
+    <link href="../bootsrap/css/colorpicker.css" rel="stylesheet"/>
+    <link href="css/style.css" rel="stylesheet"/>
+    <link href="css/storefront.css" rel="stylesheet"/>
+</head>
+<body>
+    <div>
+        <div class="top">
+            <div class="top_toolbar">
+                <div class="toolbar_left">
+                    <div class="logo ml24"></div>
+                </div>
+            </div>
+            <div id="id-user_toolbar" class="toolbar_user">
+                <div id="id-fb_profile_picture" class="user_avatar"></div>
+                <div class="dropdown_btn">
+                    <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
+                        <div class="ctx_menu_item" onclick="onMyTemplatesClick();">
+                            Мои проекты
+                        </div>
+                        <div class="ctx_menu_item">
+                            Настройки профиля
+                        </div>
+                        <div class="ctx_menu_item">
+                            Выйти
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menu_tabs_wr">
+            <div class="menu_tabs">
+                <div class="menu_tab __selected">Галерея шаблонов</div>
+                <div class="menu_tab">Мои тесты</div>
+                <div class="menu_tab">Как это работает</div>
+                <div class="menu_tab">Решения для бизнеса</div>
+                <div class="menu_tab">Помощь</div>
+            </div>
+        </div>
+        <div class="st_cnt">
+            <div class="st_filter">
+                <div class="st_filter_ctg_i __selected">Все</div>
+                <div class="st_filter_ctg_i">Медиа</div>
+                <div class="st_filter_ctg_i">Банки</div>
+                <div class="st_filter_ctg_i">Путешествия</div>
+                <div class="st_filter_ctg_i">Музыка</div>
+                <div class="st_filter_ctg_i">Мода</div>
+                <div class="st_filter_ctg_i">Спорт</div>
+            </div>
+            <div class="st_templates_wr">
+                <h1 class="st_header">Создайте свой тест легко и быстро</br>с помощью шаблонов</h1>
+                <div class="st_items_cnt">
+                    <div class="st_item" data-template-url="https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/609a0db43a.txt">
+                        <div class="st_item_img">
+                            <div class="st_item_op">
+                                <div class="st_item_op_line mt90"><div class="pbtn">Редактировать</div></div>
+                                <div class="st_item_op_line"><div class="pbtn js_app-preview">Посмотреть</div></div>
+                            </div>
+                        </div>
+                        <div class="st_item_name">Модный тест</div>
+                    </div>
+                    <div class="st_item" data-template-url="https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/65584b62d2.txt">
+                        <div class="st_item_img">
+                            <div class="st_item_op">
+                                <div class="st_item_op_line mt90"><div class="pbtn">Редактировать</div></div>
+                                <div class="st_item_op_line"><div class="pbtn js_app-preview">Посмотреть</div></div>
+                            </div>
+                        </div>
+                        <div class="st_item_name">Модный тест</div>
+                    </div>
+                    <div class="st_item" data-template-url="https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-937567369613566/app/6f7c6becde.txt">
+                        <div class="st_item_img">
+                            <div class="st_item_op">
+                                <div class="st_item_op_line mt90"><div class="pbtn">Редактировать</div></div>
+                                <div class="st_item_op_line"><div class="pbtn js_app-preview">Посмотреть</div></div>
+                            </div>
+                        </div>
+                        <div class="st_item_name">Модный тест</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="id-app_preview" class="st_preview_app_wr" style="display:none">
+            <div class="st_preview_app">
+                <div class="st_preview_top_panel">
+                    <div class="st_preview_header">Понравился шаблон? Создайте свой тест!</div>
+                    <div class="pbtn __green">Редактировать</div>
+                </div>
+                <div id="id-app_iframe_cnt" class="st_preview_iframe_cnt"></div>
+                <div class="close_dialog_btn __ext js-close"></div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="container">-->
+        <!--<div class="product_elem js-product-thumb" data-product="/temp/facebook-902609146442342/test1/index.html">-->
+            <!--<img src="http://s3.eu-central-1.amazonaws.com/proconstructor/storefront/st1.jpg"/>-->
+        <!--</div>-->
+        <!--<div class="product_elem js-product-thumb" data-product="/temp/facebook-937567369613566/test1/index.html">-->
+            <!--<img src="http://s3.eu-central-1.amazonaws.com/proconstructor/storefront/st2.jpg"/>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<script type="text/javascript" src="../js/jquery.js"></script>-->
+    <!--<script>-->
+        <!--$('.js-product-thumb').click(function(e){-->
+            <!--var productSrc = $(e.currentTarget).attr('data-product');-->
+            <!--if (productSrc) {-->
+                <!--window.location = '../editor/index.html?src='+productSrc;-->
+            <!--}-->
+        <!--});-->
+    <!--</script>-->
+
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/config.js"></script>
+    <script type="text/javascript" src="../js/app.js"></script>
+    <script type="text/javascript" src="../js/storefront.js"></script>
+</body>
+</html>

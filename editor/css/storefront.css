@@ -1,0 +1,135 @@
+html, body {
+    background-color: #e9e9e9
+}
+.menu_tabs_wr {
+    text-align: center;
+    background-color: #fff;
+}
+.menu_tabs {
+    margin: 0 auto;
+}
+.menu_tab {
+    display: inline-block;
+    vertical-align: top;
+    min-width: 150px;
+    padding: 14px 25px 10px;
+    margin: 0;
+    margin-left: -4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #414141;
+    cursor: pointer;
+}
+.menu_tab.__selected {
+    border-bottom: 8px solid #4c77b8;
+}
+.st_cnt {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    background-color: #e9e9e9;
+}
+.st_filter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #fff;
+}
+.st_header {
+    margin: 0;
+    padding: 33px 0 24px;
+    text-align: center;
+    font-weight: 300;
+    font-size: 28px;
+    color: #777;
+}
+.st_filter_ctg_i {
+    padding: 10px 0 10px 52px;
+    color: #414141;
+    cursor: pointer;
+}
+.st_filter_ctg_i.__selected {
+    padding-left: 25px;
+    background-color: #e9e9e9;
+}
+.st_templates_wr {
+    padding-left: 200px;
+    margin: 0 auto;
+}
+.st_items_cnt {
+    margin: 0 auto;
+    width: 980px; /* 2 slide in row */
+}
+.st_item {
+    position: relative;
+    display: inline-block;
+    width: 400px;
+    padding: 0 40px 40px;
+}
+.st_item_img:hover > .st_item_op {
+    display: block;
+}
+.st_item_op {
+    display: none;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.5);
+}
+.st_item_op_line {
+    padding: 7px;
+}
+.st_item_img {
+    position: relative;
+    background-color: #eee;
+    background-size: cover;
+    width: 400px;
+    height: 300px;
+    text-align: center;
+}
+.st_item_name {
+    width: 100%;
+    text-align: center;
+    color: #666;
+    padding: 12px 0;
+}
+.st_preview_app_wr {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(63, 63, 63, 0.9);
+}
+.st_preview_app {
+    position: relative;
+    width: 800px;
+    margin: 100px auto;
+}
+.st_preview_iframe_cnt {
+    height: 600px;
+    background-color: #666;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+.st_preview_top_panel {
+    height: 70px;
+    background-color: #343434;
+    text-align: right;
+}
+.st_preview_header {
+    display: inline-block;
+    color: #848484;
+}
+.st_app_iframe {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}

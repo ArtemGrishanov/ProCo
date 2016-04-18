@@ -876,16 +876,6 @@ function requestFBUssrInfo() {
     );
 }
 
-$('#id-user_toolbar').click(function() {
-    var e = $('#id-user_ctx_menu');
-    if (e.css('display') === 'none') {
-        e.show();
-    }
-    else {
-        e.hide();
-    }
-});
-
 var selectionBorders = [];
 var selectedElem = null;
 function deleteSelections() {
