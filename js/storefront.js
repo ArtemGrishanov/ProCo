@@ -5,19 +5,39 @@
 var Storefront = {};
 (function (global) {
 
+    // TODO держать все шаблоны в памяти
     var templates = [
     ];
+    /**
+     * Iframe для предпросмотра шаблона
+     * @type {iframe}
+     */
+    var appIframe = null;
 
     function init() {
         $('.js_app-preview').click(function(e) {
-            //TODO template id or url
-            loadApp('test');
-            $('#id-app_preview').show();
+            var d = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
+            if (d) {
+                //loadTemplate('https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/609a0db43a.txt');
+                //loadApp('test');
+                templates = [];
+                loadTemplate(d);
+                $('.scr_wr').addClass('__shadow');
+                $('#id-app_preview').show();
+            }
         });
         $('.js-close').click(function(e) {
             $('#id-app_preview').hide();
+            $('.scr_wr').removeClass('__shadow');
         });
-        loadTemplate('https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/609a0db43a.txt');
+    }
+
+    /**
+     * Возвращает шаблон который был выбран для предпросмотра
+     * @returns {*}
+     */
+    function getActiveTemplate() {
+        return templates[0];
     }
 
     function getTemplate(index) {
@@ -47,6 +67,7 @@ var Storefront = {};
                         //TODO после при превью
                         //loadAppSrc(appName);
                         templates.push(obj);
+                        loadApp('test');
                     }
                     else {
                         log('Data not valid. Template url: \''+templateUrl+'\'', true);
@@ -78,7 +99,7 @@ var Storefront = {};
 //            $(appIframe).addClass('proto_cnt');
             var host = config.common.devPrototypesHostName || (config.common.awsHostName+config.common.awsBucketName);
             appIframe.src = host+src;
-            $('#id-app_iframe_cnt').append(appIframe);
+            $('#id-app_iframe_cnt').empty().append(appIframe);
             //TODO надо точно знать размеры продукта в этот момент
             // $('#id-app_iframe_cnt').width(600).height(400);
         }
@@ -88,22 +109,20 @@ var Storefront = {};
     }
 
     /**
-     * iFrame промо проекта был загружен. Получаем из него document и window
+     * iFrame промо проекта был загружен.
+     * Далее устанавливаем в него свойства из шаблона
      */
     function onProductIframeLoaded() {
-//        iframeWindow = appIframe.contentWindow;
-//        // запуск движка с передачей информации о шаблоне
-//        var params = null;
-//        if (appTemplate) {
-//            params = {
-//                values: appTemplate.propertyValues,
-//                descriptor: appTemplate.descriptor
-//            };
-//        }
-//        Engine.startEngine(iframeWindow, params);
-//        showEditor();
-//        syncUIControlsToAppProperties();
-//        workspaceOffset = $('#id-product_cnt').offset();
+        // запуск движка с передачей информации о шаблоне
+        var t = getActiveTemplate()
+        if (t) {
+            var params = {
+                values: t.propertyValues,
+                descriptor: t.descriptor
+            };
+            // движок используется только для установки свойств промо приложение
+            Engine.startEngine(appIframe.contentWindow, params);
+        }
     }
 
     init();

@@ -700,7 +700,51 @@ function saveTemplate() {
         log('Saving task done:' + appId);
         operationsCount = Engine.getOperationsCount();
         alert('Сохранено');
+        uploadTemplatePreview();
     }).bind(this));
+}
+
+function uploadTemplatePreview() {
+    function uplCnv(canvas) {
+        JPEGEncoder(100);
+        var theImgData = (canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
+        // Encode the image and get a URI back, set toRaw to true
+        var rawData = encode(theImgData, 100, true);
+        var blob = new Blob([rawData.buffer], {type: 'image/jpeg'});
+        var objKey = 'facebook-' + fbUserId + '/app/'+appId+'.jpg';
+        var params = {
+            Key: objKey,
+            ContentType: 'image/jpeg',
+            Body: blob,
+            ACL: 'public-read'
+        };
+        bucket.putObject(params, (function (err, data) {
+            if (err) {
+                //Not authorized to perform sts:AssumeRoleWithWebIdentity
+                log('ERROR: ' + err, true);
+            } else {
+                alert('Превью промки загружено');
+            }
+        }).bind(this));
+    }
+
+    // работает, но плохо с буллитами. Появляются непонятные линии
+//    html2canvas(productScreensCnt, {
+//        onrendered: (function(canvas) {
+//            uplCnv(canvas);
+//        }).bind(this)
+//    });
+
+    // не работает
+//    var canvas = document.getElementById("id-preview_canvas");
+//    rasterizeHTML.drawHTML(productScreensCnt.html(),canvas)
+//        .then(function success(renderResult) {
+//            console.log(renderResult);
+//        }, function error(e) {
+//            console.log(e);
+//        });
+//    $('body').append(canvas);
+    //uplCnv(canvas);
 }
 
 /**

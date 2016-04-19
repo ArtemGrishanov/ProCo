@@ -432,7 +432,7 @@ var Engine = {};
         var result = [];
         var parts = selector.split('.');
         // селектор постепенно уменьшается и передается вглубь рекурсии
-        var restSelector = parts.slice(1,a.length).join('.');
+        var restSelector = parts.slice(1,parts.length).join('.');
         if (parts[0]==='{{number}}') {
             // найти все числовые свойтсва в объекте
             for (var objkey in obj) {

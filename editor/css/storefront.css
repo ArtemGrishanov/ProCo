@@ -120,7 +120,8 @@ html, body {
     border: 0;
 }
 .st_preview_top_panel {
-    height: 70px;
+    height: 46px;
+    padding: 12px;
     background-color: #343434;
     text-align: right;
 }
@@ -132,4 +133,11 @@ html, body {
     border: 0;
     margin: 0;
     padding: 0;
+}
+.st_icon_arrow_left {
+    display: inline-block;
+    vertical-align: middle;
+    width: 62px;
+    height: 32px;
+    background: url(../i/icon-arrow-left.png);
 }
