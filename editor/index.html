@@ -22,9 +22,18 @@
                 <div class="toolbar_left">
                     <div class="logo ml24"></div>
                     <div class="delimeter"></div>
-                    <div class="top_proj_name">"Тест выставка Серова"</div>
+                    <div class="top_proj_name"><input class="top_proj_input js-proj_name" placeholder="Введите имя проекта"/></div>
                 </div>
                 <div class="toolbar_btns">
+                    <span class="tico">
+                        <i class="tico_img i_eye" style="position:relative;">
+                            <div class="file_input_wr">
+                                <input id="id-app_preview_img" class="file_input" type="file" accept="image/jpg"/>
+                            </div>
+                            <img src="i/add-slide-big.png"/>
+                        </i>
+                    </span>
+                    <div class="delimeter"></div>
                     <span class="tico" onclick="saveTemplate();"><i class="tico_img i_eye"><img src="i/save.png"/></i>Сохранить</span>
                     <div class="delimeter"></div>
                     <span class="tico" onclick="onPreviewClick();"><i class="tico_img"><img src="i/i_eye.png"/></i>Просмотр</span>

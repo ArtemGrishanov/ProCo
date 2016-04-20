@@ -18,7 +18,7 @@
                     <p id="id-start_desc_text" data-app-property="startDescription" class="js-start_description start_desc">Проверь свои знания в географии</p>
                 </div>
                 <div class="btn_wr js-btn_wr">
-                    <span class="t_btn js-next" data-app-property="startButtonText">Начать</span>
+                    <span class="t_btn js-next js-start_btn" data-app-property="startButtonText">Начать</span>
                 </div>
             </div>
         </div>
@@ -602,6 +602,7 @@
             else {
                 $w.css('backgroundImage','none');
             }
+            $('.js-start_btn').text(app.startButtonText);
             if (app.showTopColontitle === true) {
                 $('.topColontitle').show();
             }
@@ -639,7 +640,6 @@
             else {
                 $('.bullit').hide();
             }
-//            $('.bullit').css('borderWidth',app.bullitsBorderWidth+'px');
         }
 
         /**

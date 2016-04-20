@@ -14,11 +14,11 @@ var config = {
         /**
          * Проводить ли при старте инициализацию для работы с хранилищем амазона
          */
-        awsEnabled: true,
+        awsEnabled: false,
         /**
          * Разрешать вход через FB автоматически при запуске приложения
          */
-        facebookAutoAuthEnable: true,
+        facebookAutoAuthEnable: false,
         /**
          * Id приложения в facebook для логина
          */

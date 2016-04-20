@@ -78,7 +78,7 @@ var productScreensCnt = null;
  *
  * @type {{width: number}}
  */
-var appSize = {width: 600, height: 400};
+var appSize = {width: 800, height: 600};
 /**
  * Количество сделанный операция по редактированию пользователем
  * При сохранении шаблона синхронизируется с таким же счетччиком engine
@@ -188,7 +188,7 @@ function loadAppSrc(loadedAppName) {
         appIframe.src = host+src;
         $('#id-product_iframe_cnt').append(appIframe);
         //TODO надо точно знать размеры продукта в этот момент
-        $('#id-product_cnt').width(600).height(400);
+        $('#id-product_cnt').width(800).height(600);
     }
     else {
         log('Cannot find src for: \''+loadedAppName+'\'', true);
@@ -681,7 +681,8 @@ function saveTemplate() {
 //        app: Engine.getAppString(),
 //        css: Engine.getCustomStylesString(),
         propertyValues: Engine.getAppPropertiesValues(),
-        descriptor: iframeWindow.descriptor
+        descriptor: iframeWindow.descriptor,
+        title: $('.js-proj_name').val()
     };
     log('Saving project:' + appId);
     var objKey = 'facebook-'+fbUserId+'/app/'+appId+'.txt';
@@ -700,33 +701,57 @@ function saveTemplate() {
         log('Saving task done:' + appId);
         operationsCount = Engine.getOperationsCount();
         alert('Сохранено');
-        uploadTemplatePreview();
+//        uploadTemplatePreview();
     }).bind(this));
 }
 
+$('#id-app_preview_img').change((function() {
+    // сразу без превью - аплоад
+    this.uploadTemplatePreview();
+}).bind(this));
 function uploadTemplatePreview() {
-    function uplCnv(canvas) {
-        JPEGEncoder(100);
-        var theImgData = (canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
-        // Encode the image and get a URI back, set toRaw to true
-        var rawData = encode(theImgData, 100, true);
-        var blob = new Blob([rawData.buffer], {type: 'image/jpeg'});
-        var objKey = 'facebook-' + fbUserId + '/app/'+appId+'.jpg';
-        var params = {
-            Key: objKey,
-            ContentType: 'image/jpeg',
-            Body: blob,
-            ACL: 'public-read'
-        };
-        bucket.putObject(params, (function (err, data) {
-            if (err) {
-                //Not authorized to perform sts:AssumeRoleWithWebIdentity
-                log('ERROR: ' + err, true);
-            } else {
-                alert('Превью промки загружено');
-            }
-        }).bind(this));
+    if (fbUserId) {
+        var file = $('#id-app_preview_img')[0].files[0];
+        if (file) {
+            var objKey = 'facebook-' + fbUserId + '/app/'+appId+'.jpg';
+            var params = {
+                Key: objKey,
+                ContentType: file.type,
+                Body: file,
+                ACL: 'public-read'
+            };
+            bucket.putObject(params, (function (err, data) {
+                if (err) {
+                    //Not authorized to perform sts:AssumeRoleWithWebIdentity
+                    log('ERROR: ' + err, true);
+                } else {
+                    alert('Превью для промки загружена');
+                }
+            }).bind(this));
+        }
     }
+//    function uplCnv(canvas) {
+//        JPEGEncoder(100);
+//        var theImgData = (canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
+//        // Encode the image and get a URI back, set toRaw to true
+//        var rawData = encode(theImgData, 100, true);
+//        var blob = new Blob([rawData.buffer], {type: 'image/jpeg'});
+//        var objKey = 'facebook-' + fbUserId + '/app/'+appId+'.jpg';
+//        var params = {
+//            Key: objKey,
+//            ContentType: 'image/jpeg',
+//            Body: blob,
+//            ACL: 'public-read'
+//        };
+//        bucket.putObject(params, (function (err, data) {
+//            if (err) {
+//                //Not authorized to perform sts:AssumeRoleWithWebIdentity
+//                log('ERROR: ' + err, true);
+//            } else {
+//                alert('Превью промки загружено');
+//            }
+//        }).bind(this));
+//    }
 
     // работает, но плохо с буллитами. Появляются непонятные линии
 //    html2canvas(productScreensCnt, {
@@ -761,16 +786,23 @@ function openTemplate(templateUrl) {
         if (e.target.readyState == 4) {
             if(e.target.status == 200) {
                 var newId = null;
+                //TODO надо уметь открывать из моих проектов с требуемым fbUserId
+                // TODO и в то же время не требовать fbUserId когда из витрины
                 var reg = new RegExp('facebook-'+fbUserId+'\/app\/([A-z0-9]+)\.txt','g');
                 var match = reg.exec(templateUrl);
                 if (match && match[1]) {
                     newId = match[1];
                 }
                 var obj = JSON.parse(e.target.responseText);
-                if (obj.appName && obj.propertyValues && obj.descriptor && newId) {
+                if (obj.appName && obj.propertyValues && obj.descriptor/* && newId*/) {
                     appName = obj.appName;
                     appTemplate = obj;
-                    appId = newId;
+                    if (newId) {
+                        appId = newId;
+                    }
+                    if (obj.title) {
+                        $('.js-proj_name').val(obj.title);
+                    }
                     // после загрузки шаблона надо загрузить код самого промо проекта
                     // там далее в колбеке на загрузку iframe есть запуск движка
                     loadAppSrc(appName);
@@ -842,7 +874,7 @@ function showPreview() {
 function showEmbedDialog(result, data) {
     if (result === 'success') {
         var iframeUrl = data.src;
-        var ec = '<iframe src="'+iframeUrl+'" style="display:block;width:600px;height:400px;padding:0;border:none;"></iframe>';
+        var ec = '<iframe src="'+iframeUrl+'" style="display:block;width:800px;height:600px;padding:0;border:none;"></iframe>';
         showPublishDialog({
             link: iframeUrl,
             embedCode: ec

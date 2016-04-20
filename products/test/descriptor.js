@@ -173,7 +173,7 @@ descriptor.rules = {
         },
         label: 'Размер шрифта',
         cssProperty: 'font-size',
-        cssValuePattern: '{{value}}px',
+        cssValuePattern: '{{number}}px',
         filter: true
     },
     fontFamily: {
@@ -271,6 +271,7 @@ descriptor.rules = {
         },
         label: 'Скругление углов',
         cssProperty: 'border-radius',
+        cssValuePattern: '{{number}}px',
         filter: true
     },
     showQuestionProgress: {
@@ -292,7 +293,7 @@ descriptor.rules = {
         },
         //TODO format cssValue: '{value}px' чтобы было понятно как формировать проперти
         cssProperty: 'border-width',
-        cssValuePattern: '{{value}}px',
+        cssValuePattern: '{{number}}px',
         label: "Толщина бордера",
         filter: true
     },
@@ -304,7 +305,7 @@ descriptor.rules = {
             viewName: "textinput"
         },
         cssProperty: 'border-width',
-        cssValuePattern: '{{value}}px',
+        cssValuePattern: '{{number}}px',
         label: "Толщина бордера при наведении",
         filter: true
     },
@@ -374,7 +375,7 @@ descriptor.rules = {
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'padding-top',
-        cssValuePattern: '{{value}}px',
+        cssValuePattern: '{{number}}px',
         filter: true
     },
     paddingBottom: {
@@ -382,7 +383,7 @@ descriptor.rules = {
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'padding-bottom',
-        cssValuePattern: '{{value}}px',
+        cssValuePattern: '{{number}}px',
         filter: true
     },
     paddingLeft: {
@@ -390,7 +391,7 @@ descriptor.rules = {
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'padding-left',
-        cssValuePattern: '{{value}}px',
+        cssValuePattern: '{{number}}px',
         filter: true
     },
     marginTop: {
@@ -398,7 +399,7 @@ descriptor.rules = {
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'margin-top',
-        cssValuePattern: '{{value}}px',
+        cssValuePattern: '{{number}}px',
         filter: true
     },
     marginBottom: {
@@ -406,7 +407,7 @@ descriptor.rules = {
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'margin-bottom',
-        cssValuePattern: '{{value}}px',
+        cssValuePattern: '{{number}}px',
         filter: true
     },
     marginLeft: {
@@ -414,7 +415,7 @@ descriptor.rules = {
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'margin-left',
-        cssValuePattern: '{{value}}px',
+        cssValuePattern: '{{number}}px',
         filter: true
     }
 };

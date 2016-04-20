@@ -7,8 +7,8 @@ body {
     */
 }
 .wrapper {
-    width: 600px;
-    height: 400px;
+    width: 800px;
+    height: 600px;
     overflow: hidden;
     position: relative;
     font-family: Arial, sans-serif;
@@ -87,7 +87,6 @@ body {
 }
 .q_wr.__photo {
     margin: 5px;
-    font-size: 18px;
 }
 .a_wr {
     cursor: pointer;

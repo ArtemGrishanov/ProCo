@@ -14,12 +14,15 @@ var Storefront = {};
      */
     var appIframe = null;
 
+    var activeTemplateUrl = null;
+
     function init() {
         $('.js_app-preview').click(function(e) {
             var d = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
             if (d) {
                 //loadTemplate('https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/609a0db43a.txt');
                 //loadApp('test');
+                activeTemplateUrl = d;
                 templates = [];
                 loadTemplate(d);
                 $('.scr_wr').addClass('__shadow');
@@ -29,6 +32,18 @@ var Storefront = {};
         $('.js-close').click(function(e) {
             $('#id-app_preview').hide();
             $('.scr_wr').removeClass('__shadow');
+        });
+        $('.js-edit').click(function(e) {
+            var d = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
+            if (d) {
+                activeTemplateUrl = d;
+                window.location.href = config.common.devPrototypesHostName+'/editor/index.html?'+config.common.templateUrlParamName+'='+activeTemplateUrl;
+            }
+        });
+        $('.js-edit_active').click(function(e) {
+            if (activeTemplateUrl) {
+                window.location.href = config.common.devPrototypesHostName+'/editor/index.html?'+config.common.templateUrlParamName+'='+activeTemplateUrl;
+            }
         });
     }
 

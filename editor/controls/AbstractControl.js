@@ -45,7 +45,11 @@ var AbstractControl = {
      */
     addDirective: function() {
         //TODO refactor
-        if (this.$parent && this.directiveName != 'arraycontrol' && this.directiveName != 'slide') {
+        if (this.$parent &&
+            this.directiveName != 'arraycontrol' &&
+            this.directiveName != 'slide' &&
+            this.directiveName != 'colorpicker' &&
+            this.directiveName != 'textinput') {
             var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyString+'"></div>');
             this.$parent.append($elem);
             return $elem;

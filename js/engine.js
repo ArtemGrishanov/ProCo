@@ -828,7 +828,13 @@ var Engine = {};
                 if (appProperty.cssSelector && appProperty.cssProperty && value !== undefined && value !== null && value !== '') {
                     var cssV = null;
                     if (appProperty.cssValuePattern) {
-                        cssV = appProperty.cssValuePattern.replace('{{value}}',value);
+                        // пока поддерживается только паттерны на основе целого числа
+                        // например {{number}}px
+                        if (appProperty.cssValuePattern.indexOf('{{number}}') >= 0) {
+                            // парсим число для того чтобы работала установка как '20', так и '20px' в контроле в редакторе
+                            value = parseInt(value);
+                            cssV = appProperty.cssValuePattern.replace('{{number}}',value);
+                        }
                     }
                     else {
                         cssV = value;
