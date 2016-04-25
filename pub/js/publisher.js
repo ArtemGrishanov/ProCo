@@ -73,64 +73,66 @@ var Publisher = {};
      * @params.promoIframe {iFrame} - iframe приложения прототипа, который меняем
      */
     function publish(params) {
-        publishedAppId = params.appId;
-        appStr = params.appStr;
-        cssStr = params.cssStr;
-        promoIframe = params.promoIframe;
-        errorInPublish = false;
-        //TODO собираем ресурсы в несколько проходов
-        // например, для того чтобы забрать картинку, сначала надо скачать и распарсить файл css
-        var iframeDocument = promoIframe.contentDocument || promoIframe.contentWindow.document;
-        buildProductResourceList(iframeDocument.documentElement.innerHTML);
-        //подписка на окончания задач по сбору ресурсов для проекта
-        Queue.onComplete('grabResTask', function(){
-            log('All resources grabbed.');
+        if (App.getUserData() !== null) {
+            publishedAppId = params.appId;
+            appStr = params.appStr;
+            cssStr = params.cssStr;
+            promoIframe = params.promoIframe;
+            errorInPublish = false;
+            //TODO собираем ресурсы в несколько проходов
+            // например, для того чтобы забрать картинку, сначала надо скачать и распарсить файл css
+            var iframeDocument = promoIframe.contentDocument || promoIframe.contentWindow.document;
+            buildProductResourceList(iframeDocument.documentElement.innerHTML);
+            //подписка на окончания задач по сбору ресурсов для проекта
+            Queue.onComplete('grabResTask', function(){
+                log('All resources grabbed.');
 
-            //TODO меняем ссылки на картинки
-//            var imgReg = /((?:\w)+\/(?:\w)+\.(?:jpg|jpeg|png))/ig;
-//            for (var i = 0; i < productResources.length; i++) {
-//                var imgMatch = null;
-//                while ( (imgMatch = imgReg.exec(productResources.data)) !== null) {
-//                    //imgMatch[1]
-//                }
-//            }
+                //TODO меняем ссылки на картинки
+    //            var imgReg = /((?:\w)+\/(?:\w)+\.(?:jpg|jpeg|png))/ig;
+    //            for (var i = 0; i < productResources.length; i++) {
+    //                var imgMatch = null;
+    //                while ( (imgMatch = imgReg.exec(productResources.data)) !== null) {
+    //                    //imgMatch[1]
+    //                }
+    //            }
 
-            // удалим лишние параметры внутри приложения если они там есть
-            var indexRes = getResourceByUrl(indexHtml);
-            indexRes.data = deleteOverridedAppParams(indexRes.data);
+                // удалим лишние параметры внутри приложения если они там есть
+                var indexRes = getResourceByUrl(indexHtml);
+                indexRes.data = deleteOverridedAppParams(indexRes.data);
 
-            Queue.onComplete('overrideApp', function() {
-                log('Apps were overrided.');
+                Queue.onComplete('overrideApp', function() {
+                    log('Apps were overrided.');
 
-                Queue.onComplete('uploadRes', function() {
-                    if (errorInPublish === true) {
-                        callback('error', null);
-                    }
-                    else {
-                        log('All resources were uploaded.');
-                        var src = getDistribUrl()+indexHtml;
-                        callback('success', {src: src});
-                    }
+                    Queue.onComplete('uploadRes', function() {
+                        if (errorInPublish === true) {
+                            callback('error', null);
+                        }
+                        else {
+                            log('All resources were uploaded.');
+                            var src = getDistribUrl()+indexHtml;
+                            callback('success', {src: src});
+                        }
+                    });
+                    uploadProductResources({
+                        taskType:'uploadRes',
+                        priority:8
+                    });
                 });
-                uploadProductResources({
-                    taskType:'uploadRes',
-                    priority:8
+                overrideAppParams({
+                    taskType:'overrideApp',
+                    priority:9
                 });
-            });
-            overrideAppParams({
-                taskType:'overrideApp',
-                priority:9
-            });
 
-        });
-        grabProductResources({
-            taskType:'grabResTask',
-            priority:10
-        });
+            });
+            grabProductResources({
+                taskType:'grabResTask',
+                priority:10
+            });
+        }
     }
 
     function getDistribUrl() {
-        return config.common.awsHostName+config.common.awsBucketName+'/facebook-'+fbUserId+'/pub/'+publishedAppId+'/';
+        return config.common.awsHostName+config.common.awsBucketName+'/facebook-'+App.getUserData().id+'/pub/'+publishedAppId+'/';
     }
 
     /**
@@ -294,7 +296,7 @@ var Publisher = {};
                 data: JSON.parse(JSON.stringify(productResources[i])),
                 run: function() {
                     log('Upload task run:' + this.data.url);
-                    var objKey = 'facebook-'+fbUserId+'/pub/'+publishedAppId+'/'+this.data.url;
+                    var objKey = 'facebook-'+App.getUserData().id+'/pub/'+publishedAppId+'/'+this.data.url;
                     var params = {
                         Key: objKey,
                         ContentType: this.data.type,

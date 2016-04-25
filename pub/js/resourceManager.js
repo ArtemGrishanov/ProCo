@@ -26,10 +26,10 @@ function ResourceManager(params) {
      * @param {function} callback когда список ресурсов загужен будет вызвана
      */
     this.loadResources = function(callback) {
-        if (fbUserId) {
+        if (App.getAWSBucket() !== null) {
             // все кастомне ресы находятся в каталоге /res в пользовательском каталоге
-            var prefix = 'facebook-' + fbUserId + '/res';
-            bucket.listObjects({
+            var prefix = 'facebook-' + App.getUserData().id + '/res';
+            App.getAWSBucket().listObjects({
                 Prefix: prefix
             }, (function (err, data) {
                 if (err) {
@@ -38,7 +38,7 @@ function ResourceManager(params) {
                     data.Contents.forEach((function (obj) {
                         // вырезаем имя файла, чтобы использовать его в качестве id для дальнейшей работы
                         //TODO Файл с точками в имени тоже бывают и они не отображаются
-                        var reg = new RegExp('facebook-'+fbUserId+'\/res\/([^\.]+\.[A-z]+)','g');
+                        var reg = new RegExp('facebook-'+App.getUserData().id+'\/res\/([^\.]+\.[A-z]+)','g');
                         var match = reg.exec(obj.Key);
                         if (match && match[1]) {
                             var id = match[1];
@@ -68,19 +68,19 @@ function ResourceManager(params) {
      * Окно будет автоматически перерисовано с обновленным списком ресурсов
      */
     this.uploadResource = function() {
-        if (fbUserId) {
+        if (App.getAWSBucket() !== null) {
             var file = this.fileChooseOption.find('input[type=\'file\']')[0].files[0];
             if (file) {
                 // очищаем диалог от элементов на время аплоада, потом будет заново загрузка всех элементов
                 this.dialog.setOptions(null);
-                var objKey = 'facebook-' + fbUserId + '/res/' + file.name;
+                var objKey = 'facebook-' + App.getUserData().id + '/res/' + file.name;
                 var params = {
                     Key: objKey,
                     ContentType: file.type,
                     Body: file,
                     ACL: 'public-read'
                 };
-                bucket.putObject(params, (function (err, data) {
+                App.getAWSBucket().putObject(params, (function (err, data) {
                     if (err) {
                         //Not authorized to perform sts:AssumeRoleWithWebIdentity
                         log('ERROR: ' + err, true);
@@ -104,7 +104,7 @@ function ResourceManager(params) {
         // ничего более умного не делал пока
         this.initDialog();
         $('#id-dialogs_view').empty().append(this.dialog.view).show();
-        if (fbUserId) {
+        if (App.getUserData() !== null) {
             if (this.resourcesList === null) {
                 this.loadResources((function() {
                     this.setDialogOptions();

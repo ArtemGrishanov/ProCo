@@ -37,12 +37,12 @@ var Storefront = {};
             var d = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
             if (d) {
                 activeTemplateUrl = d;
-                window.location.href = config.common.devPrototypesHostName+'/editor/index.html?'+config.common.templateUrlParamName+'='+activeTemplateUrl;
+                window.location.href = 'editor.html?'+config.common.templateUrlParamName+'='+activeTemplateUrl;
             }
         });
         $('.js-edit_active').click(function(e) {
             if (activeTemplateUrl) {
-                window.location.href = config.common.devPrototypesHostName+'/editor/index.html?'+config.common.templateUrlParamName+'='+activeTemplateUrl;
+                window.location.href = 'editor.html?'+config.common.templateUrlParamName+'='+activeTemplateUrl;
             }
         });
     }

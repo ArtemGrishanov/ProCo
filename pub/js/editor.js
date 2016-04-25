@@ -34,8 +34,6 @@ var userTemplates = null;
 var devMode = true;
 var appIframe = null;
 var iframeWindow = null;
-var fbUserId;
-var bucket = null;
 /**
  * Диалог с выбором ресурсов (картинки). Можно зааплоадить, запросить список с сервера и выбрать картинку
  * @type {object}
@@ -52,11 +50,6 @@ var activeScreens = [];
  * @type {left: 0, top: 0}
  */
 var workspaceOffset = null;
-/**
- * Контролы Slide экранов, которые показаны в данный момент
- * @type {Array}
- */
-//var activeScreensControls = [];
 /**
  * Массив контролов и свойств AppProperty продукта
  * @type {Array.<object>}
@@ -145,17 +138,18 @@ function start() {
         filterControls();
     });
     resourceManager = new ResourceManager();
-    // инициализация апи для работы с хранилищем Amazon
-    if (config.common.awsEnabled === true) {
-        AWS.config.region = config.common.awsRegion;
-        bucket = new AWS.S3({
-            params: {
-                Bucket: config.common.awsBucketName
-            }
-        });
+    function _initPublisher() {
         Publisher.init({
-            awsBucket:bucket,
+            awsBucket: App.getAWSBucket(),
             callback: showEmbedDialog
+        });
+    }
+    if (App.getAWSBucket() !== null) {
+        _initPublisher();
+    }
+    else {
+        App.on(AWS_INIT_EVENT, function() {
+            _initPublisher();
         });
     }
     window.onbeforeunload = confirmExit;
@@ -204,8 +198,6 @@ function onProductIframeLoaded() {
     var params = null;
     if (appTemplate) {
         params = {
-//            app: appTemplate.app,
-//            css: appTemplate.css,
             values: appTemplate.propertyValues,
             descriptor: appTemplate.descriptor
         };
@@ -281,82 +273,66 @@ function showScreen(ids) {
  *
  */
 function bindControlsForAppPropertiesOnScreen($view, scrId) {
-//    var elems = $view.find('[data-app-property]');
-//    for (var i = 0; i < elems.length; i++) {
-//        var pAtt = $(elems[i]).attr('data-app-property');
-//        //TODO этот поиск никогда не сработает, сейчас всегда чистим все контролы при переключении экранов
-//        var c = findControlInfo(pAtt, elems[i]);
-//        if (c) {
-//            c.control.setProductDomElement(elems[i]);
-//            $('#id-control_cnt').append(c.control.$directive);
-//        }
-//        else {
-            // через запятую может быть перечислено несколько appProperty для одного и того же элемента
-            // например для логотипа data-app-property="logoStartPosition,logoUrl"
-//            var propertyStrings = pAtt.split(',');
-//            for (var k = 0; k < propertyStrings.length; k++) {
-            var appScreen = Engine.getAppScreen(scrId);
-            for (var k = 0; k < appScreen.appPropertyElements.length; k++) {
-                // для всех элементов связанных с appProperty надо создать событие по клику.
-                // в этот момент будет происходить фильтрация контролов на боковой панели
-                $(appScreen.appPropertyElements[k].domElement).click(function(e){
-                    // сейчас для простоты удаляются все выделения перед показом следующего
-                    deleteSelections();
-                    // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
-                    // задача - отфильтровать настройки на правой панели
-                    var dataAppPropertyString = $(e.currentTarget).attr('data-app-property');
-                    log(dataAppPropertyString + ' clicked');
-                    showSelection($(e.currentTarget));
-                    filterControls(dataAppPropertyString);
-                    e.preventDefault();
-                    e.stopPropagation();
-                });
-                // контрола пока ещё не существует для настройки, надо создать
-                var propertyString = appScreen.appPropertyElements[k].propertyString;
-                var appProperty = Engine.getAppProperty(propertyString);
-                //TODO объяснение снизу не понятно
-                //TODO remove иногда в атрибуте data-app-property содержится несколько ссылок на appProperty через запятую
-                //TODO remove в этом случае берем описание из дескриптора первого элемента [0]. Свойства должны быть идентичными, иначе это не имеет смысла
-                if (appProperty) {
-                    // не забыть что может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
-                    var controlsInfo = appProperty.controls;
-                    for (var j = 0; j < controlsInfo.length; j++) {
-                        var cn = controlsInfo[j].name;
-                        // здесь надо создавать только контролы которые находятся на рабочем поле, например textquickinput
-                        // они пересоздаются каждый раз при переключении экрана
-                        // "обычные" контролы создаются иначе
-                        if (config.controls[cn].type === 'workspace') {
-                            // имя вью для контрола
-                            var viewName = controlsInfo[j].params.viewName;
-                            var newControl = createControl(appProperty.propertyString,
-                                viewName,
-                                controlsInfo[j].name,
-                                controlsInfo[j].params,
-                                null,
-                                appScreen.appPropertyElements[k].domElement);
-                            if (newControl) {
-                                // только если действительно получилось создать ui для настройки
-                                // не все контролы могут быть реализованы или некорректно указаны
-                                uiControlsInfo.push({
-                                    appPropertyString: propertyString,
-                                    control: newControl,
-                                    domElement: appScreen.appPropertyElements[k].domElement
-                                });
-                            }
-                            else {
-                                log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+propertyString+ '\' on the screen '+scrId, true);
-                            }
-                        }
+    var appScreen = Engine.getAppScreen(scrId);
+    for (var k = 0; k < appScreen.appPropertyElements.length; k++) {
+        // для всех элементов связанных с appProperty надо создать событие по клику.
+        // в этот момент будет происходить фильтрация контролов на боковой панели
+        $(appScreen.appPropertyElements[k].domElement).click(function(e){
+            // сейчас для простоты удаляются все выделения перед показом следующего
+            deleteSelections();
+            // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
+            // задача - отфильтровать настройки на правой панели
+            var dataAppPropertyString = $(e.currentTarget).attr('data-app-property');
+            log(dataAppPropertyString + ' clicked');
+            showSelection($(e.currentTarget));
+            filterControls(dataAppPropertyString);
+            e.preventDefault();
+            e.stopPropagation();
+        });
+        // контрола пока ещё не существует для настройки, надо создать
+        var propertyString = appScreen.appPropertyElements[k].propertyString;
+        var appProperty = Engine.getAppProperty(propertyString);
+        //TODO объяснение снизу не понятно
+        //TODO remove иногда в атрибуте data-app-property содержится несколько ссылок на appProperty через запятую
+        //TODO remove в этом случае берем описание из дескриптора первого элемента [0]. Свойства должны быть идентичными, иначе это не имеет смысла
+        if (appProperty) {
+            // не забыть что может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
+            var controlsInfo = appProperty.controls;
+            for (var j = 0; j < controlsInfo.length; j++) {
+                var cn = controlsInfo[j].name;
+                // здесь надо создавать только контролы которые находятся на рабочем поле, например textquickinput
+                // они пересоздаются каждый раз при переключении экрана
+                // "обычные" контролы создаются иначе
+                if (config.controls[cn].type === 'workspace') {
+                    // имя вью для контрола
+                    var viewName = controlsInfo[j].params.viewName;
+                    var newControl = createControl(appProperty.propertyString,
+                        viewName,
+                        controlsInfo[j].name,
+                        controlsInfo[j].params,
+                        null,
+                        appScreen.appPropertyElements[k].domElement);
+                    if (newControl) {
+                        // только если действительно получилось создать ui для настройки
+                        // не все контролы могут быть реализованы или некорректно указаны
+                        uiControlsInfo.push({
+                            appPropertyString: propertyString,
+                            control: newControl,
+                            domElement: appScreen.appPropertyElements[k].domElement
+                        });
+                    }
+                    else {
+                        log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+propertyString+ '\' on the screen '+scrId, true);
                     }
                 }
-                else {
-                    // нет свойства appProperty в Engine хотя во вью есть элемент с таким атрибутом data-app-property
-                    // это значит ошибку в промо-продукте
-                    log('AppProperty \''+propertyString+'\' not exist. But such attribute exists on the screen: \''+scrId+'\'', true);
-                }
             }
-//        }
-//    }
+        }
+        else {
+            // нет свойства appProperty в Engine хотя во вью есть элемент с таким атрибутом data-app-property
+            // это значит ошибку в промо-продукте
+            log('AppProperty \''+propertyString+'\' not exist. But such attribute exists on the screen: \''+scrId+'\'', true);
+        }
+    }
 
     //TODO пока как-то выглядит запутанным управление контролами
 
@@ -655,16 +631,21 @@ function onEditClick() {
 }
 
 function onPublishClick() {
-    //TODO отделить пользовательскую зону для сохранения. другой домен например
-    //TODO прототипы для витрины и прочие ресы лежат в нашей доверенной зоне
-    if (Publisher.isInited() === true) {
-        // appId - уникальный ид проекта, например appId
-        Publisher.publish({
-            appId: appId,
-            appStr: Engine.getAppString(),
-            cssStr: Engine.getCustomStylesString(),
-            promoIframe: appIframe //TODO возможно айрейм спрятать в engine тоже
-        });
+    if (App.getUserData() !== null) {
+        //TODO отделить пользовательскую зону для сохранения. другой домен например
+        //TODO прототипы для витрины и прочие ресы лежат в нашей доверенной зоне
+        if (Publisher.isInited() === true) {
+            // appId - уникальный ид проекта, например appId
+            Publisher.publish({
+                appId: appId,
+                appStr: Engine.getAppString(),
+                cssStr: Engine.getCustomStylesString(),
+                promoIframe: appIframe //TODO возможно айрейм спрятать в engine тоже
+            });
+        }
+    }
+    else {
+        App.showLogin();
     }
 }
 
@@ -676,33 +657,36 @@ function saveTemplate() {
     //TODO автосохранение
     //TODO name
     //TODO возможно шифрование
-    var data = {
-        appName: appName,
-//        app: Engine.getAppString(),
-//        css: Engine.getCustomStylesString(),
-        propertyValues: Engine.getAppPropertiesValues(),
-        descriptor: iframeWindow.descriptor,
-        title: $('.js-proj_name').val()
-    };
-    log('Saving project:' + appId);
-    var objKey = 'facebook-'+fbUserId+'/app/'+appId+'.txt';
-    var params = {
-        Key: objKey,
-        ContentType: 'text/plain',
-        Body: JSON.stringify(data),
-        ACL: 'public-read'
-    };
-    bucket.putObject(params, (function (err, data) {
-        // task object context
-        if (err) {
-            log('ERROR: ' + err, true);
-            alert('Не удалось сохранить проект');
-        }
-        log('Saving task done:' + appId);
-        operationsCount = Engine.getOperationsCount();
-        alert('Сохранено');
-//        uploadTemplatePreview();
-    }).bind(this));
+    if (App.getAWSBucket() !== null) {
+        var data = {
+            appName: appName,
+            propertyValues: Engine.getAppPropertiesValues(),
+            descriptor: iframeWindow.descriptor,
+            title: $('.js-proj_name').val()
+        };
+        log('Saving project:' + appId);
+        var objKey = 'facebook-'+App.getUserData().id+'/app/'+appId+'.txt';
+        var params = {
+            Key: objKey,
+            ContentType: 'text/plain',
+            Body: JSON.stringify(data),
+            ACL: 'public-read'
+        };
+        App.getAWSBucket().putObject(params, (function (err, data) {
+            // task object context
+            if (err) {
+                log('ERROR: ' + err, true);
+                alert('Не удалось сохранить проект');
+            }
+            log('Saving task done:' + appId);
+            operationsCount = Engine.getOperationsCount();
+            alert('Сохранено');
+    //        uploadTemplatePreview();
+        }).bind(this));
+    }
+    else {
+        App.showLogin();
+    }
 }
 
 $('#id-app_preview_img').change((function() {
@@ -710,17 +694,17 @@ $('#id-app_preview_img').change((function() {
     this.uploadTemplatePreview();
 }).bind(this));
 function uploadTemplatePreview() {
-    if (fbUserId) {
+    if (App.getAWSBucket() !== null) {
         var file = $('#id-app_preview_img')[0].files[0];
         if (file) {
-            var objKey = 'facebook-' + fbUserId + '/app/'+appId+'.jpg';
+            var objKey = 'facebook-'+App.getUserData().id+'/app/'+appId+'.jpg';
             var params = {
                 Key: objKey,
                 ContentType: file.type,
                 Body: file,
                 ACL: 'public-read'
             };
-            bucket.putObject(params, (function (err, data) {
+            App.getAWSBucket().putObject(params, (function (err, data) {
                 if (err) {
                     //Not authorized to perform sts:AssumeRoleWithWebIdentity
                     log('ERROR: ' + err, true);
@@ -730,20 +714,23 @@ function uploadTemplatePreview() {
             }).bind(this));
         }
     }
+    else {
+        App.showLogin();
+    }
 //    function uplCnv(canvas) {
 //        JPEGEncoder(100);
 //        var theImgData = (canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
 //        // Encode the image and get a URI back, set toRaw to true
 //        var rawData = encode(theImgData, 100, true);
 //        var blob = new Blob([rawData.buffer], {type: 'image/jpeg'});
-//        var objKey = 'facebook-' + fbUserId + '/app/'+appId+'.jpg';
+//        var objKey = 'facebook-' + +App.getUserData().id+ + '/app/'+appId+'.jpg';
 //        var params = {
 //            Key: objKey,
 //            ContentType: 'image/jpeg',
 //            Body: blob,
 //            ACL: 'public-read'
 //        };
-//        bucket.putObject(params, (function (err, data) {
+//        App.getAWSBucket.putObject(params, (function (err, data) {
 //            if (err) {
 //                //Not authorized to perform sts:AssumeRoleWithWebIdentity
 //                log('ERROR: ' + err, true);
@@ -781,54 +768,61 @@ function uploadTemplatePreview() {
  * @param templateUrl
  */
 function openTemplate(templateUrl) {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function(e) {
-        if (e.target.readyState == 4) {
-            if(e.target.status == 200) {
-                var newId = null;
-                //TODO надо уметь открывать из моих проектов с требуемым fbUserId
-                // TODO и в то же время не требовать fbUserId когда из витрины
-                var reg = new RegExp('facebook-'+fbUserId+'\/app\/([A-z0-9]+)\.txt','g');
-                var match = reg.exec(templateUrl);
-                if (match && match[1]) {
-                    newId = match[1];
-                }
-                var obj = JSON.parse(e.target.responseText);
-                if (obj.appName && obj.propertyValues && obj.descriptor/* && newId*/) {
-                    appName = obj.appName;
-                    appTemplate = obj;
-                    if (newId) {
-                        appId = newId;
+    if (App.getUserData() !== null) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(e) {
+            if (e.target.readyState == 4) {
+                if(e.target.status == 200) {
+                    var myAppId = null;
+                    //TODO надо уметь открывать из моих проектов с требуемым user id
+                    var reg = new RegExp('facebook-'+App.getUserData().id+'\/app\/([A-z0-9]+)\.txt','g');
+                    var match = reg.exec(templateUrl);
+                    if (match && match[1]) {
+                        myAppId = match[1];
                     }
-                    if (obj.title) {
-                        $('.js-proj_name').val(obj.title);
+                    var obj = JSON.parse(e.target.responseText);
+                    if (obj.appName && obj.propertyValues && obj.descriptor) {
+                        appName = obj.appName;
+                        appTemplate = obj;
+                        if (myAppId) {
+                            // если шаблон мой, то используем предыдущий ид для редактирования.
+                            // если чужой (из витрины), то сгенерированный при старте редактора
+                            appId = myAppId;
+                        }
+                        if (obj.title) {
+                            $('.js-proj_name').val(obj.title);
+                        }
+                        // после загрузки шаблона надо загрузить код самого промо проекта
+                        // там далее в колбеке на загрузку iframe есть запуск движка
+                        loadAppSrc(appName);
                     }
-                    // после загрузки шаблона надо загрузить код самого промо проекта
-                    // там далее в колбеке на загрузку iframe есть запуск движка
-                    loadAppSrc(appName);
+                    else {
+                        log('Data not valid. Template url: \''+templateUrl+'\'', true);
+                    }
                 }
                 else {
-                    log('Data not valid. Template url: \''+templateUrl+'\'', true);
+                    log('Resource request failed: '+ e.target.statusText, true);
                 }
             }
-            else {
-                log('Resource request failed: '+ e.target.statusText, true);
-            }
-        }
-    };
-    xhr.open('GET',templateUrl);
-    xhr.send();
+        };
+        xhr.open('GET',templateUrl);
+        xhr.send();
+    }
+    else {
+        App.showLogin();
+    }
 }
 
 /**
  * Получить список проектов авторизованного пользователя
+ * Получить проекты другого пользователя нельзя
  *
  * @param {function} [callback] - функция для обратного вызова, когда шаблоны будут загружены
  */
 function requestUserTemplates(callback) {
-    if (fbUserId) {
-        var prefix = 'facebook-' + fbUserId + '/app';
-        bucket.listObjects({
+    if (App.getUserData() !== null) {
+        var prefix = 'facebook-'+App.getUserData().id+'/app';
+        App.getAWSBucket().listObjects({
             Prefix: prefix
         }, function (err, data) {
             if (err) {
@@ -837,7 +831,7 @@ function requestUserTemplates(callback) {
                 userTemplates = [];
                 data.Contents.forEach(function (obj) {
                     // вырезаем имя файла, чтобы использовать его в качестве id для дальнейшей работы
-                    var reg = new RegExp('facebook-'+fbUserId+'\/app\/([A-z0-9]+)\.txt','g');
+                    var reg = new RegExp('facebook-'+App.getUserData().id+'\/app\/([A-z0-9]+)\.txt','g');
                     var match = reg.exec(obj.Key);
                     if (match && match[1]) {
                         var id = match[1];
@@ -853,6 +847,9 @@ function requestUserTemplates(callback) {
             }
             callback();
         });
+    }
+    else {
+        App.showLogin();
     }
 }
 
@@ -903,55 +900,6 @@ function onBackToEditorClick() {
     showEditor();
 }
 
-if (config.common.facebookAutoAuthEnable === true) {
-    /*!
-     * Login to your application using Facebook.
-     * Uses the Facebook SDK for JavaScript available here:
-     * https://developers.facebook.com/docs/javascript/gettingstarted/
-     */
-    window.fbAsyncInit = function () {
-        FB.init({
-            appId: config.common.facebookAppId
-        });
-        FB.login(function (response) {
-            bucket.config.credentials = new AWS.WebIdentityCredentials({
-                ProviderId: 'graph.facebook.com',
-                RoleArn: config.common.awsRoleArn,
-                WebIdentityToken: response.authResponse.accessToken
-            });
-            fbUserId = response.authResponse.userID;
-
-            requestFBUssrInfo();
-        });
-    };
-    // Load the Facebook SDK asynchronously
-    (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-            return;
-        }
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "//connect.facebook.net/en_US/all.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-}
-
-function requestFBUssrInfo() {
-    FB.api('/me',
-        {fields: "id,about,age_range,picture,bio,birthday,context,email,first_name,gender,hometown,link,location,middle_name,name,timezone,website,work"},
-        function(response) {
-            console.log('API response', response);
-            $("#id-fb_profile_picture").append('<img src="' + response.picture.data.url + '"> ');
-//            $("#name").append(response.name);
-//            $("#user-id").append(response.id);
-//            $("#work").append(response.gender);
-//            $("#birthday").append(response.birthday);
-//            $("#education").append(response.hometown);
-        }
-    );
-}
-
 var selectionBorders = [];
 var selectedElem = null;
 function deleteSelections() {
@@ -964,10 +912,6 @@ function showSelection($elem) {
     selectedElem = $elem;
     var $seletionBorder = $($('#id-elem_selection_template').html());
     var eo = $elem.offset(); // position() не подходит в данном случае
-//    $seletionBorder.css('top',eo.top-workspaceOffset.top+'px');
-//    $seletionBorder.css('left',eo.left-workspaceOffset.left+'px');
-//    $seletionBorder.css('width',$elem.outerWidth(false)-1+'px'); // false - not including margins
-//    $seletionBorder.css('height',$elem.outerHeight(false)-1+'px');
     $seletionBorder.css('top',eo.top+'px');
     $seletionBorder.css('left',eo.left+'px');
     $seletionBorder.css('width',$elem.outerWidth(false)-1+'px'); // false - not including margins

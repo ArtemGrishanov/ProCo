@@ -4,23 +4,19 @@
 <head>
     <title>Редактор</title>
     <meta charset="UTF-8"/>
-    <link href="../bootsrap/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="../bootsrap/css/checkbox-radio-switch.css" rel="stylesheet"/>
-    <link href="../bootsrap/css/colorpicker.css" rel="stylesheet"/>
+    <link href="lib/bootsrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="lib/bootsrap/css/checkbox-radio-switch.css" rel="stylesheet"/>
+    <link href="lib/bootsrap/css/colorpicker.css" rel="stylesheet"/>
+    <link href="css/common.css" rel="stylesheet"/>
     <link href="controls/css/style.css" rel="stylesheet"/>
-    <link href="css/style.css" rel="stylesheet"/>
-    <!-- TODO для исключения влияния бутстрапа на превью используются файл очистки
-    в идеале должен быть iframe но там есть сложности с редактированием свойств его -->
-    <!--<link href="css/clearbootstrap.css" rel="stylesheet">-->
-    <!--TODO стили подгружать локально, только для экрана промо приложения -->
-
+    <link href="css/editor.css" rel="stylesheet"/>
 </head>
 <body ng-app="procoApp">
     <div id="id-editor_view" class="scr" style="display:none;">
         <div class="top">
             <div class="top_toolbar">
                 <div class="toolbar_left">
-                    <div class="logo ml24"></div>
+                    <a class="logo ml24" href="index.html"></a>
                     <div class="delimeter"></div>
                     <div class="top_proj_name"><input class="top_proj_input js-proj_name" placeholder="Введите имя проекта"/></div>
                 </div>
@@ -41,8 +37,9 @@
                 </div>
             </div>
             <div id="id-user_toolbar" class="toolbar_user">
-                <div id="id-fb_profile_picture" class="user_avatar"></div>
-                <div class="dropdown_btn">
+                <div style="display:none" class="user_avatar js-profile_picture"></div>
+                <span style="display:none" class="tico mt6 js-show_login">Войти</span>
+                <div style="display:none" class="dropdown_btn js-user_ctx_menu">
                     <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
                         <div class="ctx_menu_item" onclick="onMyTemplatesClick();">
                             Мои проекты
@@ -50,7 +47,7 @@
                         <div class="ctx_menu_item">
                             Настройки профиля
                         </div>
-                        <div class="ctx_menu_item">
+                        <div class="ctx_menu_item js-logout">
                             Выйти
                         </div>
                     </div>
@@ -99,6 +96,9 @@
     </div>
     <div id="id-dialogs_view" class="scr" style="display: none; z-index: 99; background-color: rgba(0,0,0,0.5); padding-top: 100px">
         <!-- для показа диалогов поверх остальных вью -->
+    </div>
+    <div id="id-modal_cnt">
+        <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
     </div>
 
     <!-- Шаблон для группы Slide соответствующих группе экранов -->
@@ -189,84 +189,84 @@
 
     <!-- Шаблон для диалога публикации -->
     <script id="id-publish_dialog_template" type="text/template">
-        <div class="pd_wr">
-            <div class="pd_top">
-                <p class="pd_header">Ваш тест готов!</p>
-                <div class="pd_tab_switcher js-tab_btns">
-                    <div class="pd_tab_btn js-tab_btn __selected" data-tab-id="1">
-                        <div><span class="pd_icon_link"></span></div>
-                        <div>Ссылка на проект</div>
-                    </div>
-                    <div class="pd_tab_btn js-tab_btn" data-tab-id="2">
-                        <div><span class="pd_icon_embed"></span></div>
-                        <div>Код для вставки на сайт или блог</div>
-                    </div>
+    <div class="pd_wr">
+        <div class="pd_top">
+            <p class="pd_header">Ваш тест готов!</p>
+            <div class="pd_tab_switcher js-tab_btns">
+                <div class="pd_tab_btn js-tab_btn __selected" data-tab-id="1">
+                    <div><span class="pd_icon_link"></span></div>
+                    <div>Ссылка на проект</div>
+                </div>
+                <div class="pd_tab_btn js-tab_btn" data-tab-id="2">
+                    <div><span class="pd_icon_embed"></span></div>
+                    <div>Код для вставки на сайт или блог</div>
                 </div>
             </div>
-            <div class="pd_tab_cnt js-tabs">
-                <div class="pd_tab js-tab" data-tab-id="1">
-                    <br><br>
-                    <div>
-                        <input class="pd_link_input js-project_link" readonly="readonly" value="http://example.com"/>
-                        <span class="pbtn __green js-copy_link">Копировать</span>
-                        <a href="#" target="_blank" class="pbtn js-view">Посмотреть</a>
-                    </div>
-                    <div class="pd_annotation_wr">
-                        <p class="pd_ann">Поделитесь вашим тестом в социальный сетях</p>
-                        <div class="pd_social_wr">
-                            <a href="#" class="social_btn __ok"></a>
-                            <a href="#" class="social_btn __vk ml12"></a>
-                            <a href="#" class="social_btn __fb ml12"></a>
-                            <a href="#" class="social_btn __twitter ml12"></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="pd_tab js-tab" data-tab-id="2">
-                    <br><br>
-                    <div class="pd_col">
-                        <textarea class="pd_embed_area js-embed_code" readonly="readonly"></textarea>
-                    </div>
-                    <div class="pd_col __w150">
-                        <span class="pbtn __green js-copy_embed_code">Копировать</span>
-                        <div class="pd_annotation_wr __b0">
-                            <span class="tx">Не получается?</span>
-                            <a href="#" class="link">Свяжитесь с нами</a>
-                        </div>
-                    </div>
-                    <div class="pd_annotation_wr">
-                        <!--<div class="pd_social_wr">-->
-                        <!--<a href="#" class="social_btn __q"></a>-->
-                        <!--</div>-->
-                        <p class="pd_ann">Как вставить тест на сайт или в блог</p>
-                    </div>
-                </div>
-            </div>
-            <div class="close_dialog_btn js-close"></div>
         </div>
+        <div class="pd_tab_cnt js-tabs">
+            <div class="pd_tab js-tab" data-tab-id="1">
+                <br><br>
+                <div>
+                    <input class="pd_link_input js-project_link" readonly="readonly" value="http://example.com"/>
+                    <span class="pbtn __green js-copy_link">Копировать</span>
+                    <a href="#" target="_blank" class="pbtn js-view">Посмотреть</a>
+                </div>
+                <div class="pd_annotation_wr">
+                    <p class="pd_ann">Поделитесь вашим тестом в социальный сетях</p>
+                    <div class="pd_social_wr">
+                        <a href="#" class="social_btn __ok"></a>
+                        <a href="#" class="social_btn __vk ml12"></a>
+                        <a href="#" class="social_btn __fb ml12"></a>
+                        <a href="#" class="social_btn __twitter ml12"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="pd_tab js-tab" data-tab-id="2">
+                <br><br>
+                <div class="pd_col">
+                    <textarea class="pd_embed_area js-embed_code" readonly="readonly"></textarea>
+                </div>
+                <div class="pd_col __w150">
+                    <span class="pbtn __green js-copy_embed_code">Копировать</span>
+                    <div class="pd_annotation_wr __b0">
+                        <span class="tx">Не получается?</span>
+                        <a href="#" class="link">Свяжитесь с нами</a>
+                    </div>
+                </div>
+                <div class="pd_annotation_wr">
+                    <!--<div class="pd_social_wr">-->
+                    <!--<a href="#" class="social_btn __q"></a>-->
+                    <!--</div>-->
+                    <p class="pd_ann">Как вставить тест на сайт или в блог</p>
+                </div>
+            </div>
+        </div>
+        <div class="close_dialog_btn js-close"></div>
+    </div>
     </script>
 
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
-    <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript" src="../js/html2canvas.js"></script>
-    <script type="text/javascript" src="../js/rasterizeHTML.allinone.js"></script>
-    <script type="text/javascript" src="../js/jpeg_encoder.js"></script>
-    <script type="text/javascript" src="../bootsrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../bootsrap/js/ace.min.js"></script>
-    <script type="text/javascript" src="../bootsrap/js/ace-elements.min.js"></script>
-    <script type="text/javascript" src="../bootsrap/js/bootstrap-colorpicker.min.js"></script>
-    <script type="text/javascript" src="../js/angular.min.js"></script>
-    <script type="text/javascript" src="../js/app.js"></script>
-    <script type="text/javascript" src="../js/config.js"></script>
-    <script type="text/javascript" src="../js/utils.js"></script>
-    <script type="text/javascript" src="../js/engine.js"></script>
-    <script type="text/javascript" src="../js/setting.js"></script>
-    <script type="text/javascript" src="../js/appProperty.js"></script>
-    <script type="text/javascript" src="../js/queue.js"></script>
-    <script type="text/javascript" src="../js/selectDialog.js"></script>
-    <script type="text/javascript" src="../js/selectUserTemplateDialog.js"></script>
-    <script type="text/javascript" src="../js/publishDialog.js"></script>
-    <script type="text/javascript" src="../js/resourceManager.js"></script>
-    <script type="text/javascript" src="../js/publisher.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/html2canvas.js"></script>
+    <script type="text/javascript" src="js/rasterizeHTML.allinone.js"></script>
+    <script type="text/javascript" src="js/jpeg_encoder.js"></script>
+    <script type="text/javascript" src="lib/bootsrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="lib/bootsrap/js/ace.min.js"></script>
+    <script type="text/javascript" src="lib/bootsrap/js/ace-elements.min.js"></script>
+    <script type="text/javascript" src="lib/bootsrap/js/bootstrap-colorpicker.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/engine.js"></script>
+    <script type="text/javascript" src="js/setting.js"></script>
+    <script type="text/javascript" src="js/appProperty.js"></script>
+    <script type="text/javascript" src="js/queue.js"></script>
+    <script type="text/javascript" src="js/selectDialog.js"></script>
+    <script type="text/javascript" src="js/selectUserTemplateDialog.js"></script>
+    <script type="text/javascript" src="js/publishDialog.js"></script>
+    <script type="text/javascript" src="js/resourceManager.js"></script>
+    <script type="text/javascript" src="js/publisher.js"></script>
     <!-- Все скрипты будут объединены при сборке проекта, так что забить что их много -->
     <script type="text/javascript" src="controls/AbstractControl.js"></script>
     <script type="text/javascript" src="controls/TextQuickInput.js"></script>
@@ -279,10 +279,18 @@
     <script type="text/javascript" src="controls/Alternative.js"></script>
     <script type="text/javascript" src="controls/ArrayControl.js"></script>
     <script type="text/javascript" src="controls/ChooseImageQuick.js"></script>
-    <script type="text/javascript" src="../js/editor.js"></script>
+    <script type="text/javascript" src="js/editor.js"></script>
     <script>
         $(document).ready(function(){
-            start();
+            App.on(FB_INIT_EVENT, function(result) {
+                if (result === 'ok') {
+                    start();
+                }
+                else {
+                    App.showLogin();
+                }
+            });
+            App.start();
         })
     </script>
     <canvas id="id-preview_canvas" width="600" height="400"></canvas>

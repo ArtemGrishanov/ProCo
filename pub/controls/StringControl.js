@@ -32,10 +32,12 @@ function StringControl(propertyString, directiveName, $parent, productDOMElement
 
     // в случае колорпикера только используя таймер можно отлавливать изменения поля. События не срабатывают
     setInterval((function(){
-        var p = Engine.getAppProperty(this.propertyString);
-        var v = this.$input.val() || undefined;
-        if (p.propertyValue !== v) {
-            Engine.setValue(p, v);
+        if (this.$input) {
+            var p = Engine.getAppProperty(this.propertyString);
+            var v = this.$input.val() || undefined;
+            if (p.propertyValue !== v) {
+                Engine.setValue(p, v);
+            }
         }
     }).bind(this), 500);
 }

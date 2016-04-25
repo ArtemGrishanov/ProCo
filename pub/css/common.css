@@ -1,0 +1,307 @@
+html, body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    color: #fff;
+    background-color: #c3c3c3;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+.modal_wr {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(63, 63, 63, 0.9);
+}
+.modal {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 800px;
+    margin: 100px auto;
+}
+.scr_wr {
+    position: relative;
+}
+.scr {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    min-width: 1024px;
+}
+.social_btn {
+    display: inline-block;
+    width: 44px;
+    height: 44px;
+    background: url(../editor/i/share-facebook.png) center no-repeat;
+    cursor: pointer;
+}
+.social_btn.__fb {
+    background-image: url(../editor/i/share-facebook.png);
+}
+.social_btn.__vk {
+    background-image: url(../editor/i/share-vk.png);
+}
+.social_btn.__ok {
+    background-image: url(../editor/i/share-ok.png);
+}
+.social_btn.__twitter {
+    background-image: url(../editor/i/share-twitter.png);
+}
+.social_btn.__q {
+    background-image: url(../i/q);
+}
+.link {
+    color: #0000ff;
+    text-decoration: underline;
+}
+.tx {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #979797;
+}
+.tx.__white {
+}
+.mt6 {
+    margin-top: 6px;
+}
+.ml12 {
+    margin-left: 12px;
+}
+.ml24 {
+    margin-left: 24px;
+}
+.mt90 {
+    margin-top: 90px;
+}
+.ctx_menu_wr {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    width: 219px;
+    background-color: #434343;
+    padding: 15px 0;
+    z-index: 9;
+}
+.ctx_menu_item {
+    padding: 10px 19px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+.ctx_menu_item:hover {
+    background-color: #343434;
+}
+.close_dialog_btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 30px;
+    height: 30px;
+    background: url(../i/Krestik-white.png) center no-repeat;
+    cursor: pointer;
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform:rotate(0deg);
+}
+.close_dialog_btn.__ext {
+    right: -54px;
+}
+.close_dialog_btn.__grey {
+    background-image: url(../i/Krestik-dark.png);
+}
+.close_dialog_btn:hover {
+    -webkit-animation:spin 0.3s linear;
+    -moz-animation:spin 0.3s linear;
+    animation:spin 0.3s linear;
+}
+@-moz-keyframes spin { 100% { -moz-transform: rotate(90deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(90deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(90deg); transform:rotate(90deg); } }
+
+.file_input_wr {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+}
+.file_input {
+    top: -10px;
+    right: -10px;
+    z-index: 2;
+    position: absolute;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    font-size: 500px;
+    height: initial !important; /* в bootstrap есть правило на input[type="file"] height:30px */
+}
+.pbtn {
+    display: inline-block;
+    border: #979797 solid 1px;
+    border-radius: 4px;
+    min-width: 128px;
+    padding: 12px 7px 12px 7px;
+    color: #979797;
+    background-color: #fff;
+    text-align: center;
+    cursor: pointer;
+}
+.pbtn.__green {
+    background-color: #1cbf61;
+    color: #fff;
+    border-color: #1cbf61;
+}
+.pbtn.__small {
+    padding: 5px 7px 5px 7px;
+}
+.top {
+    width: 100%;
+    height: 50px;
+    background-color: #343434;
+}
+.top_proj_name {
+    display: inline-block;
+    color: #b8b8b8;
+    font-size: 18px;
+    padding-top: 6px;
+}
+.top_proj_input {
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    color: #b8b8b8;
+    font-size: 18px;
+}
+.delimeter {
+    display: inline-block;
+    vertical-align: top;
+    height: 28px;
+    border-left: 1px solid #929292;
+    margin: 3px 16px;
+}
+.logo {
+    display: inline-block;
+    vertical-align: top;
+    background: url(../i/share-vk.png) center no-repeat;
+    width: 44px;
+    height: 34px;
+    background-size: contain;
+}
+.top_toolbar {
+    display: inline-block;
+    vertical-align: top;
+    width: 88%;
+    padding-top: 8px;
+}
+.toolbar_left {
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    width: 49%;
+}
+.toolbar_btns {
+    display: inline-block;
+    vertical-align: top;
+    text-align: right;
+    width: 49%;
+}
+.toolbar_user {
+    display: inline-block;
+    vertical-align: top;
+    min-width: 80px;
+    width: 10%;
+    padding-top: 5px;
+    cursor: pointer;
+}
+.user_avatar {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: #eee;
+    border-radius: 999px;
+    overflow: hidden;
+}
+.dropdown_btn {
+    display: inline-block;
+    position: relative;
+    background: url(../i/drop-down-2.png) no-repeat center;
+    width: 20px;
+    height: 40px;
+    cursor: pointer;
+}
+.tico {
+    position: relative;
+    display: inline-block;
+    min-height: 16px;
+    line-height: 1.5;
+    cursor: pointer;
+}
+.tico_img {
+    display: inline-block;
+    padding-right: 7px;
+    text-decoration: none;
+    font-style: normal;
+    background-repeat: no-repeat;
+}
+.i_eye {
+    width: 30px;
+    height: 22px;
+}
+.fb_login_button {
+    display: inline-block;
+    width: 253px;
+    height: 47px;
+    background: url(../i/facebook-login.png) no-repeat;
+    cursor: pointer;
+}
+.menu_tabs_wr {
+    text-align: center;
+    background-color: #fff;
+}
+.menu_tabs {
+    margin: 0 auto;
+}
+.menu_tab {
+    display: inline-block;
+    vertical-align: top;
+    min-width: 150px;
+    padding: 14px 25px 10px;
+    margin: 0;
+    margin-left: -4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #414141;
+    cursor: pointer;
+    text-decoration: none;
+}
+.menu_tab:hover {
+    text-decoration: none;
+}
+.menu_tab.__selected {
+    border-bottom: 8px solid #4c77b8;
+}
+.header {
+    margin: 0;
+    padding: 33px 0 24px;
+    text-align: center;
+    font-weight: 300;
+    font-size: 28px;
+    color: #777;
+}
+.login_form {
+    position: relative;
+    background-color: #fff;
+    color: #979797;
+    text-align: center;
+    padding: 40px;
+}
