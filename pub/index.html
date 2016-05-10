@@ -3,6 +3,7 @@
 <head>
     <title>Главная</title>
     <meta charset="UTF-8">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
     <link href="css/common.css" rel="stylesheet"/>
 </head>
 <body>
@@ -15,7 +16,7 @@
             </div>
             <div id="id-user_toolbar" class="toolbar_user">
                 <div style="display:none" class="user_avatar js-profile_picture"></div>
-                <span style="display:none" class="tico mt6 js-show_login">Войти</span>
+                <span style="display:none" class="pbtn __green __small mt4 js-show_login">Войти</span>
                 <div style="display:none" class="dropdown_btn js-user_ctx_menu">
                     <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
                         <div class="ctx_menu_item" onclick="onMyTemplatesClick();">
@@ -41,8 +42,22 @@
             </div>
         </div>
     </div>
-    <div class="header">
-        Главная страница
+    <!--<div class="header">-->
+        <!--Главная страница-->
+    <!--</div>-->
+    <div class="main_title">
+        <div class="main_title_shadow"></div>
+        <div class="main_title_content_wr">
+            <div class="main_title_content">
+                <h1 class="main_title_header tx __white">testix</h1>
+                <h2 class="main_title_header2 tx __white __light">Конструктор спецпроектов</h2>
+                <p class="main_title_desc tx __white __light">Узнайте, как спецпроекты<br>могут помочь вашему бизнесу</p>
+                <div class="main_title_btns_wr">
+                    <span class="pbtn __long">Посмотрите видео</span>
+                    <span class="pbtn __green __long ml24">Создайте спецпроект</span>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="id-modal_cnt">
         <!-- Сюда динамически подгружаются модальные окна из шаблонов -->

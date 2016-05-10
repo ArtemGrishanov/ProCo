@@ -1,5 +1,5 @@
 html, body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto-Medium', sans-serif;
     font-size: 16px;
     font-weight: 300;
     color: #fff;
@@ -66,6 +66,14 @@ html, body {
     color: #979797;
 }
 .tx.__white {
+    color: #fff;
+}
+.tx.__light {
+    /*font-family: Roboto-Light;*/
+    font-weight: 100;
+}
+.mt4 {
+    margin-top: 4px;
 }
 .mt6 {
     margin-top: 6px;
@@ -147,7 +155,7 @@ html, body {
 }
 .pbtn {
     display: inline-block;
-    border: #979797 solid 1px;
+    border: none;/*#979797 solid 1px;*/
     border-radius: 4px;
     min-width: 128px;
     padding: 12px 7px 12px 7px;
@@ -162,7 +170,10 @@ html, body {
     border-color: #1cbf61;
 }
 .pbtn.__small {
-    padding: 5px 7px 5px 7px;
+    padding: 6px 7px 6px 7px;
+}
+.pbtn.__long {
+    min-width: 225px;
 }
 .top {
     width: 100%;
@@ -275,6 +286,7 @@ html, body {
     display: inline-block;
     vertical-align: top;
     min-width: 150px;
+    min-height: 50px;
     padding: 14px 25px 10px;
     margin: 0;
     margin-left: -4px;
@@ -294,7 +306,6 @@ html, body {
     margin: 0;
     padding: 33px 0 24px;
     text-align: center;
-    font-weight: 300;
     font-size: 28px;
     color: #777;
 }
@@ -304,4 +315,44 @@ html, body {
     color: #979797;
     text-align: center;
     padding: 40px;
+}
+.main_title {
+    position: relative;
+    height: 580px;
+    background: url(../i/index_main.jpg) no-repeat center;
+    background-size: cover;
+    text-align: center;
+}
+.main_title_shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4));
+}
+.main_title_content_wr {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+.main_title_content {
+    padding-top: 120px;
+}
+.main_title_header {
+    text-transform: uppercase;
+    font-size: 114px;
+    margin: 0;
+}
+.main_title_header2 {
+    font-size: 40px;
+    margin: 0;
+}
+.main_title_desc {
+    font-size: 24px;
+    margin: 0;
+}
+.main_title_btns_wr {
 }

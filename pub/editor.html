@@ -4,6 +4,7 @@
 <head>
     <title>Редактор</title>
     <meta charset="UTF-8"/>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
     <link href="lib/bootsrap/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="lib/bootsrap/css/checkbox-radio-switch.css" rel="stylesheet"/>
     <link href="lib/bootsrap/css/colorpicker.css" rel="stylesheet"/>
@@ -38,7 +39,7 @@
             </div>
             <div id="id-user_toolbar" class="toolbar_user">
                 <div style="display:none" class="user_avatar js-profile_picture"></div>
-                <span style="display:none" class="tico mt6 js-show_login">Войти</span>
+                <span style="display:none" class="pbtn __green __small mt4 js-show_login">Войти</span>
                 <div style="display:none" class="dropdown_btn js-user_ctx_menu">
                     <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
                         <div class="ctx_menu_item" onclick="onMyTemplatesClick();">
@@ -281,16 +282,20 @@
     <script type="text/javascript" src="controls/ChooseImageQuick.js"></script>
     <script type="text/javascript" src="js/editor.js"></script>
     <script>
-        $(document).ready(function(){
-            App.on(FB_INIT_EVENT, function(result) {
-                if (result === 'ok') {
+        $(document).ready(function() {
+            if (config.common.facebookAuthEnable === true) {
+                App.on(FB_INIT_EVENT, function(result) {
+                    if (result !== 'ok') {
+                        App.showLogin();
+                    }
                     start();
-                }
-                else {
-                    App.showLogin();
-                }
-            });
-            App.start();
+                });
+                App.start();
+            }
+            else {
+                App.start();
+                start();
+            }
         })
     </script>
     <canvas id="id-preview_canvas" width="600" height="400"></canvas>
