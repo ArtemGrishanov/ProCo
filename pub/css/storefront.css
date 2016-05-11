@@ -32,11 +32,14 @@ html, body {
     margin: 0 auto;
     width: 980px; /* 2 slide in row */
 }
+.st_row {
+    width: 2400px;
+    margin: 0 auto;
+}
 .st_item {
     position: relative;
     display: inline-block;
-    width: 400px;
-    padding: 0 40px 40px;
+    /*width: 400px;*/
 }
 .st_item_img:hover > .st_item_op {
     display: block;
@@ -61,6 +64,10 @@ html, body {
     width: 400px;
     height: 300px;
     text-align: center;
+}
+.st_item_img.__small {
+    width: 350px;
+    height: 247px;
 }
 .st_item_name {
     width: 100%;
