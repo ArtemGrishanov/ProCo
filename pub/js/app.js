@@ -67,6 +67,14 @@ var App = App || {};
         $('.js-close').click(function() {
             $('#id-modal_cnt').empty();
         });
+        $('.js-video').click(function() {
+            $('#id-video').show();
+            document.getElementById('id-videoplayer').play();
+        });
+        $('.js-video_close').click(function() {
+            $('#id-video').hide();
+            document.getElementById('id-videoplayer').pause();
+        });
     }
 
     /**
