@@ -45,7 +45,13 @@ var resourceManager = null;
  */
 var activeScreens = [];
 /**
+ * Подсказки для текущего экрана продукта
+ * @type {Array}
+ */
+var activeScreenHints = [];
+/**
  * Объект с информации о координатах рабочего поля.
+ * Другими словами: промо-продукта
  * Нужен для позиционирования рамок selections
  * @type {left: 0, top: 0}
  */
@@ -134,7 +140,7 @@ function start() {
         }
     }
     $('#id-workspace').click(function(){
-        // любой клик по документы сбрасывает фильтр контролов
+        // любой клик по документу сбрасывает фильтр контролов
         filterControls();
     });
     resourceManager = new ResourceManager();
@@ -205,7 +211,7 @@ function onProductIframeLoaded() {
     Engine.startEngine(iframeWindow, params);
     showEditor();
     syncUIControlsToAppProperties();
-    workspaceOffset = $('#id-product_cnt').offset();
+    workspaceOffset = $('#id-product_screens_cnt').offset();
 }
 
 /**
@@ -218,7 +224,7 @@ function showScreen(ids) {
     // запоминаем, если потребуется восстановление показа экранов.
     // Например, произойдет пересборка экранов и надо будет вернуться к показу последних активных
     activeScreens = ids;
-
+    activeScreenHints = [];
     // каждый раз удаляем quick-контролы и создаем их заново. Не слишком эффективно мб но просто и надежно
     // то что контролы привязаны к одному экрану определяется только на основании контейнера, в который они помещены
     var $controlCnt = $('#id-control_cnt').empty();
@@ -240,16 +246,11 @@ function showScreen(ids) {
         if (appScreen) {
             $(productScreensCnt).append(appScreen.view).append('<br>');
             previewHeight += appSize.height+20; // 20 - <br>
-
-//            var screenHtml = '<link href="../products/test/style.css" rel="stylesheet"/>'+appScreen.view.html();
-//            $screensCnt.html(screenHtml);
-
-//            var screenHtml = '<head><link href="../products/test/style.css" rel="stylesheet"></head><body>'+appScreen.view.html()+'</body>';
-//            $screensCnt.attr('srcdoc',screenHtml);
             if (typeof appScreen.doWhenInDOM === 'function') {
                 appScreen.doWhenInDOM(iframeWindow.app, appScreen.view);
             }
             bindControlsForAppPropertiesOnScreen(appScreen.view, ids[i]);
+            showAppScreenHints(appScreen);
         }
         else {
             //TODO показать ошибку наверное
@@ -262,6 +263,11 @@ function showScreen(ids) {
     // подсветка контрола Slide по которому кликнули
     $('#id-slides_cnt').find('.slide_thumb').removeClass('__active');
     $('#id-slides_cnt').find('[data-app-property=\"'+activeScreens.join(' ')+'\"]').addClass('__active');
+
+    $($("#id-product_screens_cnt").contents()).click(function(){
+        // любой клик по промо-проекту сбрасывает подсказки
+        hideWorkspaceHints();
+    });
 }
 
 /**
@@ -342,6 +348,23 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
         $compile($('#id-control_cnt')[0])($rootScope);
         $rootScope.$digest();
     });
+}
+
+/**
+ * Показать подсказки для экрана
+ * @param appScreen
+ */
+function showAppScreenHints(appScreen) {
+    if (appScreen.hints) {
+        for (var i = 0; i < appScreen.hints.length; i++) {
+            var h = appScreen.hints[i];
+            if (h.isShown === false) {
+                h.hintElement = showWorkspaceHint(h.domElement, h.text);
+                h.isShown = true;
+                activeScreenHints.push(h);
+            }
+        }
+    }
 }
 
 /**
@@ -879,6 +902,30 @@ function showEmbedDialog(result, data) {
     }
     else {
         alert('Publishing Error');
+    }
+}
+
+/**
+ * Показать подсказку на любой элемент в редакторе
+ * @param $elem
+ * @param text
+ */
+function showWorkspaceHint($elem, text) {
+    var $hint = $($('#id-hint_template').html());
+    $hint.find('.js-text').html(text);
+    var eo = $elem.offset();
+    // сначала элемент надо добавить в дерево, чтобв рассчитать его размеры
+    $(document.body).append($hint);
+    // выравнивание слева от элемента, учитывая актуальный размер элемента и подсказки
+    $hint.css('top',eo.top+workspaceOffset.top+($elem.outerHeight(false)-$hint.outerHeight(false))/2+'px');
+    $hint.css('left',eo.left+workspaceOffset.left-$hint.outerWidth(false)-config.editor.ui.hintRightMargin+'px');
+    //TODO добавить треугольный указатель
+    return $hint;
+}
+
+function hideWorkspaceHints() {
+    while (activeScreenHints.length>0) {
+        $(activeScreenHints.pop().hintElement).remove();
     }
 }
 

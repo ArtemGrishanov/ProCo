@@ -14,11 +14,11 @@ var config = {
         /**
          * Проводить ли при старте инициализацию для работы с хранилищем амазона
          */
-        awsEnabled: true,
+        awsEnabled: false,
         /**
          * Разрешать вход через FB
          */
-        facebookAuthEnable: true,
+        facebookAuthEnable: false,
         /**
          * Id приложения в facebook для логина
          */
@@ -163,6 +163,10 @@ var config = {
              */
             arrayControlDragZIndex: 20,
             /**
+             * zIndex подсказок
+             */
+            hintZIndex: 30,
+            /**
              * Отступы, насколько можно вынести перетаскиваемый элемент за границы группы
              */
             slideGroupLeftDragMargin: 10,
@@ -170,7 +174,11 @@ var config = {
             /**
              * Утступы слева и справа от промежуточных кнопок в слайдереэ экранов
              */
-            slideInterimBtnMargins: 6
+            slideInterimBtnMargins: 6,
+            /**
+             * Отступ от хинта до элемента, на который он указывает
+             */
+            hintRightMargin: 7
         }
     }
 };

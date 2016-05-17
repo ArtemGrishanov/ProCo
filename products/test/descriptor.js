@@ -61,6 +61,12 @@ descriptor.css = [
         rules: 'textAlign marginTop marginBottom paddingLeft'
     },
     {
+        //TODO подумать
+        selector: '.t_btn',
+        hint: 'Кнопка',
+        rules: 'textAlign'
+    },
+    {
         selector: '.js-photo',
         rules: 'textAlign marginTop marginBottom',
         // выделяться будет .js-photo, пользователь работает как-бы с ним
@@ -70,7 +76,7 @@ descriptor.css = [
     {
         // все кнопки в состоянии навеения
         selector: '.t_btn:hover',
-        rules: 'hoverBackgroundColor hoverFontColor hoverBorderColor'
+        rules: 'hoverBackgroundColor hoverFontColor hoverBorderColor',
     },
     {
         selector: '.bullit',
@@ -419,6 +425,7 @@ descriptor.rules = {
         filter: true
     }
 };
+
 //var descriptor = {
 //    stylePresets: {
 //        isPreset: true,

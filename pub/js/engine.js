@@ -539,6 +539,7 @@ var Engine = {};
                 // мы знаем сss классы для редактирования, так как дескриптор был разобран
                 // можно сразу найти классы и data-app-property на view
                 ps[i].appPropertyElements = [];
+                ps[i].hints = [];
                 // id нужен для соотнесения клика по элементу с нужным апп проперти в массиве appPropertyElements
                 //TODO нужно подумать о таком кейсе: когда один и тот же элемент помечен как data-app-property и каким-то классом одновременно
                 for (var j = 0; j < appProperties.length; j++) {
@@ -548,6 +549,8 @@ var Engine = {};
                             // добавить проперти в data-app-property атрибут, так как css свойств там нет
                             // они понадобятся чтобы по клику а этот элемент показать все проперти которые нужны
                             addDataAttribute(elemsOnView[k], appProperties[j].propertyString);
+                            // для экрана подготавливаем domElement связанные с appProperty,
+                            // чтобы потом не искать их при каждом показе экрана
                             ps[i].appPropertyElements.push({
                                 propertyString: appProperties[j].propertyString,
                                 domElement: elemsOnView[k]
@@ -569,6 +572,15 @@ var Engine = {};
                                 log('No cssProperty: ' + appProperties[j].propertyString, true);
                             }
                         }
+                    }
+                    // заранее находим dom элементы на экране для подсказок
+                    // в дальнейшем они будут активироваться при показе этого экрана
+                    if (appProperties[j].hint) {
+                        ps[i].hints.push({
+                            text: appProperties[j].hint,
+                            domElement: $(ps[i].view).find(appProperties[j].cssSelector),
+                            isShown: false
+                        });
                     }
                 }
                 // далее ищем data-app-property атрибуты, чтобы сразу привязать к экрану app property

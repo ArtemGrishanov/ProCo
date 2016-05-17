@@ -26,7 +26,10 @@ var validAttributes = {
 
     // селектор dom-элемент к которому применяем свойства. Обычно это cssSelector, но например text-align надо применять к родителю.
     // вот тут и указываем родителя в этом свойства
-    applyCssTo: null
+    applyCssTo: null,
+
+    // подсказка для dom-элемента в промо продуктеы
+    hint: null
 };
 
 /**
@@ -50,8 +53,8 @@ var AppProperty = function(propertyValue, propertyString, descriptor) {
     if (this.propertyString.charAt(0) === '.') {
         this.propertyString = this.propertyString.substr(1);
     }
-    // может быть привязан позднее
-    this.domElement = null;
+// может быть привязан позднее
+//    this.domElement = null;
 //    // если css селектор не указан, то автоматически формируем его из имени propertyString
 //    if (!descriptor.cssSelector) {
 //        descriptor.cssSelector = '.js-app_'+propertyString;

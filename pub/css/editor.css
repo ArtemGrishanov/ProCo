@@ -355,3 +355,12 @@
     font-size: 14px;
     resize: none;
 }
+.hint {
+    position: absolute;
+    min-width: 120px;
+    max-width: 200px;
+    background-color: #2222ff;
+    padding: 10px;
+    z-index: 1;
+    color: #fff;
+}
