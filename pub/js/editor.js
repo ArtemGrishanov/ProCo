@@ -224,6 +224,8 @@ function showScreen(ids) {
     // запоминаем, если потребуется восстановление показа экранов.
     // Например, произойдет пересборка экранов и надо будет вернуться к показу последних активных
     activeScreens = ids;
+    // надо скрыть все активные подсказки, если таковые есть. На новом экране будут новые подсказки
+    hideWorkspaceHints();
     activeScreenHints = [];
     // каждый раз удаляем quick-контролы и создаем их заново. Не слишком эффективно мб но просто и надежно
     // то что контролы привязаны к одному экрану определяется только на основании контейнера, в который они помещены
@@ -250,6 +252,7 @@ function showScreen(ids) {
                 appScreen.doWhenInDOM(iframeWindow.app, appScreen.view);
             }
             bindControlsForAppPropertiesOnScreen(appScreen.view, ids[i]);
+            initTriggers(appScreen);
             showAppScreenHints(appScreen);
         }
         else {
@@ -267,6 +270,29 @@ function showScreen(ids) {
     $($("#id-product_screens_cnt").contents()).click(function(){
         // любой клик по промо-проекту сбрасывает подсказки
         hideWorkspaceHints();
+    });
+}
+
+/**
+ * инициализировать триггеры, относящиеся к текущему экрану
+ */
+var tr;
+function initTriggers(appScreen) {
+    //TODO организовать систему триггеров +config.js
+    tr = new ClickTrigger(appScreen, {
+        event: 'click',
+        cssSelector: '.bullit',
+        onEventClass: 'bullit_active',
+        callMethod: 'setCorrentAnswer',
+        callParams: 'data-id'
+    });
+
+    tr2 = new SetClassTrigger(appScreen, {
+        callMethod: 'getCorrectAnswerId',
+        callParams: 'screenData:currentQuestionIndex',
+        cssSelector: '.bullit',
+        activeClass: 'bullit_active',
+        attr: 'data-id'
     });
 }
 

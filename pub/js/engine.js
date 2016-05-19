@@ -433,7 +433,8 @@ var Engine = {};
         var parts = selector.split('.');
         // селектор постепенно уменьшается и передается вглубь рекурсии
         var restSelector = parts.slice(1,parts.length).join('.');
-        if (parts[0]==='{{number}}') {
+        // Либо просто число, либо со ссылкой на переменную: quiz.{{number:currentQuestionIndex}}.options.{{number}}.points
+        if (parts[0].indexOf('{{number')===0) {
             // найти все числовые свойтсва в объекте
             for (var objkey in obj) {
                 if (obj.hasOwnProperty(objkey) && isNaN(objkey)===false) {
@@ -498,25 +499,25 @@ var Engine = {};
      * @param Array.<string> selector например "[startHeaderText, quiz.{{number}}.options.{{number}}.text, resultText]"
      * @returns {boolean}
      */
-    function matchSelector(objectString, selector) {
-        var selectorArr = selector.split(' ');
-        for (var i = 0; i < selectorArr.length; i++) {
-            if (objectString === selectorArr[i].trim()) {
-                return true;
-            }
-            else if (selectorArr[i].indexOf('.') >= 0 || selectorArr[i].indexOf('{{') >= 0) {
-                // Пример: selector "quiz.{{number}}.text" превращается в регулярку "quiz\.\d+\.text" и сравнивается с objectString на соответствие
-                var s = selectorArr[i].replace(new RegExp('\\.','g'),'\\.').replace(new RegExp('{{number}}','ig'),'\\d+');
-                var reg = new RegExp(s,'ig');
-                var match = reg.exec(objectString);
-                if (match && match[0] == objectString) {
-                    // match[0] string itself
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+//    function matchSelector(objectString, selector) {
+//        var selectorArr = selector.split(' ');
+//        for (var i = 0; i < selectorArr.length; i++) {
+//            if (objectString === selectorArr[i].trim()) {
+//                return true;
+//            }
+//            else if (selectorArr[i].indexOf('.') >= 0 || selectorArr[i].indexOf('{{') >= 0) {
+//                // Пример: selector "quiz.{{number}}.text" превращается в регулярку "quiz\.\d+\.text" и сравнивается с objectString на соответствие
+//                var s = selectorArr[i].replace(new RegExp('\\.','g'),'\\.').replace(new RegExp('{{number}}','ig'),'\\d+');
+//                var reg = new RegExp(s,'ig');
+//                var match = reg.exec(objectString);
+//                if (match && match[0] == objectString) {
+//                    // match[0] string itself
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
     /**
      * Создать экраны в промоприложении.
@@ -576,11 +577,15 @@ var Engine = {};
                     // заранее находим dom элементы на экране для подсказок
                     // в дальнейшем они будут активироваться при показе этого экрана
                     if (appProperties[j].hint) {
-                        ps[i].hints.push({
-                            text: appProperties[j].hint,
-                            domElement: $(ps[i].view).find(appProperties[j].cssSelector),
-                            isShown: false
-                        });
+                        var hde = $(ps[i].view).find(appProperties[j].cssSelector);
+                        if (hde && hde.length > 0) {
+                            // если элемент для подсказки действительно был найден на текущем экране то добавляем подсказку для показа здесь
+                            ps[i].hints.push({
+                                text: appProperties[j].hint,
+                                domElement: hde,
+                                isShown: false
+                            });
+                        }
                     }
                 }
                 // далее ищем data-app-property атрибуты, чтобы сразу привязать к экрану app property

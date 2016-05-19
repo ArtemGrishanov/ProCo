@@ -63,7 +63,6 @@ descriptor.css = [
     {
         //TODO подумать
         selector: '.t_btn',
-        hint: 'Кнопка',
         rules: 'textAlign'
     },
     {
@@ -80,8 +79,13 @@ descriptor.css = [
     },
     {
         selector: '.bullit',
-        rules: 'borderWidth borderColor'
+        rules: 'borderWidth borderColor',
+        hint: 'Кнопка'
     },
+//    {
+//        selector: '.bullit',
+//        hint: 'Кнопка'
+//    },
     {
         selector: '.a_wr:hover .bullit',
         rules: 'hoverBorderWidth hoverBorderColor'
@@ -148,7 +152,45 @@ descriptor.app = [
     {
         selector: "quiz.{{number}}.options",
         rules: 'quizOptionEditRule'
-    }
+    },
+//    {
+//        /**
+//         * Смена верного ответа для теста.
+//         * Это больше чем просто смена значения одного поля (или css-свойства)
+//         * Впервые это изменение нескольких свойств по определенным правилам с визуализацией на рабочем поле.
+//         * Формальное определение проблемы:
+//         * 1. Есть свойства quiz.{{number}}.options
+//         * 2. У каждого такого свойства нужно менять значения суб-свойств: {{number}}.points по правилам
+//         * 3.
+//         *
+//         * Префикс 'app:' говорит, что это свойство из промо-проекта, которое надо взять и подставить
+//         * То есть надо взять переменную и подставить ее и с получившимся свойством работать дальше
+//         * Наверное, подстановка будет происходить при showScreen
+//         */
+//        selector: 'quiz.{{number:currentQuestionIndex}}.options.{{number}}.points',
+//        controls: 'QuickAlternative',
+//        controlParams: {
+//            // no specific view in this control
+//            /**
+//             * элементы на экране, клик по которым будет приводить к смене значения
+//             */
+//            optionsCssSelector: '.bullit',
+//            /**
+//             * Класс, который будет присвоен выбранному элементу
+//             * Одному из optionsCssSelector
+//             * promo app must provide this class
+//             */
+//            selectedOptionCssClass: '.bullit_active',
+//            /**
+//             * Функция установки правильного ответа
+//             */
+//            setFunction: 'setCorrentAnswer',
+//            setFunctionParams: [
+//                // в appScreen.data содержатся данные необходимые для этой операции
+//                {value: 'data.currentQuestion'}
+//            ]
+//        }
+//    }
 ];
 
 // правила, как редактировать свойства
@@ -423,6 +465,38 @@ descriptor.rules = {
         cssProperty: 'margin-left',
         cssValuePattern: '{{number}}px',
         filter: true
+    }
+};
+
+descriptor.triggers = {
+    /**
+     * Установка класса по какому то признаку
+     * Метод вовзаращает значение
+     * По этому значению ищем элемент с атрибутом
+     * Лепим элементу класс
+     */
+    setClass: {
+        callMethod: 'getCorrectAnswerId',
+        callParams: 'screenData:currentQuestionIndex',
+        cssSelector: '.bullit',
+        activeClass: 'bullit_active',
+        attr: 'data-id'
+    },
+    /**
+     * Триггер для смены правильного ответа в вопросе
+     * Клик по элементам с указанным классом приводит в вызову метода промо проекта с указанными параметрами
+     */
+    bullitClick: {
+        event: 'click',
+        cssSelector: '.bullit',
+        onEventClass: 'bullit_active',
+        callMethod: 'setCorrentAnswer',
+        /**
+         * Параметр который будет передан в фунуцию call при вызове
+         * TODO Для простоты заточено, так как не понятно как будет развиваться эти триггеры
+         * Можно передать только один параметр и это имя атрибута элемента cssSelector
+         */
+        callParams: 'data-id'
     }
 };
 

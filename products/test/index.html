@@ -178,6 +178,7 @@
              * Буллиты вопросов
              */
             showBullits: true,
+            bullitsBorderCorrectColor: '#0f0', // цвет подсветки верного ответа
             bullitsBorderColor: '#fff',
             bullitsBorderWidth: 2,
             bullitHoverBorderWidth: 4, // при наведении на весь вопрос
@@ -643,20 +644,14 @@
         }
 
         /**
-         *
-         * @param {string} id - ид экрана
-         */
-        function getScreen(id) {
-
-        }
-
-        /**
          * Сгенерировать уникальные идишки для вопросов и ответов
          */
         function makeUidForQuiz() {
             for (var j = 0; j < app.quiz.length; j++) {
+                var q = app.quiz[j];
+                q.id = MD5.calc(q.text + i);
                 for (var i = 0; i < app.quiz[j].options.length; i++) {
-                    var o = app.quiz[j].options[i];
+                    var o = q.options[i];
                     o.id = MD5.calc(o.text + j + i);
                 }
             }
@@ -697,6 +692,8 @@
                 templStr = templStr.replace('{{answer_options_text}}', o.text);
                 var $e = $(templStr);
                 $e.attr('data-id', o.id);
+                // для буллита тоже добавим, так как с его помощью будет переключаться верный ответ
+                $e.find('.bullit').attr('data-id', o.id);
                 $e.click(function(e) {
                     if (previewMode === false) {
                         currentOptionId = $(e.currentTarget).attr('data-id');
@@ -745,6 +742,53 @@
                 }
             }
             return false;
+        }
+
+        /**
+         * Вернуть ид верного ответа
+         * @param questionIndex - индекс вопроса
+         */
+        function getCorrectAnswerId(questionIndex) {
+            for (var i = 0; i < app.quiz[questionIndex].options.length; i++) {
+                var o = app.quiz[questionIndex].options[i];
+                if (o.points > 0) {
+                    return o.id;
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Установить опцию ответа как верную.
+         * Номер вопроса необязателен. Так как по ид опции мы определим к какому вопросу она относится.
+         * @param {string} id - ид опции, все опции в тесте имеют уникальные идентификаторы
+         */
+        function setCorrentAnswer(id) {
+            for (var i = 0; i < app.quiz.length; i++) {
+                var q = app.quiz[i];
+                var isActualQuestion = false;
+                for (var j = 0; j < q.options.length; j++) {
+                    var o = q.options[j];
+                    if (o.id === id) {
+                        // это вопрос с индексом i
+                        isActualQuestion = true;
+                        break;
+                    }
+                }
+                if (isActualQuestion === true) {
+                    // теперь для найденного вопроса правим верные ответы
+                    for (var j = 0; j < q.options.length; j++) {
+                        var o = q.options[j];
+                        if (o.id === id) {
+                            o.points = 1;
+                        }
+                        else {
+                            o.points = 0;
+                        }
+                    }
+                    break;
+                }
+            }
         }
 
         /**

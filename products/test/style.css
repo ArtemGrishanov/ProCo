@@ -103,6 +103,10 @@ body {
     height: 18px;
     box-sizing: border-box;
 }
+.bullit_active {
+    border-color: #0f0;
+    border-width: 5px;
+}
 .a_wr:hover .bullit {
     border-width: 4px;
 }
