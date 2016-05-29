@@ -79,13 +79,8 @@ descriptor.css = [
     },
     {
         selector: '.bullit',
-        rules: 'borderWidth borderColor',
-        hint: 'Кнопка'
+        rules: 'borderWidth borderColor'
     },
-//    {
-//        selector: '.bullit',
-//        hint: 'Кнопка'
-//    },
     {
         selector: '.a_wr:hover .bullit',
         rules: 'hoverBorderWidth hoverBorderColor'
@@ -468,35 +463,113 @@ descriptor.rules = {
     }
 };
 
+/**
+ * Это действия, которые должны происходить при редактировании промо проекта
+ * - Показать подсказку
+ * - Подсветить верные ответы
+ * - Установить верный ответ в тесте (это не appProperty так как меняются несколько свойств по определенным зависимостям)
+ * - ...
+ *
+ * Любой триггер применяется при показе экрана?..
+ *
+ * Это индивидуальная логика по управлению промо-проектом.
+ * Именно по управлению, написанная тут, в дескрипторе. А не относится к механике самого промо проекта.
+ *
+ * @type {object}
+ */
 descriptor.triggers = {
+    hintToSetCorrectAnswer: {
+        event: 'screen_show',
+        repeat: 1, // number | 'infinity',
+        action: function(params) {
+            var selector = '.bullit';
+            var result = false;
+            var txt = 'Кликните для установки<br>верного ответа';
+            for (var j = 0; j < params.appScreens.length; j++) {
+                var as = params.appScreens[j];
+                var elements = $(as.view).find(selector);
+                if (elements.length > 0) {
+                    params.editor.showWorkspaceHint(elements[0],txt);
+                    result = true;
+                }
+            }
+            return result;
+        }
+    },
     /**
-     * Установка класса по какому то признаку
-     * Метод вовзаращает значение
-     * По этому значению ищем элемент с атрибутом
-     * Лепим элементу класс
+     * Выполнить действие на показ экрана
+     *
      */
-    setClass: {
-        callMethod: 'getCorrectAnswerId',
-        callParams: 'screenData:currentQuestionIndex',
-        cssSelector: '.bullit',
-        activeClass: 'bullit_active',
-        attr: 'data-id'
+    showCorrectAnswer: {
+        event: 'screen_show',
+        repeat: 'infinity', // number | 'infinity'
+        /**
+         *
+         * @param {object} params.appScreen - текущий экран в редакторе. Можно получить данные
+         * @param {object} params.appWindow - промо-приложение. Можно вызвать любой метод
+         * @return {boolean} - был выполнен триггер или нет
+         */
+        action: function(params) {
+            var selector = '.bullit';
+            var activeClass = 'bullit_active';
+            var result = false;
+            for (var j = 0; j < params.appScreens.length; j++) {
+                var as = params.appScreens[j];
+                // сейчас находимся на каком-то экране, мы должны знать индекс вопроса
+                var qi = as.data.currentQuestion;
+                if (Number.isInteger(qi)) {
+                    // должен остаться только один элемент с классом activeClass
+                    var elements = $(as.view).find(selector);
+                    elements.remove(activeClass);
+                    // и только элементу с корректным ответом ставим activeClass
+                    var correntAnswerId = params.appWindow.getCorrectAnswerId(qi);
+                    if (correntAnswerId) {
+                        for (var i = 0; i < elements.length; i++) {
+                            if ($(elements[i]).attr('data-id') === correntAnswerId) {
+                                $(elements[i]).addClass(activeClass);
+                            }
+                        }
+                    }
+                    result = true;
+                }
+            }
+            return result;
+        }
     },
     /**
      * Триггер для смены правильного ответа в вопросе
      * Клик по элементам с указанным классом приводит в вызову метода промо проекта с указанными параметрами
      */
     bullitClick: {
-        event: 'click',
-        cssSelector: '.bullit',
-        onEventClass: 'bullit_active',
-        callMethod: 'setCorrentAnswer',
+        event: 'screen_show',
+        repeat: 'infinity',
         /**
-         * Параметр который будет передан в фунуцию call при вызове
-         * TODO Для простоты заточено, так как не понятно как будет развиваться эти триггеры
-         * Можно передать только один параметр и это имя атрибута элемента cssSelector
+         *
+         * @param params.appScreen
+         * @param params.appWindow
+         *
+         * @return {boolean} - был выполнен триггер или нет
          */
-        callParams: 'data-id'
+        action: function(params) {
+            var selector = '.bullit';
+            var activeClass = 'bullit_active';
+            var result = false;
+            for (var j = 0; j < params.appScreens.length; j++) {
+                var as = params.appScreens[j];
+                var elements = $(as.view).find(selector).click(function(e) {
+                    // data-id - в этом элементе хранится ид верного ответа
+                    var attr = $(e.currentTarget).attr('data-id');
+                    $(elements).removeClass(activeClass);
+                    $(e.currentTarget).addClass(activeClass);
+                    // установка верного ответа. Метод setCorrectAnswer в промо-проекте служит для этой цели
+                    params.appWindow.setCorrectAnswer(attr);
+                });
+                if (elements.length > 0) {
+                    result = true;
+                }
+            }
+            return result;
+        }
     }
 };
 

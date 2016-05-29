@@ -25,20 +25,36 @@
     <splitter split-orientation="horizontal" split-proportion="0.68847096">
       <split-first>
         <leaf>
-          <file leaf-file-name="editor.js" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="editor.js" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="287" column="7" selection-start="9455" selection-end="9455" vertical-scroll-proportion="0.58848315" vertical-offset="3886" max-vertical-offset="15615">
-                  <folding />
+                <state line="265" column="9" selection-start="8561" selection-end="8561" vertical-scroll-proportion="-9.76" vertical-offset="3731" max-vertical-offset="16080">
+                  <folding>
+                    <marker date="1464512031000" expanded="true" signature="14675:14741" placeholder="/** Показать подсказки для экрана ...*/" />
+                    <marker date="1464512031000" expanded="true" signature="14783:15153" placeholder="{...}" />
+                    <marker date="1464512031000" expanded="true" signature="14812:15149" placeholder="{...}" />
+                    <marker date="1464512031000" expanded="true" signature="14873:15141" placeholder="{...}" />
+                    <marker date="1464512031000" expanded="true" signature="14956:15129" placeholder="{...}" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="SetClassTrigger.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/triggers/SetClassTrigger.js">
+          <file leaf-file-name="appTrigger.js" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/pub/js/appTrigger.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="21" column="38" selection-start="943" selection-end="943" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="495">
-                  <folding />
+                <state line="81" column="52" selection-start="2371" selection-end="2397" vertical-scroll-proportion="-26.2" vertical-offset="560" max-vertical-offset="1350">
+                  <folding>
+                    <element signature="n#!!doc" expanded="true" />
+                    <marker date="1464510375000" expanded="true" signature="469:488" placeholder="//..." />
+                    <marker date="1464510375000" expanded="true" signature="350:691" placeholder="{...}" />
+                    <marker date="1464510375000" expanded="true" signature="431:469" placeholder="{...}" />
+                    <marker date="1464510375000" expanded="true" signature="447:469" placeholder="{...}" />
+                    <marker date="1464510375000" expanded="true" signature="465:469" placeholder="{...}" />
+                    <marker date="1464510375000" expanded="true" signature="476:649" placeholder="{...}" />
+                    <marker date="1464510375000" expanded="true" signature="560:639" placeholder="[...]" />
+                    <marker date="1464510375000" expanded="true" signature="561:638" placeholder="{...}" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -46,7 +62,16 @@
           <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/products/test/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="753" column="32" selection-start="30775" selection-end="30775" vertical-scroll-proportion="-17.125" vertical-offset="10884" max-vertical-offset="13050">
+                <state line="738" column="42" selection-start="30305" selection-end="30305" vertical-scroll-proportion="-7.75" vertical-offset="10884" max-vertical-offset="13050">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="descriptor.js" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/products/test/descriptor.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="482" column="17" selection-start="14475" selection-end="14475" vertical-scroll-proportion="0.15866084" vertical-offset="7121" max-vertical-offset="9225">
                   <folding />
                 </state>
               </provider>
@@ -55,13 +80,13 @@
           <file leaf-file-name="engine.js" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="435" column="61" selection-start="16673" selection-end="16673" vertical-scroll-proportion="68.56" vertical-offset="8239" max-vertical-offset="17670">
+                <state line="1064" column="24" selection-start="44583" selection-end="44583" vertical-scroll-proportion="0.0" vertical-offset="15811" max-vertical-offset="17490">
                   <folding>
-                    <marker date="1463562704000" expanded="true" signature="19426:20335" placeholder="{...}" />
-                    <marker date="1463562704000" expanded="true" signature="19532:20303" placeholder="{...}" />
-                    <marker date="1463562704000" expanded="true" signature="19592:19640" placeholder="{...}" />
-                    <marker date="1463562704000" expanded="true" signature="19735:20291" placeholder="{...}" />
-                    <marker date="1463562704000" expanded="true" signature="20171:20275" placeholder="{...}" />
+                    <marker date="1464001319000" expanded="true" signature="20130:21039" placeholder="{...}" />
+                    <marker date="1464001319000" expanded="true" signature="20236:21007" placeholder="{...}" />
+                    <marker date="1464001319000" expanded="true" signature="20296:20344" placeholder="{...}" />
+                    <marker date="1464001319000" expanded="true" signature="20439:20995" placeholder="{...}" />
+                    <marker date="1464001319000" expanded="true" signature="20875:20979" placeholder="{...}" />
                   </folding>
                 </state>
               </provider>
@@ -83,7 +108,7 @@
           <file leaf-file-name="editor.css" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/pub/css/editor.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="342" column="1" selection-start="6784" selection-end="6784" vertical-scroll-proportion="0.4522472" vertical-offset="4808" max-vertical-offset="5565">
+                <state line="355" column="17" selection-start="7027" selection-end="7027" vertical-scroll-proportion="0.7261236" vertical-offset="4808" max-vertical-offset="5565">
                   <folding />
                 </state>
               </provider>
@@ -101,20 +126,20 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/js/app.js" />
-        <option value="$PROJECT_DIR$/pub/css/common.css" />
         <option value="$PROJECT_DIR$/pub/css/editor.css" />
         <option value="$PROJECT_DIR$/pub/js/appProperty.js" />
         <option value="$PROJECT_DIR$/pub/controls/AbstractControl.js" />
         <option value="$PROJECT_DIR$/pub/controls/QuickAlternative.js" />
-        <option value="$PROJECT_DIR$/pub/js/engine.js" />
-        <option value="$PROJECT_DIR$/pub/js/config.js" />
         <option value="$PROJECT_DIR$/products/test/style.css" />
         <option value="$PROJECT_DIR$/Readme.txt" />
         <option value="$PROJECT_DIR$/pub/triggers/ClickTrigger.js" />
-        <option value="$PROJECT_DIR$/pub/editor.html" />
-        <option value="$PROJECT_DIR$/products/test/index.html" />
         <option value="$PROJECT_DIR$/pub/triggers/SetClassTrigger.js" />
+        <option value="$PROJECT_DIR$/pub/editor.html" />
+        <option value="$PROJECT_DIR$/pub/js/engine.js" />
+        <option value="$PROJECT_DIR$/pub/js/app.js" />
+        <option value="$PROJECT_DIR$/pub/js/config.js" />
+        <option value="$PROJECT_DIR$/pub/js/appTrigger.js" />
+        <option value="$PROJECT_DIR$/products/test/index.html" />
         <option value="$PROJECT_DIR$/pub/js/editor.js" />
         <option value="$PROJECT_DIR$/products/test/descriptor.js" />
       </list>
@@ -151,6 +176,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -193,24 +219,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="triggers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="products" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -235,18 +243,17 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="coverage" />
+    <property name="recentsLimit" value="5" />
     <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PublishConfig">
     <servers>
@@ -261,11 +268,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pub/js" />
       <recent name="$PROJECT_DIR$/pub/triggers" />
       <recent name="$PROJECT_DIR$/pub/controls" />
       <recent name="$PROJECT_DIR$/pub/i" />
       <recent name="$PROJECT_DIR$/editor/i" />
-      <recent name="$PROJECT_DIR$/js" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/pub" />
@@ -281,14 +288,6 @@
       <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
       <method />
     </configuration>
-    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
-      <option name="VMOptions" />
-      <option name="arguments" />
-      <option name="filePath" />
-      <option name="scope" value="ALL" />
-      <option name="testName" />
-      <method />
-    </configuration>
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -297,6 +296,14 @@
       <option name="saveOutputToFile" value="false" />
       <option name="showConsoleOnStdErr" value="false" />
       <option name="showConsoleOnStdOut" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
+      <option name="VMOptions" />
+      <option name="arguments" />
+      <option name="filePath" />
+      <option name="scope" value="ALL" />
+      <option name="testName" />
       <method />
     </configuration>
     <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
@@ -337,7 +344,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1492109" sideWeight="0.79814076" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12266858" sideWeight="0.79814076" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -366,103 +373,19 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/css/editor.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="342" column="1" selection-start="6784" selection-end="6784" vertical-scroll-proportion="0.4522472" vertical-offset="4808" max-vertical-offset="5565">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="147" column="9" selection-start="5691" selection-end="5691" vertical-scroll-proportion="0.0" vertical-offset="1763" max-vertical-offset="2850">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/Alternative.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="78" selection-start="120" selection-end="130" vertical-scroll-proportion="0.06531204" vertical-offset="0" max-vertical-offset="885">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/Slide.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="34" selection-start="1514" selection-end="1514" vertical-scroll-proportion="0.65312046" vertical-offset="0" max-vertical-offset="1170">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/AddArrayElementControl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="735">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/controls/Drag.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="11" selection-start="804" selection-end="804" vertical-scroll-proportion="0.34833091" vertical-offset="0" max-vertical-offset="1245">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="435" column="61" selection-start="16673" selection-end="16673" vertical-scroll-proportion="68.56" vertical-offset="8239" max-vertical-offset="17670">
-          <folding>
-            <marker date="1463562704000" expanded="true" signature="19426:20335" placeholder="{...}" />
-            <marker date="1463562704000" expanded="true" signature="19532:20303" placeholder="{...}" />
-            <marker date="1463562704000" expanded="true" signature="19592:19640" placeholder="{...}" />
-            <marker date="1463562704000" expanded="true" signature="19735:20291" placeholder="{...}" />
-            <marker date="1463562704000" expanded="true" signature="20171:20275" placeholder="{...}" />
-          </folding>
-        </state>
+        <state line="16" column="11" selection-start="804" selection-end="804" vertical-scroll-proportion="0.34833091" vertical-offset="0" max-vertical-offset="1245" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/notes.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="689">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/triggers/ClickTrigger.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="36" selection-start="1064" selection-end="1068" vertical-scroll-proportion="0.57857144" vertical-offset="0" max-vertical-offset="700">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="689" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Readme.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="0" selection-start="2226" selection-end="2226" vertical-scroll-proportion="0.5042135" vertical-offset="406" max-vertical-offset="1170">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/editor.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="290" column="64" selection-start="14823" selection-end="14823" vertical-scroll-proportion="0.81395346" vertical-offset="3190" max-vertical-offset="4155">
-          <folding>
-            <element signature="tag#div#0;tag#div#0;tag#body#0;tag#html#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/products/test/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="753" column="32" selection-start="30775" selection-end="30775" vertical-scroll-proportion="-17.125" vertical-offset="10884" max-vertical-offset="13050">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/triggers/SetClassTrigger.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="38" selection-start="943" selection-end="943" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="495">
-          <folding />
-        </state>
+        <state line="51" column="0" selection-start="2226" selection-end="2226" vertical-scroll-proportion="0.5042135" vertical-offset="406" max-vertical-offset="1170" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/products/test/style.css">
@@ -472,16 +395,110 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/products/test/descriptor.js">
+    <entry file="file://$PROJECT_DIR$/pub/triggers/ClickTrigger.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="481" column="37" selection-start="14341" selection-end="14341" vertical-scroll-proportion="0.13623595" vertical-offset="7118" max-vertical-offset="8130">
+        <state line="19" column="65" selection-start="694" selection-end="810" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/utils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="195" column="9" selection-start="7049" selection-end="7049" vertical-scroll-proportion="0.48290598" vertical-offset="2586" max-vertical-offset="4710">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/triggers/SetClassTrigger.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="30" selection-start="843" selection-end="843" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="495">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="210" column="42" selection-start="6671" selection-end="6671" vertical-scroll-proportion="0.0" vertical-offset="2791" max-vertical-offset="4605">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/css/editor.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="355" column="17" selection-start="7027" selection-end="7027" vertical-scroll-proportion="0.7261236" vertical-offset="4808" max-vertical-offset="5565">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="33" selection-start="699" selection-end="699" vertical-scroll-proportion="0.0" vertical-offset="30" max-vertical-offset="2850">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/editor.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="47" selection-start="574" selection-end="574" vertical-scroll-proportion="-5.625" vertical-offset="0" max-vertical-offset="4170">
+          <folding>
+            <element signature="tag#div#0;tag#div#0;tag#body#0;tag#html#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/appTrigger.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="81" column="52" selection-start="2371" selection-end="2397" vertical-scroll-proportion="-26.2" vertical-offset="560" max-vertical-offset="1350">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <marker date="1464510375000" expanded="true" signature="469:488" placeholder="//..." />
+            <marker date="1464510375000" expanded="true" signature="350:691" placeholder="{...}" />
+            <marker date="1464510375000" expanded="true" signature="431:469" placeholder="{...}" />
+            <marker date="1464510375000" expanded="true" signature="447:469" placeholder="{...}" />
+            <marker date="1464510375000" expanded="true" signature="465:469" placeholder="{...}" />
+            <marker date="1464510375000" expanded="true" signature="476:649" placeholder="{...}" />
+            <marker date="1464510375000" expanded="true" signature="560:639" placeholder="[...]" />
+            <marker date="1464510375000" expanded="true" signature="561:638" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/products/test/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="738" column="42" selection-start="30305" selection-end="30305" vertical-scroll-proportion="-7.75" vertical-offset="10884" max-vertical-offset="13050">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="287" column="7" selection-start="9455" selection-end="9455" vertical-scroll-proportion="0.58848315" vertical-offset="3886" max-vertical-offset="15615">
+        <state line="265" column="9" selection-start="8561" selection-end="8561" vertical-scroll-proportion="-9.76" vertical-offset="3731" max-vertical-offset="16080">
+          <folding>
+            <marker date="1464512031000" expanded="true" signature="14675:14741" placeholder="/** Показать подсказки для экрана ...*/" />
+            <marker date="1464512031000" expanded="true" signature="14783:15153" placeholder="{...}" />
+            <marker date="1464512031000" expanded="true" signature="14812:15149" placeholder="{...}" />
+            <marker date="1464512031000" expanded="true" signature="14873:15141" placeholder="{...}" />
+            <marker date="1464512031000" expanded="true" signature="14956:15129" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1064" column="24" selection-start="44583" selection-end="44583" vertical-scroll-proportion="0.0" vertical-offset="15811" max-vertical-offset="17490">
+          <folding>
+            <marker date="1464001319000" expanded="true" signature="20130:21039" placeholder="{...}" />
+            <marker date="1464001319000" expanded="true" signature="20236:21007" placeholder="{...}" />
+            <marker date="1464001319000" expanded="true" signature="20296:20344" placeholder="{...}" />
+            <marker date="1464001319000" expanded="true" signature="20439:20995" placeholder="{...}" />
+            <marker date="1464001319000" expanded="true" signature="20875:20979" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/products/test/descriptor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="482" column="17" selection-start="14475" selection-end="14475" vertical-scroll-proportion="0.15866084" vertical-offset="7121" max-vertical-offset="9225">
           <folding />
         </state>
       </provider>

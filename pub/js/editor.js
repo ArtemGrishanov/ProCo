@@ -68,6 +68,14 @@ var uiControlsInfo = [
     // domElement
 ];
 /**
+ * При показе экрана инициализируется набор триггеров.
+ * В массиве собраны триггеры, активные на данный момент.
+ * Триггеры могут быть в нескольких состояниях.
+ *
+ * @type {Array}
+ */
+var activeTriggers = [];
+/**
  * Элемент внутри айФрейма куда добавляем экраны промо приложения
  * @type {null}
  */
@@ -227,6 +235,7 @@ function showScreen(ids) {
     // надо скрыть все активные подсказки, если таковые есть. На новом экране будут новые подсказки
     hideWorkspaceHints();
     activeScreenHints = [];
+    activeTriggers = [];
     // каждый раз удаляем quick-контролы и создаем их заново. Не слишком эффективно мб но просто и надежно
     // то что контролы привязаны к одному экрану определяется только на основании контейнера, в который они помещены
     var $controlCnt = $('#id-control_cnt').empty();
@@ -252,8 +261,8 @@ function showScreen(ids) {
                 appScreen.doWhenInDOM(iframeWindow.app, appScreen.view);
             }
             bindControlsForAppPropertiesOnScreen(appScreen.view, ids[i]);
-            initTriggers(appScreen);
-            showAppScreenHints(appScreen);
+            applyTriggers('screen_show');
+//            showAppScreenHints(appScreen);
         }
         else {
             //TODO показать ошибку наверное
@@ -274,26 +283,46 @@ function showScreen(ids) {
 }
 
 /**
- * инициализировать триггеры, относящиеся к текущему экрану
+ * Запустить триггеры для определенного события
+ *
+ * @param {string} event
  */
-var tr;
-function initTriggers(appScreen) {
-    //TODO организовать систему триггеров +config.js
-    tr = new ClickTrigger(appScreen, {
-        event: 'click',
-        cssSelector: '.bullit',
-        onEventClass: 'bullit_active',
-        callMethod: 'setCorrentAnswer',
-        callParams: 'data-id'
-    });
+function applyTriggers(event) {
+    //TODO возможно не очищать вот так сразу...
+    var scrns = getActiveScreens();
+    var triggers = Engine.getAppTriggers();
+    for (var i = 0; i < triggers.length; i++) {
+        if (triggers[i].status !== AppTrigger.STATUS_RESOLVED && triggers[i].event === event) {
+            try {
+                triggers[i].do({
+                    appScreens: scrns,
+                    appWindow: iframeWindow,
+                    editor: this
+                });
+                activeTriggers.push(triggers[i]);
+            }
+            catch (e)
+            {
+                log('Error in trigger action: '+ e.message, true);
+            }
+        }
+    }
+}
 
-    tr2 = new SetClassTrigger(appScreen, {
-        callMethod: 'getCorrectAnswerId',
-        callParams: 'screenData:currentQuestionIndex',
-        cssSelector: '.bullit',
-        activeClass: 'bullit_active',
-        attr: 'data-id'
-    });
+/**
+ * Вернуть активные экраны. Те которые показаны в текущий момент.
+ *
+ * @returns {Array}
+ */
+function getActiveScreens() {
+    var result = []
+    for (var i = 0; i < activeScreens.length; i++) {
+        var s = Engine.getAppScreen(activeScreens[i]);
+        if (s) {
+            result.push(s);
+        }
+    }
+    return result;
 }
 
 /**
@@ -376,22 +405,22 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
     });
 }
 
-/**
- * Показать подсказки для экрана
- * @param appScreen
- */
-function showAppScreenHints(appScreen) {
-    if (appScreen.hints) {
-        for (var i = 0; i < appScreen.hints.length; i++) {
-            var h = appScreen.hints[i];
-            if (h.isShown === false) {
-                h.hintElement = showWorkspaceHint(h.domElement, h.text);
-                h.isShown = true;
-                activeScreenHints.push(h);
-            }
-        }
-    }
-}
+///**
+// * Показать подсказки для экрана
+// * @param appScreen
+// */
+//function showAppScreenHints(appScreen) {
+//    if (appScreen.hints) {
+//        for (var i = 0; i < appScreen.hints.length; i++) {
+//            var h = appScreen.hints[i];
+//            if (h.isShown === false) {
+//                h.hintElement = showWorkspaceHint(h.domElement, h.text);
+//                h.isShown = true;
+//                activeScreenHints.push(h);
+//            }
+//        }
+//    }
+//}
 
 /**
  * Показать на боковой панели только те контролы, appPropertyString которых есть в dataAppPropertyString
@@ -933,10 +962,11 @@ function showEmbedDialog(result, data) {
 
 /**
  * Показать подсказку на любой элемент в редакторе
- * @param $elem
+ * @param elem
  * @param text
  */
-function showWorkspaceHint($elem, text) {
+function showWorkspaceHint(elem, text) {
+    var $elem = $(elem);
     var $hint = $($('#id-hint_template').html());
     $hint.find('.js-text').html(text);
     var eo = $elem.offset();
@@ -946,12 +976,13 @@ function showWorkspaceHint($elem, text) {
     $hint.css('top',eo.top+workspaceOffset.top+($elem.outerHeight(false)-$hint.outerHeight(false))/2+'px');
     $hint.css('left',eo.left+workspaceOffset.left-$hint.outerWidth(false)-config.editor.ui.hintRightMargin+'px');
     //TODO добавить треугольный указатель
+    activeScreenHints.push($hint);
     return $hint;
 }
 
 function hideWorkspaceHints() {
     while (activeScreenHints.length>0) {
-        $(activeScreenHints.pop().hintElement).remove();
+        $(activeScreenHints.pop()).remove();
     }
 }
 

@@ -192,13 +192,27 @@ var App = App || {};
             FB.api('/me',
                 {fields: "id,about,age_range,picture,bio,birthday,context,email,first_name,gender,hometown,link,location,middle_name,name,timezone,website,work"},
                 function(response) {
-                console.log('Successful login for: ' + response.name);
-                userData = response;
-                updateUI();
-                if (typeof callbacks[FB_INIT_EVENT] === 'function') {
-                    callbacks[FB_INIT_EVENT]('ok');
-                }
+                    console.log('Successful login for: ' + response.name);
+                    userData = response;
+                    updateUI();
+                    if (typeof callbacks[FB_INIT_EVENT] === 'function') {
+                        callbacks[FB_INIT_EVENT]('ok');
+                    }
+                    //getFriends();
             });
+        }
+    }
+
+    /**
+     * Get friends
+     */
+    function getFriends() {
+        if (FB) {
+            FB.api(userData.id+'/friends',
+                {fields: "id,about,age_range,picture,bio,birthday,context,email,first_name,gender,hometown,link,location,middle_name,name,timezone,website,work"},
+                function(response) {
+                    console.log('Successful getfriends');
+                });
         }
     }
 
@@ -209,7 +223,9 @@ var App = App || {};
         if (FB) {
             FB.login(function(response) {
                 statusChangeCallback(response);
-            });
+            }
+                ,{scope:'user_friends,email'}
+            );
         }
     }
 
@@ -282,4 +298,5 @@ var App = App || {};
     global.getAWSBucket = function() { return bucket; };
     global.showLogin = showLogin;
     global.on = on;
+    global.getFriends = getFriends;
 })(App);

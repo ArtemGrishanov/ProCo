@@ -45,6 +45,11 @@ var Engine = {};
      */
     var appScreenIds = [];
     /**
+     * Триггеры. Создаются только один раз при запуске движка
+     * @type {Array}
+     */
+    var triggers = [];
+    /**
      * Экран, для которого было показано превью;
      * Нужно для того чтобы после перезапуска приложения его запоминать и восстанавливать.
      * @type {string}
@@ -468,6 +473,25 @@ var Engine = {};
             }
         }
         return result;
+    }
+
+    /**
+     * Создать триггеры - индивидуальная логика по управлению проектом
+     *
+     * @param {object} desc - дескриптор приложения
+     */
+    function createTriggers(desc) {
+        triggers = [];
+        if (desc.triggers) {
+            for (var key in desc.triggers) {
+                if (desc.triggers.hasOwnProperty(key)) {
+                    var params = desc.triggers[key];
+                    params.name = params.name || key;
+                    var t = new AppTrigger(params);
+                    triggers.push(t);
+                }
+            }
+        }
     }
 
     /**
@@ -955,6 +979,8 @@ var Engine = {};
         createAppScreens();
         // находим и создаем темы
         createAppPresets(productWindow.descriptor);
+        // создать триггеры. Создаются только один раз
+        createTriggers(productWindow.descriptor);
     }
 
     /**
@@ -1032,54 +1058,6 @@ var Engine = {};
         return appPropertiesObjectPathes;
     }
 
-//    /**
-//     * Связать свойство промо-приложения и dom-элемент
-//     * UI элементы часто создаются динамически и сразу привязать их в дескрипторе нет возможности.
-//     * Разработчик промо-приложения сам должен за этим следить.
-//     *
-//     * @param {Array|string} objectPath
-//     * @param {DOMElement} domElem
-//     */
-//    function bind(objectPath, domElem) {
-//        if (!objectPath) {
-//            log('objectPath is empty in binding.');
-//            return;
-//        }
-//        var propStr = '';
-//        if (Array.isArray(objectPath)) {
-//            propStr = objectPath.join('.');
-//        }
-//        else if (typeof objectPath === 'string') {
-//            propStr = objectPath;
-//        }
-//        var p = getAppProperty(propStr);
-//        if (p) {
-////            p.set('domElement', domElem);
-//            p.domElem = domElem;
-//            send('DOMElementChanged', p.propertyString);
-//        }
-//        else {
-//            log('Could not find AppProperty for string: ' + propStr, true);
-//        }
-//    }
-
-//    /**
-//     * Запросить у промопродукта показ превью определенного экрана.
-//     *
-//     * @param screenId
-//     */
-//    function showScreenPreview(screenId) {
-//        currentPreviewScreen = screenId;
-//        if (typeof productWindow.showScreenPreview === 'function') {
-//            for (var i = 0; i < appScreens.length; i++) {
-//                if (screenId === appScreens[i].id) {
-//                    productWindow.showScreenPreview(screenId, appScreens[i].data);
-//                    break;
-//                }
-//            }
-//        }
-//    }
-
     /**
      * Вернуть ид всех доступных экранов
      * @returns {Array.<string>}
@@ -1100,6 +1078,13 @@ var Engine = {};
             }
         }
         return null;
+    }
+
+    /**
+     * Вернуть триггеры для промо приложения.
+     */
+    function getAppTriggers() {
+        return triggers;
     }
 
     /**
@@ -1159,6 +1144,9 @@ var Engine = {};
 
     // events
     global.on = on;
+
+    // triggers methods
+    global.getAppTriggers = getAppTriggers;
 
     // методы для работы с экранами(слайдами)
     global.getAppScreenIds = getAppScreenIds;
