@@ -3,17 +3,6 @@
  */
 
 /**
- * Допустимые свойства и их значения по умолчанию
- */
-var validAttributes = {
-    name: null,
-    event: 'show_screen',
-    repeat: 1,
-    action: null
-};
-
-
-/**
  *
  * @param params.name - имя
  * @param params.repeat - сколько раз повторять триггер при наступлении события
@@ -22,12 +11,12 @@ var validAttributes = {
  */
 var AppTrigger = function(params) {
     // нормализация свойств
-    for (var key in validAttributes) {
+    for (var key in AppTrigger.validAttributes) {
         if (params.hasOwnProperty(key)) {
             this[key] = params[key];
         }
         else {
-            this[key] = validAttributes[key];
+            this[key] = AppTrigger.validAttributes[key];
         }
     }
     // скрываем action будем звать через обертку do
@@ -40,6 +29,16 @@ var AppTrigger = function(params) {
     // счетчик, сколько раз был сделан триггер
     this.count = 0;
     log('Trigger inited: ' + this.name, false, false);
+};
+
+/**
+ * Допустимые свойства и их значения по умолчанию
+ */
+AppTrigger.validAttributes = {
+    name: null,
+    event: 'show_screen',
+    repeat: 1,
+    action: null
 };
 
 //

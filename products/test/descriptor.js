@@ -33,7 +33,7 @@ descriptor.css = [
         filter: true
     },*/
     {
-        // на самом деле тут 8 appProperty: .js-startHeader_fontFamily .js-startHeader_fontColor .js-startHeader_fontSize .js-startHeader_textAlign
+        // на самом деле тут больше appProperty: .js-startHeader_fontFamily .js-startHeader_fontColor .js-startHeader_fontSize .js-startHeader_textAlign
         //   .js-startDescription_fontFamily .js-startDescription_fontColor .js-startDescription_fontSize .js-startDescription_textAlign
         // перечислил все классы к которым применять правила
         selector: '.js-startHeader .js-start_description .js-question_text .js-result_title .js-result_description',
@@ -507,6 +507,7 @@ descriptor.triggers = {
          *
          * @param {object} params.appScreen - текущий экран в редакторе. Можно получить данные
          * @param {object} params.appWindow - промо-приложение. Можно вызвать любой метод
+         * @param {object} params.editor - ссылка на редактор
          * @return {boolean} - был выполнен триггер или нет
          */
         action: function(params) {
@@ -545,8 +546,9 @@ descriptor.triggers = {
         repeat: 'infinity',
         /**
          *
-         * @param params.appScreen
-         * @param params.appWindow
+         * @param {object} params.appScreen
+         * @param {object} params.appWindow
+         * @param {object} params.editor - ссылка на редактор
          *
          * @return {boolean} - был выполнен триггер или нет
          */

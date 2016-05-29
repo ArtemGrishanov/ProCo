@@ -3,36 +3,6 @@
  */
 
 /**
- * Допустимые свойства и их значения по умолчанию
- */
-var validAttributes = {
-    selector: null,
-    canAdd: null,
-    editable: true,
-    updateScreens: false,
-    updateAppProperties: true,
-    label: null,
-    runTests: true,
-    static: false,
-    possibleValues: [],
-    isPreset: false,
-    cssProperty: null,
-
-    // это селектор элемента с которым работаем. То есть кликаем в него, риусем выделение, применяем к нему свойства.
-    // но иногда применять свойства надо к родителю или еще как-то. Тогда поможет applyCssTo
-    cssSelector: null,
-    cssValuePattern: null,
-    filter: false,
-
-    // селектор dom-элемент к которому применяем свойства. Обычно это cssSelector, но например text-align надо применять к родителю.
-    // вот тут и указываем родителя в этом свойства
-    applyCssTo: null,
-
-    // подсказка для dom-элемента в промо продуктеы
-    hint: null
-};
-
-/**
  * Обертка вокруг одного свойства в объекте window.app
  * То, что можно менять в промо проекте.
  * Например, app.randomQuestions в тесте - для него будет создана обертка AppProperty, так как у этого свойства есть дескриптор и оно помечено для редактирования.
@@ -60,18 +30,48 @@ var AppProperty = function(propertyValue, propertyString, descriptor) {
 //        descriptor.cssSelector = '.js-app_'+propertyString;
 //    }
     // декскриптор и его нормализация
-    for (var key in validAttributes) {
+    for (var key in AppProperty.validAttributes) {
         if (descriptor.hasOwnProperty(key)) {
             this[key] = descriptor[key];
         }
         else {
-            this[key] = validAttributes[key];
+            this[key] = AppProperty.validAttributes[key];
         }
     }
     this.parseControls(descriptor);
     this.path = this.propertyString.split('.');
     this.isArray = Array.isArray(this.propertyValue);
     log('Property inited: ' + this.path.toString(), false, false);
+};
+
+/**
+ * Допустимые свойства и их значения по умолчанию
+ */
+AppProperty.validAttributes = {
+    selector: null,
+    canAdd: null,
+    editable: true,
+    updateScreens: false,
+    updateAppProperties: true,
+    label: null,
+    runTests: true,
+    static: false,
+    possibleValues: [],
+    isPreset: false,
+    cssProperty: null,
+
+    // это селектор элемента с которым работаем. То есть кликаем в него, риусем выделение, применяем к нему свойства.
+    // но иногда применять свойства надо к родителю или еще как-то. Тогда поможет applyCssTo
+    cssSelector: null,
+    cssValuePattern: null,
+    filter: false,
+
+    // селектор dom-элемент к которому применяем свойства. Обычно это cssSelector, но например text-align надо применять к родителю.
+    // вот тут и указываем родителя в этом свойства
+    applyCssTo: null,
+
+    // подсказка для dom-элемента в промо продуктеы
+    hint: null
 };
 
 /**
