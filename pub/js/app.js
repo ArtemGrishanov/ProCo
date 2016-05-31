@@ -35,12 +35,66 @@ var App = App || {};
      * @type {{function}}
      */
     var callbacks = {};
+    /**
+     * Язык который стоит в интерфейсе по умолчанию
+     * @type {string}
+     */
+    var defaultLang = 'RU';
+    /**
+     *
+     * @type {{}}
+     */
+    var dict = {
+        'RU': {
+
+        },
+        'EN': {
+            main_desc: 'Create quizes and<br>other special projects online',
+            special_what_is_it: 'What special projects is?',
+            business_solutions: 'Business solutions'
+        }
+    };
+
+    /**
+     * Забрать из верстки тексты и сложить в словарь
+     * @param lang
+     */
+    function initLang(lang) {
+        if (dict.hasOwnProperty(lang)) {
+            var elements = $('.pts_string');
+            for (var i = 0; i < elements.length; i++) {
+                var classes = $(elements[i]).attr('class');
+                var reg = /pts_([A-z0-9]+)/ig;
+                var match = null;
+                while (match = reg.exec(classes)) {
+                    if (match[0] && match[1] && match[1] !== 'string')  {
+                        var key = match[1];
+                        if (dict[lang].hasOwnProperty(key) === false) {
+                            dict[lang][key] = $('.pts_'+key).html();
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    function setLang(lang) {
+        if (dict.hasOwnProperty(lang)) {
+            for (var key in dict[lang]) {
+                if (dict[lang].hasOwnProperty(key)) {
+                    $('.pts_'+key).html(dict[lang][key]);
+                }
+            }
+        }
+    }
 
     function start() {
         if (config.common.facebookAuthEnable === true) {
             initFB();
         }
         initUIHandlers();
+        initLang('RU');
     }
 
     /**
@@ -74,6 +128,12 @@ var App = App || {};
         $('.js-video_close').click(function() {
             $('#id-video').hide();
             document.getElementById('id-videoplayer').pause();
+        });
+        $('.js-lang').click(function(e){
+            var $e = $(e.currentTarget);
+            $('.js-lang').removeClass('__active');
+            $e.addClass('__active');
+            setLang($e.attr('data-lang'));
         });
     }
 
@@ -296,6 +356,7 @@ var App = App || {};
     global.start = start;
     global.getUserData = function() { return userData; };
     global.getAWSBucket = function() { return bucket; };
+    global.getDict = function() { return dict; };
     global.showLogin = showLogin;
     global.on = on;
     global.getFriends = getFriends;
