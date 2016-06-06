@@ -50,8 +50,24 @@ var App = App || {};
         },
         'EN': {
             main_desc: 'Create quizes and<br>other special projects online',
-            special_what_is_it: 'What special projects is?',
-            business_solutions: 'Business solutions'
+            special_what_is_it: 'What special project is?',
+            business_solutions: 'Business solutions',
+            spec_descr: 'Special projects are quizes, timelines, infografics and other formats. They can easily tell about complex topics, and using game ways frequently.',
+            buss_descr: 'It\'s a good alternative to the standart ad formats. Create effective special projects to support your brand, which can be shared by people in social netwoks.',
+            to_bloggers: 'Bloggers',
+            to_media: 'Media',
+            to_companies: 'Companies',
+            surprise_them: 'Surprise your users offering them unusual formats',
+            attract_new_readers: 'Use special projects to attract new followers',
+            increase_reach: 'Increase your reach due to the viral effect of a special project',
+            your_design: 'Special project with your design',
+            choose_template: 'Select an appropriate template from the library and customize it according to your tasks.',
+            spec_in_one_touch: 'Special projects with one touch',
+            editor_desc: 'Convenient online Testix editor allows you to create high-quality quiz without programming skills,<br>and intuitive interface allows a designer to do without.',
+            idea_publish: 'One step from idea to publication',
+            create_in_blowser: 'Create special projects directly in your browser.<br>Get a link to your test or the code to insert into your website or blog.',
+            learn_more: 'Want to know more about Testix? Write to us!',
+            send_message: 'Send message'
         }
     };
 
