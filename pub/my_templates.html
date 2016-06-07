@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мои проекты</title>
+    <meta charset="UTF-8"/>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <link href="lib/bootsrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="lib/bootsrap/css/checkbox-radio-switch.css" rel="stylesheet"/>
+    <link href="lib/bootsrap/css/colorpicker.css" rel="stylesheet"/>
+    <link href="css/common.css" rel="stylesheet"/>
+    <link href="css/storefront.css" rel="stylesheet"/>
+</head>
+<body>
+    <div class="scr_wr">
+        <div class="top">
+            <div class="top_toolbar">
+                <div class="toolbar_left">
+                    <a class="logo ml24" href="index.html"></a>
+                </div>
+            </div>
+            <div id="id-user_toolbar" class="toolbar_user">
+                <div style="display:none" class="user_avatar js-profile_picture"></div>
+                <span style="display:none" class="pbtn __green __small mt4 js-show_login">Войти</span>
+                <div style="display:none" class="dropdown_btn js-user_ctx_menu">
+                    <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
+                        <div class="ctx_menu_item" onclick="onMyTemplatesClick();">
+                            Мои проекты
+                        </div>
+                        <div class="ctx_menu_item">
+                            Настройки профиля
+                        </div>
+                        <div class="ctx_menu_item js-logout">
+                            Выйти
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menu_tabs_wr">
+            <div class="menu_tabs">
+                <a href="storefront.html" class="menu_tab">Галерея шаблонов</a>
+                <a href="info.html" class="menu_tab __selected">Мои тесты</a>
+                <a href="info.html" class="menu_tab">Как это работает</a>
+                <a href="info.html" class="menu_tab">Решения для бизнеса</a>
+                <a href="info.html" class="menu_tab">Помощь</a>
+            </div>
+        </div>
+        <div class="st_cnt">
+            <div class="st_templates_wr">
+                <div id="id-my_projects_cnt" class="st_items_cnt">
+                    <!-- add user templates here after loading -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="id-modal_cnt">
+        <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
+    </div>
+    <script id="id-my_project_elem_template" type="text/template">
+        <div class="st_item pr40 pb40" data-template-url="{{data_file_url}}">
+            <div class="st_item_img js-preview" style="">
+                <div class="st_elem_status tx __18 __light __gray js-status">Загрузка...</div>
+                <div class="st_item_op">
+                    <div class="st_item_op_line mt90"><div class="pbtn js-edit">Редактировать</div></div>
+                    <div class="st_item_op_line"><div class="pbtn js_app-clone">Клонировать</div></div>
+                </div>
+            </div>
+            <div class="st_item_info">
+                <div class="st_item_name tx js-title"></div>
+                <div class="st_item_publish tx js-publish">не опубликован</div>
+            </div>
+            <div class="st_item_info">
+                <div class="st_item_last_modified js-last_modified"></div>
+            </div>
+        </div>
+    </script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/model/app.js"></script>
+    <script type="text/javascript" src="js/model/templates/template.js"></script>
+    <script type="text/javascript" src="js/model/templates/templateCollection.js"></script>
+    <script type="text/javascript" src="js/util/utils.js"></script>
+    <script type="text/javascript" src="js/util/queue.js"></script>
+    <script type="text/javascript" src="js/engine.js"></script>
+    <script type="text/javascript" src="js/appProperty.js"></script>
+    <script type="text/javascript" src="js/view/my_projects.js"></script>
+    <script>
+        $(document).ready(function() {
+            App.start();
+        });
+    </script>
+</body>
+</html>

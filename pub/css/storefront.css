@@ -3,7 +3,7 @@ html, body {
 }
 .st_cnt {
     margin: 0;
-    padding: 0;
+    padding: 36px 0;
     position: relative;
     background-color: #e9e9e9;
 }
@@ -52,7 +52,7 @@ html, body {
     display: inline-block;
     /*width: 400px;*/
 }
-.st_item_img:hover > .st_item_op {
+.st_item_img.__active:hover > .st_item_op {
     display: block;
 }
 .st_item_op {
@@ -80,11 +80,45 @@ html, body {
     width: 350px;
     height: 247px;
 }
-.st_item_name {
-    width: 100%;
+.st_elem_status {
+    position: absolute;
     text-align: center;
+    width: 100%;
+    top: 130px;
+}
+.st_item_info {
+    min-height: 22px;
+    padding-top: 10px;
+}
+.st_item_name {
+    display: inline-block;
+    vertical-align: top;
+    width: 246px;
+    text-align: left;
+    line-height: 22px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.st_item_last_modified {
+
+}
+.st_item_publish {
+    display: inline-block;
+    vertical-align: top;
+    min-width: 138px;
+    height: 22px;
+    border-radius: 99px;
+    border: 1px solid #727272;
+    font-size: 12px;
     color: #666;
-    padding: 12px 0;
+    text-align: center;
+    padding: 0 7px;
+}
+.st_item_publish.__published {
+    background-color: #1cbe60;
+    border: none;
+    color: #fff;
 }
 .st_preview_app_wr {
     position: fixed;

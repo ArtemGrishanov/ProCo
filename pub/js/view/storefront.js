@@ -2,7 +2,7 @@
  * Created by artyom.grishanov on 18.04.16.
  */
 
-var Storefront = {};
+var storefrontView = {};
 (function (global) {
 
     // TODO держать все шаблоны в памяти
@@ -146,4 +146,4 @@ var Storefront = {};
     global.getTemplates = function () { return templates; };
     global.loadApp = loadApp;
 
-})(Storefront);
+})(storefrontView);

@@ -307,3 +307,23 @@ function mergeProperties(from, to, overwrite) {
         }
     }
 }
+
+/**
+ * Берет свойства из первого объекта и пишет их во второй, только если
+ * свойства из первого объекта не null или undefined
+ *
+ *
+ * @param {object} from
+ * @param {object} to
+ * @param {boolean} [overwrite]
+ */
+function mergeIfNotNullProperties(from, to) {
+    for (var key in from) {
+        if (from.hasOwnProperty(key) === true) {
+            if (from[key] !== null && from[key] !== undefined) {
+                // перезаписываем и не смотрим что там в объекте to
+                to[key] = from[key];
+            }
+        }
+    }
+}

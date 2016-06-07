@@ -360,7 +360,7 @@ html, body {
 }
 .header {
     margin: 0;
-    padding: 33px 0 24px;
+    padding: 33px 0;
     text-align: center;
     font-size: 28px;
     color: #777;

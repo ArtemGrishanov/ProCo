@@ -3,9 +3,48 @@
  *
  * Основной объект управления приложением.
  *
+ * Организация проекта простая, исходя из того что нет бекенда:
+ * 1. На каждой странице инициализируем App, в котором собраны ключевые функции.
+ * 1.1 FB апи.
+ * 1.2 AWS апи.
+ * 1.3 Функции локализации
+ * 1.4 Множество UI обработчиков (применяются, понятно, только актуальные для страницы)
+ * 2. В верстке каждой страницы: избыточность и повторы.
+ *
+ *
+ * Дальше:
+ * TODO вынести обработчики в view-контроллеры, в модели только работа с данными
+ * TODO заменить на серверные шаблоны.
+ * TODO авторизация: будет замена на свою куку вместо запроса к ФБ каждый раз
+ *
+ */
+
+/**
+ * AWS bucket доступен для работы
+ * @type {string}
  */
 var AWS_INIT_EVENT = 'AWS_INIT_EVENT';
-var FB_INIT_EVENT = 'FB_INIT_EVENT';
+/**
+ *
+ * @type {string}
+ */
+var FB_CONNECTED = 'FB_CONNECTED';
+/**
+ *
+ * @type {string}
+ */
+var USER_DATA_RECEIVED = 'USER_DATA_RECEIVED';
+///**
+// * Был загружен список шаблонов пользователя
+// * Например, можно начинать рисовать список шаблонов пользователя
+// * @type {string}
+// */
+//var USER_TEMPLATES_LIST_RECEIVED = 'USER_TEMPLATES_LIST_RECEIVED';
+///**
+// * Вызывается на каждый загруженный шаблон индивидуально
+// * @type {string}
+// */
+//var USER_TEMPLATES_LIST_RECEIVED = 'USER_TEMPLATE_INFO_RECEIVED';
 
 var App = App || {};
 (function(global){
@@ -22,6 +61,11 @@ var App = App || {};
      * @type {object}
      */
     var userData = null;
+    /**
+     * Сохраненные проекты пользователя
+     * Коллекция шаблонов пользователя
+     */
+    var userTemplateCollection = null;
     /**
      * апи для работы со aws хранилищем
      *
@@ -240,6 +284,10 @@ var App = App || {};
         // Full docs on the response object can be found in the documentation
         // for FB.getLoginStatus().
         if (response.status === 'connected') {
+            // событие: установлена свзяь с фб, пользователь вошел
+            if (typeof callbacks[FB_CONNECTED] === 'function') {
+                callbacks[FB_CONNECTED]('unknown');
+            }
             // Logged into your app and Facebook.
             if (userData === null) {
                 getUserInfo();
@@ -252,9 +300,6 @@ var App = App || {};
             userData = null;
             bucket = null;
             //not_authorized unknown
-            if (typeof callbacks[FB_INIT_EVENT] === 'function') {
-                callbacks[FB_INIT_EVENT]('unknown');
-            }
         }
         updateUI();
     }
@@ -271,8 +316,8 @@ var App = App || {};
                     console.log('Successful login for: ' + response.name);
                     userData = response;
                     updateUI();
-                    if (typeof callbacks[FB_INIT_EVENT] === 'function') {
-                        callbacks[FB_INIT_EVENT]('ok');
+                    if (typeof callbacks[USER_DATA_RECEIVED] === 'function') {
+                        callbacks[USER_DATA_RECEIVED]('ok');
                     }
                     //getFriends();
             });
@@ -368,6 +413,38 @@ var App = App || {};
         callbacks[event] = callback;
     }
 
+    /**
+     * Запросить шаблоны пользователя
+     *
+     * @param {function} onTemplateListLoaded
+     * @param {function} onTemplateInfoLoaded
+     */
+    function requestUserTemplates(onTemplateListLoaded, onTemplateInfoLoaded) {
+        if (App.getUserData() !== null) {
+            userTemplateCollection = new TemplateCollection({
+                // каталог с шаблонами который надо загружать
+                folder: 'facebook-'+App.getUserData().id+'/app'
+            });
+            userTemplateCollection.loadTemplateList(function() {
+                if (onTemplateListLoaded) {
+                    onTemplateListLoaded(userTemplateCollection.templates);
+                }
+                // небольшая пауза - даем отрисовать список шаблонов
+                setTimeout(function(){
+                    userTemplateCollection.loadTemplatesInfo(function(template) {
+                        // получена информация по одному шаблоны
+                        if (onTemplateInfoLoaded) {
+                            onTemplateInfoLoaded(template);
+                        }
+                    });
+                }, 200);
+            });
+        }
+        else {
+            App.showLogin();
+        }
+    }
+
     // public methoods below
     global.start = start;
     global.getUserData = function() { return userData; };
@@ -376,4 +453,9 @@ var App = App || {};
     global.showLogin = showLogin;
     global.on = on;
     global.getFriends = getFriends;
+
+    // шаблоны. Получить
+    global.getUserTemplates = function() { return (userTemplateCollection !== null) ? userTemplateCollection.templates: null; }
+    // шаблоны. Запросить с колбеком
+    global.requestUserTemplates = requestUserTemplates;
 })(App);

@@ -20,13 +20,6 @@ var appName = null;
  */
 var appTemplate = null;
 /**
- * Список проектов текущего пользователя. Запрашивается когда пользователь заходит в "Мои Проекты"
- * null - список еще не был запрошен.
- * [] - запрошен, и у пользователя нет проектов
- * @type {Array.<object>}
- */
-var userTemplates = null;
-/**
  * Создание и сохранение шаблонов. Запуск автотестов.
  * @type {boolean}
  */
@@ -891,46 +884,6 @@ function openTemplate(templateUrl) {
     }
 }
 
-/**
- * Получить список проектов авторизованного пользователя
- * Получить проекты другого пользователя нельзя
- *
- * @param {function} [callback] - функция для обратного вызова, когда шаблоны будут загружены
- */
-function requestUserTemplates(callback) {
-    if (App.getUserData() !== null) {
-        var prefix = 'facebook-'+App.getUserData().id+'/app';
-        App.getAWSBucket().listObjects({
-            Prefix: prefix
-        }, function (err, data) {
-            if (err) {
-                log('ERROR: ' + err, true);
-            } else {
-                userTemplates = [];
-                data.Contents.forEach(function (obj) {
-                    // вырезаем имя файла, чтобы использовать его в качестве id для дальнейшей работы
-                    var reg = new RegExp('facebook-'+App.getUserData().id+'\/app\/([A-z0-9]+)\.txt','g');
-                    var match = reg.exec(obj.Key);
-                    if (match && match[1]) {
-                        var id = match[1];
-                        userTemplates.push({
-                            // key example facebook-902609146442342/app/abc123.txt
-                            key: obj.Key,
-                            id: id,
-                            lastModified: obj.LastModified
-                        });
-                    }
-                });
-                log('Objects in dir '+prefix+':');
-            }
-            callback();
-        });
-    }
-    else {
-        App.showLogin();
-    }
-}
-
 function showEditor() {
     $(appIframe).css('top','-9999px');
     $('#id-editor_view').show();
@@ -1033,35 +986,4 @@ function showSelectDialog(params) {
 function showPublishDialog(params) {
     var dialog = new PublishDialog(params);
     $('#id-dialogs_view').empty().append(dialog.view).show();
-}
-
-/**
- * Показать диалог с выбором своих сохраненных проектов
- *
- * @param params
- */
-function showMyTemplates() {
-    if (!userTemplates) {
-        requestUserTemplates(function(){
-            var selectOptions = [];
-            for (var i = 0; i < userTemplates.length; i++) {
-                selectOptions.push({
-                    id: userTemplates[i].key,
-                    label: userTemplates[i].id
-                });
-            }
-            var params = {};
-            params.options = selectOptions;
-            params.callback = function(selectedOptionId) {
-                if (selectedOptionId) {
-                    //TODO open saved template
-                    // в качестве ид передавали сразу ссылку на проект
-                    var tUrl = config.common.awsHostName+config.common.awsBucketName+'/'+selectedOptionId;
-                    openTemplate(tUrl);
-                }
-            };
-            var dialog = new SelectUserTemplateDialog(params);
-            $('#id-dialogs_view').empty().append(dialog.view).show();
-        });
-    }
 }
