@@ -122,7 +122,7 @@ TemplateCollection.prototype.loadTemplatesInfo = function(callback) {
                             Queue.release(this); // завершить задачу
                         }
                     }).bind(this);
-                    xhr.open('GET',this.data.templateUrl);
+                    xhr.open('GET',this.data.templateUrl+'?r='+getUniqId());
                     xhr.send();
                 }
             };
@@ -144,4 +144,50 @@ TemplateCollection.prototype.getById = function(id) {
         }
     }
     return null;
+}
+
+/**
+ * Сохранить шаблон в хранилище
+ * @param id - ид шаблона в коллекции
+ */
+TemplateCollection.prototype.saveTemplate = function(callback,
+                                                     id,
+                                                     propertyValues,
+                                                     descriptor,
+                                                     title) {
+    var template = this.getById(id);
+    if (template) {
+        if (propertyValues) {
+            template.propertyValues = propertyValues;
+        }
+        if (descriptor) {
+            template.descriptor = descriptor;
+        }
+        if (title) {
+            template.title = title;
+        }
+        template
+        log('Saving project:' + appId);
+        var objKey = 'facebook-'+App.getUserData().id+'/app/'+appId+'.txt';
+        var params = {
+            Key: objKey,
+            ContentType: 'text/plain',
+            Body: template.serialize(),
+            ACL: 'public-read'
+        };
+        App.getAWSBucket().putObject(params, (function (err, data) {
+            if (err) {
+                log('ERROR: ' + err, true);
+                callback('error');
+            }
+            else {
+                log('Saving task done:' + appId);
+                // uploadTemplatePreview();
+                callback('ok');
+            }
+        }).bind(this));
+    }
+    else {
+        log('saveTemplate says: There is no template with id='+id, true);
+    }
 }

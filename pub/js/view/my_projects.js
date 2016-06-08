@@ -12,9 +12,13 @@ var myProjectsView = {};
     var userTemplateViews = {};
 
     function initUIHandlers() {
-        $('.js-create_blank').click(function(){
-            //TODO
-            window.location.href = 'editor.html?app=test';
+        $('.js-create_blank').click(function(e){
+            var appName = $(e).attr('data-app-name');
+            if (appName) {
+                // открытие пустого шаблона
+                // параметр подготовлен для открытия проекта любого типа
+                window.location.href = 'editor.html?app='+appName;
+            }
         });
     }
 

@@ -20,6 +20,18 @@ var appName = null;
  */
 var appTemplate = null;
 /**
+ * Коллекция для управления открытыми шаблонами
+ * На самом деле в ней один шаблон
+ * @type {null}
+ */
+var openedTemplateCollection = new TemplateCollection();
+/**
+ * Дата публикации во время сессии
+ * Если публикации не было во время сесии - остается null
+ * @type {null}
+ */
+var sessionPublishDate = null;
+/**
  * Создание и сохранение шаблонов. Запуск автотестов.
  * @type {boolean}
  */
@@ -128,7 +140,8 @@ function start() {
     // сначала смотрим, есть ли ссылка на шаблон
     var t = getQueryParams(document.location.search)[config.common.templateUrlParamName];
     if (t) {
-        openTemplate(t);
+        var clone = getQueryParams(document.location.search)[config.common.cloneParamName] === 'true';
+        openTemplate(t, clone);
     }
     else {
         // если ссылки на шаблон нет, то открываем по имени промо-проекта, если оно есть
@@ -723,37 +736,49 @@ function onPublishClick() {
 /**
  * Сохранение проекта над которым работает пользователь
  * Сохраняет текущее состояние app+desc в сторадж
+ *
+ * @param {boolean} showResultMessage - показывать ли сообщение после сохранения. Например при фоновом сохранении не надо
  */
-function saveTemplate() {
+function saveTemplate(showResultMessage) {
+    if (showResultMessage === undefined) {
+        showResultMessage = true;
+    }
     //TODO автосохранение
-    //TODO name
     //TODO возможно шифрование
-    if (App.getAWSBucket() !== null) {
-        var data = {
-            appName: appName,
+    if (App.getAWSBucket() !== null && App.getUserData() !== null) {
+        // параметры сохраняемого шаблона
+        var param = {
+            appId: appId,
             propertyValues: Engine.getAppPropertiesValues(),
             descriptor: iframeWindow.descriptor,
             title: $('.js-proj_name').val()
         };
-        log('Saving project:' + appId);
-        var objKey = 'facebook-'+App.getUserData().id+'/app/'+appId+'.txt';
-        var params = {
-            Key: objKey,
-            ContentType: 'text/plain',
-            Body: JSON.stringify(data),
-            ACL: 'public-read'
-        };
-        App.getAWSBucket().putObject(params, (function (err, data) {
-            // task object context
-            if (err) {
-                log('ERROR: ' + err, true);
-                alert('Не удалось сохранить проект');
+        if (sessionPublishDate) {
+            // если в процессе сессии была сделана публикация, то сохраняем дату
+            // иначе сохранять дату не надо
+            param.publishDate = sessionPublishDate;
+        }
+        var storingTempl = openedTemplateCollection.getById(appId);
+        if (storingTempl === null) {
+            // это новый шаблон
+            // мы не открывали из своих шаблонов что-то, и не сохранили ранее ничего
+            storingTempl = new Template();
+            openedTemplateCollection.add(storingTempl);
+        }
+        storingTempl.set(param);
+        openedTemplateCollection.saveTemplate(function(result){
+            if (result === 'ok') {
+                operationsCount = Engine.getOperationsCount();
+                if (showResultMessage === true) {
+                    alert('Сохранено');
+                }
             }
-            log('Saving task done:' + appId);
-            operationsCount = Engine.getOperationsCount();
-            alert('Сохранено');
-    //        uploadTemplatePreview();
-        }).bind(this));
+            else {
+                if (showResultMessage === true) {
+                    alert('Не удалось сохранить проект');
+                }
+            }
+        }, appId);
     }
     else {
         App.showLogin();
@@ -836,11 +861,12 @@ function uploadTemplatePreview() {
  * По сути это функция "Открыть шаблон" из витрины или "Открыть мой ранее сохраненный проект". В этих случаях проект открывается на основе файла шаблона
  * сохраненных app+desc+appName
  *
- * @param templateUrl
+ * @param {string} templateUrl
+ * @param {boolean} clone - клонировать ли открываемый шаблон. Технически это просто смена appId
  */
 function openTemplate(templateUrl, clone) {
     if (App.getUserData() !== null) {
-        var openedTemplateCollection = new TemplateCollection({
+        openedTemplateCollection = new TemplateCollection({
             // в ручную добавили в коллекцию один шаблон, останется только получить инфо о нем
             templateUrls: [templateUrl]
         });
@@ -940,6 +966,9 @@ function showEmbedDialog(result, data) {
             link: iframeUrl,
             embedCode: ec
         });
+        // надо сохранить статус публикации
+        sessionPublishDate = new Date().toString();
+        saveTemplate(false);
     }
     else {
         alert('Publishing Error');

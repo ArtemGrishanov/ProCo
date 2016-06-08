@@ -3,24 +3,23 @@
  *
  * Шаблон промо приложения
  */
-
 function Template(param) {
     this.set(param)
 }
 
+/**
+ * Установить свойства для шаблона
+ * Будут установелны только свойства описанные в Template.validAttributes
+ *
+ * @param param
+ */
 Template.prototype.set = function(param) {
     param = param || {};
-    this.id = (param.id !== null) ? param.id: null;
-    this.url = (param.url !== null) ? param.url: null;
-    this.title = (param.title !== null) ? param.title: null;
-    this.previewUrl = (param.previewUrl !== null) ? param.previewUrl: null;
-    this.appId = (param.appId !== null) ? param.appId: null;
-    // имя промо-прототипа, например test timeline и так далее
-    this.appName = (param.appId !== null) ? param.appName: null;
-    this.propertyValues = (param.propertyValues !== null) ? param.propertyValues: null;
-    this.descriptor = (param.descriptor !== null) ? param.descriptor: null;
-    this.lastModified = (param.lastModified !== null) ? param.lastModified: null;
-    this.publishDate = (param.publishDate !== null) ? param.publishDate: null;
+    for (var key in Template.validAttributes) {
+        if (param.hasOwnProperty(key) === true) {
+            this[key] = param[key];
+        }
+    }
 }
 
 /**
@@ -37,6 +36,32 @@ Template.prototype.deserialize = function(str) {
     this.set(JSON.parse(str));
 }
 
+/**
+ * Сериализовать ключевые свойства шаблона в строку
+ *
+ * @returns {*}
+ */
 Template.prototype.serialize = function() {
-
+    var result = {};
+    for (var key in Template.validAttributes) {
+        var v = this[key];
+        if (v !== null && v != undefined) {
+            // берем только необходимые атрибуты
+            // причем null и undefined сохранять смысла нет
+            result[key] = v;
+        }
+    }
+    return JSON.stringify(result);
 }
+
+Template.validAttributes = {
+    id: null,
+    url: null,
+    title: null,
+    previewUrl: null,
+    appName: null, // имя промо-прототипа, например test timeline и так далее
+    propertyValues: null,
+    descriptor: null,
+    lastModified: null,
+    publishDate: null
+};
