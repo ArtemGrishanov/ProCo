@@ -49,6 +49,10 @@ var config = {
          */
         appNameParamName: 'app',
         /**
+         * Имя get параметра для указания, что проект надо клонировать
+         */
+        cloneParamName: 'clone',
+        /**
          * Теги, которыми будет обрамлены новые параметры перезаписывании
          */
         tagsForOverridingParams: ['/*<overrideapp>*/','/*</overrideapp>*/'],

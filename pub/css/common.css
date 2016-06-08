@@ -127,6 +127,9 @@ html, body {
 .pb40 {
     padding-bottom: 40px;
 }
+.pt80 {
+    padding-top: 80px;
+}
 .ctx_menu_wr {
     position: absolute;
     top: 45px;

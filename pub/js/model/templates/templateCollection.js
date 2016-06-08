@@ -7,12 +7,40 @@
  * 3) какие-то подборки на главной
  * ...
  *
- * @param {string} param.folder
+ * @param {string} param.folder - каталог пользователя, из которого будут загружены все шаблоны
+ * @param {Array.<string>} param.templateUrls - можно добавить в коллекцию отдельные шаблоны сразу
  */
 function TemplateCollection(param) {
     param = param || {};
     this.templates = [];
     this.folder = param.folder;
+    if (param.templateUrls) {
+        for (var i = 0; i < param.templateUrls.length; i++) {
+            var tId = this.getIdFromUrl(param.templateUrls[i], App.getUserData().id);
+            if (tId) {
+                this.templates.push(new Template({
+                    id: tId,
+                    url: param.templateUrls[i]
+                }));
+            }
+        }
+    }
+}
+
+/**
+ * Получить ид из урла. Ид это имя файла.
+ *
+ * @param url
+ * @param userId
+ * @returns {*}
+ */
+TemplateCollection.prototype.getIdFromUrl = function(url, userId) {
+    var reg = new RegExp('facebook-'+userId+'\/app\/([A-z0-9]+)\.txt','g');
+    var match = reg.exec(url);
+    if (match && match[1]) {
+        return match[1];
+    }
+    return null;
 }
 
 /**
@@ -34,16 +62,14 @@ TemplateCollection.prototype.loadTemplateList = function(callback) {
         } else {
             data.Contents.forEach(function (obj) {
                 // вырезаем имя файла, чтобы использовать его в качестве id для дальнейшей работы
-                var reg = new RegExp('facebook-'+App.getUserData().id+'\/app\/([A-z0-9]+)\.txt','g');
-                var match = reg.exec(obj.Key);
-                if (match && match[1]) {
-                    var id = match[1];
+                var tId = thisCollection.getIdFromUrl(obj.Key, App.getUserData().id);
+                if (tId) {
                     // создаем пока практически пустой объект-шаблон
                     // позже он будет дописан более подробной информацией из loadTemplatesInfo
                     thisCollection.templates.push(new Template({
                         // key example facebook-902609146442342/app/abc123.txt
                         url: obj.Key,
-                        id: id,
+                        id: tId,
                         lastModified: obj.LastModified
                     }));
                 }

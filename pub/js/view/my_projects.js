@@ -12,17 +12,30 @@ var myProjectsView = {};
     var userTemplateViews = {};
 
     function initUIHandlers() {
+        $('.js-create_blank').click(function(){
+            //TODO
+            window.location.href = 'editor.html?app=test';
+        });
+    }
 
+    function onEditClick(e) {
+        var url = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
+        window.location.href = 'editor.html?'+config.common.templateUrlParamName+'='+url;
+    }
+
+    function onCloneClick(e) {
+        var url = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
+        window.location.href = 'editor.html?'+config.common.templateUrlParamName+'='+url+'&'+config.common.cloneParamName+'=true';
     }
 
     /**
      * Отрисовать список моих проектов
      */
     function render(myTemplates) {
-        var $cnt = $('#id-my_projects_cnt').empty();
+        var $cnt = $('#id-my_projects_cnt');
+        // не очищаем контейнер - в нем уже находится кнопка создания нового пустого теста
         for (var i = 0; i < myTemplates.length; i++) {
-            var v = renderTemplateThumb(myTemplates[i]);
-            $cnt.append(v);
+            var v = renderTemplateThumb(myTemplates[i], $cnt);
             userTemplateViews[myTemplates[i].id] = v;
         }
     }
@@ -31,10 +44,15 @@ var myProjectsView = {};
      * Отрисовать один элемент в списке моих проектов с ключевыми элементами:
      * картинки, название, атрибуты, ид и так далее
      */
-    function renderTemplateThumb(templateData) {
+    function renderTemplateThumb(templateData, $cnt) {
         var s = $('#id-my_project_elem_template').html();
-        s = s.replace('{{data_file_url}}',templateData.key);
-        return $(s).attr('data-id',templateData.id);
+        s = s.replace('{{data_file_url}}',templateData.url);
+        var $e = $(s);
+        $cnt.append($e);
+        $e.find('.js-edit').click(onEditClick);
+        $e.find('.js_app-clone').click(onCloneClick);
+        $e.attr('data-id',templateData.id);
+        return $e;
     }
 
     /**
