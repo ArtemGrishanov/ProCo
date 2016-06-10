@@ -28,9 +28,15 @@ var openedTemplateCollection = new TemplateCollection();
 /**
  * Дата публикации во время сессии
  * Если публикации не было во время сесии - остается null
- * @type {null}
+ * @type {string}
  */
 var sessionPublishDate = null;
+/**
+ * Картинка для проекта, которая была загружена во время сессии
+ * Если ничего нового не было загружено, то null
+ * @type {string}
+ */
+var sessionPreviewUrl = null;
 /**
  * Создание и сохранение шаблонов. Запуск автотестов.
  * @type {boolean}
@@ -276,6 +282,8 @@ function showScreen(ids) {
     }
     // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
     $('#id-product_screens_cnt').width(appSize.width).height(previewHeight);
+    // боковые панели вытягиваем также
+    $('.js-setting_panel').height(previewHeight);
 
     //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
     // подсветка контрола Slide по которому кликнули
@@ -758,6 +766,24 @@ function saveTemplate(showResultMessage) {
             // иначе сохранять дату не надо
             param.publishDate = sessionPublishDate;
         }
+        // если пользовательское - перезаписать урл и ничего не аплоадить (аплоадил пользователь раньше)
+        // если не пользовательское то в любом случае запустить таску на генерацию а sessionPreviewUrl перезаписать путем
+        if (sessionPreviewUrl && sessionPreviewUrl.indexOf(config.common.userCustomPreviewFileName) >= 0) {
+            // превью пользовательское и было изменено в этой сессии, обновляем урл для записи
+            param.previewUrl = sessionPreviewUrl;
+        } else if (appTemplate && appTemplate.previewUrl && appTemplate.previewUrl.indexOf(config.common.userCustomPreviewFileName) >= 0) {
+            // превью пользовательское уже сохранено в шаблоне, то ничего делать не надо
+            // не предусмотрено удаление картинки превью, которое пользователь сам привязал к тесту
+        }
+        else {
+            // превью автоматическое
+            // будет возвращен урл картинки, а сама таска на генерацию и аплоад сделана позже
+            sessionPreviewUrl = generateAutoPreview();
+            if (sessionPreviewUrl) {
+                // если появился новый урл превью картинки то сохраняем его
+                param.previewUrl = sessionPreviewUrl;
+            }
+        }
         var storingTempl = openedTemplateCollection.getById(appId);
         if (storingTempl === null) {
             // это новый шаблон
@@ -787,13 +813,14 @@ function saveTemplate(showResultMessage) {
 
 $('#id-app_preview_img').change((function() {
     // сразу без превью - аплоад
-    this.uploadTemplatePreview();
+    this.uploadUserCustomTemplatePreview();
 }).bind(this));
-function uploadTemplatePreview() {
+
+function uploadUserCustomTemplatePreview() {
     if (App.getAWSBucket() !== null) {
         var file = $('#id-app_preview_img')[0].files[0];
         if (file) {
-            var objKey = 'facebook-'+App.getUserData().id+'/app/'+appId+'.jpg';
+            var objKey = 'facebook-'+App.getUserData().id+'/app/'+config.common.userCustomPreviewFileName+'.jpg';
             var params = {
                 Key: objKey,
                 ContentType: file.type,
@@ -806,6 +833,8 @@ function uploadTemplatePreview() {
                     log('ERROR: ' + err, true);
                 } else {
                     alert('Превью для промки загружена');
+                    sessionPreviewUrl = objKey;
+                    saveTemplate(false);
                 }
             }).bind(this));
         }
@@ -813,46 +842,49 @@ function uploadTemplatePreview() {
     else {
         App.showLogin();
     }
-//    function uplCnv(canvas) {
-//        JPEGEncoder(100);
-//        var theImgData = (canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
-//        // Encode the image and get a URI back, set toRaw to true
-//        var rawData = encode(theImgData, 100, true);
-//        var blob = new Blob([rawData.buffer], {type: 'image/jpeg'});
-//        var objKey = 'facebook-' + +App.getUserData().id+ + '/app/'+appId+'.jpg';
-//        var params = {
-//            Key: objKey,
-//            ContentType: 'image/jpeg',
-//            Body: blob,
-//            ACL: 'public-read'
-//        };
-//        App.getAWSBucket.putObject(params, (function (err, data) {
-//            if (err) {
-//                //Not authorized to perform sts:AssumeRoleWithWebIdentity
-//                log('ERROR: ' + err, true);
-//            } else {
-//                alert('Превью промки загружено');
-//            }
-//        }).bind(this));
-//    }
+}
 
-    // работает, но плохо с буллитами. Появляются непонятные линии
-//    html2canvas(productScreensCnt, {
-//        onrendered: (function(canvas) {
-//            uplCnv(canvas);
-//        }).bind(this)
-//    });
+/**
+ * Создать таск на генерацию картинки превью
+ * Генерация и аплоад будут сделаны позже, хотя урл возвращается сразу
+ *
+ * @return {string} - урл на превью картинки
+ */
+function generateAutoPreview() {
+    // проверяем что надо генеритьб првеью для проекта если только пользователь ранее не установил свое кастомное превью
+    // его не надо перезаписывать
+    if (appTemplate) {
+        var url = 'facebook-'+App.getUserData().id+'/app/'+appId+'.jpg';
 
-    // не работает
-//    var canvas = document.getElementById("id-preview_canvas");
-//    rasterizeHTML.drawHTML(productScreensCnt.html(),canvas)
-//        .then(function success(renderResult) {
-//            console.log(renderResult);
-//        }, function error(e) {
-//            console.log(e);
-//        });
-//    $('body').append(canvas);
-    //uplCnv(canvas);
+        function uplCnv(canvas) {
+            JPEGEncoder(100);
+            var theImgData = (canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
+            // Encode the image and get a URI back, set toRaw to true
+            var rawData = encode(theImgData, 100, true);
+            var blob = new Blob([rawData.buffer], {type: 'image/jpeg'});
+            var params = {
+                Key: url,
+                ContentType: 'image/jpeg',
+                Body: blob,
+                ACL: 'public-read'
+            };
+            App.getAWSBucket().putObject(params, (function (err, data) {
+                if (err) {
+                    //Not authorized to perform sts:AssumeRoleWithWebIdentity
+                    log('ERROR: ' + err, true);
+                } else {
+                    alert('Превью промки загружено');
+                }
+            }).bind(this));
+        }
+
+        previewService.create(productScreensCnt, function(canvas) {
+            uplCnv(canvas);
+        });
+
+        return url;
+    }
+    return null;
 }
 
 /**

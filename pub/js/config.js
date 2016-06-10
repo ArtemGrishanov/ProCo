@@ -59,7 +59,11 @@ var config = {
         /**
          *
          */
-        angularAppName: 'procoApp'
+        angularAppName: 'procoApp',
+        /**
+         * Имя файла превью для проекта при условии что его ставит сам пользователь, а не автоматическая генерация
+         */
+        userCustomPreviewFileName: 'userCustomPreview'
     },
     products: {
         // конфигурация для каждого типа промо-приложений

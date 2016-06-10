@@ -182,7 +182,6 @@ TemplateCollection.prototype.saveTemplate = function(callback,
             }
             else {
                 log('Saving task done:' + appId);
-                // uploadTemplatePreview();
                 callback('ok');
             }
         }).bind(this));

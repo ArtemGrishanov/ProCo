@@ -76,8 +76,8 @@ var myProjectsView = {};
             else {
                 $(v).find('.js-status').text('Ошибка');
             }
-            if (template.preview) {
-                $(v).find('.js-preview').css('backgroundImage','url('+template.preview+')');
+            if (template.previewUrl) {
+                $(v).find('.js-preview').css('backgroundImage','url('+config.common.awsHostName+'/'+config.common.awsBucketName+'/'+template.previewUrl+')');
             }
 // for test            template.publishDate = 'Mon Apr 25 2016 12:37:00 GMT+0300 (MSK)';
             if (template.publishDate) {

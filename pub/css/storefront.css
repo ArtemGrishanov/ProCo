@@ -77,6 +77,7 @@ html, body {
     position: relative;
     background-color: #eee;
     background-size: cover;
+    background-position: center;
     width: 400px;
     height: 300px;
     text-align: center;
