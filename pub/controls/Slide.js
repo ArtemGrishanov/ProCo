@@ -16,7 +16,9 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
             var arr = (Array.isArray(this.propertyString))?this.propertyString:[this.propertyString];
             showScreen(arr);
         }
-        this.updatePreview();
+        if (config.common.generateSlidePreviews === true) {
+            this.updatePreview();
+        }
     };
     // помним, что контрол может отвечать сразу за несколько экранов
     // подписка на обновления экрана в движке, контрол будет запрашивать у редактора перерисовку
@@ -29,30 +31,30 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
         //TODO not working yet
         // успешно работает только создание превью для одного активного экрана
         // для всех экранов, даже в очереди, в либе html2canvas валится эксепшн
-//        try {
-//            var t = {
-//                run: (function() {
-//                    var view = (Array.isArray(this.propertyString)) ?
-//                        Engine.getAppScreen(this.propertyString[0]).view :
-//                        Engine.getAppScreen(this.propertyString).view;
-//                    //$('#id-screens_preview_cnt').empty().append(view);
-//                    html2canvas(view,{
-//                        onrendered: (function(canvas) {
-//                            // canvas is the final rendered <canvas> element
-//                            this.$directive.empty().append($(canvas).css('width','166px')); // 166 - ширине slide
-//                            //$('#id-screens_preview_cnt').empty();
-//                            Queue.release(t);
-//                        }).bind(this)
-//                    })
-//                }).bind(this)
-//            };
-//            Queue.push(t);
-//        }
-//        catch(e) {
-//            log('Can not create preview on screen \''+p+'\'', true);
-//        }
+        try {
+            var view = (Array.isArray(this.propertyString)) ?
+                    Engine.getAppScreen(this.propertyString[0]).view :
+                    Engine.getAppScreen(this.propertyString).view;
+
+            var clonedView = $(view).clone().css('transform','scale(0.21)').css('transform-origin','top left');
+            //TODO
+            var $previewDocument = this.$directive.find('.js-preview_iframe').contents();
+            $previewDocument.find('head').append('<link href="../products/test/style.css" rel="stylesheet"/>');
+            $previewDocument.find('body').css('margin',0);
+            $previewDocument.find('body').empty().append(clonedView);
+//            previewService.create(view, (function(canvas) {
+//                this.$directive.empty().append($(canvas).css('width','166px')); // 166 - ширине slide
+//            }).bind(this), 'rasterizeHTML');
+
+        }
+        catch(e) {
+            log('Can not create preview on screen \''+p+'\'', true);
+        }
     };
-    this.updatePreview();
+
+    if (config.common.generateSlidePreviews === true) {
+       // this.updatePreview();
+    }
 }
 Slide.prototype = AbstractControl;
 /**

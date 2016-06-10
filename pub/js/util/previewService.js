@@ -36,7 +36,8 @@ var previewService = {};
                     rasterizeHTML.drawHTML(productScreensCnt.html(),canvas)
                         .then(function success(renderResult) {
                             console.log(renderResult);
-                            callback(renderResult);
+                            //callback(renderResult.image);
+                            callback(renderResult.svg);
                         }, function error(e) {
                             console.log(e);
                             callback(null);

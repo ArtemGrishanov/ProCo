@@ -14,11 +14,11 @@ var config = {
         /**
          * Проводить ли при старте инициализацию для работы с хранилищем амазона
          */
-        awsEnabled: true,
+        awsEnabled: false,
         /**
          * Разрешать вход через FB
          */
-        facebookAuthEnable: true,
+        facebookAuthEnable: false,
         /**
          * Id приложения в facebook для логина
          */
@@ -78,7 +78,11 @@ var config = {
          * Доступны следующие библиотеки
          * html2canvas | rasterizeHTML
          */
-        previewMethod: 'html2canvas'
+        previewMethod: 'html2canvas',
+        /**
+         * Надо ли генерировать превью всех экранов приложения для контрола Slide
+         */
+        generateSlidePreviews: true
     },
     products: {
         // конфигурация для каждого типа промо-приложений

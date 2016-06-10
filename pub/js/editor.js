@@ -79,6 +79,11 @@ var uiControlsInfo = [
     // domElement
 ];
 /**
+ * Массив контролов типа slide
+ * @type {Array}
+ */
+var slides = [];
+/**
  * При показе экрана инициализируется набор триггеров.
  * В массиве собраны триггеры, активные на данный момент.
  * Триггеры могут быть в нескольких состояниях.
@@ -288,8 +293,8 @@ function showScreen(ids) {
 
     //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
     // подсветка контрола Slide по которому кликнули
-    $('#id-slides_cnt').find('.slide_thumb').removeClass('__active');
-    $('#id-slides_cnt').find('[data-app-property=\"'+activeScreens.join(' ')+'\"]').addClass('__active');
+    $('#id-slides_cnt').find('.slide_selection').removeClass('__active');
+    $('#id-slides_cnt').find('[data-app-property=\"'+activeScreens.join(' ')+'\"]').find('.slide_selection').addClass('__active');
 
     $($("#id-product_screens_cnt").contents()).click(function(){
         // любой клик по промо-проекту сбрасывает подсказки
@@ -586,6 +591,7 @@ function createScreenControls() {
     var appScreenIds = Engine.getAppScreenIds();
     // экраны могут быть поделены на группы
     var groups = {};
+    slides = [];
     if (appScreenIds.length > 0) {
         // подготовительная часть: разобъем экраны на группы
         for (var i = 0; i < appScreenIds.length; i++) {
@@ -624,6 +630,7 @@ function createScreenControls() {
                     // выходим, так как добавили всю группу разом в один контрол
                     break;
                 }
+                slides.push(newControl);
             }
 
             //TODO есть группа экранов и непонятно к какому appProperty надо ее привязать. Надо quiz для questions
@@ -854,7 +861,7 @@ function uploadUserCustomTemplatePreview() {
 function generateAutoPreview() {
     // проверяем что надо генеритьб првеью для проекта если только пользователь ранее не установил свое кастомное превью
     // его не надо перезаписывать
-    if (appTemplate && previewAutoGeneration === true) {
+    if (appTemplate && config.common.previewAutoGeneration === true) {
         var url = 'facebook-'+App.getUserData().id+'/app/'+appId+'.jpg';
 
         function uplCnv(canvas) {
