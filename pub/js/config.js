@@ -53,6 +53,10 @@ var config = {
          */
         cloneParamName: 'clone',
         /**
+         * Параметр передающий ссылку на опубликованное приложение
+         */
+        publishedProjParamName: 'pp',
+        /**
          * Теги, которыми будет обрамлены новые параметры перезаписывании
          */
         tagsForOverridingParams: ['/*<overrideapp>*/','/*</overrideapp>*/'],
@@ -63,7 +67,18 @@ var config = {
         /**
          * Имя файла превью для проекта при условии что его ставит сам пользователь, а не автоматическая генерация
          */
-        userCustomPreviewFileName: 'userCustomPreview'
+        userCustomPreviewFileName: 'userCustomPreview',
+        /**
+         * Автоматическая генерация превью проекта при его сохранении
+         * Берется текущий экран и перегоняется в jpeg
+         */
+        previewAutoGeneration: true,
+        /**
+         * Метод для генерации превью html элемента
+         * Доступны следующие библиотеки
+         * html2canvas | rasterizeHTML
+         */
+        previewMethod: 'html2canvas'
     },
     products: {
         // конфигурация для каждого типа промо-приложений

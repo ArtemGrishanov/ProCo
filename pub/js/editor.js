@@ -208,6 +208,7 @@ function loadAppSrc(loadedAppName) {
         appIframe.src = host+src;
         $('#id-product_iframe_cnt').append(appIframe);
         //TODO надо точно знать размеры продукта в этот момент
+        //TODO когда то будет динамический размер
         $('#id-product_cnt').width(800).height(600);
     }
     else {
@@ -853,7 +854,7 @@ function uploadUserCustomTemplatePreview() {
 function generateAutoPreview() {
     // проверяем что надо генеритьб првеью для проекта если только пользователь ранее не установил свое кастомное превью
     // его не надо перезаписывать
-    if (appTemplate) {
+    if (appTemplate && previewAutoGeneration === true) {
         var url = 'facebook-'+App.getUserData().id+'/app/'+appId+'.jpg';
 
         function uplCnv(canvas) {

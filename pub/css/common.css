@@ -25,6 +25,7 @@ html, body {
 }
 .scr_wr {
     position: relative;
+    height: 100%;
 }
 .scr {
     position: absolute;
@@ -672,4 +673,10 @@ html, body {
 }
 .lang_item.__leftborder {
     border-left: 1px solid #979797;
+}
+
+.published_proj_back {
+    background-color: #5d5d5d;
+    width: 100%;
+    height: 100%;
 }
