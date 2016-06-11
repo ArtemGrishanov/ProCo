@@ -35,16 +35,27 @@
       <file leaf-file-name="Slide.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/controls/Slide.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="29" selection-start="298" selection-end="303" vertical-scroll-proportion="-3.6" vertical-offset="0" max-vertical-offset="1200">
+            <state line="15" column="70" selection-start="689" selection-end="714" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1425">
+              <folding>
+                <marker date="1465667778000" expanded="true" signature="2439:3210" placeholder="//..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="editor.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1098" column="10" selection-start="42076" selection-end="42076" vertical-scroll-proportion="0.87586206" vertical-offset="15835" max-vertical-offset="16590">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="style.css" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="style.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/controls/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="23" selection-start="447" selection-end="447" vertical-scroll-proportion="0.35428572" vertical-offset="187" max-vertical-offset="1185">
+            <state line="29" column="23" selection-start="447" selection-end="447" vertical-scroll-proportion="-9.92" vertical-offset="187" max-vertical-offset="1185">
               <folding />
             </state>
           </provider>
@@ -62,7 +73,7 @@
       <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="84" column="35" selection-start="2922" selection-end="2922" vertical-scroll-proportion="0.0" vertical-offset="855" max-vertical-offset="3255">
+            <state line="84" column="35" selection-start="2922" selection-end="2922" vertical-scroll-proportion="0.0" vertical-offset="915" max-vertical-offset="3255">
               <folding />
             </state>
           </provider>
@@ -88,15 +99,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="editor.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="283" column="9" selection-start="9032" selection-end="9032" vertical-scroll-proportion="-4.52" vertical-offset="4132" max-vertical-offset="16440">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindManager">
@@ -117,12 +119,12 @@
         <option value="$PROJECT_DIR$/pub/css/editor.css" />
         <option value="$PROJECT_DIR$/pub/css/common.css" />
         <option value="$PROJECT_DIR$/pub/js/util/previewService.js" />
-        <option value="$PROJECT_DIR$/pub/js/config.js" />
         <option value="$PROJECT_DIR$/pub/controls/view/slide.html" />
         <option value="$PROJECT_DIR$/pub/editor.html" />
+        <option value="$PROJECT_DIR$/pub/controls/css/style.css" />
+        <option value="$PROJECT_DIR$/pub/js/config.js" />
         <option value="$PROJECT_DIR$/pub/controls/Slide.js" />
         <option value="$PROJECT_DIR$/pub/js/editor.js" />
-        <option value="$PROJECT_DIR$/pub/controls/css/style.css" />
       </list>
     </option>
   </component>
@@ -490,26 +492,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="84" column="35" selection-start="2922" selection-end="2922" vertical-scroll-proportion="0.0" vertical-offset="855" max-vertical-offset="3255">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/css/editor.css">
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="16" selection-start="260" selection-end="260" vertical-scroll-proportion="0.28965518" vertical-offset="0" max-vertical-offset="5400">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/editor.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="757" selection-end="757" vertical-scroll-proportion="-8.125" vertical-offset="0" max-vertical-offset="4815">
-          <folding>
-            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -527,23 +513,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
+    <entry file="file://$PROJECT_DIR$/pub/controls/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="283" column="9" selection-start="9032" selection-end="9032" vertical-scroll-proportion="-4.52" vertical-offset="4132" max-vertical-offset="16440">
+        <state line="29" column="23" selection-start="447" selection-end="447" vertical-scroll-proportion="-9.92" vertical-offset="187" max-vertical-offset="1185">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="84" column="35" selection-start="2922" selection-end="2922" vertical-scroll-proportion="0.0" vertical-offset="915" max-vertical-offset="3255">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/editor.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="0" selection-start="757" selection-end="757" vertical-scroll-proportion="-8.125" vertical-offset="0" max-vertical-offset="4815">
+          <folding>
+            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/controls/Slide.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="29" selection-start="298" selection-end="303" vertical-scroll-proportion="-3.6" vertical-offset="0" max-vertical-offset="1200">
-          <folding />
+        <state line="15" column="70" selection-start="689" selection-end="714" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1425">
+          <folding>
+            <marker date="1465667778000" expanded="true" signature="2439:3210" placeholder="//..." />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/css/style.css">
+    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="23" selection-start="447" selection-end="447" vertical-scroll-proportion="0.35428572" vertical-offset="187" max-vertical-offset="1185">
+        <state line="1098" column="10" selection-start="42076" selection-end="42076" vertical-scroll-proportion="0.87586206" vertical-offset="15835" max-vertical-offset="16590">
           <folding />
         </state>
       </provider>

@@ -3,7 +3,29 @@
  */
 function Slide(propertyString, directiveName, $parent, productDOMElement, params) {
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
+    // в это body будет вставляться превью слайда
+    this.$previewDocumentBody = null;
+    this.$previewIFrame = null
+    this.previewScale = undefined;
+    /**
+     * Событие на загрузку айфрейма, тут мы сможем его подготовить для создания превью слайда
+     */
+    this.onPreviewIFrameLoaded = function() {
+        var $previewDocument = this.$previewIFrame.contents();
+        // TODO стили промопроекта как сюда попадут?
+        $previewDocument.find('head').append(getProjectStandartCssLink());
+        this.$previewDocumentBody = $previewDocument.find('body').css('margin',0).css('overflow','hidden');
+        // создание первого превью
+        if (config.common.generateSlidePreviews === true) {
+            this.updatePreview();
+        }
+    };
+    // загрузить UI контрола
     this.loadDirective(function(response, status, xhr){
+        // подотовка компонента к работе с превью
+        //
+        this.$previewIFrame = $(this.$directive.find('.js-preview_iframe'));
+        this.$previewIFrame.load(this.onPreviewIFrameLoaded.bind(this));
         this.$directive.click(function(){
             showScreen(Array.isArray(propertyString)?propertyString:propertyString.split(','));
         });
@@ -28,33 +50,26 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
     }
 
     this.updatePreview = function() {
-        //TODO not working yet
-        // успешно работает только создание превью для одного активного экрана
-        // для всех экранов, даже в очереди, в либе html2canvas валится эксепшн
         try {
-            var view = (Array.isArray(this.propertyString)) ?
-                    Engine.getAppScreen(this.propertyString[0]).view :
-                    Engine.getAppScreen(this.propertyString).view;
-
-            var clonedView = $(view).clone().css('transform','scale(0.21)').css('transform-origin','top left');
-            //TODO
-            var $previewDocument = this.$directive.find('.js-preview_iframe').contents();
-            $previewDocument.find('head').append('<link href="../products/test/style.css" rel="stylesheet"/>');
-            $previewDocument.find('body').css('margin',0);
-            $previewDocument.find('body').empty().append(clonedView);
-//            previewService.create(view, (function(canvas) {
-//                this.$directive.empty().append($(canvas).css('width','166px')); // 166 - ширине slide
-//            }).bind(this), 'rasterizeHTML');
-
+            if (this.$previewDocumentBody) {
+                var view = (Array.isArray(this.propertyString)) ?
+                        Engine.getAppScreen(this.propertyString[0]).view :
+                        Engine.getAppScreen(this.propertyString).view;
+                if (this.previewScale === undefined) {
+                    this.previewScale = this.$previewIFrame.width() / appSize.width;
+                }
+                var clonedView = $(view).clone().css('transform','scale('+this.previewScale+')').css('transform-origin','top left');
+                this.$previewDocumentBody.empty().append(clonedView);
+            }
         }
         catch(e) {
-            log('Can not create preview on screen \''+p+'\'', true);
+            log('Can not create preview on screen \''+this.propertyString+'\'', true);
         }
     };
 
-    if (config.common.generateSlidePreviews === true) {
+    //if (config.common.generateSlidePreviews === true) {
        // this.updatePreview();
-    }
+    //}
 }
 Slide.prototype = AbstractControl;
 /**

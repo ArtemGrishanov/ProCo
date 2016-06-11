@@ -1089,3 +1089,13 @@ function showPublishDialog(params) {
     var dialog = new PublishDialog(params);
     $('#id-dialogs_view').empty().append(dialog.view).show();
 }
+
+/**
+ * В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae
+ * Нужно для превью в контроле Slide
+ * @returns {string}
+ */
+function getProjectStandartCssLink() {
+    //TODO
+    return '<link href="../products/test/style.css" rel="stylesheet"/>';
+}
