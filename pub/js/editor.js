@@ -208,7 +208,7 @@ function loadAppSrc(loadedAppName) {
         iframeWindow = null;
         appIframe = document.createElement('iframe');
         appIframe.onload = onProductIframeLoaded;
-        $(appIframe).addClass('proto_cnt');
+        $(appIframe).addClass('proto_cnt').addClass('__hidden');
         var host = config.common.devPrototypesHostName || (config.common.awsHostName+config.common.awsBucketName);
         appIframe.src = host+src;
         $('#id-product_iframe_cnt').append(appIframe);
@@ -984,13 +984,13 @@ function openTemplate(templateUrl, clone) {
 }
 
 function showEditor() {
-    $(appIframe).css('top','-9999px');
+    $(appIframe).addClass('__hidden');
     $('#id-editor_view').show();
     $('#id-preview_view').hide();
 }
 
 function showPreview() {
-    $(appIframe).css('top',0);
+    $(appIframe).removeClass('__hidden');
     $('#id-editor_view').hide();
     $('#id-preview_view').show();
 }

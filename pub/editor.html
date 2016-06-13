@@ -81,17 +81,49 @@
                 <!-- Сюда попадают контролы которые показываются постоянно -->
             </div>
         </div>
-        <div id="id-screens_preview_cnt" class="proto_cnt">
-            <!-- Скрытый контейнер для добавления туда экранов для рендеринга превью для Slides контролов -->
-        </div>
     </div>
     <div id="id-preview_view" style="display:none">
         <div style="margin: 5px">
             <a class="btn" onclick="onBackToEditorClick();">Назад</a>
         </div>
-        <div style="position:relative;margin: 5px">
-            <div id="id-product_iframe_cnt" class="">
-                <!-- Сюда добавляем программно айфрейм с прототипом для редактирования -->
+        <!--<div style="position:relative;margin: 5px">-->
+            <!--<div id="id-product_iframe_cnt" class="proto_wr">-->
+                <!--&lt;!&ndash; Сюда добавляем программно айфрейм с прототипом для редактирования &ndash;&gt;-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="scr_wr">
+            <div class="top">
+                <div class="top_toolbar">
+                    <div class="toolbar_left">
+                        <a class="logo ml24" href="index.html"></a>
+                    </div>
+                </div>
+                <div id="id-user_toolbar" class="toolbar_user">
+                    <!--<div style="display:none" class="user_avatar js-profile_picture"></div>-->
+                    <!--<span style="display:none" class="pbtn __green __small mt4 js-show_login">Войти</span>-->
+                    <!--<div style="display:none" class="dropdown_btn js-user_ctx_menu">-->
+                    <!--<div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">-->
+                    <!--<div class="ctx_menu_item" onclick="onMyTemplatesClick();">-->
+                    <!--Мои проекты-->
+                    <!--</div>-->
+                    <!--<div class="ctx_menu_item">-->
+                    <!--Настройки профиля-->
+                    <!--</div>-->
+                    <!--<div class="ctx_menu_item js-logout">-->
+                    <!--Выйти-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <a class="pbtn __green js-create_new" style="display:none;">Хочу такой же!</a>
+                </div>
+            </div>
+            <div class="published_proj_back">
+                <div id="id-product_iframe_cnt" class="proto_wr">
+                    <!-- Сюда добавляем программно айфрейм с прототипом для редактирования -->
+                </div>
+                <div class="social_btns_cnt">
+                    <!-- TODO -->
+                </div>
             </div>
         </div>
     </div>
