@@ -61,14 +61,21 @@ var AbstractControl = {
      */
     loadDirective: function(callback) {
         if (this.directiveName) {
-            var $d = $('<div></div>').load('controls/view/'+this.directiveName+'.html', (function(response, status, xhr) {
-                if (this.$parent) {
-                    this.$directive = $($d.html());
-                    this.$directive.attr('data-app-property',this.propertyString);
-                    this.$parent.append(this.$directive);
-                    callback.call(this);
+            var control = this;
+            var t = {
+                run: function () {
+                    var $d = $('<div></div>').load('controls/view/'+control.directiveName+'.html', (function(response, status, xhr) {
+                        if (control.$parent) {
+                            control.$directive = $($d.html());
+                            control.$directive.attr('data-app-property',control.propertyString);
+                            control.$parent.append(control.$directive);
+                            callback.call(control);
+                            Queue.release(this);
+                        }
+                    }).bind(this));
                 }
-            }).bind(this));
+            };
+            Queue.push(t);
         }
     }
 };

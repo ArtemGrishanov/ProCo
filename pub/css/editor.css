@@ -108,10 +108,12 @@
     top: 0;
     left: 0;
     width: 180px;
+    height: 100%;
+    /* TODO 1000px - в расчете на то что хватит под все контролы которые появятся */
+    min-height: 1000px;
     padding: 12px;
     background-color: #eee;
     border: 1px solid #bbb;
-    min-height: 600px;
     color: #000;
 }
 .settings_panel.__right {

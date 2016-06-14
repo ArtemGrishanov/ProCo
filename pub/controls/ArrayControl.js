@@ -36,6 +36,20 @@ function ArrayControl(propertyString, directiveName, $parent, productDOMElement,
     this.startMousePosition = null;
     this.propertyValueMap = null;
 
+    
+    /**
+     * Обновить экраны на основе информации из Engine
+     *
+     * У этого контрола есть такие данные:
+     * 1) Массив Slide (превью одного экрана), он их сам и создает сколько надо и когда надо
+     * 2) Engine.getAppScreenIds()
+     * 3) требования к быстродействию:
+     *      - перетаскивания, добавления/удаления должны происходить гладко
+     */
+    this.updateScreens() {
+
+    }
+
     this.loadDirective(function(response, status, xhr){
         if (this.params.groupLabel) {
             this.$directive.find('.js-slide_group_name').text(this.params.groupLabel);
@@ -350,9 +364,15 @@ function ArrayControl(propertyString, directiveName, $parent, productDOMElement,
             }
         }
         var ap = Engine.getAppProperty(this.propertyString);
-        //TODO важно: здесь должно быть updateScreens:false, иначе произойдет пересборка экранов и перемещения заметно не будет
-        // а делать пересборку такого большого контрола ArrayControl невозможно
-        Engine.setValue(ap, newValue, {updateScreens:false});
+        //TODO remove важно: здесь должно быть updateScreens:false, иначе произойдет пересборка экранов и перемещения заметно не будет
+        //TODO remove а делать пересборку такого большого контрола ArrayControl невозможно
+        // Здесь необходимо делать пересборку экранов, так как надо рендерить заново с учетом порядка
+        // например такие конструкции как quiz.{{currentQuestion}}.text и тому подобное
+        Engine.setValue(ap, newValue, {
+            updateScreens:true
+        });
+        //TODO контролы типа Slide нуждаются в обновлении?
+//        syncUIControlsToAppProperties();
     }
 }
 ArrayControl.prototype = AbstractControl;

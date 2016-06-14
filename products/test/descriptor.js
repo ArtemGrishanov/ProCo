@@ -104,7 +104,7 @@ descriptor.app = [
     },
     {
         selector: 'questionProgressPosition',
-        updateScreens: true,
+        updateScreens: true, // потому что в рамках одной сессии надо менять позицию этого элемента на нескольких экранах
         rules: 'drag'
     },
     {

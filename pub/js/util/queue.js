@@ -35,7 +35,7 @@
 var Queue = {};
 (function(global) {
     var tasks = [];
-    var timer = setInterval(doNext, 200);
+    var timer = setInterval(doNext, 60);
     var currentTask = null;
     var onCompleteHandlers = [];
     /**

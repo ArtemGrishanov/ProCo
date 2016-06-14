@@ -289,12 +289,13 @@ function showScreen(ids) {
     // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
     $('#id-product_screens_cnt').width(appSize.width).height(previewHeight);
     // боковые панели вытягиваем также
+    // TODO в зависимости от контролов также вытягивать надо
     $('.js-setting_panel').height(previewHeight);
 
     //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
     // подсветка контрола Slide по которому кликнули
     $('#id-slides_cnt').find('.slide_selection').removeClass('__active');
-    $('#id-slides_cnt').find('[data-app-property=\"'+activeScreens.join(' ')+'\"]').find('.slide_selection').addClass('__active');
+    $('#id-slides_cnt').find('[data-app-property=\"'+activeScreens.join(',')+'\"]').find('.slide_selection').addClass('__active');
 
     $($("#id-product_screens_cnt").contents()).click(function(){
         // любой клик по промо-проекту сбрасывает подсказки
@@ -423,6 +424,10 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
         $compile($('#id-control_cnt')[0])($rootScope);
         $rootScope.$digest();
     });
+
+    // обновление высоты боковой панели в зависимости от высоты контролов в в ней
+    // ставится максимум из высоты экранов и контролов: не получилось это сделать стилями
+//    $('.js-setting_panel.__right').width(appSize.width).height(previewHeight);
 }
 
 ///**
@@ -624,13 +629,13 @@ function createScreenControls() {
                 }
                 var $d = $('<div></div>');
                 slidesParents.push($d);
-                // контрол никуда не сохраняется ?! Но он нужен для использования в ArrayControl
+                groups[groupName][i].slideParent = d;
                 var newControl = createControl(slideId, null, 'Slide', {}, $d, null);
+                slides.push(newControl);
                 if (screen.collapse === true) {
                     // выходим, так как добавили всю группу разом в один контрол
                     break;
                 }
-                slides.push(newControl);
             }
 
             //TODO есть группа экранов и непонятно к какому appProperty надо ее привязать. Надо quiz для questions
@@ -645,8 +650,40 @@ function createScreenControls() {
                 items: slidesParents,
                 allowDragY: true,
                 showAddButton: true
+//                onDirectiveLoaded: onDirectiveLoaded
             }, $('#id-slides_cnt'));
         }
+
+        /**
+         * Загружен UI контрола ArrayControl
+         */
+
+        //была задумка попробовать так сделать
+//        function onDirectiveLoaded() {
+//            // теперь можно создать контролы Slide, так как родитель готов
+//            for (var groupName in groups) {
+//                var slidesParents = [];
+//                for (var i = 0; i < groups[groupName].length; i++) {
+//                    var s = groups[groupName][i];
+//                    var screen = Engine.getAppScreen(s);
+//                    var slideId = null;
+//                    if (screen.collapse === true) {
+//                        // экраны представлены на левой панели одной единой иконкой и при клике на нее отображаются все вместе
+//                        // например, результаты в тесте
+//                        slideId = groups[groupName].join(' ');
+//                    }
+//                    else {
+//                        slideId = s;
+//                    }
+//                    var newControl = createControl(slideId, null, 'Slide', {}, s.d, null);
+//                    if (screen.collapse === true) {
+//                        // выходим, так как добавили всю группу разом в один контрол
+//                        break;
+//                    }
+//                    slides.push(newControl);
+//                }
+//            }
+//        }
     }
 }
 

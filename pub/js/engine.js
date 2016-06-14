@@ -415,7 +415,8 @@ var Engine = {};
             newPathes.push(appProperties[k].propertyString);
             k++;
         }
-        appPropertiesObjectPathes = [];
+        // обновляем список ключей, в нем останутся только имена appproperty с типом css
+        appPropertiesObjectPathes = newPathes;
     }
 
     /**
@@ -1050,7 +1051,7 @@ var Engine = {};
 
     /**
      * Вернуть массив строк - ключей свойств
-     * Вне Engine лучше работать с этими ключами, так как appProperties могут пересоздавать при изменении свойств
+     * Редактор перебирает этот массив строк для создания контролов.
      *
      * @returns {Array.<string>}
      */
