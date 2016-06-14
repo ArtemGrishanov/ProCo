@@ -79,10 +79,11 @@ var uiControlsInfo = [
     // domElement
 ];
 /**
- * Массив контролов типа slide
- * @type {Array}
+ * Один контрол для управления экранами промо приложения
+ * превью, управления порядком, добавление и удаление
+ * @type {Array.<SlideGroupControl>}
  */
-var slides = [];
+var slideGroupControls = null;
 /**
  * При показе экрана инициализируется набор триггеров.
  * В массиве собраны триггеры, активные на данный момент.
@@ -236,6 +237,7 @@ function onProductIframeLoaded() {
     }
     Engine.startEngine(iframeWindow, params);
     showEditor();
+    createScreenControls();
     syncUIControlsToAppProperties();
     workspaceOffset = $('#id-product_screens_cnt').offset();
 }
@@ -494,12 +496,8 @@ function filterControls(dataAppPropertyString) {
 function syncUIControlsToAppProperties() {
     //TODO название метода не соответствует тому что здесь: полное пересоздание всех контролов
     uiControlsInfo = [];
-    $('#id-slides_cnt').empty();
     $('#id-static_controls_cnt').empty();
     $('#id-control_cnt').empty();
-
-    // теперь контролы для экранов
-    createScreenControls();
 
     // задача здесь: создать постоянные контролы, которые не будут меняться при переключении экранов
     var appPropertiesStrings = Engine.getAppPropertiesObjectPathes();
@@ -589,16 +587,28 @@ function syncUIControlsToAppProperties() {
 }
 
 /**
+ * Модель управления экранами:
+ * Сейчас предполагается что группы экранов постоянные, поэтому createScreenControls зовется один раз при старте редактора
+ * Если будут меняться группы, то надо формировать группы в движке и следить за их изменением и делать события с обработкой
+ * TODO А пока здесь один раз создаются все контролы SlideGroupControl один раз и управление слайдами идет внутри них
+ *
  * Конролы управления экранами специфичные, поэтому существует отдельная функция для их создания
+ * Задача не пересоздавать контролы управления экранами - это дорого
+ *
+ * Нет контрола управления группами, который включал бы управления несколькими SlideGroupControl
+ * По сути это вот эта функция ниже.
+ * А упрвления отдельными Slide спрятана внутрь одного SlideGroupControl
  */
 function createScreenControls() {
+    $('#id-slides_cnt').empty();
     //TODO конечно не надо пересоздавать каждый раз всё при добавл-удал экрана. Но так пока проще
     var appScreenIds = Engine.getAppScreenIds();
     // экраны могут быть поделены на группы
     var groups = {};
-    slides = [];
+    var sGroups = [];
     if (appScreenIds.length > 0) {
         // подготовительная часть: разобъем экраны на группы
+        // groups - просто временный вспомогательный объект
         for (var i = 0; i < appScreenIds.length; i++) {
             var s = appScreenIds[i];
             var screen = Engine.getAppScreen(s);
@@ -612,78 +622,54 @@ function createScreenControls() {
             }
             groups[screen.group].push(s);
         }
+
         // далее начнем создать контролы и вью для групп экранов
         for (var groupName in groups) {
-            var slidesParents = [];
-            for (var i = 0; i < groups[groupName].length; i++) {
-                var s = groups[groupName][i];
-                var screen = Engine.getAppScreen(s);
-                var slideId = null;
-                if (screen.collapse === true) {
-                    // экраны представлены на левой панели одной единой иконкой и при клике на нее отображаются все вместе
-                    // например, результаты в тесте
-                    slideId = groups[groupName].join(' ');
-                }
-                else {
-                    slideId = s;
-                }
-                var $d = $('<div></div>');
-                slidesParents.push($d);
-                groups[groupName][i].slideParent = d;
-                var newControl = createControl(slideId, null, 'Slide', {}, $d, null);
-                slides.push(newControl);
-                if (screen.collapse === true) {
-                    // выходим, так как добавили всю группу разом в один контрол
-                    break;
+            var curG = groups[groupName];
+            var firstScrInGroup = Engine.getAppScreen(curG[0]);
+            var sgc = findSlideGroupByGroupName(groupName);
+            if (sgc === null) {
+                // группой экранов может управлять массив.
+                // в случае вопросов теста: эта группа привязана к quiz, передается в промо проекте при создании экранов
+                // для остальных undefined
+                sgc = createControl(firstScrInGroup.appProperyString, 'SlideGroupControl', 'SlideGroupControl', {}, $('#id-slides_cnt'));
+            }
+            else {
+                // подходящий контрол SlideGroupControl создавался ранее для управления этой группой экранов
+            }
+            // устанавливаем все атрибуты, не один раз при создании, а сколько угодно раз
+            sgc.set({
+                // идентификатор группы
+                groupName: groupName,
+                // имя забираем у первого экрана группы, в группе минимум один экран, а все имена одинаковые конечно
+                groupLabel: firstScrInGroup.name,
+                // это массив экранов
+                //screens: curG,
+                //allowDragY: true,
+                showAddButton: true
+            });
+            sGroups.push(sgc);
+        }
+        // если при обновлении какие-то группы пропали в промо приложении, то они не попадут более в slideGroupControls
+        // например для теста будет три группы: стартовый, вопросы, результаты
+        slideGroupControls = sGroups;
+    }
+
+    /**
+     * Найти контрол SlideGroupControl по имени группы экранов
+     * Задача не пересоздавать контролы управления экранами - это дорого
+     * @param groupName
+     * @returns {null}
+     */
+    function findSlideGroupByGroupName(groupName) {
+        if (slideGroupControls !== null && groupName) {
+            for (var i = 0; i < slideGroupControls.length; i++) {
+                if (slideGroupControls[i].groupName == groupName) {
+                    return slideGroupControls[i];
                 }
             }
-
-            //TODO есть группа экранов и непонятно к какому appProperty надо ее привязать. Надо quiz для questions
-            // нужно сделать createControl для пустого aps для экрана старт и результат только чтоы показалось группы экранов
-            // коряво!
-            // а для questions надо делать контрол - тут логично
-            var aps = (groupName == 'questions') ? 'quiz': '';
-            var arrayControl = createControl(aps, 'ArrayControl', 'ArrayControl', {
-                // имя забираем у первого экрана группы, в группе минимум один экран, а все имена одинаковые конечно
-                groupLabel: Engine.getAppScreen(groups[groupName][0]).name,
-                // это массив html-элементов, которые служат хранилищем например для Slide
-                items: slidesParents,
-                allowDragY: true,
-                showAddButton: true
-//                onDirectiveLoaded: onDirectiveLoaded
-            }, $('#id-slides_cnt'));
         }
-
-        /**
-         * Загружен UI контрола ArrayControl
-         */
-
-        //была задумка попробовать так сделать
-//        function onDirectiveLoaded() {
-//            // теперь можно создать контролы Slide, так как родитель готов
-//            for (var groupName in groups) {
-//                var slidesParents = [];
-//                for (var i = 0; i < groups[groupName].length; i++) {
-//                    var s = groups[groupName][i];
-//                    var screen = Engine.getAppScreen(s);
-//                    var slideId = null;
-//                    if (screen.collapse === true) {
-//                        // экраны представлены на левой панели одной единой иконкой и при клике на нее отображаются все вместе
-//                        // например, результаты в тесте
-//                        slideId = groups[groupName].join(' ');
-//                    }
-//                    else {
-//                        slideId = s;
-//                    }
-//                    var newControl = createControl(slideId, null, 'Slide', {}, s.d, null);
-//                    if (screen.collapse === true) {
-//                        // выходим, так как добавили всю группу разом в один контрол
-//                        break;
-//                    }
-//                    slides.push(newControl);
-//                }
-//            }
-//        }
+        return null;
     }
 }
 
@@ -725,7 +711,7 @@ function findControlInfo(propertyString, domElement) {
  */
 function createControl(propertyString, viewName, name, params, controlParentView, productDOMElement) {
     var ctrl = null;
-    try {
+//    try {
         // существует ли такой вью, если нет, берем по умолчанию
         if (viewName) {
             // в случае с вью регистр важен, в конфиге директивы прописаны малым регистром
@@ -747,12 +733,12 @@ function createControl(propertyString, viewName, name, params, controlParentView
             cpv = $('#'+config.controls[name].parentId);
         }
         // свойств может быть несколько, передаем массив
-        var propertyStrArg = (propertyString.indexOf(' ')>=0)?propertyString.split(' '):propertyString;
+        var propertyStrArg = (propertyString && propertyString.indexOf(' ')>=0)?propertyString.split(' '):propertyString;
         ctrl = new window[name](propertyStrArg, viewName, cpv, productDOMElement, params);
-    }
-    catch(e) {
-        log(e, true);
-    }
+//    }
+//    catch(e) {
+//        log(e, true);
+//    }
 //    log('Creating UI control for appProperty='+propertyString+' ui='+name);
     return ctrl;
 }

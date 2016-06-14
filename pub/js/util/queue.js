@@ -42,7 +42,7 @@ var Queue = {};
      * Максимальное допустимое время на выполнение таска
      * @type {number}
      */
-    var maxTimeForTaskExecution = 5000; //millis
+    var maxTimeForTaskExecution = 4000; //millis
     /**
      * Максимальное время по умолчанию для ожидания завершения группы задач.
      * Далее вызовется колбек с неудачей
@@ -146,7 +146,7 @@ var Queue = {};
             t.priority = 1;
         }
         if (!t.hasOwnProperty('maxWaitTime')) {
-            t.priority = maxTimeForTaskExecution;
+            t.maxWaitTime = maxTimeForTaskExecution;
         }
         tasks.push(t);
     };

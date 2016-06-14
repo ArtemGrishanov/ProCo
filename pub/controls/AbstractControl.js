@@ -46,7 +46,7 @@ var AbstractControl = {
     addDirective: function() {
         //TODO refactor
         if (this.$parent &&
-            this.directiveName != 'arraycontrol' &&
+            this.directiveName != 'slidegroupcontrol' &&
             this.directiveName != 'slide' &&
             this.directiveName != 'colorpicker' &&
             this.directiveName != 'textinput') {
@@ -75,7 +75,30 @@ var AbstractControl = {
                     }).bind(this));
                 }
             };
+            var cfg = this.getControlConfig();
+            if (cfg) {
+                if (cfg.directiveLoadPriority !== undefined) {
+                    // кастомный приоритет для некоторых директив, задается в конфиге
+                    t.priority = cfg.directiveLoadPriority;
+                }
+            }
+            else {
+                log('There is not config for directive: '+this.directiveName, true);
+            }
             Queue.push(t);
         }
+    },
+
+    /**
+     * Получить конфигурацию контрола по его вью
+     * используется this.directiveName в качестве критерия поиска
+     */
+    getControlConfig: function() {
+        for (var controlName in config.controls) {
+            if (config.controls[controlName].directives.indexOf(this.directiveName) >= 0) {
+                return config.controls[controlName];
+            }
+        }
+        return null;
     }
 };

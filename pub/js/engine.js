@@ -58,7 +58,13 @@ var Engine = {};
     /**
      * типы поддерживаемых событий
      */
-    var events = ['AppPropertyInited','AppPropertyValueChanged','DOMElementChanged','ScreenUpdated'];
+    var events = ['AppPropertyInited',
+        'AppPropertyValueChanged',
+        'DOMElementChanged',
+        'AllScreensWereUpdatedBefore', // экраны уже созданы, но перед тем как разослать каждому, вызывается эт событие
+        'ScreenUpdated', // один скрин обновился, вызывается для каждого скрина отдельно
+        'AllScreensWereUpdatedAfter' // после того как все экраны собраны и сообщения разосланы для всех скринов будет это вызвано
+    ];
     /**
      * Зарегистрированные колбеки на события
      * {object}
@@ -634,8 +640,14 @@ var Engine = {};
                 appScreens.push(ps[i]);
                 // идишники сохраняем отдельно для быстрой отдачи их редактору единым массивом
                 appScreenIds.push(ps[i].id);
-                send('ScreenUpdated', ps[i].id);
             }
+
+            // нужно именно такое разделение событий: до, для каждого экрана, и после
+            send('AllScreensWereUpdatedBefore');
+            for (var i = 0; i < ps.length; i++) {
+                send('ScreenUpdated', null, ps[i].id);
+            }
+            send('AllScreensWereUpdatedAfter');
         }
     }
 
@@ -710,6 +722,7 @@ var Engine = {};
      * @param {Function} clb
      */
     function on(event, propertyString, clb) {
+        propertyString = propertyString || 'default';
         if (events.indexOf(event) > 0) {
             if (eventCallbacks.hasOwnProperty(event) === false) {
                 eventCallbacks[event] = {};
@@ -729,12 +742,11 @@ var Engine = {};
      * @param event
      * @param propertyString
      */
-    function send(event, propertyString) {
+    function send(event, propertyString, data) {
+        propertyString = propertyString || 'default';
         if (eventCallbacks[event] && eventCallbacks[event][propertyString]) {
             for (var i = 0; i < eventCallbacks[event][propertyString].length; i++) {
-                eventCallbacks[event][propertyString][i]({
-                    propertyString: propertyString
-                });
+                eventCallbacks[event][propertyString][i](data);
             }
         }
     }

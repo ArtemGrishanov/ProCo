@@ -542,11 +542,13 @@
                 id: 'startScr',
                 view: $('#id-start_slide'),
                 data: {},
+                group: 'start',
                 name: 'Стартовый экран',
                 doWhenInDOM: applyStyles
             });
             for (var i = 0; i < app.quiz.length; i++) {
                 screens.push({
+                    //TODO можно вынести в раздел дескриптора по ид.... не знаю пока
                     id: 'quizScr'+i,
                     view: renderQuestion(i),
                     // во view есть такие строки data-app-property="quiz.{{currentQuestion}}.text"
@@ -556,6 +558,12 @@
                     },
                     group: 'questions',
                     name: 'Вопросы',
+                    draggable: true,
+                    canAdd: true,
+                    canClone: true,
+                    canDelete: true,
+                    // массив quiz управляет экранами
+                    appProperyString: 'quiz',
                     doWhenInDOM: applyStyles
                 });
             }

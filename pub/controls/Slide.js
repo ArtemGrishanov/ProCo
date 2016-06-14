@@ -8,6 +8,20 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
     this.$previewIFrame = null
     this.previewScale = undefined;
     /**
+     * Установка свойства propertyString
+     * Это сделано только в контроле Slide для быстродействия, так как там очень заметен негативный эффект
+     * @param propertyString
+     */
+    this.setPropertyString = function(propertyString) {
+        if (this.propertyString !== propertyString) {
+            this.propertyString = propertyString;
+            this.$directive.attr('data-app-property',this.propertyString);
+            if (config.common.generateSlidePreviews === true) {
+                this.updatePreview();
+            }
+        }
+    };
+    /**
      * Событие на загрузку айфрейма, тут мы сможем его подготовить для создания превью слайда
      */
     this.onPreviewIFrameLoaded = function() {
@@ -22,31 +36,44 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
     };
     // загрузить UI контрола
     this.loadDirective(function(response, status, xhr){
-        // подотовка компонента к работе с превью
-        //
+        // подготовка компонента к работе с превью
         this.$previewIFrame = $(this.$directive.find('.js-preview_iframe'));
-        this.$previewIFrame.load(this.onPreviewIFrameLoaded.bind(this));
+        // проверяем загружен iframe или еще нет
+        var $previewDocument = this.$previewIFrame.contents();
+        if ($previewDocument && $previewDocument.find('head') && $previewDocument.find('body')) {
+            this.onPreviewIFrameLoaded();
+        }
+        else {
+            this.$previewIFrame.load(this.onPreviewIFrameLoaded.bind(this));
+        }
         this.$directive.click(function(){
             showScreen(Array.isArray(propertyString)?propertyString:propertyString.split(','));
         });
     });
-    this.onScreenUpdate = function(e) {
+    /**
+     *
+     * @param {string} screenId ид экрана который обновился
+     */
+    this.onScreenUpdate = function(screenId) {
         //перерисовывать только когда экран реально виден пользователю, только активный экран
         //activeScreens - последние показанные экраны
         var p = (Array.isArray(this.propertyString))?this.propertyString.join(','):this.propertyString;
-        if (activeScreens.join(',') == p) {
-            var arr = (Array.isArray(this.propertyString))?this.propertyString:[this.propertyString];
-            showScreen(arr);
-        }
-        if (config.common.generateSlidePreviews === true) {
-            this.updatePreview();
+        if (screenId === p) {
+            // это этот экран
+            if (activeScreens.join(',') == p) {
+                var arr = (Array.isArray(this.propertyString))?this.propertyString:[this.propertyString];
+                showScreen(arr);
+            }
+            if (config.common.generateSlidePreviews === true) {
+                this.updatePreview();
+            }
         }
     };
     // помним, что контрол может отвечать сразу за несколько экранов
     // подписка на обновления экрана в движке, контрол будет запрашивать у редактора перерисовку
     var arr = (Array.isArray(this.propertyString))?this.propertyString:[this.propertyString];
     for (var i = 0; i < arr.length; i++) {
-        Engine.on('ScreenUpdated', arr[i], this.onScreenUpdate.bind(this));
+        Engine.on('ScreenUpdated', null/*arr[i]*/, this.onScreenUpdate.bind(this));
     }
 
     this.updatePreview = function() {

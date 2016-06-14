@@ -123,6 +123,7 @@ var config = {
         },
         Slide: {
             defaultDirectiveIndex: 0,
+            directiveLoadPriority: 10, // специальный приоритет для более быстрой загрузки контрола, высокий для более важных
             directives: ['slide'],
             parentId: null // вставляется в группу контролов Slide
         },
@@ -162,9 +163,9 @@ var config = {
             parentId: 'id-static_controls_cnt',
             type: 'controlpanel'
         },
-        ArrayControl: {
+        SlideGroupControl: {
             defaultDirectiveIndex: 0,
-            directives: ['arraycontrol'],
+            directives: ['slidegroupcontrol'],
             parentId: null
         },
         ChooseImageQuick: {
