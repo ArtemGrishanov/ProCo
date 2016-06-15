@@ -46,9 +46,12 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
         else {
             this.$previewIFrame.load(this.onPreviewIFrameLoaded.bind(this));
         }
-        this.$directive.click(function(){
-            showScreen(Array.isArray(propertyString)?propertyString:propertyString.split(','));
-        });
+        this.$directive.mousedown((function() {
+            var p = (Array.isArray(this.propertyString))?this.propertyString.join(','):this.propertyString;
+            if (activeScreens.join(',') !== p) {
+                showScreen(Array.isArray(propertyString)?propertyString:propertyString.split(','));
+            }
+        }).bind(this));
     });
     /**
      *

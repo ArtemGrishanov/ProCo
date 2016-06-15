@@ -10,14 +10,19 @@
  */
 function SlideGroupControl(propertyString, directiveName, $parent, productDOMElement, params) {
     //TODO надо высчитать вместе с отступами
-    this._elemWidth = 166;
+    this._elemWidth = 194;
     this._elemRightPadding = 7;
     //TODO ширина промежуточной кнопки, надо высчитьывать программно
     this._btnWidth = 23;
-    this.insertButtons = [];
+    this.collapsed = false;
+    this.draggable = false;
+    this.canAdd = false;
+    this.canDelete = false;
+    this.canClone = false;
 
     // свойства необходимые для перетаскивания
     this.originZIndex = undefined;
+    this.mousePressed = false;
     this.draggingElement = null;
     this.draggingElementId = null;
     this.isDragging = false;
@@ -25,6 +30,7 @@ function SlideGroupControl(propertyString, directiveName, $parent, productDOMEle
     this.startPosition = null;
     this.startMousePosition = null;
     this.propertyValueMap = null;
+
     /**
      * идентификатор группы
      * все slides внутри этого контрола принадлежать одной группе
@@ -36,38 +42,13 @@ function SlideGroupControl(propertyString, directiveName, $parent, productDOMEle
      */
     this.groupLabel = null;
     /**
-     * Актуальный на каждый момент массив контролов
-     * Именно те что видит пользователь
-     * @type {Array.<Slide>}
-     */
-    this.slides = [];
-    /**
      * Вспомогательный массив
      * @type {Array}
      * @private
      */
     this._slidesInfo = [
-        //{
-        // slide
-        // $parent
-        // used
-        //
-        // }
     ];
-//    var ap = Engine.getAppProperty(propertyString);
-//    if (ap) {
-//        if (Array.isArray(ap.propertyValue) === false) {
-//            log('ArrayControl requires array properties: \''+propertyString+'\'', true);
-//            return;
-//        }
-//        if (ap.propertyValue && ap.propertyValue.length !== params.items.length) {
-//            log('Property value length and items length are different', true);
-//            return;
-//        }
-//    }
-//    else {
-//        log('AppProperty doesnot exist', true);
-//    }
+
     if (params) {
         this.set(params);
     }
@@ -79,6 +60,12 @@ function SlideGroupControl(propertyString, directiveName, $parent, productDOMEle
 
     // загрузка UI контрола
     this.loadDirective(function(response, status, xhr){
+        // некоторый инит ui который делается один раз
+        this.$directive.find('.js-add').show().click((function(){
+            this.addNewItem();
+        }).bind(this));
+        $(document).mousemove(this.onMouseMove.bind(this));
+        $(document).mouseup(this.onMouseUp.bind(this));
         this.updateScreens();
     });
 
@@ -140,16 +127,16 @@ SlideGroupControl.prototype.updateScreens = function() {
             this.$directive.find('.js-slide_group_name').text(myScreens[0].name);
         }
 
-        var collapsed = this.isCollapsedScreens(myScreens);
-        var draggable = this.isDraggableScreens(myScreens);
-        var canAdd = this.canAdd(myScreens);
-        var canDelete = this.canDelete(myScreens);
-        var canClone = this.canClone(myScreens);
+        this.collapsed = this.isCollapsedScreens(myScreens);
+        this.draggable = this.isDraggableScreens(myScreens);
+        this.canAdd = this.canAddScreens(myScreens);
+        this.canDelete = this.canDeleteScreens(myScreens);
+        this.canClone = this.canCloneScreens(myScreens);
 
         // смотрим сколько слайдов нам надо под экраны
         //
         var mySlides = [];
-        if (collapsed === true) {
+        if (this.collapsed === true) {
             // один контрол нужен
             //slideId = groups[groupName].join(' '); // групповой ид экрана
             //TODO
@@ -166,19 +153,20 @@ SlideGroupControl.prototype.updateScreens = function() {
             // могут остаться после удаления
         }
 
+        // удалить неиспоьзуемые
+        this.deleteUnusedSlides();
+
         // привести UI контрола в порядок в соответствии с этими данными
         this.arrangeItems({
-            collapsed: collapsed,
-            draggable: draggable,
-            canAdd: canAdd,
-            canDelete: canDelete,
-            canClone: canClone,
+            collapsed: this.collapsed,
+            draggable: this.draggable,
+            canAdd: this.canAdd,
+            canDelete: this.canDelete,
+            canClone: this.canClone,
             items: this._items
         });
     }
 };
-
-//draggable
 
 /**
  * определение - надо ли сжимать группу или нет
@@ -222,7 +210,7 @@ SlideGroupControl.prototype.isDraggableScreens = function(screens) {
  * надо ли показывать кнопки добавления экранов
  * @param screens
  */
-SlideGroupControl.prototype.canAdd = function(screens) {
+SlideGroupControl.prototype.canAddScreens = function(screens) {
     var result = false;
     for (var i = 0; i < screens.length; i++) {
         if (!!screens[i].canAdd === false) {
@@ -239,7 +227,7 @@ SlideGroupControl.prototype.canAdd = function(screens) {
  * надо ли показывать кнопки удаления экранов
  * @param screens
  */
-SlideGroupControl.prototype.canDelete = function(screens) {
+SlideGroupControl.prototype.canDeleteScreens = function(screens) {
     var result = false;
     for (var i = 0; i < screens.length; i++) {
         if (!!screens[i].canDelete === false) {
@@ -256,7 +244,7 @@ SlideGroupControl.prototype.canDelete = function(screens) {
  * надо ли показывать кнопки клонирования экрана
  * @param screens
  */
-SlideGroupControl.prototype.canClone = function(screens) {
+SlideGroupControl.prototype.canCloneScreens = function(screens) {
     var result = false;
     for (var i = 0; i < screens.length; i++) {
         if (!!screens[i].canClone === false) {
@@ -267,6 +255,22 @@ SlideGroupControl.prototype.canClone = function(screens) {
         }
     }
     return result;
+};
+
+/**
+ * Удалить неиспользуемые слайды
+ */
+SlideGroupControl.prototype.deleteUnusedSlides = function() {
+    for (var i = 0; i < this._slidesInfo.length;) {
+        var si = this._slidesInfo[i];
+        if (si.used === false) {
+            si.$wrapper.remove();
+            this._slidesInfo.splice(i,1);
+        }
+        else {
+            i++
+        }
+    }
 };
 
 /**
@@ -303,9 +307,27 @@ SlideGroupControl.prototype.useSlide = function(slideId) {
         result.$wrapper.find('.js-item').append($d);
         var $cnt = this.$directive.find('.js-slides_cnt');
         result.$wrapper.appendTo($cnt);
+        result.$wrapper.find('.js-delete').attr('data-id',dataId).click(this.onDeleteItemClick.bind(this));
+        result.$wrapper.find('.js-clone').attr('data-id',dataId).click(this.onCloneItemClick.bind(this));
+        result.$wrapper.find('.js-insert').click(this.onInsertButtonClick.bind(this));
+        result.$wrapper.mousedown(this.onMouseDown.bind(this));
         this._slidesInfo.push(result);
     }
     return result;
+};
+
+/**
+ *
+ * @param dataId
+ */
+SlideGroupControl.prototype.getSlideInfo = function(dataId) {
+    for (var i = 0; i < this._slidesInfo.length; i++) {
+        var si = this._slidesInfo[i];
+        if (si.dataId === dataId) {
+            return si;
+        }
+    }
+    return null;
 };
 
 /**
@@ -325,7 +347,7 @@ SlideGroupControl.prototype.arrangeItems = function(params) {
         var l = 0;
         this.leftPositions = [];
         this.items = [];
-        this.insertButtons = [];
+//        this.insertButtons = [];
         for (var i = 0; i < this._slidesInfo.length; i++) {
             var dataId = this._slidesInfo[i].dataId;
             var $wr = this._slidesInfo[i].$wrapper;
@@ -334,43 +356,38 @@ SlideGroupControl.prototype.arrangeItems = function(params) {
             // this.items нужен для перетаскивания, если постараться можно от него тоже избавиться, оставить только _slidesInfo
             this.items.push($wr);
             $wr.css('left',l+'px');
-            if (params.draggable === true) {
-                // одиночные экраны, например, стартовый экран, не привязан к массиву, не нужно перетаскивание
-                $wr.mousedown(this.onMouseDown.bind(this));
-            }
             if (params.canDelete === true) {
-                $wr.find('.js-delete').show().attr('data-id',dataId).click(this.onDeleteItemClick.bind(this));
+                $wr.find('.js-delete').show();
             }
             else {
                 $wr.find('.js-delete').hide();
             }
-            if (params.canDelete === true) {
-                $wr.find('.js-clone').attr('data-id',dataId).click(this.onCloneItemClick.bind(this));
+            if (params.canClone === true) {
+                $wr.find('.js-clone').show();
             }
             else {
                 $wr.find('.js-clone').hide();
             }
+            if (params.canAdd === true && i < this._slidesInfo.length-1) {
+                // промежуточные кнопки для быстрого добавления элемента в нужную позицию
+                $wr.find('.js-insert').attr('data-insert-index',i+1).show();
+//                if (i < params.items.length-1) {
+//                    l += config.editor.ui.slideInterimBtnMargins;
+//                    var $ib = $(interimBtnTemplate).css('left',l+'px').attr('data-insert-index',i+1).click(this.onInsertButtonClick.bind(this));
+//                    $cnt.append($ib);
+//                    this.insertButtons.push($ib);
+//                    l += (this._btnWidth+config.editor.ui.slideInterimBtnMargins);
+//                }
+            }
+            else {
+                $wr.find('.js-insert').attr('data-insert-index','undefined').hide();
+                l -= this._btnWidth;
+            }
             l += this._elemWidth+this._elemRightPadding;
-            // добавляем промежуточные кнопки для быстрого добавления элемента в нужную позицию
-            //TODO
-//            if (i < params.items.length-1) {
-//                l += config.editor.ui.slideInterimBtnMargins;
-//                var $ib = $(interimBtnTemplate).css('left',l+'px').attr('data-insert-index',i+1).click(this.onInsertButtonClick.bind(this));
-//                $cnt.append($ib);
-//                this.insertButtons.push($ib);
-//                l += (this._btnWidth+config.editor.ui.slideInterimBtnMargins);
-//            }
-        }
-        if (params.draggable === true) {
-            // одиночные экраны, например, стартовый экран, не привязан к массиву, не нужно перетаскивание
-            $(document).mousemove(this.onMouseMove.bind(this));
-            $(document).mouseup(this.onMouseUp.bind(this));
         }
         if (params.canAdd === true) {
             // показывать ли кнопку добавления в конце
-            this.$directive.find('.js-add').show().click((function(){
-                this.addNewItem();
-            }).bind(this));
+            this.$directive.find('.js-add').show();
         }
         else {
             this.$directive.find('.js-add').hide();
@@ -389,54 +406,56 @@ SlideGroupControl.prototype.arrangeItems = function(params) {
  * @param newItem может быть указан (при клонировании) или не указан
  */
 SlideGroupControl.prototype.addNewItem = function(position, newItem) {
-    // если позиция не задана элемент будет добавлен в конец массива
-    var p = (Number.isInteger(position)===true)?position:undefined;
-    var ap = Engine.getAppProperty(this.propertyString);
-    var pp = Engine.getPrototypesForAppProperty(ap);
-    if (!newItem) {
-        // нужно выбрать прототип для нового элемента
-        if (pp && pp.length > 0) {
-            //TODO если доступен один прототип то не надо диалога, сразу добавить
-            var selectOptions = [];
-            for (var i = 0; i < pp.length; i++) {
-                selectOptions.push({
-                    id: pp[i].uiTemplate,
-                    label: 'Вариант ' + i
-                });
-            }
-            showSelectDialog({
-                caption: 'Новый слайд',
-                options: selectOptions,
-                callback: (function(selectedOptionId) {
-                    if (selectedOptionId) {
-                        //TODO refactor
-                        for (var j = 0; j < pp.length; j++) {
-                            if (pp[j].uiTemplate == selectedOptionId) {
-                                Engine.addArrayElement(ap, pp[j], p);
-                                if (ap.updateScreens === true) {
-                                    activeScreens = [];
-                                    syncUIControlsToAppProperties();
+    if (this.canAdd === true) {
+        // если позиция не задана элемент будет добавлен в конец массива
+        var p = (Number.isInteger(position)===true)?position:undefined;
+        var ap = Engine.getAppProperty(this.propertyString);
+        var pp = Engine.getPrototypesForAppProperty(ap);
+        if (!newItem) {
+            // нужно выбрать прототип для нового элемента
+            if (pp && pp.length > 0) {
+                //TODO если доступен один прототип то не надо диалога, сразу добавить
+                var selectOptions = [];
+                for (var i = 0; i < pp.length; i++) {
+                    selectOptions.push({
+                        id: pp[i].uiTemplate,
+                        label: 'Вариант ' + i
+                    });
+                }
+                showSelectDialog({
+                    caption: 'Новый слайд',
+                    options: selectOptions,
+                    callback: (function(selectedOptionId) {
+                        if (selectedOptionId) {
+                            //TODO refactor
+                            for (var j = 0; j < pp.length; j++) {
+                                if (pp[j].uiTemplate == selectedOptionId) {
+                                    Engine.addArrayElement(ap, pp[j], p);
+                                    if (ap.updateScreens === true) {
+                                        activeScreens = [];
+                                        syncUIControlsToAppProperties();
+                                    }
                                 }
                             }
                         }
-                    }
-                }).bind(this)
-            });
-            //newItem = pp[0];
+                    }).bind(this)
+                });
+                //newItem = pp[0];
+            }
+            else {
+                log('There is no prototypes for \''+this.propertyString+'\'', true);
+                return;
+            }
         }
-        else {
-            log('There is no prototypes for \''+this.propertyString+'\'', true);
-            return;
-        }
-    }
-    if (newItem) {
-        // newItem определили (из прототипа либо склонировали)
-        Engine.addArrayElement(ap, newItem, p);
-        if (ap.updateScreens === true) {
-            //TODO запросить показ нового добавленного экрана, сейчас старый активен
-            activeScreens = [];
-            //TODO почему этот синк руками нельзя вызвать?
-            syncUIControlsToAppProperties();
+        if (newItem) {
+            // newItem определили (из прототипа либо склонировали)
+            Engine.addArrayElement(ap, newItem, p);
+            if (ap.updateScreens === true) {
+                //TODO запросить показ нового добавленного экрана, сейчас старый активен
+                activeScreens = [];
+                //TODO почему этот синк руками нельзя вызвать?
+                syncUIControlsToAppProperties();
+            }
         }
     }
 };
@@ -446,16 +465,20 @@ SlideGroupControl.prototype.addNewItem = function(position, newItem) {
  * @param itemId
  */
 SlideGroupControl.prototype.cloneItem = function(itemId) {
-    var clonedItemIndex = this.getItemIndexById(itemId);
-    var ap = Engine.getAppProperty(this.propertyString);
-    // копируем указанный элемент массива
-    var newItem = ap.getArrayElementCopy(clonedItemIndex);
-    // далее обычное добавление, но без выбора прототипа
-    this.addNewItem(clonedItemIndex+1, newItem);
+    if (this.canClone === true) {
+        var clonedItemIndex = this.getItemIndexById(itemId);
+        var ap = Engine.getAppProperty(this.propertyString);
+        // копируем указанный элемент массива
+        var newItem = ap.getArrayElementCopy(clonedItemIndex);
+        // далее обычное добавление, но без выбора прототипа
+        this.addNewItem(clonedItemIndex+1, newItem);
+    }
 };
 SlideGroupControl.prototype.onInsertButtonClick = function(e) {
-    var insertIndex = parseInt($(e.currentTarget).attr('data-insert-index'));
-    this.addNewItem(insertIndex);
+    if (this.canAdd === true) {
+        var insertIndex = parseInt($(e.currentTarget).attr('data-insert-index'));
+        this.addNewItem(insertIndex);
+    }
 };
 SlideGroupControl.prototype.onDeleteItemClick = function(e) {
     var dataId = $(e.currentTarget).attr('data-id');
@@ -467,28 +490,36 @@ SlideGroupControl.prototype.onCloneItemClick = function(e) {
     this.cloneItem(dataId);
 };
 SlideGroupControl.prototype.deleteItem = function(position) {
-    if (position >= 0) {
-        var ap = Engine.getAppProperty(this.propertyString);
-        Engine.deleteArrayElement(ap, position);
-        if (ap.updateScreens === true) {
-            //TODO запросить показ ближайшего экрана, предыдущего от удаленного
-            activeScreens = [];
-            syncUIControlsToAppProperties();
+    if (this.canDelete === true) {
+        if (position >= 0) {
+            var ap = Engine.getAppProperty(this.propertyString);
+            Engine.deleteArrayElement(ap, position);
+            if (ap.updateScreens === true) {
+                //TODO запросить показ ближайшего экрана, предыдущего от удаленного
+                activeScreens = [];
+                syncUIControlsToAppProperties();
+            }
         }
     }
 };
 SlideGroupControl.prototype.onMouseDown = function(e) {
-    this.draggingElement = $(e.currentTarget);
-    this.draggingElementId = this.draggingElement.attr('data-id');
-    this.elemPosition = null;
-    this.isDragging = true;
-    this.startPosition = $(e.currentTarget).position();
-    this.startMousePosition = {
-        left: e.pageX,
-        top: e.pageY
-    };
+    if (this.draggable === true) {
+        this.draggingElement = $(e.currentTarget);
+        this.draggingElementId = this.draggingElement.attr('data-id');
+        this.elemPosition = null;
+        //this.isDragging = true;
+        this.startPosition = $(e.currentTarget).position();
+        this.startMousePosition = {
+            left: e.pageX,
+            top: e.pageY
+        };
+        this.mousePressed = true;
+    }
 };
 SlideGroupControl.prototype.onMouseMove = function(e) {
+    if (this.mousePressed === true && this.isDragging === false) {
+        this.isDragging = true;
+    }
     if (this.isDragging === true && this.draggingElement) {
         if (this.originZIndex === undefined) {
             this.originZIndex = this.draggingElement.css('zIndex');
@@ -526,21 +557,50 @@ SlideGroupControl.prototype.onMouseMove = function(e) {
 };
 SlideGroupControl.prototype.onMouseUp = function(e) {
     if (this.isDragging === true) {
-//            var ap1 = Engine.getAppProperty(this.propertyString);
-//            Engine.setValue(ap1, this.elemPosition);
         this.draggingElement.css('zIndex', this.originZIndex);
         this.originZIndex = undefined;
+        var newPositionIndex = 0;
+        for (var i = 0; i < this.items.length; i++) {
+            if (this.draggingElementId === this.items[i].attr('data-id')) {
+                newPositionIndex=i;
+            }
+        }
         this.draggingElement = null;
         this.draggingElementId = null;
         this.isDragging = false;
         this.arrangeViews();
+
+        // тонкий момент
+        // при выборе новой позиции экрана мы должны сменить текущий экран
+        // quizScr0 всегда будет первым экраном (так задаются идишки в приложении) не важно как он выглядит,
+        //  хотя с точки зрения пользователя вопрос сменился (визуально)
+        // поэтому и надо переключать экран на другой, то есть на тот на чью позицию переместили вопрос
+        activeScreens = [this._slidesInfo[newPositionIndex].slide.propertyString];
+
         if (this.isOrderWasChanged() === true) {
             // изменили порядок при перетаскиввании, надо изменить теперь свойство
             this.setValue();
         }
         this.propertyValueMap = null;
     }
+    this.mousePressed = false;
 };
+
+///**
+// * В итоге после перетаскивания надо упорядочить _slidesInfo в соответствии с порядком переставлениных вью this.items
+// */
+//SlideGroupControl.prototype.sortSlideInfo = function() {
+//    var result = [];
+//    for (var i = 0; i < this.items.length; i++) {
+//        var atr = this.items[i].attr('data-id');
+//        var si = this.getSlideInfo(atr);
+//        if (si) {
+//            result.push(si);
+//        }
+//    }
+//    this._slideInfo = result;
+//}
+
 /**
  * Функция проверки новой позиции, можно ли перетаскиваемый элемент поместить в какое-то новое место.
  * Если да, помещает и переупорядочивает view
@@ -638,15 +698,13 @@ SlideGroupControl.prototype.setValue = function() {
         }
     }
     var ap = Engine.getAppProperty(this.propertyString);
-    //TODO remove важно: здесь должно быть updateScreens:false, иначе произойдет пересборка экранов и перемещения заметно не будет
-    //TODO remove а делать пересборку такого большого контрола ArrayControl невозможно
-    // Здесь необходимо делать пересборку экранов, так как надо рендерить заново с учетом порядка
-    // например такие конструкции как quiz.{{currentQuestion}}.text и тому подобное
-    Engine.setValue(ap, newValue, {
-        updateScreens:true
-    });
-    //TODO контролы типа Slide нуждаются в обновлении?
-//        syncUIControlsToAppProperties();
+    setTimeout(function() {
+        // Здесь необходимо делать пересборку экранов, так как надо рендерить заново с учетом порядка
+        // например такие конструкции как quiz.{{currentQuestion}}.text и тому подобное
+        Engine.setValue(ap, newValue, {
+            updateScreens:true
+        });
+    },100);
 }
 /**
  * Angular контроллер, для управления view

@@ -296,13 +296,22 @@ function showScreen(ids) {
 
     //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
     // подсветка контрола Slide по которому кликнули
-    $('#id-slides_cnt').find('.slide_selection').removeClass('__active');
-    $('#id-slides_cnt').find('[data-app-property=\"'+activeScreens.join(',')+'\"]').find('.slide_selection').addClass('__active');
+    setActiveScreen(activeScreens.join(','));
 
     $($("#id-product_screens_cnt").contents()).click(function(){
         // любой клик по промо-проекту сбрасывает подсказки
         hideWorkspaceHints();
     });
+}
+
+/**
+ * Добавить оформление к одному из экранов
+ *
+ * @param
+ */
+function setActiveScreen(dataAppProperty) {
+    $('#id-slides_cnt').find('.slide_selection').removeClass('__active');
+    $('#id-slides_cnt').find('[data-app-property=\"'+dataAppProperty+'\"]').find('.slide_selection').addClass('__active');
 }
 
 /**

@@ -72,6 +72,14 @@
     vertical-align: top;
     margin: 0 5px 0 5px;
 }
+.sl_item_cnt {
+    display: inline-block;
+    vertical-align: top;
+}
+.sl_item_insert {
+    display: inline-block;
+    vertical-align: top;
+}
 .item_controls{
     display: none;
 }
