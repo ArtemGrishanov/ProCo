@@ -999,9 +999,10 @@ var Engine = {};
     /**
      * Ищет доступные прототипы, которые можно было бы добавить в AppProperty
      * Только для массивов. AppProperty должна обязательно представлять массив.
+     * Прототипы собираются на лету
      *
      * @param appProperty app property для которого найти прототипы
-     * @returns {array<object>} например все прототипы слайдов, которые можно вставить в тест.
+     * @returns {array<AppPropertyPrototype>} например все прототипы слайдов, которые можно вставить в тест.
      */
     function getPrototypesForAppProperty(appProperty) {
         if (appProperty.isArray === true && appProperty.hasOwnProperty('canAdd')) {
@@ -1012,9 +1013,8 @@ var Engine = {};
                     if (result === null) {
                         result = [];
                     }
-                    // клонируем прототип. Нельзя отдавать наружу реальный объект из productWindow
-                    var c = JSON.parse(JSON.stringify(productWindow.app[canAddArr[i]]));
-                    result.push(c);
+                    var pr = new AppPropertyPrototype(canAddArr[i], productWindow.app, productWindow.descriptor);
+                    result.push(pr);
                 }
             }
             return result;

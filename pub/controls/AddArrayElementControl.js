@@ -10,7 +10,7 @@ function AddArrayElementControl(propertyString, directiveName, $parent, productD
         var pp = Engine.getPrototypesForAppProperty(ap);
         if (pp && pp.length > 0) {
             var protoIndex = params.prototypeIndex || 0;
-            Engine.addArrayElement(ap, pp[protoIndex]);
+            Engine.addArrayElement(ap, pp[protoIndex].value);
             if (ap.updateScreens === true) {
                 syncUIControlsToAppProperties();
             }
@@ -21,14 +21,16 @@ function AddArrayElementControl(propertyString, directiveName, $parent, productD
     }
     this.$directive.on('click', this.onAddQuickButtonClick.bind(this));
     if (this.$productDomElement) {
-        var offset = this.$productDomElement.position();
+        // берем offset, так как экран располагается внутри iframe
+        var offset = this.$productDomElement.offset();
         var h = this.$productDomElement.height();
-        //TODO позиционирование пока не понятно как делать
-        //TODO в панеле экранов одно, а на рабочем поле - другое
-        this.$directive.css('position','absolute');
-        this.$directive.css('left', '10px');
-        this.$directive.css('top', offset.top+h+'px')
-        this.$directive.css('zIndex',config.editor.ui.quickControlsZIndex);
+        // выровнена всегда стилями по центру экрана
+        // по высоте - под последней опцией ответв
+        this.$directive.css('position','absolute')
+            .css('left','50%')
+            .css('margin-left','-62px')
+            .css('top', offset.top+h+'px')
+            .css('zIndex',config.editor.ui.quickControlsZIndex);
     }
 }
 AddArrayElementControl.prototype = AbstractControl;

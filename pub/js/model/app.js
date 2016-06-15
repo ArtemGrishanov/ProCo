@@ -111,7 +111,10 @@ var App = App || {};
             idea_publish: 'One step from idea to publication',
             create_in_blowser: 'Create special projects directly in your browser.<br>Get a link to your test or the code to insert into your website or blog.',
             learn_more: 'Want to know more about Testix? Write to us!',
-            send_message: 'Send message'
+            send_message: 'Send message',
+            watch_video: 'Video',
+            create_spec: 'Create project',
+            how_it_helps_to_business: 'Learn how special project<br>can support your business'
         }
     };
 
@@ -183,11 +186,17 @@ var App = App || {};
         });
         $('.js-video').click(function() {
             $('#id-video').show();
-            document.getElementById('id-videoplayer').play();
+            if (document.getElementById('id-videoplayer')) {
+                // standar <video> tag controls
+                document.getElementById('id-videoplayer').play();
+            }
         });
         $('.js-video_close').click(function() {
             $('#id-video').hide();
-            document.getElementById('id-videoplayer').pause();
+            if (document.getElementById('id-videoplayer')) {
+                // standar <video> tag controls
+                document.getElementById('id-videoplayer').pause();
+            }
         });
         $('.js-lang').click(function(e){
             var $e = $(e.currentTarget);

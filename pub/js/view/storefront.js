@@ -22,9 +22,9 @@ var storefrontView = {};
             if (d) {
                 //loadTemplate('https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/609a0db43a.txt');
                 //loadApp('test');
-                activeTemplateUrl = d;
+                activeTemplateUrl = config.common.awsHostName+config.common.awsBucketName+'/'+d;
                 templates = [];
-                loadTemplate(d);
+                loadTemplate(activeTemplateUrl);
                 $('.scr_wr').addClass('__shadow');
                 $('#id-app_preview').show();
             }

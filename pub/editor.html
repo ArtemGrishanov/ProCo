@@ -83,9 +83,6 @@
         </div>
     </div>
     <div id="id-preview_view" style="display:none">
-        <div style="margin: 5px">
-            <a class="btn" onclick="onBackToEditorClick();">Назад</a>
-        </div>
         <!--<div style="position:relative;margin: 5px">-->
             <!--<div id="id-product_iframe_cnt" class="proto_wr">-->
                 <!--&lt;!&ndash; Сюда добавляем программно айфрейм с прототипом для редактирования &ndash;&gt;-->
@@ -96,6 +93,10 @@
                 <div class="top_toolbar">
                     <div class="toolbar_left">
                         <a class="logo ml24" href="index.html"></a>
+                    </div>
+                    <div class="toolbar_btns">
+                        <a class="pbtn __small" onclick="onBackToEditorClick();">Назад</a>
+                        <span class="pbtn __green __small ml24" onclick="onPublishClick();"><i class="tico_img"><img src="i/publish.png"/></i>Опубликовать</span>
                     </div>
                 </div>
                 <div id="id-user_toolbar" class="toolbar_user">
@@ -304,6 +305,7 @@
     <script type="text/javascript" src="js/setting.js"></script>
     <script type="text/javascript" src="js/appProperty.js"></script>
     <script type="text/javascript" src="js/appTrigger.js"></script>
+    <script type="text/javascript" src="js/appPropertyPrototype.js"></script>
     <script type="text/javascript" src="js/util/queue.js"></script>
     <script type="text/javascript" src="js/util/previewService.js"></script>
     <script type="text/javascript" src="js/selectDialog.js"></script>

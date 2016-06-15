@@ -138,19 +138,13 @@ SlideGroupControl.prototype.updateScreens = function() {
         var mySlides = [];
         if (this.collapsed === true) {
             // один контрол нужен
-            //slideId = groups[groupName].join(' '); // групповой ид экрана
-            //TODO
+            myScreenIds = [myScreenIds.join(' ')]; // групповой ид экрана
         }
-        else {
-            this._items = [];
-            for (var i = 0; i < myScreenIds.length; i++) {
-                var sId = myScreenIds[i];
-                var si = this.useSlide(sId);
-                this._items.push(si.$parent);
-            }
-
-            //TODO удалить лишние элементв из контейнера, а в буфере можно оставить
-            // могут остаться после удаления
+        this._items = [];
+        for (var i = 0; i < myScreenIds.length; i++) {
+            var sId = myScreenIds[i];
+            var si = this.useSlide(sId);
+            this._items.push(si.$parent);
         }
 
         // удалить неиспоьзуемые
@@ -177,7 +171,7 @@ SlideGroupControl.prototype.updateScreens = function() {
 SlideGroupControl.prototype.isCollapsedScreens = function(screens) {
     var result = false;
     for (var i = 0; i < screens.length; i++) {
-        if (!!screens[i].collapsed === false) {
+        if (!!screens[i].collapse === false) {
             // хотя бы один экран из группы не имеет этого свойства то не сжимаем группу
             break;
         }
@@ -418,8 +412,9 @@ SlideGroupControl.prototype.addNewItem = function(position, newItem) {
                 var selectOptions = [];
                 for (var i = 0; i < pp.length; i++) {
                     selectOptions.push({
-                        id: pp[i].uiTemplate,
-                        label: 'Вариант ' + i
+                        id: pp[i].key,
+                        label: pp[i].label,
+                        icon: pp[i].img
                     });
                 }
                 showSelectDialog({
@@ -429,8 +424,8 @@ SlideGroupControl.prototype.addNewItem = function(position, newItem) {
                         if (selectedOptionId) {
                             //TODO refactor
                             for (var j = 0; j < pp.length; j++) {
-                                if (pp[j].uiTemplate == selectedOptionId) {
-                                    Engine.addArrayElement(ap, pp[j], p);
+                                if (pp[j].key == selectedOptionId) {
+                                    Engine.addArrayElement(ap, pp[j].value, p);
                                     if (ap.updateScreens === true) {
                                         activeScreens = [];
                                         syncUIControlsToAppProperties();
@@ -440,7 +435,6 @@ SlideGroupControl.prototype.addNewItem = function(position, newItem) {
                         }
                     }).bind(this)
                 });
-                //newItem = pp[0];
             }
             else {
                 log('There is no prototypes for \''+this.propertyString+'\'', true);
@@ -657,7 +651,7 @@ SlideGroupControl.prototype.onAddQuickButtonClick = function(e) {
     var pp = Engine.getPrototypesForAppProperty(ap);
     if (pp && pp.length > 0) {
         var protoIndex = params.prototypeIndex || 0;
-        Engine.addArrayElement(ap, pp[protoIndex]);
+        Engine.addArrayElement(ap, pp[protoIndex].value);
         if (ap.updateScreens === true) {
             syncUIControlsToAppProperties();
         }

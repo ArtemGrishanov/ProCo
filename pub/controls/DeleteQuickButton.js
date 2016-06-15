@@ -20,12 +20,12 @@ function DeleteQuickButton(propertyString, directiveName, $parent, productDOMEle
         }
     }
     this.onElementOver = function(e) {
-        this.overedArrayElement = e. currentTarget;
+        this.overedArrayElement = e.currentTarget;
         var pos = $(this.overedArrayElement).position();
         //TODO непонятно как позиционировать
         this.$directive.css('display','block');
-        this.$directive.css('left', '300px');
-        this.$directive.css('top', (pos.top+14)+'px')
+        this.$directive.css('left', pos.left+'px');
+        this.$directive.css('top', (pos.top+0)+'px')
     }
     this.$directive.css('zIndex', config.editor.ui.quickControlsZIndex);
     this.$directive.css('position','absolute');

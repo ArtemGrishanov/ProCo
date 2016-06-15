@@ -16,7 +16,7 @@ function TemplateCollection(param) {
     this.folder = param.folder;
     if (param.templateUrls) {
         for (var i = 0; i < param.templateUrls.length; i++) {
-            var tId = this.getIdFromUrl(param.templateUrls[i], App.getUserData().id);
+            var tId = this.getIdFromUrl(param.templateUrls[i]);
             if (tId) {
                 this.templates.push(new Template({
                     id: tId,
@@ -31,11 +31,10 @@ function TemplateCollection(param) {
  * Получить ид из урла. Ид это имя файла.
  *
  * @param url
- * @param userId
  * @returns {*}
  */
-TemplateCollection.prototype.getIdFromUrl = function(url, userId) {
-    var reg = new RegExp('facebook-'+userId+'\/app\/([A-z0-9]+)\.txt','g');
+TemplateCollection.prototype.getIdFromUrl = function(url) {
+    var reg = new RegExp('facebook-[0-9]+\/app\/([A-z0-9]+)\.txt','g');
     var match = reg.exec(url);
     if (match && match[1]) {
         return match[1];
@@ -62,7 +61,7 @@ TemplateCollection.prototype.loadTemplateList = function(callback) {
         } else {
             data.Contents.forEach(function (obj) {
                 // вырезаем имя файла, чтобы использовать его в качестве id для дальнейшей работы
-                var tId = thisCollection.getIdFromUrl(obj.Key, App.getUserData().id);
+                var tId = thisCollection.getIdFromUrl(obj.Key);
                 if (tId) {
                     // создаем пока практически пустой объект-шаблон
                     // позже он будет дописан более подробной информацией из loadTemplatesInfo

@@ -937,7 +937,7 @@ function generateAutoPreview() {
  * @param {boolean} clone - клонировать ли открываемый шаблон. Технически это просто смена appId
  */
 function openTemplate(templateUrl, clone) {
-    if (App.getUserData() !== null) {
+//    if (App.getUserData() !== null) {
         openedTemplateCollection = new TemplateCollection({
             // в ручную добавили в коллекцию один шаблон, останется только получить инфо о нем
             templateUrls: [templateUrl]
@@ -965,50 +965,6 @@ function openTemplate(templateUrl, clone) {
                 log('Data not valid. Template url: \''+templateUrl+'\'', true);
             }
         });
-    }
-    else {
-        App.showLogin();
-    }
-
-//    if (App.getUserData() !== null) {
-//        var xhr = new XMLHttpRequest();
-//        xhr.onreadystatechange = function(e) {
-//            if (e.target.readyState == 4) {
-//                if(e.target.status == 200) {
-//                    var myAppId = null;
-//                    //TODO надо уметь открывать из моих проектов с требуемым user id
-//                    var reg = new RegExp('facebook-'+App.getUserData().id+'\/app\/([A-z0-9]+)\.txt','g');
-//                    var match = reg.exec(templateUrl);
-//                    if (match && match[1]) {
-//                        myAppId = match[1];
-//                    }
-//                    var obj = JSON.parse(e.target.responseText);
-//                    if (obj.appName && obj.propertyValues && obj.descriptor) {
-//                        appName = obj.appName;
-//                        appTemplate = obj;
-//                        if (myAppId) {
-//                            // если шаблон мой, то используем предыдущий ид для редактирования.
-//                            // если чужой (из витрины), то сгенерированный при старте редактора
-//                            appId = myAppId;
-//                        }
-//                        if (obj.title) {
-//                            $('.js-proj_name').val(obj.title);
-//                        }
-//                        // после загрузки шаблона надо загрузить код самого промо проекта
-//                        // там далее в колбеке на загрузку iframe есть запуск движка
-//                        loadAppSrc(appName);
-//                    }
-//                    else {
-//                        log('Data not valid. Template url: \''+templateUrl+'\'', true);
-//                    }
-//                }
-//                else {
-//                    log('Resource request failed: '+ e.target.statusText, true);
-//                }
-//            }
-//        };
-//        xhr.open('GET',templateUrl);
-//        xhr.send();
 //    }
 //    else {
 //        App.showLogin();

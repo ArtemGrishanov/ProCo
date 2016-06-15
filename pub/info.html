@@ -16,7 +16,7 @@
         </div>
         <div id="id-user_toolbar" class="toolbar_user">
             <div style="display:none" class="user_avatar js-profile_picture"></div>
-            <span style="display:none" class="pbtn __green __small mt4 js-show_login">Войти</span>
+            <span style="display:none" class="pbtn __green __small mt4 js-show_login" style="display:none;">Войти</span>
             <div style="display:none" class="dropdown_btn js-user_ctx_menu">
                 <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
                     <div class="ctx_menu_item" onclick="onMyTemplatesClick();">
@@ -35,7 +35,7 @@
     <div class="menu_tabs_wr">
         <div class="menu_tabs">
             <a href="storefront.html" class="menu_tab">Галерея шаблонов</a>
-            <a href="info.html" class="menu_tab">Мои тесты</a>
+            <a href="my_templates.html" class="menu_tab">Мои тесты</a>
             <a href="info.html" class="menu_tab">Как это работает</a>
             <a href="info.html" class="menu_tab">Решения для бизнеса</a>
             <a href="info.html" class="menu_tab">Помощь</a>
@@ -43,7 +43,6 @@
     </div>
     <div class="header tx __light">
         Информационная страница
-        <iframe src="https://player.vimeo.com/video/144986013" width="640" height="351" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
     </div>
 </div>
 <div id="id-modal_cnt">
@@ -53,7 +52,7 @@
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/config.js"></script>
-<script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript" src="js/model/app.js"></script>
 <script>
     $(document).ready(function() {
         App.start();

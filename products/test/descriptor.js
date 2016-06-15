@@ -372,7 +372,7 @@ descriptor.rules = {
                 params: {
                     viewName: "AddScreenButton",
                     screenGroup: "questions",
-                    prototypeIndex: 0
+                    prototypeIndex: 0,
                 }
             },
             {
@@ -385,6 +385,10 @@ descriptor.rules = {
             }
         ]
     },
+    /**
+     * Правила добавления опции ответа
+     * сейчас текстовой
+     */
     quizOptionEditRule: {
         // несколько контролов, альтернативная форма объявления
         controls: [
@@ -460,6 +464,29 @@ descriptor.rules = {
         cssProperty: 'margin-left',
         cssValuePattern: '{{number}}px',
         filter: true
+    }
+};
+
+/**
+ * Описание прототипов
+ * имя свойства - это также и имя значения в productIFrame.app
+ * - лабел
+ * - иконка
+ * -
+ *
+ * @type {{}}
+ */
+descriptor.prototypes = {
+    proto__text_slide: {
+        label: 'Текстовый вопрос',
+        img: '/products/test/i/editor/t1.jpg' // +devPrototypesHostName
+    },
+    proto__photo_question_slide: {
+        label: 'Фото вопрос',
+        img: '/products/test/i/editor/t2.jpg' // +devPrototypesHostName
+    },
+    proto__option_text: {
+
     }
 };
 

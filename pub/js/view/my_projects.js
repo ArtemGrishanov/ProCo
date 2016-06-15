@@ -13,7 +13,7 @@ var myProjectsView = {};
 
     function initUIHandlers() {
         $('.js-create_blank').click(function(e){
-            var appName = $(e).attr('data-app-name');
+            var appName = $(e.currentTarget).attr('data-app-name');
             if (appName) {
                 // открытие пустого шаблона
                 // параметр подготовлен для открытия проекта любого типа

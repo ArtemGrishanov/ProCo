@@ -424,9 +424,11 @@ html, body {
 .main_title_header2 {
     font-size: 40px;
     margin: 0;
+    padding: 12px;
 }
 .main_title_desc {
     margin: 0;
+    padding: 12px;
 }
 .main_title_btns_wr {
 }

@@ -20,7 +20,7 @@
             </div>
             <div id="id-user_toolbar" class="toolbar_user">
                 <div style="display:none" class="user_avatar js-profile_picture"></div>
-                <span style="display:none" class="pbtn __green __small mt4 js-show_login">Войти</span>
+                <span style="display:none" class="pbtn __green __small mt4 js-show_login" style="display:none;">Войти</span>
                 <div style="display:none" class="dropdown_btn js-user_ctx_menu">
                     <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
                         <div class="ctx_menu_item" onclick="onMyTemplatesClick();">
@@ -39,7 +39,7 @@
         <div class="menu_tabs_wr">
             <div class="menu_tabs">
                 <a href="storefront.html" class="menu_tab __selected">Галерея шаблонов</a>
-                <a href="info.html" class="menu_tab">Мои тесты</a>
+                <a href="my_templates.html" class="menu_tab">Мои тесты</a>
                 <a href="info.html" class="menu_tab">Как это работает</a>
                 <a href="info.html" class="menu_tab">Решения для бизнеса</a>
                 <a href="info.html" class="menu_tab">Помощь</a>
@@ -58,32 +58,32 @@
             <div class="st_templates_wr">
                 <h1 class="header tx __light">Создайте свой тест легко и быстро</br>с помощью шаблонов</h1>
                 <div class="st_items_cnt">
-                    <div class="st_item pr40 pb40" data-template-url="https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/16807c295d.txt">
-                        <div class="st_item_img" style="background-image:url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/16807c295d.jpg)">
+                    <div class="st_item __center pr40 pb40" data-template-url="facebook-902609146442342/app/16807c295d.txt">
+                        <div class="st_item_img __active" style="background-image:url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/16807c295d.jpg)">
                             <div class="st_item_op">
                                 <div class="st_item_op_line mt90"><div class="pbtn js-edit">Редактировать</div></div>
                                 <div class="st_item_op_line"><div class="pbtn js_app-preview">Посмотреть</div></div>
                             </div>
                         </div>
-                        <div class="st_item_name">Свадебная тема</div>
+                        <div class="st_item_name tx __16 __grey __light">Свадебная тема</div>
                     </div>
-                    <div class="st_item pr40 pb40" data-template-url="https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/f7be373260.txt">
-                        <div class="st_item_img" style="background-image:url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/f7be373260.jpg)">
+                    <div class="st_item __center pr40 pb40" data-template-url="facebook-902609146442342/app/f7be373260.txt">
+                        <div class="st_item_img __active" style="background-image:url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/f7be373260.jpg)">
                             <div class="st_item_op">
                                 <div class="st_item_op_line mt90"><div class="pbtn js-edit">Редактировать</div></div>
                                 <div class="st_item_op_line"><div class="pbtn js_app-preview">Посмотреть</div></div>
                             </div>
                         </div>
-                        <div class="st_item_name">C2H5OH</div>
+                        <div class="st_item_name tx __16 __grey __light">C2H5OH</div>
                     </div>
-                    <div class="st_item pr40 pb40" data-template-url="https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/ad2788472b.txt">
-                        <div class="st_item_img" style="background-image:url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/ad2788472b.jpg)">
+                    <div class="st_item __center pr40 pb40" data-template-url="facebook-902609146442342/app/ad2788472b.txt">
+                        <div class="st_item_img __active" style="background-image:url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/ad2788472b.jpg)">
                             <div class="st_item_op">
                                 <div class="st_item_op_line mt90"><div class="pbtn js-edit">Редактировать</div></div>
                                 <div class="st_item_op_line"><div class="pbtn js_app-preview">Посмотреть</div></div>
                             </div>
                         </div>
-                        <div class="st_item_name">Тест по географии</div>
+                        <div class="st_item_name tx __16 __grey __light">Тест по географии</div>
                     </div>
                 </div>
             </div>
@@ -124,11 +124,11 @@
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/config.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/model/app.js"></script>
+    <script type="text/javascript" src="js/util/utils.js"></script>
     <script type="text/javascript" src="js/engine.js"></script>
     <script type="text/javascript" src="js/appProperty.js"></script>
-    <script type="text/javascript" src="js/storefront.js"></script>
+    <script type="text/javascript" src="js/view/storefront.js"></script>
     <script>
         $(document).ready(function() {
             App.start();

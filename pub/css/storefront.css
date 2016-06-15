@@ -52,6 +52,9 @@ html, body {
     display: inline-block;
     vertical-align: top;
 }
+.st_item.__center {
+    text-align: center;
+}
 .st_item_img.__active:hover > .st_item_op {
     display: block;
 }
@@ -103,12 +106,15 @@ html, body {
 .st_item_name {
     display: inline-block;
     vertical-align: top;
-    width: 246px;
+    max-width: 400px;
     text-align: left;
     line-height: 22px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.st_item_name.__w245 {
+    width: 245px;
 }
 .st_item_last_modified {
 
