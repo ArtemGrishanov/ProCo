@@ -28,6 +28,18 @@ function TemplateCollection(param) {
 }
 
 /**
+ * Добавить напрямуб шаблон в коллекцию
+ * Без загрузки
+ * То есть например новый шаблон, который был создан редактором
+ *
+ * @param url
+ * @returns {*}
+ */
+TemplateCollection.prototype.add = function(template) {
+    this.templates.push(template);
+}
+
+/**
  * Получить ид из урла. Ид это имя файла.
  *
  * @param url

@@ -20,11 +20,12 @@ var storefrontView = {};
         $('.js_app-preview').click(function(e) {
             var d = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
             if (d) {
-                //loadTemplate('https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/609a0db43a.txt');
+                //examples
+                //loadTemplate('facebook-902609146442342/app/609a0db43a.txt');
                 //loadApp('test');
-                activeTemplateUrl = config.common.awsHostName+config.common.awsBucketName+'/'+d;
+                activeTemplateUrl = d;
                 templates = [];
-                loadTemplate(activeTemplateUrl);
+                loadTemplate(config.common.awsHostName+config.common.awsBucketName+'/'+activeTemplateUrl);
                 $('.scr_wr').addClass('__shadow');
                 $('#id-app_preview').show();
             }
@@ -60,6 +61,7 @@ var storefrontView = {};
         return {};
     }
 
+    //TODO лучше использовать коллекцию
     function loadTemplate(templateUrl) {
         //TODO
         var xhr = new XMLHttpRequest();

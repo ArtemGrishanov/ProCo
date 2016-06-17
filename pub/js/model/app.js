@@ -117,6 +117,11 @@ var App = App || {};
             how_it_helps_to_business: 'Learn how special project<br>can support your business'
         }
     };
+    /**
+     * Универсальное окно процесса загрузки чего-либо
+     * @type {null}
+     */
+    var $loadingModal = null;
 
     /**
      * Забрать из верстки тексты и сложить в словарь
@@ -180,10 +185,6 @@ var App = App || {};
         $('.js-logout').click(onLogoutClick);
         $('.js-login').click(onFBLoginClick);
         $('.js-show_login').click(showLogin);
-        //TODO этим должен управлять контроллер окна
-        $('.js-close').click(function() {
-            $('#id-modal_cnt').empty();
-        });
         $('.js-video').click(function() {
             $('#id-video').show();
             if (document.getElementById('id-videoplayer')) {
@@ -390,7 +391,7 @@ var App = App || {};
             //TODO показать/скрыть кнопку Выйти/Войти
             // ава показать-заменить на кнопку войти
             //
-            $('#id-modal_cnt').empty();
+            $('#id-modal_cnt').empty().hide();
         }
         else {
             $('.js-login').show();
@@ -400,15 +401,6 @@ var App = App || {};
             $('.js-user_name').text('');
             $('.js-authorization_status').text('Not logged');
         }
-    }
-
-    /**
-     * Показать окно с приглашением к логину и различными способами логина
-     */
-    function showLogin() {
-        $('#id-modal_cnt').load('templates/login.html', function() {
-             initUIHandlers();
-        })
     }
 
     /**
@@ -454,6 +446,47 @@ var App = App || {};
         }
     }
 
+    /**
+     * Показать модальное блокирующее окно с анимацией загрузки
+     * Его нельзя закрыть, пока приложение само этого не сделает
+     *
+     * @param {string} message
+     */
+//    function showLoadingModal(message) {
+//        if ($loadingModal === null) {
+//            $loadingModal = $('<div></div>');
+//            $('#id-modal_cnt').append($loadingModal);
+//            $loadingModal.load('templates/loadingModal.html', function() {
+//                // do nothing
+//            });
+//        }
+//        else {
+//            $('#id-modal_cnt').append($loadingModal);
+//        }
+//    }
+//
+//    function hideLoadingModal() {
+//        if ($loadingModal !== null) {
+//            $loadingModal.remove();
+//        }
+//    }
+
+    /**
+     * Показать окно с приглашением к логину и различными способами логина
+     */
+    function showLogin() {
+        $('#id-modal_cnt').load('templates/login.html', function() {
+            //initUIHandlers();
+            //TODO создать модалку
+            $('.js-login').click(onFBLoginClick);
+            //TODO этим должен управлять контроллер окна
+            $('.js-close').click(function() {
+                $('#id-modal_cnt').empty().hide();
+            });
+            $('#id-modal_cnt').show();
+        });
+    }
+
     // public methoods below
     global.start = start;
     global.getUserData = function() { return userData; };
@@ -462,6 +495,10 @@ var App = App || {};
     global.showLogin = showLogin;
     global.on = on;
     global.getFriends = getFriends;
+
+//    // управление универсальными окнами
+//    global.showLoadingModal = showLoadingModal;
+//    global.hideLoadingModal = hideLoadingModal;
 
     // шаблоны. Получить
     global.getUserTemplates = function() { return (userTemplateCollection !== null) ? userTemplateCollection.templates: null; }

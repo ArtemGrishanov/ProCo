@@ -278,7 +278,9 @@ SlideGroupControl.prototype.useSlide = function(slideId) {
         if (si.used === false) {
             // нашли первый свободный слайд - его и используем
             si.used = true;
-            si.slide.setPropertyString(slideId);
+            // обработка как и в createControl (пример 'resultScr0 resultScr1 resultScr2')
+            var propertyStrArg = (slideId && slideId.indexOf(' ')>=0)?slideId.split(' '):slideId;
+            si.slide.setPropertyString(propertyStrArg);
             result = si;
             break;
         }

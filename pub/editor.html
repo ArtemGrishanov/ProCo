@@ -128,11 +128,12 @@
             </div>
         </div>
     </div>
-    <div id="id-dialogs_view" class="scr" style="display: none; z-index: 99; background-color: rgba(0,0,0,0.5); padding-top: 100px">
+    <div id="id-dialogs_view" class="scr_dialog" style="display: none;">
         <!-- для показа диалогов поверх остальных вью -->
     </div>
-    <div id="id-modal_cnt">
-        <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
+
+    <div id="id-modal_cnt" class="scr">
+        <!-- parent for modals -->
     </div>
 
     <!-- Шаблон для группы Slide соответствующих группе экранов -->
@@ -327,8 +328,13 @@
     <script type="text/javascript" src="controls/ChooseImageQuick.js"></script>
     <script type="text/javascript" src="triggers/ClickTrigger.js"></script>
     <script type="text/javascript" src="triggers/SetClassTrigger.js"></script>
+    <script type="text/javascript" src="js/view/modals/abstractModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/loadingModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/messageModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/modal.js"></script>
     <script type="text/javascript" src="js/editor.js"></script>
     <script>
+        Modal.showLoading();
         $(document).ready(function() {
             if (config.common.facebookAuthEnable === true) {
                 App.on(USER_DATA_RECEIVED, function(result) {

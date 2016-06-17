@@ -60,10 +60,16 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
     this.onScreenUpdate = function(screenId) {
         //перерисовывать только когда экран реально виден пользователю, только активный экран
         //activeScreens - последние показанные экраны
-        var p = (Array.isArray(this.propertyString))?this.propertyString.join(','):this.propertyString;
-        if (screenId === p) {
+
+        // Схлопнутые экраны.
+        // например, this.propertyString = [result1, resul2, result3]
+        // приходит из события screenId = result2
+        // TODO но в таком случае как сделать обновление единожды? А не в каждом событии
+//        var p = (Array.isArray(this.propertyString))?this.propertyString.join(','):this.propertyString;
+        if ((typeof this.propertyString==='string' && screenId===this.propertyString) ||
+            (Array.isArray(this.propertyString) && this.propertyString.indexOf(screenId)>=0)) {
             // это этот экран
-            if (activeScreens.join(',') == p) {
+            if (activeScreens.join(',') == this.propertyString) {
                 var arr = (Array.isArray(this.propertyString))?this.propertyString:[this.propertyString];
                 showScreen(arr);
             }

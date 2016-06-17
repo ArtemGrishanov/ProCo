@@ -9,44 +9,22 @@
     <link href="controls/css/style.css" rel="stylesheet" type='text/css'>
 </head>
 <body style="background-color: #888">
-    <div id="id-user_ctx_menu" class="ctx_menu_wr">
-        <div class="ctx_menu_item">
-            Мои проекты
-        </div>
-        <div class="ctx_menu_item">
-            Настройки профиля
-        </div>
-        <div class="ctx_menu_item">
-            Выйти
-        </div>
+    <div id="id-modal_cnt" class="scr">
+        <!-- parent for modals -->
     </div>
-    <div id="id-load">
-    </div>
-    <!--<div class="control-group">-->
-        <!--<div class="control-label">Checkbox</div>-->
-        <!--<div class="controls">-->
-        <!--<div>-->
-            <!--<input name="form-field-checkbox" type="checkbox">-->
-            <!--<span class="lbl">choice 1</span>-->
-        <!--</div>-->
-        <!--<div>-->
-            <!--<input name="form-field-checkbox" type="checkbox">-->
-            <!--<span class="lbl">choice 2</span>-->
-        <!--</div>-->
-        <!--<div>-->
-            <!--<input name="form-field-checkbox" type="checkbox">-->
-            <!--<span class="lbl">choice 3</span>-->
-        <!--</div>-->
-        <!--<div>-->
-            <!--<input name="form-field-checkbox" disabled="" type="checkbox">-->
-            <!--<span class="lbl">disabled</span>-->
-        <!--</div>-->
-    <!--</div>-->
-    <script src="js/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/model/app.js"></script>
+    <script type="text/javascript" src="js/util/utils.js"></script>
+    <script type="text/javascript" src="js/engine.js"></script>
+    <script type="text/javascript" src="js/appProperty.js"></script>
+    <script type="text/javascript" src="js/view/storefront.js"></script>
+    <script type="text/javascript" src="js/view/modals/AbstractModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/LoadingModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/MessageModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/Modal.js"></script>
     <script>
-        $('#id-load').load('templates/login.html', function() {
 
-        })
     </script>
 </body>
 </html>

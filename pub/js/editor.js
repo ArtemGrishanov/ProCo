@@ -240,6 +240,7 @@ function onProductIframeLoaded() {
     createScreenControls();
     syncUIControlsToAppProperties();
     workspaceOffset = $('#id-product_screens_cnt').offset();
+    Modal.hideLoading();
 }
 
 /**
@@ -562,13 +563,21 @@ function syncUIControlsToAppProperties() {
     }
 
     //TODO жесткий хак: данная инициализация не поддерживается на нескольких колорпикерах
+    // надо отследить загружку всех директив колорпикеров и тогда инициализировать их
     setTimeout(function() {
         // стараемся выполнить после загрузки всех колорпикеров
-        $('.colorpicker').colorpicker();
-        $('.colorpicker input').click(function() {
-            $(this).parents('.colorpicker').colorpicker('show');
-        })
-    }, 2000);
+        try {
+            $('.colorpicker').colorpicker();
+            $('.colorpicker input').click(function() {
+                $(this).parents('.colorpicker').colorpicker('show');
+            })
+        }
+        catch (e) {
+            // strange thing here
+            //bootstrap-colorpicker.min.js:19 Uncaught TypeError: Cannot read property 'toLowerCase' of undefined
+            log(e,true);
+        }
+    }, 6000);
 
     // скомпилировать новые angular derictives (которые соответствуют контролам)
     var $injector = angular.injector(['ng', 'procoApp']);
@@ -767,6 +776,7 @@ function onPublishClick() {
         //TODO отделить пользовательскую зону для сохранения. другой домен например
         //TODO прототипы для витрины и прочие ресы лежат в нашей доверенной зоне
         if (Publisher.isInited() === true) {
+            Modal.showLoading();
             // appId - уникальный ид проекта, например appId
             Publisher.publish({
                 appId: appId,
@@ -794,9 +804,11 @@ function saveTemplate(showResultMessage) {
     //TODO автосохранение
     //TODO возможно шифрование
     if (App.getAWSBucket() !== null && App.getUserData() !== null) {
+        Modal.showLoading();
         // параметры сохраняемого шаблона
         var param = {
-            appId: appId,
+            id: appId,
+            appName: appName,
             propertyValues: Engine.getAppPropertiesValues(),
             descriptor: iframeWindow.descriptor,
             title: $('.js-proj_name').val()
@@ -828,7 +840,7 @@ function saveTemplate(showResultMessage) {
         if (storingTempl === null) {
             // это новый шаблон
             // мы не открывали из своих шаблонов что-то, и не сохранили ранее ничего
-            storingTempl = new Template();
+            storingTempl = new Template(param);
             openedTemplateCollection.add(storingTempl);
         }
         storingTempl.set(param);
@@ -844,6 +856,7 @@ function saveTemplate(showResultMessage) {
                     alert('Не удалось сохранить проект');
                 }
             }
+            Modal.hideLoading();
         }, appId);
     }
     else {
@@ -893,7 +906,7 @@ function uploadUserCustomTemplatePreview() {
 function generateAutoPreview() {
     // проверяем что надо генеритьб првеью для проекта если только пользователь ранее не установил свое кастомное превью
     // его не надо перезаписывать
-    if (appTemplate && config.common.previewAutoGeneration === true) {
+    if (config.common.previewAutoGeneration === true) {
         var url = 'facebook-'+App.getUserData().id+'/app/'+appId+'.jpg';
 
         function uplCnv(canvas) {
@@ -987,6 +1000,7 @@ function showPreview() {
  * Показать окно для вставки со ссылкой
  */
 function showEmbedDialog(result, data) {
+    Modal.hideLoading();
     if (result === 'success') {
         var iframeUrl = data.src;
         var ec = '<iframe src="'+iframeUrl+'" style="display:block;width:800px;height:600px;padding:0;border:none;"></iframe>';

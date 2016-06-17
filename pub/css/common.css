@@ -9,7 +9,7 @@ html, body {
     margin: 0;
 }
 .modal_wr {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -22,6 +22,10 @@ html, body {
     left: 0;
     width: 800px;
     margin: 100px auto;
+    background-color: #fff;
+    color: #555;
+    text-align: center;
+    padding: 20px;
 }
 .scr_wr {
     position: relative;
@@ -35,6 +39,15 @@ html, body {
     height: 100%;
     min-width: 1024px;
 }
+/*.scr_dialog {*/
+    /*position: fixed;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*background-color: rgba(63, 63, 63, 0.9);*/
+    /*padding-top: 50px*/
+/*}*/
 .social_btns_cnt {
     min-height: 44px;
     margin: 0 auto;
@@ -705,4 +718,48 @@ html, body {
     /* makes it invisible */
     position: absolute;
     top:-9999px;
+}
+
+.loading_anim_wr {
+    position: relative;
+    height: 78px;
+}
+.loading_anim {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 78px;
+    height: 78px;
+    margin: -39px 0 0 -39px;
+    text-indent: -9999em;
+    background-image: url(../i/spinner-color.png);
+    -webkit-animation: load 1.4s infinite linear;
+    animation: load 3.4s infinite linear;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-transform-origin: center;
+    transform-origin: center;
+}
+.loading_anim.__white {
+    background-image: url(../i/spinner.png);
+}
+@-webkit-keyframes load {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes load {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }

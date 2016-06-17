@@ -60,7 +60,7 @@
             </div>
         </div>
     </div>
-    <div id="id-modal_cnt">
+    <div id="id-modal_cnt" class="scr_dialog __modal" style="display:none">
         <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
     </div>
     <script id="id-my_project_elem_template" type="text/template">
@@ -92,6 +92,10 @@
     <script type="text/javascript" src="js/engine.js"></script>
     <script type="text/javascript" src="js/appProperty.js"></script>
     <script type="text/javascript" src="js/view/my_projects.js"></script>
+    <script type="text/javascript" src="js/view/modals/abstractModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/loadingModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/messageModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/modal.js"></script>
     <script>
         $(document).ready(function() {
             App.start();
