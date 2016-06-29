@@ -231,6 +231,8 @@ var App = App || {};
             //
             // These three cases are handled in the callback function.
             FB.getLoginStatus(function(response) {
+                // если приложение в тестовом режиме, то пользователь должен быть добавлен в приложение руками
+                // иначе никакого колбека не будет, ни с каким статусом
                 statusChangeCallback(response);
             });
         };
@@ -296,7 +298,7 @@ var App = App || {};
         if (response.status === 'connected') {
             // событие: установлена свзяь с фб, пользователь вошел
             if (typeof callbacks[FB_CONNECTED] === 'function') {
-                callbacks[FB_CONNECTED]('unknown');
+                callbacks[FB_CONNECTED]('connected');
             }
             // Logged into your app and Facebook.
             if (userData === null) {
@@ -309,7 +311,10 @@ var App = App || {};
         } else {
             userData = null;
             bucket = null;
-            //not_authorized unknown
+            if (typeof callbacks[FB_CONNECTED] === 'function') {
+                callbacks[FB_CONNECTED]('not_authorized, unknown');
+            }
+            //not_authorized, unknown
         }
         updateUI();
     }

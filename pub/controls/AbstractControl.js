@@ -85,6 +85,10 @@ var AbstractControl = {
             else {
                 log('There is not config for directive: '+this.directiveName, true);
             }
+            //TODO
+            if (this.directiveName === 'colorpicker') {
+                t.priority = 8;
+            }
             Queue.push(t);
         }
     },

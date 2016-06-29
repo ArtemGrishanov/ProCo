@@ -337,10 +337,11 @@
         Modal.showLoading();
         $(document).ready(function() {
             if (config.common.facebookAuthEnable === true) {
-                App.on(USER_DATA_RECEIVED, function(result) {
-                    if (result !== 'ok') {
-                        App.showLogin();
-                    }
+                App.on(FB_CONNECTED, function(result) {
+                    //TODO просто стартуем, окно логина не переведено на модал и автоматически скрывается
+//                    if (result !== 'connected') {
+//                        App.showLogin();
+//                    }
                     start();
                 });
                 App.start();

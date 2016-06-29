@@ -565,18 +565,10 @@ function syncUIControlsToAppProperties() {
     //TODO жесткий хак: данная инициализация не поддерживается на нескольких колорпикерах
     // надо отследить загружку всех директив колорпикеров и тогда инициализировать их
     setTimeout(function() {
-        // стараемся выполнить после загрузки всех колорпикеров
-        try {
-            $('.colorpicker').colorpicker();
-            $('.colorpicker input').click(function() {
-                $(this).parents('.colorpicker').colorpicker('show');
-            })
-        }
-        catch (e) {
-            // strange thing here
-            //bootstrap-colorpicker.min.js:19 Uncaught TypeError: Cannot read property 'toLowerCase' of undefined
-            log(e,true);
-        }
+        initColorpickers();
+        setTimeout(function() {
+            initColorpickers();
+        }, 10000);
     }, 6000);
 
     // скомпилировать новые angular derictives (которые соответствуют контролам)
@@ -601,6 +593,21 @@ function syncUIControlsToAppProperties() {
             productScreensCnt = $("#id-product_screens_cnt").contents().find('body');
             showScreen([Engine.getAppScreenIds()[0]]);
         },1000);
+    }
+}
+
+function initColorpickers() {
+    // стараемся выполнить после загрузки всех колорпикеров
+    try {
+        $('.colorpicker').colorpicker();
+        $('.colorpicker input').click(function() {
+            $(this).parents('.colorpicker').colorpicker('show');
+        })
+    }
+    catch (e) {
+        // strange thing here
+        //bootstrap-colorpicker.min.js:19 Uncaught TypeError: Cannot read property 'toLowerCase' of undefined
+        log(e,true);
     }
 }
 
