@@ -2,33 +2,67 @@
  * Created by artyom.grishanov on 16.06.16.
  *
  * Контроллер для управления модалками
- * Предполашается что есть котейнер для размещения модалок на веб странице config.ui.modalsParentSelector
+ *
+ * Ограничения
+ * 1) Предполашается что есть котейнер для размещения модалок на веб странице config.ui.modalsParentSelector
+ *    Этот контейнер показывается пока есть хотя бы одно активное модальное окно.
+ * 2) В один момент может быть показано только одно окно одного типа
+ *
+ *
+ * Для добавления нового окна:
+ * 1) Создать новый класс в pub/js/view/modals наследуя от abstractModal и реализовать там кастомную логику
+ * 2) Создать верстку в pub/templates
+ * 3) Прописать настройка в конфиг config.modals (файл config.js)
+ * 4) Добавить в Modal функции типа showMessage/hideMessage
+ *
  */
 var Modal = {};
 (function(global) {
 
-    var modals = [];
-    var $loading = null;
+    var activeModals = [];
     var $modalCnt = null;
 
-    function showLoading(data) {
-        if ($loading) {
-            hideLoading();
-        }
+    /**
+     * Создает и показывает модальное окно по конструктору
+     *
+     * @param {function} constructor функция для создания мод окна
+     * @param {object} data - данные для передачи в окно
+     * @returns {*|show|show|show|show|show}
+     * @private
+     */
+    function _show(constructor, data) {
+        // не надо скрывать контейнер, так как сейчас собираемся его показать. Иначе будет моргание
+        _hide(constructor, false);
         $modalCnt.show();
-        $loading = new LoadingModal(data).show($modalCnt);
-        modals.push($loading);
-        return $loading;
+        var modal = new constructor(data).show($modalCnt);
+        activeModals.push({
+            constructor: constructor,
+            modal: modal
+        });
+        return modal;
     }
 
-    function hideLoading() {
-        $loading.hide();
-        var i = modals.indexOf($loading);
-        if (i >= 0) {
-            modals.splice(i, 1);
+    /**
+     * Скрыть модальное окно
+     *
+     * @param {function} constructor - функция-конструктор, указывающая тип окошка
+     * @param {boolean} hideCnt - надо ли скрывать сам контейнер
+     * @private
+     */
+    function _hide(constructor, hideCnt) {
+        hideCnt = (hideCnt === undefined) ? true:hideCnt;
+        var mIndex = -1;
+        for (var i = 0; i < activeModals.length; i++) {
+            if (activeModals[i].constructor === constructor) {
+                mIndex = i;
+                break;
+            }
         }
-        delete $loading;
-        if (modals.length <= 0) {
+        if (mIndex >= 0) {
+            activeModals[i].modal.hide();
+            activeModals.splice(i, 1);
+        }
+        if (hideCnt ===true && activeModals.length <= 0) {
             $modalCnt.hide();
         }
     }
@@ -40,7 +74,13 @@ var Modal = {};
     }
 
     // public methods below
-    global.showLoading = showLoading;
-    global.hideLoading = hideLoading;
+    global.showLogin = function (data) { _show(LoginModal, data) };
+    global.hideLogin = function () { _hide(LoginModal) };
+
+    global.showMessage = function (data) { _show(MessageModal, data) };
+    global.hideMessage = function () { _hide(MessageModal) };
+
+    global.showLoading = function (data) { _show(LoadingModal, data) };
+    global.hideLoading = function () { _hide(LoadingModal) };
 
 })(Modal);

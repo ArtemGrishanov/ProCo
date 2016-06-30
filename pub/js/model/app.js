@@ -184,7 +184,9 @@ var App = App || {};
         });
         $('.js-logout').click(onLogoutClick);
         $('.js-login').click(onFBLoginClick);
-        $('.js-show_login').click(showLogin);
+        $('.js-show_login').click(function(){
+            Modal.showLogin();
+        });
         $('.js-video').click(function() {
             $('#id-video').show();
             if (document.getElementById('id-videoplayer')) {
@@ -320,6 +322,17 @@ var App = App || {};
     }
 
     /**
+     * Запросить логин у FB апи
+     */
+    function requestLogin() {
+        if (FB) {
+            FB.login(function(response) {
+                statusChangeCallback(response);
+            }, {scope:'user_friends,email'});
+        }
+    }
+
+    /**
      * Request basic info from fb api
      */
     function getUserInfo() {
@@ -356,13 +369,7 @@ var App = App || {};
      * Обработчик клика на любую кнопку с классом js-login
      */
     function onFBLoginClick() {
-        if (FB) {
-            FB.login(function(response) {
-                statusChangeCallback(response);
-            }
-                ,{scope:'user_friends,email'}
-            );
-        }
+        requestLogin();
     }
 
     /**
@@ -451,59 +458,14 @@ var App = App || {};
         }
     }
 
-    /**
-     * Показать модальное блокирующее окно с анимацией загрузки
-     * Его нельзя закрыть, пока приложение само этого не сделает
-     *
-     * @param {string} message
-     */
-//    function showLoadingModal(message) {
-//        if ($loadingModal === null) {
-//            $loadingModal = $('<div></div>');
-//            $('#id-modal_cnt').append($loadingModal);
-//            $loadingModal.load('templates/loadingModal.html', function() {
-//                // do nothing
-//            });
-//        }
-//        else {
-//            $('#id-modal_cnt').append($loadingModal);
-//        }
-//    }
-//
-//    function hideLoadingModal() {
-//        if ($loadingModal !== null) {
-//            $loadingModal.remove();
-//        }
-//    }
-
-    /**
-     * Показать окно с приглашением к логину и различными способами логина
-     */
-    function showLogin() {
-        $('#id-modal_cnt').load('templates/login.html', function() {
-            //initUIHandlers();
-            //TODO создать модалку
-            $('.js-login').click(onFBLoginClick);
-            //TODO этим должен управлять контроллер окна
-            $('.js-close').click(function() {
-                $('#id-modal_cnt').empty().hide();
-            });
-            $('#id-modal_cnt').show();
-        });
-    }
-
     // public methoods below
     global.start = start;
     global.getUserData = function() { return userData; };
     global.getAWSBucket = function() { return bucket; };
     global.getDict = function() { return dict; };
-    global.showLogin = showLogin;
     global.on = on;
     global.getFriends = getFriends;
-
-//    // управление универсальными окнами
-//    global.showLoadingModal = showLoadingModal;
-//    global.hideLoadingModal = hideLoadingModal;
+    global.requestLogin = requestLogin;
 
     // шаблоны. Получить
     global.getUserTemplates = function() { return (userTemplateCollection !== null) ? userTemplateCollection.templates: null; }

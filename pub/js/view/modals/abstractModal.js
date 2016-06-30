@@ -3,6 +3,8 @@
  *
  * Объект реализующий общую логику для модальных окон
  *
+ * @param.data
+ * @param.name
  */
 var AbstractModal = function(param) {
     param = param || {};
@@ -58,6 +60,7 @@ AbstractModal.prototype._loadTemplate = function(callback) {
         var $d = $('<div></div>');
         $d.load(this.templateUrl, (function() {
             this.$ui = $($d.html());
+            this.render();
             callback();
         }).bind(this));
     }

@@ -179,6 +179,7 @@ html, body {
     transform:rotate(0deg);
 }
 .close_dialog_btn.__ext {
+    top: 0;
     right: -54px;
 }
 .close_dialog_btn.__grey {

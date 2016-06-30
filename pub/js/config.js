@@ -237,8 +237,8 @@ var config = {
             templateUrl: 'templates/loadingModal.html',
             defZIndex: 101
         },
-        login: {
-            templateUrl: 'templates/login.html',
+        loginModal: {
+            templateUrl: 'templates/loginModal.html',
             defZIndex: 100
         },
         messageModal: {
