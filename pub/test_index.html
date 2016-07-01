@@ -24,7 +24,21 @@
     <script type="text/javascript" src="js/view/modals/MessageModal.js"></script>
     <script type="text/javascript" src="js/view/modals/Modal.js"></script>
     <script>
+        var o = {
+            data1: 12,
+            data2: 'ssserrt',
+            data3: function() {
+                var i = 1 + 3;
+                console.log('result='+i);
+            }
+        };
 
+        var so = JSON.stringify(o, function(key, val) {
+            if (typeof val === 'function') {
+                return val + ''; // implicitly `toString` it
+            }
+            return val;
+        });
     </script>
 </body>
 </html>

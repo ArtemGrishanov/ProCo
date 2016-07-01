@@ -3,17 +3,6 @@
  *
  */
 var descriptor = {};
-//    {
-//        selector: 'randomizeQuestions',
-//        editable: true,
-//        controls: "OnOff",
-//        controlParams: {
-//            viewName: "OnOffSwitcher"
-//        },
-//        label: "Перемешать вопросы"
-//    }
-//];
-
 
 descriptor.css = [
     /*{
@@ -112,6 +101,11 @@ descriptor.app = [
         rules: 'imgUrl'
     },
     {
+        selector: 'backgroundStart backgroundQuestions backgroundResult',
+        updateScreens: true,
+        rules: 'imgUrl'
+    },
+    {
         selector: 'showQuestionProgress showBullits showTopColontitle showBackgroundImage randomizeQuestions',
         rules: 'trueFalse'
     },
@@ -148,44 +142,6 @@ descriptor.app = [
         selector: "quiz.{{number}}.options",
         rules: 'quizOptionEditRule'
     },
-//    {
-//        /**
-//         * Смена верного ответа для теста.
-//         * Это больше чем просто смена значения одного поля (или css-свойства)
-//         * Впервые это изменение нескольких свойств по определенным правилам с визуализацией на рабочем поле.
-//         * Формальное определение проблемы:
-//         * 1. Есть свойства quiz.{{number}}.options
-//         * 2. У каждого такого свойства нужно менять значения суб-свойств: {{number}}.points по правилам
-//         * 3.
-//         *
-//         * Префикс 'app:' говорит, что это свойство из промо-проекта, которое надо взять и подставить
-//         * То есть надо взять переменную и подставить ее и с получившимся свойством работать дальше
-//         * Наверное, подстановка будет происходить при showScreen
-//         */
-//        selector: 'quiz.{{number:currentQuestionIndex}}.options.{{number}}.points',
-//        controls: 'QuickAlternative',
-//        controlParams: {
-//            // no specific view in this control
-//            /**
-//             * элементы на экране, клик по которым будет приводить к смене значения
-//             */
-//            optionsCssSelector: '.bullit',
-//            /**
-//             * Класс, который будет присвоен выбранному элементу
-//             * Одному из optionsCssSelector
-//             * promo app must provide this class
-//             */
-//            selectedOptionCssClass: '.bullit_active',
-//            /**
-//             * Функция установки правильного ответа
-//             */
-//            setFunction: 'setCorrentAnswer',
-//            setFunctionParams: [
-//                // в appScreen.data содержатся данные необходимые для этой операции
-//                {value: 'data.currentQuestion'}
-//            ]
-//        }
-//    }
 ];
 
 // правила, как редактировать свойства

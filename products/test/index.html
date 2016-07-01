@@ -8,8 +8,8 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body style="padding:0;margin:0">
-    <div id="id-start_slide" class="wrapper js-back" data-app-property="backgroundColor">
-        <div class="back_start"></div>
+    <div id="id-start_slide" class="wrapper" data-app-property="backgroundColor">
+        <div class="back_start js-start_back" data-app-property="backgroundStart"></div>
         <!--<div class="shadow"></div>-->
         <div class="slide">
             <div class="cnt_wr">
@@ -36,8 +36,8 @@
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript" src="jquery.js"></script>
     <script id="id-slide_text_template" type="text/template">
-        <div class="wrapper js-back" data-app-property="backgroundColor">
-            <div class="back_start"></div>
+        <div class="wrapper js-question_back" data-app-property="backgroundColor">
+            <div class="back_start js-questions_back" data-app-property="backgroundQuestions"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
                 <div class="cnt_wr">
@@ -60,8 +60,8 @@
         </div>
     </script>
     <script id="id-slide_photo_template" type="text/template">
-        <div class="wrapper js-back" data-app-property="backgroundColor">
-            <div class="back_start"></div>
+        <div class="wrapper js-question_back" data-app-property="backgroundColor">
+            <div class="back_start js-questions_back" data-app-property="backgroundQuestions"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
                 <div class="cnt_wr" style="margin-top: 30px;">
@@ -94,8 +94,8 @@
         </div>
     </script>
     <script id="id-result_template" type="text/template">
-        <div class="wrapper js-back" data-app-property="backgroundColor">
-            <div class="back_start"></div>
+        <div class="wrapper js-result_back" data-app-property="backgroundColor">
+            <div class="back_start js-result_back" data-app-property="backgroundResult"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide">
                 <div class="cnt_wr">
@@ -134,7 +134,9 @@
             fontFamily: 'Arial',
             backgroundColor: '#eee',
             showBackgroundImage: false,
-            background: 'url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg)',
+            backgroundStart: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg',
+            backgroundResult: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg',
+            backgroundQuestions: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg',
             /**
              * Логотип бренда, размещенный в тесте. Лого один, но позиции на разных экранах могут быть различные
              *
@@ -531,6 +533,10 @@
                 engineInstance = params.engine;
             }
 
+            // сгенерить идишки до рендера экранов обязательно
+            // так как идишки ставятся в атрибуты вью
+            makeUidForQuiz();
+
             // инициализация по параметрам app
             applyStyles(app);
             $('#id-start_header_text').text(app.startHeaderText);
@@ -586,7 +592,6 @@
                 });
             }
 
-            makeUidForQuiz();
             state = undefined;
             next();
         }
@@ -599,17 +604,33 @@
          */
         function applyStyles(appObject, $elem) {
             var $elem = $elem || document;
-            var $w = ($elem.hasClass && $elem.hasClass('wrapper')) ? $elem: $($elem).find('.wrapper');
+//            var $w = ($elem.hasClass && $elem.hasClass('wrapper')) ? $elem: $($elem).find('.wrapper');
             if (appObject.showBackgroundImage === true) {
-                if (appObject.background) {
-                    $w.css('backgroundImage',appObject.background);
+                if (appObject.backgroundStart) {
+                    $('.js-start_back').css('backgroundImage','url('+appObject.backgroundStart+')');
                 }
                 else {
-                    $w.css('backgroundImage','none');
+                    $('.js-start_back').css('backgroundImage','none');
+                }
+
+                if (appObject.backgroundQuestions) {
+                    $('.js-questions_back').css('backgroundImage','url('+appObject.backgroundQuestions+')');
+                }
+                else {
+                    $('.js-questions_back').css('backgroundImage','none');
+                }
+
+                if (appObject.backgroundResult) {
+                    $('.js-result_back').css('backgroundImage','url('+appObject.backgroundResult+')');
+                }
+                else {
+                    $('.js-result_back').css('backgroundImage','none');
                 }
             }
             else {
-                $w.css('backgroundImage','none');
+                $('.js-start_back').css('backgroundImage','none');
+                $('.js-questions_back').css('backgroundImage','none');
+                $('.js-result_back').css('backgroundImage','none');
             }
             $('.js-start_btn').text(app.startButtonText);
             if (app.showTopColontitle === true) {

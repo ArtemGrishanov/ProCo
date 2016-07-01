@@ -29,7 +29,7 @@ Template.prototype.set = function(param) {
  * @returns {boolean}
  */
 Template.prototype.isValid = function(str) {
-    return !!this.appName && !!this.propertyValues && !!this.descriptor;
+    return !!this.appName && !!this.propertyValues/* && !!this.descriptor*/;
 }
 
 Template.prototype.deserialize = function(str) {
@@ -61,7 +61,9 @@ Template.validAttributes = {
     previewUrl: null,
     appName: null, // имя промо-прототипа, например test timeline и так далее
     propertyValues: null,
-    descriptor: null,
+    // была идея сериализовать дескриптор тоже для того, чтобы у разных шаблонов были разные настройки
+    // но сложностей много и фича сомнительная
+    // descriptor: null,
     lastModified: null,
     publishDate: null
 };

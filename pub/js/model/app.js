@@ -117,11 +117,6 @@ var App = App || {};
             how_it_helps_to_business: 'Learn how special project<br>can support your business'
         }
     };
-    /**
-     * Универсальное окно процесса загрузки чего-либо
-     * @type {null}
-     */
-    var $loadingModal = null;
 
     /**
      * Забрать из верстки тексты и сложить в словарь

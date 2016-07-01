@@ -172,17 +172,21 @@
 
     <!-- Шаблон для группы Slide соответствующх группе экранов -->
     <script id="id-select_dialog_template" type="text/template">
-        <div class="select_dialog_back">
-            <div class="select_dialog_caption">
-                <span class="js-caption">Выбрать</span>
-            </div>
-            <div class="select_dialog_loading_anim js-loader" style="display:none;"></div>
-            <div class="select_dialog_options_cnt js-options_cnt">
-                <!-- Сюда будут программно добавлять опции -->
-            </div>
-            <div class="select_dialog_button_cnt">
-                <a class="pbtn js-cancel">Отмена</a>
-                <a class="pbtn __green js-confirm">Добавить</a>
+        <div class="modal_wr">
+            <div class="select_dialog_back">
+                <div class="select_dialog_caption">
+                    <span class="js-caption">Выбрать</span>
+                </div>
+                <div class="loading_anim_wr js-loader" style="display:none;margin-top:50px;">
+                    <div class="loading_anim"></div>
+                </div>
+                <div class="select_dialog_options_cnt js-options_cnt">
+                    <!-- Сюда будут программно добавлять опции -->
+                </div>
+                <div class="select_dialog_button_cnt">
+                    <a class="pbtn js-cancel">Отмена</a>
+                    <a class="pbtn __green js-confirm">Добавить</a>
+                </div>
             </div>
         </div>
     </script>
@@ -232,58 +236,60 @@
     <!-- Шаблон для диалога публикации -->
     <script id="id-publish_dialog_template" type="text/template">
     <div class="pd_wr">
-        <div class="pd_top">
-            <p class="pd_header">Ваш тест готов!</p>
-            <div class="pd_tab_switcher js-tab_btns">
-                <div class="pd_tab_btn js-tab_btn __selected" data-tab-id="1">
-                    <div><span class="pd_icon_link"></span></div>
-                    <div>Ссылка на проект</div>
-                </div>
-                <div class="pd_tab_btn js-tab_btn" data-tab-id="2">
-                    <div><span class="pd_icon_embed"></span></div>
-                    <div>Код для вставки на сайт или блог</div>
-                </div>
-            </div>
-        </div>
-        <div class="pd_tab_cnt js-tabs">
-            <div class="pd_tab js-tab" data-tab-id="1">
-                <br><br>
-                <div>
-                    <input class="pd_link_input js-project_link" readonly="readonly" value="http://example.com"/>
-                    <span class="pbtn __green js-copy_link">Копировать</span>
-                    <a href="#" target="_blank" class="pbtn js-view">Посмотреть</a>
-                </div>
-                <div class="pd_annotation_wr">
-                    <p class="pd_ann">Поделитесь вашим тестом в социальный сетях</p>
-                    <div class="pd_social_wr">
-                        <a href="#" class="social_btn __ok"></a>
-                        <a href="#" class="social_btn __vk ml12"></a>
-                        <a href="#" class="social_btn __fb ml12"></a>
-                        <a href="#" class="social_btn __twitter ml12"></a>
+        <div class="pd">
+            <div class="pd_top">
+                <p class="pd_header">Ваш тест готов!</p>
+                <div class="pd_tab_switcher js-tab_btns">
+                    <div class="pd_tab_btn js-tab_btn __selected" data-tab-id="1">
+                        <div><span class="pd_icon_link"></span></div>
+                        <div>Ссылка на проект</div>
+                    </div>
+                    <div class="pd_tab_btn js-tab_btn" data-tab-id="2">
+                        <div><span class="pd_icon_embed"></span></div>
+                        <div>Код для вставки на сайт или блог</div>
                     </div>
                 </div>
             </div>
-            <div class="pd_tab js-tab" data-tab-id="2">
-                <br><br>
-                <div class="pd_col">
-                    <textarea class="pd_embed_area js-embed_code" readonly="readonly"></textarea>
-                </div>
-                <div class="pd_col __w150">
-                    <span class="pbtn __green js-copy_embed_code">Копировать</span>
-                    <div class="pd_annotation_wr __b0">
-                        <span class="tx">Не получается?</span>
-                        <a href="#" class="link">Свяжитесь с нами</a>
+            <div class="pd_tab_cnt js-tabs">
+                <div class="pd_tab js-tab" data-tab-id="1">
+                    <br><br>
+                    <div>
+                        <input class="pd_link_input js-project_link" readonly="readonly" value="http://example.com"/>
+                        <span class="pbtn __green js-copy_link">Копировать</span>
+                        <a href="#" target="_blank" class="pbtn js-view">Посмотреть</a>
+                    </div>
+                    <div class="pd_annotation_wr">
+                        <p class="pd_ann">Поделитесь вашим тестом в социальный сетях</p>
+                        <div class="pd_social_wr">
+                            <a href="#" class="social_btn __ok"></a>
+                            <a href="#" class="social_btn __vk ml12"></a>
+                            <a href="#" class="social_btn __fb ml12"></a>
+                            <a href="#" class="social_btn __twitter ml12"></a>
+                        </div>
                     </div>
                 </div>
-                <div class="pd_annotation_wr">
-                    <!--<div class="pd_social_wr">-->
-                    <!--<a href="#" class="social_btn __q"></a>-->
-                    <!--</div>-->
-                    <p class="pd_ann">Как вставить тест на сайт или в блог</p>
+                <div class="pd_tab js-tab" data-tab-id="2">
+                    <br><br>
+                    <div class="pd_col">
+                        <textarea class="pd_embed_area js-embed_code" readonly="readonly"></textarea>
+                    </div>
+                    <div class="pd_col __w150">
+                        <span class="pbtn __green js-copy_embed_code">Копировать</span>
+                        <div class="pd_annotation_wr __b0">
+                            <span class="tx">Не получается?</span>
+                            <a href="#" class="link">Свяжитесь с нами</a>
+                        </div>
+                    </div>
+                    <div class="pd_annotation_wr">
+                        <!--<div class="pd_social_wr">-->
+                        <!--<a href="#" class="social_btn __q"></a>-->
+                        <!--</div>-->
+                        <p class="pd_ann">Как вставить тест на сайт или в блог</p>
+                    </div>
                 </div>
             </div>
+            <div class="close_dialog_btn js-close"></div>
         </div>
-        <div class="close_dialog_btn js-close"></div>
     </div>
     </script>
 
@@ -335,15 +341,18 @@
     <script type="text/javascript" src="js/view/modals/modal.js"></script>
     <script type="text/javascript" src="js/editor.js"></script>
     <script>
-        Modal.showLoading();
         $(document).ready(function() {
             if (config.common.facebookAuthEnable === true) {
                 App.on(FB_CONNECTED, function(result) {
                     //TODO просто стартуем, окно логина не переведено на модал и автоматически скрывается
-//                    if (result !== 'connected') {
-//                        App.showLogin();
-//                    }
-                    start();
+                    if (result === 'connected') {
+                        Modal.hideLogin();
+                        start();
+                    }
+                    else {
+                        // canClose:false - леер нельзя закрыть
+                        Modal.showLogin({text:'Войдите для создания своего проекта',canClose:false});
+                    }
                 });
                 App.start();
             }

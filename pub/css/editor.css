@@ -174,6 +174,7 @@
     height: 127px;
     /*width: 273px;*/
     /*height: 168px;*/
+    background-size: contain;
     border: #bfbfbf solid 2px;
     background: url(../../products/test/i/editor/t1.jpg) no-repeat center;
 }
@@ -251,14 +252,22 @@
 
 /* Диалог публикации */
 .pd_wr {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(63, 63, 63, 0.9);
+    text-align: center;
+}
+.pd {
+    position: relative;
     width: 800px;
     height: 500px;
-    position: relative;
-    margin: 0 auto;
-    padding: 0;
     background-color: #fff;
-    text-align: center;
     overflow: hidden;
+    margin: 100px auto;
+    padding: 0;
 }
 .pd_top {
     position: relative;

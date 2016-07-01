@@ -16,7 +16,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #333;
-    background-image: url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg);
+    /*background-image: url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg);*/
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -34,6 +34,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 .cnt_wr {
     width: 100%;
@@ -104,8 +106,11 @@ body {
     box-sizing: border-box;
 }
 .bullit_active {
-    border-color: #0f0;
-    border-width: 5px;
+    /* Это класс подсветки верного ответа */
+    /* Решение "так себе */
+    /* important - чтобы перебить стили custom_style если пользователь настроил их */
+    border-color: #0f0 !important;
+    border-width: 5px !important;
 }
 .a_wr:hover .bullit {
     border-width: 4px;

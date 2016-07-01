@@ -832,7 +832,7 @@ var Engine = {};
         }
         var key = appProperty.propertyString;
         var stringifiedValue = JSON.stringify(value);
-        log('Changing property \''+key+'\'='+stringifiedValue);
+        log('Changing property \''+key+'\'='+stringifiedValue, false, false);
         if (productWindow.app && productWindow.tests) {
             // обнуляем перед прогоном тестов
             testResults = [];
@@ -849,7 +849,7 @@ var Engine = {};
                         eval('appCopy'+convertToBracedString(key)+'='+stringifiedValue);
                         try {
                             // запускаем тест на новых настройках, результаты собираются в переменную
-                            log('Running test...');
+                            log('Running test...', false, false);
                             productWindow.tests[i].call(productWindow, appCopy, this);
                         }
                         catch(e) {
@@ -870,10 +870,10 @@ var Engine = {};
                 appProperty.propertyValue = value;
                 // если всё хорошо завершилось, устанавливаем свойство, это безопасно
                 eval('productWindow.app'+convertToBracedString(key)+'='+stringifiedValue);
-                log('All tests was successful. Tests count='+testResults.length+'; \''+key+'\'='+stringifiedValue+' was set');
+                log('All tests was successful. Tests count='+testResults.length+'; \''+key+'\'='+stringifiedValue+' was set', false, false);
                 // дальше перезапустить приложение
                 if (typeof productWindow.start === 'function') {
-                    log('Restart app');
+                    log('Restart app', false, false);
                     // передает ссылку на себя при старте
                     productWindow.start.call(productWindow, buildProductAppParams.call(this));
                 }
@@ -911,7 +911,7 @@ var Engine = {};
                 send('AppPropertyValueChanged', key);
                 return {result: 'success', message: ''};
             }
-            log('Tests contain errors. Cannot set \''+key+'\'='+stringifiedValue);
+            log('Tests contain errors. Cannot set \''+key+'\'='+stringifiedValue, true);
             return {result: 'error', message: ''};
         }
         else {
@@ -976,17 +976,19 @@ var Engine = {};
         }
         // вызываем start передавая в промо-приложение параметры
         productWindow.start.call(productWindow, buildProductAppParams.call(this));
+
+        // установить сохраненный значения из шаблона, например, они могут быть взяты из шаблона
+        // сначала установить значения, так как на основе них потом создаются appProperty
+        if (params && params.values) {
+            setAppPropertiesValues(params.values);
+        }
+
         appProperties = [];
         appPropertiesObjectPathes = [];
         testResults = [];
         // рекурсивно создает по всем свойствам app объекты AppProperty
         createAppProperties(productWindow.descriptor);
         createCssProperties(productWindow.descriptor);
-
-        // установить css свойства, например, они могут быть взяты из шаблона
-        if (params && params.values) {
-            setAppPropertiesValues(params.values);
-        }
 
         // создать экраны (слайды) для промо приложения
         createAppScreens();

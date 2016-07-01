@@ -177,7 +177,6 @@ TemplateCollection.prototype.saveTemplate = function(callback,
         if (title) {
             template.title = title;
         }
-        template
         log('Saving project:' + appId);
         var objKey = 'facebook-'+App.getUserData().id+'/app/'+appId+'.txt';
         var params = {

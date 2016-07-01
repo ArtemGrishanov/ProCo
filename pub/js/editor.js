@@ -146,6 +146,7 @@ initControls();
  * Функция запуска редактора
  */
 function start() {
+    Modal.showLoading();
     appId = getUniqId().substr(22);
     appTemplate = null;
     appName = null;
@@ -231,8 +232,9 @@ function onProductIframeLoaded() {
     var params = null;
     if (appTemplate) {
         params = {
-            values: appTemplate.propertyValues,
-            descriptor: appTemplate.descriptor
+            values: appTemplate.propertyValues
+            // не переписываем дескриптор, как плнировал изначально, а берем из материнского приложения всегда
+            //descriptor: appTemplate.descriptor
         };
     }
     Engine.startEngine(iframeWindow, params);
@@ -933,7 +935,7 @@ function generateAutoPreview() {
                     //Not authorized to perform sts:AssumeRoleWithWebIdentity
                     log('ERROR: ' + err, true);
                 } else {
-                    alert('Превью промки загружено');
+                    log('Превью промки загружено');
                 }
             }).bind(this));
         }
@@ -957,7 +959,6 @@ function generateAutoPreview() {
  * @param {boolean} clone - клонировать ли открываемый шаблон. Технически это просто смена appId
  */
 function openTemplate(templateUrl, clone) {
-//    if (App.getUserData() !== null) {
         openedTemplateCollection = new TemplateCollection({
             // в ручную добавили в коллекцию один шаблон, останется только получить инфо о нем
             templateUrls: [templateUrl]
@@ -985,10 +986,6 @@ function openTemplate(templateUrl, clone) {
                 log('Data not valid. Template url: \''+templateUrl+'\'', true);
             }
         });
-//    }
-//    else {
-//        App.showLogin();
-//    }
 }
 
 function showEditor() {
@@ -1090,11 +1087,13 @@ function showSelection($elem) {
 }
 
 function showSelectDialog(params) {
+    deleteSelections();
     var dialog = new SelectDialog(params);
     $('#id-dialogs_view').empty().append(dialog.view).show();
 }
 
 function showPublishDialog(params) {
+    deleteSelections();
     var dialog = new PublishDialog(params);
     $('#id-dialogs_view').empty().append(dialog.view).show();
 }
