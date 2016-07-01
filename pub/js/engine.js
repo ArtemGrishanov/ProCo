@@ -181,11 +181,24 @@ var Engine = {};
      * @return {string}
      */
     function getAppPropertiesValues() {
-        var result = {};
+        var result = {css:{},app:{}};
         for (var i = 0; i < appProperties.length; i++) {
-            result[appProperties[i].propertyString]=appProperties[i].propertyValue;
+            if (appProperties[i].type === 'css') {
+                result['css'][appProperties[i].propertyString] = appProperties[i].propertyValue;
+            }
+            else if (appProperties[i].type === 'app') {
+                result['app'][appProperties[i].propertyString] = appProperties[i].propertyValue;
+            }
         }
         return result;
+    }
+
+    function setAppPropertiesValues(values) {
+        for (var key in values) {
+            if (values.hasOwnProperty(key)) {
+                _setAppValue(key, values[key])
+            }
+        }
     }
 
     /**
@@ -194,7 +207,7 @@ var Engine = {};
      * Например {"t_btn_paddingTop":"20","js-question_progress_fontColor":"#eee","showBackgroundImage":true,...}
      * Нужно при загрузке шаблона
      */
-    function setAppPropertiesValues(values) {
+    function setCssPropertiesValues(values) {
         for (var key in values) {
             if (values.hasOwnProperty(key)) {
                 var p = getAppProperty(key);
@@ -830,74 +843,82 @@ var Engine = {};
         if (attributes.hasOwnProperty('runTests') === false) {
             attributes.runTests = appProperty.runTests;
         }
-        var key = appProperty.propertyString;
+        var pStr = appProperty.propertyString;
+        // stringifiedValue for log and tests
         var stringifiedValue = JSON.stringify(value);
-        log('Changing property \''+key+'\'='+stringifiedValue, false, false);
+        log('Changing property \''+pStr+'\'='+stringifiedValue, false, false);
         if (productWindow.app && productWindow.tests) {
             // обнуляем перед прогоном тестов
             testResults = [];
             if (attributes.runTests === true) {
                 //TODO для сложных строк типа quiz.1.text как определять тесты? Возможно, все таки явно указывать
-                for (var i = 0; i < productWindow.tests.length; i++) {
-                    var s = productWindow.tests[i].toString();
-                    // запускаем тесты, в которых обнаружено данное свойство
-                    if (s.indexOf('.'+key) >= 0 || s.indexOf('\''+key+'\'') >= 0) {
-                        // клонируем настройки приложения, чтобы на них произвести тест
-                        //TODO может быть не эффективно на сложных объектах
-                        var appCopy = JSON.parse(JSON.stringify(productWindow.app));
-                        // делаем изменение
-                        eval('appCopy'+convertToBracedString(key)+'='+stringifiedValue);
-                        try {
-                            // запускаем тест на новых настройках, результаты собираются в переменную
-                            log('Running test...', false, false);
-                            productWindow.tests[i].call(productWindow, appCopy, this);
-                        }
-                        catch(e) {
-                            // что-то непредвиденное тоже обрабатываем, так как запускаются клиентские тесты
-                            testResults.push({
-                                result: 'error',
-                                message: e
-                            });
-                            log(e, true);
-                        }
-                    }
-                }
+//                for (var i = 0; i < productWindow.tests.length; i++) {
+//                    var s = productWindow.tests[i].toString();
+//                    // запускаем тесты, в которых обнаружено данное свойство
+//                    if (s.indexOf('.'+pStr) >= 0 || s.indexOf('\''+pStr+'\'') >= 0) {
+//                        // клонируем настройки приложения, чтобы на них произвести тест
+//                        //TODO может быть не эффективно на сложных объектах
+//                        var appCopy = JSON.parse(JSON.stringify(productWindow.app));
+//                        // делаем изменение
+//                        eval('appCopy'+convertToBracedString(pStr)+'='+stringifiedValue);
+//                        try {
+//                            // запускаем тест на новых настройках, результаты собираются в переменную
+//                            log('Running test...', false, false);
+//                            productWindow.tests[i].call(productWindow, appCopy, this);
+//                        }
+//                        catch(e) {
+//                            // что-то непредвиденное тоже обрабатываем, так как запускаются клиентские тесты
+//                            testResults.push({
+//                                result: 'error',
+//                                message: e
+//                            });
+//                            log(e, true);
+//                        }
+//                    }
+//                }
             }
             // после прогонов всех тестов (если они были) можно сделать вывод о том, были ли ошибки
             // если тестов не было, то тоже считаем что всё успешно
             if (isErrorInTestResults() === false) {
                 operationsCount++;
                 appProperty.propertyValue = value;
-                // если всё хорошо завершилось, устанавливаем свойство, это безопасно
-                eval('productWindow.app'+convertToBracedString(key)+'='+stringifiedValue);
-                log('All tests was successful. Tests count='+testResults.length+'; \''+key+'\'='+stringifiedValue+' was set', false, false);
-                // дальше перезапустить приложение
-                if (typeof productWindow.start === 'function') {
-                    log('Restart app', false, false);
-                    // передает ссылку на себя при старте
-                    productWindow.start.call(productWindow, buildProductAppParams.call(this));
+                if (appProperty.type === 'app') {
+                    _setAppValue(pStr, value);
+                    log('\''+pStr+'\'='+stringifiedValue+' was set', false, false);
+                    // тесты пока не делаем
+                    //log('All tests was successful. Tests count='+testResults.length+'; \''+pStr+'\'='+stringifiedValue+' was set', false, false);
+                    // дальше перезапустить приложение
+                    if (typeof productWindow.start === 'function') {
+                        log('Restart app', false, false);
+                        // передает ссылку на себя при старте
+                        productWindow.start.call(productWindow, buildProductAppParams.call(this));
+                    }
                 }
-                // если с изменямым appProperty связаны css свойства, то записываем их
-                // Проверки на null и так далее: дескрипторе это нормально - описать редактирование свойства, а значения нет, пока первый раз его не задашь
-                if (appProperty.cssSelector && appProperty.cssProperty && value !== undefined && value !== null && value !== '') {
-                    var cssV = null;
-                    if (appProperty.cssValuePattern) {
-                        // пока поддерживается только паттерны на основе целого числа
-                        // например {{number}}px
-                        if (appProperty.cssValuePattern.indexOf('{{number}}') >= 0) {
-                            // парсим число для того чтобы работала установка как '20', так и '20px' в контроле в редакторе
-                            value = parseInt(value);
-                            cssV = appProperty.cssValuePattern.replace('{{number}}',value);
+
+                if (appProperty.type === 'css') {
+                    // если с изменямым appProperty связаны css свойства, то записываем их
+                    // Проверки на null и так далее: дескрипторе это нормально - описать редактирование свойства, а значения нет, пока первый раз его не задашь
+                    if (appProperty.cssSelector && appProperty.cssProperty && value !== undefined && value !== null && value !== '') {
+                        var cssV = null;
+                        if (appProperty.cssValuePattern) {
+                            // пока поддерживается только паттерны на основе целого числа
+                            // например {{number}}px
+                            if (appProperty.cssValuePattern.indexOf('{{number}}') >= 0) {
+                                // парсим число для того чтобы работала установка как '20', так и '20px' в контроле в редакторе
+                                value = parseInt(value);
+                                cssV = appProperty.cssValuePattern.replace('{{number}}',value);
+                            }
                         }
+                        else {
+                            cssV = value;
+                        }
+                        saveCssRule(appProperty.applyCssTo || appProperty.cssSelector, appProperty.cssProperty, cssV);
+                        //TODO здесь наверное не обязательно каждый раз писать.
+                        // это мы пишем в productWindow - то есть в скрытый iframe с промо приложением, который показывается только в предпросмотре
+                        writeCssRulesTo(productWindow.document.body);
                     }
-                    else {
-                        cssV = value;
-                    }
-                    saveCssRule(appProperty.applyCssTo || appProperty.cssSelector, appProperty.cssProperty, cssV);
-                    //TODO здесь наверное не обязательно каждый раз писать.
-                    // это мы пишем в productWindow - то есть в скрытый iframe с промо приложением, который показывается только в предпросмотре
-                    writeCssRulesTo(productWindow.document.body);
                 }
+
                 // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
                 //TODO нужен более умный алгоритм. Пересоздавать только свойства в массиве. Есть ли другие случаи?
                 if (attributes.updateAppProperties === true) {
@@ -907,17 +928,37 @@ var Engine = {};
                 if (attributes.updateScreens === true) {
                     createAppScreens();
                 }
-                // рассылка события для ключа key
-                send('AppPropertyValueChanged', key);
+                // рассылка события для ключа pStr
+                send('AppPropertyValueChanged', pStr);
                 return {result: 'success', message: ''};
             }
-            log('Tests contain errors. Cannot set \''+key+'\'='+stringifiedValue, true);
+            log('Tests contain errors. Cannot set \''+pStr+'\'='+stringifiedValue, true);
             return {result: 'error', message: ''};
         }
         else {
             log('You must set windows.app and windows.test properties in your promoapp', true);
         }
         return {result: 'error', message: ''};
+    }
+
+    /**
+     *
+     * @param propertyString
+     * @param value
+     * @private
+     */
+    function _setAppValue(propertyString, value) {
+        var stringifiedValue = JSON.stringify(value);
+        try {
+            eval('productWindow.app'+convertToBracedString(propertyString)+'='+stringifiedValue);
+        }
+        catch(e) {
+            log('_setAppValue: '+propertyString+'='+value+' details:'+e,true)
+        }
+    }
+
+    function _setCssValue() {
+        //TODO
     }
 
     function isErrorInTestResults() {
@@ -974,14 +1015,15 @@ var Engine = {};
         if (productWindow.start === undefined) {
             console.error('start function must be specified');
         }
-        // вызываем start передавая в промо-приложение параметры
-        productWindow.start.call(productWindow, buildProductAppParams.call(this));
 
         // установить сохраненный значения из шаблона, например, они могут быть взяты из шаблона
         // сначала установить значения, так как на основе них потом создаются appProperty
-        if (params && params.values) {
-            setAppPropertiesValues(params.values);
+        if (params && params.values && params.values.app) {
+            setAppPropertiesValues(params.values.app);
         }
+
+        // вызываем start передавая в промо-приложение параметры
+        productWindow.start.call(productWindow, buildProductAppParams.call(this));
 
         appProperties = [];
         appPropertiesObjectPathes = [];
@@ -989,6 +1031,11 @@ var Engine = {};
         // рекурсивно создает по всем свойствам app объекты AppProperty
         createAppProperties(productWindow.descriptor);
         createCssProperties(productWindow.descriptor);
+
+        // css можно устанавливать уже после создания appProperties по дескриптору, роли не играет
+        if (params && params.values && params.values.css) {
+            setCssPropertiesValues(params.values.css);
+        }
 
         // создать экраны (слайды) для промо приложения
         createAppScreens();

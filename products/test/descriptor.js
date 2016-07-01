@@ -79,7 +79,8 @@ descriptor.css = [
         rules: 'topColontitleBottomBorderColor fontColor fontSize fontFamily textAlign backgroundColor paddingTop paddingBottom'
     },
     {
-        selector: '.js-back',
+        selector: '.wrapper',
+        applyCssTo: '.js-back_color',
         label: 'Цвет фона теста',
         filter: false,
         rules: 'backgroundColor'

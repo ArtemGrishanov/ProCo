@@ -67,7 +67,7 @@ var config = {
         /**
          * Имя файла превью для проекта при условии что его ставит сам пользователь, а не автоматическая генерация
          */
-        userCustomPreviewFileName: 'userCustomPreview',
+        userCustomPreviewFileNamePrefix: 'userCustomPreview_',
         /**
          * Автоматическая генерация превью проекта при его сохранении
          * Берется текущий экран и перегоняется в jpeg

@@ -8,7 +8,7 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body style="padding:0;margin:0">
-    <div id="id-start_slide" class="wrapper" data-app-property="backgroundColor">
+    <div id="id-start_slide" class="wrapper js-back_color" data-app-property="backgroundColor">
         <div class="back_start js-start_back" data-app-property="backgroundStart"></div>
         <!--<div class="shadow"></div>-->
         <div class="slide">
@@ -36,7 +36,7 @@
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript" src="jquery.js"></script>
     <script id="id-slide_text_template" type="text/template">
-        <div class="wrapper js-question_back" data-app-property="backgroundColor">
+        <div class="wrapper js-back_color" data-app-property="backgroundColor">
             <div class="back_start js-questions_back" data-app-property="backgroundQuestions"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
@@ -60,7 +60,7 @@
         </div>
     </script>
     <script id="id-slide_photo_template" type="text/template">
-        <div class="wrapper js-question_back" data-app-property="backgroundColor">
+        <div class="wrapper js-back_color" data-app-property="backgroundColor">
             <div class="back_start js-questions_back" data-app-property="backgroundQuestions"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide js-slide">
@@ -94,7 +94,7 @@
         </div>
     </script>
     <script id="id-result_template" type="text/template">
-        <div class="wrapper js-result_back" data-app-property="backgroundColor">
+        <div class="wrapper js-back_color" data-app-property="backgroundColor">
             <div class="back_start js-result_back" data-app-property="backgroundResult"></div>
             <!--<div class="shadow"></div>-->
             <div class="slide">
@@ -472,7 +472,10 @@
                     };
                 }
             }
-            //TODO при удалении соответственно надо уменьшить количество результатов
+            if (app.results.length > app.quiz.length) {
+                //при удалении соответственно надо уменьшить количество результатов ровно столько сколько ответов
+                app.results.splice(app.quiz.length, app.results.length)
+            }
         }
 
         /**

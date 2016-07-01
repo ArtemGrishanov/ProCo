@@ -829,10 +829,10 @@ function saveTemplate(showResultMessage) {
         }
         // если пользовательское - перезаписать урл и ничего не аплоадить (аплоадил пользователь раньше)
         // если не пользовательское то в любом случае запустить таску на генерацию а sessionPreviewUrl перезаписать путем
-        if (sessionPreviewUrl && sessionPreviewUrl.indexOf(config.common.userCustomPreviewFileName) >= 0) {
+        if (sessionPreviewUrl && sessionPreviewUrl.indexOf(config.common.userCustomPreviewFileNamePrefix) >= 0) {
             // превью пользовательское и было изменено в этой сессии, обновляем урл для записи
             param.previewUrl = sessionPreviewUrl;
-        } else if (appTemplate && appTemplate.previewUrl && appTemplate.previewUrl.indexOf(config.common.userCustomPreviewFileName) >= 0) {
+        } else if (appTemplate && appTemplate.previewUrl && appTemplate.previewUrl.indexOf(config.common.userCustomPreviewFileNamePrefix) >= 0) {
             // превью пользовательское уже сохранено в шаблоне, то ничего делать не надо
             // не предусмотрено удаление картинки превью, которое пользователь сам привязал к тесту
         }
@@ -882,7 +882,7 @@ function uploadUserCustomTemplatePreview() {
     if (App.getAWSBucket() !== null) {
         var file = $('#id-app_preview_img')[0].files[0];
         if (file) {
-            var objKey = 'facebook-'+App.getUserData().id+'/app/'+config.common.userCustomPreviewFileName+'.jpg';
+            var objKey = 'facebook-'+App.getUserData().id+'/app/'+config.common.userCustomPreviewFileNamePrefix+appId+'.jpg';
             var params = {
                 Key: objKey,
                 ContentType: file.type,
@@ -1088,12 +1088,16 @@ function showSelection($elem) {
 
 function showSelectDialog(params) {
     deleteSelections();
+    hideWorkspaceHints();
+    $('#id-control_cnt').empty()
     var dialog = new SelectDialog(params);
     $('#id-dialogs_view').empty().append(dialog.view).show();
 }
 
 function showPublishDialog(params) {
     deleteSelections();
+    hideWorkspaceHints();
+    $('#id-control_cnt').empty();
     var dialog = new PublishDialog(params);
     $('#id-dialogs_view').empty().append(dialog.view).show();
 }

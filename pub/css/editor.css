@@ -151,6 +151,8 @@
     height: 326px;
     margin-top: 50px;
     text-align: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 .select_dialog_loading_anim {
     width: 220px;

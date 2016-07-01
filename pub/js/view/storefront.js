@@ -75,7 +75,7 @@ var storefrontView = {};
 //                        newId = match[1];
 //                    }
                     var obj = JSON.parse(e.target.responseText);
-                    if (obj.appName && obj.propertyValues && obj.descriptor /*&& newId*/) {
+                    if (obj.appName && obj.propertyValues /*&& obj.descriptor *&& newId*/) {
                         appName = obj.appName;
                         appTemplate = obj;
                         appId = newId;

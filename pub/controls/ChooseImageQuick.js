@@ -11,6 +11,8 @@ function ChooseImageQuick(propertyString, directiveName, $parent, productDOMElem
     this.onProductElementDpubleClick = function() {
         // resourceManager - объявлен в editor.js (singleton)
         deleteSelections();
+        hideWorkspaceHints();
+        $('#id-control_cnt').empty();
         resourceManager.show(this.onImageSelected.bind(this));
     };
 
