@@ -38,12 +38,12 @@ var storefrontView = {};
             var d = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
             if (d) {
                 activeTemplateUrl = d;
-                window.location.href = 'editor.html?'+config.common.templateUrlParamName+'='+activeTemplateUrl;
+                window.location.href = 'editor.html?'+config.common.templateUrlParamName+'='+activeTemplateUrl+'&'+config.common.needNewIdParamName+'=true';
             }
         });
         $('.js-edit_active').click(function(e) {
             if (activeTemplateUrl) {
-                window.location.href = 'editor.html?'+config.common.templateUrlParamName+'='+activeTemplateUrl;
+                window.location.href = 'editor.html?'+config.common.templateUrlParamName+'='+activeTemplateUrl+'&'+config.common.needNewIdParamName+'=true';
             }
         });
     }

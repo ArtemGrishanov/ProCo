@@ -154,7 +154,8 @@ function start() {
     var t = getQueryParams(document.location.search)[config.common.templateUrlParamName];
     if (t) {
         var clone = getQueryParams(document.location.search)[config.common.cloneParamName] === 'true';
-        openTemplate(t, clone);
+        var needNewId = getQueryParams(document.location.search)[config.common.needNewIdParamName] === 'true';
+        openTemplate(t, clone, needNewId);
     }
     else {
         // если ссылки на шаблон нет, то открываем по имени промо-проекта, если оно есть
@@ -958,7 +959,7 @@ function generateAutoPreview() {
  * @param {string} templateUrl
  * @param {boolean} clone - клонировать ли открываемый шаблон. Технически это просто смена appId
  */
-function openTemplate(templateUrl, clone) {
+function openTemplate(templateUrl, clone, needNewAppId) {
         openedTemplateCollection = new TemplateCollection({
             // в ручную добавили в коллекцию один шаблон, останется только получить инфо о нем
             templateUrls: [templateUrl]
@@ -977,6 +978,10 @@ function openTemplate(templateUrl, clone) {
                     // appId уже был сгенерирован при старте редактора start()
                     // title не указываем, это новый проект-клон
                     appTemplate.title = null;
+                }
+                if (needNewAppId === true) {
+                    // такой параметр передается когда мы переходим из витрины, нужен новый ид, а не из шаблона
+                    appId = getUniqId().substr(22);
                 }
                 // после загрузки шаблона надо загрузить код самого промо проекта
                 // там далее в колбеке на загрузку iframe есть запуск движка

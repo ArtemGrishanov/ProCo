@@ -53,6 +53,10 @@ var config = {
          */
         cloneParamName: 'clone',
         /**
+         * Имя get параметра для указания, что нужно сгенерировать новый ид для приложения
+         */
+        needNewIdParamName: 'newId',
+        /**
          * Параметр передающий ссылку на опубликованное приложение
          */
         publishedProjParamName: 'pp',
