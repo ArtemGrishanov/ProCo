@@ -23,6 +23,17 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="47" column="32" selection-start="2374" selection-end="2374" vertical-scroll-proportion="0.22674419" vertical-offset="549" max-vertical-offset="3390">
+              <folding>
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#11;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="descriptor.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/products/test/descriptor.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -32,10 +43,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="editor.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="editor.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="3" selection-start="1206" selection-end="1206" vertical-scroll-proportion="0.4206696" vertical-offset="341" max-vertical-offset="16770">
+            <state line="40" column="24" selection-start="1154" selection-end="1154" vertical-scroll-proportion="0.0" vertical-offset="316" max-vertical-offset="16770">
               <folding />
             </state>
           </provider>
@@ -62,7 +73,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/js/view/modals/loginModal.js" />
         <option value="$PROJECT_DIR$/pub/editor.html" />
         <option value="$PROJECT_DIR$/pub/my_templates.html" />
         <option value="$PROJECT_DIR$/pub/js/model/templates/templateCollection.js" />
@@ -78,6 +88,7 @@
         <option value="$PROJECT_DIR$/pub/storefront.html" />
         <option value="$PROJECT_DIR$/pub/js/editor.js" />
         <option value="$PROJECT_DIR$/pub/js/config.js" />
+        <option value="$PROJECT_DIR$/pub/index.html" />
       </list>
     </option>
   </component>
@@ -353,13 +364,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/templates/loadingModal.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="14" selection-start="122" selection-end="211" vertical-scroll-proportion="0.10699002" vertical-offset="0" max-vertical-offset="701">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/products/test/style.css">
       <provider selected="true" editor-type-id="text-editor">
         <state line="110" column="82" selection-start="2120" selection-end="2120" vertical-scroll-proportion="-10.8" vertical-offset="1380" max-vertical-offset="2385">
@@ -475,8 +479,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="3" selection-start="1206" selection-end="1206" vertical-scroll-proportion="0.4206696" vertical-offset="341" max-vertical-offset="16770">
+        <state line="40" column="24" selection-start="1154" selection-end="1154" vertical-scroll-proportion="0.0" vertical-offset="316" max-vertical-offset="16770">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="32" selection-start="2374" selection-end="2374" vertical-scroll-proportion="0.22674419" vertical-offset="549" max-vertical-offset="3390">
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#11;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
