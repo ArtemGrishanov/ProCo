@@ -2,7 +2,7 @@
  * Created by artyom.grishanov on 28.12.15.
  */
 //TODO подумать над форматом, где должны храниться продукты всегда. Какое-то одно хранилище?
-var baseProductUrl = '../products/test/';
+var baseProductUrl = 'products/test/';
 /**
  * Уникальный ид проекта
  * Также это имя файла, которое будет использовано при сохранении
@@ -1114,5 +1114,5 @@ function showPublishDialog(params) {
  */
 function getProjectStandartCssLink() {
     //TODO
-    return '<link href="../products/test/style.css" rel="stylesheet"/>';
+    return '<link href="products/test/style.css" rel="stylesheet"/>';
 }

@@ -9,8 +9,9 @@ var config = {
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
          * При деплое на продакш оставить пустым
          */
-        devPrototypesHostName: 'http://localhost:63342/ProCo',
+//        devPrototypesHostName: 'http://localhost:63342/ProCo',
 //        devPrototypesHostName: 'http://proco.surge.sh/',
+        devPrototypesHostName: 'http://testix.me/',
         /**
          * Проводить ли при старте инициализацию для работы с хранилищем амазона
          */
@@ -23,7 +24,8 @@ var config = {
          * Id приложения в facebook для логина
          */
 //        facebookAppId: '515132035326687', //aws appId
-        facebookAppId: '518819781624579', //localhost site
+//        facebookAppId: '518819781624579', //localhost site
+        facebookAppId: '1734391910154130', //testix.me appId
 
         //==================================================
         //==================================================
@@ -92,7 +94,8 @@ var config = {
         // конфигурация для каждого типа промо-приложений
         test: {
             prototypeId: 'test_v0.1',
-            src: '/products/test/index.html',
+//            src: '/pub/products/test/index.html', //proco+localhost
+            src: 'products/test/index.html', //testix
             backgrounds: [
                 //TODO брать параметры из других параметров config.common.awsHostName
                 'url('+'https://s3.eu-central-1.amazonaws.com/'+'proconstructor/facebook-902609146442342/test1/i/ny-regents-exam-global-history-and-geography-help-course_132147_large.jpg)',
