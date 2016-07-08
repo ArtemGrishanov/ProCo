@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test</title>
+    <meta charset="UTF-8">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div id="id-mutapp_screens">
+        <div id="id-start_scr_cnt"></div>
+        <div id="id-questions_cnt"></div>
+    </div>
+
+    <script id="id-slide_text_template" type="text/template">
+        <div class="wrapper js-back_color" data-app-property="backgroundColor">
+            <div class="back_start js-start_back" data-app-property="backgroundStart"></div>
+            <!--<div class="shadow"></div>-->
+            <div class="slide">
+                <div class="cnt_wr">
+                    <div class="start_txt">
+                        <h2 id="id-start_header_text" data-app-property="startHeaderText" class="js-startHeader start_head">Тест</h2>
+                        <p id="id-start_desc_text" data-app-property="startDescription" class="js-start_description start_desc">Проверь свои знания в географии</p>
+                    </div>
+                    <div class="btn_wr js-btn_wr">
+                        <span class="t_btn js-next js-start_btn" data-app-property="startButtonText">Начать</span>
+                    </div>
+                </div>
+            </div>
+            <div class="logo js-logo js-start_logo" data-app-property="logoStartPosition logoUrl"></div>
+        </div>
+    </script>
+    <script id="id-slide_text_template" type="text/template">
+        <div class="wrapper js-back_color" data-app-property="backgroundColor">
+            <div class="back_start js-questions_back" data-app-property="backgroundQuestions"></div>
+            <!--<div class="shadow"></div>-->
+            <div class="slide js-slide">
+                <div class="cnt_wr">
+                    <div class="q_wr js-question_text" data-app-property="quiz.{{currentQuestion}}.text">
+                        {{question_text}}
+                    </div>
+                    <div data-app-property="quiz.{{currentQuestion}}.options" class="js-answers_wr">
+                        <div class="js-answers_cnt">
+                            <!-- Сюда программно добавляются варианта ответов -->
+                        </div>
+                    </div>
+                    <div class="js-explain explain_blk" style="display:none;">
+                        <div class="js-explanation_text"></div>
+                        <div><span class="t_btn js-next">Далее</span></div>
+                    </div>
+                </div>
+            </div>
+            <div data-app-property="topColontitleText" class="js-topColontitleText topColontitle">Верхний колонтитул</div>
+            <div data-app-property="questionProgressPosition" class="js-question_progress question_progress"></div>
+        </div>
+    </script>
+    <script id="id-slide_photo_template" type="text/template">
+        <div class="wrapper js-back_color" data-app-property="backgroundColor">
+            <div class="back_start js-questions_back" data-app-property="backgroundQuestions"></div>
+            <!--<div class="shadow"></div>-->
+            <div class="slide js-slide">
+                <div class="cnt_wr" style="margin-top: 30px;">
+                    <div class="q_wr __photo js-question_text" data-app-property="quiz.{{currentQuestion}}.text">
+                        {{question_text}}
+                    </div>
+                    <div class="js-photo_cnt"><div class="photo_wr js-photo" data-app-property="quiz.{{currentQuestion}}.img"></div></div>
+                    <div data-app-property="quiz.{{currentQuestion}}.options" class="js-answers_wr">
+                        <div class="js-answers_cnt">
+                            <!-- Сюда программно добавляются варианта ответов -->
+                        </div>
+                    </div>
+                    <div class="js-explain explain_blk" style="display:none;">
+                        <div class="js-explanation_text"></div>
+                        <div><span class="t_btn js-next">Далее</span></div>
+                    </div>
+                </div>
+            </div>
+            <div data-app-property="topColontitleText" class="js-topColontitleText topColontitle">Верхний колонтитул</div>
+            <div data-app-property="questionProgressPosition" class="js-question_progress question_progress"></div>
+        </div>
+    </script>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="underscore.js"></script>
+    <script type="text/javascript" src="backbone.js"></script>
+    <script type="text/javascript" src="mutapp.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script>
+        var app = null;
+        $(document).ready(function() {
+            app = new TestApp();
+            app.start();
+        });
+    </script>
+</body>
+</html>
