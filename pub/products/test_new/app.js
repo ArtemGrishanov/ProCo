@@ -131,136 +131,32 @@ var TestApp = MutApp.extend({
         var s1 = new StartScreen({
             model: this.models.tm
         });
-
-        var q1 = new QuestionScreen({
-            model: this.models.tm
-        });
-
         this.screens.startScreen = s1;
+
+        // для всех вопросов создается по отдельному экрану
+        var quiz = this.models.tm.get('quiz');
+        var qs = null;
+        for (var i = 0; i < quiz.length; i++) {
+            qs = new QuestionScreen({
+                model: this.models.tm,
+                questionId: quiz[i].id
+            });
+            this.screens['questionScreen'+i] = qs;
+        }
+
+        // для всех результатов по отдельному экрану
+        var results = this.models.tm.get('results');
+        var rs = null;
+        for (var i = 0; i < results.length; i++) {
+            rs = new ResultScreen({
+                model: this.models.tm,
+                resultId: results[i].id
+            });
+            this.screens['resultScreen'+i] = qs;
+        }
     },
 
     start: function() {
         this.models.tm.start();
-    }
-});
-
-var StartScreen = MutApp.Screen.extend({
-    /**
-     * @see MutApp
-     */
-    id: 'startScr',
-
-    /**
-     * Тег для группировки экранов в редакторе
-     * @see MutApp
-     */
-    group: 'start',
-
-    /**
-     * Метка которая показывается в редакторе, рядом с превью экрана
-     * @see MutApp
-     */
-    name: 'Стартовый экран',
-
-    /**
-     * @see MutApp
-     */
-    doWhenInDOM: function() {
-        applyStyles();
-    },
-
-    /**
-     * Это appProperty
-     * Сам logo не является отдельным вью, так как не имеет своей логики
-     */
-    logoPosition: {top: 0, left: 0},
-
-    /**
-     * Контейнер в котором будет происходить рендер этого вью
-     */
-    el: $('#id-start_scr_cnt').hide(),
-
-    template: {
-        "default": _.template($('#id-slide_text_template').html())
-    },
-
-    events: {
-    },
-
-    initialize: function () {
-        this.model.bind("change:currentScreen", function () {
-            if (this.id === this.model.get('currentScreen')) {
-                this.render();
-                app.showScreen(this);
-            }
-        }, this);
-    },
-
-    render: function() {
-        this.$el.html(this.template['default']());
-        return this;
-    }
-});
-
-/**
- * Экран вопроса теста
- * @type {*|void|Object|extend|extend|extend}
- */
-var QuestionScreen = MutApp.Screen.extend({
-    /**
-     * @see MutApp
-     */
-    id: 'questionScr',
-
-    /**
-     * Тег для группировки экранов в редакторе
-     * @see MutApp
-     */
-    group: 'questions',
-
-    /**
-     * Метка которая показывается в редакторе, рядом с превью экрана
-     * @see MutApp
-     */
-    name: 'Вопрос',
-
-    /**
-     * @see MutApp
-     */
-    doWhenInDOM: function() {
-        applyStyles();
-    },
-
-    /**
-     * Это appProperty
-     * Сам logo не является отдельным вью, так как не имеет своей логики
-     */
-    logoPosition: {top: 0, left: 0},
-
-    /**
-     * Контейнер в котором будет происходить рендер этого вью
-     */
-    el: $('#id-questions_cnt').hide(),
-
-    template: {
-        "textQtextA": _.template($('#id-slide_text_template').html()),
-        "photoQtextA": _.template($('#id-slide_photo_template').html())
-    },
-
-    events: {
-    },
-
-    initialize: function () {
-        this.model.bind("change:currentScreen", function () {
-            if (this.id === this.model.get('currentScreen')) {
-                this.render();
-                app.showScreen(this);
-            }
-        }, this);
-    },
-
-    render: function() {
-        this.$el.html(this.template['textQtextA']());
-        return this;
     }
 });

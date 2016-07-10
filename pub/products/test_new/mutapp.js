@@ -83,13 +83,17 @@ MutApp.prototype.models = {};
  * @param v
  * @param hideOthers
  */
-MutApp.prototype.showScreen = function(v) {
+MutApp.prototype.showScreen = function(v, hideOthers) {
+    hideOthers = (hideOthers === undefined) ? true: hideOthers;
+    if (hideOthers === true) {
+        this.hideAllScreens();
+    }
     $(v.el).show();
     v.isShowed = true;
     if (typeof v.onShow === 'function') {
         v.onShow();
     }
-    this.updateViewsZOrder();
+    this._updateViewsZOrder();
 };
 /**
  * Скрыть определенный экран приложения
@@ -102,7 +106,7 @@ MutApp.prototype.hideScreen = function(v) {
     if (typeof v.onHide === 'function') {
         v.onHide();
     }
-    this.updateViewsZOrder();
+    this._updateViewsZOrder();
 };
 
 /**
@@ -110,28 +114,28 @@ MutApp.prototype.hideScreen = function(v) {
  * Instance method
  */
 MutApp.prototype.hideAllScreens = function() {
-    _.each(this.Views, _.bind(function(v) {
+    _.each(this.screens, _.bind(function(v) {
         if (v.isShowed !== false) {
-            app.hideView(v);
+            app.hideScreen(v);
         }
     }), this);
 };
 
 /**
- * Получить z индекс вьюхи. Относительно других ВИДИМЫХ вью, которые есть в app.Views
+ * Получить z индекс вьюхи. Относительно других ВИДИМЫХ вью, которые есть в app.screens
  * 0 - самый топ, то есть именно его сейчас видит пользователь. Дальше по убыванию.
  * Например, подписавшись на это событие и проверяя на самый врехний индекс, вью может начать анимацию тогда и только тогда
  * когда пользователь гарантированно его увидит
  *
  */
-MutApp.prototype.updateViewsZOrder = function() {
-    if (!this.viewsArr) {
-        this.regulateViews(this.screenRoot);
+MutApp.prototype._updateViewsZOrder = function() {
+    if (!this._viewsArr) {
+        this._regulateViews(this.screenRoot);
     }
     var zIndex = 0, v;
     // this.Views - находятся в порядке "снизу-вверх" в dom дереве
-    for (var i = this.viewsArr.length-1; i >= 0; i--) {
-        v = this.viewsArr[i];
+    for (var i = this._viewsArr.length-1; i >= 0; i--) {
+        v = this._viewsArr[i];
         if (v.isShowed == true) {
             if (v['__zIndex'] !== zIndex) {
                 v['__zIndex'] = zIndex;
@@ -159,13 +163,13 @@ MutApp.prototype.updateViewsZOrder = function() {
  *
  * @param domElem
  */
-MutApp.prototype.regulateViews = function(domElem) {
-    this.viewsArr = [];
+MutApp.prototype._regulateViews = function(domElem) {
+    this._viewsArr = [];
     for (var i = 0; i < domElem.children.length; i++) {
         _.each(app.Views, function(v) {
-            if (app.isElement(v.el) && domElem.children[i] == v.el) {
+            if (app._isElement(v.el) && domElem.children[i] == v.el) {
                 v['__domIndex'] = i;
-                app.viewsArr.push(v);
+                app._viewsArr.push(v);
             }
         });
     }
@@ -176,7 +180,7 @@ MutApp.prototype.regulateViews = function(domElem) {
  * @param obj
  * @returns {boolean}
  */
-MutApp.prototype.isElement = function(obj) {
+MutApp.prototype._isElement = function(obj) {
     try {
         //Using W3 DOM2 (works for FF, Opera and Chrom)
         return obj instanceof HTMLElement;
