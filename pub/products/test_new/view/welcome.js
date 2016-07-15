@@ -30,12 +30,15 @@ var StartScreen = MutApp.Screen.extend({
      * Это appProperty
      * Сам logo не является отдельным вью, так как не имеет своей логики
      */
-    logoPosition: {top: 0, left: 0},
+    logoPosition: {top: 200, left: 200},
+    logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
+    startButtonText: 'Начать',
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
+     * Создается динамически
      */
-    el: $('#id-start_scr_cnt').hide(),
+    el: null,//$('#id-start_scr_cnt').hide(),
 
     template: {
         "default": _.template($('#id-welcome_template').html())
@@ -49,17 +52,28 @@ var StartScreen = MutApp.Screen.extend({
         this.model.next();
     },
 
-    initialize: function () {
+    initialize: function (param) {
+        this.setElement($('<div></div>')
+            .attr('id',this.id)
+            .css('width','100%')
+            .css('height','100%'));
+        param.screenRoot.append(this.$el);
         this.model.bind("change:state", function () {
             if ('welcome' === this.model.get('state')) {
                 this.render();
-                app.showScreen(this);
+                this.application.showScreen(this);
             }
         }, this);
     },
 
     render: function() {
         this.$el.html(this.template['default']());
+        this.$el.find('.js-logo').
+            css('backgroundImage','url('+this.logoUrl+')');
+        this.$el.find('.js-start_logo').
+            css('top',this.logoPosition.top+'px').
+            css('left',this.logoPosition.left+'px');
+        this.$el.find('.js-start_btn').text(this.application.startButtonText);
         return this;
     }
 });

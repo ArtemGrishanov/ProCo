@@ -30,7 +30,9 @@ var ResultScreen = MutApp.Screen.extend({
      * Это appProperty
      * Сам logo не является отдельным вью, так как не имеет своей логики
      */
-    logoPosition: {top: 0, left: 0},
+    logoPosition: {top: 100, left: 20},
+    logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
+    restartButtonText: 'Заново',
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -49,11 +51,17 @@ var ResultScreen = MutApp.Screen.extend({
         this.model.next();
     },
 
-    initialize: function () {
+    initialize: function (param) {
+        this.id = param.id;
+        this.setElement($('<div></div>')
+            .attr('id',this.id)
+            .css('width','100%')
+            .css('height','100%'));
+        param.screenRoot.append(this.$el);
         this.model.bind("change:state", function () {
             if ('result' === this.model.get('state')) {
                 this.render();
-                app.showScreen(this);
+                this.application.showScreen(this);
             }
         }, this);
     },
@@ -61,6 +69,12 @@ var ResultScreen = MutApp.Screen.extend({
     render: function() {
         //renderResult(currentResult);
         this.$el.html(this.template['default']());
+        $('.js-logo').
+            css('backgroundImage','url('+this.logoUrl+')');
+        $('.js-result_logo').
+            css('top',this.logoPosition.top+'px').
+            css('left',this.logoPosition.left+'px');
+        this.$el.find('.js-restart').text(this.restartButtonText);
         return this;
     }
 });

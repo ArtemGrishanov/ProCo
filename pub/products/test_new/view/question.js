@@ -35,16 +35,13 @@ var QuestionScreen = MutApp.Screen.extend({
      */
     questionId: null,
 
-    /**
-     * Это appProperty
-     * Сам logo не является отдельным вью, так как не имеет своей логики
-     */
-    logoPosition: {top: 0, left: 0},
+    showBullits: true,
+    questionProgressPosition: {top:30, left:30},
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
      */
-    el: $('#id-questions_cnt').hide(),
+    el: null,//$('#id-questions_cnt').hide(),
 
     template: {
         "id-slide_text_template": _.template($('#id-slide_text_template').html()),
@@ -60,11 +57,17 @@ var QuestionScreen = MutApp.Screen.extend({
     },
 
     initialize: function (param) {
+        this.id = param.id;
+        this.setElement($('<div></div>')
+            .attr('id',this.id)
+            .css('width','100%')
+            .css('height','100%'));
+        param.screenRoot.append(this.$el);
         this.questionId = param.questionId;
 //        this.model.bind("change:state", function () {
 //            if ('question' === this.model.get('state')) {
 //                this.render();
-//                app.showScreen(this);
+//                this.application.showScreen(this);
 //            }
 //        }, this);
 
@@ -72,7 +75,7 @@ var QuestionScreen = MutApp.Screen.extend({
             if ('question' === this.model.get('state') &&
                 this.questionId === this.model.get('currentQuestionId')) {
                 this.render();
-                app.showScreen(this);
+                this.application.showScreen(this);
             }
         }, this);
 
@@ -82,6 +85,15 @@ var QuestionScreen = MutApp.Screen.extend({
         var q = this.model.getQuestionById(this.questionId);
         this.$el.html(this.template[q.uiTemplate](q));
         this.renderAnswers();
+        if (this.showBullits === true) {
+            this.$el.find('.bullit').show();
+        }
+        else {
+            this.$el.find('.bullit').hide();
+        }
+        this.$el.find('.js-question_progress').
+            css('top',this.questionProgressPosition.top+'px').
+            css('left',this.questionProgressPosition.left+'px');
         return this;
     },
 

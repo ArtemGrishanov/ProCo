@@ -15,8 +15,8 @@ QUnit.test("MutApp test1", function( assert ) {
     });
     var app = new AppClass();
 
-    assert.ok(app.screens !== undefined, 'screens in app');
-    assert.ok(app.models !== undefined, 'models in app');
+    assert.ok(app._screens !== undefined, 'screens in app');
+    assert.ok(app._models !== undefined, 'models in app');
     assert.ok(app.inited === true, 'app inited');
 });
 
@@ -57,12 +57,17 @@ QUnit.test("MutApp test2", function( assert ) {
 });
 
 QUnit.test("MutApp test3", function( assert ) {
+    var AppClass = MutApp.extend({
+        screenRoot: $('#id-swimming_test'),
+        initialize: function() {
+            this.inited = true;
+        }
+    });
+    var app = new AppClass({width:1000,height:500});
 
-});
-
-// ====================================
-// ========= тесты приложения =========
-// ====================================
-QUnit.test("TestApp test1", function( assert ) {
-
+    assert.ok(app.screenRoot.length > 0, 'screenRoot is set');
+    assert.ok(app.width === 1000, 'width is set');
+    assert.ok(app.height === 500, 'height is set');
+    assert.ok($('#id-swimming_test').width() === 1000, 'width is ok');
+    assert.ok($('#id-swimming_test').height() === 500, 'height is ok');
 });

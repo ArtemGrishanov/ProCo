@@ -46,9 +46,15 @@
 //        Class.extend = arguments.callee;
 //        return Class;
 //    };
+//    };
 //})();
 
 var MutApp = function() {
+    if (arguments[0]) {
+        this.width = arguments[0].width;
+        this.height = arguments[0].height;
+        this.screenRoot.width(this.width).height(this.height);
+    }
     // вызов конструктора initialize, аналогично backbone
     this.initialize.apply(this, arguments);
 };
@@ -61,20 +67,47 @@ MutApp.prototype.screenRoot = null;
  * История показов экранов
  *
  * @type {Array}
+ * @private
  */
-MutApp.prototype.history = [];
+MutApp.prototype._history = [];
 /**
  * Все экраны приложения
  *
- * @type {Object}
+ * @type {Array}
+ * @private
  */
-MutApp.prototype.screens = {};
+MutApp.prototype._screens = [];
 /**
  * Модели приложения, которые связываются с представлениями
  *
  * @type {Object}
+ * @private
  */
-MutApp.prototype.models = {};
+MutApp.prototype._models = [];
+/**
+ * Связать экран с приложением
+ * @param v
+ */
+MutApp.prototype.addScreen = function(v) {
+    if (v instanceof MutApp.Screen === true) {
+        this._screens.push(v);
+        v.application = this;
+        return v;
+    }
+    throw new Error('View must be a MutApp.Screen instance');
+};
+/**
+ * Связать модель с приложением
+ * @param v
+ */
+MutApp.prototype.addModel = function(m) {
+    if (m instanceof Backbone.Model === true) {
+        this._models.push(m);
+        m.application = this;
+        return m;
+    }
+    throw new Error('Model must be a Backbone.Model instance');
+};
 /**
  * Отобразить вью.
  * Важно, вызов этого метода еще не гарантирует, что пользователь увидит вью. Он может быть закрыт другим вью сверху
@@ -114,11 +147,11 @@ MutApp.prototype.hideScreen = function(v) {
  * Instance method
  */
 MutApp.prototype.hideAllScreens = function() {
-    _.each(this.screens, _.bind(function(v) {
-        if (v.isShowed !== false) {
-            app.hideScreen(v);
+    for (var i = 0; i < this._screens.length; i++) {
+        if (this._screens[i].isShowed !== false) {
+            this.hideScreen(this._screens[i]);
         }
-    }), this);
+    }
 };
 
 /**
@@ -143,7 +176,7 @@ MutApp.prototype._updateViewsZOrder = function() {
                 // если у текущего вью меняется zOrder и становится 0, то это считается пока
                 // не обязательно show, а может быть hide предыдущего
                 if (zIndex == 0) {
-                    this.history.push(v);
+                    this._history.push(v);
                 }
 
                 if (v.onZIndexChange) {
@@ -196,9 +229,9 @@ MutApp.prototype._isElement = function(obj) {
 };
 
 //MutApp.prototype.back function() {
-//    if (this.history.length >= 2) {
-//        this.history.pop()
-//        this.showView(this.history[this.history.length-1]);
+//    if (this._history.length >= 2) {
+//        this._history.pop()
+//        this.showView(this._history[this._history.length-1]);
 //    }
 //};
 
@@ -231,6 +264,10 @@ MutApp.extend = Backbone.View.extend.bind(MutApp);
  *      Чтобы не реализовывать логику переключения типов экрнов внутри одного класса, лучше использовать наследование
  *
  * Static method
+ *
+ *
+ * Верстка экрана должна быть адаптивная
+ * Так как размер приложения может быть любым: и на вебе тоже, смотря какое выберет пользователь
  */
 MutApp.Screen = Backbone.View.extend({
 
@@ -249,3 +286,56 @@ MutApp.Screen = Backbone.View.extend({
         // screen hash
     }
 });
+
+var MutAppProperty = function() {
+    // класс обертка?
+
+//    прототипы данных
+//    Изменение стиля одного буллита? Или всех буллитов в приложении? Или: фон для всех экранов приложения, против фона для каждого экрана отдельно?
+//        Если мне нужно создать подвид теста (с др мех ответов), то что?
+//        applyStyles?
+//            Зависимости: при изменении одного свойства приложения, могут измениться другие. Для движка должно быть понятно.
+//        При изменении свойства должно быть понятно автоматически, какие экраны (вью) претерпели рендер
+//    аналог сеттеров-геттеров для нормализации и контроля значения
+
+    // рассылка об изменении свойства своего ?
+    function set() {
+
+    }
+
+    function get() {
+
+    }
+
+    // версионирование. Случаи
+    // сохраненный шаблон - это просто ключ=значение
+    /**
+     *
+     *
+     * Разделение: теперь можно установить фон для всех экранов отдельно. Свойство новое, картинка пользователя пропадет.
+     * Фоновую картинку для каждого результата захотел установить
+     * Добавился новый обязательный экран в начале или конце, который нельзя убрать
+     * Новая верстка, в результате которой текст перестал умещаться с прежнем месте
+     * Делаю фикс и добавляется новый результат. В сохраненные шаблоны пользователю надо дописывать новые результат
+     * Изменяю логику результата, чтобы их стало меньше. Часть ответов пользователей пропадет
+     * Изменяю базовый размер приложения, меньше чем 800x600. Все выравнивание съехало
+     * Ставлю новый текст пояснения на стартовую страницу: все съезжает, либо как выбрать нулевой текст?
+     * Сделаю многострочный текст: съедет выравнивание?
+     * Поменять структуру quiz: нельзя
+     * Поменять дефолтные значения appProperty нельзя в приложении?
+     * Добавится настройка текста пояснения в вопросе: как по умолчанию пустой текст показать? так как просто вдруг начать показывать дефолт нельзя
+     * Хочу добавить настройку вкл/выкл пояснения показ
+     * Добавить настройку внешнего вида пояснений
+     * Хочу добавить кнопку "Назад" -> потребовалось изменить существующие appProperty ?
+     * В конец добавили кнопки шаринга, что-то закрыли, перекрыли?
+     *
+     * ОК: Добавить фото-ширина/фото-высота в фото вопросе. Но нельзя потом менять
+     * ОК: Добавить лого-ширина/лого-высота. На нескольких экранах
+     * ОК: Хочу добавить настройку рандомизации опций ответа
+     * OK: Добавлю новые типы вопросов: надо просто добавить в тест
+     * ОК: Добавляю в кнопку возможность иконки. По дефолту нельзя ее показывать, иначе съедет.
+     * ОК: Добавляется таймер, он абсолют. Время вышло: это другие экраны.
+     * ОК: Добавлю скрытие логотипа: по умолчанию он у всех включен.
+     * ОК: Добавлю скрытие бордера кнопки: по умолчанию его видно.
+     */
+}

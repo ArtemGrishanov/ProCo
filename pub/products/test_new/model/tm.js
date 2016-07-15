@@ -15,6 +15,9 @@ var TestModel = Backbone.Model.extend({
         showBackgroundImage: false,
         logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
         showQuestionProgress: true,
+
+        currentQuestionId: null,
+        currentQuestionIndex: undefined,
         /**
          * Структура вопросов с ответами
          */
@@ -180,7 +183,9 @@ var TestModel = Backbone.Model.extend({
                     // конец теста, финальный скрин
                     this.set({
                         currentResult: this.getResultByPoints(this.attributes.resultPoints),
-                        state: 'result'
+                        state: 'result',
+                        currentQuestionId: null,
+                        currentQuestionIndex: undefined
                     });
                 }
                 break;

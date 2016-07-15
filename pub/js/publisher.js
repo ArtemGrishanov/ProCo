@@ -45,6 +45,12 @@ var Publisher = {};
      * @type {function}
      */
     var callback = null;
+    /**
+     * Каталог в котором находятся ресурсы спецпроекта
+     * например 'products/test/'
+     * @type {null}
+     */
+    var baseProductUrl = null;
 
     /**
      * Инициаоизация модуля.
@@ -71,6 +77,7 @@ var Publisher = {};
      * @params.cssStr {string} - css стили приложения, которые надо добавить в index.html
      * @params.cssStr {string} - css стили приложения, которые надо добавить в index.html
      * @params.promoIframe {iFrame} - iframe приложения прототипа, который меняем
+     * @params.baseProductUrl {string} - базовый каталог спецпроекта для работы с ресурсами, например 'products/test'
      */
     function publish(params) {
         if (App.getUserData() !== null) {
@@ -78,6 +85,7 @@ var Publisher = {};
             appStr = params.appStr;
             cssStr = params.cssStr;
             promoIframe = params.promoIframe;
+            baseProductUrl = params.baseProductUrl;
             errorInPublish = false;
             //TODO собираем ресурсы в несколько проходов
             // например, для того чтобы забрать картинку, сначала надо скачать и распарсить файл css

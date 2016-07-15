@@ -3,33 +3,62 @@
  * Простой объект с конфигурацией
  */
 var config = {
+    /**
+     * Возможность применить сразу набор свойств для быстрого переключения конфигурации
+     * config.common.configurationSetsOnStart показывает какие наборы будут применены при запуске
+     * Это также полезно для автотестов, чтобы тесты могли выставлять себе разную конфигурацию
+     */
+    congigurationSet: {
+        dev: function() {
+            config.common.devPrototypesHostName = 'http://localhost:63342/ProCo/pub/';
+            config.common.facebookAppId = '518819781624579';
+            config.common.awsEnabled = true;
+            config.common.facebookAuthEnabled = true;
+            return this;
+        },
+        test: function() {
+            config.common.devPrototypesHostName = 'http://proco.surge.sh/';
+            config.common.facebookAppId = '515132035326687';
+            config.common.awsEnabled = true;
+            config.common.facebookAuthEnabled = true;
+            return this;
+        },
+        prod: function () {
+            config.common.devPrototypesHostName = 'http://testix.me/';
+            config.common.facebookAppId = '1734391910154130';
+            config.common.awsEnabled = true;
+            config.common.facebookAuthEnabled = true;
+            return this;
+        },
+        offline: function() {
+            config.common.awsEnabled = false;
+            config.common.facebookAuthEnabled = false;
+            return this;
+        }
+    },
     common: {
+        /**
+         * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
+         */
+        configurationSetsOnStart: ['dev'],
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
          * При деплое на продакш оставить пустым
          */
-//        devPrototypesHostName: 'http://localhost:63342/ProCo',
-//        devPrototypesHostName: 'http://proco.surge.sh/',
-        devPrototypesHostName: 'http://testix.me/',
+        devPrototypesHostName: null,
         /**
          * Проводить ли при старте инициализацию для работы с хранилищем амазона
          */
-        awsEnabled: true,
+        awsEnabled: false,
         /**
          * Разрешать вход через FB
          */
-        facebookAuthEnable: true,
+        facebookAuthEnable: false,
         /**
          * Id приложения в facebook для логина
          */
-//        facebookAppId: '515132035326687', //aws appId
-//        facebookAppId: '518819781624579', //localhost site
-        facebookAppId: '1734391910154130', //testix.me appId
-
-        //==================================================
-        //==================================================
-
+        facebookAppId: null,
         /**
          * Хост для сохранения данных
          */
@@ -41,6 +70,10 @@ var config = {
          * Разрешает вывод в консоль console.log
          */
         consoleLogEnable: true,
+        /**
+         * Показывать ли редактор и инициализировать все контролы
+         */
+        editorUiEnable: true,
         /**
          * Имя get параметра для передачи ссылки на шаблон
          * если указан этот параметр то app-параметр игнорируется
@@ -94,8 +127,14 @@ var config = {
         // конфигурация для каждого типа промо-приложений
         test: {
             prototypeId: 'test_v0.1',
-//            src: '/pub/products/test/index.html', //proco+localhost
-            src: 'products/test/index.html', //testix
+            /**
+             * Само приложение для загрузки через iframe
+             */
+            src: 'products/test/index.html',
+            /**
+             * каталог откуда publisher будет брать все ресурсы для публикации проекта
+             */
+            baseProductUrl: 'products/test/',
             backgrounds: [
                 //TODO брать параметры из других параметров config.common.awsHostName
                 'url('+'https://s3.eu-central-1.amazonaws.com/'+'proconstructor/facebook-902609146442342/test1/i/ny-regents-exam-global-history-and-geography-help-course_132147_large.jpg)',
@@ -254,3 +293,11 @@ var config = {
         }
     }
 };
+
+// применение конфигураций по умолчанию
+if (config.common.configurationSetsOnStart && config.common.configurationSetsOnStart.length > 0) {
+    for (var i = 0; i < config.common.configurationSetsOnStart.length; i++) {
+        var setName = config.common.configurationSetsOnStart[i];
+        config.congigurationSet[setName].call(this);
+    }
+}

@@ -7,8 +7,9 @@ body {
     */
 }
 .wrapper {
-    width: 800px;
-    height: 600px;
+    /* приложение должно растягиваться в рамках контейнера приложения */
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     position: relative;
     font-family: Arial, sans-serif;

@@ -1,8 +1,6 @@
 /**
  * Created by artyom.grishanov on 28.12.15.
  */
-//TODO подумать над форматом, где должны храниться продукты всегда. Какое-то одно хранилище?
-var baseProductUrl = 'products/test/';
 /**
  * Уникальный ид проекта
  * Также это имя файла, которое будет использовано при сохранении
@@ -239,11 +237,13 @@ function onProductIframeLoaded() {
         };
     }
     Engine.startEngine(iframeWindow, params);
-    showEditor();
-    createScreenControls();
-    syncUIControlsToAppProperties();
-    workspaceOffset = $('#id-product_screens_cnt').offset();
-    Modal.hideLoading();
+    if (config.common.editorUiEnable === true) {
+        showEditor();
+        createScreenControls();
+        syncUIControlsToAppProperties();
+        workspaceOffset = $('#id-product_screens_cnt').offset();
+        Modal.hideLoading();
+    }
 }
 
 /**
@@ -792,7 +792,8 @@ function onPublishClick() {
                 appId: appId,
                 appStr: Engine.getAppString(),
                 cssStr: Engine.getCustomStylesString(),
-                promoIframe: appIframe //TODO возможно айрейм спрятать в engine тоже
+                promoIframe: appIframe, //TODO возможно айрейм спрятать в engine тоже
+                baseProductUrl: config.products[appName].baseProductUrl
             });
         }
     }
