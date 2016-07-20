@@ -52,7 +52,7 @@ QUnit.test("Engine test 1", function( assert ) {
 
         assert.ok(Engine.getAppScreenIds().length >= 9, 'There are some screens');
         done();
-    }, 1000);
+    }, 1600);
 
 
 })

@@ -1,9 +1,10 @@
 /**
  * Created by artyom.grishanov on 08.07.16.
  */
-var TestModel = Backbone.Model.extend({
+var TestModel = MutApp.Model.extend({
 
     defaults: {
+        id: 'tm',
         state: null,
         currentResult: null,
         resultPoints: 0,
@@ -77,25 +78,6 @@ var TestModel = Backbone.Model.extend({
                     }
                 ],
                 explanation: ''
-            },
-            {
-                uiTemplate: 'id-slide_text_template',
-                text: 'Какого моря не существует?',
-                options: [
-                    {
-                        text: 'Черное море'
-                    },
-                    {
-                        text: 'Синее море',
-                        points: 1
-                    },
-                    {
-                        text: 'Красное море'
-                    },
-                    {
-                        text: 'Желтое море'
-                    }
-                ]
             }
         ],
 
@@ -143,8 +125,11 @@ var TestModel = Backbone.Model.extend({
         }
     },
 
-    initialize: function() {
+    initialize: function(param) {
         console.log('model initialize');
+        //TODO не очень красиво смотрится этот вызов
+        // задача: перед кодом пользователя в initialize сделать привязку application, установить апп проперти
+        this.super.initialize.call(this, param);
         this._makeUidForQuiz();
         this.updateResults();
     },

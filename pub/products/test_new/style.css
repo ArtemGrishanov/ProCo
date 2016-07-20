@@ -116,6 +116,16 @@ body {
 .a_wr:hover .bullit {
     border-width: 4px;
 }
+.img_wr {
+    display: inline-block;
+    margin: 7px;
+    cursor: pointer;
+}
+.img_option {
+    background-size: cover;
+    width: 400px;
+    height: 260px;
+}
 .txt {
     font-size: 16px;
 }

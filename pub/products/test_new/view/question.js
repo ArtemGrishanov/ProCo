@@ -45,7 +45,7 @@ var QuestionScreen = MutApp.Screen.extend({
 
     template: {
         "id-slide_text_template": _.template($('#id-slide_text_template').html()),
-        "id-slide_photo_template": _.template($('#id-slide_photo_template').html())
+        "id-slide_text_photo_template": _.template($('#id-slide_text_photo_template').html())
     },
 
     events: {
@@ -57,6 +57,7 @@ var QuestionScreen = MutApp.Screen.extend({
     },
 
     initialize: function (param) {
+        this.super.initialize.call(this, param);
         this.id = param.id;
         this.setElement($('<div></div>')
             .attr('id',this.id)
@@ -67,7 +68,7 @@ var QuestionScreen = MutApp.Screen.extend({
 //        this.model.bind("change:state", function () {
 //            if ('question' === this.model.get('state')) {
 //                this.render();
-//                this.application.showScreen(this);
+//                this.model.application.showScreen(this);
 //            }
 //        }, this);
 
@@ -75,7 +76,7 @@ var QuestionScreen = MutApp.Screen.extend({
             if ('question' === this.model.get('state') &&
                 this.questionId === this.model.get('currentQuestionId')) {
                 this.render();
-                this.application.showScreen(this);
+                this.model.application.showScreen(this);
             }
         }, this);
 
@@ -101,23 +102,32 @@ var QuestionScreen = MutApp.Screen.extend({
         var q = this.model.getQuestionById(this.questionId);
         for (var i = 0; i < q.options.length; i++) {
             var o = q.options[i];
-            var templStr = $('#id-answer_template').html();
-            //TODO важно, костыль: пока нет возможности сделать это в движке, сформировать атрибуты при parseView
-            // потому что это надо заменять при рендере ответа
-            var re = new RegExp('{{currentOption}}','g');
-            templStr = templStr.replace(re, i);
-
-            templStr = templStr.replace('{{answer_options_text}}', o.text);
-            var $e = $(templStr);
-            $e.attr('data-id', o.id);
-            // для буллита тоже добавим, так как с его помощью будет переключаться верный ответ
-            $e.find('.bullit').attr('data-id', o.id);
-            $e.click((function(e) {
-                var oId = $(e.currentTarget).attr('data-id');
-                var success = this.model.answer(oId);
-                this.showExplanation(success);
-            }).bind(this));
-            this.$el.find('.js-answers_cnt').append($e);
+            if (o.uiTemplate) {
+                var templStr = $('#'+o.uiTemplate).html();
+                //TODO важно, костыль: пока нет возможности сделать это в движке, сформировать атрибуты при parseView
+                // потому что это надо заменять при рендере ответа
+                var re = new RegExp('{{currentOption}}','g');
+                templStr = templStr.replace(re, i);
+                if (o.text) {
+                    templStr = templStr.replace('{{answer_options_text}}', o.text);
+                }
+                if (o.src) {
+                    templStr = templStr.replace('{{src}}', o.src);
+                }
+                var $e = $(templStr);
+                $e.attr('data-id', o.id);
+                // для буллита тоже добавим, так как с его помощью будет переключаться верный ответ
+                $e.find('.bullit').attr('data-id', o.id);
+                $e.click((function(e) {
+                    var oId = $(e.currentTarget).attr('data-id');
+                    var success = this.model.answer(oId);
+                    this.showExplanation(success);
+                }).bind(this));
+                this.$el.find('.js-answers_cnt').append($e);
+            }
+            else {
+                throw new Error('Option does not have uiTemplate attribute');
+            }
         }
     },
 

@@ -52,6 +52,7 @@ var ResultScreen = MutApp.Screen.extend({
     },
 
     initialize: function (param) {
+        this.super.initialize.call(this, param);
         this.id = param.id;
         this.setElement($('<div></div>')
             .attr('id',this.id)
@@ -61,7 +62,7 @@ var ResultScreen = MutApp.Screen.extend({
         this.model.bind("change:state", function () {
             if ('result' === this.model.get('state')) {
                 this.render();
-                this.application.showScreen(this);
+                this.model.application.showScreen(this);
             }
         }, this);
     },

@@ -54,6 +54,27 @@ var MutApp = function() {
         this.width = arguments[0].width;
         this.height = arguments[0].height;
         this.screenRoot.width(this.width).height(this.height);
+
+        // значения которые надо установить по умолчанию при запуске приложения
+        // значения могут относиться к Вью или Моделям
+        if (arguments[0].defaults) {
+            this._defaults = arguments[0].defaults;
+            this._parsedDefaults = [];
+            for (var key in this._defaults) {
+                if (this._defaults.hasOwnProperty(key)) {
+                    // доступен только один формат #entityId propertyName
+                    var reg = new RegExp(/(#[\w]+)[\s]+([\w]+)/ig);
+                    var match = reg.exec(key);
+                    if (match[1] && match[2]) {
+                        this._parsedDefaults.push({
+                            entityId: match[1],
+                            valueKey: match[2],
+                            value: this._defaults[key]
+                        });
+                    }
+                }
+            }
+        }
     }
     // вызов конструктора initialize, аналогично backbone
     this.initialize.apply(this, arguments);
@@ -91,7 +112,6 @@ MutApp.prototype._models = [];
 MutApp.prototype.addScreen = function(v) {
     if (v instanceof MutApp.Screen === true) {
         this._screens.push(v);
-        v.application = this;
         return v;
     }
     throw new Error('View must be a MutApp.Screen instance');
@@ -103,7 +123,6 @@ MutApp.prototype.addScreen = function(v) {
 MutApp.prototype.addModel = function(m) {
     if (m instanceof Backbone.Model === true) {
         this._models.push(m);
-        m.application = this;
         return m;
     }
     throw new Error('Model must be a Backbone.Model instance');
@@ -281,9 +300,65 @@ MutApp.Screen = Backbone.View.extend({
     canDelete: false,
     appPropertyString: null,
     doWhenInDOM: null,
+    /**
+     *
+     */
+    super: {
+        initialize: function(param) {
+            console.log('Screen super initialize');
+            // screen связываетсяс application через его модель
+            if (this.model && this.model.application) {
+                if (this.model.application._parsedDefaults) {
+                    var d, o = null;
+                    for (var i = 0; i < this.model.application._parsedDefaults.length; i++) {
+                        d = this.model.application._parsedDefaults[i];
+                        // пока доступен только поиск по ид
+                        if (d.entityId === '#'+this.id) {
+                            this[d.valueKey] = d.value;
+                        }
+                    }
+                }
+            }
+            console.log('Model super initialize ' + this.application);
+        }
+    },
 
     render: function() {
         // screen hash
+    }
+});
+
+MutApp.Model = Backbone.Model.extend({
+    /**
+     * Уникальный ид модели
+     */
+    id: null,
+    /**
+     * Ссылка на приложение, внутри которго эта модель
+     */
+    application: null,
+    /**
+     *
+     */
+    super: {
+        initialize: function(param) {
+            if (param && param.application) {
+                this.application = param.application;
+                if (this.application._parsedDefaults) {
+                    var d, o = null;
+                    for (var i = 0; i < this.application._parsedDefaults.length; i++) {
+                        d = this.application._parsedDefaults[i];
+                        // пока доступен только поиск по ид
+                        if (d.entityId === '#'+this.id) {
+                            o = {};
+                            o[d.valueKey] = d.value;
+                            this.set(o);
+                        }
+                    }
+                }
+            }
+            console.log('Model super initialize ' + this.application);
+        }
     }
 });
 

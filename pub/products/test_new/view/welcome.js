@@ -32,7 +32,11 @@ var StartScreen = MutApp.Screen.extend({
      */
     logoPosition: {top: 200, left: 200},
     logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
+    showLogo: false,
+    startHeaderText: 'Тест',
+    startDescription: 'Проверь свои знания',
     startButtonText: 'Начать',
+
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -53,6 +57,7 @@ var StartScreen = MutApp.Screen.extend({
     },
 
     initialize: function (param) {
+        this.super.initialize.call(this, param);
         this.setElement($('<div></div>')
             .attr('id',this.id)
             .css('width','100%')
@@ -61,7 +66,7 @@ var StartScreen = MutApp.Screen.extend({
         this.model.bind("change:state", function () {
             if ('welcome' === this.model.get('state')) {
                 this.render();
-                this.application.showScreen(this);
+                this.model.application.showScreen(this);
             }
         }, this);
     },
@@ -73,7 +78,17 @@ var StartScreen = MutApp.Screen.extend({
         this.$el.find('.js-start_logo').
             css('top',this.logoPosition.top+'px').
             css('left',this.logoPosition.left+'px');
-        this.$el.find('.js-start_btn').text(this.application.startButtonText);
+
+        this.$el.find('.js-start_btn').text(this.startButtonText);
+        this.$el.find('.js-startHeader').text(this.startHeader);
+        this.$el.find('.js-start_description').text(this.startDescription);
+
+        if (this.showLogo === true) {
+            this.$el.find('.js-start_logo').show();
+        }
+        else {
+            this.$el.find('.js-start_logo').hide();
+        }
         return this;
     }
 });
