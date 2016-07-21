@@ -25,7 +25,8 @@ QUnit.test("MutApp test: Screen", function( assert ) {
 
         viewInited: false,
 
-        initialize: function() {
+        initialize: function(param) {
+            this.super.initialize.call(this, param);
             this.viewInited = true;
         },
 
@@ -43,15 +44,12 @@ QUnit.test("MutApp test: Screen", function( assert ) {
     assert.ok(s1.viewInited === true, 'Instance attribute');
 
     assert.ok(s1.id !== undefined);
-    assert.ok(s1.el !== undefined);
     assert.ok(s1.group !== undefined);
     assert.ok(s1.name !== undefined);
     assert.ok(s1.draggable !== undefined);
     assert.ok(s1.canAdd !== undefined);
     assert.ok(s1.canClone !== undefined);
     assert.ok(s1.canDelete !== undefined);
-    assert.ok(s1.appPropertyString !== undefined);
-    assert.ok(s1.doWhenInDOM !== undefined);
     assert.ok(s1.id === 'newScr');
 
     assert.ok(typeof s1.render === 'function', 'Screen inherited from Backbone.view');
@@ -100,6 +98,7 @@ QUnit.test("MutApp test: Models", function( assert ) {
                 id = 'questionScreen'+i;
                 qs = new QuestionScreen({
                     id: id,
+                    type: 'question',
                     model: tm,
                     questionId: quiz[i].id,
                     screenRoot: this.screenRoot
@@ -125,18 +124,22 @@ QUnit.test("MutApp test: Models", function( assert ) {
 
     var app = new SwimmingTest({
         defaults: {
-            "#tm data1": "12345",
-            "#tm  data2": "5678",
-            "#welcomeCustomId data1": "welcomeCustomId",
-            "#welcomeCustomId data2": false
+            "id=tm data1": "12345",
+            "id=tm  data2": "5678",
+            "id=welcomeCustomId data1": "welcomeCustomId",
+            "id=welcomeCustomId data2": false,
+            "type=question typeData": 23
         }
     });
 
     assert.ok(app === app._models[0].application, 'application in model');
-    assert.ok(app._parsedDefaults.length === 4, 'parsed values');
+    assert.ok(app._parsedDefaults.length === 5, 'parsed values');
     assert.ok(app._models[0].attributes.data1 === '12345', 'default value has set');
     assert.ok(app._models[0].attributes.data2 === '5678', 'default value has set');
 
     assert.ok(app._screens[0].data1 === 'welcomeCustomId', 'default value has set');
     assert.ok(app._screens[0].data2 === false, 'default value has set');
+
+    assert.ok(app._screens[1].typeData === 23, 'default value has set');
+    assert.ok(app._screens[2].typeData === 23, 'default value has set');
 });

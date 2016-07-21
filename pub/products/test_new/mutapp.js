@@ -63,12 +63,13 @@ var MutApp = function() {
             for (var key in this._defaults) {
                 if (this._defaults.hasOwnProperty(key)) {
                     // доступен только один формат #entityId propertyName
-                    var reg = new RegExp(/(#[\w]+)[\s]+([\w]+)/ig);
+                    var reg = new RegExp(/([\w]+)=([\w]+)[\s]+([\w]+)/ig);
                     var match = reg.exec(key);
-                    if (match[1] && match[2]) {
+                    if (match[1] && match[2] && match[3]) {
                         this._parsedDefaults.push({
-                            entityId: match[1],
-                            valueKey: match[2],
+                            conditionKey: match[1],
+                            conditionValue: match[2],
+                            valueKey: match[3],
                             value: this._defaults[key]
                         });
                     }
@@ -289,23 +290,30 @@ MutApp.extend = Backbone.View.extend.bind(MutApp);
  * Так как размер приложения может быть любым: и на вебе тоже, смотря какое выберет пользователь
  */
 MutApp.Screen = Backbone.View.extend({
-
-    id: null,
-    el: null,
-    group: null,
-    name: null,
-    draggable: true,
-    canAdd: false,
-    canClone: false,
-    canDelete: false,
-    appPropertyString: null,
-    doWhenInDOM: null,
+    /**
+     * Сабвью которые включены в этот экран
+     */
+    children: [],
+    /**
+     * Значения, которые могут быть установлены в initialize автоматически
+     */
+    defaultsToSetInInitialize: [
+        {key: 'id', value: null},
+        {key: 'type', value: null},
+        {key: 'group', value: null},
+        {key: 'name', value: null},
+        {key: 'draggable', value: true},
+        {key: 'canAdd', value: false},
+        {key: 'canClone', value: false},
+        {key: 'canDelete', value: false}
+    ],
     /**
      *
      */
     super: {
         initialize: function(param) {
-            console.log('Screen super initialize');
+            // установить необходимые экрану свойства по умолчанию
+            MutApp.Util.setDefaultProperties(this, param, this.defaultsToSetInInitialize);
             // screen связываетсяс application через его модель
             if (this.model && this.model.application) {
                 if (this.model.application._parsedDefaults) {
@@ -313,13 +321,12 @@ MutApp.Screen = Backbone.View.extend({
                     for (var i = 0; i < this.model.application._parsedDefaults.length; i++) {
                         d = this.model.application._parsedDefaults[i];
                         // пока доступен только поиск по ид
-                        if (d.entityId === '#'+this.id) {
+                        if (d.conditionValue === this[d.conditionKey]) {
                             this[d.valueKey] = d.value;
                         }
                     }
                 }
             }
-            console.log('Model super initialize ' + this.application);
         }
     },
 
@@ -330,37 +337,60 @@ MutApp.Screen = Backbone.View.extend({
 
 MutApp.Model = Backbone.Model.extend({
     /**
-     * Уникальный ид модели
+     * Значения, которые могут быть установлены в initialize автоматически
      */
-    id: null,
-    /**
-     * Ссылка на приложение, внутри которго эта модель
-     */
-    application: null,
+    defaultsToSetInInitialize: [
+        {key: 'id', value: null},
+        {key: 'application', value: null}
+    ],
     /**
      *
      */
     super: {
         initialize: function(param) {
-            if (param && param.application) {
-                this.application = param.application;
-                if (this.application._parsedDefaults) {
-                    var d, o = null;
-                    for (var i = 0; i < this.application._parsedDefaults.length; i++) {
-                        d = this.application._parsedDefaults[i];
-                        // пока доступен только поиск по ид
-                        if (d.entityId === '#'+this.id) {
-                            o = {};
-                            o[d.valueKey] = d.value;
-                            this.set(o);
-                        }
+            // установить необходимые модели свойства по умолчанию
+            MutApp.Util.setDefaultProperties(this, param, this.defaultsToSetInInitialize);
+            if (this.application && this.application._parsedDefaults) {
+                var d, o = null;
+                for (var i = 0; i < this.application._parsedDefaults.length; i++) {
+                    d = this.application._parsedDefaults[i];
+                    // пока доступен только поиск по ид
+                    if (d.conditionValue === this[d.conditionKey]) {
+                        o = {};
+                        o[d.valueKey] = d.value;
+                        this.set(o);
                     }
                 }
             }
-            console.log('Model super initialize ' + this.application);
         }
     }
 });
+
+/**
+ * Класс утилит
+ * @type {{setDefaultProperties: Function}}
+ */
+MutApp.Util = {
+    /**
+     * Установит в указанный объект параметры
+     *
+     * @param {object} object - объект для установки свойств в него
+     * @param {object} param - приоритетные значения параметров
+     * @param {object} defaults - описание имен параметров и значений по умолчанию
+     */
+    setDefaultProperties: function(object, param, defaults) {
+        var key = null;
+        for (var k = 0; k < defaults.length; k++) {
+            key = defaults[k].key;
+            if (param && param.hasOwnProperty(key)) {
+                object[key] = param[key];
+            }
+            else if (object[key] === undefined){
+                object[key] = defaults[k].value;
+            }
+        }
+    }
+};
 
 var MutAppProperty = function() {
     // класс обертка?

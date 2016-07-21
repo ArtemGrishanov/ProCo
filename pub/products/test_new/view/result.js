@@ -7,6 +7,7 @@ var ResultScreen = MutApp.Screen.extend({
      */
     id: 'resultScr',
 
+    type: 'result',
     /**
      * Тег для группировки экранов в редакторе
      * @see MutApp
@@ -30,6 +31,7 @@ var ResultScreen = MutApp.Screen.extend({
      * Это appProperty
      * Сам logo не является отдельным вью, так как не имеет своей логики
      */
+    showLogo: true,
     logoPosition: {top: 100, left: 20},
     logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
     restartButtonText: 'Заново',
@@ -53,7 +55,6 @@ var ResultScreen = MutApp.Screen.extend({
 
     initialize: function (param) {
         this.super.initialize.call(this, param);
-        this.id = param.id;
         this.setElement($('<div></div>')
             .attr('id',this.id)
             .css('width','100%')
@@ -69,13 +70,19 @@ var ResultScreen = MutApp.Screen.extend({
 
     render: function() {
         //renderResult(currentResult);
-        this.$el.html(this.template['default']());
+        this.$el.html(this.template['default'](this.model.get('currentResult')));
         $('.js-logo').
             css('backgroundImage','url('+this.logoUrl+')');
         $('.js-result_logo').
             css('top',this.logoPosition.top+'px').
             css('left',this.logoPosition.left+'px');
         this.$el.find('.js-restart').text(this.restartButtonText);
+        if (this.showLogo === true) {
+            this.$el.find('.js-result_logo').show();
+        }
+        else {
+            this.$el.find('.js-result_logo').hide();
+        }
         return this;
     }
 });

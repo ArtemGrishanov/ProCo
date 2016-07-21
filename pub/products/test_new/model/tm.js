@@ -24,60 +24,107 @@ var TestModel = MutApp.Model.extend({
          */
         quiz: [
             {
-                uiTemplate: 'id-slide_text_template',
-                text: 'Мадагаскар -- это где?',
-                options: [
-                    {
-                        text: 'Страна на западе Африки',
-                        type: 'text',
-                        explanation: ''
-                    },
-                    {
-                        text: 'Остров в Атлантическом океане',
-                        type: 'text',
-                        explanation: ''
-                    },
-                    {
-                        text: 'Остров на юге Африки',
-                        type: 'text',
-                        points: 1,
-                        explanation: 'Да, верно'
-                    }
-                ],
-                explanation: ''
+                // id: '23434536645'; id for question will be generated
+                question: {
+                    // атрибуты внутри используются для рендера uiTemplate
+                    uiTemplate: 'id-question_text_template',
+                    text: 'Сколько будет дважды два?'
+                },
+                explanation: {
+                    // блок, который будет показан после ответа, в отдельном экране поверх вопроса
+                    uiTemplate: 'id-explanation_text_template',
+                    text: 'Конечно же 4!'
+                },
+                answer: {
+                    // тип механики ответа: выбор только одной опции, и сразу происходит обработка ответа
+                    type: 'radiobutton',
+                    options: [
+                        {
+                            // атрибуты внутри используются для рендера uiTemplate
+                            uiTemplate: 'id-option_text_template',
+                            text: '1',
+                            type: 'text'
+                        },
+                        {
+                            uiTemplate: 'id-option_text_template',
+                            text: '4',
+                            type: 'text',
+                            points: 1
+                        },
+                        {
+                            uiTemplate: 'id-option_text_template',
+                            text: '3',
+                            type: 'text'
+                        },
+                        {
+                            uiTemplate: 'id-option_text_template',
+                            text: 'Неизвестно',
+                            type: 'text'
+                        }
+                    ]
+                }
             },
             {
-                uiTemplate: 'id-slide_photo_template',
-                text: 'Текст фото вопроса?',
-                //TODO base64 data
-                img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/picture1.jpg',
-                options: [
-                    {
-                        text: 'Вариант ответа 1',
-                        points: 1
-                    },
-                    {
-                        text: 'Вариант ответа 2'
-                    }
-                ],
-                explanation: ''
+                question: {
+                    uiTemplate: 'id-question_text_template',
+                    text: 'Где муравьед?'
+                },
+                explanation: {
+                    uiTemplate: 'id-explanation_text_template',
+                    text: 'Муравьед слева, а справа это россомаха'
+                },
+                answer: {
+                    type: 'radiobutton',
+                    options: [
+                        {
+                            uiTemplate: 'id-option_img_template',
+                            img: '../products/i/mur1.jpg',
+                        },
+                        {
+                            uiTemplate: 'id-option_img_template',
+                            img: '../products/i/mur2.jpg',
+                            points: 1
+                        }
+                    ]
+                }
             },
             {
-                uiTemplate: 'id-slide_text_template',
-                text: 'Какая самая большая страна?',
-                options: [
-                    {
-                        text: 'Гренландия'
-                    },
-                    {
-                        text: 'Россия',
-                        points: 1
-                    },
-                    {
-                        text: 'Австралия'
-                    }
-                ],
-                explanation: ''
+                question: {
+                    uiTemplate: 'id-question_text_photo_template',
+                    text: 'Самый большой океан в мире?',
+                    img: '../products/i/ocean.jpg'
+                },
+                explanation: {
+                    uiTemplate: 'id-explanation_text_template',
+                    text: 'Тихий океан — самый большой по площади и глубине океан на Земле'
+                },
+                answer: {
+                    type: 'radiobutton',
+                    options: [
+                        {
+                            // атрибуты внутри используются для рендера uiTemplate
+                            uiTemplate: 'id-option_text_template',
+                            text: 'Атлантический',
+                            type: 'text'
+                        },
+                        {
+                            uiTemplate: 'id-option_text_template',
+                            text: 'Индийский',
+                            type: 'text',
+                            points: 1
+                        },
+                        {
+                            uiTemplate: 'id-option_text_template',
+                            text: 'Тихий',
+                            type: 'text'
+                        },
+                        {
+                            uiTemplate: 'id-option_text_template',
+                            text: 'Северный Ледовитый',
+                            type: 'text'
+                        }
+                    ]
+                }
             }
         ],
 
@@ -220,13 +267,17 @@ var TestModel = MutApp.Model.extend({
      * @returns {boolean}
      */
     answer: function(id) {
-        this.set({currentOptionId: id});
-        for (var i = 0; i < this.attributes.quiz[this.attributes.currentQuestionIndex].options.length; i++) {
-            var o = this.attributes.quiz[this.attributes.currentQuestionIndex].options[i];
-            if (o.id === id) {
-                if (o.points !== undefined && o.points > 0) {
-                    this.set({'resultPoints': this.attributes.resultPoints+o.points});
-                    return true;
+        //TODO верный ответ для произвольного ввода значения
+        //TODO верный ответ для мультивыбора
+        if (this.attributes.quiz[this.attributes.currentQuestionIndex].answer.options) {
+            this.set({currentOptionId: id});
+            for (var i = 0; i < this.attributes.quiz[this.attributes.currentQuestionIndex].answer.options.length; i++) {
+                var o = this.attributes.quiz[this.attributes.currentQuestionIndex].answer.options[i];
+                if (o.id === id) {
+                    if (o.points !== undefined && o.points > 0) {
+                        this.set({'resultPoints': this.attributes.resultPoints+o.points});
+                        return true;
+                    }
                 }
             }
         }
@@ -238,10 +289,14 @@ var TestModel = MutApp.Model.extend({
      * @param questionIndex - индекс вопроса
      */
     getCorrectAnswerId: function(questionIndex) {
-        for (var i = 0; i < this.attributes.quiz[questionIndex].options.length; i++) {
-            var o = this.attributes.quiz[questionIndex].options[i];
-            if (o.points > 0) {
-                return o.id;
+        //TODO верный ответ для произвольного ввода значения
+        //TODO верный ответ для мультивыбора
+        if (this.attributes.quiz[questionIndex].answer.options) {
+            for (var i = 0; i < this.attributes.quiz[questionIndex].answer.options.length; i++) {
+                var o = this.attributes.quiz[questionIndex].answer.options[i];
+                if (o.points > 0) {
+                    return o.id;
+                }
             }
         }
         return null;
@@ -253,21 +308,26 @@ var TestModel = MutApp.Model.extend({
      * @param {string} id - ид опции, все опции в тесте имеют уникальные идентификаторы
      */
     setCorrectAnswer: function(id) {
+        //TODO верный ответ для произвольного ввода значения
+        //TODO верный ответ для мультивыбора
         for (var i = 0; i < this.attributes.quiz.length; i++) {
             var q = this.attributes.quiz[i];
             var isActualQuestion = false;
-            for (var j = 0; j < q.options.length; j++) {
-                var o = q.options[j];
-                if (o.id === id) {
-                    // это вопрос с индексом i
-                    isActualQuestion = true;
-                    break;
+            if (q.answer.options) {
+                // если вопрос имеет опции для ответа
+                for (var j = 0; j < q.answer.options.length; j++) {
+                    var o = q.answer.options[j];
+                    if (o.id === id) {
+                        // это вопрос с индексом i
+                        isActualQuestion = true;
+                        break;
+                    }
                 }
             }
             if (isActualQuestion === true) {
                 // теперь для найденного вопроса правим верные ответы
-                for (var j = 0; j < q.options.length; j++) {
-                    var o = q.options[j];
+                for (var j = 0; j < q.answer.options.length; j++) {
+                    var o = q.answer.options[j];
                     if (o.id === id) {
                         o.points = 1;
                     }
@@ -287,35 +347,40 @@ var TestModel = MutApp.Model.extend({
      * @param {number} currentQuestionIndex - индекс вопроса
      */
     getOptionById: function(id, currentQuestionIndex) {
-        for (var i = 0; i < this.attributes.quiz[currentQuestionIndex].options.length; i++) {
-            var o = this.attributes.quiz[currentQuestionIndex].options[i];
-            if (o.id === id) {
-                return o;
+        if (this.attributes.quiz[currentQuestionIndex].answer.options) {
+            // если вопрос имеет опции ответа, некоторые могут не иметь
+            for (var i = 0; i < this.attributes.quiz[currentQuestionIndex].answer.options.length; i++) {
+                var o = this.attributes.quiz[currentQuestionIndex].answer.options[i];
+                if (o.id === id) {
+                    return o;
+                }
             }
         }
         return null;
     },
 
     /**
-     *
+     * Сейчас принцип формирования результатов жестко определен
+     * Например: если 3 вопроса, то 4 результата - так как на все можно неправильно ответить.
      */
     updateResults: function() {
-        for (var i = 0; i < this.attributes.quiz.length; i++) {
+        var resultsCount = this.attributes.quiz.length+1; // +1 надо, так как можно отвтеить неверно на все вопросы
+        for (var i = 0; i < resultsCount; i++) { //+1
             // если такого результата не существует, то создать.
             // это может случиться после добавления нового вопроса в тест
             if (!this.attributes.results[i]) {
                 // этот результат значит "ответил правильно на i вопросов"
                 this.attributes.results[i] = {
                     minPoints: i,
-                    maxPoints: i+1,
-                    title: 'Название результата ' + (i+1),
+                    maxPoints: i,
+                    title: 'Название результата ' + i,
                     description: 'Неплохо для начала.'
                 };
             }
         }
-        if (this.attributes.results.length > this.attributes.quiz.length) {
+        if (this.attributes.results.length > resultsCount) {
             //при удалении соответственно надо уменьшить количество результатов ровно столько сколько ответов
-            this.attributes.results.splice(this.attributes.quiz.length, this.attributes.results.length)
+            this.attributes.results.splice(resultsCount, this.attributes.results.length)
         }
     },
 
@@ -325,10 +390,13 @@ var TestModel = MutApp.Model.extend({
     _makeUidForQuiz: function() {
         for (var j = 0; j < this.attributes.quiz.length; j++) {
             var q = this.attributes.quiz[j];
-            q.id = MD5.calc(q.text + i);
-            for (var i = 0; i < this.attributes.quiz[j].options.length; i++) {
-                var o = q.options[i];
-                o.id = MD5.calc(o.text + j + i).substr(0,6);
+            q.id = MD5.calc(q.question.text + j);
+            if (this.attributes.quiz[j].answer.options) {
+                // опций ответа может и не быть
+                for (var i = 0; i < this.attributes.quiz[j].answer.options.length; i++) {
+                    var o = q.answer.options[i];
+                    o.id = MD5.calc(o.text + o.img + j + i).substr(0,6);
+                }
             }
         }
     }

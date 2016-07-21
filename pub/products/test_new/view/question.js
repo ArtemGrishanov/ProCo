@@ -10,7 +10,7 @@ var QuestionScreen = MutApp.Screen.extend({
      * @see MutApp
      */
     id: 'questionScr',
-
+    type: 'questions',
     /**
      * Тег для группировки экранов в редакторе
      * @see MutApp
@@ -36,16 +36,24 @@ var QuestionScreen = MutApp.Screen.extend({
     questionId: null,
 
     showBullits: true,
+    showTopColontitle: true,
     questionProgressPosition: {top:30, left:30},
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
      */
-    el: null,//$('#id-questions_cnt').hide(),
+    el: null,
 
     template: {
-        "id-slide_text_template": _.template($('#id-slide_text_template').html()),
-        "id-slide_text_photo_template": _.template($('#id-slide_text_photo_template').html())
+        "default": _.template($('#id-slide_template').html()),
+        //TODO это сабвью по сути, возможно выделить в отдельные вью?
+        //TODO возможно эти шаблоны надо создать автоматически на основании quiz и прототипов в модели?
+        "id-question_text_template": _.template($('#id-question_text_template').html()),
+        "id-question_text_photo_template": _.template($('#id-question_text_photo_template').html()),
+        "id-option_text_template": _.template($('#id-option_text_template').html()),
+        "id-option_img_template": _.template($('#id-option_img_template').html()),
+        "id-answer_input_btn_template": _.template($('#id-answer_input_btn_template').html()),
+        "id-explanation_text_template": _.template($('#id-explanation_text_template').html())
     },
 
     events: {
@@ -58,20 +66,12 @@ var QuestionScreen = MutApp.Screen.extend({
 
     initialize: function (param) {
         this.super.initialize.call(this, param);
-        this.id = param.id;
         this.setElement($('<div></div>')
             .attr('id',this.id)
             .css('width','100%')
             .css('height','100%'));
         param.screenRoot.append(this.$el);
         this.questionId = param.questionId;
-//        this.model.bind("change:state", function () {
-//            if ('question' === this.model.get('state')) {
-//                this.render();
-//                this.model.application.showScreen(this);
-//            }
-//        }, this);
-
         this.model.bind("change:currentQuestionId", function () {
             if ('question' === this.model.get('state') &&
                 this.questionId === this.model.get('currentQuestionId')) {
@@ -79,18 +79,27 @@ var QuestionScreen = MutApp.Screen.extend({
                 this.model.application.showScreen(this);
             }
         }, this);
-
     },
 
     render: function() {
         var q = this.model.getQuestionById(this.questionId);
-        this.$el.html(this.template[q.uiTemplate](q));
-        this.renderAnswers();
+        this.$el.html(this.template['default'](q));
+
+        this.renderQuestion(q.question);
+
+        this.renderAnswers(q.answer);
+
         if (this.showBullits === true) {
             this.$el.find('.bullit').show();
         }
         else {
             this.$el.find('.bullit').hide();
+        }
+        if (this.showTopColontitle === true) {
+            this.$el.find('.js-topColontitleText').show();
+        }
+        else {
+            this.$el.find('.js-topColontitleText').hide();
         }
         this.$el.find('.js-question_progress').
             css('top',this.questionProgressPosition.top+'px').
@@ -98,35 +107,45 @@ var QuestionScreen = MutApp.Screen.extend({
         return this;
     },
 
-    renderAnswers: function() {
+    renderQuestion: function(questionData) {
         var q = this.model.getQuestionById(this.questionId);
-        for (var i = 0; i < q.options.length; i++) {
-            var o = q.options[i];
-            if (o.uiTemplate) {
-                var templStr = $('#'+o.uiTemplate).html();
-                //TODO важно, костыль: пока нет возможности сделать это в движке, сформировать атрибуты при parseView
-                // потому что это надо заменять при рендере ответа
-                var re = new RegExp('{{currentOption}}','g');
-                templStr = templStr.replace(re, i);
-                if (o.text) {
-                    templStr = templStr.replace('{{answer_options_text}}', o.text);
+        this.$el.find('.js-question_cnt').html(this.template[questionData.uiTemplate](questionData));
+    },
+
+    renderAnswers: function(answerData) {
+        switch(answerData.type) {
+            case 'radiobutton': {
+                for (var i = 0; i < answerData.options.length; i++) {
+                    var o = answerData.options[i];
+                    if (o.uiTemplate) {
+                        o.currentOption = i;
+                        var $e = $(this.template[o.uiTemplate](o));
+                        $e.click((function(e) {
+                            var oId = $(e.currentTarget).attr('data-id');
+                            var success = this.model.answer(oId);
+                            //TODO showExplanation через модель
+                            this.renderExplanation(
+                                success,
+                                this.model.get('quiz')[this.model.get('currentQuestionIndex')].explanation
+                            );
+                        }).bind(this));
+                        this.$el.find('.js-answers_cnt').append($e);
+                    }
+                    else {
+                        throw new Error('Option does not have uiTemplate attribute');
+                    }
                 }
-                if (o.src) {
-                    templStr = templStr.replace('{{src}}', o.src);
-                }
-                var $e = $(templStr);
-                $e.attr('data-id', o.id);
-                // для буллита тоже добавим, так как с его помощью будет переключаться верный ответ
-                $e.find('.bullit').attr('data-id', o.id);
-                $e.click((function(e) {
-                    var oId = $(e.currentTarget).attr('data-id');
-                    var success = this.model.answer(oId);
-                    this.showExplanation(success);
-                }).bind(this));
-                this.$el.find('.js-answers_cnt').append($e);
+                break;
             }
-            else {
-                throw new Error('Option does not have uiTemplate attribute');
+            case 'input': {
+                //TODO
+//                var $e = $(this.template[answerData.uiTemplate](answerData));
+//                $e.find('js-make_answer').click((function(e) {
+//                    //TODO showExplanation через модель если это будет сабвью
+//                    this.renderExplanation();
+//                }).bind(this));
+//                this.$el.find('.js-answers_cnt').append($e);
+//                break;
             }
         }
     },
@@ -136,29 +155,19 @@ var QuestionScreen = MutApp.Screen.extend({
      * Также появляется кнопка Далее, чтобы перейти к следующему вопросу
      *
      * @param success - верно ли ответил пользователь
+     * @param {object} explanationData
      */
-    showExplanation: function(success) {
-        var $ex = this.$el.find('.js-explain');
-        // add __err modifier if wrong
-        if ($ex) {
-            if (success !== true) {
-                $ex.addClass('__err');
-            }
-            $ex.show();
-            var $explText = this.$el.find('.js-explanation_text');
-            var cqi = this.model.get('currentQuestionIndex');
-            var option = this.model.getOptionById(
-                this.model.get('currentOptionId'),
-                cqi
-            );
-            if (option.explanation) {
-                // показать объяснение если есть в варианте ответа
-                $explText.text(option.explanation);
-            }
-            else if (this.model.attributes.quiz[cqi].explanation) {
-                // показать объяснение если есть в вопросе
-                $explText.text(this.model.attributes.quiz[cqi].explanation);
-            }
+    renderExplanation: function(success, explanationData) {
+        //TODO можно это вынести в отдельный сабвью, если хоти его тдельно редактировать и показывать.
+        var $e = $(this.template[explanationData.uiTemplate](explanationData));
+        this.$el.find('.js-explain').append($e).show();
+        // обработчик уже установлен через backbone events
+//        $e.find('.js-next').click((function(){
+//            // переход к соедующему вопросы после просмотра объяснения
+//            this.model.next();
+//        }).bind(this));
+        if (success !== true) {
+            $e.find('.explain_blk').addClass('__err');
         }
     }
 });
