@@ -141,7 +141,6 @@ var Queue = {};
      * @param {Number} t.priority - приоритет задачи (выше -- важнее). Опционально.
      */
     global.push = function(t) {
-        log('New task came');
         if (!t.hasOwnProperty('priority')) {
             t.priority = 1;
         }

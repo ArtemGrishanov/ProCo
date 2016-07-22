@@ -173,7 +173,6 @@ var TestModel = MutApp.Model.extend({
     },
 
     initialize: function(param) {
-        console.log('model initialize');
         //TODO не очень красиво смотрится этот вызов
         // задача: перед кодом пользователя в initialize сделать привязку application, установить апп проперти
         this.super.initialize.call(this, param);
@@ -223,11 +222,19 @@ var TestModel = MutApp.Model.extend({
                 break;
             }
             case 'result': {
-                this.set({state: 'welcome'});
+                this.set({
+                    state: 'welcome',
+                    resultPoints: 0,
+                    currentResult: null
+                });
                 break;
             }
             default: {
-                this.set({state: 'welcome'});
+                this.set({
+                    state: 'welcome',
+                    resultPoints: 0,
+                    currentResult: null
+                });
             }
         }
         return this.attributes.state;
@@ -287,6 +294,7 @@ var TestModel = MutApp.Model.extend({
     /**
      * Вернуть ид верного ответа
      * @param questionIndex - индекс вопроса
+     * @return {string} ид верного ответа
      */
     getCorrectAnswerId: function(questionIndex) {
         //TODO верный ответ для произвольного ввода значения

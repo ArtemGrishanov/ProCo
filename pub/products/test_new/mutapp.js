@@ -219,12 +219,13 @@ MutApp.prototype._updateViewsZOrder = function() {
 MutApp.prototype._regulateViews = function(domElem) {
     this._viewsArr = [];
     for (var i = 0; i < domElem.children.length; i++) {
-        _.each(app.Views, function(v) {
-            if (app._isElement(v.el) && domElem.children[i] == v.el) {
+        for (var k = 0; k < this._screens.length; k++) {
+            var v = this._screens[k];
+            if (this._isElement(v.el) && domElem.children[i] == v.el) {
                 v['__domIndex'] = i;
-                app._viewsArr.push(v);
+                this._viewsArr.push(v);
             }
-        });
+        }
     }
 };
 
