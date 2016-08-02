@@ -39,6 +39,82 @@
             }
             return val;
         });
+
+        var formatsB2C = [
+            {name: 'Social Media Content', usagePercent: 90, interactive: 0.2},
+            {name: 'Illustrations/Photos', usagePercent: 87},
+            {name: 'eNewsletters', usagePercent: 83},
+            {name: 'Videos', usagePercent: 82},
+            {name: 'Articles', usagePercent: 81, interactive: 0.1},
+            {name: 'Blogs', usagePercent: 77},
+            {name: 'In-person Events', usagePercent: 73},
+            {name: 'Infographics', usagePercent: 62, interactive: 0.2},
+            {name: 'Microsites/Separate website hubs', usagePercent: 52, interactive: 1},
+            {name: 'Online presentations', usagePercent: 48, interactive: 0.5},
+            {name: 'Branded content tools', usagePercent: 46},
+            {name: 'Mobile Apps', usagePercent: 43, interactive: 1},
+            {name: 'Print Magazines', usagePercent: 41},
+            {name: 'Webinars/Webcasts', usagePercent: 40},
+            {name: 'Case Studies', usagePercent: 38},
+            {name: 'Research Reports', usagePercent: 36},
+            {name: 'Print newsletters', usagePercent: 35},
+            {name: 'White papers', usagePercent: 32},
+            {name: 'Digital magazines', usagePercent: 31},
+            {name: 'Books', usagePercent: 31},
+            {name: 'eBooks', usagePercent: 30},
+            {name: 'Virtual conferences', usagePercent: 26},
+            {name: 'Games gamification', usagePercent: 22},
+            {name: 'Podcasts', usagePercent: 21}
+        ];
+
+        var formatsB2B = [
+            {name: 'Social Media Content', usagePercent: 93, interactive: 0.2},
+            {name: 'Case studies', usagePercent: 82},
+            {name: 'blogs', usagePercent: 81},
+            {name: 'eNewsletters', usagePercent: 81},
+            {name: 'in-person events', usagePercent: 81},
+            {name: 'Articles on your website', usagePercent: 79, interactive: 0.1},
+            {name: 'Videos', usagePercent: 79},
+            {name: 'Illustrations/photos', usagePercent: 76},
+            {name: 'Whitepapers', usagePercent: 71},
+            {name: 'Infographics', usagePercent: 67, interactive: 0.2},
+            {name: 'Webinars podcasts', usagePercent: 66},
+            {name: 'Online presentation', usagePercent: 65, interactive: 0.5},
+            {name: 'Research reports', usagePercent: 49},
+            {name: 'Microsites/separate website hubs', usagePercent: 47, interactive: 1},
+            {name: 'Branded content tools', usagePercent: 42},
+            {name: 'eBooks', usagePercent: 39},
+            {name: 'Print magazines', usagePercent: 36},
+            {name: 'Books', usagePercent: 30},
+            {name: 'Digital magazines', usagePercent: 26},
+            {name: 'Mobile apps', usagePercent: 28, interactive: 1},
+            {name: 'Virtual conferences', usagePercent: 25},
+            {name: 'Podcasts', usagePercent: 23},
+            {name: 'Print newsletters', usagePercent: 22},
+            {name: 'Games/gamification', usagePercent: 12, interactive: 1}
+        ];
+
+        function calcInterativePercent(data) {
+            var sum = 0, sumInt = 0;
+            var result = 0;
+
+            for (var i = 0; i < data.length; i++) {
+                sum += data[i].usagePercent;
+                if (data[i].interactive > 0) {
+                    sumInt += data[i].usagePercent*data[i].interactive;
+                    sum+= data[i].usagePercent*(1-data[i].interactive);
+                }
+                else {
+                    sum += data[i].usagePercent;
+                }
+            }
+
+            console.log('Interactive: '+(sumInt/(sumInt+sum)));
+            console.log('Static: '+(sum/(sumInt+sum)));
+        }
+
+        calcInterativePercent(formatsB2C);
+        calcInterativePercent(formatsB2B);
     </script>
 </body>
 </html>

@@ -38,6 +38,7 @@ var TestModel = MutApp.Model.extend({
                 answer: {
                     // тип механики ответа: выбор только одной опции, и сразу происходит обработка ответа
                     type: 'radiobutton',
+                    uiTemplate: 'id-answer_question_lst',
                     options: [
                         {
                             // атрибуты внутри используются для рендера uiTemplate
@@ -75,6 +76,7 @@ var TestModel = MutApp.Model.extend({
                 },
                 answer: {
                     type: 'radiobutton',
+                    uiTemplate: 'id-answer_question_grid_2',
                     options: [
                         {
                             uiTemplate: 'id-option_img_template',
@@ -100,6 +102,7 @@ var TestModel = MutApp.Model.extend({
                 },
                 answer: {
                     type: 'radiobutton',
+                    uiTemplate: 'id-answer_question_lst_2',
                     options: [
                         {
                             // атрибуты внутри используются для рендера uiTemplate

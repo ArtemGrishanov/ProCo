@@ -1,5 +1,8 @@
 /**
  * Created by artyom.grishanov on 20.07.16.
+ *
+ * Проверки определяют работоспособность теста, как отдельного приложения
+ * Независимо ни от чего (редактора, движка)
  */
 
 QUnit.test("Specproject Test: static", function( assert ) {
@@ -93,6 +96,7 @@ function checkQuizFormat(assert, model) {
         assert.ok(!!r.question === true, 'question');
         assert.ok(!!r.question.uiTemplate === true, 'question.uiTemplate');
         assert.ok(!!r.answer === true, 'answer');
+        assert.ok(!!r.answer.uiTemplate === true, 'answer.uiTemplate');
         assert.ok(!!r.answer.type === true, 'answer.type');
         if (r.answer.type === 'radiobutton') {
             assert.ok($.isArray(r.answer.options) === true, 'answer.options is array');

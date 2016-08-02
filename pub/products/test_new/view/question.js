@@ -50,9 +50,16 @@ var QuestionScreen = MutApp.Screen.extend({
         //TODO возможно эти шаблоны надо создать автоматически на основании quiz и прототипов в модели?
         "id-question_text_template": _.template($('#id-question_text_template').html()),
         "id-question_text_photo_template": _.template($('#id-question_text_photo_template').html()),
+
+        "id-answer_question_lst": _.template($('#id-answer_question_lst').html()),
+        "id-answer_question_lst_2": _.template($('#id-answer_question_lst_2').html()),
+        "id-answer_question_grid_2": _.template($('#id-answer_question_grid_2').html()),
+        "id-answer_question_grid_3": _.template($('#id-answer_question_grid_3').html()),
+
         "id-option_text_template": _.template($('#id-option_text_template').html()),
         "id-option_img_template": _.template($('#id-option_img_template').html()),
-        "id-answer_input_btn_template": _.template($('#id-answer_input_btn_template').html()),
+//        "id-answer_input_btn_template": _.template($('#id-answer_input_btn_template').html()),
+
         "id-explanation_text_template": _.template($('#id-explanation_text_template').html())
     },
 
@@ -115,6 +122,10 @@ var QuestionScreen = MutApp.Screen.extend({
     renderAnswers: function(answerData) {
         switch(answerData.type) {
             case 'radiobutton': {
+                //сначала нужно отрендерить контейнер опций ответа
+                //в нем могут быть заложены разные опции расположения элементов, поэтому реализоан в виде отдельного шаблона
+                var $ea = $(this.template[answerData.uiTemplate](answerData));
+                this.$el.find('.js-answer_cnt').append($ea);
                 for (var i = 0; i < answerData.options.length; i++) {
                     var o = answerData.options[i];
                     if (o.uiTemplate) {
@@ -129,7 +140,7 @@ var QuestionScreen = MutApp.Screen.extend({
                                 this.model.get('quiz')[this.model.get('currentQuestionIndex')].explanation
                             );
                         }).bind(this));
-                        this.$el.find('.js-answers_cnt').append($e);
+                        $ea.append($e); // ea is js-options_cnt
                     }
                     else {
                         throw new Error('Option does not have uiTemplate attribute');
