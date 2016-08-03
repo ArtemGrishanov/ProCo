@@ -3,7 +3,9 @@
 <head>
     <title>Test</title>
     <meta charset="UTF-8">
+    <!--build:css index.min.css-->
     <link href="style.css" rel="stylesheet">
+    <!--endbuild-->
 </head>
 <body>
     <div id="id-mutapp_screens">
@@ -103,6 +105,7 @@
             <div class="logo js-logo js-result_logo" data-app-property="logoResultPosition logoUrl"></div>
         <div>
     </script>
+    <!-- build:js index.min.js -->
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="underscore.js"></script>
     <script type="text/javascript" src="backbone.js"></script>
@@ -113,6 +116,7 @@
     <script type="text/javascript" src="view/result.js"></script>
     <script type="text/javascript" src="view/question.js"></script>
     <script type="text/javascript" src="app.js"></script>
+    <!-- endbuild -->
     <script>
         var app = null;
         $(document).ready(function() {

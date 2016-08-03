@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8"/>
     <title>QUnit Autotests</title>
+    <!--build:css css/index.min.css-->
     <link rel="stylesheet" href="css/qunit-1.20.0.css">
+    <!--endbuild-->
 </head>
 <body>
     <div id="qunit"></div>
@@ -24,6 +26,7 @@
     <script id="id-result_template" type="text/template"></script>
 
     <!--<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>-->
+    <!-- build:js index.min.js -->
     <script type="text/javascript" src="lib/jquery.js"></script>
     <script type="text/javascript" src="lib/underscore.js"></script>
     <script type="text/javascript" src="lib/backbone.js"></script>
@@ -51,5 +54,6 @@
     <script type="text/javascript" src="testMutAppEngine.js"></script>
     <script type="text/javascript" src="testMutAppClientFramework.js"></script>
     <script type="text/javascript" src="testTest.js"></script>
+    <!-- endbuild -->
 </body>
 </html>

@@ -1,0 +1,35 @@
+{
+  "name": "ProCo",
+  "version": "0.0.1",
+  "description": "Interactive content constructor",
+  "main": "index.js",
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "grunt-surge": "^0.7.0",
+    "rasterizehtml": "^1.2.2"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.14.0",
+    "del": "^2.2.1",
+    "gulp": "^3.9.1",
+    "gulp-cache": "^0.4.5",
+    "gulp-if": "^2.0.1",
+    "gulp-imagemin": "^3.0.2",
+    "gulp-uglify": "^2.0.0",
+    "gulp-useref": "^3.1.0",
+    "run-sequence": "^1.2.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArtemGrishanov/ProCo.git"
+  },
+  "author": "Artem Grishanov",
+  "license": "Commerce",
+  "bugs": {
+    "url": "https://github.com/ArtemGrishanov/ProCo/issues"
+  },
+  "homepage": "https://github.com/ArtemGrishanov/ProCo"
+}

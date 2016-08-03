@@ -4,11 +4,13 @@
     <title>Проекты</title>
     <meta charset="UTF-8"/>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <!--build:css css/published_project.min.css-->
     <link href="lib/bootsrap/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="lib/bootsrap/css/checkbox-radio-switch.css" rel="stylesheet"/>
     <link href="lib/bootsrap/css/colorpicker.css" rel="stylesheet"/>
     <link href="css/common.css" rel="stylesheet"/>
     <link href="css/storefront.css" rel="stylesheet"/>
+    <!--endbuild-->
 </head>
 <body>
     <div class="scr_wr">
@@ -50,11 +52,13 @@
         <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
     </div>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
+    <!-- build:js published_project.min.js -->
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/model/app.js"></script>
     <script type="text/javascript" src="js/util/utils.js"></script>
     <script type="text/javascript" src="js/view/published_project.js"></script>
+    <!-- endbuild -->
     <script>
         $(document).ready(function() {
             App.start();

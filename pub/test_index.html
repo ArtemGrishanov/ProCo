@@ -4,14 +4,17 @@
     <title></title>
     <meta charset="utf-8">
     <link href='https://fonts.googleapis.com/css?family=Roboto&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <!--build:css css/test_index.min.css-->
     <link href="css/common.css" rel="stylesheet" type='text/css'>
     <link href="css/editor.css" rel="stylesheet" type='text/css'>
     <link href="controls/css/style.css" rel="stylesheet" type='text/css'>
+    <!--endbuild-->
 </head>
 <body style="background-color: #888">
     <div id="id-modal_cnt" class="scr">
         <!-- parent for modals -->
     </div>
+    <!-- build:js test_index.min.js -->
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/model/app.js"></script>
@@ -23,9 +26,10 @@
     <script type="text/javascript" src="js/view/modals/LoadingModal.js"></script>
     <script type="text/javascript" src="js/view/modals/MessageModal.js"></script>
     <script type="text/javascript" src="js/view/modals/Modal.js"></script>
+    <!-- endbuild -->
     <script>
         var o = {
-            data1: 12,
+            data1: 123,
             data2: 'ssserrt',
             data3: function() {
                 var i = 1 + 3;
