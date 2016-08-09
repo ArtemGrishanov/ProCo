@@ -63,7 +63,7 @@ gulp.task('useref:test_new', function(){
         .pipe(useref())
         .pipe(gulpIf('*.js', uglify()))
         .pipe(gulpIf('*.css', cssnano()))
-        .pipe(gulp.dest('build/products/test_new/index.html'))
+        .pipe(gulp.dest('build/products/test_new'))
 });
 gulp.task('images:test_new', function(){
     return gulp.src('pub/products/test_new/i/**/*.+(png|jpg|jpeg|gif|svg)')
@@ -73,6 +73,23 @@ gulp.task('images:test_new', function(){
         .pipe(gulp.dest('build/products/test_new/i'))
 });
 // </test_new>
+
+// <test>
+gulp.task('useref:test', function(){
+    return gulp.src('pub/products/test/index.html')
+        .pipe(useref())
+        .pipe(gulpIf('*.js', uglify()))
+        .pipe(gulpIf('*.css', cssnano()))
+        .pipe(gulp.dest('build/products/test'))
+});
+gulp.task('images:test', function(){
+    return gulp.src('pub/products/test/i/**/*.+(png|jpg|jpeg|gif|svg)')
+        .pipe(cache(imagemin({
+            interlaced: true
+        })))
+        .pipe(gulp.dest('build/products/test/i'))
+});
+// </test>
 
 
 // <root>
@@ -119,7 +136,7 @@ gulp.task('clean:build', function() {
 
 gulp.task('build', function (callback) {
     runSequence('measure:start','clean:build',
-        ['useref:root','useref:autotest', 'useref:test_new', 'images:root', 'fonts', 'templates', 'controls', 'lib'],
+        ['useref:root','useref:autotest', 'useref:test_new', 'useref:test', 'images:root', 'fonts', 'templates', 'controls', 'lib'],
         'measure:end','hello',
         callback
     )

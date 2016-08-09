@@ -5,7 +5,7 @@
  * Независимо ни от чего (редактора, движка)
  */
 
-QUnit.test("Specproject Test: static", function( assert ) {
+QUnit.test("Specproject Test_New: static", function( assert ) {
     var testApp = createTest();
     var model = testApp._models[0];
     assert.ok(!!testApp === true, 'app exists');
@@ -17,7 +17,7 @@ QUnit.test("Specproject Test: static", function( assert ) {
     checkSetGetRightAnswers(assert, model);
 });
 
-QUnit.test("Specproject Test: in action", function( assert ) {
+QUnit.test("Specproject Test_New: in action", function( assert ) {
     var testApp = createTest();
     var model = testApp._models[0];
 

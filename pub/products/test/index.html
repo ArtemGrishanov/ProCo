@@ -5,7 +5,7 @@
 <head>
     <title class="Test"></title>
     <meta charset="UTF-8">
-    <!--build:css products/test/index.min.css-->
+    <!--build:css style.css-->
     <link href="style.css" rel="stylesheet">
     <!--endbuild-->
 </head>
@@ -35,8 +35,11 @@
         <!-- Сюда добавляется один из результатов. Который собирается из шаблона. -->
     </div>
 
+    <!-- build:js index.min.js -->
     <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="descriptor.js"></script>
+    <!-- endbuild -->
     <script id="id-slide_text_template" type="text/template">
         <div class="wrapper js-back_color" data-app-property="backgroundColor">
             <div class="back_start js-questions_back" data-app-property="backgroundQuestions"></div>
@@ -894,6 +897,5 @@
             start();
         });
     </script>
-    <script type="text/javascript" src="descriptor.js"></script>
 </body>
 </html>
