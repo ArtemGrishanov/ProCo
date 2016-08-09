@@ -35,6 +35,3 @@ function ChooseImageQuick(propertyString, directiveName, $parent, productDOMElem
     Engine.on('AppPropertyValueChanged', this.propertyString, this.onPropertyChanged.bind(this));
 }
 ChooseImageQuick.prototype = AbstractControl;
-
-function ChooseImageQuickController(scope, attrs) {
-}

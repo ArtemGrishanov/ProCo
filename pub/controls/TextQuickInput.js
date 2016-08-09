@@ -27,13 +27,3 @@ function TextQuickInput(propertyString, directiveName, $parent, productDOMElemen
     Engine.on('AppPropertyValueChanged', this.propertyString, this.onPropertyChanged.bind(this));
 }
 TextQuickInput.prototype = AbstractControl;
-/**
- * Angular контроллер, для управления view
- * имя состоит из двух частей: 'Имя контрола'+'Controller'
- * Эта функция - общий контроллер для всех TextQuickInput
- *
- * @param $scope область видимости из angular
- * @param $attrs дополнительные атрибуты, например dom элемент внутри
- */
-function TextQuickInputController(scope, attrs) {
-}

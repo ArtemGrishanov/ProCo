@@ -13,9 +13,21 @@ var cache = require('gulp-cache');
 var cssnano = require('gulp-cssnano');
 var del = require('del');
 var runSequence = require('run-sequence');
+var changed = require('gulp-changed');
+var buildTimeStart = 0;
 
 gulp.task('hello', function() {
     console.log('Hello Zell');
+});
+
+gulp.task('measure:start', function() {
+    buildTimeStart = new Date().getTime();
+    console.log('Starting build...'+buildTimeStart);
+});
+
+gulp.task('measure:end', function() {
+    var t = Math.round((new Date().getTime()-buildTimeStart)/1000);
+    console.log('Built in ' + t + ' sec');
 });
 
 gulp.task('watch', ['browserSync'], function(){
@@ -33,16 +45,47 @@ gulp.task('browserSync', function() {
     });
 });
 
-gulp.task('useref', function(){
-    return gulp.src('pub/**/*.html')
+// <autotest>
+gulp.task('useref:autotest', function(){
+    return gulp.src('pub/autotest/index.html')
         .pipe(useref())
-        // Minifies only if it's a JavaScript file
+        //не надо минимизировать автотесты
+        //.pipe(gulpIf('*.js', uglify()))
+        .pipe(gulpIf('*.css', cssnano()))
+        .pipe(gulp.dest('build/autotest'));
+});
+// </autotest>
+
+
+// <test_new>
+gulp.task('useref:test_new', function(){
+    return gulp.src('pub/products/test_new/index.html')
+        .pipe(useref())
+        .pipe(gulpIf('*.js', uglify()))
+        .pipe(gulpIf('*.css', cssnano()))
+        .pipe(gulp.dest('build/products/test_new/index.html'))
+});
+gulp.task('images:test_new', function(){
+    return gulp.src('pub/products/test_new/i/**/*.+(png|jpg|jpeg|gif|svg)')
+        .pipe(cache(imagemin({
+            interlaced: true
+        })))
+        .pipe(gulp.dest('build/products/test_new/i'))
+});
+// </test_new>
+
+
+// <root>
+gulp.task('useref:root', function(){
+    return gulp.src('pub/*.html')
+        // пытался оптимизировать
+        // .pipe(changed('build'))
+        .pipe(useref())
         .pipe(gulpIf('*.js', uglify()))
         .pipe(gulpIf('*.css', cssnano()))
         .pipe(gulp.dest('build'))
 });
-
-gulp.task('images', function(){
+gulp.task('images:root', function(){
     return gulp.src('pub/i/**/*.+(png|jpg|jpeg|gif|svg)')
         // Caching images that ran through imagemin
         .pipe(cache(imagemin({
@@ -50,19 +93,34 @@ gulp.task('images', function(){
         })))
         .pipe(gulp.dest('build/i'))
 });
-
+gulp.task('controls', function() {
+    return gulp.src('pub/controls/**/*')
+        .pipe(gulp.dest('build/controls'))
+});
+gulp.task('templates', function() {
+    return gulp.src('pub/templates/**/*')
+        .pipe(gulp.dest('build/templates'))
+});
 gulp.task('fonts', function() {
     return gulp.src('pub/fonts/**/*')
         .pipe(gulp.dest('build/fonts'))
 });
+gulp.task('lib', function() {
+    return gulp.src('pub/lib/**/*.js')
+        .pipe(gulp.dest('build/lib'))
+});
+// </root>
+
 
 gulp.task('clean:build', function() {
     return del.sync('build');
 });
 
+
 gulp.task('build', function (callback) {
-    runSequence('clean:build',
-        ['useref', 'images', 'fonts'],
+    runSequence('measure:start','clean:build',
+        ['useref:root','useref:autotest', 'useref:test_new', 'images:root', 'fonts', 'templates', 'controls', 'lib'],
+        'measure:end','hello',
         callback
     )
 });

@@ -108,19 +108,3 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
     //}
 }
 Slide.prototype = AbstractControl;
-/**
- * Angular контроллер, для управления view
- * имя состоит из двух частей: 'Имя контрола'+'Controller'
- *
- * @param $scope область видимости из angular
- * @param $attrs дополнительные атрибуты, например dom элемент внутри
- */
-function SlideController(scope, attrs) {
-//    // может быть указано несколько экрано для одного контрола Slide
-//    var appProperties = attrs.$$element.parent().attr('data-app-property');
-//    var scrIds = appProperties.split(',');
-//    scope.slideClicked = function() {
-//        // просим редактор показать скрин по его ид
-//        showScreen(scrIds);
-//    }
-}

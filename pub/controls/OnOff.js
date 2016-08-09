@@ -6,23 +6,14 @@
  */
 function OnOff(propertyString, directiveName, $parent, productDOMElement, params) {
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
-}
-OnOff.prototype = AbstractControl;
-/**
- * Angular контроллер, для управления view
- * имя состоит из двух частей: 'Имя контрола'+'Controller'
- *
- * @param $scope область видимости из angular
- * @param $attrs дополнительные атрибуты, например dom элемент внутри
- */
-function OnOffController(scope, attrs) {
-    scope.switcherId = Math.random().toString();
-    var $e = attrs.$$element;
-    //TODO здесь не учитывается что propertyStringsArray может быть массивом
-    var propertyString = $e.parent().attr('data-app-property');
-    var appProperty = Engine.getAppProperty(propertyString);
-    if (appProperty) {
-        var $checkbox = $e.find('[type="checkbox"]');
+
+    this.loadDirective(function(response, status, xhr){
+        // каждый переключатель требует свой уникальный ид, так работает этот bootstrap компонент
+        var switcherId = Math.random().toString();
+        var appProperty = Engine.getAppProperty(propertyString);
+        this.$directive.find('input').attr('id',switcherId);
+        this.$directive.find('label').attr('for',switcherId);
+        var $checkbox = this.$directive.find('[type="checkbox"]');
         $checkbox.prop('checked', appProperty.propertyValue);
         $checkbox.on('change',function (e) {
             console.log('changed');
@@ -30,5 +21,6 @@ function OnOffController(scope, attrs) {
             var ap = Engine.getAppProperty(propertyString);
             Engine.setValue(ap, v);
         });
-    }
+    });
 }
+OnOff.prototype = AbstractControl;

@@ -108,37 +108,6 @@ var appSize = {width: 800, height: 600};
  * @type {number}
  */
 var operationsCount = 0;
-/**
- * Единый для всех контролов angular модуль
- * @type {*}
- */
-var myApp = angular.module(config.common.angularAppName, []);
-function initControls() {
-    'use strict';
-    // создадим директивы для всех контролов
-    for (var controlName in config.controls) {
-        if (config.controls.hasOwnProperty(controlName)) {
-            for (var i = 0; i < config.controls[controlName].directives.length; i++) {
-                var directiveName = config.controls[controlName].directives[i];
-                (function (dn) {
-                    myApp.directive(dn, function($compile) {
-                        return {
-                            restrict: 'A',
-                            templateUrl: 'controls/view/'+dn+'.html',
-                            scope: {
-                                myScope: '=info'
-                            }
-                        };
-                    });
-                })(directiveName);
-            }
-            // регистрируем angular-контроллер с именем контрола
-            myApp.controller(controlName, ['$scope', '$attrs', window[controlName+'Controller']]);
-        }
-    }
-}
-//TODO remove
-initControls();
 
 /**
  * Функция запуска редактора
@@ -434,11 +403,11 @@ function bindControlsForAppPropertiesOnScreen($view, scrId) {
     //TODO пока как-то выглядит запутанным управление контролами
 
     // скомпилировать новые angular derictives (которые соответствуют контролам)
-    var $injector = angular.injector(['ng', 'procoApp']);
-    $injector.invoke(function ($rootScope, $compile) {
-        $compile($('#id-control_cnt')[0])($rootScope);
-        $rootScope.$digest();
-    });
+//    var $injector = angular.injector(['ng', 'procoApp']);
+//    $injector.invoke(function ($rootScope, $compile) {
+//        $compile($('#id-control_cnt')[0])($rootScope);
+//        $rootScope.$digest();
+//    });
 
     // обновление высоты боковой панели в зависимости от высоты контролов в в ней
     // ставится максимум из высоты экранов и контролов: не получилось это сделать стилями
@@ -575,15 +544,15 @@ function syncUIControlsToAppProperties() {
     }, 6000);
 
     // скомпилировать новые angular derictives (которые соответствуют контролам)
-    var $injector = angular.injector(['ng', 'procoApp']);
-    $injector.invoke(function ($rootScope, $compile) {
-        $compile($('#id-slides_cnt')[0])($rootScope);
-        $rootScope.$digest();
-    });
-    $injector.invoke(function ($rootScope, $compile) {
-        $compile($('#id-static_controls_cnt')[0])($rootScope);
-        $rootScope.$digest();
-    });
+//    var $injector = angular.injector(['ng', 'procoApp']);
+//    $injector.invoke(function ($rootScope, $compile) {
+//        $compile($('#id-slides_cnt')[0])($rootScope);
+//        $rootScope.$digest();
+//    });
+//    $injector.invoke(function ($rootScope, $compile) {
+//        $compile($('#id-static_controls_cnt')[0])($rootScope);
+//        $rootScope.$digest();
+//    });
 
     if (activeScreens.length > 0) {
         // восстановить показ экранов, которые видели ранее

@@ -66,13 +66,3 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
     Engine.on('AppPropertyValueChanged', this.propertyString, this.onPropertyChanged.bind(this));
 }
 Drag.prototype = AbstractControl;
-/**
- * Angular контроллер, для управления view
- * имя состоит из двух частей: 'Имя контрола'+'Controller'
- *
- * @param $scope область видимости из angular
- * @param $attrs дополнительные атрибуты, например dom элемент внутри
- */
-function DragController(scope, attrs) {
-
-}

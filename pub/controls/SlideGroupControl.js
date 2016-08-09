@@ -702,13 +702,3 @@ SlideGroupControl.prototype.setValue = function() {
         });
     },100);
 }
-/**
- * Angular контроллер, для управления view
- * имя состоит из двух частей: 'Имя контрола'+'Controller'
- *
- * @param $scope область видимости из angular
- * @param $attrs дополнительные атрибуты, например dom элемент внутри
- */
-function SlideGroupControlController(scope, attrs) {
-
-}

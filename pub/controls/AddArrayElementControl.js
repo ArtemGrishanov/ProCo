@@ -34,13 +34,3 @@ function AddArrayElementControl(propertyString, directiveName, $parent, productD
     }
 }
 AddArrayElementControl.prototype = AbstractControl;
-/**
- * Angular контроллер, для управления view
- * имя состоит из двух частей: 'Имя контрола'+'Controller'
- *
- * @param $scope область видимости из angular
- * @param $attrs дополнительные атрибуты, например dom элемент внутри
- */
-function AddArrayElementControlController(scope, attrs) {
-
-}

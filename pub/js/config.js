@@ -100,10 +100,6 @@ var config = {
          */
         tagsForOverridingParams: ['/*<overrideapp>*/','/*</overrideapp>*/'],
         /**
-         *
-         */
-        angularAppName: 'procoApp',
-        /**
          * Имя файла превью для проекта при условии что его ставит сам пользователь, а не автоматическая генерация
          */
         userCustomPreviewFileNamePrefix: 'userCustomPreview_',

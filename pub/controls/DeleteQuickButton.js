@@ -43,13 +43,3 @@ function DeleteQuickButton(propertyString, directiveName, $parent, productDOMEle
     }
 }
 DeleteQuickButton.prototype = AbstractControl;
-/**
- * Angular контроллер, для управления view
- * имя состоит из двух частей: 'Имя контрола'+'Controller'
- *
- * @param $scope область видимости из angular
- * @param $attrs дополнительные атрибуты, например dom элемент внутри
- */
-function DeleteQuickButtonController(scope, attrs) {
-
-}

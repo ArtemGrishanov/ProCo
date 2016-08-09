@@ -3,11 +3,9 @@
  *
  * Абстрактный контрол для управления свойствами AppProperty
  *
- * View контрола сделано в виде angular-директивы.
- *
  * Главные вещи в контроле:
  * 1) appProperty которое он редактирует.
- * 2) Контроллер для angular дериктивы, для рендера контрола.
+ * 2) view $directive
  * 3) Возможно, работает с dom элементом из промо-приложения.
  */
 var AbstractControl = {
@@ -15,7 +13,7 @@ var AbstractControl = {
      *
      * @constructor
      * @param {(Array.<string>)|(string)} propertyString одно или несколько свойств, с которыми будет работать контрол
-     * @param {string} directiveName - имя вью, имя директивы angular которая его загружает
+     * @param {string} directiveName - имя вью, имя директивы, которая его загружает
      * @param {HTMLElement} parent
      * @param {HTMLElement} productDOMElement элемент на экране промо-продукта к которому привязывается контрол
      * @param {object} params
