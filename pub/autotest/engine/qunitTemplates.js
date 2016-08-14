@@ -21,6 +21,10 @@ QUnit.test("Templates test 1", function( assert ) {
 
         tc.loadTemplatesInfo(function(template) {
             // получена информация по одному шаблоны
+            if (templateIsValid(assert, template) !== true) {
+                assert.ok(false, 'Template is not valid');
+            }
+
             loadedCount++;
 
             if (loadedCount === templateUrls.length) {
@@ -33,3 +37,20 @@ QUnit.test("Templates test 1", function( assert ) {
         assert.ok(false,'No templates');
     }
 });
+
+QUnit.test("Templates test 2", function( assert ) {
+    openTemplate(templateUrls[0], true, true);
+
+    var done = assert.async();
+
+    // waiting while iframe loaded
+    setTimeout(function() {
+        assert.ok(Engine.getAppProperties().length > 120, 'More then 120 appProperties for test');
+        assert.ok(Engine.getAppProperties().length === Engine.getAppPropertiesObjectPathes().length, 'App Properties and object pathes');
+
+        assert.ok(Engine.getAppScreenIds().length >= 9, 'There are some screens');
+        done();
+    }, 1600);
+});
+
+

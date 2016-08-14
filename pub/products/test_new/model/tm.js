@@ -80,11 +80,11 @@ var TestModel = MutApp.Model.extend({
                     options: [
                         {
                             uiTemplate: 'id-option_img_template',
-                            img: '../products/i/mur1.jpg',
+                            img: 'i/mur1.jpg',
                         },
                         {
                             uiTemplate: 'id-option_img_template',
-                            img: '../products/i/mur2.jpg',
+                            img: 'i/mur2.jpg',
                             points: 1
                         }
                     ]
@@ -94,7 +94,7 @@ var TestModel = MutApp.Model.extend({
                 question: {
                     uiTemplate: 'id-question_text_photo_template',
                     text: 'Самый большой океан в мире?',
-                    img: '../products/i/ocean.jpg'
+                    img: 'i/ocean.jpg'
                 },
                 explanation: {
                     uiTemplate: 'id-explanation_text_template',

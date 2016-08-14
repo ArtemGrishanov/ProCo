@@ -349,7 +349,7 @@
                     //TODO просто стартуем, окно логина не переведено на модал и автоматически скрывается
                     if (result === 'connected') {
                         Modal.hideLogin();
-                        start();
+                        Editor.start();
                     }
                     else {
                         // canClose:false - леер нельзя закрыть
@@ -360,7 +360,7 @@
             }
             else {
                 App.start();
-                start();
+                Editor.start();
             }
         })
     </script><!-- Yandex.Metrika counter -->

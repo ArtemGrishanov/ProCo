@@ -40,19 +40,7 @@ config.congigurationSet.dev().offline();
 config.common.editorUiEnable = false;
 
 QUnit.test("Engine test 1", function( assert ) {
-    // from editor
-    loadAppSrc('test');
-    assert.ok(!!Engine, 'Engine is not null');
-    var done = assert.async();
 
-    // waiting while iframe loaded
-    setTimeout(function() {
-        assert.ok(Engine.getAppProperties().length > 120, 'More then 120 appProperties for test');
-        assert.ok(Engine.getAppProperties().length === Engine.getAppPropertiesObjectPathes().length, 'App Properties and object pathes');
-
-        assert.ok(Engine.getAppScreenIds().length >= 9, 'There are some screens');
-        done();
-    }, 1600);
 
 
 })

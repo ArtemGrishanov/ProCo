@@ -1,25 +1,19 @@
 /**
- * Created by artyom.grishanov on 20.07.16.
- *
- * Проверки определяют работоспособность теста, как отдельного приложения
- * Независимо ни от чего (редактора, движка)
+ * Created by artyom.grishanov on 11.08.16.
  */
-
-QUnit.test("Specproject Test_New: static", function( assert ) {
-    var testApp = createTest();
-    var model = testApp._models[0];
-    assert.ok(!!testApp === true, 'app exists');
+function checkTestInStatic(assert, app) {
+    var model = app._models[0];
+    assert.ok(!!app === true, 'app exists');
     assert.ok(!!model === true, 'model exists');
     checkQuizFormat(assert, model);
     checkUnicQuestionsId(assert, model);
     checkUnicOptionsId(assert, model);
     checkResults(assert, model);
     checkSetGetRightAnswers(assert, model);
-});
+}
 
-QUnit.test("Specproject Test_New: in action", function( assert ) {
-    var testApp = createTest();
-    var model = testApp._models[0];
+function checkTestInAction(assert, app) {
+    var model = app._models[0];
 
     // пройти тест успешно
     for (var i = 0; i < 5; i++) {
@@ -32,12 +26,14 @@ QUnit.test("Specproject Test_New: in action", function( assert ) {
         doToStart(assert, model);
         doOnePass(assert, model);
     }
-});
+}
 
-function createTest(defaults) {
+function createTest(width, height, defaults) {
+    width = width || 1000;
+    height = height || 500;
     var testApp = new TestApp({
-        width: 1000,
-        height: 500,
+        width: width,
+        height: height,
         defaults: defaults
     });
     return testApp;

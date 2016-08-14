@@ -10,7 +10,7 @@ var config = {
      */
     congigurationSet: {
         dev: function() {
-            config.common.devPrototypesHostName = 'http://localhost:63342/ProCo/pub/';
+            config.common.home = 'http://localhost:63342/ProCo/pub/';
             config.common.facebookAppId = '518819781624579';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
@@ -22,7 +22,7 @@ var config = {
             return this;
         },
         test: function() {
-            config.common.devPrototypesHostName = 'http://proco.surge.sh/';
+            config.common.home = 'http://proco.surge.sh/';
             config.common.facebookAppId = '515132035326687';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
@@ -34,7 +34,7 @@ var config = {
             return this;
         },
         prod: function () {
-            config.common.devPrototypesHostName = 'http://testix.me/';
+            config.common.home = 'http://testix.me/';
             config.common.facebookAppId = '1734391910154130';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
@@ -145,15 +145,15 @@ var config = {
     products: {
         // конфигурация для каждого типа промо-приложений
         test: {
-            prototypeId: 'test_v0.1',
+            prototypeId: 'test_v1.0',
             /**
              * Само приложение для загрузки через iframe
              */
-            src: 'products/test/index.html',
+            src: 'products/test_new/index.html',
             /**
              * каталог откуда publisher будет брать все ресурсы для публикации проекта
              */
-            baseProductUrl: 'products/test/',
+            baseProductUrl: 'products/test_new/',
             backgrounds: [
                 //TODO брать параметры из других параметров config.common.awsHostName
                 'url('+'https://s3.eu-central-1.amazonaws.com/'+'proconstructor/facebook-902609146442342/test1/i/ny-regents-exam-global-history-and-geography-help-course_132147_large.jpg)',

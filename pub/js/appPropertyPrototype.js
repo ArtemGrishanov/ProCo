@@ -18,7 +18,7 @@ var AppPropertyPrototype = function(key, app, descriptor) {
         }
     }
     this.key = key;
-    this.img = config.common.devPrototypesHostName+this.img;
+    this.img = config.common.home+this.img;
     // клонируем прототип. Нельзя отдавать наружу реальный объект из productWindow
     this.value = JSON.parse(JSON.stringify(app[this.key]));
 };

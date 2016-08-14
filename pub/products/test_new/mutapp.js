@@ -65,7 +65,7 @@ var MutApp = function() {
                     // доступен только один формат #entityId propertyName
                     var reg = new RegExp(/([\w]+)=([\w]+)[\s]+([\w]+)/ig);
                     var match = reg.exec(key);
-                    if (match[1] && match[2] && match[3]) {
+                    if (match && match[1] && match[2] && match[3]) {
                         this._parsedDefaults.push({
                             conditionKey: match[1],
                             conditionValue: match[2],

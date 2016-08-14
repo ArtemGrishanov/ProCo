@@ -58,7 +58,7 @@ AbstractModal.prototype._loadTemplate = function(callback) {
     if (this.templateUrl) {
         // временная переменная чтобы только загрузить с помощью нее
         var $d = $('<div></div>');
-        $d.load(this.templateUrl, (function() {
+        $d.load(config.common.home+this.templateUrl, (function() {
             this.$ui = $($d.html());
             this.render();
             callback();

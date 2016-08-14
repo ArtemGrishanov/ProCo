@@ -13,28 +13,39 @@
 
     <div id="id-product_iframe_cnt" style="display:none;"></div>
     <div id="id-product_cnt" style="display:none"></div>
+    <div id="id-modal_cnt" style="display:none"></div>
     <div id="id-swimming_test">
     </div>
-    <script id="id-welcome_template" type="text/template"></script>
-    <script id="id-slide_template" type="text/template"></script>
-    <script id="id-question_text_template" type="text/template"></script>
-    <script id="id-question_text_photo_template" type="text/template"></script>
-    <script id="id-option_text_template" type="text/template"></script>
-    <script id="id-option_img_template" type="text/template"></script>
-    <script id="id-answer_question_lst" type="text/template"></script>
-    <script id="id-answer_question_lst_2" type="text/template"></script>
-    <script id="id-answer_question_grid_2" type="text/template"></script>
-    <script id="id-answer_question_grid_3" type="text/template"></script>
-    <script id="id-explanation_text_template" type="text/template"></script>
-    <script id="id-result_template" type="text/template"></script>
+
+    <!-- Проект должен загружаться и тестироваться через iframe в своем контекста -->
+    <!--<script id="id-welcome_template" type="text/template"></script>-->
+    <!--<script id="id-slide_template" type="text/template"></script>-->
+    <!--<script id="id-question_text_template" type="text/template"></script>-->
+    <!--<script id="id-question_text_photo_template" type="text/template"></script>-->
+    <!--<script id="id-option_text_template" type="text/template"></script>-->
+    <!--<script id="id-option_img_template" type="text/template"></script>-->
+    <!--<script id="id-answer_question_lst" type="text/template"></script>-->
+    <!--<script id="id-answer_question_lst_2" type="text/template"></script>-->
+    <!--<script id="id-answer_question_grid_2" type="text/template"></script>-->
+    <!--<script id="id-answer_question_grid_3" type="text/template"></script>-->
+    <!--<script id="id-explanation_text_template" type="text/template"></script>-->
+    <!--<script id="id-result_template" type="text/template"></script>-->
 
     <!--<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>-->
     <script type="text/javascript" src="../lib/jquery.js"></script>
     <script type="text/javascript" src="../lib/underscore.js"></script>
     <script type="text/javascript" src="../lib/backbone.js"></script>
     <script type="text/javascript" src="../lib/qunit-1.20.0.js"></script>
+    <script type="text/javascript" src="../lib/html2canvas.js"></script>
+    <script type="text/javascript" src="../lib/rasterizeHTML.allinone.js"></script>
+    <script type="text/javascript" src="../lib/jpeg_encoder.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/ace.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/ace-elements.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/bootstrap-colorpicker.min.js"></script>
 
     <!-- build:js autotest.js -->
+    <script type="text/javascript" src="../js/model/app.js"></script>
     <script type="text/javascript" src="../js/config.js"></script>
     <script type="text/javascript" src="../js/util/utils.js"></script>
     <script type="text/javascript" src="../js/util/queue.js"></script>
@@ -44,19 +55,54 @@
     <script type="text/javascript" src="../js/model/templates/templateCollection.js"></script>
     <script type="text/javascript" src="../js/editor.js"></script>
     <script type="text/javascript" src="../js/engine.js"></script>
+    <script type="text/javascript" src="../js/selectDialog.js"></script>
+    <script type="text/javascript" src="../js/selectUserTemplateDialog.js"></script>
+    <script type="text/javascript" src="../js/publishDialog.js"></script>
+    <script type="text/javascript" src="../js/resourceManager.js"></script>
+    <script type="text/javascript" src="../js/publisher.js"></script>
+    <script type="text/javascript" src="../controls/AbstractControl.js"></script>
+    <script type="text/javascript" src="../controls/TextQuickInput.js"></script>
+    <script type="text/javascript" src="../controls/Slide.js"></script>
+    <script type="text/javascript" src="../controls/AddArrayElementControl.js"></script>
+    <script type="text/javascript" src="../controls/DeleteQuickButton.js"></script>
+    <script type="text/javascript" src="../controls/OnOff.js"></script>
+    <script type="text/javascript" src="../controls/StringControl.js"></script>
+    <script type="text/javascript" src="../controls/Drag.js"></script>
+    <script type="text/javascript" src="../controls/Alternative.js"></script>
+    <script type="text/javascript" src="../controls/SlideGroupControl.js"></script>
+    <script type="text/javascript" src="../controls/ChooseImageQuick.js"></script>
+    <script type="text/javascript" src="../triggers/ClickTrigger.js"></script>
+    <script type="text/javascript" src="../triggers/SetClassTrigger.js"></script>
+    <script type="text/javascript" src="../js/view/modals/abstractModal.js"></script>
+    <script type="text/javascript" src="../js/view/modals/loadingModal.js"></script>
+    <script type="text/javascript" src="../js/view/modals/loginModal.js"></script>
+    <script type="text/javascript" src="../js/view/modals/messageModal.js"></script>
+    <script type="text/javascript" src="../js/view/modals/modal.js"></script>
 
-    <script type="text/javascript" src="../products/test_new/mutapp.js"></script>
-    <script type="text/javascript" src="../products/test_new/model/tm.js"></script>
-    <script type="text/javascript" src="../products/test_new/view/question.js"></script>
-    <script type="text/javascript" src="../products/test_new/view/result.js"></script>
-    <script type="text/javascript" src="../products/test_new/view/welcome.js"></script>
-    <script type="text/javascript" src="../products/test_new/app.js"></script>
+    <!-- Загрузка через iframe -->
+    <!--<script type="text/javascript" src="../products/test_new/mutapp.js"></script>-->
+    <!--<script type="text/javascript" src="../products/test_new/model/tm.js"></script>-->
+    <!--<script type="text/javascript" src="../products/test_new/view/question.js"></script>-->
+    <!--<script type="text/javascript" src="../products/test_new/view/result.js"></script>-->
+    <!--<script type="text/javascript" src="../products/test_new/view/welcome.js"></script>-->
+    <!--<script type="text/javascript" src="../products/test_new/app.js"></script>-->
 
-    <script type="text/javascript" src="testQueue.js"></script>
-    <script type="text/javascript" src="testMutAppEngine.js"></script>
-    <script type="text/javascript" src="testMutAppClientFramework.js"></script>
-    <script type="text/javascript" src="testTest.js"></script>
-    <script type="text/javascript" src="testTemplates.js"></script>
+    <!--<script type="text/javascript" src="testQueue.js"></script>-->
+    <!--<script type="text/javascript" src="testMutAppEngine.js"></script>-->
+    <!--<script type="text/javascript" src="testMutAppClientFramework.js"></script>-->
+    <!--<script type="text/javascript" src="testTest.js"></script>-->
+    <!--<script type="text/javascript" src="testTemplates.js"></script>-->
+
+    <script type="text/javascript" src="apps/helpers/test/testHelpers.js"></script>
+    <script type="text/javascript" src="apps/TApp.js"></script>
+
+    <script type="text/javascript" src="engine/helpers/templateHelpers.js"></script>
+    <script type="text/javascript" src="engine/TEngine.js"></script>
+
+    <script type="text/javascript" src="editor/TEditor.js"></script>
+
+    <script type="text/javascript" src="scenarios/TScenarios.js"></script>
+    <script type="text/javascript" src="scenarios/qunitHappyPath.js"></script>
     <!-- endbuild -->
 </body>
 </html>

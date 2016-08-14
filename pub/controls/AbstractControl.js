@@ -62,7 +62,7 @@ var AbstractControl = {
             var control = this;
             var t = {
                 run: function () {
-                    var $d = $('<div></div>').load('controls/view/'+control.directiveName+'.html', (function(response, status, xhr) {
+                    var $d = $('<div></div>').load(config.common.home+'controls/view/'+control.directiveName+'.html', (function(response, status, xhr) {
                         if (control.$parent) {
                             control.$directive = $($d.html());
                             control.$directive.attr('data-app-property',control.propertyString);

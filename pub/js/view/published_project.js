@@ -15,7 +15,7 @@ var publishedProject = {};
      * Анализ параметров
      */
     function init() {
-        var host = config.common.devPrototypesHostName || (config.common.awsHostName+config.common.awsBucketName);
+        var host = config.common.home;// || (config.common.awsHostName+config.common.awsBucketName);
         // ссылка на опубликованный проект передается через гет параметр
         var pUrl = getQueryParams(document.location.search)[config.common.publishedProjParamName];
         if (pUrl) {

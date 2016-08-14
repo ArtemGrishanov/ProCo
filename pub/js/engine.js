@@ -1008,12 +1008,8 @@ var Engine = {};
         if (productWindow.app === undefined) {
             console.error('app object must be specified');
         }
-        if (productWindow.tests === undefined) {
-            console.error('tests array must be specified');
-        }
-
-        if (productWindow.start === undefined) {
-            console.error('start function must be specified');
+        if (productWindow.descriptor === undefined) {
+            console.error('descriptor object must be specified');
         }
 
         // установить сохраненный значения из шаблона, например, они могут быть взяты из шаблона
@@ -1023,7 +1019,13 @@ var Engine = {};
         }
 
         // вызываем start передавая в промо-приложение параметры
-        productWindow.start.call(productWindow, buildProductAppParams.call(this));
+//        productWindow.start.call(productWindow, buildProductAppParams.call(this));
+        //TODO
+        productWindow.app = new productWindow.TestApp({
+//            width: 123,
+//            height: 123,
+            defaults: buildProductAppParams.call(this)
+        });
 
         appProperties = [];
         appPropertiesObjectPathes = [];
@@ -1043,6 +1045,14 @@ var Engine = {};
         createAppPresets(productWindow.descriptor);
         // создать триггеры. Создаются только один раз
         createTriggers(productWindow.descriptor);
+    }
+
+    /**
+     * Вернуть приложение MutApp
+     * @returns {MutApp}
+     */
+    function getApp() {
+        return productWindow.app;
     }
 
     /**
@@ -1193,6 +1203,7 @@ var Engine = {};
 
     global.startEngine = startEngine;
     global.test = test;
+    global.getApp = getApp;
 
     // методы для работы со свойствами appProperties
     global.setValue = setValue;

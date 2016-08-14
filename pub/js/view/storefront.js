@@ -114,7 +114,7 @@ var storefrontView = {};
             //TODO size
             $(appIframe).addClass('st_app_iframe').css('width',800).css('height',600);
 //            $(appIframe).addClass('proto_cnt');
-            var host = config.common.devPrototypesHostName || (config.common.awsHostName+config.common.awsBucketName);
+            var host = config.common.home;// || (config.common.awsHostName+config.common.awsBucketName);
             appIframe.src = host+src;
             $('#id-app_iframe_cnt').empty().append(appIframe);
             //TODO надо точно знать размеры продукта в этот момент
