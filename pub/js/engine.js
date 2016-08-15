@@ -297,7 +297,7 @@ var Engine = {};
     /**
      * Разобрать декскриптор на правила
      * Именно эта информация определяющая
-     * По селекторам из дескриптора ищутся подходящие свойства в в productWindow.app
+     * По селекторам из дескриптора ищутся подходящие свойства в приложении
      *
      * @param desc
      */
@@ -312,30 +312,37 @@ var Engine = {};
                     log('Descriptor property index\''+i+'\' has not selector',true);
                     continue;
                 }
-                //TODO удалить двойные пробелы
-                var selectorArr = curRec.selector.split(' ');
+                // через запятую может быть несколько селекторов
+                var selectorArr = curRec.selector.split(',');
                 for (var j = 0; j < selectorArr.length; j++) {
-                    var appPropertyString = selectorArr[j];
-                    if (calculatedAppDescriptor.hasOwnProperty(appPropertyString)===false) {
-                        // первый раз столкнулись с таким свойством-селектором, надо создать
-                        calculatedAppDescriptor[appPropertyString] = {};
-                    }
-                    if (curRec.rules) {
-                        // несколько правил может быть, они перечислены через пробел
-                        //TODO удалить двойные пробелы
-                        var ruleNames = curRec.rules.split(' ');
-                        for (var k = 0; k < ruleNames.length; k++) {
-                            var rn = ruleNames[k];
-                            if (desc.rules.hasOwnProperty(rn)) {
-                                mergeProperties(desc.rules[rn], calculatedAppDescriptor[appPropertyString]);
-                            }
-                            else {
-                                log('Rule \''+rn+'\' is not exist in descriptor.rules',true);
+                    //селектор в приложении должен соответствовать определенному формату '<filterKey>=<filterValue> value'
+                    var correct = productWindow.MutApp.Util.checkAppPropertySelector(selectorArr[j].trim()) !== null;
+                    if (correct === true) {
+                        var appPropertyString = selectorArr[j].trim();
+                        if (calculatedAppDescriptor.hasOwnProperty(appPropertyString)===false) {
+                            // первый раз столкнулись с таким свойством-селектором, надо создать
+                            calculatedAppDescriptor[appPropertyString] = {};
+                        }
+                        if (curRec.rules) {
+                            // несколько правил может быть, они перечислены через пробел
+                            //TODO удалить двойные пробелы
+                            var ruleNames = curRec.rules.split(' ');
+                            for (var k = 0; k < ruleNames.length; k++) {
+                                var rn = ruleNames[k];
+                                if (desc.rules.hasOwnProperty(rn)) {
+                                    mergeProperties(desc.rules[rn], calculatedAppDescriptor[appPropertyString]);
+                                }
+                                else {
+                                    log('Rule \''+rn+'\' is not exist in descriptor.rules',true);
+                                }
                             }
                         }
+                        // мердж со свойствами curInfo стоит после мерджа правил, так как они более приоритетны
+                        mergeProperties(curRec, calculatedAppDescriptor[appPropertyString]);
                     }
-                    // мердж со свойствами curInfo стоит после мерджа правил, так как они более приоритетны
-                    mergeProperties(curRec, calculatedAppDescriptor[appPropertyString]);
+                    else {
+                        log('Engine.createAppProperties: Invalid selector in descriptor: '+selectorArr[j], true);
+                    }
                 }
             }
         }
@@ -345,20 +352,26 @@ var Engine = {};
             // проверяем существуют ли в productWindow такие свойства отвечающие селектору
             // например: selector==quiz.{{number}}.text
             // получаем 4-е свойства со своими значениями: quiz.0.text quiz.1.text quiz.2.text quiz.3.text
-            var pp = getPropertiesBySelector(productWindow.app, selector);
-            for (var q = 0; q < pp.length; q++) {
-                if (getAppProperty(pp[q].path) === null) {
-                    count++;
-                    var p = new AppProperty(pp[q].value,
-                        pp[q].path,
-                        calculatedAppDescriptor[selector]);
-                    p.type = 'app';
-                    appProperties.push(p);
-                    appPropertiesObjectPathes.push(p.propertyString);
-                    send('AppPropertyInited', p.propertyString);
-//                    log('AppProperty created: \''+ p.propertyString + '\'', false, false);
+            var pp = getApp().getPropertiesBySelector(selector);
+            if (pp && pp.length > 0) {
+                for (var q = 0; q < pp.length; q++) {
+                    if (getAppProperty(pp[q].path) === null) {
+                        count++;
+                        var p = new AppProperty(pp[q].value,
+                            pp[q].path,
+                            calculatedAppDescriptor[selector]);
+                        p.type = 'app';
+                        appProperties.push(p);
+                        appPropertiesObjectPathes.push(p.propertyString);
+                        send('AppPropertyInited', p.propertyString);
+                        // log('AppProperty created: \''+ p.propertyString + '\'', false, false);
+                    }
                 }
             }
+            else {
+                log('Engine.createAppProperties: Cannot find property in app by selector: '+selector, true);
+            }
+
         }
         log('AppProperties created (type=app) ' + count, false);
     }
@@ -436,63 +449,6 @@ var Engine = {};
         }
         // обновляем список ключей, в нем останутся только имена appproperty с типом css
         appPropertiesObjectPathes = newPathes;
-    }
-
-    /**
-     * Проверить в объекте obj, содержит ли он свойства соответствующие selector
-     * Например: selector==quiz.{{number}}.text
-     * получаем 4-е свойства со своими значениями: quiz.0.text quiz.1.text quiz.2.text quiz.3.text
-     *
-     * @param obj
-     * @param selector
-     * @return {Array} result
-     */
-    function getPropertiesBySelector(obj, selector, path) {
-        if (path) {
-            path = path+'.';
-        }
-        else {
-            path = '';
-        }
-        var result = [];
-        var parts = selector.split('.');
-        // селектор постепенно уменьшается и передается вглубь рекурсии
-        var restSelector = parts.slice(1,parts.length).join('.');
-        // Либо просто число, либо со ссылкой на переменную: quiz.{{number:currentQuestionIndex}}.options.{{number}}.points
-        if (parts[0].indexOf('{{number')===0) {
-            // найти все числовые свойтсва в объекте
-            for (var objkey in obj) {
-                if (obj.hasOwnProperty(objkey) && isNaN(objkey)===false) {
-                    // нашли совпадение. Например, это индекс массива
-                    if (restSelector.length > 0) {
-                        // смотрим дальше вглубь пока не закончится селектор
-                        result=result.concat(getPropertiesBySelector(obj[objkey], restSelector, path+objkey));
-                    }
-                    else {
-                        // дошли до конца, весь селектор сопоставлен
-                        result.push({
-                            path: path+objkey,
-                            value: obj[objkey]
-                        });
-                    }
-                }
-            }
-        }
-        if (obj.hasOwnProperty(parts[0])) {
-            // нашли совпадение. Например, это индекс массива
-            if (restSelector.length > 0) {
-                // смотрим дальше вглубь пока не закончится селектор
-                result=result.concat(getPropertiesBySelector(obj[parts[0]], restSelector, path+parts[0]));
-            }
-            else {
-                // дошли до конца, весь селектор сопоставлен
-                result.push({
-                    path: path+parts[0],
-                    value: obj[parts[0]]
-                });
-            }
-        }
-        return result;
     }
 
     /**

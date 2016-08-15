@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>QUnit Autotests</title>
+    <!--build:css css/index.min.css-->
+    <link rel="stylesheet" href="css/qunit-1.20.0.css">
+    <!--endbuild-->
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+
+    <div id="id-product_iframe_cnt" style="display:none;"></div>
+    <div id="id-product_cnt" style="display:none"></div>
+    <div id="id-modal_cnt" style="display:none"></div>
+    <div id="id-swimming_test">
+    </div>
+
+     <!--Проект должен загружаться и тестироваться через iframe в своем контекста-->
+    <script id="id-welcome_template" type="text/template"></script>
+    <script id="id-slide_template" type="text/template"></script>
+    <script id="id-question_text_template" type="text/template"></script>
+    <script id="id-question_text_photo_template" type="text/template"></script>
+    <script id="id-option_text_template" type="text/template"></script>
+    <script id="id-option_img_template" type="text/template"></script>
+    <script id="id-answer_question_lst" type="text/template"></script>
+    <script id="id-answer_question_lst_2" type="text/template"></script>
+    <script id="id-answer_question_grid_2" type="text/template"></script>
+    <script id="id-answer_question_grid_3" type="text/template"></script>
+    <script id="id-explanation_text_template" type="text/template"></script>
+    <script id="id-result_template" type="text/template"></script>
+
+    <!--<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>-->
+    <script type="text/javascript" src="../lib/jquery.js"></script>
+    <script type="text/javascript" src="../lib/underscore.js"></script>
+    <script type="text/javascript" src="../lib/backbone.js"></script>
+    <script type="text/javascript" src="../lib/qunit-1.20.0.js"></script>
+    <script type="text/javascript" src="../lib/html2canvas.js"></script>
+    <script type="text/javascript" src="../lib/rasterizeHTML.allinone.js"></script>
+    <script type="text/javascript" src="../lib/jpeg_encoder.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/ace.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/ace-elements.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/bootstrap-colorpicker.min.js"></script>
+
+    <script type="text/javascript" src="../js/util/utils.js"></script>
+
+     <!--Загрузка через iframe-->
+    <script type="text/javascript" src="../products/test_new/mutapp.js"></script>
+    <script type="text/javascript" src="../products/test_new/model/tm.js"></script>
+    <script type="text/javascript" src="../products/test_new/view/question.js"></script>
+    <script type="text/javascript" src="../products/test_new/view/result.js"></script>
+    <script type="text/javascript" src="../products/test_new/view/welcome.js"></script>
+    <script type="text/javascript" src="../products/test_new/app.js"></script>
+
+    <!--<script type="text/javascript" src="testQueue.js"></script>-->
+    <!--<script type="text/javascript" src="testMutAppEngine.js"></script>-->
+    <!--<script type="text/javascript" src="testMutAppClientFramework.js"></script>-->
+    <!--<script type="text/javascript" src="testTest.js"></script>-->
+    <!--<script type="text/javascript" src="testTemplates.js"></script>-->
+
+    <script type="text/javascript" src="apps/helpers/test/testHelpers.js"></script>
+    <script type="text/javascript" src="apps/TApp.js"></script>
+    <script type="text/javascript" src="apps/qunitMutAppClientFramework.js"></script>
+    <!-- endbuild -->
+</body>
+</html>

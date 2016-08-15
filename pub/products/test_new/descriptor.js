@@ -89,58 +89,59 @@ descriptor.css = [
 
 descriptor.app = [
     {
-        selector: 'logoStartPosition logoResultPosition',
+        //selector: 'logoStartPosition logoResultPosition',
+        selector: 'id=startScr startHeader, type=results logoPosition',
         rules: 'drag'
     },
     {
-        selector: 'questionProgressPosition',
+        selector: 'type=questions questionProgressPosition',
         updateScreens: true, // потому что в рамках одной сессии надо менять позицию этого элемента на нескольких экранах
         rules: 'drag'
     },
     {
-        selector: 'logoUrl quiz.{{number}}.img',
+        selector: 'id=tm logoUrl, id=tm quiz.{{number}}.img',
         rules: 'imgUrl'
     },
     {
-        selector: 'backgroundStart backgroundQuestions backgroundResult',
+        selector: 'id=startScr backgroundStart, type=questions backgroundQuestions, type=results backgroundResult',
         updateScreens: true,
         rules: 'imgUrl'
     },
     {
-        selector: 'showQuestionProgress showBullits showTopColontitle showBackgroundImage randomizeQuestions',
+        selector: 'type=questions showQuestionProgress, type=questions showBullits, type=questions showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions',
         rules: 'trueFalse'
     },
             {
-                selector: 'showBackgroundImage',
+                selector: 'id=tm showBackgroundImage',
                 label: 'Показывать фоновую картинку',
                 rules: 'trueFalse'
             },
             {
-                selector: 'showBullits',
+                selector: 'type=questions showBullits',
                 label: 'Показывать буллиты вариантов ответа'
             },
             {
-                selector: 'showQuestionProgress',
+                selector: 'type=questions showQuestionProgress',
                 label: 'Показывать прогресс вопросов'
             },
             {
-                selector: 'showTopColontitle',
+                selector: 'type=questions showTopColontitle',
                 label: 'Верхний колонтитул'
             },
             {
-                selector: 'randomizeQuestions',
+                selector: 'id=tm randomizeQuestions',
                 label: 'Перемешивать вопросы'
             },
     {
-        selector: 'quiz.{{number}}.text quiz.{{number}}.options.{{number}}.text results.{{number}}.title results.{{number}}.description startHeaderText startDescription startButtonText restartButtonText topColontitleText',
+        selector: 'id=tm quiz.{{number}}.text, id=tm quiz.{{number}}.options.{{number}}.text, id=tm results.{{number}}.title, id=tm results.{{number}}.description, id=tm startHeaderText, id=tm startDescription, id=tm startButtonText, id=tm restartButtonText, id=tm topColontitleText',
         rules: 'text'
     },
     {
-        selector: 'quiz',
+        selector: 'id=tm quiz',
         rules: 'quizAddRule'
     },
     {
-        selector: "quiz.{{number}}.options",
+        selector: "id=tm quiz.{{number}}.options",
         rules: 'quizOptionEditRule'
     },
 ];

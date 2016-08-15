@@ -76,12 +76,15 @@ QUnit.test("MutApp test: app size", function( assert ) {
 QUnit.test("MutApp test: Models", function( assert ) {
     var SwimmingTest = MutApp.extend({
 
+        testName: 'swimmingTest',
+
         screenRoot: $('#id-swimming_test'),
 
         initialize: function(param) {
             // связь модели с приложением swimming test
             var tm = this.addModel(new TestModel({
-                application: this
+                application: this,
+                customAttr1: 'customValue1'
             }));
 
             this.addScreen(new StartScreen({
@@ -142,4 +145,38 @@ QUnit.test("MutApp test: Models", function( assert ) {
 
     assert.ok(app._screens[1].typeData === 23, 'default value has set');
     assert.ok(app._screens[2].typeData === 23, 'default value has set');
+
+    var ent1 = app.getEntities('type', 'question');
+    assert.ok(ent1 && ent1.length === 3, 'getAllEntities');
+
+    var ent2 = app.getEntities('id', 'tm');
+    assert.ok(ent2 && ent2.length === 1, 'getAllEntities');
+
+    var ent3 = app.getEntities('testName', 'swimmingTest');
+    assert.ok(ent3[0] === app && ent3.length === 1, 'getAllEntities');
+
+    var p1 = app.getPropertiesBySelector('id=tm data1');
+    assert.ok(p1 !== null, 'getPropertiesBySelector');
+    assert.ok(p1.length === 1, 'getPropertiesBySelector');
+
+    var p2 = app.getPropertiesBySelector('id=tm quiz.{{number}}.question.text');
+    assert.ok(p2 !== null, 'getPropertiesBySelector');
+    assert.ok(p2.length === 3, 'getPropertiesBySelector');
+    assert.ok(p2[0].path === 'quiz.0.question.text', 'getPropertiesBySelector path');
+    assert.ok(typeof p2[0].value === 'string', 'getPropertiesBySelector value');
+    assert.ok(p2[1].path === 'quiz.1.question.text', 'getPropertiesBySelector path');
+    assert.ok(typeof p2[1].value === 'string', 'getPropertiesBySelector value');
+    assert.ok(p2[2].path === 'quiz.2.question.text', 'getPropertiesBySelector path');
+    assert.ok(typeof p2[2].value === 'string', 'getPropertiesBySelector value');
+
+    var p3 = app.getPropertiesBySelector('type=question showBullits');
+    assert.ok(p3 !== null, 'getPropertiesBySelector');
+    assert.ok(p3.length === 1, 'getPropertiesBySelector');
+    assert.ok(p3[0].path === 'showBullits', 'getPropertiesBySelector');
+    assert.ok(p3[0].value === true, 'getPropertiesBySelector');
+
+    // поиск по атрибутам модели
+    var p4 = app.getPropertiesBySelector('customAttr1=customValue1 data1');
+    assert.ok(p4 !== null, 'getPropertiesBySelector');
+    assert.ok(p4.length === 1, 'getPropertiesBySelector');
 });

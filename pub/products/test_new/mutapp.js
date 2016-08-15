@@ -62,16 +62,10 @@ var MutApp = function() {
             this._parsedDefaults = [];
             for (var key in this._defaults) {
                 if (this._defaults.hasOwnProperty(key)) {
-                    // доступен только один формат #entityId propertyName
-                    var reg = new RegExp(/([\w]+)=([\w]+)[\s]+([\w]+)/ig);
-                    var match = reg.exec(key);
-                    if (match && match[1] && match[2] && match[3]) {
-                        this._parsedDefaults.push({
-                            conditionKey: match[1],
-                            conditionValue: match[2],
-                            valueKey: match[3],
-                            value: this._defaults[key]
-                        });
+                    var parsed = MutApp.Util.parseSelector(key);
+                    if (parsed !== null) {
+                        parsed.value = this._defaults[key];
+                        this._parsedDefaults.push(parsed);
                     }
                 }
             }
@@ -249,6 +243,66 @@ MutApp.prototype._isElement = function(obj) {
     }
 };
 
+/**
+ * 0) Проверить корректность входящего селектора '<filterKey>=<filterValue> propertySelector'
+ * Например, 'id=mainModel quiz.{{number}}.text'
+ *
+ * 1) Найти в приложении вью или модели, соответствующие условию entity[filterKey]===filterValue
+ * Например, model['id']==='mainModel'
+ *
+ * 2) далее разобрать propertySelector
+ * Например, он может быть такой: quiz.{{number}}.text - это значит что свойств будет несколько
+ *
+ * @param {string} selector - например, 'id=mainModel quiz.{{number}}.text'
+ *
+ * @return {Array}
+ */
+MutApp.prototype.getPropertiesBySelector = function(selector) {
+    var parsedSelector = MutApp.Util.parseSelector(selector);
+    if (parsedSelector) {
+        var result = [];
+        var entities = this.getEntities(parsedSelector.conditionKey, parsedSelector.conditionValue);
+        if (entities) {
+            // хотя entities может быть несколько: например, несколько экранов вопросов
+            // но настройка это одна: например, showLogo свойства во всех экранах (type=question showLogo)
+            // в движке это будет одно appProperty
+            // тогда и не надо искать значения во всех entities, достаточно лишь первого
+            // Отличаться значения в приложении не должны в таком случае
+            for (var i = 0; i < entities.length; i++) {
+                var finded = MutApp.Util.getPropertiesBySelector(entities[i], parsedSelector.valueKey)
+                if (finded && finded.length > 0) {
+                    result = finded;
+                    break;
+                }
+            }
+        }
+        return (result.length > 0) ? result: null;
+    }
+    return null;
+};
+
+/**
+ * Найти в приложении сущности, которые имеют свойства filterKey со значением filterValue
+ * Модели, экраны и само приложение.
+ *
+ * @param filterKey
+ * @param filterValue
+ */
+MutApp.prototype.getEntities = function(filterKey, filterValue) {
+    if (filterKey && filterValue) {
+        var a = this._models.concat(this._screens, [this]);
+        var result = [];
+        for (var i = 0; i < a.length; i++) {
+            // для модели надо также смотреть в ее атрибутах
+            var isModel = a[i] instanceof MutApp.Model;
+            if (a[i][filterKey]===filterValue || (isModel===true && a[i].attributes[filterKey]===filterValue)) {
+                result.push(a[i]);
+            }
+        }
+        return result.length > 0 ? result: null;
+    }
+};
+
 //MutApp.prototype.back function() {
 //    if (this._history.length >= 2) {
 //        this._history.pop()
@@ -321,7 +375,6 @@ MutApp.Screen = Backbone.View.extend({
                     var d, o = null;
                     for (var i = 0; i < this.model.application._parsedDefaults.length; i++) {
                         d = this.model.application._parsedDefaults[i];
-                        // пока доступен только поиск по ид
                         if (d.conditionValue === this[d.conditionKey]) {
                             this[d.valueKey] = d.value;
                         }
@@ -355,7 +408,6 @@ MutApp.Model = Backbone.Model.extend({
                 var d, o = null;
                 for (var i = 0; i < this.application._parsedDefaults.length; i++) {
                     d = this.application._parsedDefaults[i];
-                    // пока доступен только поиск по ид
                     if (d.conditionValue === this[d.conditionKey]) {
                         o = {};
                         o[d.valueKey] = d.value;
@@ -390,6 +442,94 @@ MutApp.Util = {
                 object[key] = defaults[k].value;
             }
         }
+    },
+
+
+
+    /**
+     * Разобрать селектор на составляющие и вернуть объектом
+     * Эта функция также может быть использована с целью определения корректности селектора.
+     *
+     * @param selector
+     * @return {object}
+     */
+    parseSelector: function(selector) {
+        var reg = new RegExp(/([\w]+)=([\w]+)[\s]+([\w|{|}|\.]+)/ig);
+        var match = reg.exec(selector);
+        if (match && match[1] && match[2] && match[3]) {
+            return {
+                conditionKey: match[1],
+                conditionValue: match[2],
+                valueKey: match[3],
+                value: null
+            };
+        }
+        return null;
+    },
+
+    /**
+     * Проверить в объекте obj, содержит ли он свойства соответствующие selector
+     * Например: selector==quiz.{{number}}.text
+     * получаем 4-е свойства со своими значениями: quiz.0.text quiz.1.text quiz.2.text quiz.3.text
+     *
+     * @param obj
+     * @param selector
+     * @param path
+     *
+     * @return {Array} result
+     */
+    getPropertiesBySelector: function(obj, selector, path) {
+        if (path) {
+            path = path+'.';
+        }
+        else {
+            path = '';
+        }
+        // у модели свойства надо брать через attributes
+        var isModel = obj instanceof MutApp.Model;
+        var result = [];
+        var parts = selector.split('.');
+        // селектор постепенно уменьшается и передается вглубь рекурсии
+        var restSelector = parts.slice(1,parts.length).join('.');
+        // Либо просто число, либо со ссылкой на переменную: quiz.{{number:currentQuestionIndex}}.options.{{number}}.points
+        if (parts[0].indexOf('{{number')===0) {
+            // найти все числовые свойтсва в объекте
+            for (var objkey in obj) {
+                if (((isModel===true && obj.attributes.hasOwnProperty(objKey)) || obj[objkey]!==undefined) && isNaN(objkey)===false) {
+                    // нашли совпадение. Например, это индекс массива
+                    // у модели надо брать значение из атрибутов
+                    var o = (isModel===true) ? obj.attributes[objKey]: obj[objkey];
+                    if (restSelector.length > 0) {
+                        // смотрим дальше вглубь пока не закончится селектор
+                        result=result.concat(this.getPropertiesBySelector(o, restSelector, path+objkey));
+                    }
+                    else {
+                        // дошли до конца, весь селектор сопоставлен
+                        result.push({
+                            path: path+objkey,
+                            value: o
+                        });
+                    }
+                }
+            }
+        }
+        if ((isModel===true && obj.attributes.hasOwnProperty(parts[0])) || obj[parts[0]]!==undefined) {
+            // нашли совпадение. Например, это индекс массива
+            // у модели надо брать значение из атрибутов
+            var o = (isModel===true) ? obj.attributes[parts[0]]: obj[parts[0]];
+            if (restSelector.length > 0) {
+                // смотрим дальше вглубь пока не закончится селектор
+                result=result.concat(this.getPropertiesBySelector(o, restSelector, path+parts[0]));
+            }
+            else {
+                // дошли до конца, весь селектор сопоставлен
+                result.push({
+                    path: path+parts[0],
+                    value: o
+                });
+            }
+        }
+        return result;
     }
 };
 
