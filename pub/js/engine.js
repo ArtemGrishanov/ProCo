@@ -316,7 +316,7 @@ var Engine = {};
                 var selectorArr = curRec.selector.split(',');
                 for (var j = 0; j < selectorArr.length; j++) {
                     //селектор в приложении должен соответствовать определенному формату '<filterKey>=<filterValue> value'
-                    var correct = productWindow.MutApp.Util.checkAppPropertySelector(selectorArr[j].trim()) !== null;
+                    var correct = productWindow.MutApp.Util.parseSelector(selectorArr[j].trim()) !== null;
                     if (correct === true) {
                         var appPropertyString = selectorArr[j].trim();
                         if (calculatedAppDescriptor.hasOwnProperty(appPropertyString)===false) {

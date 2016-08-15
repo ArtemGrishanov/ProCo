@@ -180,3 +180,38 @@ QUnit.test("MutApp test: Models", function( assert ) {
     assert.ok(p4 !== null, 'getPropertiesBySelector');
     assert.ok(p4.length === 1, 'getPropertiesBySelector');
 });
+
+QUnit.test("MutApp test: multiapp", function( assert ) {
+    var SwimmingTest = MutApp.extend({
+        screenRoot: $('#id-swimming_test'),
+        initialize: function(param) {
+            var tm = this.addModel(new TestModel({
+                application: this
+            }));
+            this.addScreen(new StartScreen({
+                model: tm,
+                screenRoot: this.screenRoot
+            }));
+            this.addScreen(new QuestionScreen({
+                model: tm,
+                screenRoot: this.screenRoot
+            }));
+            this.addScreen(new ResultScreen({
+                model: tm,
+                screenRoot: this.screenRoot
+            }));
+        }
+    });
+
+    var app1 = new SwimmingTest({
+    });
+
+    var app2 = new SwimmingTest({
+    });
+
+    assert.ok(app1._screens.length === 3, 'Screens length 1');
+    assert.ok(app1._models.length === 1, 'Models length 1');
+
+    assert.ok(app2._screens.length === 3, 'Screens length 2');
+    assert.ok(app2._models.length === 1, 'Models length 2');
+});

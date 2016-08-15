@@ -89,8 +89,7 @@ descriptor.css = [
 
 descriptor.app = [
     {
-        //selector: 'logoStartPosition logoResultPosition',
-        selector: 'id=startScr startHeader, type=results logoPosition',
+        selector: 'id=startScr logoPosition, type=result logoPosition',
         rules: 'drag'
     },
     {
@@ -103,7 +102,7 @@ descriptor.app = [
         rules: 'imgUrl'
     },
     {
-        selector: 'id=startScr backgroundStart, type=questions backgroundQuestions, type=results backgroundResult',
+        selector: 'id=startScr backgroundStart, type=questions backgroundQuestions, type=result backgroundResult',
         updateScreens: true,
         rules: 'imgUrl'
     },

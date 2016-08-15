@@ -50,10 +50,16 @@
 //})();
 
 var MutApp = function() {
+    this._models = [];
+    this._screens = [];
+    this._history = [];
+
     if (arguments[0]) {
         this.width = arguments[0].width;
         this.height = arguments[0].height;
-        this.screenRoot.width(this.width).height(this.height);
+        if (this.screenRoot) {
+            this.screenRoot.width(this.width).height(this.height);
+        }
 
         // значения которые надо установить по умолчанию при запуске приложения
         // значения могут относиться к Вью или Моделям
@@ -76,30 +82,39 @@ var MutApp = function() {
 };
 /**
  * dom-элемент в котором помещаются все экраны
+ * Создается в конструкторе приложения
+ * MutApp.prototype.screenRoot = null;
+ *
  * @type {null}
  */
-MutApp.prototype.screenRoot = null;
+
 /**
  * История показов экранов
+ * Создается в конструкторе приложения
  *
  * @type {Array}
  * @private
+ * MutApp.prototype._history = [];
  */
-MutApp.prototype._history = [];
+
 /**
  * Все экраны приложения
+ * Создается в конструкторе приложения
  *
  * @type {Array}
  * @private
+ * MutApp.prototype._screens = [];
  */
-MutApp.prototype._screens = [];
+
 /**
  * Модели приложения, которые связываются с представлениями
+ * Создается в кнструкторе приложения
  *
  * @type {Object}
  * @private
+ * MutApp.prototype._models = [];
  */
-MutApp.prototype._models = [];
+
 /**
  * Связать экран с приложением
  * @param v
