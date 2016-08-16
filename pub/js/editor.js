@@ -776,7 +776,7 @@ var Editor = {};
                 cpv = $('#'+config.controls[name].parentId);
             }
             // свойств может быть несколько, передаем массив
-            var propertyStrArg = (propertyString && propertyString.indexOf(' ')>=0)?propertyString.split(' '):propertyString;
+            var propertyStrArg = (propertyString && propertyString.indexOf(',')>=0)?propertyString.split(','):propertyString;
             ctrl = new window[name](propertyStrArg, viewName, cpv, productDOMElement, params);
     //    }
     //    catch(e) {
@@ -805,7 +805,7 @@ var Editor = {};
                 // appId - уникальный ид проекта, например appId
                 Publisher.publish({
                     appId: appId,
-                    appStr: Engine.getAppString(),
+                    appStr: Engine.serializeAppValues(),
                     cssStr: Engine.getCustomStylesString(),
                     promoIframe: appIframe, //TODO возможно айрейм спрятать в engine тоже
                     baseProductUrl: config.products[appName].baseProductUrl

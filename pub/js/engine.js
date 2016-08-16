@@ -174,11 +174,12 @@ var Engine = {};
 
     /**
      * Возвращает объект ключ-значения со свойствами
-     * propertyString:propertyValue
-     * Например {"t_btn_paddingTop":"20","js-question_progress_fontColor":"#eee","showBackgroundImage":true,...}
+     * Причем app и css свойства разделены
+     * {app:{свойтсва апп}, css:{свойства стилей}}
+     *
      * Нужно при сериализации шаблона
      *
-     * @return {string}
+     * @return {object}
      */
     function getAppPropertiesValues() {
         var result = {css:{},app:{}};
@@ -316,7 +317,7 @@ var Engine = {};
                 var selectorArr = curRec.selector.split(',');
                 for (var j = 0; j < selectorArr.length; j++) {
                     //селектор в приложении должен соответствовать определенному формату '<filterKey>=<filterValue> value'
-                    var correct = productWindow.MutApp.Util.parseSelector(selectorArr[j].trim()) !== null;
+                    var correct = Engine.parseSelector(selectorArr[j].trim()) !== null;
                     if (correct === true) {
                         var appPropertyString = selectorArr[j].trim();
                         if (calculatedAppDescriptor.hasOwnProperty(appPropertyString)===false) {
@@ -348,18 +349,20 @@ var Engine = {};
         }
         // собрали все селекторы. Теперь нужно зарезолвить такие селекторы quiz.{{number}}.img
         var count = 0;
-        for (var selector in calculatedAppDescriptor) {
-            // проверяем существуют ли в productWindow такие свойства отвечающие селектору
-            // например: selector==quiz.{{number}}.text
+        for (var s in calculatedAppDescriptor) {
+            // проверяем существуют ли в приложении такие свойства отвечающие propertyString
+            // например: tm=id property==quiz.{{number}}.text
             // получаем 4-е свойства со своими значениями: quiz.0.text quiz.1.text quiz.2.text quiz.3.text
-            var pp = getApp().getPropertiesBySelector(selector);
+            var pp = getApp().getPropertiesBySelector(s);
             if (pp && pp.length > 0) {
                 for (var q = 0; q < pp.length; q++) {
                     if (getAppProperty(pp[q].path) === null) {
                         count++;
+                        // второй параметр (appProperty) это уже не селектор вида id=tm quiz.{{number}}.img
+                        // а конкретный id=tm quiz.0.img
                         var p = new AppProperty(pp[q].value,
-                            pp[q].path,
-                            calculatedAppDescriptor[selector]);
+                            pp[q].propertyString,
+                            calculatedAppDescriptor[s]);
                         p.type = 'app';
                         appProperties.push(p);
                         appPropertiesObjectPathes.push(p.propertyString);
@@ -369,7 +372,7 @@ var Engine = {};
                 }
             }
             else {
-                log('Engine.createAppProperties: Cannot find property in app by selector: '+selector, true);
+                log('Engine.createAppProperties: Cannot find property in app by selector: '+s, true);
             }
 
         }
@@ -421,11 +424,11 @@ var Engine = {};
         }
         // все готово, теперь создаем appPropery
         var count = 0;
-        for (var selector in calculatedCssDescriptor) {
+        for (var key in calculatedCssDescriptor) {
             // пустая строка в качество начального значения
             var p = new AppProperty('',
-                selector,
-                calculatedCssDescriptor[selector]);
+                key,
+                calculatedCssDescriptor[key]);
             p.type = 'css';
             appProperties.push(p);
             appPropertiesObjectPathes.push(p.propertyString);
@@ -469,55 +472,6 @@ var Engine = {};
             }
         }
     }
-
-    /**
-     * Найти все описания для свойства objectString в объекте descriptor
-     *
-     * @param objectString
-     * @returns {*} null если ничего не найдено
-     */
-//    function findDescription(objectString) {
-//        var descInfo = null;
-//        // в app.descriptor может быть несколько селекторов, которые соответствуют свойству
-//        for (var i = 0; i < productWindow.descriptor.length; i++) {
-//            var selector = productWindow.descriptor[i].selector;
-//            if (matchSelector(objectString,selector) === true) {
-//                descInfo = descInfo || {};
-//                // добавляем найденную конфигурацию в описание
-//                for (var key in productWindow.descriptor[i]) {
-//                    descInfo[key] = productWindow.descriptor[i][key];
-//                }
-//            }
-//        }
-//        return descInfo;
-//    }
-
-    /**
-     * Сопоставить селектор и object-path свойства
-     *
-     * @param {string} objectString например "quiz.0.options.1.text"
-     * @param Array.<string> selector например "[startHeaderText, quiz.{{number}}.options.{{number}}.text, resultText]"
-     * @returns {boolean}
-     */
-//    function matchSelector(objectString, selector) {
-//        var selectorArr = selector.split(' ');
-//        for (var i = 0; i < selectorArr.length; i++) {
-//            if (objectString === selectorArr[i].trim()) {
-//                return true;
-//            }
-//            else if (selectorArr[i].indexOf('.') >= 0 || selectorArr[i].indexOf('{{') >= 0) {
-//                // Пример: selector "quiz.{{number}}.text" превращается в регулярку "quiz\.\d+\.text" и сравнивается с objectString на соответствие
-//                var s = selectorArr[i].replace(new RegExp('\\.','g'),'\\.').replace(new RegExp('{{number}}','ig'),'\\d+');
-//                var reg = new RegExp(s,'ig');
-//                var match = reg.exec(objectString);
-//                if (match && match[0] == objectString) {
-//                    // match[0] string itself
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
 
     /**
      * Создать экраны в промоприложении.
@@ -1115,51 +1069,54 @@ var Engine = {};
         return triggers;
     }
 
-    /**
-     * Создать шаблон из прототипа. Это набор дескрипторов, который можно применить к прототипу.
-     * @deprecated
-     * @returns {string} строка, сериализованный JSON объект
-     */
-    function exportTemplate() {
-        // ид прототипа показывает для какого прототипа подходит этот шаблон
-        var templObj = {
-            prototype: config.products.tests.prototypeId,
-            descriptors: {},
-            themes: ''
-        };
-        // записать дескрипторы в шаблон
-        for (var i = 0; i < appProperties.length; i++) {
-            var p = appProperties[i];
-            if (p.descriptor.editable === true) {
-                for (var key in p.descriptor) {
-                    if (p.descriptor.hasOwnProperty(key)) {
-                        templObj.descriptors[key] = p.descriptor[key];
-                    }
-                }
-            }
-        }
-        var templStr = null;
-        try {
-            templStr = JSON.stringify(templObj);
-        }
-        catch(e) {
-            log('Error in serializing template error: ' + e, true);
-            return null;
-        }
-        return templStr;
-    }
+//    /**
+//     * Создать шаблон из прототипа. Это набор дескрипторов, который можно применить к прототипу.
+//     * @deprecated
+//     * @returns {string} строка, сериализованный JSON объект
+//     */
+//    function exportTemplate() {
+//        // ид прототипа показывает для какого прототипа подходит этот шаблон
+//        var templObj = {
+//            prototype: config.products.tests.prototypeId,
+//            descriptors: {},
+//            themes: ''
+//        };
+//        // записать дескрипторы в шаблон
+//        for (var i = 0; i < appProperties.length; i++) {
+//            var p = appProperties[i];
+//            if (p.descriptor.editable === true) {
+//                for (var key in p.descriptor) {
+//                    if (p.descriptor.hasOwnProperty(key)) {
+//                        templObj.descriptors[key] = p.descriptor[key];
+//                    }
+//                }
+//            }
+//        }
+//        var templStr = null;
+//        try {
+//            templStr = JSON.stringify(templObj);
+//        }
+//        catch(e) {
+//            log('Error in serializing template error: ' + e, true);
+//            return null;
+//        }
+//        return templStr;
+//    }
 
     /**
-     * Вернуть актуальные свойства приложения в виде строки
+     * Вернуть актуальные свойства приложения в виде строки.
+     * Применяется в публикации
+     *
      * @return {string}
      */
-    function getAppString() {
-        return JSON.stringify(productWindow.app);
+    function serializeAppValues() {
+        return JSON.stringify(Engine.getAppPropertiesValues().app);
     }
 
     global.startEngine = startEngine;
     global.test = test;
     global.getApp = getApp;
+    global.parseSelector = function(s) { return productWindow.MutApp.Util.parseSelector(s) };
 
     // методы для работы со свойствами appProperties
     global.setValue = setValue;
@@ -1169,7 +1126,6 @@ var Engine = {};
     global.getAppProperty = getAppProperty;
     global.addArrayElement = addArrayElement;
     global.deleteArrayElement = deleteArrayElement;
-//    global.bind = bind;
 
     // events
     global.on = on;
@@ -1182,9 +1138,9 @@ var Engine = {};
     global.getAppScreen = getAppScreen;
 
     // методы для работы с шаблонами
-    global.exportTemplate = exportTemplate;
+//    global.exportTemplate = exportTemplate;
     global.getCustomStylesString = getCustomStylesString;
-    global.getAppString = getAppString;
+    global.serializeAppValues = serializeAppValues;
     global.getAppPropertiesValues = getAppPropertiesValues;
     global.getOperationsCount = function() { return operationsCount; }
 })(Engine);

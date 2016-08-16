@@ -3,52 +3,6 @@
  *
  */
 
-/**
- * Реализация наследования с помощью метода extend
- * Таким образом, наследование становится контролируемым, что лучше подходит для фреймворка.
- * Например:
- * Метод init заточен в виде конструктора
- * Можно делать какие-то проверки на корректность нового "класса", который пытается создать пользователь
- */
-//(function () {
-//    var initializing = false;
-////        fnTest = /xyz/.test(function () {
-////            xyz;
-////        }) ? /\b_super\b/ : /.*/;
-//
-//    // The base Class implementation (does nothing)
-//    this.Class = function () {
-//    };
-//
-//    Class.extend = function (prop) {
-//        // Instantiate a base class (but only create the instance,
-//        // don’t run the init constructor)
-//        initializing = true;
-//        var prototype = new this(); // ex: new Person()
-//        initializing = false;
-//        // копирование новых свойств в уже сществующий прототип
-//        for (var name in prop) {
-//            prototype[name] = prop[name];
-//        }
-//        // для удобства сохраняем ссылку на предка
-//        prototype._super = this.prototype;
-//        // Подменяем конструктор вот этой функцией, чтобы звалась функция init как коструктор
-//        function Class() {
-//            // All construction is actually done in the init method
-//            if (!initializing && this.init)
-//                this.init.apply(this, arguments);
-//        }
-//        // Populate our constructed prototype object
-//        Class.prototype = prototype;
-//        // Enforce the constructor to be what we expect
-//        Class.prototype.constructor = Class;
-//        // And make this class extendable
-//        Class.extend = arguments.callee;
-//        return Class;
-//    };
-//    };
-//})();
-
 var MutApp = function() {
     this._models = [];
     this._screens = [];
@@ -290,6 +244,12 @@ MutApp.prototype.getPropertiesBySelector = function(selector) {
                     break;
                 }
             }
+        }
+        // собираем реальный propertyString для работы в движке
+        // вместо id=tm quiz.{{number}}.question.text получим:
+        // id=tm quiz.0.question.text
+        for (var j = 0; j < result.length; j++) {
+            result[j].propertyString = parsedSelector.conditionKey+'='+parsedSelector.conditionValue+' '+result[j].path;
         }
         return (result.length > 0) ? result: null;
     }

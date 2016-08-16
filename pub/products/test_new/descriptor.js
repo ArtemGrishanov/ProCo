@@ -98,7 +98,7 @@ descriptor.app = [
         rules: 'drag'
     },
     {
-        selector: 'id=tm logoUrl, id=tm quiz.{{number}}.img',
+        selector: 'id=tm logoUrl, id=tm quiz.{{number}}.question.img',
         rules: 'imgUrl'
     },
     {
@@ -132,7 +132,7 @@ descriptor.app = [
                 label: 'Перемешивать вопросы'
             },
     {
-        selector: 'id=tm quiz.{{number}}.text, id=tm quiz.{{number}}.options.{{number}}.text, id=tm results.{{number}}.title, id=tm results.{{number}}.description, id=tm startHeaderText, id=tm startDescription, id=tm startButtonText, id=tm restartButtonText, id=tm topColontitleText',
+        selector: 'id=tm quiz.{{number}}.question.text, id=tm quiz.{{number}}.answer.options.{{number}}.text, id=tm results.{{number}}.title, id=tm results.{{number}}.description, id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText, type=result restartButtonText, type=questions topColontitleText',
         rules: 'text'
     },
     {
@@ -140,7 +140,7 @@ descriptor.app = [
         rules: 'quizAddRule'
     },
     {
-        selector: "id=tm quiz.{{number}}.options",
+        selector: "id=tm quiz.{{number}}.answer.options",
         rules: 'quizOptionEditRule'
     },
 ];

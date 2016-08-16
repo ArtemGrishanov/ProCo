@@ -170,7 +170,16 @@ var config = {
                 '"Times New Roman", Times, serif',
                 'Impact, Charcoal, sans-serif',
                 '"Courier New", Courier, monospace'
-            ]
+            ],
+            /**
+             * Свойства предназначенные для автотестов
+             */
+            autotests: {
+                expectedPropertiesCount: 120,
+                expectedScreensCount: 9,
+                expectedTriggersCount: 3,
+                expectedSerializedAppStringLength: 4000
+            }
         },
         timeline: {
 

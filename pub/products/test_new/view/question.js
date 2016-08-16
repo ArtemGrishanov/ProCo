@@ -37,7 +37,9 @@ var QuestionScreen = MutApp.Screen.extend({
 
     showBullits: true,
     showTopColontitle: true,
+    showQuestionProgress: true,
     questionProgressPosition: {top:30, left:30},
+    topColontitleText: 'Текст колонтитула',
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -103,10 +105,19 @@ var QuestionScreen = MutApp.Screen.extend({
             this.$el.find('.bullit').hide();
         }
         if (this.showTopColontitle === true) {
-            this.$el.find('.js-topColontitleText').show();
+            var $c = this.$el.find('.js-topColontitleText').show();
+            if (this.topColontitleText) {
+                $c.text(this.topColontitleText);
+            }
         }
         else {
             this.$el.find('.js-topColontitleText').hide();
+        }
+        if (this.showQuestionProgress === true) {
+            this.$el.find('.js-question_progress').show();
+        }
+        else {
+            this.$el.find('.js-question_progress').hide();
         }
         this.$el.find('.js-question_progress').
             css('top',this.questionProgressPosition.top+'px').
