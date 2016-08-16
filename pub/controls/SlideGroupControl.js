@@ -279,7 +279,7 @@ SlideGroupControl.prototype.useSlide = function(slideId) {
             // нашли первый свободный слайд - его и используем
             si.used = true;
             // обработка как и в createControl (пример 'resultScr0 resultScr1 resultScr2')
-            var propertyStrArg = (slideId && slideId.indexOf(' ')>=0)?slideId.split(' '):slideId;
+            var propertyStrArg = (slideId && slideId.indexOf(',')>=0)?slideId.split(','):slideId;
             si.slide.setPropertyString(propertyStrArg);
             result = si;
             break;
@@ -288,7 +288,7 @@ SlideGroupControl.prototype.useSlide = function(slideId) {
     if (result === null) {
         var $d = $('<div></div>');
         var itemWrapperTemplate = this.$directive.find('.js-item_wr_template').html();
-        var slide = createControl(slideId, null, 'Slide', {}, $d, null);
+        var slide = Editor.createControl(slideId, null, 'Slide', {}, $d, null);
         var dataId = Math.random().toString();
         result = {
             dataId: dataId,

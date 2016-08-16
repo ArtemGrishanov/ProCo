@@ -76,11 +76,6 @@ var TEngine = {};
 
 
         //TODO
-//        0) Engine.getAppString - внутрь MutApp
-//        Это сериализация значения, чтобы паблишер мог их вставить в приложение
-//        в defaults подставить объект:
-//        {'id=tm value1':  data1}
-//
 //        2) сценрий engine
 //        сделать изменение свойств в приложении mutapp через движок и с их последующей проверкой
 //        но как тогда грузить приложение? Этот слой сам этого не умеет...
@@ -110,7 +105,7 @@ var TEngine = {};
     /**
      * Проверить отдельный AppScreen
      */
-    function checkAppScreen() {
+    function checkAppScreen(assert, screen) {
         //todo
     }
 

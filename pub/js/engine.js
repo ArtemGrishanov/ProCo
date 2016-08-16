@@ -482,87 +482,60 @@ var Engine = {};
     function createAppScreens() {
         appScreens = [];
         appScreenIds = [];
-        var ps = productWindow.screens;
+
+        // заранее надо проставить значения по умолчанию для css appProperties
+        // по css селекторам определяем значения в промо приложении в верстке
+        for (var j = 0; j < appProperties.length; j++) {
+            var ap = appProperties[j];
+            if (ap.type==='css' && !!ap.propertyValue === false) {
+                // прочитать актуальное значение свойства и сохранить его
+                // если свойство ни разу не задавали, то сначала надо взять его из приложения и записать
+                // TODO далее могут быть разные сценарии: изменено где-то вовне, например самим промо приложением согласно его логике,
+                // TODO эти случаи не рассматриваем пока...
+                var actualSelector = ap.applyCssTo || ap.cssSelector;
+                if (ap.cssProperty) {
+                    ap.propertyValue = $("#id-product_iframe_cnt").find('iframe').contents().find(actualSelector).css(ap.cssProperty)
+                }
+                else {
+                    log('Engine.createAppScreens: No cssProperty in app: ' + ap.propertyString, true);
+                }
+            }
+        }
+
+        var ps = Engine.getApp()._screens;
         if (ps) {
             for (var i = 0; i < ps.length; i++) {
-                if (ps[i].data) {
-                    // если имеются дополнительные данные их возможно вставить во view
-                    // например: data-app-property="quiz.{{currentQuestion}}.text"
-                    ps[i].view = parseView(ps[i].view, ps[i].data);
-                    writeCssRulesTo(ps[i].view);
-                }
+//                if (ps[i].data) {
+//                    // если имеются дополнительные данные их возможно вставить во view
+//                    // например: data-app-property="quiz.{{currentQuestion}}.text"
+//                    ps[i].view = parseView(ps[i].view, ps[i].data);
+//                    writeCssRulesTo(ps[i].view);
+//                }
                 // мы знаем сss классы для редактирования, так как дескриптор был разобран
                 // можно сразу найти классы и data-app-property на view
-                ps[i].appPropertyElements = [];
-                ps[i].hints = [];
-                // id нужен для соотнесения клика по элементу с нужным апп проперти в массиве appPropertyElements
-                //TODO нужно подумать о таком кейсе: когда один и тот же элемент помечен как data-app-property и каким-то классом одновременно
+                var appScreen = new AppScreen(ps[i]);
                 for (var j = 0; j < appProperties.length; j++) {
-                    if (appProperties[j].type === 'css') {
-                        var elemsOnView = $(ps[i].view).find(appProperties[j].cssSelector);
-                        for (var k = 0; k < elemsOnView.length; k++) {
-                            // добавить проперти в data-app-property атрибут, так как css свойств там нет
-                            // они понадобятся чтобы по клику а этот элемент показать все проперти которые нужны
-                            addDataAttribute(elemsOnView[k], appProperties[j].propertyString);
-                            // для экрана подготавливаем domElement связанные с appProperty,
-                            // чтобы потом не искать их при каждом показе экрана
-                            ps[i].appPropertyElements.push({
-                                propertyString: appProperties[j].propertyString,
-                                domElement: elemsOnView[k]
-                            });
-                        }
-                        if (appProperties[j].propertyValue === '' || appProperties[j].propertyValue === null || appProperties[j].propertyValue === undefined) {
-                            // прочитать актуальное значение свойства и сохранить его
-                            // если свойство ни разу не задавали, то сначала надо взять его из приложения и записать
-                            // TODO далее могут быть разные сценарии: изменено где-то вовне, например самим промо приложением согласно его логике,
-                            // TODO эти случаи не рассматриваем пока...
-                            var actualSelector = appProperties[j].applyCssTo || appProperties[j].cssSelector;
-                            if (appProperties[j].cssProperty) {
-                                //$(ps[i].view).find('.js-startHeader').css('text-align')
-                                //$("#id-product_iframe_cnt").find('iframe').contents().find('.js-startHeader').css('font-family');
-                                appProperties[j].propertyValue = $("#id-product_iframe_cnt").find('iframe').contents().find(actualSelector).css(appProperties[j].cssProperty)
-//                                appProperties[j].propertyValue = $(productScreensCnt).find(actualSelector).css(appProperties[j].cssProperty);
-                            }
-                            else {
-                                log('No cssProperty: ' + appProperties[j].propertyString, true);
-                            }
-                        }
-                    }
-                    // заранее находим dom элементы на экране для подсказок
-                    // в дальнейшем они будут активироваться при показе этого экрана
-                    if (appProperties[j].hint) {
-                        var hde = $(ps[i].view).find(appProperties[j].cssSelector);
-                        if (hde && hde.length > 0) {
-                            // если элемент для подсказки действительно был найден на текущем экране то добавляем подсказку для показа здесь
-                            ps[i].hints.push({
-                                text: appProperties[j].hint,
-                                domElement: hde,
-                                isShown: false
-                            });
-                        }
+                    var ap = appProperties[j];
+                    if (ap.type === 'css') {
+                        var findedDomElements = appScreen.findAndAttachCssAppProperty(ap);
+//                        if (!!ap.propertyValue === false) {
+//                            // прочитать актуальное значение свойства и сохранить его
+//                            // если свойство ни разу не задавали, то сначала надо взять его из приложения и записать
+//                            // TODO далее могут быть разные сценарии: изменено где-то вовне, например самим промо приложением согласно его логике,
+//                            // TODO эти случаи не рассматриваем пока...
+//                            var actualSelector = ap.applyCssTo || ap.cssSelector;
+//                            if (ap.cssProperty) {
+//                                ap.propertyValue = $("#id-product_iframe_cnt").find('iframe').contents().find(actualSelector).css(ap.cssProperty)
+//                            }
+//                            else {
+//                                log('No cssProperty: ' + ap.propertyString, true);
+//                            }
+//                        }
                     }
                 }
-                // далее ищем data-app-property атрибуты, чтобы сразу привязать к экрану app property
-                var dataElems = $(ps[i].view).find('[data-app-property]');
-                if (dataElems.length > 0) {
-                    for (var j = 0; j < dataElems.length; j++) {
-                        var atr = $(dataElems[j]).attr('data-app-property');
-                        var psArr = atr.split(' ');
-                        for (var k = 0; k < psArr.length; k++) {
-                            var tspAtr = psArr[k].trim();
-                            if (getAppProperty(tspAtr)!==null) {
-                                ps[i].appPropertyElements.push({
-                                    propertyString: tspAtr,
-                                    domElement: dataElems[j]
-                                });
-                            }
-                        }
-                    }
-                }
-
-                appScreens.push(ps[i]);
+                appScreens.push(appScreen);
                 // идишники сохраняем отдельно для быстрой отдачи их редактору единым массивом
-                appScreenIds.push(ps[i].id);
+                appScreenIds.push(appScreen.id);
             }
 
             // нужно именно такое разделение событий: до, для каждого экрана, и после
@@ -571,26 +544,6 @@ var Engine = {};
                 send('ScreenUpdated', null, ps[i].id);
             }
             send('AllScreensWereUpdatedAfter');
-        }
-    }
-
-    /**
-     * Добавить новое значение в data-app-property избегая дублирования
-     * prop3 -> data-app-property="prop1 prop2" = data-app-property="prop1 prop2 prop3"
-     *
-     * @param {DOMElement} elem html element
-     * @param {string} attribute
-     */
-    function addDataAttribute(elem, attribute) {
-        var exAtr = $(elem).attr('data-app-property');
-        if (exAtr) {
-            if (exAtr.indexOf(attribute) < 0) {
-                // избегаем дублирования
-                $(elem).attr('data-app-property', exAtr + ' ' + attribute);
-            }
-        }
-        else {
-            $(elem).attr('data-app-property', attribute);
         }
     }
 

@@ -151,6 +151,11 @@ var config = {
              */
             src: 'products/test_new/index.html',
             /**
+             * В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae
+             * Нужно для превью в контроле Slide
+             */
+            stylesForEmbed: '<link href="products/test/style.css" rel="stylesheet"/>',
+            /**
              * каталог откуда publisher будет брать все ресурсы для публикации проекта
              */
             baseProductUrl: 'products/test_new/',
@@ -176,7 +181,7 @@ var config = {
              */
             autotests: {
                 expectedPropertiesCount: 120,
-                expectedScreensCount: 9,
+                expectedScreensCount: 8,
                 expectedTriggersCount: 3,
                 expectedSerializedAppStringLength: 4000
             }

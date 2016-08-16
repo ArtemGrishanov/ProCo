@@ -27,7 +27,14 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
     this.onPreviewIFrameLoaded = function() {
         var $previewDocument = this.$previewIFrame.contents();
         // TODO стили промопроекта как сюда попадут?
-        $previewDocument.find('head').append(getProjectStandartCssLink());
+        var productType = Engine.getApp().type;
+        var productConfig = config.products[productType];
+        if (productConfig) {
+            $previewDocument.find('head').append(productConfig.stylesForEmbed);
+        }
+        else {
+            log('Slide.onPreviewIFrameLoaded: Unknown product type', true);
+        }
         this.$previewDocumentBody = $previewDocument.find('body').css('margin',0).css('overflow','hidden');
         // создание первого превью
         if (config.common.generateSlidePreviews === true) {
