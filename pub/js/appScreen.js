@@ -18,6 +18,21 @@ var AppScreen = function(view) {
      */
     this.appPropertyElements = [];
     this.hints = [];
+    /**
+     * Признак группировки в контроле
+     * @type {*}
+     */
+    this.group = view.group;
+    /**
+     * Название показываемое рядом с экраном
+     * @type {*}
+     */
+    this.name = view.name;
+    /**
+     * Схлопывание экранов в один контрол
+     * @type {*}
+     */
+    this.collapse = view.collapse;
 }
 
 /**

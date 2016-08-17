@@ -104,6 +104,9 @@ var TEngine = {};
      */
     function checkAppScreen(assert, screen) {
         assert.ok(!!screen.id === true, 'checkAppScreen id');
+        assert.ok(!!screen.group === true, 'checkAppScreen group');
+        assert.ok(typeof screen.name === 'string', 'checkAppScreen name');
+        assert.ok(typeof screen.collapse === 'boolean', 'checkAppScreen collapse');
         assert.ok(!!screen.view === true, 'checkAppScreen view');
         assert.ok(!!screen.view.$el === true, 'checkAppScreen view.$el');
         assert.ok(!!screen.view.$el.children().length > 0, 'checkAppScreen view.$el children');

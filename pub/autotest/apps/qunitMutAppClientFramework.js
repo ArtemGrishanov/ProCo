@@ -194,10 +194,12 @@ QUnit.test("MutApp test: multiapp", function( assert ) {
             }));
             this.addScreen(new QuestionScreen({
                 model: tm,
+                questionId: tm.attributes.quiz[0].id,
                 screenRoot: this.screenRoot
             }));
             this.addScreen(new ResultScreen({
                 model: tm,
+                resultId: tm.attributes.results[0].id,
                 screenRoot: this.screenRoot
             }));
         }

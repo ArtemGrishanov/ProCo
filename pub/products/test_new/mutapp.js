@@ -339,7 +339,8 @@ MutApp.Screen = Backbone.View.extend({
         {key: 'draggable', value: true},
         {key: 'canAdd', value: false},
         {key: 'canClone', value: false},
-        {key: 'canDelete', value: false}
+        {key: 'canDelete', value: false},
+        {key: 'collapse', value: false}
     ],
     /**
      *

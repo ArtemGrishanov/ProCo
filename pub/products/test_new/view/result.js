@@ -19,7 +19,10 @@ var ResultScreen = MutApp.Screen.extend({
      * @see MutApp
      */
     name: 'Результат',
-
+    /**
+     * Схлопываем результаты в один
+     */
+    collapse: true,
     /**
      * @see MutApp
      */
