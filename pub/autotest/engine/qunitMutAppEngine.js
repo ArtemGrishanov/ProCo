@@ -41,6 +41,6 @@ config.common.editorUiEnable = false;
 
 QUnit.test("Engine test 1", function( assert ) {
 
-
+    TEngine.scenarioChangeValues(assert, 'test');
 
 })

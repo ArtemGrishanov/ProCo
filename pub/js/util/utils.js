@@ -230,13 +230,13 @@ function getQueryParams(qs) {
  * @param prop
  * @param value
  */
-function assign(obj, prop, value) {
+function assignByPropertyString(obj, prop, value) {
     if (typeof prop === "string") {
         prop = prop.split(".");
     }
     if (prop.length > 1) {
         var e = prop.shift();
-        assign(obj[e] =
+        assignByPropertyString(obj[e] =
             Object.prototype.toString.call(obj[e]) === "[object Object]"
                 ? obj[e]
                 : {},

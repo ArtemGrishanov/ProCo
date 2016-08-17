@@ -194,13 +194,14 @@ var Engine = {};
         return result;
     }
 
-    function setAppPropertiesValues(values) {
-        for (var key in values) {
-            if (values.hasOwnProperty(key)) {
-                _setAppValue(key, values[key])
-            }
-        }
-    }
+//    function setAppPropertiesValues(values) {
+//        todo change
+//        for (var key in values) {
+//            if (values.hasOwnProperty(key)) {
+//                _setAppValue(key, values[key])
+//            }
+//        }
+//    }
 
     /**
      * Устанавливает быстро значения appProperty
@@ -743,19 +744,26 @@ var Engine = {};
             // после прогонов всех тестов (если они были) можно сделать вывод о том, были ли ошибки
             // если тестов не было, то тоже считаем что всё успешно
             if (isErrorInTestResults() === false) {
-                operationsCount++;
-                appProperty.propertyValue = value;
                 if (appProperty.type === 'app') {
-                    _setAppValue(pStr, value);
-                    log('\''+pStr+'\'='+stringifiedValue+' was set', false, false);
+                    var success = setPropertyToMutApp(pStr, value);
+                    if (success === true) {
+                        operationsCount++;
+                        appProperty.propertyValue = value;
+                        log('Engine.setValue: property was set \''+pStr+'\'='+stringifiedValue);
+                    }
+                    else {
+                        log('Engine.setValue: Unable to set \''+pStr+'\'='+stringifiedValue, true);
+                    }
+//                    _setAppValue(pStr, value);
+//                    log('\''+pStr+'\'='+stringifiedValue+' was set', false, false);
                     // тесты пока не делаем
                     //log('All tests was successful. Tests count='+testResults.length+'; \''+pStr+'\'='+stringifiedValue+' was set', false, false);
                     // дальше перезапустить приложение
-                    if (typeof productWindow.start === 'function') {
-                        log('Restart app', false, false);
-                        // передает ссылку на себя при старте
-                        productWindow.start.call(productWindow, buildProductAppParams.call(this));
-                    }
+//                    if (typeof productWindow.start === 'function') {
+//                        log('Restart app', false, false);
+//                        // передает ссылку на себя при старте
+//                        productWindow.start.call(productWindow, buildProductAppParams.call(this));
+//                    }
                 }
 
                 if (appProperty.type === 'css') {
@@ -805,24 +813,75 @@ var Engine = {};
     }
 
     /**
-     *
-     * @param propertyString
-     * @param value
-     * @private
+     * Старт приложения
+     * @param {object} defaults свойства которые будут установлены по умолчанию в приложение
+     * @return {boolen}
      */
-    function _setAppValue(propertyString, value) {
-        var stringifiedValue = JSON.stringify(value);
+    function startMutApp(defaults) {
+        //TODO выбрать конструктор для приложения
         try {
-            eval('productWindow.app'+convertToBracedString(propertyString)+'='+stringifiedValue);
+            productWindow.app = new productWindow.TestApp({
+    //TODO ширина и высота такие аппПроперти
+    //            width: appWidth,
+    //            height: appHeight,
+        //            renderScreensOnStart: true,
+                defaults: defaults
+            });
         }
         catch(e) {
-            log('_setAppValue: '+propertyString+'='+value+' details:'+e,true)
+            log('Engine.setPropertyToMutApp: '+ e.message, true);
+            return false;
         }
+        return true;
     }
 
-    function _setCssValue() {
-        //TODO
+    /**
+     * Поменять одно свойтство приложения
+     * Всегда делается перезапуск
+     *
+     * @param {string} 'id=tm showTextixLogo'
+     * @param {*} newValue
+     *
+     * @return {boolen}
+     */
+    function setPropertyToMutApp(propertyString, newValue) {
+        //TODO выбрать конструктор для приложения
+        try {
+            var apps = Engine.getAppPropertiesValues().app;
+            apps[propertyString] = newValue;
+            productWindow.app = new productWindow.TestApp({
+                //TODO ширина и высота такие аппПроперти
+    //            width: appWidth,
+    //            height: appHeight,
+    //            renderScreensOnStart: true,
+                defaults: apps
+            });
+        }
+        catch(e) {
+            log('Engine.setPropertyToMutApp: '+ e.message, true);
+            return false;
+        }
+        return true;
     }
+//    /**
+//     *
+//     * @param propertyString
+//     * @param value
+//     * @private
+//     */
+//    function _setAppValue(propertyString, value) {
+//        var stringifiedValue = JSON.stringify(value);
+//        try {
+//            eval('productWindow.app'+convertToBracedString(propertyString)+'='+stringifiedValue);
+//        }
+//        catch(e) {
+//            log('_setAppValue: '+propertyString+'='+value+' details:'+e,true)
+//        }
+//    }
+//
+//    function _setCssValue() {
+//        //TODO
+//    }
 
     function isErrorInTestResults() {
         if (testResults) {
@@ -835,22 +894,22 @@ var Engine = {};
         return false;
     }
 
-    /**
-     * Подготовить параметры для передачи в промо приложение при запуске
-     *
-     * @returns {{engine: buildProductAppParams, startSlide: number}}
-     */
-    function buildProductAppParams() {
-        var result = {
-            engine: this,
-            previewScreen: currentPreviewScreen
-        };
-        if (currentPreviewScreen) {
-            // если экран для запуска указан, то надо также передать его данные
-            result.previewScreenData = getAppScreen(currentPreviewScreen).data;
-        }
-        return result;
-    }
+//    /**
+//     * Подготовить параметры для передачи в промо приложение при запуске
+//     *
+//     * @returns {{engine: buildProductAppParams, startSlide: number}}
+//     */
+//    function buildProductAppParams() {
+//        var result = {
+//            engine: this,
+//            previewScreen: currentPreviewScreen
+//        };
+//        if (currentPreviewScreen) {
+//            // если экран для запуска указан, то надо также передать его данные
+//            result.previewScreenData = getAppScreen(currentPreviewScreen).data;
+//        }
+//        return result;
+//    }
 
     /**
      * Запуск платформы
@@ -875,39 +934,45 @@ var Engine = {};
             console.error('descriptor object must be specified');
         }
 
-        // установить сохраненный значения из шаблона, например, они могут быть взяты из шаблона
-        // сначала установить значения, так как на основе них потом создаются appProperty
-        if (params && params.values && params.values.app) {
-            setAppPropertiesValues(params.values.app);
-        }
+//        if (params && params.values && params.values.app) {
+//            setAppPropertiesValues(params.values.app);
+//        }
 
         // вызываем start передавая в промо-приложение параметры
 //        productWindow.start.call(productWindow, buildProductAppParams.call(this));
         //TODO
-        productWindow.app = new productWindow.TestApp({
-//            width: 123,
-//            height: 123,
-            defaults: buildProductAppParams.call(this)
-        });
-
-        appProperties = [];
-        appPropertiesObjectPathes = [];
-        testResults = [];
-        // рекурсивно создает по всем свойствам app объекты AppProperty
-        createAppProperties(productWindow.descriptor);
-        createCssProperties(productWindow.descriptor);
-
-        // css можно устанавливать уже после создания appProperties по дескриптору, роли не играет
-        if (params && params.values && params.values.css) {
-            setCssPropertiesValues(params.values.css);
+        var success = undefined;
+        if (params && params.values && params.values.app) {
+            // установить значения из шаблона
+            // сначала установить значения, так как на основе них потом создаются appProperty
+            success = startMutApp(param.values.app);
         }
+        else {
+            success = startMutApp();
+        }
+        if (success===true) {
+            appProperties = [];
+            appPropertiesObjectPathes = [];
+            testResults = [];
+            // рекурсивно создает по всем свойствам app объекты AppProperty
+            createAppProperties(productWindow.descriptor);
+            createCssProperties(productWindow.descriptor);
 
-        // создать экраны (слайды) для промо приложения
-        createAppScreens();
-        // находим и создаем темы
-        createAppPresets(productWindow.descriptor);
-        // создать триггеры. Создаются только один раз
-        createTriggers(productWindow.descriptor);
+            // css можно устанавливать уже после создания appProperties по дескриптору, роли не играет
+            if (params && params.values && params.values.css) {
+                setCssPropertiesValues(params.values.css);
+            }
+
+            // создать экраны (слайды) для промо приложения
+            createAppScreens();
+            // находим и создаем темы
+            createAppPresets(productWindow.descriptor);
+            // создать триггеры. Создаются только один раз
+            createTriggers(productWindow.descriptor);
+        }
+        else {
+            log('Engine: Can not start application');
+        }
     }
 
     /**

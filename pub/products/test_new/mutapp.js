@@ -384,9 +384,12 @@ MutApp.Model = Backbone.Model.extend({
                 for (var i = 0; i < this.application._parsedDefaults.length; i++) {
                     d = this.application._parsedDefaults[i];
                     if (d.conditionValue === this[d.conditionKey]) {
-                        o = {};
-                        o[d.valueKey] = d.value;
-                        this.set(o);
+                        //o = {};
+                        //o[d.valueKey] = d.value;
+                        //this.set(o);
+                        // здесь подойдет установка сразу в attributes модели, так как модели создаются перед вью (всегда?) и не нужны события и прочие опции
+                        // например, d.valueKey='quiz.2.question.text' d.value='Текст вопроса'
+                        MutApp.Util.assignByPropertyString(this.attributes, d.valueKey, d.value); // assignByPropertyString in util/utils.js
                     }
                 }
             }
@@ -505,6 +508,35 @@ MutApp.Util = {
             }
         }
         return result;
+    },
+
+    /**
+     * Установить свойство используя object path
+     *
+     * var obj = {},
+     * assign(obj, "foo.bar.foobar", "Value");
+     *
+     * @param obj
+     * @param prop
+     * @param value
+     */
+    assignByPropertyString: function(obj, prop, value) {
+        if (typeof prop === "string") {
+            prop = prop.split(".");
+        }
+        if (prop.length > 1) {
+            var e = prop.shift();
+            var typeString = Object.prototype.toString.call(obj[e]);
+            MutApp.Util.assignByPropertyString(obj[e] =
+                typeString === "[object Object]" || typeString === "[object Array]"
+                    ? obj[e]
+                    : {},
+                prop,
+                value);
+        }
+        else {
+            obj[prop[0]] = value;
+        }
     }
 };
 

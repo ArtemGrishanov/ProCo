@@ -55,8 +55,8 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
         }
         this.$directive.mousedown((function() {
             var p = (Array.isArray(this.propertyString))?this.propertyString.join(','):this.propertyString;
-            if (activeScreens.join(',') !== p) {
-                showScreen(Array.isArray(propertyString)?propertyString:propertyString.split(','));
+            if (Editor.getActiveScreens().join(',') !== p) {
+                Editor.showScreen(Array.isArray(propertyString)?propertyString:propertyString.split(','));
             }
         }).bind(this));
     });
@@ -66,7 +66,7 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
      */
     this.onScreenUpdate = function(screenId) {
         //перерисовывать только когда экран реально виден пользователю, только активный экран
-        //activeScreens - последние показанные экраны
+        //Editor.getActiveScreens() - текущие показанные экраны
 
         // Схлопнутые экраны.
         // например, this.propertyString = [result1, resul2, result3]
@@ -76,9 +76,9 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
         if ((typeof this.propertyString==='string' && screenId===this.propertyString) ||
             (Array.isArray(this.propertyString) && this.propertyString.indexOf(screenId)>=0)) {
             // это этот экран
-            if (activeScreens.join(',') == this.propertyString) {
+            if (Editor.getActiveScreens().join(',') == this.propertyString) {
                 var arr = (Array.isArray(this.propertyString))?this.propertyString:[this.propertyString];
-                showScreen(arr);
+                Editor.showScreen(arr);
             }
             if (config.common.generateSlidePreviews === true) {
                 this.updatePreview();

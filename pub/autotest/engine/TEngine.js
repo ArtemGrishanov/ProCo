@@ -33,12 +33,17 @@ var TEngine = {};
                 checkAppProperty(assert, appProps[i]);
             }
         }
+        // поиск дублирующихся пропертей
+        var d = duplicateCount(assert,appProps,'propertyString');
+        assert.ok(d === 0, 'Duplicates in app properties');
 
         var scrIds = Engine.getAppScreenIds();
         assert.ok(scrIds.length >= productConfig.autotests.expectedScreensCount, 'There are some screens');
         for (var i = 0; i < scrIds.length; i++) {
             var s = Engine.getAppScreen(scrIds[i]);
             assert.ok(s!==null,'Screen has finded');
+
+            checkAppScreen(assert, s);
         }
 
         var trig = Engine.getAppTriggers();
@@ -73,18 +78,10 @@ var TEngine = {};
             assert.ok(cssString.length == 1, 'Engine.getCustomStylesString()');
         }
 
-
-
-        //TODO
-//        2) сценрий engine
-//        сделать изменение свойств в приложении mutapp через движок и с их последующей проверкой
-//        но как тогда грузить приложение? Этот слой сам этого не умеет...
-//
 //        1) верхний уровень можно назвать "product"
 //        а сценарии иметь на каждом уровне
 //        на уровне движка например генератор
 //        на уровне TApp выделить сценарий прохождения и проверки
-
 
     }
 
@@ -107,6 +104,84 @@ var TEngine = {};
      */
     function checkAppScreen(assert, screen) {
         //todo
+        assert.ok(!!screen.id === true, 'checkAppScreen');
+    }
+
+    /**
+     *
+     * @param assert
+     */
+    function scenarioChangeValues(assert, appName) {
+        var appName = appName || 'test';
+
+        var done = assert.async();
+        var app = null;
+
+        Queue.push({
+            run: function() {
+                // запуск редактора
+                // в нормальном режиме эти параметры передаются через url-get строку
+                Editor.start({
+                    app: appName,
+                    //template: '' // другой режим запуска возможен, через шаблон
+                    callback: function() {
+                        assert.ok(true, 'Editor started');
+                        Queue.release(this);
+                    }
+                });
+            }
+        });
+
+        Queue.push({run: function() {
+            TEngine.checkEngine(assert, 'test');
+            Queue.release(this);
+        }});
+
+        Queue.push({
+            run: function() {
+                var saved = [];
+                // нужно склонировать массив, так как он по ходу теста может меняться, а нам надо постоянный
+                var appProps = JSON.parse(JSON.stringify(Engine.getAppPropertiesObjectPathes()));
+                var initialLength = appProps.length;
+                for (var i = 0; i < appProps.length; i++) {
+                    var p = Engine.getAppProperty(appProps[i]);
+                    assert.ok(p!==null,'Property not null \''+appProps[i]+'\'');
+                    if (p.type === 'app') {
+                        if (typeof p.propertyValue === 'string') {
+                            var newValue = 'rand_string_'+Math.trunc(Math.random()*10000);
+                            Engine.setValue(p, newValue);
+                            var actualProperty = Engine.getApp().getPropertiesBySelector(p.propertyString);
+                            assert.ok(actualProperty.length===1, 'actualProperty is array length=1');
+                            assert.ok(actualProperty[0].value === newValue, 'string value set correctly for \''+p.propertyString+'\''+' value='+newValue);
+                            saved.push({'propertyString':p.propertyString, 'value':newValue});
+                        }
+                    }
+                }
+
+                for (var i = 0; i < saved.length; i++) {
+                    var actualProperty = Engine.getApp().getPropertiesBySelector(saved[i].propertyString);
+                    assert.ok(actualProperty.length===1, 'Second interation. actualProperty is array length=1');
+                    assert.ok(actualProperty[0].value === saved[i].value, 'Second interation. String value set correctly for \''+saved[i].propertyString+'\''+' value='+saved[i].value);
+                }
+
+                assert.ok(initialLength===Engine.getAppProperties().length, 'Length');
+
+                Queue.release(this);
+            }
+        });
+
+        Queue.push({run: function() {
+            TEngine.checkEngine(assert, 'test');
+            Queue.release(this);
+        }});
+
+        Queue.push({run: function() {
+            app = Engine.getApp();
+            TApp.checkApp(assert, app);
+            Queue.release(this);
+
+            done();
+        }});
     }
 
     /**
@@ -134,6 +209,26 @@ var TEngine = {};
         return result;
     }
 
+    /**
+     * Найти количество дубликатов в массиве по свойству
+     *
+     * @param array
+     * @param propertyName
+     */
+    function duplicateCount(assert, array, propertyName) {
+        var result = 0;
+        for (var i = 0; i < array.length; i++) {
+            for (var j = 0; j < array.length; j++) {
+                if (i!==j && array[i][propertyName]===array[j][propertyName]) {
+                    assert(false, 'TEngine.duplicateCount: duplicated \''+array[i][propertyName]+'\'');
+                    result++;
+                }
+            }
+        }
+        return result;
+    }
+
     global.checkEngine = checkEngine;
+    global.scenarioChangeValues = scenarioChangeValues;
 
 })(TEngine);

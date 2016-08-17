@@ -1093,6 +1093,10 @@ var Editor = {};
         });
     }
 
+    function getActiveScreens() {
+        return activeScreens;
+    }
+
     function showSelection($elem) {
         selectedElem = $elem;
         var $seletionBorder = $($('#id-elem_selection_template').html());
@@ -1127,5 +1131,7 @@ var Editor = {};
     global.selectElementsOnScreen = selectElementsOnScreen;
     global.getAppIframe = getAppIframe;
     global.createControl = createControl;
+    global.getActiveScreens = getActiveScreens;
+    global.showScreen = showScreen;
 
 })(Editor);
