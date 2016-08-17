@@ -154,7 +154,7 @@ var config = {
              * В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae
              * Нужно для превью в контроле Slide
              */
-            stylesForEmbed: '<link href="products/test/style.css" rel="stylesheet"/>',
+            stylesForEmbed: '<link href="products/test_new/style.css" rel="stylesheet"/>',
             /**
              * каталог откуда publisher будет брать все ресурсы для публикации проекта
              */

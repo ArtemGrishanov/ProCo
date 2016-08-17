@@ -99,12 +99,11 @@ var Editor = {};
      * @type {null}
      */
     var productScreensCnt = null;
-    //TODO calculate appSize
     /**
      *
      * @type {{width: number}}
      */
-    var appSize = {width: 800, height: 600};
+    var appContainerSize = {width: 800, height: 600};
     /**
      * Количество сделанный операция по редактированию пользователем
      * При сохранении шаблона синхронизируется с таким же счетччиком engine
@@ -235,6 +234,17 @@ var Editor = {};
             };
         }
         Engine.startEngine(iframeWindow, params);
+
+        var app = Engine.getApp();
+        // выставляем размер приложения, как оно будет видно пользователю при редактировании
+        appContainerSize = {
+            width: app.width,
+            height: app.height
+        };
+
+        // в поле для редактирования подтягиваем стили продукта
+        $("#id-product_screens_cnt").contents().find('head').append(config.products[app.type].stylesForEmbed);
+
         if (config.common.editorUiEnable === true) {
             showEditor();
             createScreenControls();
@@ -280,12 +290,12 @@ var Editor = {};
         for (var i = 0; i < ids.length; i++) {
             appScreen = Engine.getAppScreen(ids[i]);
             if (appScreen) {
-                $(productScreensCnt).append(appScreen.view).append('<br>');
-                previewHeight += appSize.height+20; // 20 - <br>
-                if (typeof appScreen.doWhenInDOM === 'function') {
-                    appScreen.doWhenInDOM(iframeWindow.app, appScreen.view);
-                }
-                bindControlsForAppPropertiesOnScreen(appScreen.view, ids[i]);
+                $(productScreensCnt).append(appScreen.view.$el).append('<br>');
+                previewHeight += appContainerSize.height+20; // 20 - <br>
+//                if (typeof appScreen.doWhenInDOM === 'function') {
+//                    appScreen.doWhenInDOM(iframeWindow.app, appScreen.view);
+//                }
+                bindControlsForAppPropertiesOnScreen(appScreen.view.$el, ids[i]);
                 applyTriggers('screen_show');
     //            showAppScreenHints(appScreen);
             }
@@ -294,7 +304,7 @@ var Editor = {};
             }
         }
         // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
-        $('#id-product_screens_cnt').width(appSize.width).height(previewHeight);
+        $('#id-product_screens_cnt').width(appContainerSize.width).height(previewHeight);
         // боковые панели вытягиваем также
         // TODO в зависимости от контролов также вытягивать надо
         $('.js-setting_panel').height(previewHeight);
@@ -445,19 +455,6 @@ var Editor = {};
                 log('AppProperty \''+propertyString+'\' not exist. But such attribute exists on the screen: \''+scrId+'\'', true);
             }
         }
-
-        //TODO пока как-то выглядит запутанным управление контролами
-
-        // скомпилировать новые angular derictives (которые соответствуют контролам)
-    //    var $injector = angular.injector(['ng', 'procoApp']);
-    //    $injector.invoke(function ($rootScope, $compile) {
-    //        $compile($('#id-control_cnt')[0])($rootScope);
-    //        $rootScope.$digest();
-    //    });
-
-        // обновление высоты боковой панели в зависимости от высоты контролов в в ней
-        // ставится максимум из высоты экранов и контролов: не получилось это сделать стилями
-    //    $('.js-setting_panel.__right').width(appSize.width).height(previewHeight);
     }
 
     ///**
@@ -1133,5 +1130,6 @@ var Editor = {};
     global.createControl = createControl;
     global.getActiveScreens = getActiveScreens;
     global.showScreen = showScreen;
+    global.getAppContainerSize = function() { return appContainerSize; };
 
 })(Editor);

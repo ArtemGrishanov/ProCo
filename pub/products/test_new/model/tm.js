@@ -272,6 +272,21 @@ var TestModel = MutApp.Model.extend({
     },
 
     /**
+     * Найти результат по ид
+     * Нужно потому, что каждый экран отвечает за свой результат
+     * @param {string} id - уник ид результата
+     */
+    getResultById: function(id) {
+        for (var i = 0; i < this.attributes.results.length; i++) {
+            var r = this.attributes.results[i];
+            if (r.id === id) {
+                return r;
+            }
+        }
+        return null;
+    },
+
+    /**
      * Ответить на текущий вопрос
      * @param id - идентификатор выбранного ответа
      * @returns {boolean}
@@ -387,6 +402,7 @@ var TestModel = MutApp.Model.extend({
                     title: 'Название результата ' + i,
                     description: 'Неплохо для начала.'
                 };
+                this.attributes.results[i].id = MD5.calc(this.attributes.results[i].title + this.attributes.results[i].description + i).substr(0,6);;
             }
         }
         if (this.attributes.results.length > resultsCount) {

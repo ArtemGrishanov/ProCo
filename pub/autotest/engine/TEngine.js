@@ -103,8 +103,10 @@ var TEngine = {};
      * Проверить отдельный AppScreen
      */
     function checkAppScreen(assert, screen) {
-        //todo
-        assert.ok(!!screen.id === true, 'checkAppScreen');
+        assert.ok(!!screen.id === true, 'checkAppScreen id');
+        assert.ok(!!screen.view === true, 'checkAppScreen view');
+        assert.ok(!!screen.view.$el === true, 'checkAppScreen view.$el');
+        assert.ok(!!screen.view.$el.children().length > 0, 'checkAppScreen view.$el children');
     }
 
     /**

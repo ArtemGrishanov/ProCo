@@ -7,6 +7,9 @@ var MutApp = function() {
     this._models = [];
     this._screens = [];
     this._history = [];
+    //TODO mob ?
+    this.width = 800;
+    this.height = 400;
 
     if (arguments[0]) {
         this.width = arguments[0].width;
@@ -76,6 +79,7 @@ var MutApp = function() {
 MutApp.prototype.addScreen = function(v) {
     if (v instanceof MutApp.Screen === true) {
         this._screens.push(v);
+        v.render();
         return v;
     }
     throw new Error('View must be a MutApp.Screen instance');

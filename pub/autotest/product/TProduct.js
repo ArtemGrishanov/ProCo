@@ -90,11 +90,13 @@ var TScenarios = {};
                 },
                 run: function() {
                     // показать все экраны по очереди
-                    Editor.showScreen();
+                    Editor.showScreen([this.data.screenId]);
+
                     // проверить переключение и отображение экрана
-                    TEditor.checkScreens(assert);
+                    TEditor.checkSlides(assert);
+
                     // выделение всех элементов приводит к созданию и фильтрации контролов
-                    TEditor.selectElementsOnScreen(function(elem) {
+                    Editor.selectElementsOnScreen(function(elem) {
                         TEditor.checkControls(assert);
                         // контролы управляют настройками верно
                         TEditor.changeValue(assert); // ???

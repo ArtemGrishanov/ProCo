@@ -4,6 +4,9 @@
 function checkTestInStatic(assert, app) {
     var model = app._models[0];
     assert.ok(!!app === true, 'app exists');
+    assert.ok(!!app.type === true, 'app type exists');
+    assert.ok(!!app.width === true, 'app width exists');
+    assert.ok(!!app.height === true, 'app height exists');
     assert.ok(!!model === true, 'model exists');
     checkQuizFormat(assert, model);
     checkUnicQuestionsId(assert, model);
@@ -176,6 +179,7 @@ function checkResults(assert, model) {
 
     for (var i = 0; i < model.attributes.results.length; i++) {
         var r = model.attributes.results[i];
+        assert.ok(!!r.id === true, 'Result id');
         assert.ok(!!r.title === true, 'Result title');
         assert.ok(!!r.description === true, 'Result description');
         assert.ok($.isNumeric(r.minPoints) === true, 'minpoints is numeric');
@@ -194,6 +198,20 @@ function checkResults(assert, model) {
                 assert.ok(false, 'Points conflict in '+ r.title+' and '+r2.title);
             }
         }
+
+        if (!!r.id === true) {
+            // проверим что ид не повторяются
+            for (var k = 0; k < model.attributes.results.length; k++) {
+                if (k!==i && r.id===model.attributes.results[k].id) {
+                    assert.ok(false, 'checkResults: result id must be unic');
+                }
+            }
+        }
+        else {
+            assert.ok(false, 'checkResults: id is not set for result');
+        }
+
+        assert.ok(model.getResultById(r.id)===r, 'getResultById');
     }
 
     // проверяем что для каждого значения есть результат

@@ -179,3 +179,1452 @@ body {
     color: #ffffcc;
     border-bottom: 1px solid #000;
 }
+
+/*====================================================================*/
+/*====================================================================*/
+/*====================================================================*/
+
+html,
+body {
+    position: relative;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+body {
+    background-image: url("../i/Big-fon.png");
+    background-size: cover;
+    background-attachment: fixed;
+}
+img {
+    border: 0 none;
+}
+.wrapper {
+    position: relative;
+    height: 100%;
+    overflow: auto;
+}
+.container {
+    min-width: 960px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 42px 0;
+}
+.content {
+    padding: 16px;
+    background-color: #eee;
+    overflow: hidden;
+}
+.island {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 24px 40px;
+    margin-bottom: 16px;
+}
+.island:last-child {
+    margin-bottom: 0;
+}
+.left-column {
+    overflow: hidden;
+}
+.right-column {
+    width: 33%;
+    max-width: 400px;
+    float: right;
+    margin-left: 16px;
+}
+.title {
+    font-size: 28px;
+    color: #4f4f4f;
+    margin-bottom: 22px;
+}
+.button {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #024889;
+    color: #fff;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 32px;
+    cursor: pointer;
+    font-size: 18px;
+}
+.button.__small {
+    padding: 0 16px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+}
+.button.__sec {
+    background-color: transparent;
+    border: 1px #024889 solid;
+    height: 38px;
+    line-height: 38px;
+    color: #024889;
+}
+.button + .button {
+    margin-left: 12px;
+}
+html,
+body {
+    position: relative;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+body {
+    background-image: url("../i/Big-fon.png");
+    background-size: cover;
+    background-attachment: fixed;
+}
+img {
+    border: 0 none;
+}
+.wrapper {
+    position: relative;
+    height: 100%;
+    overflow: auto;
+}
+.container {
+    min-width: 960px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 42px 0;
+}
+.content {
+    padding: 16px;
+    background-color: #eee;
+    overflow: hidden;
+}
+.island {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 24px 40px;
+    margin-bottom: 16px;
+}
+.island:last-child {
+    margin-bottom: 0;
+}
+.left-column {
+    overflow: hidden;
+}
+.right-column {
+    width: 33%;
+    max-width: 400px;
+    float: right;
+    margin-left: 16px;
+}
+.leaders_a {
+    text-decoration: none;
+    color: #4f4f4f;
+}
+.leaders_lst {
+    overflow: hidden;
+}
+.leaders_i {
+    float: left;
+    width: 30%;
+}
+.leaders_i + .leaders_i {
+    margin-left: 5%;
+}
+.leaders_flag {
+    width: 60px;
+    height: 36px;
+    float: left;
+    margin-right: 14px;
+    background-color: #ccc;
+    background-size: 60px 36px;
+}
+.leaders_flag.__australia {
+    background-image: url("../../common/i/flags/Australia.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .leaders_flag.__australia {
+        background-image: url("../../common/i/flags/Australia@2x.png");
+    }
+}
+.leaders_flag.__china {
+    background-image: url("../../common/i/flags/China.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .leaders_flag.__china {
+        background-image: url("../../common/i/flags/China@2x.png");
+    }
+}
+.leaders_flag.__cuba {
+    background-image: url("../../common/i/flags/Cuba.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .leaders_flag.__cuba {
+        background-image: url("../../common/i/flags/Cuba@2x.png");
+    }
+}
+.leaders_flag.__france {
+    background-image: url("../../common/i/flags/France.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .leaders_flag.__france {
+        background-image: url("../../common/i/flags/France@2x.png");
+    }
+}
+.leaders_flag.__germany {
+    background-image: url("../../common/i/flags/Germany.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .leaders_flag.__germany {
+        background-image: url("../../common/i/flags/Germany@2x.png");
+    }
+}
+.leaders_flag.__gb {
+    background-image: url("../../common/i/flags/Great_Britain.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .leaders_flag.__gb {
+        background-image: url("../../common/i/flags/Great_Britain@2x.png");
+    }
+}
+.leaders_flag.__hungary {
+    background-image: url("../../common/i/flags/Hungary.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .leaders_flag.__hungary {
+        background-image: url("../../common/i/flags/Hungary@2x.png");
+    }
+}
+.leaders_flag.__italy {
+    background-image: url("../../common/i/flags/Italy.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .leaders_flag.__italy {
+        background-image: url("../../common/i/flags/Italy@2x.png");
+    }
+}
+.leaders_flag.__japan {
+    background-image: url("../../common/i/flags/Japan.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .leaders_flag.__japan {
+        background-image: url("../../common/i/flags/Japan@2x.png");
+    }
+}
+.leaders_flag.__netherlands {
+    background-image: url("../../common/i/flags/Netherlands.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .leaders_flag.__netherlands {
+        background-image: url("../../common/i/flags/Netherlands@2x.png");
+    }
+}
+.leaders_flag.__russia {
+    background-image: url("../../common/i/flags/Russia.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .leaders_flag.__russia {
+        background-image: url("../../common/i/flags/Russia@2x.png");
+    }
+}
+.leaders_flag.__south-korea {
+    background-image: url("../../common/i/flags/South_Korea.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .leaders_flag.__south-korea {
+        background-image: url("../../common/i/flags/South_Korea@2x.png");
+    }
+}
+.leaders_flag.__usa {
+    background-image: url("../../common/i/flags/USA.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .leaders_flag.__usa {
+        background-image: url("../../common/i/flags/USA@2x.png");
+    }
+}
+@media only screen and (max-width: 1200px) {
+    .leaders_flag {
+        display: none;
+    }
+}
+.leaders_name {
+    font-size: 16px;
+    color: #595959;
+    text-transform: uppercase;
+    max-width: 100%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+.leaders_medals {
+    clear: left;
+    padding-top: 16px;
+    white-space: nowrap;
+}
+.medal {
+    display: inline-block;
+    vertical-align: top;
+    line-height: 18px;
+}
+.medal + .medal {
+    margin-left: 12px;
+}
+.medal:before {
+    content: '';
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 6px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+}
+.medal.__gold:before {
+    background-color: #ab891e;
+}
+.medal.__silver:before {
+    background-color: #b3b3b3;
+}
+.medal.__bronze:before {
+    background-color: #c26c3c;
+}
+.opera-mini .medal.__gold:before {
+    background-color: transparent;
+    background-image: url("../../common/i/medals/gold_18.png");
+}
+.opera-mini .medal.__silver:before {
+    background-color: transparent;
+    background-image: url("../../common/i/medals/silver_18.png");
+}
+.opera-mini .medal.__bronze:before {
+    background-color: transparent;
+    background-image: url("../../common/i/medals/bronze_18.png");
+}
+.feed_i {
+    border: 1px #979797 solid;
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 0;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+.feed_i + .feed_i {
+    margin-top: 8px;
+}
+.feed_media {
+    position: relative;
+    margin-right: 16px;
+    height: 80px;
+    width: 120px;
+    overflow: hidden;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+}
+.feed_img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.feed_t {
+    font-size: 16px;
+    color: #4f4f4f;
+    -webkit-flex-shrink: 1;
+    -ms-flex-negative: 1;
+    flex-shrink: 1;
+}
+.games_title {
+    margin-bottom: 12px;
+}
+.games_tx {
+    font-size: 16px;
+    color: #6a6a6a;
+    margin-bottom: 24px;
+}
+.games_i {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.games_i + .games_i {
+    margin-top: 24px;
+}
+.games_img {
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    margin-right: 16px;
+    width: 96px;
+    height: 81px;
+    background-size: 96px 81px;
+    opacity: 0.3;
+}
+.games_i.__active .games_img {
+    opacity: 1;
+}
+.games_img.__cycling {
+    background-image: url("../../common/i/main_icons/1_cycling.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__cycling {
+        background-image: url("../../common/i/main_icons/1_cycling@2x.png");
+    }
+}
+.games_img.__judo {
+    background-image: url("../../common/i/main_icons/2_judo.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__judo {
+        background-image: url("../../common/i/main_icons/2_judo@2x.png");
+    }
+}
+.games_img.__fencing {
+    background-image: url("../../common/i/main_icons/3_fencing.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__fencing {
+        background-image: url("../../common/i/main_icons/3_fencing@2x.png");
+    }
+}
+.games_img.__swimming {
+    background-image: url("../../common/i/main_icons/4_swimming.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__swimming {
+        background-image: url("../../common/i/main_icons/4_swimming@2x.png");
+    }
+}
+.games_img.__diving {
+    background-image: url("../../common/i/main_icons/5_diving.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__diving {
+        background-image: url("../../common/i/main_icons/5_diving@2x.png");
+    }
+}
+.games_img.__a-gymnastics {
+    background-image: url("../../common/i/main_icons/6_artistic_gymnastics.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__a-gymnastics {
+        background-image: url("../../common/i/main_icons/6_artistic_gymnastics@2x.png");
+    }
+}
+.games_img.__rugby {
+    background-image: url("../../common/i/main_icons/7_rugby.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__rugby {
+        background-image: url("../../common/i/main_icons/7_rugby@2x.png");
+    }
+}
+.games_img.__tennis {
+    background-image: url("../../common/i/main_icons/8_tennis.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__tennis {
+        background-image: url("../../common/i/main_icons/8_tennis@2x.png");
+    }
+}
+.games_img.__gr-wrestling {
+    background-image: url("../../common/i/main_icons/9_greco_roman_wrestling.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__gr-wrestling {
+        background-image: url("../../common/i/main_icons/9_greco_roman_wrestling@2x.png");
+    }
+}
+.games_img.__running {
+    background-image: url("../../common/i/main_icons/10_running.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__running {
+        background-image: url("../../common/i/main_icons/10_running@2x.png");
+    }
+}
+.games_img.__box {
+    background-image: url("../../common/i/main_icons/11_box.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__box {
+        background-image: url("../../common/i/main_icons/11_box@2x.png");
+    }
+}
+.games_img.__freestyle {
+    background-image: url("../../common/i/main_icons/12_freestyle_wrestling.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__freestyle {
+        background-image: url("../../common/i/main_icons/12_freestyle_wrestling@2x.png");
+    }
+}
+.games_img.__rowling {
+    background-image: url("../../common/i/main_icons/13_rowing.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__rowling {
+        background-image: url("../../common/i/main_icons/13_rowing@2x.png");
+    }
+}
+.games_img.__s-swimming {
+    background-image: url("../../common/i/main_icons/14_synchronised_swimming.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__s-swimming {
+        background-image: url("../../common/i/main_icons/14_synchronised_swimming@2x.png");
+    }
+}
+.games_img.__r-gymnastics {
+    background-image: url("../../common/i/main_icons/15_rhythmic_gymnastics.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__r-gymnastics {
+        background-image: url("../../common/i/main_icons/15_rhythmic_gymnastics@2x.png");
+    }
+}
+.games_img.__volleyball {
+    background-image: url("../../common/i/main_icons/16_volleyball.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__volleyball {
+        background-image: url("../../common/i/main_icons/16_volleyball@2x.png");
+    }
+}
+.games_img.__common {
+    background-image: url("../../common/i/main_icons/17_allsports.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .games_img.__common {
+        background-image: url("../../common/i/main_icons/17_allsports@2x.png");
+    }
+}
+.games_t {
+    font-size: 18px;
+    color: #024889;
+    margin-bottom: 8px;
+}
+.games_date {
+    font-size: 16px;
+    color: #6a6a6a;
+}
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    white-space: nowrap;
+}
+.modal.__active {
+    display: block;
+}
+.modal:before {
+    content: '';
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+}
+.modal_overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+.modal_cnt {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 912px;
+    height: 516px;
+    background-color: #fff;
+    border-radius: 4px;
+}
+.modal_cnt:before {
+    content: '';
+    position: relative;
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+}
+.modal_cnt:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 238px;
+    height: 128px;
+    background-image: url("../i/Left-top-corner.png");
+    background-repeat: no-repeat;
+}
+.modal_logo {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 119px;
+    height: 100px;
+    background-image: url("../../common/i/test_icons/size2_mediator.png");
+    z-index: 1;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo {
+        background-image: url("../../common/i/test_icons/size2_mediator@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.modal_logo.__cycling:after {
+    background-image: url("../../common/i/test_icons/size2_1_cycling.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__cycling:after {
+        background-image: url("../../common/i/test_icons/size2_1_cycling@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__common:after {
+    background-image: url("../../common/i/test_icons/size2_17_allsports.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__common:after {
+        background-image: url("../../common/i/test_icons/size2_17_allsports@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__judo:after {
+    background-image: url("../../common/i/test_icons/size2_2_judo.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__judo:after {
+        background-image: url("../../common/i/test_icons/size2_2_judo@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__fencing:after {
+    background-image: url("../../common/i/test_icons/size2_3_fencing.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__fencing:after {
+        background-image: url("../../common/i/test_icons/size2_3_fencing@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__swimming:after {
+    background-image: url("../../common/i/test_icons/size2_4_swimming.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__swimming:after {
+        background-image: url("../../common/i/test_icons/size2_4_swimming@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__diving:after {
+    background-image: url("../../common/i/test_icons/size2_5_diving.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__diving:after {
+        background-image: url("../../common/i/test_icons/size2_5_diving@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__a-gymnastics:after {
+    background-image: url("../../common/i/test_icons/size2_6_artistic_gymnastics.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__a-gymnastics:after {
+        background-image: url("../../common/i/test_icons/size2_6_artistic_gymnastics@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__rugby:after {
+    background-image: url("../../common/i/test_icons/size2_7_rugby.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__rugby:after {
+        background-image: url("../../common/i/test_icons/size2_7_rugby@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__tennis:after {
+    background-image: url("../../common/i/test_icons/size2_8_tennis.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__tennis:after {
+        background-image: url("../../common/i/test_icons/size2_8_tennis@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__gr-wrestling:after {
+    background-image: url("../../common/i/test_icons/size2_9_greco_roman_wrestling.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__gr-wrestling:after {
+        background-image: url("../../common/i/test_icons/size2_9_greco_roman_wrestling@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__running:after {
+    background-image: url("../../common/i/test_icons/size2_10_running.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__running:after {
+        background-image: url("../../common/i/test_icons/size2_10_running@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__box:after {
+    background-image: url("../../common/i/test_icons/size2_11_box.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__box:after {
+        background-image: url("../../common/i/test_icons/size2_11_box@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__freestyle:after {
+    background-image: url("../../common/i/test_icons/size2_12_freestyle_wrestling.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__freestyle:after {
+        background-image: url("../../common/i/test_icons/size2_12_freestyle_wrestling@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__rowling:after {
+    background-image: url("../../common/i/test_icons/size2_13_rowing.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__rowling:after {
+        background-image: url("../../common/i/test_icons/size2_13_rowing@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__s-swimming:after {
+    background-image: url("../../common/i/test_icons/size2_14_synchronised_swimming.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__s-swimming:after {
+        background-image: url("../../common/i/test_icons/size2_14_synchronised_swimming@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__r-gymnastics:after {
+    background-image: url("../../common/i/test_icons/size2_15_rhythmic_gymnastics.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__r-gymnastics:after {
+        background-image: url("../../common/i/test_icons/size2_15_rhythmic_gymnastics@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_logo.__volleyball:after {
+    background-image: url("../../common/i/test_icons/size2_16_volleyball.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_logo.__volleyball:after {
+        background-image: url("../../common/i/test_icons/size2_16_volleyball@2x.png");
+        background-size: 119px 100px;
+    }
+}
+.modal_close {
+    position: absolute;
+    top: 0;
+    right: -34px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    background-image: url("../i/close.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_close {
+        background-image: url("../i/close@2x.png");
+        background-size: 16px 16px;
+    }
+}
+.modal_hld {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    vertical-align: middle;
+    width: 480px;
+    margin-bottom: 48px;
+    margin-top: 20px;
+    white-space: normal;
+}
+.modal_f {
+    position: absolute;
+    bottom: 24px;
+    left: 0;
+    right: 0;
+    height: 28px;
+}
+.modal_f:before {
+    content: '';
+    position: absolute;
+    bottom: -24px;
+    right: 0;
+    width: 329px;
+    height: 183px;
+    background-image: url("../i/Right-bottom-corner.png");
+}
+.modal_f:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 28px;
+    background-image: url("../../common/i/logo/Logo-small.png");
+    background-position: 50% 100%;
+    background-repeat: no-repeat;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .modal_f:after {
+        background-image: url("../../common/i/logo/Logo-small@2x.png");
+        background-size: 174px 26px;
+    }
+}
+.question_number {
+    font-size: 18px;
+    color: #7f7f7f;
+    margin-bottom: 8px;
+}
+.question_title {
+    font-size: 22px;
+    color: #000;
+    font-weight: 700;
+    margin: 0 -72px 24px;
+}
+.question_lst.__2 {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    overflow: hidden;
+}
+.question_i {
+    font-size: 18px;
+    border: 1px #5c5c5c solid;
+    box-sizing: border-box;
+    padding: 14px 12px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    box-shadow: 0 0 0 #044d89 inset;
+    transition: box-shadow 0.3s;
+}
+.question_lst.__2 .question_i {
+    float: left;
+    width: 230px;
+    margin: 0 4px 12px;
+}
+.question_i:hover {
+    box-shadow: 0 0 0 4px #044d89 inset;
+}
+.question_grid {
+    white-space: nowrap;
+    font-size: 0;
+    width: 776px;
+    text-align: center;
+    margin-left: -150px;
+}
+.question_grid-i {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    height: 180px;
+    width: 360px;
+}
+.question_grid.__2 .question_grid-i + .question_grid-i {
+    margin-left: 24px;
+}
+.question_grid.__3 .question_grid-i + .question_grid-i {
+    margin-left: 28px;
+}
+.question_grid.__2 .question_grid-i {
+    width: 320px;
+    height: 240px;
+}
+.question_grid.__3 .question_grid-i {
+    width: 240px;
+    height: 240px;
+}
+.question_grid.__2 .question_grid-i:hover:after,
+.question_grid.__3 .question_grid-i:hover:after {
+    box-shadow: 0 0 0 4px #044d89 inset;
+    cursor: pointer;
+}
+.question_grid-i:before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    height: 240px;
+}
+.question_grid-i:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 0 #044d89 inset;
+    transition: box-shadow 0.3s;
+}
+.question_img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 4px;
+}
+@supports (object-fit: cover) {
+    .question_img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+.answer_title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+.answer_title:before {
+    content: '';
+    display: block;
+    width: 78px;
+    height: 78px;
+    margin: 0 auto 12px;
+}
+.answer_title.__success:before {
+    background-image: url("../../common/i/status/Check.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .answer_title.__success:before {
+        background-image: url("../../common/i/status/Check@2x.png");
+        background-size: 78px 78px;
+    }
+}
+.answer_title.__fail:before {
+    background-image: url("../../common/i/status/Cross.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .answer_title.__fail:before {
+        background-image: url("../../common/i/status/Cross@2x.png");
+        background-size: 78px 78px;
+    }
+}
+.answer_tx {
+    border-top: 2px solid #979797;
+    border-bottom: 2px solid #979797;
+    padding: 20px 0;
+    margin-bottom: 32px;
+}
+.answer_ac:after {
+    content: '';
+    position: relative;
+    top: -1px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 13px;
+    height: 21px;
+    margin-left: 10px;
+    background-image: url("../i/white_arrow.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .answer_ac:after {
+        background-image: url("../i/white_arrow@2x.png");
+        background-size: 13px 21px;
+    }
+}
+.header {
+    padding: 58px 32px 32px;
+    background-color: #fff;
+    position: relative;
+}
+.header_logo {
+    width: 436px;
+    height: 65px;
+    background-image: url("../../common/i/logo/Logo-big.png");
+    background-repeat: no-repeat;
+    margin: 0 auto 12px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .header_logo {
+        background-image: url("../../common/i/logo/Logo-big@2x.png");
+        background-size: 436px 65px;
+    }
+}
+.header_tx {
+    width: 40%;
+    margin: 0 auto;
+    font-size: 18px;
+    color: #024889;
+    text-align: center;
+}
+.header_medals {
+    position: absolute;
+    top: 0;
+    left: 25px;
+    background-image: url("../../common/i/medals/three_medals.png");
+    width: 223px;
+    height: 167px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .header_medals {
+        background-image: url("../../common/i/medals/three_medals@2x.png");
+        background-size: 223px 167px;
+    }
+}
+.header_partner {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+}
+.header_a {
+    text-decoration: none;
+}
+.header_a:hover {
+    text-decoration: none;
+}
+.header_partner-t {
+    color: #6b6b6b;
+    font-size: 11px;
+    vertical-align: middle;
+    margin-right: 3px;
+}
+.header_partner-img {
+    width: 101px;
+    height: 39px;
+    display: inline-block;
+    vertical-align: middle;
+    background-image: url("../i/sport_express_logo_WEB.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .header_partner-img {
+        background-image: url("../i/sport_express_logo_WEB@2x.png");
+        background-size: 101px 39px;
+    }
+}
+.info {
+    white-space: normal;
+}
+.info:before,
+.info:after,
+.info .modal_f:before {
+    display: none;
+}
+.info_header {
+    position: relative;
+    height: 200px;
+    margin-bottom: 60px;
+    background-image: url("../../common/i/Smaller_fon.png");
+    background-position: 50%;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header {
+        background-image: url("../../common/i/Smaller_fon@2x.png");
+        background-size: 1000px 200px;
+    }
+}
+.info_header.__gold:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -93px;
+    width: 186px;
+    height: 252px;
+    background-image: url("../../common/i/medals/1Gold.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__gold:before {
+        background-image: url("../../common/i/medals/1Gold@2x.png");
+        background-size: 186px 252px;
+    }
+}
+.info_header.__silver:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -93px;
+    width: 186px;
+    height: 252px;
+    background-image: url("../../common/i/medals/2Silver.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__silver:before {
+        background-image: url("../../common/i/medals/2Silver@2x.png");
+        background-size: 186px 252px;
+    }
+}
+.info_header.__bronze:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -93px;
+    width: 186px;
+    height: 252px;
+    background-image: url("../../common/i/medals/3Bronze.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__bronze:before {
+        background-image: url("../../common/i/medals/3Bronze@2x.png");
+        background-size: 186px 252px;
+    }
+}
+.info_header.__wood:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin-left: -93px;
+    width: 186px;
+    height: 252px;
+    background-image: url("../../common/i/medals/4Wooden.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__wood:before {
+        background-image: url("../../common/i/medals/4Wooden@2x.png");
+        background-size: 186px 252px;
+    }
+}
+.info_header.__cycling:before,
+.info_header.__judo:before,
+.info_header.__fencing:before,
+.info_header.__swimming:before,
+.info_header.__diving:before,
+.info_header.__a-gymnastics:before,
+.info_header.__rugby:before,
+.info_header.__tennis:before,
+.info_header.__gr-wrestling:before,
+.info_header.__running:before,
+.info_header.__box:before,
+.info_header.__freestyle:before,
+.info_header.__rowling:before,
+.info_header.__s-swimming:before,
+.info_header.__r-gymnastics:before,
+.info_header.__volleyball:before,
+.info_header.__common:before {
+    content: '';
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    margin-left: -105px;
+    width: 210px;
+    height: 176px;
+    background-image: url("../../common/i/test_icons/size1_mediator.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__cycling:before,
+    .info_header.__judo:before,
+    .info_header.__fencing:before,
+    .info_header.__swimming:before,
+    .info_header.__diving:before,
+    .info_header.__a-gymnastics:before,
+    .info_header.__rugby:before,
+    .info_header.__tennis:before,
+    .info_header.__gr-wrestling:before,
+    .info_header.__running:before,
+    .info_header.__box:before,
+    .info_header.__freestyle:before,
+    .info_header.__rowling:before,
+    .info_header.__s-swimming:before,
+    .info_header.__r-gymnastics:before,
+    .info_header.__volleyball:before,
+    .info_header.__common:before {
+        background-image: url("../../common/i/test_icons/size1_mediator@2x.png");
+        background-size: 210px 176px;
+    }
+}
+.info_header.__cycling:after,
+.info_header.__judo:after,
+.info_header.__fencing:after,
+.info_header.__swimming:after,
+.info_header.__diving:after,
+.info_header.__a-gymnastics:after,
+.info_header.__rugby:after,
+.info_header.__tennis:after,
+.info_header.__gr-wrestling:after,
+.info_header.__running:after,
+.info_header.__box:after,
+.info_header.__freestyle:after,
+.info_header.__rowling:after,
+.info_header.__s-swimming:after,
+.info_header.__r-gymnastics:after,
+.info_header.__volleyball:after,
+.info_header.__common:after {
+    content: '';
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    margin-left: -105px;
+    width: 210px;
+    height: 176px;
+    background-size: 210px 176px;
+}
+.info_header.__cycling:after {
+    background-image: url("../../common/i/test_icons/size1_1_cycling.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__cycling:after {
+        background-image: url("../../common/i/test_icons/size1_1_cycling@2x.png");
+    }
+}
+.info_header.__judo:after {
+    background-image: url("../../common/i/test_icons/size1_2_judo.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__judo:after {
+        background-image: url("../../common/i/test_icons/size1_2_judo@2x.png");
+    }
+}
+.info_header.__fencing:after {
+    background-image: url("../../common/i/test_icons/size1_3_fencing.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__fencing:after {
+        background-image: url("../../common/i/test_icons/size1_3_fencing@2x.png");
+    }
+}
+.info_header.__swimming:after {
+    background-image: url("../../common/i/test_icons/size1_4_swimming.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__swimming:after {
+        background-image: url("../../common/i/test_icons/size1_4_swimming@2x.png");
+    }
+}
+.info_header.__diving:after {
+    background-image: url("../../common/i/test_icons/size1_5_diving.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__diving:after {
+        background-image: url("../../common/i/test_icons/size1_5_diving@2x.png");
+    }
+}
+.info_header.__a-gymnastics:after {
+    background-image: url("../../common/i/test_icons/size1_6_artistic_gymnastics.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__a-gymnastics:after {
+        background-image: url("../../common/i/test_icons/size1_6_artistic_gymnastics@2x.png");
+    }
+}
+.info_header.__rugby:after {
+    background-image: url("../../common/i/test_icons/size1_7_rugby.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__rugby:after {
+        background-image: url("../../common/i/test_icons/size1_7_rugby@2x.png");
+    }
+}
+.info_header.__tennis:after {
+    background-image: url("../../common/i/test_icons/size1_8_tennis.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__tennis:after {
+        background-image: url("../../common/i/test_icons/size1_8_tennis@2x.png");
+    }
+}
+.info_header.__gr-wrestling:after {
+    background-image: url("../../common/i/test_icons/size1_9_greco_roman_wrestling.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__gr-wrestling:after {
+        background-image: url("../../common/i/test_icons/size1_9_greco_roman_wrestling@2x.png");
+    }
+}
+.info_header.__running:after {
+    background-image: url("../../common/i/test_icons/size1_10_running.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__running:after {
+        background-image: url("../../common/i/test_icons/size1_10_running@2x.png");
+    }
+}
+.info_header.__box:after {
+    background-image: url("../../common/i/test_icons/size1_11_box.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__box:after {
+        background-image: url("../../common/i/test_icons/size1_11_box@2x.png");
+    }
+}
+.info_header.__freestyle:after {
+    background-image: url("../../common/i/test_icons/size1_12_freestyle_wrestling.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__freestyle:after {
+        background-image: url("../../common/i/test_icons/size1_12_freestyle_wrestling@2x.png");
+    }
+}
+.info_header.__rowling:after {
+    background-image: url("../../common/i/test_icons/size1_13_rowing.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__rowling:after {
+        background-image: url("../../common/i/test_icons/size1_13_rowing@2x.png");
+    }
+}
+.info_header.__s-swimming:after {
+    background-image: url("../../common/i/test_icons/size1_14_synchronised_swimming.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__s-swimming:after {
+        background-image: url("../../common/i/test_icons/size1_14_synchronised_swimming@2x.png");
+    }
+}
+.info_header.__r-gymnastics:after {
+    background-image: url("../../common/i/test_icons/size1_15_rhythmic_gymnastics.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__r-gymnastics:after {
+        background-image: url("../../common/i/test_icons/size1_15_rhythmic_gymnastics@2x.png");
+    }
+}
+.info_header.__volleyball:after {
+    background-image: url("../../common/i/test_icons/size1_16_volleyball.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__volleyball:after {
+        background-image: url("../../common/i/test_icons/size1_16_volleyball@2x.png");
+    }
+}
+.info_header.__common:after {
+    background-image: url("../../common/i/test_icons/size1_17_allsports.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .info_header.__common:after {
+        background-image: url("../../common/i/test_icons/size1_17_allsports@2x.png");
+    }
+}
+.info_title {
+    width: 840px;
+    font-size: 36px;
+    margin: 0 auto 20px;
+}
+.info_tx {
+    font-size: 18px;
+    width: 600px;
+    margin: 0 auto 32px;
+}
+.info_f {
+    font-size: 0;
+}
+.groups {
+    text-align: justify;
+    font-size: 0;
+}
+.groups:before {
+    content: '';
+    display: block;
+    margin-top: -24px;
+}
+.groups:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+}
+.groups-item {
+    display: inline-block;
+    vertical-align: top;
+    width: 46%;
+    margin-right: 2%;
+    margin-top: 24px;
+    font-size: 12px;
+    text-align: left;
+}
+.section {
+    float: left;
+    width: 128px;
+    height: 128px;
+}
+.photo_img {
+    width: 128px;
+    height: 128px;
+}
+.caption {
+    padding-top: 4px;
+    margin-left: 144px;
+}
+.ic_premium {
+    vertical-align: top;
+    position: relative;
+    top: -2px;
+    margin-right: 3px;
+}
+.group-name-link {
+    display: block;
+    margin-bottom: 4px;
+    color: #666;
+    text-decoration: none;
+    font-weight: 700;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+.group-name-link:hover {
+    text-decoration: underline;
+}
+.group-name-desc {
+    display: block;
+    color: #666;
+    margin-bottom: 8px;
+}
+.button-pro {
+    display: inline-block;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: visible;
+    border-radius: 3px;
+    border: 0;
+    font: 500 14px/32px arial, helvetica, sans-serif;
+    color: #fff;
+    outline: 0;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 0;
+    background-color: #ee8208;
+    min-width: 72px;
+    height: 24px;
+    padding: 0 16px;
+    line-height: 24px;
+    font-size: 12px;
+    text-decoration: none;
+}
+.button-pro:hover,
+.button-pro:focus {
+    background-color: #ee7808;
+    color: #fff;
+    text-decoration: none;
+}
+.button-pro:active {
+    background-color: #ee6e08;
+}

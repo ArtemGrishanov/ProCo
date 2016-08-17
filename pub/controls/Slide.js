@@ -99,14 +99,14 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
                         Engine.getAppScreen(this.propertyString[0]).view :
                         Engine.getAppScreen(this.propertyString).view;
                 if (this.previewScale === undefined) {
-                    this.previewScale = this.$previewIFrame.width() / appSize.width;
+                    this.previewScale = this.$previewIFrame.width() / Editor.getAppContainerSize().width;
                 }
                 var clonedView = $(view).clone().css('transform','scale('+this.previewScale+')').css('transform-origin','top left');
                 this.$previewDocumentBody.empty().append(clonedView);
             }
         }
         catch(e) {
-            log('Can not create preview on screen \''+this.propertyString+'\'', true);
+            log('Can not create preview on screen \''+this.propertyString+'\' Details: ' + e.message, true);
         }
     };
 

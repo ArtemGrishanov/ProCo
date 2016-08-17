@@ -59,9 +59,11 @@ var ResultScreen = MutApp.Screen.extend({
             .attr('id',this.id)
             .css('width','100%')
             .css('height','100%'));
+        this.resultId = param.resultId;
         param.screenRoot.append(this.$el);
         this.model.bind("change:state", function () {
-            if ('result' === this.model.get('state')) {
+            // у каждого экрана-результата есть уже свой ид связанный с результатом в модели
+            if ('result'===this.model.get('state') && this.resultId===this.model.get('currentResult').id) {
                 this.render();
                 this.model.application.showScreen(this);
             }
@@ -69,8 +71,8 @@ var ResultScreen = MutApp.Screen.extend({
     },
 
     render: function() {
-        //renderResult(currentResult);
-        this.$el.html(this.template['default'](this.model.get('currentResult')));
+        var r = this.model.getResultById(this.resultId);
+        this.$el.html(this.template['default'](r));
         $('.js-logo').
             css('backgroundImage','url('+this.logoUrl+')');
         $('.js-result_logo').
