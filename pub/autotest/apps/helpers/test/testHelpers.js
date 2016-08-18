@@ -1,7 +1,8 @@
 /**
  * Created by artyom.grishanov on 11.08.16.
  */
-function checkTestInStatic(assert, app) {
+function checkTestInStatic(assert, appIFrame) {
+    var app = appIFrame.contentWindow.app;
     var model = app._models[0];
     assert.ok(!!app === true, 'app exists');
     assert.ok(!!app.type === true, 'app type exists');
@@ -13,9 +14,11 @@ function checkTestInStatic(assert, app) {
     checkUnicOptionsId(assert, model);
     checkResults(assert, model);
     checkSetGetRightAnswers(assert, model);
+    checkAppScreens(assert, app, appIFrame.contentDocument);
 }
 
-function checkTestInAction(assert, app) {
+function checkTestInAction(assert, appIFrame) {
+    var app = appIFrame.contentWindow.app;
     var model = app._models[0];
 
     // пройти тест успешно
@@ -29,17 +32,6 @@ function checkTestInAction(assert, app) {
         doToStart(assert, model);
         doOnePass(assert, model);
     }
-}
-
-function createTest(width, height, defaults) {
-    width = width || 1000;
-    height = height || 500;
-    var testApp = new TestApp({
-        width: width,
-        height: height,
-        defaults: defaults
-    });
-    return testApp;
 }
 
 function doToStart(assert, model) {
@@ -245,4 +237,21 @@ function checkSetGetRightAnswers(assert, model) {
             assert.ok(model.getCorrectAnswerId(i) === curOptionId, 'Option set as correct='+curOptionId);
         }
     }
+}
+
+function checkAppScreens(assert, app, document) {
+    var screens = app._screens;
+    assert.ok(app.screenRoot !== null, 'checkScreens: screenRoot not null');
+    assert.ok(screens.length > 0, 'checkScreens: At least one screen exist');
+    assert.ok($(document).find(app.screenRoot).length > 0, 'checkScreens: Document has screenRoot='+app.screenRoot.selector);
+
+    for (var i = 0; i < screens.length; i++) {
+        checkScreen(assert, screens[i], app.screenRoot);
+    }
+}
+
+function checkScreen(assert, screen, screenRoot) {
+    assert.ok(screen.$el !== null, 'checkScreen: screen.$el');
+
+    assert.ok($(screenRoot).find(screen.$el).length > 0, 'checkScreen: screen.$el in screenRoot');
 }

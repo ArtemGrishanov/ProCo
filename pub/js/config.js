@@ -159,6 +159,17 @@ var config = {
              * каталог откуда publisher будет брать все ресурсы для публикации проекта
              */
             baseProductUrl: 'products/test_new/',
+            /**
+             * Ширина по умолчанию, если не задана
+             */
+            defaultWidth: 800,
+            /**
+             * Высота по умолчанию, если не задана
+             */
+            defaultHeight: 600,
+            /**
+             *
+             */
             backgrounds: [
                 //TODO брать параметры из других параметров config.common.awsHostName
                 'url('+'https://s3.eu-central-1.amazonaws.com/'+'proconstructor/facebook-902609146442342/test1/i/ny-regents-exam-global-history-and-geography-help-course_132147_large.jpg)',

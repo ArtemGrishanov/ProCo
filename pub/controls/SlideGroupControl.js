@@ -138,7 +138,7 @@ SlideGroupControl.prototype.updateScreens = function() {
         var mySlides = [];
         if (this.collapsed === true) {
             // один контрол нужен
-            myScreenIds = [myScreenIds.join(' ')]; // групповой ид экрана
+            myScreenIds = [myScreenIds.join(',')]; // групповой ид экрана
         }
         this._items = [];
         for (var i = 0; i < myScreenIds.length; i++) {

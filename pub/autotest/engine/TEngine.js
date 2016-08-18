@@ -107,9 +107,21 @@ var TEngine = {};
         assert.ok(!!screen.group === true, 'checkAppScreen group');
         assert.ok(typeof screen.name === 'string', 'checkAppScreen name');
         assert.ok(typeof screen.collapse === 'boolean', 'checkAppScreen collapse');
+        assert.ok(typeof screen.draggable === 'boolean', 'checkAppScreen draggable');
+        assert.ok(typeof screen.canAdd === 'boolean', 'checkAppScreen canAdd');
+        assert.ok(typeof screen.canDelete === 'boolean', 'checkAppScreen canDelete');
+        assert.ok(typeof screen.canClone === 'boolean', 'checkAppScreen canClone');
         assert.ok(!!screen.view === true, 'checkAppScreen view');
         assert.ok(!!screen.view.$el === true, 'checkAppScreen view.$el');
         assert.ok(!!screen.view.$el.children().length > 0, 'checkAppScreen view.$el children');
+
+        var dataElems = screen.view.$el.find('[data-app-property]');
+        if (dataElems.length > 0) {
+            assert.ok(screen.appPropertyElements.length > 0, 'checkAppScreen appPropertyElements '+screen.id);
+        }
+        else {
+            assert.ok(screen.appPropertyElements.length === 0, 'checkAppScreen appPropertyElements'+screen.id);
+        }
     }
 
     /**
@@ -120,19 +132,27 @@ var TEngine = {};
         var appName = appName || 'test';
 
         var done = assert.async();
-        var app = null;
+        var appIframe = null;
+//        var app = null;
 
         Queue.push({
             run: function() {
                 // запуск редактора
                 // в нормальном режиме эти параметры передаются через url-get строку
-                Editor.start({
-                    app: appName,
-                    //template: '' // другой режим запуска возможен, через шаблон
-                    callback: function() {
-                        assert.ok(true, 'Editor started');
-                        Queue.release(this);
-                    }
+//                Editor.start({
+//                    app: appName,
+//                    //template: '' // другой режим запуска возможен, через шаблон
+//                    callback: function() {
+//                        assert.ok(true, 'Editor started');
+//                        Queue.release(this);
+//                    }
+//                });
+                TApp.createApp(appName, function(iframe) {
+                    appIframe = iframe;
+                    assert.ok(true, 'App created');
+                    Engine.startEngine(appIframe.contentWindow);
+                    assert.ok(true, 'Engine started');
+                    Queue.release(this);
                 });
             }
         });
@@ -181,8 +201,7 @@ var TEngine = {};
         }});
 
         Queue.push({run: function() {
-            app = Engine.getApp();
-            TApp.checkApp(assert, app);
+            TApp.checkApp(assert, appIframe);
             Queue.release(this);
 
             done();

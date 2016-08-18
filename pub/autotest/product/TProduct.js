@@ -38,7 +38,7 @@ var TScenarios = {};
         appName = appName || 'test';
 
         var done = assert.async();
-        var app = null;
+        var appIframe = null;
 
         Queue.push({
             run: function() {
@@ -56,8 +56,9 @@ var TScenarios = {};
         });
 
         Queue.push({run: function() {
-            app = Engine.getApp();
-            TApp.checkApp(assert, app);
+            appIframe = Editor.getAppIframe();
+            assert.ok(appIframe !== null, 'appIframe from Editor');
+            TApp.checkApp(assert, appIframe);
             Queue.release(this);
         }});
 

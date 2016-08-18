@@ -12,14 +12,25 @@ var TApp = {};
      * Проверка приложения на работоспособность и корректность
      *
      * @param assert
-     * @param app
+     * @param {iframe|MutApp} appObject
      * @constructor
      */
-    function checkApp(assert, app) {
+    function checkApp(assert, appIFrame) {
+        var app = null;
+        if (appIFrame.contentWindow) {
+            app = appIFrame.contentWindow.app;
+            assert.ok(app !== null, 'checkApp: app found in iframe');
+        }
+//        else if (appObject._models) {
+//            app = appObject;
+//        }
+//        else {
+//            assert.ok(false, 'checkApp: unknown app object');
+//        }
         if (app.type === 'test') {
             // тип приложения - тест
-            checkTestInStatic(assert, app);
-            checkTestInAction(assert, app);
+            checkTestInStatic(assert, appIFrame);
+            checkTestInAction(assert, appIFrame);
         }
         else {
             assert.ok(false, 'checkApp: unknown app type '+app.constructor);
@@ -28,17 +39,25 @@ var TApp = {};
 
     /**
      *
+     * @param appName
      * @param width
      * @param height
      * @param defaults
      * @returns {*}
      * @constructor
      */
-    function CREATE_TEST(width, height, defaults) {
-        return createTest();
+    function createApp(appName, callback, width, height, defaults) {
+        var src = config.products[appName].src;
+        var appIframe = document.createElement('iframe');
+        appIframe.onload = function() {
+            callback(appIframe);
+        };
+        var host = config.common.home;
+        appIframe.src = host+src;
+        $('#id-product_iframe_cnt').append(appIframe);
     }
 
     global.checkApp = checkApp;
-    global.createTest = createTest;
+    global.createApp = createApp;
 
 })(TApp);

@@ -7,13 +7,11 @@ var MutApp = function() {
     this._models = [];
     this._screens = [];
     this._history = [];
-    //TODO mob ?
-    this.width = 800;
-    this.height = 400;
+    //TODO mob 'auto'
+    this.width = (arguments[0] && arguments[0].width > 0) ? arguments[0].width: 800;
+    this.height = (arguments[0] && arguments[0].height > 0) ? arguments[0].height: 600;
 
     if (arguments[0]) {
-        this.width = arguments[0].width;
-        this.height = arguments[0].height;
         if (this.screenRoot) {
             this.screenRoot.width(this.width).height(this.height);
         }

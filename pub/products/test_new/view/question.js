@@ -16,7 +16,10 @@ var QuestionScreen = MutApp.Screen.extend({
      * @see MutApp
      */
     group: 'questions',
-
+    draggable: true,
+    canAdd: true,
+    canDelete: true,
+    canClone: true,
     /**
      * Метка которая показывается в редакторе, рядом с превью экрана
      * @see MutApp

@@ -33,6 +33,14 @@ var AppScreen = function(view) {
      * @type {*}
      */
     this.collapse = view.collapse;
+    this.canAdd = view.canAdd;
+    this.canDelete = view.canDelete;
+    this.canClone = view.canClone;
+    this.draggable = view.draggable;
+    /**
+     * Сразу выполнить во вью поиск атрибутов data-app-property и проанализировать их
+     */
+    this.findAndAttachAppProperty();
 }
 
 /**

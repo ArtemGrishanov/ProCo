@@ -6,9 +6,7 @@ var TestApp = MutApp.extend({
 
     type: 'test',
 
-    //TODO пока для отладки использую готовые тесты
-    // верстка разумеется будет новая
-    screenRoot: $('#id-swimming_test'),
+    screenRoot: $('#id-mutapp_screens'),
 
     initialize: function(param) {
         console.log('TestApp initialize');

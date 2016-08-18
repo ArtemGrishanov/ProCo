@@ -6,6 +6,10 @@
  */
 
 QUnit.test("Specproject Test_New", function( assert ) {
-    var app = LAYER1_APP.CREATE_TEST();
-    LAYER1_APP.CHECK_TEST(app);
+    var done = assert.async();
+    TApp.createApp('test', function(appIFrame) {
+        // приложение создается асинхронно через iframe
+        TApp.checkApp(assert, appIFrame);
+        done();
+    });
 });

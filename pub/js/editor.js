@@ -174,6 +174,10 @@ var Editor = {};
             });
         }
         window.onbeforeunload = confirmExit;
+        $('.js-app_preview').click(onPreviewClick);
+        $('.js-app_publish').click(onPublishClick);
+        $('.js-app_save_template').click(saveTemplate);
+        $('.js-back_to_editor').click(onBackToEditorClick);
     }
 
     /**
@@ -988,7 +992,7 @@ var Editor = {};
                     }
                 }
                 else {
-                    // appId уже был сгенерирован при старте редактора start()
+                    // appId уже был сгенерирован при старте редактора start
                     // title не указываем, это новый проект-клон
                     appTemplate.title = null;
                 }
