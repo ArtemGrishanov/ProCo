@@ -290,13 +290,23 @@ var config = {
             slideGroupLeftDragMargin: 10,
             slideGroupRightDragMargin: 10,
             /**
-             * Утступы слева и справа от промежуточных кнопок в слайдереэ экранов
+             * Отступы слева и справа от промежуточных кнопок в слайдереэ экранов
              */
             slideInterimBtnMargins: 6,
             /**
              * Отступ от хинта до элемента, на который он указывает
              */
-            hintRightMargin: 7
+            hintRightMargin: 7,
+            /**
+             * боттом паддинг в стиле product_cnt.css/.screen_block
+             * Он нужен для подсчета общей высоты редактора при добавлении нескольких экранов
+             */
+            screen_blocks_padding: 20,
+            /**
+             * Толщина обводки в стиле product_cnt.css/.screen_block
+             * Надо для расчета ширины контейнера
+             */
+            screen_blocks_border_width: 4
         }
     },
     ui: {

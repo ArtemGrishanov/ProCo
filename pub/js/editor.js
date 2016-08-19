@@ -98,7 +98,7 @@ var Editor = {};
      * Элемент внутри айФрейма куда добавляем экраны промо приложения
      * @type {null}
      */
-    var productScreensCnt = null;
+    var previewScreensIframeBody = null;
     /**
      *
      * @type {{width: number}}
@@ -214,9 +214,6 @@ var Editor = {};
             var host = config.common.home;// || (config.common.awsHostName+config.common.awsBucketName);
             appIframe.src = host+src;
             $('#id-product_iframe_cnt').append(appIframe);
-            //TODO надо точно знать размеры продукта в этот момент
-            //TODO когда то будет динамический размер
-            $('#id-product_cnt').width(800).height(600);
         }
         else {
             log('Cannot find src for: \''+loadedAppName+'\'', true);
@@ -246,6 +243,8 @@ var Editor = {};
             height: app.height
         };
 
+        // нужна только ширина для горизонтального выравнивания
+        $('#id-product_cnt').width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width);
         // в поле для редактирования подтягиваем стили продукта
         $("#id-product_screens_cnt").contents().find('head').append(config.products[app.type].stylesForEmbed);
 
@@ -288,14 +287,20 @@ var Editor = {};
             }
         }
 
-        $(productScreensCnt).empty();
+        $(previewScreensIframeBody).empty();
         var appScreen = null;
         var previewHeight = 0;
         for (var i = 0; i < ids.length; i++) {
             appScreen = Engine.getAppScreen(ids[i]);
             if (appScreen) {
-                $(productScreensCnt).append(appScreen.view.$el).append('<br>');
-                previewHeight += appContainerSize.height+20; // 20 - <br>
+                var b = createPreviewScreenBlock(appScreen.view.$el)
+                $(previewScreensIframeBody).append(b);
+                previewHeight += appContainerSize.height;
+//                if (i < ids.length-1) {
+//                    // разрыв между экранами, когда отображается сразу группа экранов
+                    previewHeight += config.editor.ui.screen_blocks_padding+2*config.editor.ui.screen_blocks_border_width; // 20 - паддинг в стиле product_cnt.css/screen_block
+//                    $(previewScreensIframeBody).append('<br>');
+//                }
 //                if (typeof appScreen.doWhenInDOM === 'function') {
 //                    appScreen.doWhenInDOM(iframeWindow.app, appScreen.view);
 //                }
@@ -308,9 +313,8 @@ var Editor = {};
             }
         }
         // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
-        $('#id-product_screens_cnt').width(appContainerSize.width).height(previewHeight);
-        // боковые панели вытягиваем также
-        // TODO в зависимости от контролов также вытягивать надо
+        $('#id-product_screens_cnt').width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
+        // боковые панели вытягиваем также вслед за экранами
         $('.js-setting_panel').height(previewHeight);
 
         //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
@@ -321,6 +325,15 @@ var Editor = {};
             // любой клик по промо-проекту сбрасывает подсказки
             hideWorkspaceHints();
         });
+    }
+
+    function createPreviewScreenBlock(view) {
+        var d = $('<div></div>')
+            .css('width',appContainerSize.width)
+            .css('height',appContainerSize.height)
+            .addClass('screen_block'); // product_cnt.css
+        d.append(view);
+        return d;
     }
 
     /**
@@ -608,10 +621,10 @@ var Editor = {};
         else {
             // первый экран показать по умолчанию
             //TODO первый старт: надо дождаться загрузки этого айфрема и нормально проинициализировать после
-            setTimeout(function(){
-                productScreensCnt = $("#id-product_screens_cnt").contents().find('body');
+            setTimeout(function() {
+                previewScreensIframeBody = $("#id-product_screens_cnt").contents().find('body');
                 showScreen([Engine.getAppScreenIds()[0]]);
-            },1000);
+            }, 1000);
         }
     }
 
@@ -958,7 +971,7 @@ var Editor = {};
                 }).bind(this));
             }
 
-            previewService.create(productScreensCnt, function(canvas) {
+            previewService.create(previewScreensIframeBody, function(canvas) {
                 uplCnv(canvas);
             });
 

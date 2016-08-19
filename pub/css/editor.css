@@ -6,7 +6,17 @@
 .product_cnt {
     position: relative;
     margin: 0 auto;
-    padding-top: 20px;
+    /*padding-top: 20px;*/
+}
+.workspace_screens_iframe {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    height: 100%;
+    overflow: visible;
 }
 .quick_controls_cnt {
     position: absolute;

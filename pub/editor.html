@@ -67,11 +67,7 @@
                     <div id="id-control_cnt" class="quick_controls_cnt">
                         <!-- Здесь располагаются "быстрые" контролы, которые показываются поверх продукта при клике или наведении куда-то -->
                     </div>
-                    <!--<div id="id-product_screens_cnt">-->
-                        <!--&lt;!&ndash; Сюда добавляем программно view различных экранов промо приложения &ndash;&gt;-->
-                    <!--</div>-->
-                    <!-- Эксперимент с iframe чтобы изолировать стили промо проекта -->
-                    <iframe id="id-product_screens_cnt" src="product_cnt.html" style="position: absolute; top: 20px; width: 100%;padding: 0;margin: 0;border: 0;height: 100%;">
+                    <iframe id="id-product_screens_cnt" class="workspace_screens_iframe" src="product_cnt.html" style="">
                         <!-- Сюда добавляем программно view различных экранов промо приложения -->
                     </iframe>
                 </div>
@@ -85,11 +81,6 @@
         </div>
     </div>
     <div id="id-preview_view" style="display:none">
-        <!--<div style="position:relative;margin: 5px">-->
-            <!--<div id="id-product_iframe_cnt" class="proto_wr">-->
-                <!--&lt;!&ndash; Сюда добавляем программно айфрейм с прототипом для редактирования &ndash;&gt;-->
-            <!--</div>-->
-        <!--</div>-->
         <div class="scr_wr">
             <div class="top">
                 <div class="top_toolbar">
@@ -102,21 +93,6 @@
                     </div>
                 </div>
                 <div id="id-user_toolbar" class="toolbar_user">
-                    <!--<div style="display:none" class="user_avatar js-profile_picture"></div>-->
-                    <!--<span style="display:none" class="pbtn __green __small mt4 js-show_login">Войти</span>-->
-                    <!--<div style="display:none" class="dropdown_btn js-user_ctx_menu">-->
-                    <!--<div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">-->
-                    <!--<div class="ctx_menu_item" onclick="onMyTemplatesClick();">-->
-                    <!--Мои проекты-->
-                    <!--</div>-->
-                    <!--<div class="ctx_menu_item">-->
-                    <!--Настройки профиля-->
-                    <!--</div>-->
-                    <!--<div class="ctx_menu_item js-logout">-->
-                    <!--Выйти-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</div>-->
                     <a class="pbtn __green js-create_new" style="display:none;">Хочу такой же!</a>
                 </div>
             </div>
