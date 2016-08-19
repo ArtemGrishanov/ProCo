@@ -75,6 +75,7 @@ var ResultScreen = MutApp.Screen.extend({
 
     render: function() {
         var r = this.model.getResultById(this.resultId);
+        r.currentResultIndex = this.model.get('results').indexOf(r);
         this.$el.html(this.template['default'](r));
         $('.js-logo').
             css('backgroundImage','url('+this.logoUrl+')');

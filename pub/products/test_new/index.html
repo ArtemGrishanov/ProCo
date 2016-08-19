@@ -103,11 +103,11 @@
         <div class="modal __active">
             <div class="modal_cnt info">
                 <div class="info_header"></div>
-                <div class="info_title"><b><%=title%></b></div>
-                <div class="info_tx"><%=description%></div>
+                <div class="info_title" data-app-property="id=tm results.<%=currentResultIndex%>.title"><b><%=title%></b></div>
+                <div class="info_tx" data-app-property="id=tm results.<%=currentResultIndex%>.description"><%=description%></div>
                 <div class="info_f">
-                    <div class="button __sec js-next">Пройти тест еще раз</div>
-                    <div class="button js-attach_badge">Прикрепить медаль</div>
+                    <div class="button __sec js-next js-restart">Пройти тест еще раз</div>
+                    <!--<div class="button js-details">Подробности</div>-->
                 </div>
 
                 <div class="modal_f"></div>
