@@ -112,10 +112,10 @@ var TEngine = {};
         assert.ok(typeof screen.canDelete === 'boolean', 'checkAppScreen canDelete');
         assert.ok(typeof screen.canClone === 'boolean', 'checkAppScreen canClone');
         assert.ok(!!screen.view === true, 'checkAppScreen view');
-        assert.ok(!!screen.view.$el === true, 'checkAppScreen view.$el');
-        assert.ok(!!screen.view.$el.children().length > 0, 'checkAppScreen view.$el children');
+        assert.ok(screen.view.css('display') !== 'none', 'checkAppScreen display!==none');
+        assert.ok(!!screen.view.children().length > 0, 'checkAppScreen view.$el children');
 
-        var dataElems = screen.view.$el.find('[data-app-property]');
+        var dataElems = screen.view.find('[data-app-property]');
         if (dataElems.length > 0) {
             assert.ok(screen.appPropertyElements.length > 0, 'checkAppScreen appPropertyElements '+screen.id);
         }

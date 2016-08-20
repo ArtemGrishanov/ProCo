@@ -13,6 +13,7 @@ var MutApp = function() {
 
     if (arguments[0]) {
         if (this.screenRoot) {
+            this.screenRoot.empty();
             this.screenRoot.width(this.width).height(this.height);
         }
 

@@ -13,7 +13,6 @@
     <script id="id-welcome_template" type="text/template">
         <div class="modal __active">
             <div class="modal_cnt info">
-                <div class="info_header js-test_logo"></div>
                 <div class="info_title js-startHeader" data-app-property="id=startScr startHeaderText"><b>Дзюдо: </b>иппон или вазаари</div>
                 <div class="info_tx js-startDescription" data-app-property="id=startScr startDescription">Пройдите тест и узнайте, как хорошо вы разбираетесь в этом виде восточных единоборств</div>
                 <div class="info_f">
@@ -28,7 +27,6 @@
         <div class="modal __active">
             <div class="modal_cnt">
                 <div data-app-property="type=questions topColontitleText" class="js-topColontitleText topColontitle">Верхний колонтитул</div>
-                <div class="modal_logo js-test_logo"></div>
                 <div class="modal_hld question">
                     <div class="question_number">Вопрос <span class="js-question_progress"></span></div>
                     <div class="js-question_cnt">
@@ -39,17 +37,23 @@
                     </div>
                 </div>
                 <div class="modal_f"></div>
+                <div class="js-explain explain_modal" style="display:none;">
+                    <div class="explain_blk">
+                        <div class="explain_title js-explanation_text"></div>
+                        <div><span class="t_btn js-next">Далее</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </script>
     <script id="id-question_text_template" type="text/template">
-        <div class="question_title"><%=text%></div>
+        <div class="question_title" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
     </script>
     <script id="id-question_text_photo_template" type="text/template">
-        <div class="question_title"><%=text%></div>
+        <div class="question_title" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
         <div class="question_grid">
             <div class="question_grid-i">
-                <img class="question_img" src="<%=img%>" />
+                <img class="question_img" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.img" src="<%=img%>" />
             </div>
         </div>
     </script>
@@ -102,7 +106,6 @@
     <script id="id-result_template" type="text/template">
         <div class="modal __active">
             <div class="modal_cnt info">
-                <div class="info_header"></div>
                 <div class="info_title" data-app-property="id=tm results.<%=currentResultIndex%>.title"><b><%=title%></b></div>
                 <div class="info_tx" data-app-property="id=tm results.<%=currentResultIndex%>.description"><%=description%></div>
                 <div class="info_f">

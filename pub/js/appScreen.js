@@ -1,17 +1,23 @@
 /**
  * Created by artyom.grishanov on 16.08.16.
  *
- * @param {MutApp.Screen} view
+ * @param {MutApp.Screen} mutAppScreen
  */
-var AppScreen = function(view) {
+var AppScreen = function(mutAppScreen) {
     /**
      * MutApp screen
      */
-    this.view = view;
-    if (!!view.id===false) {
-        log('AppScreen: view must have the id', true);
+    this._mutAppScreen = mutAppScreen;
+    if (!!this._mutAppScreen.id===false) {
+        log('AppScreen: mutAppScreen must have the id', true);
     }
-    this.id = view.id;
+    if (!!this._mutAppScreen.$el === false) {
+        log('AppScreen: mutAppScreen must be rendered!', true);
+    }
+    // необходимо склонировать вью для работы в редакторе, чтобы отвязать все ui обработчики в приложении
+    this.view = this._mutAppScreen.$el.clone().show();
+
+    this.id = this._mutAppScreen.id;
     /**
      * propertyString-domElement pairs on this screen
      * @type {Array}
@@ -22,21 +28,21 @@ var AppScreen = function(view) {
      * Признак группировки в контроле
      * @type {*}
      */
-    this.group = view.group;
+    this.group = this._mutAppScreen.group;
     /**
      * Название показываемое рядом с экраном
      * @type {*}
      */
-    this.name = view.name;
+    this.name = this._mutAppScreen.name;
     /**
      * Схлопывание экранов в один контрол
      * @type {*}
      */
-    this.collapse = view.collapse;
-    this.canAdd = view.canAdd;
-    this.canDelete = view.canDelete;
-    this.canClone = view.canClone;
-    this.draggable = view.draggable;
+    this.collapse = this._mutAppScreen.collapse;
+    this.canAdd = this._mutAppScreen.canAdd;
+    this.canDelete = this._mutAppScreen.canDelete;
+    this.canClone = this._mutAppScreen.canClone;
+    this.draggable = this._mutAppScreen.draggable;
     /**
      * Сразу выполнить во вью поиск атрибутов data-app-property и проанализировать их
      */
@@ -48,32 +54,26 @@ var AppScreen = function(view) {
  * Поставить им атрибуты
  * И закешировать в appPropertyElements
  *
- * @param ap
+ * @param {AppProperty} ap
  * @returns {number} количество найденных dom-элементов на экране
  */
 AppScreen.prototype.findAndAttachCssAppProperty = function(ap) {
     if (ap.type !== 'css') {
         log('AppScreen.findAndAttchCssAppProperty: only css appProperty is allowed here', true);
     }
-    if (this.view.$el) {
-        var elemsOnView = $(this.view).find(ap.cssSelector);
-        for (var k = 0; k < elemsOnView.length; k++) {
-            // добавить проперти в data-app-property атрибут, так как css свойств там нет
-            // они понадобятся чтобы по клику а этот элемент показать все проперти которые нужны
-            this.addDataAttribute(elemsOnView[k], ap.propertyString);
-            // для экрана подготавливаем domElement связанные с appProperty,
-            // чтобы потом не искать их при каждом показе экрана
-            this.appPropertyElements.push({
-                propertyString: ps.propertyString,
-                domElement: elemsOnView[k]
-            });
-        }
-        return elemsOnView.length;
+    var elemsOnView = $(this.view).find(ap.cssSelector);
+    for (var k = 0; k < elemsOnView.length; k++) {
+        // добавить проперти в data-app-property атрибут, так как css свойств там нет
+        // они понадобятся чтобы по клику а этот элемент показать все проперти которые нужны
+        this.addDataAttribute(elemsOnView[k], ap.propertyString);
+        // для экрана подготавливаем domElement связанные с appProperty,
+        // чтобы потом не искать их при каждом показе экрана
+        this.appPropertyElements.push({
+            propertyString: ap.propertyString,
+            domElement: elemsOnView[k]
+        });
     }
-    else {
-        log('AppScreen.findAndAttchCssAppProperty: View or view.$el does not exist in AppScreen+'+this.id, true);
-    }
-    return 0;
+    return elemsOnView.length;
 };
 
 /**
@@ -83,7 +83,7 @@ AppScreen.prototype.findAndAttachCssAppProperty = function(ap) {
  * @returns {number} количество найденных dom-элементов на экране
  */
 AppScreen.prototype.findAndAttachAppProperty = function() {
-    var dataElems = this.view.$el.find('[data-app-property]');
+    var dataElems = this.view.find('[data-app-property]');
     if (dataElems.length > 0) {
         for (var j = 0; j < dataElems.length; j++) {
             var atr = $(dataElems[j]).attr('data-app-property');

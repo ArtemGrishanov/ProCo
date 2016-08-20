@@ -784,6 +784,7 @@ var Engine = {};
                 height: config.products.test.defaultHeight,
                 defaults: defaults
             });
+            productWindow.app.start();
         }
         catch(e) {
             log('Engine.setPropertyToMutApp: '+ e.message, true);
@@ -812,6 +813,7 @@ var Engine = {};
                 height: config.products.test.defaultHeight,
                 defaults: apps
             });
+            productWindow.app.start();
         }
         catch(e) {
             log('Engine.setPropertyToMutApp: '+ e.message, true);

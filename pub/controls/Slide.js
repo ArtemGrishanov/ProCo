@@ -101,7 +101,11 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
                 if (this.previewScale === undefined) {
                     this.previewScale = this.$previewIFrame.width() / Editor.getAppContainerSize().width;
                 }
-                var clonedView = $(view).clone().css('transform','scale('+this.previewScale+')').css('transform-origin','top left');
+                var clonedView = $(view).clone()
+                    .css('width',Editor.getAppContainerSize().width+'px')
+                    .css('height',Editor.getAppContainerSize().height+'px')
+                    .css('transform','scale('+this.previewScale+')')
+                    .css('transform-origin','top left');
                 this.$previewDocumentBody.empty().append(clonedView);
             }
         }

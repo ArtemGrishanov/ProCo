@@ -97,6 +97,7 @@ var QuestionScreen = MutApp.Screen.extend({
         var q = this.model.getQuestionById(this.questionId);
         this.$el.html(this.template['default'](q));
 
+        q.question.currentQuestionIndex = this.model.get('quiz').indexOf(q);
         this.renderQuestion(q.question);
 
         this.renderAnswers(q.answer);
@@ -184,15 +185,22 @@ var QuestionScreen = MutApp.Screen.extend({
      */
     renderExplanation: function(success, explanationData) {
         //TODO можно это вынести в отдельный сабвью, если хоти его тдельно редактировать и показывать.
-        var $e = $(this.template[explanationData.uiTemplate](explanationData));
-        this.$el.find('.js-explain').append($e).show();
-        // обработчик уже установлен через backbone events
-//        $e.find('.js-next').click((function(){
-//            // переход к соедующему вопросы после просмотра объяснения
-//            this.model.next();
-//        }).bind(this));
-        if (success !== true) {
-            $e.find('.explain_blk').addClass('__err');
+
+        // сейчас показывается блок js-explain с модификатором верно/неверно и кнопкой дальше.
+        // текст пояснения не показывается, так как пока не понятно как его редактировать в редакторе
+
+        // var $e = $(this.template[explanationData.uiTemplate](explanationData));
+        // this.$el.find('.js-explain').append($e).show();
+
+        this.$el.find('.js-explain').show();
+        // обработчик на js-next уже установлен через backbone events
+        if (success === true) {
+            this.$el.find('.js-explanation_text').text('Верно');
+            this.$el.find('.explain_blk').removeClass('__err');
+        }
+        else {
+            this.$el.find('.js-explanation_text').text('Неверно');
+            this.$el.find('.explain_blk').addClass('__err');
         }
     }
 });

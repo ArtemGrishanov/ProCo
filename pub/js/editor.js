@@ -293,20 +293,12 @@ var Editor = {};
         for (var i = 0; i < ids.length; i++) {
             appScreen = Engine.getAppScreen(ids[i]);
             if (appScreen) {
-                var b = createPreviewScreenBlock(appScreen.view.$el)
+                var b = createPreviewScreenBlock(appScreen.view)
                 $(previewScreensIframeBody).append(b);
                 previewHeight += appContainerSize.height;
-//                if (i < ids.length-1) {
-//                    // разрыв между экранами, когда отображается сразу группа экранов
-                    previewHeight += config.editor.ui.screen_blocks_padding+2*config.editor.ui.screen_blocks_border_width; // 20 - паддинг в стиле product_cnt.css/screen_block
-//                    $(previewScreensIframeBody).append('<br>');
-//                }
-//                if (typeof appScreen.doWhenInDOM === 'function') {
-//                    appScreen.doWhenInDOM(iframeWindow.app, appScreen.view);
-//                }
-                bindControlsForAppPropertiesOnScreen(appScreen.view.$el, ids[i]);
+                previewHeight += config.editor.ui.screen_blocks_padding+2*config.editor.ui.screen_blocks_border_width; // 20 - паддинг в стиле product_cnt.css/screen_block
+                bindControlsForAppPropertiesOnScreen(appScreen.view, ids[i]);
                 applyTriggers('screen_show');
-    //            showAppScreenHints(appScreen);
             }
             else {
                 //TODO показать ошибку наверное

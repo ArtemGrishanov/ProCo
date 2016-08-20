@@ -81,11 +81,11 @@ var TestModel = MutApp.Model.extend({
                         {
                             uiTemplate: 'id-option_img_template',
                             img: 'i/mur1.jpg',
+                            points: 1
                         },
                         {
                             uiTemplate: 'id-option_img_template',
-                            img: 'i/mur2.jpg',
-                            points: 1
+                            img: 'i/mur2.jpg'
                         }
                     ]
                 }
@@ -113,13 +113,13 @@ var TestModel = MutApp.Model.extend({
                         {
                             uiTemplate: 'id-option_text_template',
                             text: 'Индийский',
-                            type: 'text',
-                            points: 1
+                            type: 'text'
                         },
                         {
                             uiTemplate: 'id-option_text_template',
                             text: 'Тихий',
-                            type: 'text'
+                            type: 'text',
+                            points: 1
                         },
                         {
                             uiTemplate: 'id-option_text_template',
