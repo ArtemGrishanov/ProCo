@@ -43,6 +43,7 @@ var QuestionScreen = MutApp.Screen.extend({
     showQuestionProgress: true,
     questionProgressPosition: {top:30, left:30},
     topColontitleText: 'Текст колонтитула',
+    backgroundImg: null,
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -126,6 +127,11 @@ var QuestionScreen = MutApp.Screen.extend({
         this.$el.find('.js-question_progress').
             css('top',this.questionProgressPosition.top+'px').
             css('left',this.questionProgressPosition.left+'px');
+
+        if (this.backgroundImg) {
+            this.$el.find('.js-back_img').css('backgroundImage','url('+this.backgroundImg+')');
+        }
+
         return this;
     },
 

@@ -102,7 +102,7 @@ descriptor.app = [
         rules: 'imgUrl'
     },
     {
-        selector: 'id=startScr backgroundStart, type=questions backgroundQuestions, type=result backgroundResult',
+        selector: 'id=startScr backgroundImg, type=questions backgroundImg, type=result backgroundImg',
         updateScreens: true,
         rules: 'imgUrl'
     },

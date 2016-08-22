@@ -243,8 +243,10 @@ var Editor = {};
             height: app.height
         };
 
-        // нужна только ширина для горизонтального выравнивания
-        $('#id-product_cnt').width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width);
+        // нужна ширина для горизонтального выравнивания
+        $('#id-product_cnt').width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width)
+            // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
+            .height(appContainerSize.height+2*config.editor.ui.screen_blocks_border_width);
         // в поле для редактирования подтягиваем стили продукта
         $("#id-product_screens_cnt").contents().find('head').append(config.products[app.type].stylesForEmbed);
 
@@ -304,6 +306,8 @@ var Editor = {};
                 //TODO показать ошибку наверное
             }
         }
+        // в превью контейнер дописать кастомные стили, которые получились в результате редактирования css appProperties
+        Engine.writeCssRulesTo(previewScreensIframeBody);
         // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
         $('#id-product_screens_cnt').width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
         // боковые панели вытягиваем также вслед за экранами

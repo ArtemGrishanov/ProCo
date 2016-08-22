@@ -107,6 +107,7 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
                     .css('transform','scale('+this.previewScale+')')
                     .css('transform-origin','top left');
                 this.$previewDocumentBody.empty().append(clonedView);
+                Engine.writeCssRulesTo(this.$previewDocumentBody);
             }
         }
         catch(e) {

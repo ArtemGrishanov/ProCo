@@ -38,6 +38,7 @@ var ResultScreen = MutApp.Screen.extend({
     logoPosition: {top: 100, left: 20},
     logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
     restartButtonText: 'Заново',
+    backgroundImg: null,
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -88,6 +89,9 @@ var ResultScreen = MutApp.Screen.extend({
         }
         else {
             this.$el.find('.js-result_logo').hide();
+        }
+        if (this.backgroundImg) {
+            this.$el.find('.js-back_img').css('backgroundImage','url('+this.backgroundImg+')');
         }
         return this;
     }

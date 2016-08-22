@@ -11,20 +11,18 @@
     <div id="id-mutapp_screens">
     </div>
     <script id="id-welcome_template" type="text/template">
-        <div class="modal __active">
+        <div class="modal __active js-back_color js-back_img" data-app-property="id=startScr backgroundImg">
             <div class="modal_cnt info">
                 <div class="info_title js-startHeader" data-app-property="id=startScr startHeaderText"><b>Дзюдо: </b>иппон или вазаари</div>
                 <div class="info_tx js-startDescription" data-app-property="id=startScr startDescription">Пройдите тест и узнайте, как хорошо вы разбираетесь в этом виде восточных единоборств</div>
                 <div class="info_f">
                     <div class="button js-next" data-app-property="id=startScr startButtonText">Пройти тест</div>
                 </div>
-
-                <div class="modal_f"></div>
             </div>
         </div>
     </script>
     <script id="id-slide_template" type="text/template">
-        <div class="modal __active">
+        <div class="modal __active js-back_color js-back_img" data-app-property="type=questions backgroundImg">
             <div class="modal_cnt">
                 <div data-app-property="type=questions topColontitleText" class="js-topColontitleText topColontitle">Верхний колонтитул</div>
                 <div class="modal_hld question">
@@ -36,7 +34,6 @@
                         <!--Сюда программно добавляются варианта ответов-->
                     </div>
                 </div>
-                <div class="modal_f"></div>
                 <div class="js-explain explain_modal" style="display:none;">
                     <div class="explain_blk">
                         <div class="explain_title js-explanation_text"></div>
@@ -91,7 +88,6 @@
     <script id="id-explanation_text_template" type="text/template">
         <div class="modal __active">
             <div class="modal_cnt">
-                <div class="modal_logo js-test_logo"></div>
                 <div class="modal_hld answer">
                     <div class="answer_title js-expl_title">Заголовок</div>
                     <div class="answer_tx"><%=text%></div>
@@ -99,12 +95,11 @@
                         <div class="answer_ac button js-next">Следующий вопрос</div>
                     </div>
                 </div>
-                <div class="modal_f"></div>
             </div>
         </div>
     </script>
     <script id="id-result_template" type="text/template">
-        <div class="modal __active">
+        <div class="modal __active js-back_color js-back_img" data-app-property="type=result backgroundImg">
             <div class="modal_cnt info">
                 <div class="info_title" data-app-property="id=tm results.<%=currentResultIndex%>.title"><b><%=title%></b></div>
                 <div class="info_tx" data-app-property="id=tm results.<%=currentResultIndex%>.description"><%=description%></div>
@@ -112,8 +107,6 @@
                     <div class="button __sec js-next js-restart">Пройти тест еще раз</div>
                     <!--<div class="button js-details">Подробности</div>-->
                 </div>
-
-                <div class="modal_f"></div>
             </div>
         </div>
     </script>

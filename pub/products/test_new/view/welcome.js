@@ -36,6 +36,7 @@ var StartScreen = MutApp.Screen.extend({
     startHeaderText: 'Тест',
     startDescription: 'Проверь свои знания',
     startButtonText: 'Начать',
+    backgroundImg: null,
 
 
     /**
@@ -78,6 +79,10 @@ var StartScreen = MutApp.Screen.extend({
         this.$el.find('.js-start_logo').
             css('top',this.logoPosition.top+'px').
             css('left',this.logoPosition.left+'px');
+
+        if (this.backgroundImg) {
+            this.$el.find('.js-back_img').css('backgroundImage','url('+this.backgroundImg+')');
+        }
 
         this.$el.find('.js-start_btn').text(this.startButtonText);
         this.$el.find('.js-startHeader').text(this.startHeader);

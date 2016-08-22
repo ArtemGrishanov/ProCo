@@ -132,7 +132,11 @@ var config = {
         /**
          * Надо ли генерировать превью всех экранов приложения для контрола Slide
          */
-        generateSlidePreviews: true
+        generateSlidePreviews: true,
+        /**
+         * Id элемента, в который пишутся кастомные стили во время редактирования в редакторе
+         */
+        previewCustomStylesId: 'id-custom_style'
     },
     /**
      * Конфигурация витрины

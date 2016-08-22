@@ -80,12 +80,12 @@ var TestModel = MutApp.Model.extend({
                     options: [
                         {
                             uiTemplate: 'id-option_img_template',
-                            img: 'i/mur1.jpg',
+                            img: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/mur1.jpg',
                             points: 1
                         },
                         {
                             uiTemplate: 'id-option_img_template',
-                            img: 'i/mur2.jpg'
+                            img: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/mur2.jpg'
                         }
                     ]
                 }
@@ -94,7 +94,7 @@ var TestModel = MutApp.Model.extend({
                 question: {
                     uiTemplate: 'id-question_text_photo_template',
                     text: 'Самый большой океан в мире?',
-                    img: 'i/ocean.jpg'
+                    img: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/ocean.jpg'
                 },
                 explanation: {
                     uiTemplate: 'id-explanation_text_template',
@@ -157,7 +157,7 @@ var TestModel = MutApp.Model.extend({
         proto__photo_question_slide: {
             uiTemplate: 'id-slide_photo_template',
             text: 'Текст фото вопроса?',
-            img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/picture1.jpg',
+            img: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/ocean.jpg',
             options: [
                 {
                     text: 'Вариант ответа 1',

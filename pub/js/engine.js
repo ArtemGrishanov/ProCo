@@ -148,9 +148,9 @@ var Engine = {};
      */
     function writeCssRulesTo(elem) {
         var cssStr = getCustomStylesString();
-        var $style = $(elem).find('#id-custom_style');
+        var $style = $(elem).find('#'+config.common.previewCustomStylesId);
         if ($style.length === 0) {
-            $style = $('<style></style>').attr('id','id-custom_style').appendTo(elem);
+            $style = $('<style></style>').attr('id',config.common.previewCustomStylesId).appendTo(elem);
         }
         $style.html(cssStr);
     }
@@ -373,7 +373,7 @@ var Engine = {};
                 }
             }
             else {
-                log('Engine.createAppProperties: Cannot find property in app by selector: '+s, true);
+                log('Engine.createAppProperties: Cannot find property in mutapp by selector: '+s, true);
             }
 
         }
@@ -1103,10 +1103,47 @@ var Engine = {};
         return JSON.stringify(Engine.getAppPropertiesValues().app);
     }
 
+    /**
+     * Найти свойство по строке, поиск будет производиться по нескольким полям.
+     * Надо для отладки
+     *
+     * @param {string} str
+     */
+    function find(str) {
+        var results1 = [];
+        var results2 = [];
+        var results3 = [];
+        for (var i = 0; i < appProperties.length; i++) {
+            var ap = appProperties[i];
+            if (ap.propertyString.indexOf(str) >= 0) {
+                // самый релевантный поиск по ключу: propertyString
+                results1.push(ap);
+            }
+            else {
+                if ((ap.selector && ap.selector.indexOf(str) >= 0) ||
+                    (ap.cssProperty && ap.cssProperty.indexOf(str) >= 0) ||
+                    (ap.cssSelector && ap.cssSelector.indexOf(str) >= 0) ||
+                    (ap.applyCssTo && ap.applyCssTo.indexOf(str) >= 0)
+                    ) {
+                    // вторая степерь релевантности: доп атрибуты
+                    results2.push(ap);
+                }
+                else {
+                    if (ap.propertyValue && ap.propertyValue.toString().indexOf(str) >= 0) {
+                        // менее релевантный поиск - по значению
+                        results3.push(ap);
+                    }
+                }
+            }
+        }
+        return results1.concat(results2).concat(results3);
+    }
+
     global.startEngine = startEngine;
     global.test = test;
     global.getApp = getApp;
     global.parseSelector = function(s) { return productWindow.MutApp.Util.parseSelector(s) };
+    global.find = find;
 
     // методы для работы со свойствами appProperties
     global.setValue = setValue;
@@ -1128,8 +1165,8 @@ var Engine = {};
     global.getAppScreen = getAppScreen;
 
     // методы для работы с шаблонами
-//    global.exportTemplate = exportTemplate;
     global.getCustomStylesString = getCustomStylesString;
+    global.writeCssRulesTo = writeCssRulesTo;
     global.serializeAppValues = serializeAppValues;
     global.getAppPropertiesValues = getAppPropertiesValues;
     global.getOperationsCount = function() { return operationsCount; }
