@@ -22,8 +22,6 @@ descriptor.css = [
         filter: true
     },*/
     {
-        // на самом деле тут больше appProperty: .js-startHeader_fontFamily .js-startHeader_fontColor .js-startHeader_fontSize .js-startHeader_textAlign
-        //   .js-startDescription_fontFamily .js-startDescription_fontColor .js-startDescription_fontSize .js-startDescription_textAlign
         // перечислил все классы к которым применять правила
         selector: '.js-startHeader .js-start_description .js-question_text .js-result_title .js-result_description',
         // можно прописать сразу несколько правил, получается отношение "многие ко многим"
@@ -41,17 +39,16 @@ descriptor.css = [
     },
     {
         // все кнопки
-        selector: '.t_btn',
+        selector: '.js-test_btn',
         rules: 'backgroundColor fontColor fontSize fontFamily borderColor borderRadius paddingTop paddingBottom'
     },
     {
-        selector: '.t_btn',
+        selector: '.js-test_btn',
         applyCssTo: '.js-btn_wr',
         rules: 'textAlign marginTop marginBottom paddingLeft'
     },
     {
-        //TODO подумать
-        selector: '.t_btn',
+        selector: '.js-test_btn',
         rules: 'textAlign'
     },
     {
@@ -63,7 +60,7 @@ descriptor.css = [
     },
     {
         // все кнопки в состоянии навеения
-        selector: '.t_btn:hover',
+        selector: '.js-test_btn:hover',
         rules: 'hoverBackgroundColor hoverFontColor hoverBorderColor',
     },
     {

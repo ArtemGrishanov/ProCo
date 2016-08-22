@@ -150,7 +150,7 @@ var Engine = {};
         var cssStr = getCustomStylesString();
         var $style = $(elem).find('#'+config.common.previewCustomStylesId);
         if ($style.length === 0) {
-            $style = $('<style></style>').attr('id',config.common.previewCustomStylesId).appendTo(elem);
+            $style = $('<style type="text/css"></style>').attr('id',config.common.previewCustomStylesId).appendTo(elem);
         }
         $style.html(cssStr);
     }
@@ -377,7 +377,7 @@ var Engine = {};
             }
 
         }
-        log('AppProperties created (type=app) ' + count, false);
+        log('Engine.createAppProperties: properties created (type=app) '+count, false);
     }
 
     /**
@@ -546,6 +546,7 @@ var Engine = {};
             }
             send('AllScreensWereUpdatedAfter');
         }
+        log('Engine.createAppScreens: '+appScreens.length+' were created');
     }
 
     /**
@@ -729,6 +730,7 @@ var Engine = {};
             // Проверки на null и так далее: дескрипторе это нормально - описать редактирование свойства, а значения нет, пока первый раз его не задашь
             if (appProperty.cssSelector && appProperty.cssProperty && value !== undefined && value !== null && value !== '') {
                 var cssV = parseCssPattern(appProperty, value);
+                appProperty.propertyValue = cssV;
                 saveCssRule(appProperty.applyCssTo || appProperty.cssSelector, appProperty.cssProperty, cssV);
                 writeCssRulesTo(productWindow.document.body);
             }

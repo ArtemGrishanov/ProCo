@@ -20,7 +20,7 @@ var TEditor = {};
         assert.ok($workspaceCnt.length > 0, 'Workspace cnt exist');
         assert.ok($workspaceCnt.width() > 0, 'Workspace cnt width');
         // высоту выставлять необязательно, только ширина для горизонтального выравнивания
-        assert.ok($workspaceCnt.height() === 0, 'Workspace cnt height==0');
+        assert.ok($workspaceCnt.height() > 0, 'Workspace cnt height > 0');
     }
 
     function checkSlides(assert) {
@@ -36,8 +36,25 @@ var TEditor = {};
         //TODO generator
     }
 
+    /**
+     * Проверить представление всех экранов приложения, экраны на рабочем поле в приложении.
+     * @param assert
+     */
     function checkPreview(assert) {
-//        assert.ok(false, 'checkPreview');
+        var previewScreensIframeBody = $("#id-product_screens_cnt").contents().find('body');
+        assert.ok(previewScreensIframeBody!==null && previewScreensIframeBody.length>0, 'checkPreview: #id-product_screens_cnt contains iframe');
+
+        var screensIds = Engine.getAppScreenIds();
+        for (var i = 0; i < screensIds.length; i++) {
+            var sId = screensIds[i];
+            Editor.showScreen([sId]);
+
+            var bodyHtml = previewScreensIframeBody.html();
+            assert.ok(bodyHtml.indexOf(appScreen.view.html()) >= 0, 'checkPreview: #id-product_screens_cnt contains screen \''+sId+'\'');
+
+        }
+
+        assert.ok(false, 'checkPreview');
     }
 
     function checkSavingTemplate(assert) {

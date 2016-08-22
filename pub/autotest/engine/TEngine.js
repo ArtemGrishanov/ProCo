@@ -137,16 +137,6 @@ var TEngine = {};
 
         Queue.push({
             run: function() {
-                // запуск редактора
-                // в нормальном режиме эти параметры передаются через url-get строку
-//                Editor.start({
-//                    app: appName,
-//                    //template: '' // другой режим запуска возможен, через шаблон
-//                    callback: function() {
-//                        assert.ok(true, 'Editor started');
-//                        Queue.release(this);
-//                    }
-//                });
                 TApp.createApp(appName, function(iframe) {
                     appIframe = iframe;
                     assert.ok(true, 'App created');
@@ -178,6 +168,14 @@ var TEngine = {};
                             var actualProperty = Engine.getApp().getPropertiesBySelector(p.propertyString);
                             assert.ok(actualProperty.length===1, 'actualProperty is array length=1');
                             assert.ok(actualProperty[0].value === newValue, 'string value set correctly for \''+p.propertyString+'\''+' value='+newValue);
+                            saved.push({'propertyString':p.propertyString, 'value':newValue});
+                        }
+                        else if (typeof p.propertyValue === 'boolean') {
+                            var newValue = Math.random()<.5;
+                            Engine.setValue(p, newValue);
+                            var actualProperty = Engine.getApp().getPropertiesBySelector(p.propertyString);
+                            assert.ok(actualProperty.length===1, 'actualProperty is array length=1');
+                            assert.ok(actualProperty[0].value === newValue, 'boolean value set correctly for \''+p.propertyString+'\''+' value='+newValue);
                             saved.push({'propertyString':p.propertyString, 'value':newValue});
                         }
                     }

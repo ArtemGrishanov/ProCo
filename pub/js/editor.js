@@ -290,6 +290,8 @@ var Editor = {};
         }
 
         $(previewScreensIframeBody).empty();
+        // в превью контейнер дописать кастомные стили, которые получились в результате редактирования css appProperties
+        Engine.writeCssRulesTo(previewScreensIframeBody);
         var appScreen = null;
         var previewHeight = 0;
         for (var i = 0; i < ids.length; i++) {
@@ -303,11 +305,9 @@ var Editor = {};
                 applyTriggers('screen_show');
             }
             else {
-                //TODO показать ошибку наверное
+                log('Editor.showScreen: appScreen not found '+ids[i]);
             }
         }
-        // в превью контейнер дописать кастомные стили, которые получились в результате редактирования css appProperties
-        Engine.writeCssRulesTo(previewScreensIframeBody);
         // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
         $('#id-product_screens_cnt').width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
         // боковые панели вытягиваем также вслед за экранами
@@ -496,7 +496,7 @@ var Editor = {};
         if (dataAppPropertyString) {
             $('#id-static_controls_cnt').children().hide();
             // может быть несколько свойств через запятую: фон кнопки, ее бордер, цвет шрифта кнопки и так далее
-            var keys = dataAppPropertyString.split(' ');
+            var keys = dataAppPropertyString.split(',');
             for (var i = 0; i < keys.length; i++) {
                 var c = findControlInfo(keys[i].trim());
                 // wrapper - это обертка в которой находится контрол на боковой панели
