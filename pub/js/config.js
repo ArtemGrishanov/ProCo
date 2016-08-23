@@ -202,10 +202,10 @@ var config = {
             }
         },
         timeline: {
-
+            stylesForEmbed: '<link href="{{config.common.home}}/products/timeline/style.css" rel="stylesheet"/>'
         },
         smartimage: {
-
+            stylesForEmbed: '<link href="{{config.common.home}}/products/smartimage/style.css" rel="stylesheet"/>'
         }
     },
     controls: {

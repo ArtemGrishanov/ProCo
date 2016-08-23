@@ -30,6 +30,7 @@ function SlideGroupControl(propertyString, directiveName, $parent, productDOMEle
     this.startPosition = null;
     this.startMousePosition = null;
     this.propertyValueMap = null;
+    this.loaded = false;
 
     /**
      * идентификатор группы
@@ -67,6 +68,7 @@ function SlideGroupControl(propertyString, directiveName, $parent, productDOMEle
         $(document).mousemove(this.onMouseMove.bind(this));
         $(document).mouseup(this.onMouseUp.bind(this));
         this.updateScreens();
+        this.loaded = true;
     });
 
     // таймер на проверку новой позиции при перетаскивании

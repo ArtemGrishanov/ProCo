@@ -14,34 +14,34 @@ var TEngine = {};
      */
     function checkEngine(assert) {
         var app = Engine.getApp();
-        assert.ok(!!app === true, 'App exists in Engine');
+        assert.ok(!!app === true, 'Engine.checkEngine: App exists in Engine');
 
         var name = app.type; //'test'
-        assert.ok(name.length > 0, 'app type exist');
+        assert.ok(name.length > 0, 'Engine.checkEngine: app type exist');
 
         var productConfig = config.products[name];
-        assert.ok(productConfig !== null, 'Product config exist');
+        assert.ok(productConfig !== null, 'Engine.checkEngine: Product config exist');
 
         var appProps = Engine.getAppProperties();
-        assert.ok(appProps.length > productConfig.autotests.expectedPropertiesCount, 'More then '+productConfig.autotests.expectedPropertiesCount+' appProperties for test');
-        assert.ok(appProps.length === Engine.getAppPropertiesObjectPathes().length, 'App Properties and object pathes');
+        assert.ok(appProps.length > productConfig.autotests.expectedPropertiesCount, 'Engine.checkEngine: More then '+productConfig.autotests.expectedPropertiesCount+' appProperties for test');
+        assert.ok(appProps.length === Engine.getAppPropertiesObjectPathes().length, 'Engine.checkEngine: App Properties and object pathes');
         for (var i = 0; i < appProps.length; i++) {
             if (appProps[i].type === 'app') {
                 var f = Engine.getAppProperty(appProps[i].propertyString);
-                assert.ok(f === appProps[i], 'Engine.getAppProperty search');
+                assert.ok(f === appProps[i], 'Engine.checkEngine: getAppProperty search');
 
                 checkAppProperty(assert, appProps[i]);
             }
         }
         // поиск дублирующихся пропертей
         var d = duplicateCount(assert,appProps,'propertyString');
-        assert.ok(d === 0, 'Duplicates in app properties');
+        assert.ok(d === 0, 'Engine.checkEngine: Duplicates in app properties');
 
         var scrIds = Engine.getAppScreenIds();
-        assert.ok(scrIds.length >= productConfig.autotests.expectedScreensCount, 'There are some screens');
+        assert.ok(scrIds.length >= productConfig.autotests.expectedScreensCount, 'Engine.checkEngine: There are some screens');
         for (var i = 0; i < scrIds.length; i++) {
             var s = Engine.getAppScreen(scrIds[i]);
-            assert.ok(s!==null,'Screen has finded');
+            assert.ok(s!==null,'Engine.checkEngine: Screen has finded');
 
             checkAppScreen(assert, s);
         }
@@ -60,29 +60,27 @@ var TEngine = {};
 
         // вернуть свойства приложения в виде строки
         var serializedApps = Engine.serializeAppValues();
-        assert.ok(typeof serializedApps  === 'string', 'Engine.getAppString()');
+        assert.ok(typeof serializedApps  === 'string', 'Engine.checkEngine: serialize values');
         assert.ok(serializedApps.length > productConfig.autotests.expectedSerializedAppStringLength, 'Engine.getAppString()');
 
         // styles string
         var cssString = Engine.getCustomStylesString();
-        assert.ok(typeof cssString  === 'string', 'Engine.getCustomStylesString()');
+        assert.ok(typeof cssString  === 'string', 'Engine.checkEngine: getCustomStylesString()');
         var p = propertiesCount(exportedProperties.css, true);
         if (p > 0) {
             // содержит более менее-длинную строку
             // длина которой примерно зависит от количества определенных css свойств
-            assert.ok(cssString.length > p*5, 'Engine.getCustomStylesString()');
+            assert.ok(cssString.length > p*5, 'Engine.checkEngine: getCustomStylesString()');
         }
         else {
             // содержит только символ новой строки
             // нет стилей для экспорта
-            assert.ok(cssString.length == 1, 'Engine.getCustomStylesString()');
+            assert.ok(cssString.length == 1, 'Engine.checkEngine: getCustomStylesString()');
         }
 
-//        1) верхний уровень можно назвать "product"
-//        а сценарии иметь на каждом уровне
-//        на уровне движка например генератор
-//        на уровне TApp выделить сценарий прохождения и проверки
-
+        var body = $("#id-product_iframe_cnt").find('iframe').contents().find('body');
+        assert.ok(body.html().indexOf(cssString)>=0, 'Engine.checkEngine: productIframe contains custom styles');
+        // custom cssString in iframe
     }
 
     /**
@@ -250,7 +248,7 @@ var TEngine = {};
         for (var i = 0; i < array.length; i++) {
             for (var j = 0; j < array.length; j++) {
                 if (i!==j && array[i][propertyName]===array[j][propertyName]) {
-                    assert(false, 'TEngine.duplicateCount: duplicated \''+array[i][propertyName]+'\'');
+                    assert.ok(false, 'TEngine.duplicateCount: duplicated \''+array[i][propertyName]+'\'');
                     result++;
                 }
             }

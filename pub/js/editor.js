@@ -257,9 +257,33 @@ var Editor = {};
             workspaceOffset = $('#id-product_screens_cnt').offset();
             Modal.hideLoading();
         }
-        if (typeof startCallback === 'function') {
-            startCallback();
-        }
+        // проверить что редактор готов, и вызвать колбек
+        checkEditorIsReady();
+    }
+
+    /**
+     * Сделать последние проверки
+     * Например, дождаться загрузки критичных контролов управления экранами
+     */
+    function checkEditorIsReady() {
+        var intervalId = setInterval(function() {
+            // дожидаемся загрузки контролов управления экранами
+            // так как они управляют апдейтом экрана
+            var slideGroupControlIsLoaded = true;
+            var controls = Editor.getSlideGroupControls();
+            for (var n = 0; n < controls.length; n++) {
+                if (controls[n].loaded === false) {
+                    slideGroupControlIsLoaded = false;
+                    break;
+                }
+            }
+            if (slideGroupControlIsLoaded===true) {
+                clearInterval(intervalId);
+                if (typeof startCallback === 'function') {
+                    startCallback();
+                }
+            }
+        }, 200);
     }
 
     /**
@@ -1145,5 +1169,6 @@ var Editor = {};
     global.showScreen = showScreen;
     global.getAppContainerSize = function() { return appContainerSize; };
     global.findControlInfo = findControlInfo;
+    global.getSlideGroupControls = function() { return slideGroupControls; };
 
 })(Editor);

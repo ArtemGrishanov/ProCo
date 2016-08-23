@@ -31,19 +31,21 @@ var TEditor = {};
     }
 
     /**
-     * Проверить представление всех экранов приложения, экраны на рабочем поле в приложении.
+     * Проверить представление экрана в workspace
      * @param assert
      */
     function checkPreview(assert) {
 
-        var screensIds = Engine.getAppScreenIds();
-        for (var i = 0; i < screensIds.length; i++) {
+//        var screensIds = Engine.getAppScreenIds();
+//        for (var i = 0; i < screensIds.length; i++) {
 //            var sId = screensIds[i];
 //            Editor.showScreen([sId]);
+//        }
 
-        }
-
-        assert.ok(false, 'checkPreview');
+        // проверка что в превью содержатся все кастомные стили
+        var cssString = Engine.getCustomStylesString();
+        var body = $("#id-product_screens_cnt").contents().find('body');
+        assert.ok(body.html().indexOf(cssString)>=0, 'TEditor.checkPreview: workspace iframe contains custom styles');
     }
 
     /**

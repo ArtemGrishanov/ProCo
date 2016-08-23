@@ -506,12 +506,6 @@ var Engine = {};
         var ps = Engine.getApp()._screens;
         if (ps) {
             for (var i = 0; i < ps.length; i++) {
-//                if (ps[i].data) {
-//                    // если имеются дополнительные данные их возможно вставить во view
-//                    // например: data-app-property="quiz.{{currentQuestion}}.text"
-//                    ps[i].view = parseView(ps[i].view, ps[i].data);
-//                    writeCssRulesTo(ps[i].view);
-//                }
                 // мы знаем сss классы для редактирования, так как дескриптор был разобран
                 // можно сразу найти классы и data-app-property на view
                 var appScreen = new AppScreen(ps[i]);
@@ -519,19 +513,6 @@ var Engine = {};
                     var ap = appProperties[j];
                     if (ap.type === 'css') {
                         var findedDomElements = appScreen.findAndAttachCssAppProperty(ap);
-//                        if (!!ap.propertyValue === false) {
-//                            // прочитать актуальное значение свойства и сохранить его
-//                            // если свойство ни разу не задавали, то сначала надо взять его из приложения и записать
-//                            // TODO далее могут быть разные сценарии: изменено где-то вовне, например самим промо приложением согласно его логике,
-//                            // TODO эти случаи не рассматриваем пока...
-//                            var actualSelector = ap.applyCssTo || ap.cssSelector;
-//                            if (ap.cssProperty) {
-//                                ap.propertyValue = $("#id-product_iframe_cnt").find('iframe').contents().find(actualSelector).css(ap.cssProperty)
-//                            }
-//                            else {
-//                                log('No cssProperty: ' + ap.propertyString, true);
-//                            }
-//                        }
                     }
                 }
                 appScreens.push(appScreen);
