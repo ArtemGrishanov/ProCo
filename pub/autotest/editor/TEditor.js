@@ -104,10 +104,12 @@ var TEditor = {};
         // задать в контрол новое значение
         //TODO возможно ли более одного контрола у свойства
         var c = ap.controls[0];
-        var newValue = null;
+        var newValue = generateValue(ap);
         switch(c.name) {
             case 'TextQuickInput': {
-                newValue = 'test_random_value_string';
+                control.setControlValue(newValue);
+            }
+            case 'StringControl': {
                 control.setControlValue(newValue);
             }
         }

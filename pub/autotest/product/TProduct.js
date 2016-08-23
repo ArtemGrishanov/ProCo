@@ -124,7 +124,7 @@ var TScenarios = {};
                         // генерируем новое значение и устанавливаем через контрол
                         var newValue = TEditor.changeControlValue(ap, ci.control);
 
-                        if (newValue) {
+                        if (newValue!==undefined) {
                             // запоминаем сгенерированные новые значения на будущее
                             savedValues[p] = newValue;
 

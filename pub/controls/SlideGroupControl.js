@@ -106,7 +106,7 @@ SlideGroupControl.prototype.onAllScreensUpdate = function() {
  */
 SlideGroupControl.prototype.updateScreens = function() {
     var appScreenIds = Engine.getAppScreenIds();
-    if (appScreenIds.length > 0) {
+    if (this.$directive && appScreenIds.length > 0) {
         // подготовим для использования компоненты
         for (var i = 0; i < this._slidesInfo.length; i++) {
             this._slidesInfo[i].used = false;

@@ -176,23 +176,16 @@ var TEngine = {};
                 for (var i = 0; i < appProps.length; i++) {
                     var p = Engine.getAppProperty(appProps[i]);
                     assert.ok(p!==null,'Property not null \''+appProps[i]+'\'');
-                    if (p.type === 'app') {
-                        if (typeof p.propertyValue === 'string') {
-                            var newValue = 'rand_string_'+Math.trunc(Math.random()*10000);
-                            Engine.setValue(p, newValue);
-                            var actualProperty = Engine.getApp().getPropertiesBySelector(p.propertyString);
-                            assert.ok(actualProperty.length===1, 'actualProperty is array length=1');
-                            assert.ok(actualProperty[0].value === newValue, 'string value set correctly for \''+p.propertyString+'\''+' value='+newValue);
-                            saved.push({'propertyString':p.propertyString, 'value':newValue});
-                        }
-                        else if (typeof p.propertyValue === 'boolean') {
-                            var newValue = Math.random()<.5;
-                            Engine.setValue(p, newValue);
-                            var actualProperty = Engine.getApp().getPropertiesBySelector(p.propertyString);
-                            assert.ok(actualProperty.length===1, 'actualProperty is array length=1');
-                            assert.ok(actualProperty[0].value === newValue, 'boolean value set correctly for \''+p.propertyString+'\''+' value='+newValue);
-                            saved.push({'propertyString':p.propertyString, 'value':newValue});
-                        }
+                    var newValue = generateValue(p);
+                    if (newValue !== null) {
+                        Engine.setValue(p, newValue);
+                        var actualProperty = Engine.getApp().getPropertiesBySelector(p.propertyString);
+                        assert.ok(actualProperty.length===1, 'actualProperty is array length=1');
+                        assert.ok(actualProperty[0].value === newValue, typeof p.propertyValue+' value set correctly for \''+p.propertyString+'\''+' value='+newValue);
+                        saved.push({'propertyString':p.propertyString, 'value':newValue});
+                    }
+                    else {
+                        log('TEngine.scenarioChangeValues: Cannot generate value for \''+p.propertyString+'\'', true);
                     }
                 }
 

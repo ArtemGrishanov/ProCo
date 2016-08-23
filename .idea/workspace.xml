@@ -22,31 +22,42 @@
     <favorites_list name="ProCo" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.4669355">
+    <splitter split-orientation="horizontal" split-proportion="0.49087894">
       <split-first>
         <leaf>
           <file leaf-file-name="TEditor.js" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/pub/autotest/editor/TEditor.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="111" column="13" selection-start="4150" selection-end="4150" vertical-scroll-proportion="-15.76" vertical-offset="1271" max-vertical-offset="2010">
+                <state line="110" column="13" selection-start="4108" selection-end="4108" vertical-scroll-proportion="0.0" vertical-offset="1231" max-vertical-offset="2040">
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="valuesGenerator.js" pinned="false" current="false" current-in-tab="true">
+          <file leaf-file-name="StringControl.js" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/pub/controls/StringControl.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="44" column="32" selection-start="1476" selection-end="1476" vertical-scroll-proportion="0.0" vertical-offset="226" max-vertical-offset="930">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="valuesGenerator.js" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/pub/autotest/engine/helpers/valuesGenerator.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="4" column="22" selection-start="62" selection-end="75" vertical-scroll-proportion="0.08547009" vertical-offset="0" max-vertical-offset="702">
-                  <folding />
+                <state line="107" column="36" selection-start="2752" selection-end="2752" vertical-scroll-proportion="-24.76" vertical-offset="986" max-vertical-offset="1725">
+                  <folding>
+                    <element signature="n#!!doc" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="TextQuickInput.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/controls/TextQuickInput.js">
+          <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/pub/autotest/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="22" column="40" selection-start="902" selection-end="902" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="705">
+                <state line="18" column="21" selection-start="434" selection-end="434" vertical-scroll-proportion="-11.25" vertical-offset="0" max-vertical-offset="2175">
                   <folding />
                 </state>
               </provider>
@@ -55,7 +66,16 @@
           <file leaf-file-name="editor.js" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="80" column="21" selection-start="2421" selection-end="2421" vertical-scroll-proportion="0.0" vertical-offset="888" max-vertical-offset="17310">
+                <state line="245" column="37" selection-start="8312" selection-end="8312" vertical-scroll-proportion="0.0" vertical-offset="2814" max-vertical-offset="17310">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="config.js" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="160" column="64" selection-start="6258" selection-end="6258" vertical-scroll-proportion="0.41219157" vertical-offset="2116" max-vertical-offset="5550">
                   <folding />
                 </state>
               </provider>
@@ -65,32 +85,25 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="TProduct.js" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="TProduct.js" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/pub/autotest/product/TProduct.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="124" column="50" selection-start="4501" selection-end="4501" vertical-scroll-proportion="-12.16" vertical-offset="1556" max-vertical-offset="3165">
+                <state line="115" column="26" selection-start="3984" selection-end="3984" vertical-scroll-proportion="1.7743814" vertical-offset="506" max-vertical-offset="3165">
                   <folding>
-                    <marker date="1471945524000" expanded="true" signature="2979:6076" placeholder="{...}" />
-                    <marker date="1471945524000" expanded="true" signature="5777:5987" placeholder="{...}" />
+                    <marker date="1471952830000" expanded="true" signature="2979:6088" placeholder="{...}" />
+                    <marker date="1471952830000" expanded="true" signature="5789:5999" placeholder="{...}" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="PropertyIterator.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/autotest/product/helpers/PropertyIterator.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="7" column="30" selection-start="255" selection-end="255" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1020">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="TEngine.js" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="TEngine.js" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/pub/autotest/engine/TEngine.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="266" column="0" selection-start="11544" selection-end="11544" vertical-scroll-proportion="2.3973799" vertical-offset="2343" max-vertical-offset="4155">
-                  <folding />
+                <state line="189" column="17" selection-start="8677" selection-end="8677" vertical-scroll-proportion="0.0" vertical-offset="2359" max-vertical-offset="4050">
+                  <folding>
+                    <marker date="1471949422000" expanded="true" signature="7857:8660" placeholder="{...}" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -107,22 +120,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/js/config.js" />
-        <option value="$PROJECT_DIR$/pub/js/appScreen.js" />
-        <option value="$PROJECT_DIR$/pub/controls/Slide.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/style.css" />
         <option value="$PROJECT_DIR$/pub/js/engine.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/descriptor.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/index.html" />
-        <option value="$PROJECT_DIR$/pub/autotest/index.html" />
         <option value="$PROJECT_DIR$/pub/autotest/product/helpers/PropertyIterator.js" />
         <option value="$PROJECT_DIR$/build/controls/TextQuickInput.js" />
         <option value="$PROJECT_DIR$/pub/controls/TextQuickInput.js" />
-        <option value="$PROJECT_DIR$/pub/js/editor.js" />
-        <option value="$PROJECT_DIR$/pub/autotest/product/TProduct.js" />
-        <option value="$PROJECT_DIR$/pub/autotest/editor/TEditor.js" />
-        <option value="$PROJECT_DIR$/pub/autotest/engine/helpers/valuesGenerator.js" />
         <option value="$PROJECT_DIR$/pub/autotest/engine/TEngine.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/engine/helpers/valuesGenerator.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/product/TProduct.js" />
+        <option value="$PROJECT_DIR$/pub/controls/StringControl.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/editor/TEditor.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/index.html" />
+        <option value="$PROJECT_DIR$/pub/controls/SlideGroupControl.js" />
+        <option value="$PROJECT_DIR$/pub/js/editor.js" />
+        <option value="$PROJECT_DIR$/pub/js/config.js" />
       </list>
     </option>
   </component>
@@ -205,124 +218,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="autotest" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="autotest" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="product" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="autotest" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="product" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="helpers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="autotest" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="engine" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="autotest" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="engine" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="helpers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="autotest" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="editor" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -447,7 +342,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16786227" sideWeight="0.5962815" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1348637" sideWeight="0.5962815" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32898173" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -476,30 +371,57 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="96" column="22" selection-start="4569" selection-end="4569" vertical-scroll-proportion="-43.041668" vertical-offset="407" max-vertical-offset="3510">
-          <folding />
-        </state>
+    <entry file="file://$PROJECT_DIR$/pub/i/samples/5.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/i/samples/4.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/i/samples/3.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/i/samples/2.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/i/samples/1.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/test_new/descriptor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="147" column="33" selection-start="4856" selection-end="4870" vertical-scroll-proportion="40.64" vertical-offset="3221" max-vertical-offset="8970">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.037650604" vertical-offset="25" max-vertical-offset="8970">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/engine/helpers/valuesGenerator.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="107" column="36" selection-start="2752" selection-end="2752" vertical-scroll-proportion="-24.76" vertical-offset="986" max-vertical-offset="1725">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/TextQuickInput.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="2" selection-start="1217" selection-end="1593" vertical-scroll-proportion="0.892598" vertical-offset="0" max-vertical-offset="705">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/controls/StringControl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="735">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/editor.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="100" column="94" selection-start="5425" selection-end="5520" vertical-scroll-proportion="-7.6530614" vertical-offset="1125" max-vertical-offset="5685">
+        <state line="44" column="32" selection-start="1476" selection-end="1476" vertical-scroll-proportion="0.0" vertical-offset="226" max-vertical-offset="930">
           <folding />
         </state>
       </provider>
@@ -511,84 +433,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/index.html">
+    <entry file="file://$PROJECT_DIR$/pub/controls/SlideGroupControl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="132" column="86" selection-start="7913" selection-end="7913" vertical-scroll-proportion="0.78197676" vertical-offset="1442" max-vertical-offset="2145">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/product/helpers/PropertyIterator.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="30" selection-start="255" selection-end="255" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1020">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/controls/TextQuickInput.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="43" selection-start="1215" selection-end="1215" vertical-scroll-proportion="0.6313498" vertical-offset="0" max-vertical-offset="689">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/product/qunitHappyPath.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="725">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/appProperty.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="3" selection-start="3673" selection-end="3673" vertical-scroll-proportion="0.20464441" vertical-offset="1404" max-vertical-offset="2805">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/TextQuickInput.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="40" selection-start="902" selection-end="902" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="705">
+        <state line="110" column="27" selection-start="3240" selection-end="3240" vertical-scroll-proportion="-8.680723" vertical-offset="7414" max-vertical-offset="10635">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/autotest/product/TProduct.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="124" column="50" selection-start="4501" selection-end="4501" vertical-scroll-proportion="-12.16" vertical-offset="1556" max-vertical-offset="3165">
+        <state line="115" column="26" selection-start="3984" selection-end="3984" vertical-scroll-proportion="1.7743814" vertical-offset="506" max-vertical-offset="3165">
           <folding>
-            <marker date="1471945524000" expanded="true" signature="2979:6076" placeholder="{...}" />
-            <marker date="1471945524000" expanded="true" signature="5777:5987" placeholder="{...}" />
+            <marker date="1471952830000" expanded="true" signature="2979:6088" placeholder="{...}" />
+            <marker date="1471952830000" expanded="true" signature="5789:5999" placeholder="{...}" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="21" selection-start="2421" selection-end="2421" vertical-scroll-proportion="0.0" vertical-offset="888" max-vertical-offset="17310">
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/autotest/editor/TEditor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="111" column="13" selection-start="4150" selection-end="4150" vertical-scroll-proportion="-15.76" vertical-offset="1271" max-vertical-offset="2010">
+        <state line="110" column="13" selection-start="4108" selection-end="4108" vertical-scroll-proportion="0.0" vertical-offset="1231" max-vertical-offset="2040">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/engine/helpers/valuesGenerator.js">
+    <entry file="file://$PROJECT_DIR$/pub/autotest/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="22" selection-start="62" selection-end="75" vertical-scroll-proportion="0.08547009" vertical-offset="0" max-vertical-offset="702">
+        <state line="18" column="21" selection-start="434" selection-end="434" vertical-scroll-proportion="-11.25" vertical-offset="0" max-vertical-offset="2175">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/engine/TEngine.js">
+    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="266" column="0" selection-start="11544" selection-end="11544" vertical-scroll-proportion="2.3973799" vertical-offset="2343" max-vertical-offset="4155">
+        <state line="245" column="37" selection-start="8312" selection-end="8312" vertical-scroll-proportion="0.0" vertical-offset="2814" max-vertical-offset="17310">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="160" column="64" selection-start="6258" selection-end="6258" vertical-scroll-proportion="0.41219157" vertical-offset="2116" max-vertical-offset="5550">
           <folding />
         </state>
       </provider>

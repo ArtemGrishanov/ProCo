@@ -158,7 +158,7 @@ var config = {
              * В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae
              * Нужно для превью в контроле Slide
              */
-            stylesForEmbed: '<link href="products/test_new/style.css" rel="stylesheet"/>',
+            stylesForEmbed: '<link href="{{config.common.home}}/products/test_new/style.css" rel="stylesheet"/>',
             /**
              * каталог откуда publisher будет брать все ресурсы для публикации проекта
              */
@@ -358,4 +358,8 @@ if (config.common.configurationSetsOnStart && config.common.configurationSetsOnS
         var setName = config.common.configurationSetsOnStart[i];
         config.congigurationSet[setName].call(this);
     }
+}
+
+for (var key in config.products) {
+    config.products[key].stylesForEmbed = config.products[key].stylesForEmbed.replace('{{config.common.home}}',config.common.home);
 }
