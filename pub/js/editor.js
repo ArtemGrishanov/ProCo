@@ -451,7 +451,7 @@ var Editor = {};
                             // только если действительно получилось создать ui для настройки
                             // не все контролы могут быть реализованы или некорректно указаны
                             uiControlsInfo.push({
-                                appPropertyString: propertyString,
+                                propertyString: propertyString,
                                 control: newControl,
                                 domElement: appScreen.appPropertyElements[k].domElement
                             });
@@ -571,7 +571,7 @@ var Editor = {};
                             var newControl = createControl(ps, c.params.viewName, c.name, c.params, parent);
                             if (newControl) {
                                 uiControlsInfo.push({
-                                    appPropertyString: ps,
+                                    propertyString: ps,
                                     control: newControl,
                                     wrapper: $cc, // контейнер, в котором контрол находится на боковой панели контролов
                                     filter: ap.filter, // чтобы потом не искать этот признак во время фильтрации
@@ -736,13 +736,13 @@ var Editor = {};
         for (var j = 0; j < uiControlsInfo.length; j++) {
             if (domElement) {
                 // если важен domElem
-                if (propertyString === uiControlsInfo[j].appPropertyString && domElement === uiControlsInfo[j].domElement) {
+                if (propertyString === uiControlsInfo[j].propertyString && domElement === uiControlsInfo[j].domElement) {
                     return uiControlsInfo[j];
                 }
             }
             else {
                 // если domElem не важен
-                if (propertyString === uiControlsInfo[j].appPropertyString) {
+                if (propertyString === uiControlsInfo[j].propertyString) {
                     return uiControlsInfo[j];
                 }
             }
@@ -1144,5 +1144,6 @@ var Editor = {};
     global.getActiveScreens = getActiveScreens;
     global.showScreen = showScreen;
     global.getAppContainerSize = function() { return appContainerSize; };
+    global.findControlInfo = findControlInfo;
 
 })(Editor);

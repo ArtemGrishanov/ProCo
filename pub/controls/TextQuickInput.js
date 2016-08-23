@@ -26,4 +26,17 @@ function TextQuickInput(propertyString, directiveName, $parent, productDOMElemen
     }
     Engine.on('AppPropertyValueChanged', this.propertyString, this.onPropertyChanged.bind(this));
 }
+
 TextQuickInput.prototype = AbstractControl;
+
+/**
+ * Способ установить значение в контрол извне, с помощью автогенератора
+ * @param value
+ */
+TextQuickInput.prototype.setControlValue = function(value) {
+    if (this.$productDomElement && this.$productDomElement.text() !== value) {
+        this.$productDomElement.text(value);
+    }
+    var p = Engine.getAppProperty(this.propertyString);
+    Engine.setValue(p, value);
+};

@@ -88,15 +88,30 @@ var TEngine = {};
     /**
      * Проверить отдельное appProperty в движке.
      */
-    function checkAppProperty(assert, appProperty) {
-        //todo
-        // формальная корректность
-        // наличие контрола
-        // значение этого свойства в приложении
+    function checkAppProperty(assert, appProperty, expectedValue) {
+        //todo формальная корректность
+        //todo expectedValue - last param
+        //todo наличие контрола
+        //todo значение этого свойства в приложении
+        // проверить в Engine, что оно в действительности установлено
+        // проверить что в приложении оно тоже действительно установлено
+        // проверить что во вью приложения оно реально установлено
 
         assert.ok(typeof appProperty.propertyString === 'string', 'checkAppProperty');
-        var r = Engine.parseSelector(appProperty.propertyString);
-        assert.ok(r !== null, 'checkAppProperty');
+
+        if (appProperty.type==='app') {
+            var r = Engine.parseSelector(appProperty.propertyString);
+            assert.ok(r !== null, 'checkAppProperty: propertyString (type=app) is valid in '+appProperty.propertyString);
+        }
+        else if (appProperty.type==='css') {
+            // в начале селектора надо вырезать точку
+            assert.ok(appProperty.propertyString.indexOf(appProperty.cssSelector.substr(1,appProperty.cssSelector.length))===0, 'checkAppProperty: propertyString (type=css) is valid in '+appProperty.propertyString);
+        }
+        else {
+            assert.ok(false, 'checkApppropety: Unknown type='+appProperty.type);
+        }
+
+        assert.ok(!!appProperty.controls===true && appProperty.controls.length>0, 'checkAppProperty: control exist in '+appProperty.propertyString);
     }
 
     /**
@@ -252,5 +267,6 @@ var TEngine = {};
 
     global.checkEngine = checkEngine;
     global.scenarioChangeValues = scenarioChangeValues;
+    global.checkAppProperty = checkAppProperty;
 
 })(TEngine);

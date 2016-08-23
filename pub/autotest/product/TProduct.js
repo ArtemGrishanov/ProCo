@@ -39,6 +39,13 @@ var TScenarios = {};
 
         var done = assert.async();
         var appIframe = null;
+        var iterator = null;
+        // дополнительно:
+        // надо запоминать все ранее установленные значения в ходе сценария, чтобы они не пропали
+        var savedValues = {};
+
+        //TODO проверить что какие-то appProperty вообще не пояаились на экранах
+        //это тоже может быть ошибкой
 
         Queue.push({
             run: function() {
@@ -83,29 +90,73 @@ var TScenarios = {};
             Queue.release(this);
         }});
 
-        var sIds = Engine.getAppScreenIds();
-        for (var i = 0; i < sIds.length; i++) {
+//        var sIds = Engine.getAppScreenIds();
+//        for (var i = 0; i < sIds.length; i++) {
             Queue.push({
                 data: {
-                    screenId: sIds[i]
+//                    screenId: sIds[i]
                 },
                 run: function() {
                     // показать все экраны по очереди
-                    Editor.showScreen([this.data.screenId]);
+//                    Editor.showScreen([this.data.screenId]);
+                    Editor.showScreen([Engine.getAppScreenIds()[0]]);
+
+                    // создаем итератор для перехода по свойствам экрана
+                    iterator = new PropertyIterator(Editor.getActiveScreens());
+                    assert.ok(iterator.queueLength()>10,'There are some properties in iterator');
+
+                    // проверить активный экран:
+                    // что с нем есть вью экрана приложения
+                    // что есть валидные атрибуты data-app-property
+                    // и т.д.
+                    TEditor.checkActiveScreen(assert, Editor.getActiveScreens()[0]);
+
+                    // проход по всем свойствам, собранным с экрана
+                    var p = null;
+                    while (p = iterator.next()) {
+                        var ap = Engine.getAppProperty(p);
+                        TEngine.checkAppProperty(assert, ap);
+
+                        // найти информацию о контроле в редакторе
+                        var ci = Editor.findControlInfo(p);
+                        assert.ok(ci && ci.control, 'happyPathApp: Finded info about control for \''+p+'\'');
+
+                        // генерируем новое значение и устанавливаем через контрол
+                        var newValue = TEditor.changeControlValue(ap, ci.control);
+
+                        if (newValue) {
+                            // запоминаем сгенерированные новые значения на будущее
+                            savedValues[p] = newValue;
+
+                            // еще раз проверка после установки с expectedValue
+                            TEngine.checkAppProperty(assert, ap, newValue);
+
+                            // проверить что во вью оно реально установлено.
+                            // вью: MutApp.Screens в iframe продукта, Slide превью, превью активного экрана в workspace id-product_screens_cnt
+                            // контрол должен вернуть getControlValue()
+                        }
+                        else {
+                            assert.ok(false, 'happyPathApp: Cannot change value for \''+p+'\' with control \''+ ap.controls[0].name+'\'');
+                        }
+                    }
 
                     // проверить переключение и отображение экрана
-                    TEditor.checkSlides(assert);
+                    // TEditor.checkSlides(assert);
 
+                    //TODO решил не выделить элементы, а просто менять значения контролов
                     // выделение всех элементов приводит к созданию и фильтрации контролов
-                    Editor.selectElementsOnScreen(function(elem) {
-                        TEditor.checkControls(assert);
-                        // контролы управляют настройками верно
-                        TEditor.changeValue(assert); // ???
-                    });
+//                    Editor.selectElementsOnScreen(function(elem) {
+//                        TEditor.checkControls(assert);
+//                        // контролы управляют настройками верно
+//                        TEditor.changeValue(assert); // ???
+//                    });
                     Queue.release(this);
                 }
             });
-        }
+//        }
+
+        //TODO проверить значения измененные во время сценария
+        //savedValues
 
         Queue.push({run: function() {
             // после редактирования проекта в режиме превью он отображается верно
