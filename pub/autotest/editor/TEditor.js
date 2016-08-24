@@ -120,6 +120,9 @@ var TEditor = {};
             case 'StringControl': {
                 control.setControlValue(newValue);
             }
+            case 'Alternative': {
+                control.setControlValue(newValue);
+            }
         }
         // определить тип значения appProperty
         return newValue;

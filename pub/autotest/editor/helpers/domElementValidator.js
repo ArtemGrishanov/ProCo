@@ -35,7 +35,7 @@ function validateDomElement(assert, view, ap, screenId) {
         assert.ok(elements.length>0, 'validateDomElement: dom elements ('+elements.length+') found for '+ap.propertyString+' in screenId='+screenId);
         for (var i = 0; i < elements.length; i++) {
             var $e = $(elements[i]);
-            var actual = $e.css(ap.cssProperty);
+            var actual = $e.css(ap.cssProperty).replace(/['"]+/g, ''); // могут быть кавычки, например в названиях шрифтов
             var expected = ap.propertyValue;
             assert.ok(actual===expected, 'validateDomElement: expected='+expected+' actual='+actual+' in app property='+ap.propertyString+' in screenId='+screenId);
         }
