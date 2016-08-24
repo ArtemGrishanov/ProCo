@@ -43,6 +43,7 @@ var TScenarios = {};
         // дополнительно:
         // надо запоминать все ранее установленные значения в ходе сценария, чтобы они не пропали
         var savedValues = {};
+        var previewBody = null;
 
         //TODO проверить что какие-то appProperty вообще не пояаились на экранах
         //это тоже может быть ошибкой
@@ -53,6 +54,8 @@ var TScenarios = {};
             callback: function() {
                 log('happyPathApp: Editor started');
                 assert.ok(true, 'Editor started');
+                previewBody = $("#id-product_screens_cnt").contents().find('body');
+                assert.ok(!!previewBody===true, 'Preview body saved');
                 doScenarion();
             }
         });
@@ -111,17 +114,19 @@ var TScenarios = {};
                     run: function() {
                         // показать все экраны по очереди
     //                    Editor.showScreen([this.data.screenId]);
+                        //TODO
                         Editor.showScreen([Engine.getAppScreenIds()[0]]);
 
+                        var activeScreens = Editor.getActiveScreens();
                         // создаем итератор для перехода по свойствам экрана
-                        iterator = new PropertyIterator(Editor.getActiveScreens());
+                        iterator = new PropertyIterator(activeScreens);
                         assert.ok(iterator.queueLength()>10,'There are some properties in iterator');
 
                         // проверить активный экран:
                         // что с нем есть вью экрана приложения
                         // что есть валидные атрибуты data-app-property
                         // и т.д.
-                        TEditor.checkActiveScreen(assert, Editor.getActiveScreens()[0]);
+                        TEditor.checkActiveScreen(assert, activeScreens[0]);
 
                         // проход по всем свойствам, собранным с экрана
                         var p = null;
@@ -143,9 +148,13 @@ var TScenarios = {};
                                 // еще раз проверка после установки с expectedValue
                                 TEngine.checkAppProperty(assert, ap, newValue);
 
-                                // проверить что во вью оно реально установлено.
-                                // вью: MutApp.Screens в iframe продукта, Slide превью, превью активного экрана в workspace id-product_screens_cnt
-                                // контрол должен вернуть getControlValue()
+                                // проверить что во вью значение реально установлено и корректно
+                                // сначала в редакторе в рабочем поле #id-product_screens_cnt
+                                validateDomElement(assert, previewBody, ap, 'id-product_screens_cnt:'+activeScreens.join(','));
+                                // потом в самом приложении, в экранах
+                                for (var n = 0; n < activeScreens.length; n++) {
+                                    validateDomElement(assert, Engine.getAppScreen(activeScreens[n]).view, ap, 'mutapp:'+activeScreens[n]);
+                                }
                             }
                             else {
                                 assert.ok(false, 'happyPathApp: Cannot change value for \''+p+'\' with control \''+ ap.controls[0].name+'\'');
@@ -177,7 +186,7 @@ var TScenarios = {};
 
             Queue.push({run: function() {
                 // после редактирования проекта в режиме превью он отображается верно
-                TEditor.checkPreview(assert);
+//                TEditor.checkPreview(assert);
 
                 // изменения в шаблоне можно сохранить
                 TEditor.checkSavingTemplate(assert/*, template*/);

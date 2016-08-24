@@ -556,23 +556,23 @@ var Engine = {};
      * @return {object} - объект с ключами appPropertyStrings, которые были найдены.
      * Это могут быть ссылки на свойства, которых еще не было в productWindow.app
      */
-    function setDataAppPropertyClasses(view) {
-        var res = {};
-        var elems = $(view).find('[data-app-property]');
-        if ($(view).attr('data-app-property')) {
-            // непосредственно сам view надо тоже проанализировать, так как он в поиске find не участвует
-            elems.push(view);
-        }
-        for (var j = 0; j < elems.length; j++) {
-            var v = $(elems[j]).attr('data-app-property');
-            var aps = v.split(' ');
-            for (var i = 0; i < aps.length; i++) {
-                $(elems[j]).addClass('js-app_'+aps[i]);
-                res[aps[i]] = undefined;
-            }
-        }
-        return res;
-    }
+//    function setDataAppPropertyClasses(view) {
+//        var res = {};
+//        var elems = $(view).find('[data-app-property]');
+//        if ($(view).attr('data-app-property')) {
+//            // непосредственно сам view надо тоже проанализировать, так как он в поиске find не участвует
+//            elems.push(view);
+//        }
+//        for (var j = 0; j < elems.length; j++) {
+//            var v = $(elems[j]).attr('data-app-property');
+//            var aps = v.split(',');
+//            for (var i = 0; i < aps.length; i++) {
+//                $(elems[j]).addClass('js-app_'+aps[i]);
+//                res[aps[i]] = undefined;
+//            }
+//        }
+//        return res;
+//    }
 
     /**
      *

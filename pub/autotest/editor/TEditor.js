@@ -37,22 +37,22 @@ var TEditor = {};
      * @param {*} view - экран из mutapp, или экран в workspace или Slide контрол
      * @param {Array} viewAppProperties - свойства по которым будет вестись проверка. Их выбрали заранее.
      */
-    function checkView(assert, view, viewAppProperties) {
-
-        var dataAppAttributes = [];
-        // подготовить экран найти все data-app атрибуты
-
-        for (var i = 0; i < viewAppProperties.length; i++) {
-            var ap = viewAppProperties[i];
-            // для каждого элемента сопоставить его dom свойства и ap.propertyValue
-            checkDomElement(ap, domElement); // helpers/domElementValidator.js
-        }
-
-        // проверка что в превью содержатся все кастомные стили
-        var cssString = Engine.getCustomStylesString();
-        var body = $("#id-product_screens_cnt").contents().find('body');
-        assert.ok(body.html().indexOf(cssString)>=0, 'TEditor.checkPreview: workspace iframe contains custom styles');
-    }
+//    function checkView(assert, view, viewAppProperties) {
+//
+//        var dataAppAttributes = [];
+//        // подготовить экран найти все data-app атрибуты
+//
+//        for (var i = 0; i < viewAppProperties.length; i++) {
+//            var ap = viewAppProperties[i];
+//            // для каждого элемента сопоставить его dom свойства и ap.propertyValue
+//            checkDomElement(ap, domElement); // helpers/domElementValidator.js
+//        }
+//
+//        // проверка что в превью содержатся все кастомные стили
+//        var cssString = Engine.getCustomStylesString();
+//        var body = $("#id-product_screens_cnt").contents().find('body');
+//        assert.ok(body.html().indexOf(cssString)>=0, 'TEditor.checkPreview: workspace iframe contains custom styles');
+//    }
 
     /**
      * Проверить активный экран в редакторе
@@ -131,7 +131,7 @@ var TEditor = {};
     global.changeControlValue = changeControlValue;
     global.checkControls = checkControls;
     global.checkSlides = checkSlides;
-    global.checkPreview = checkPreview;
+//    global.checkPreview = checkPreview;
     global.checkSavingTemplate = checkSavingTemplate;
     global.checkPublish = checkPublish;
     global.checkActiveScreen = checkActiveScreen;

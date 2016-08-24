@@ -81,7 +81,8 @@ var GENDATA = {
 var CSS_MAP = [
     {
         cssProperties: ['color','background-color','border-color'],
-        possibleValues: ['#004400','#eee','#feddfe','#2376ea','#333','#ff3311','#7890ff']
+        // $.css('color') возвращает цвета в формате rgb()
+        possibleValues: ['rgb(0, 123, 0)','rgb(64, 64, 64)','rgb(212, 64, 212)','rgb(0, 64, 190)','rgb(200, 200, 200)','rgb(64, 64, 0)','rgb(164, 200, 32)']
     },
     {
         cssProperties: ['font-family'],
