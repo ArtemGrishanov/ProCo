@@ -23,7 +23,7 @@ descriptor.css = [
     },*/
     {
         // перечислил все классы к которым применять правила
-        selector: '.js-startHeader .js-start_description .js-question_text .js-result_title .js-result_description',
+        selector: '.js-start_header .js-start_description .js-question_text .js-result_title .js-result_description',
         // можно прописать сразу несколько правил, получается отношение "многие ко многим"
         // это позволит делать наборы правил
         rules: 'fontFamily fontColor fontSize textAlign paddingTop paddingBottom paddingLeft'
@@ -76,8 +76,8 @@ descriptor.css = [
         rules: 'topColontitleBottomBorderColor fontColor fontSize fontFamily textAlign backgroundColor paddingTop paddingBottom'
     },
     {
-        selector: '.wrapper',
-        applyCssTo: '.js-back_color',
+        selector: '.js-back_color',
+//        applyCssTo: '.js-back_color',
         label: 'Цвет фона теста',
         filter: false,
         rules: 'backgroundColor'

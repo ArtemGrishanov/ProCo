@@ -85,7 +85,7 @@ var StartScreen = MutApp.Screen.extend({
         }
 
         this.$el.find('.js-start_btn').text(this.startButtonText);
-        this.$el.find('.js-startHeader').text(this.startHeader);
+        this.$el.find('.js-start_header').text(this.startHeaderText);
         this.$el.find('.js-start_description').text(this.startDescription);
 
         if (this.showLogo === true) {

@@ -31,16 +31,22 @@ var TEditor = {};
     }
 
     /**
-     * Проверить представление экрана в workspace
+     * Проверить корректность вью. Что внутри этого вью у dom-элементов выставлены верные значения, согласно значениям appProperty
+     *
      * @param assert
+     * @param {*} view - экран из mutapp, или экран в workspace или Slide контрол
+     * @param {Array} viewAppProperties - свойства по которым будет вестись проверка. Их выбрали заранее.
      */
-    function checkPreview(assert) {
+    function checkView(assert, view, viewAppProperties) {
 
-//        var screensIds = Engine.getAppScreenIds();
-//        for (var i = 0; i < screensIds.length; i++) {
-//            var sId = screensIds[i];
-//            Editor.showScreen([sId]);
-//        }
+        var dataAppAttributes = [];
+        // подготовить экран найти все data-app атрибуты
+
+        for (var i = 0; i < viewAppProperties.length; i++) {
+            var ap = viewAppProperties[i];
+            // для каждого элемента сопоставить его dom свойства и ap.propertyValue
+            checkDomElement(ap, domElement); // helpers/domElementValidator.js
+        }
 
         // проверка что в превью содержатся все кастомные стили
         var cssString = Engine.getCustomStylesString();
