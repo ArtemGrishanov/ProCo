@@ -77,7 +77,6 @@ descriptor.css = [
     },
     {
         selector: '.js-back_color',
-//        applyCssTo: '.js-back_color',
         label: 'Цвет фона теста',
         filter: false,
         rules: 'backgroundColor'
@@ -86,7 +85,7 @@ descriptor.css = [
 
 descriptor.app = [
     {
-        selector: 'id=startScr logoPosition, type=result logoPosition',
+        selector: 'id=startScr logoPosition, type=result logoPosition, type=result fbSharePosition',
         rules: 'drag'
     },
     {

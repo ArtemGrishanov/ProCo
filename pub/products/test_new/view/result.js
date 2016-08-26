@@ -39,6 +39,10 @@ var ResultScreen = MutApp.Screen.extend({
     logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
     restartButtonText: 'Заново',
     backgroundImg: null,
+    /**
+     * Позиция кнопки для шаринга результата в фб
+     */
+    fbSharePosition: {top: 10, left: 10},
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -87,9 +91,15 @@ var ResultScreen = MutApp.Screen.extend({
         this.$el.html(this.template['default'](r));
         $('.js-logo').
             css('backgroundImage','url('+this.logoUrl+')');
+
         $('.js-result_logo').
             css('top',this.logoPosition.top+'px').
             css('left',this.logoPosition.left+'px');
+
+        $('.js-mutapp_share_fb').
+            css('top',this.fbSharePosition.top+'px').
+            css('left',this.fbSharePosition.left+'px');
+
         this.$el.find('.js-restart').text(this.restartButtonText);
         if (this.showLogo === true) {
             this.$el.find('.js-result_logo').show();

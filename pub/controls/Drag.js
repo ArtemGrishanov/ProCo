@@ -9,6 +9,7 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
     this.elemPosition = null;
 
     this.onMouseUp = function(e) {
+        console.log('onMouseUp');
         // this.elemPosition - изначально =null, и определится только в onMouseMove
         if (this.isDragging === true && this.elemPosition) {
             // апдейт экранов нужен в том случае, когда показано несколько экранов сразу
@@ -20,6 +21,7 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
     };
 
     this.onMouseMove = function(e) {
+        console.log('onMouseMove');
         if (this.isDragging === true) {
             this.elemPosition = {
                 top: (e.pageY-this.startMousePosition.top)+this.startPosition.top,
@@ -33,6 +35,7 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
     };
 
     this.onMouseDown = function(e) {
+        console.log('onMouseDown');
         this.elemPosition = null;
         this.isDragging = true;
         this.startPosition = $(e.currentTarget).position();
@@ -61,8 +64,8 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
         top: this.$productDomElement.css('top')
     };
     this.$productDomElement.mousedown(this.onMouseDown.bind(this));
-    $(productScreensCnt).mousemove(this.onMouseMove.bind(this));
-    $(productScreensCnt).mouseup(this.onMouseUp.bind(this));
+    $("#id-product_screens_cnt").contents().mousemove(this.onMouseMove.bind(this));
+    $("#id-product_screens_cnt").contents().mouseup(this.onMouseUp.bind(this));
     Engine.on('AppPropertyValueChanged', this.propertyString, this.onPropertyChanged.bind(this));
 }
 Drag.prototype = AbstractControl;
