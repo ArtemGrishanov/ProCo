@@ -9,12 +9,15 @@ function checkTestInStatic(assert, appIFrame) {
     assert.ok(!!app.width === true, 'app width exists');
     assert.ok(!!app.height === true, 'app height exists');
     assert.ok(!!model === true, 'model exists');
+    assert.ok(!!app.title === true, 'title exists');
+    assert.ok(!!app.description === true, 'description exists');
     checkQuizFormat(assert, model);
     checkUnicQuestionsId(assert, model);
     checkUnicOptionsId(assert, model);
     checkResults(assert, model);
     checkSetGetRightAnswers(assert, model);
     checkAppScreens(assert, app, appIFrame.contentDocument);
+    checkShareEntities(assert, app, appIFrame);
 }
 
 function checkTestInAction(assert, appIFrame) {
@@ -252,6 +255,41 @@ function checkAppScreens(assert, app, document) {
 
 function checkScreen(assert, screen, screenRoot) {
     assert.ok(screen.$el !== null, 'checkScreen: screen.$el');
-
     assert.ok($(screenRoot).find(screen.$el).length > 0, 'checkScreen: screen.$el in screenRoot');
+}
+
+function checkShareEntities(assert, app, appIframe) {
+    var model = app._models[0];
+    assert.ok(app._shareEntities.length===model.get('results').length, 'checkShareEntities: _shareEntities.length===results.length');
+
+    // проверка вью в сущностях для публикации
+    for (var i = 0; i < app._shareEntities.length; i++) {
+        var e = app._shareEntities[i];
+        assert.ok(!!e.view===true,'checkShareEntities: View exist in share entity');
+        assert.ok(!!e.imgUrl===false,'checkShareEntities: Imgurl dont exist in share entity');
+    }
+
+    assert.ok(app.share('unknownId')===false, 'checkShareEntities: share unknowm entity');
+    assert.ok(app.share('resultScreen0',null,true)===true, 'checkShareEntities: share entity');
+    // fb апи создаются только когда есть что шарить
+    assert.ok(!!appIframe.contentWindow.FB===true, 'checkShareEntities FB api exist. In offline mode this test fails');
+    assert.ok($(appIframe.contentDocument.body).find('#facebook-jssdk').length>0, 'checkShareEntities: facebook-jssdk exist. In offline mode this test fails');
+
+    // проверка установки imgUrl
+    // эти картинки формируются и устанавливаются редактором
+    var shareTestImg = 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/share_test.jpg';
+    for (var i = 0; i < app._shareEntities.length; i++) {
+        var e = app._shareEntities[i];
+        // редактор этим методом устанавливает картинки
+        app.setImgForShare(e.id, shareTestImg);
+        assert.ok(e.imgUrl===shareTestImg,'checkShareEntities: Imgurl was set to share entity');
+    }
+
+    // проверка наличия кнопки для публикации
+    var shareFBbtnClass = app.shareFBbtnClass;
+    var count = 0;
+    for (var i = 0; i < app._screens.length; i++) {
+        count += app._screens[i].$el.find('.'+shareFBbtnClass).length;
+    }
+    assert.ok(count>0, 'checkShareEntities: There are some share buttons in app');
 }

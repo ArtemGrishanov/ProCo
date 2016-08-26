@@ -3,15 +3,53 @@
  *
  */
 
-var MutApp = function() {
+var MutApp = function(param) {
+    this.title = null;
+    this.description = null;
     this._models = [];
     this._screens = [];
     this._history = [];
     //TODO mob 'auto'
-    this.width = (arguments[0] && arguments[0].width > 0) ? arguments[0].width: 800;
-    this.height = (arguments[0] && arguments[0].height > 0) ? arguments[0].height: 600;
+    this.width = (param && param.width > 0) ? param.width: 800;
+    this.height = (param && param.height > 0) ? param.height: 600;
+    /**
+     * Дефолтная картинка которая используется для шаринга, если нет сгенерированных редактором картинок
+     */
+    this.shareDefaultImgUrl = 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/share_def.jpg';
+    /**
+     * Ссылка для публикации по дефолту
+     * Также может быть ссылка на анонимную страницу на тестиксе
+     * Или создатель теста может указать какую страницу шарить.
+     */
+    this.shareDefaultLink = 'https://testix.me/',
+    /**
+     * Массив сущностей для публикации
+     * Например, ид какого-то результата или достижения (которых в приложении может быть несколько)
+     */
+    this._shareEntities = [
+        //        {
+        //            id: 'result1',
+        //            title: 'Название результата',
+        //            description: 'Описание результата',
+        //            view: domElement, // view из которого будет сделана картинка
+        //            imgUrl: 'http://testix.me/.../32423534246.jpg' // картинка сгенерированная из view
+        //            link: 'http://testix.me/13435255'
+        //        }
+    ];
+    /**
+     * Ид для публикации
+     *
+     * @type {string}
+     */
+    this.fbAppId = '518819781624579';
+    /**
+     * Класс для кнопок шаринга
+     * @type {string}
+     */
+    this.shareFBbtnClass = 'js-mutapp_share_fb';
 
-    if (arguments[0]) {
+    // далее установка динамических свойств для приложения
+    if (param) {
         if (this.screenRoot) {
             this.screenRoot.empty();
             this.screenRoot.width(this.width).height(this.height);
@@ -19,8 +57,8 @@ var MutApp = function() {
 
         // значения которые надо установить по умолчанию при запуске приложения
         // значения могут относиться к Вью или Моделям
-        if (arguments[0].defaults) {
-            this._defaults = arguments[0].defaults;
+        if (param.defaults) {
+            this._defaults = param.defaults;
             this._parsedDefaults = [];
             for (var key in this._defaults) {
                 if (this._defaults.hasOwnProperty(key)) {
@@ -29,10 +67,16 @@ var MutApp = function() {
                         parsed.value = this._defaults[key];
                         this._parsedDefaults.push(parsed);
                     }
+                    else {
+                        // это простое свойство вида 'key1':'value1'
+                        // которое надо установить непосредственно в сам объект MutApp
+                        this[key] = this._defaults[key];
+                    }
                 }
             }
         }
     }
+
     // вызов конструктора initialize, аналогично backbone
     this.initialize.apply(this, arguments);
 };
@@ -260,6 +304,29 @@ MutApp.prototype.getPropertiesBySelector = function(selector) {
 };
 
 /**
+ * Инициализация fb api для шаринга
+ *
+ * @param {string} appId
+ */
+MutApp.prototype.fbInit = function(appId) {
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : appId,
+            status     : true,
+            xfbml      : true,
+            version    : 'v2.7'
+        });
+    };
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+};
+
+/**
  * Найти в приложении сущности, которые имеют свойства filterKey со значением filterValue
  * Модели, экраны и само приложение.
  *
@@ -279,6 +346,86 @@ MutApp.prototype.getEntities = function(filterKey, filterValue) {
         }
         return result.length > 0 ? result: null;
     }
+};
+
+/**
+ * Установить сущности для публикации
+ * Будут инициализированы апи сервисов (соцсетей) для публикации
+ * @param {Array} arr - ид елемента для публикации
+ */
+MutApp.prototype.setShareEntities = function(arr) {
+    this._shareEntities = arr;
+    this.fbInit(this.fbAppId);
+};
+
+/**
+ * Найти сущность для публикации с заданным ид
+ * @param {string} entityId - ид елемента для публикации
+ * @return {object}
+ */
+MutApp.prototype.findShareEntity = function(entityId) {
+    for (var i = 0; i < this._shareEntities.length; i++) {
+        if (this._shareEntities[i].id === entityId) {
+            return this._shareEntities[i];
+        }
+    }
+    return null;
+};
+
+/**
+ * Установить картинку для шаринга
+ *
+ * @param {string} entityId
+ * @param {string} imgUrl
+ * @returns {*}
+ */
+MutApp.prototype.setImgForShare = function(entityId, imgUrl) {
+    for (var i = 0; i < this._shareEntities.length; i++) {
+        if (this._shareEntities[i].id === entityId) {
+            this._shareEntities[i].imgUrl = imgUrl;
+            break;
+        }
+    }
+};
+
+/**
+ * Опубликовать сущность
+ *
+ * @param entityId - ид публикуемой сущности. Например, ид какого-то результата или достижения (которых в приложении может быть несколько)
+ * @param {string} [serviceId] - fb|vk|odkl|twitter
+ * @param {boolean} isFakeShare - показывает что не надо на самом деле делать шаринг, для автотестов
+ *
+ * @returns {boolean}
+ */
+MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
+    serviceId = serviceId || 'fb';
+    var ent = this.findShareEntity(entityId);
+    if (ent) {
+        if (!!ent.imgUrl===false) {
+            ent.imgUrl = this.shareDefaultImgUrl;
+        }
+        if (!!ent.link===false) {
+            ent.link = this.shareDefaultLink;
+        }
+
+        if (serviceId === 'fb') {
+            if (isFakeShare !== true) {
+                FB.ui({
+                    method: 'feed',
+                    link: ent.link,
+                    name: ent.title,
+                    description: ent.description,
+                    picture: ent.imgUrl
+                }, function(response){
+                    console.log(response);
+                });
+            }
+            return true;
+        }
+
+        //TODO other providers
+    }
+    return false;
 };
 
 //MutApp.prototype.back function() {

@@ -38,16 +38,35 @@ var TestApp = MutApp.extend({
         // для всех результатов по отдельному экрану
         var results = tm.get('results');
         var rs = null;
+        var sEntities = [];
         for (var i = 0; i < results.length; i++) {
+            var r = results[i];
+
             id = 'resultScreen'+i;
             rs = new ResultScreen({
                 id: id,
                 model: tm,
-                resultId: results[i].id,
+                resultId: r.id,
                 screenRoot: this.screenRoot
             });
             this.addScreen(rs);
+
+            // создать сущности для публикации
+            // в тесте это количество результатов
+            sEntities.push({
+                id: id,
+                title: r.title,
+                description: r.description,
+                view: rs.$el
+            });
         }
+
+        this.setShareEntities(sEntities);
+
+        // способ указания этих атрибутов уникален для каждого проекта
+        this.title = this.getPropertiesBySelector('id=startScr startHeaderText');
+        this.description = this.getPropertiesBySelector('id=startScr startDescription');
+
     },
 
     start: function() {

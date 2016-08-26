@@ -50,11 +50,18 @@ var ResultScreen = MutApp.Screen.extend({
     },
 
     events: {
-        "click .js-next": "onNextClick"
+        "click .js-next": "onNextClick",
+        "click .js-mutapp_share_fb": "onFBShareClick"
     },
 
     onNextClick: function(e) {
         this.model.next();
+    },
+
+    onFBShareClick: function(e) {
+        // ид экрана выступает также и в роли идентификатора для постинга
+        // это определили при создании приложения в app.js
+        this.model.application.share(this.id);
     },
 
     initialize: function (param) {

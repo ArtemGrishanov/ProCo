@@ -127,6 +127,8 @@ QUnit.test("MutApp test: Models", function( assert ) {
 
     var app = new SwimmingTest({
         defaults: {
+            "appAttr1": 'appData1',
+            "appAttr2": true,
             "id=tm data1": "12345",
             "id=tm  data2": "5678",
             "id=welcomeCustomId data1": "welcomeCustomId",
@@ -137,6 +139,10 @@ QUnit.test("MutApp test: Models", function( assert ) {
 
     assert.ok(app === app._models[0].application, 'application in model');
     assert.ok(app._parsedDefaults.length === 5, 'parsed values');
+
+    assert.ok(app.appAttr1 === 'appData1', 'default without selector goes to app');
+    assert.ok(app.appAttr2 === true, 'default without selector goes to app');
+
     assert.ok(app._models[0].attributes.data1 === '12345', 'default value has set');
     assert.ok(app._models[0].attributes.data2 === '5678', 'default value has set');
 
@@ -216,4 +222,44 @@ QUnit.test("MutApp test: multiapp", function( assert ) {
 
     assert.ok(app2._screens.length === 3, 'Screens length 2');
     assert.ok(app2._models.length === 1, 'Models length 2');
+});
+
+QUnit.test("MutApp test: Sharing", function( assert ) {
+    var SwimmingTest = MutApp.extend({
+        screenRoot: $('#id-swimming_test'),
+        initialize: function(param) {
+            var tm = this.addModel(new TestModel({
+                application: this
+            }));
+            this.addScreen(new StartScreen({
+                model: tm,
+                screenRoot: this.screenRoot
+            }));
+            this.addScreen(new QuestionScreen({
+                model: tm,
+                questionId: tm.attributes.quiz[0].id,
+                screenRoot: this.screenRoot
+            }));
+            this.addScreen(new ResultScreen({
+                model: tm,
+                resultId: tm.attributes.results[0].id,
+                screenRoot: this.screenRoot
+            }));
+
+            // способ указания этих атрибутов уникален для каждого проекта
+            this.title = this.getPropertiesBySelector('id=startScr startHeaderText');
+            this.description = this.getPropertiesBySelector('id=startScr startDescription');
+        }
+    });
+
+    var app = new SwimmingTest({
+    });
+
+    assert.ok(!!app.title===true, 'title in app');
+    assert.ok(!!app.description===true, 'description in app');
+    assert.ok(!!app.shareDefaultImgUrl===true, 'defaultImgUrl in Sharer');
+    assert.ok(app._shareEntities.length===0, 'entities in Sharer');
+    assert.ok(!!app.share('fooId')===false, 'share() in Sharer');
+    assert.ok(window.FB === undefined, 'FB === undefined');
+    assert.ok($('#facebook-jssdk').length === 0, 'facebook-jssdk dont exist');
 });
