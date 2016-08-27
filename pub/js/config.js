@@ -69,7 +69,7 @@ var config = {
         /**
          * Разрешать вход через FB
          */
-        facebookAuthEnable: false,
+        facebookAuthEnabled: false,
         /**
          * Id приложения в facebook для логина
          */
@@ -118,6 +118,10 @@ var config = {
          * Имя файла превью для проекта при условии что его ставит сам пользователь, а не автоматическая генерация
          */
         userCustomPreviewFileNamePrefix: 'userCustomPreview_',
+        /**
+         * префикс для картинки шаринга
+         */
+        shareFileNamePrefix: 'share_',
         /**
          * Автоматическая генерация превью проекта при его сохранении
          * Берется текущий экран и перегоняется в jpeg

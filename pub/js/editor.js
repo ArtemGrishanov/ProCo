@@ -968,36 +968,65 @@ var Editor = {};
         // его не надо перезаписывать
         if (config.common.previewAutoGeneration === true) {
             var url = 'facebook-'+App.getUserData().id+'/app/'+appId+'.jpg';
-
-            function uplCnv(canvas) {
-                JPEGEncoder(100);
-                var theImgData = (canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
-                // Encode the image and get a URI back, set toRaw to true
-                var rawData = encode(theImgData, 100, true);
-                var blob = new Blob([rawData.buffer], {type: 'image/jpeg'});
-                var params = {
-                    Key: url,
-                    ContentType: 'image/jpeg',
-                    Body: blob,
-                    ACL: 'public-read'
-                };
-                App.getAWSBucket().putObject(params, (function (err, data) {
-                    if (err) {
-                        //Not authorized to perform sts:AssumeRoleWithWebIdentity
-                        log('ERROR: ' + err, true);
-                    } else {
-                        log('Превью промки загружено');
-                    }
-                }).bind(this));
-            }
-
             previewService.create(previewScreensIframeBody, function(canvas) {
-                uplCnv(canvas);
+                uploadCanvas(null, url, canvas);
             });
-
             return url;
         }
         return null;
+    }
+
+    /**
+     * Создать картинки для шаринга в соц сеть
+     * Забираем view и приложения, конвертируем в картинки и аплоадим
+     * Затем обратно полученные урлы ставим в приложение
+     *
+     * @param {function} previewsReadyCallback
+     * @param {boolean} options.fakeUpload - если true, то на самом деле не отправлять картинки на сервер
+     */
+    var shareToUpload = 0;
+    function createPreviewsForShare(previewsReadyCallback, options) {
+        options = options || {};
+        options.fakeUpload = options.fakeUpload || false;
+
+        if (App.getUserData() !== null || options.fakeUpload === true) {
+
+            Modal.showLoading();
+            var app = Engine.getApp();
+            var entities = app._shareEntities;
+            shareToUpload = entities.length
+
+            for (var i = 0; i < entities.length; i++) {
+                var e = entities[i];
+                var url = 'facebook-'+App.getUserData().id+'/app/'+config.common.shareFileNamePrefix+appId+'_'+e.id+'.jpg';
+                (function(entityId, entityView, imageUrl){
+
+                    // создать замыкание для сохранения значений entityId и imageUrl
+                    previewService.createInIframe(entityView, function(canvas) {
+                        log('createPreviewsForShare: preview created '+entityId+' '+imageUrl);
+                        uploadCanvas(function(result) {
+                            if (result === 'ok') {
+                                log('createPreviewsForShare: canvas uploaded '+entityId+' '+imageUrl);
+                                app.setImgForShare(entityId, imageUrl);
+                            }
+                            shareToUpload--;
+                            if (shareToUpload===0) {
+                                // загрузили все картинки
+                                if (previewsReadyCallback) {
+                                    previewsReadyCallback();
+                                }
+                                Modal.hideLoading();
+                            }
+                        }, imageUrl, canvas);
+                    }, null, config.products[app.type].stylesForEmbed, appContainerSize.width, appContainerSize.height);
+
+                })(e.id, e.view, url);
+            }
+
+        }
+        else {
+            Modal.showLogin();
+        }
     }
 
     /**
@@ -1170,5 +1199,6 @@ var Editor = {};
     global.getAppContainerSize = function() { return appContainerSize; };
     global.findControlInfo = findControlInfo;
     global.getSlideGroupControls = function() { return slideGroupControls; };
+    global.createPreviewsForShare = createPreviewsForShare;
 
 })(Editor);

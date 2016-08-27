@@ -91,6 +91,15 @@ var TEditor = {};
         }
     }
 
+    /**
+     * Проверить подготовку к шарингу
+     * Опреации с картинками
+     */
+    function checkShare(assert) {
+        //невозможно запустить проверку так как будет "задача в задаче", а очередь одна
+        Editor.createPreviewsForShare();
+    }
+
     function checkSavingTemplate(assert) {
 //        assert.ok(false, 'checkSavingTemplate');
     }

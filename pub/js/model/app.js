@@ -153,7 +153,7 @@ var App = App || {};
     }
 
     function start() {
-        if (config.common.facebookAuthEnable === true) {
+        if (config.common.facebookAuthEnabled === true) {
             initFB();
         }
         initUIHandlers();

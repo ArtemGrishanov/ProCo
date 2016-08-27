@@ -12,6 +12,9 @@ var previewService = {};
 
     /**
      * Запросить генерацию картинки из html
+     * Предполагается что html встроен в dom дерево и виден (display !== none)
+     * К сожалению, не все элементы корректно рендерятся.
+     * Например, бордеры с большим border-radius
      *
      * @param html
      * @param callback
@@ -28,6 +31,9 @@ var previewService = {};
                             callback(canvas);
                             Queue.release(this);
                         }).bind(this)
+                    },{
+                        // options for render
+                        background: '#fff'
                     });
                 }
                 else if (type === 'rasterizeHTML') {
@@ -49,6 +55,51 @@ var previewService = {};
         Queue.push(t);
     }
 
+    /**
+     * Создать превью с помощью дополнительного iframe
+     * Смысл в том чтобы изолировать html элемент со своими стилями
+     *
+     * @param html
+     * @param callback
+     * @param type
+     * @param stylesToEmbed
+     * @param width ширина вью
+     * @param height высота вью
+     */
+    function createInIframe(html, callback, type, stylesToEmbed, width, height) {
+//        ps.create(html, function(canvas) {
+//            callback(canvas);
+//        });
+        type = type || 'html2canvas';
+        var t = {
+            run: function() {
+                if (type === 'html2canvas') {
+                    // внутри iframe имеется собственный сервис previewService
+                    var ps = $('#id-html_rasterization_iframe')[0].contentWindow.previewService;
+                    var cnt = $('#id-html_rasterization_iframe').contents().find('#id-html_rasterization_cnt');
+                    // стили от этого вью добавляем,
+                    $("#id-html_rasterization_iframe").contents().find('head').append(stylesToEmbed);
+                    // Обязательно display !== none
+                    $(html).show();
+                    $("#id-html_rasterization_iframe").width(width).height(height);
+                    $(cnt).width(width).height(height).empty().append(html);
+                    html2canvas(html, {
+                        onrendered: (function(canvas) {
+                            callback(canvas);
+                            Queue.release(this);
+                        }).bind(this)
+                    },{
+                        // options for render
+                        background: '#fff'
+                    });
+                }
+            }
+        };
+        Queue.push(t);
+    }
+
     // public methods
     global.create = create;
+    global.createInIframe = createInIframe;
+
 })(previewService);

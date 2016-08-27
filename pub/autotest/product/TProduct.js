@@ -181,6 +181,11 @@ var TScenarios = {};
                 Queue.release(this);
             }});
 
+            Queue.push({run: function() {
+                TEditor.checkShare(assert);
+                Queue.release(this);
+            }});
+
             //TODO проверить значения измененные во время сценария
             //savedValues
 
