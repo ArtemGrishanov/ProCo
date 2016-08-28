@@ -68,3 +68,41 @@ QUnit.test("Queue test 2", function( assert ) {
         done();
     });
 });
+
+QUnit.test("Queue test 3", function( assert ) {
+    assert.expect(2);
+    var done = assert.async(2);
+    Queue.push({
+        run: function() {
+
+            var q1 = Queue.create();
+            q1.push({
+               run: function () {
+                   assert.ok(true,'q1 run');
+                   q1.release(this);
+               }
+            });
+
+            var q2 = Queue.create();
+            q2.push({
+                run: function () {
+                    assert.ok(true,'q2 run');
+
+                    var q3 = Queue.create();
+                    q3.push({
+                        run: function () {
+                            assert.ok(true,'q3 run');
+                            q3.release(this);
+                            q2.release(this);
+                        }
+                    });
+
+                }
+            });
+
+            assert.ok(true,'Queue run');
+            Queue.release(this);
+        }
+    });
+
+});

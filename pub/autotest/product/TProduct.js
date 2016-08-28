@@ -38,6 +38,8 @@ var TScenarios = {};
         appName = appName || 'test';
 
         var done = assert.async();
+        // отдельная очередь для этого сценария
+        var scenarioQueue = Queue.create();
         var appIframe = null;
         var iterator = null;
         // дополнительно:
@@ -80,7 +82,7 @@ var TScenarios = {};
             });
         }
 
-//        Queue.push({
+//        scenarioQueue.push({
 //            run: function() {
 //                // запуск редактора
 //                // в нормальном режиме эти параметры передаются через url-get строку
@@ -97,24 +99,24 @@ var TScenarios = {};
 //        });
 
         function doScenarion() {
-            Queue.push({run: function() {
+            scenarioQueue.push({run: function() {
                 appIframe = Editor.getAppIframe();
                 assert.ok(appIframe !== null, 'appIframe from Editor');
                 TApp.checkApp(assert, appIframe);
-                Queue.release(this);
+                scenarioQueue.release(this);
             }});
 
-            Queue.push({run: function() {
+            scenarioQueue.push({run: function() {
                 // шаблон загрузился и формально исправен
                 // В движке все хорошо создалось
                 // апп проперти двух типов
                 // количество их примерно верное
                 // количество экранов примерно верное
                 TEngine.checkEngine(assert);
-                Queue.release(this);
+                scenarioQueue.release(this);
             }});
 
-            Queue.push({run: function() {
+            scenarioQueue.push({run: function() {
                 // отобразился в редакторе корректно
                 // в контейнере появился айфрейм
                 TEditor.checkApp(assert);
@@ -122,12 +124,12 @@ var TScenarios = {};
                 TEditor.checkSlides(assert);
                 // контролы все создались
                 TEditor.checkControls(assert);
-                Queue.release(this);
+                scenarioQueue.release(this);
             }});
 
     //        var sIds = Engine.getAppScreenIds();
     //        for (var i = 0; i < sIds.length; i++) {
-                Queue.push({
+                scenarioQueue.push({
                     data: {
     //                    screenId: sIds[i]
                     },
@@ -191,26 +193,26 @@ var TScenarios = {};
     //                        // контролы управляют настройками верно
     //                        TEditor.changeValue(assert); // ???
     //                    });
-                        Queue.release(this);
+                        scenarioQueue.release(this);
                     }
                 });
     //        }
 
-            Queue.push({run: function() {
+            scenarioQueue.push({run: function() {
                 TEngine.checkEngine(assert);
-                Queue.release(this);
+                scenarioQueue.release(this);
             }});
 
-            Queue.push({run: function() {
+            scenarioQueue.push({run: function() {
                 TEditor.checkShare(assert, function() {
-                    Queue.release(this);
+                    scenarioQueue.release(this);
                 });
             }});
 
             //TODO проверить значения измененные во время сценария
             //savedValues
 
-            Queue.push({run: function() {
+            scenarioQueue.push({run: function() {
                 // после редактирования проекта в режиме превью он отображается верно
 //                TEditor.checkPreview(assert);
 
@@ -220,7 +222,7 @@ var TScenarios = {};
                 // после публикации все отображается верно
                 TEditor.checkPublish(assert);
 
-                Queue.release(this);
+                scenarioQueue.release(this);
 
                 // конец всего сценария
                 done();

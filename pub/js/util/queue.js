@@ -33,7 +33,9 @@
  */
 
 var Queue = {};
-(function(global) {
+
+// функция НЕ анонимная для возможной повторной инициализации
+function __init_queue(global) {
     var tasks = [];
     var timer = setInterval(doNext, 60);
     var currentTask = null;
@@ -209,15 +211,18 @@ var Queue = {};
         });
     };
 
-
-})(Queue);
-
-//var QueueTask = function(param) {
-//    this.run = param.run;
-//    this.done = param.done;
-//    this.data = param.data;
-//    this.type = param.type;
-//};
-//QueueTask.prototype.some = function() {
-//
-//}
+    /**
+     * Во время разработки автотестов возникла необходимость для параллельного выполнения задач
+     * Это возмонжость создавать несколько очередей для выполнения в них проверок и сценариев
+     *
+     * @returns {{}}
+     */
+    global.create = function() {
+        var newQueue = {};
+        __init_queue(newQueue);
+        return newQueue;
+    };
+}
+// автоматический инит главного инстанса Queue
+// с ним работает редактор и все основные сервисы
+__init_queue(Queue);

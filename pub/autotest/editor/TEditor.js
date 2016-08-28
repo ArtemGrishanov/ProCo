@@ -108,7 +108,7 @@ var TEditor = {};
                     assert.ok(!!e.canvas === true, 'checkShare: canvas');
                     assert.ok(e.canvas.width > 100, 'checkShare: canvas.width');
                     assert.ok(e.canvas.height > 100, 'checkShare: canvas.height');
-                    assert.ok(e.imgUrl.length > 20, 'checkShare: imgUrl');
+                    assert.ok(e.imageUrl.length > 20, 'checkShare: imgUrl');
                     assert.ok(!!e.entityId === true, 'checkShare: entityId');
                 }
 
