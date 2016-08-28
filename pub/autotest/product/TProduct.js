@@ -48,17 +48,37 @@ var TScenarios = {};
         //TODO проверить что какие-то appProperty вообще не пояаились на экранах
         //это тоже может быть ошибкой
 
-        Editor.start({
-            app: appName,
-            //template: '' // другой режим запуска возможен, через шаблон
-            callback: function() {
-                log('happyPathApp: Editor started');
-                assert.ok(true, 'Editor started');
-                previewBody = $("#id-product_screens_cnt").contents().find('body');
-                assert.ok(!!previewBody===true, 'Preview body saved');
-                doScenarion();
-            }
-        });
+        if (config.common.facebookAuthEnabled === true) {
+            App.on(FB_CONNECTED, function(result) {
+                //TODO просто стартуем, окно логина не переведено на модал и автоматически скрывается
+                if (result === 'connected') {
+                    startEditor(appName);
+                }
+                else {
+                    // canClose:false - леер нельзя закрыть
+                    Modal.showLogin({text:'Войдите для создания своего проекта',canClose:false});
+                }
+            });
+            App.start();
+        }
+        else {
+            App.start();
+            startEditor(appName);
+        }
+
+        function startEditor(appName) {
+            Editor.start({
+                app: appName,
+                //template: '' // другой режим запуска возможен, через шаблон
+                callback: function() {
+                    log('happyPathApp: Editor started');
+                    assert.ok(true, 'Editor started');
+                    previewBody = $("#id-product_screens_cnt").contents().find('body');
+                    assert.ok(!!previewBody===true, 'Preview body saved');
+                    doScenarion();
+                }
+            });
+        }
 
 //        Queue.push({
 //            run: function() {
@@ -182,8 +202,9 @@ var TScenarios = {};
             }});
 
             Queue.push({run: function() {
-                TEditor.checkShare(assert);
-                Queue.release(this);
+                TEditor.checkShare(assert, function() {
+                    Queue.release(this);
+                });
             }});
 
             //TODO проверить значения измененные во время сценария

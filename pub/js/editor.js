@@ -256,9 +256,15 @@ var Editor = {};
             syncUIControlsToAppProperties();
             workspaceOffset = $('#id-product_screens_cnt').offset();
             Modal.hideLoading();
+            // проверить что редактор готов, и вызвать колбек
+            checkEditorIsReady();
         }
-        // проверить что редактор готов, и вызвать колбек
-        checkEditorIsReady();
+        else {
+            // не грузить контролы в этом режиме. Сразу колбек на старт
+            if (typeof startCallback === 'function') {
+                startCallback();
+            }
+        }
     }
 
     /**
@@ -985,9 +991,11 @@ var Editor = {};
      * @param {boolean} options.fakeUpload - если true, то на самом деле не отправлять картинки на сервер
      */
     var shareToUpload = 0;
+    var preparedShareEntities = [];
     function createPreviewsForShare(previewsReadyCallback, options) {
         options = options || {};
         options.fakeUpload = options.fakeUpload || false;
+        preparedShareEntities = [];
 
         if (App.getUserData() !== null || options.fakeUpload === true) {
 
@@ -1008,12 +1016,17 @@ var Editor = {};
                             if (result === 'ok') {
                                 log('createPreviewsForShare: canvas uploaded '+entityId+' '+imageUrl);
                                 app.setImgForShare(entityId, imageUrl);
+                                preparedShareEntities.push({
+                                    entityId: entityId,
+                                    imageUrl: imageUrl,
+                                    canvas: canvas
+                                });
                             }
                             shareToUpload--;
                             if (shareToUpload===0) {
                                 // загрузили все картинки
                                 if (previewsReadyCallback) {
-                                    previewsReadyCallback();
+                                    previewsReadyCallback('ok', preparedShareEntities);
                                 }
                                 Modal.hideLoading();
                             }

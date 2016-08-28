@@ -95,9 +95,29 @@ var TEditor = {};
      * Проверить подготовку к шарингу
      * Опреации с картинками
      */
-    function checkShare(assert) {
+    function checkShare(assert, callback) {
         //невозможно запустить проверку так как будет "задача в задаче", а очередь одна
-        Editor.createPreviewsForShare();
+        Editor.createPreviewsForShare(function(result, prepareSharedEntities) {
+            if (result==='ok') {
+                var app = Engine.getApp();
+                assert.ok(app._shareEntities.length > 0, 'checkShare: prepareSharedEntities length > 0');
+                assert.ok(app._shareEntities.length === prepareSharedEntities.length, 'checkShare: prepareSharedEntities length');
+
+                for (var i = 0; i < prepareSharedEntities.length; i++) {
+                    var e = prepareSharedEntities[i];
+                    assert.ok(!!e.canvas === true, 'checkShare: canvas');
+                    assert.ok(e.canvas.width > 100, 'checkShare: canvas.width');
+                    assert.ok(e.canvas.height > 100, 'checkShare: canvas.height');
+                    assert.ok(e.imgUrl.length > 20, 'checkShare: imgUrl');
+                    assert.ok(!!e.entityId === true, 'checkShare: entityId');
+                }
+
+                callback();
+            }
+            else {
+                assert.ok(false, 'checkShare: failed');
+            }
+        });
     }
 
     function checkSavingTemplate(assert) {
@@ -147,5 +167,6 @@ var TEditor = {};
     global.checkSavingTemplate = checkSavingTemplate;
     global.checkPublish = checkPublish;
     global.checkActiveScreen = checkActiveScreen;
+    global.checkShare = checkShare;
 
 })(TEditor);

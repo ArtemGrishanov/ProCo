@@ -29,7 +29,7 @@
                 <div id="id-control_cnt" class="quick_controls_cnt">
                     <!-- Здесь располагаются "быстрые" контролы, которые показываются поверх продукта при клике или наведении куда-то -->
                 </div>
-                <iframe id="id-product_screens_cnt" class="workspace_screens_iframe" src="product_cnt.html" style="">
+                <iframe id="id-product_screens_cnt" class="workspace_screens_iframe" src="../product_cnt.html" style="">
                     <!-- Сюда добавляем программно view различных экранов промо приложения -->
                 </iframe>
             </div>
@@ -40,6 +40,11 @@
         <div id="id-static_controls_cnt" class="settings_panel __right js-setting_panel">
             <!-- Сюда попадают контролы которые показываются постоянно -->
         </div>
+    </div>
+    <div id="id-html_rasterization_cnt" class="proto_cnt __hidden">
+        <iframe id="id-html_rasterization_iframe" src="../rasterization_cnt.html" style="">
+            <!-- iframe используется для изоляции стилей, чтобы сгенерировать превью -->
+        </iframe>
     </div>
     <div id="id-swimming_test">
     </div>
@@ -58,7 +63,7 @@
     <script id="id-explanation_text_template" type="text/template"></script>
     <script id="id-result_template" type="text/template"></script>
 
-    <!--<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>-->
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
     <script type="text/javascript" src="../lib/jquery.js"></script>
     <script type="text/javascript" src="../lib/underscore.js"></script>
     <script type="text/javascript" src="../lib/backbone.js"></script>
@@ -75,7 +80,9 @@
     <script type="text/javascript" src="../js/model/app.js"></script>
     <script type="text/javascript" src="../js/config.js"></script>
     <script type="text/javascript" src="../js/util/utils.js"></script>
+    <script type="text/javascript" src="../js/util/s3util.js"></script>
     <script type="text/javascript" src="../js/util/queue.js"></script>
+    <script type="text/javascript" src="../js/util/previewService.js"></script>
     <script type="text/javascript" src="../js/appProperty.js"></script>
     <script type="text/javascript" src="../js/appScreen.js"></script>
     <script type="text/javascript" src="../js/appTrigger.js"></script>
@@ -123,8 +130,8 @@
 
     <script type="text/javascript" src="apps/helpers/test/testHelpers.js"></script>
     <script type="text/javascript" src="apps/TApp.js"></script>
-    <script type="text/javascript" src="apps/qunitMutAppClientFramework.js"></script>
-    <script type="text/javascript" src="apps/qunitTest.js"></script>
+    <!--<script type="text/javascript" src="apps/qunitMutAppClientFramework.js"></script>-->
+    <!--<script type="text/javascript" src="apps/qunitTest.js"></script>-->
 
     <script type="text/javascript" src="engine/helpers/templateHelpers.js"></script>
     <script type="text/javascript" src="engine/helpers/valuesGenerator.js"></script>
@@ -136,7 +143,7 @@
 
     <script type="text/javascript" src="product/helpers/PropertyIterator.js"></script>
     <script type="text/javascript" src="product/TProduct.js"></script>
-    <!--<script type="text/javascript" src="product/qunitHappyPath.js"></script>-->
+    <script type="text/javascript" src="product/qunitHappyPath.js"></script>
     <!-- endbuild -->
 </body>
 </html>
