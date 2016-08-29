@@ -1014,11 +1014,12 @@ var Editor = {};
                         log('createPreviewsForShare: preview created '+entityId+' '+imageUrl);
                         uploadCanvas(function(result) {
                             if (result === 'ok') {
-                                log('createPreviewsForShare: canvas uploaded '+entityId+' '+imageUrl);
-                                app.setImgForShare(entityId, imageUrl);
+                                var fullImageUrl = config.common.awsHostName+config.common.awsBucketName+'/'+imageUrl;
+                                log('createPreviewsForShare: canvas uploaded '+entityId+' '+fullImageUrl);
+                                app.setImgForShare(entityId, fullImageUrl);
                                 preparedShareEntities.push({
                                     entityId: entityId,
-                                    imageUrl: imageUrl,
+                                    imageUrl: fullImageUrl,
                                     canvas: canvas
                                 });
                             }

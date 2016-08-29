@@ -111,7 +111,7 @@ var TEditor = {};
                     assert.ok(e.imageUrl.length > 20, 'checkShare: imgUrl');
                     assert.ok(!!e.entityId === true, 'checkShare: entityId');
                     // проверить урлы в приложении что установка прошла
-                    assert.ok(app.findShareEntity(e.entityId)=== e.imageUrl, 'checkShare: image url was set');
+                    assert.ok(app.findShareEntity(e.entityId).imgUrl=== e.imageUrl, 'checkShare: image url was set');
                 }
 
                 callback();

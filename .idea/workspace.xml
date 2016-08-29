@@ -26,27 +26,43 @@
       <file leaf-file-name="qunitMutAppClientFramework.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitMutAppClientFramework.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="271" column="96" selection-start="10550" selection-end="10550" vertical-scroll-proportion="-21.48" vertical-offset="3528" max-vertical-offset="4215">
+            <state line="274" column="40" selection-start="11116" selection-end="11116" vertical-scroll-proportion="-23.28" vertical-offset="3528" max-vertical-offset="4215">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mutapp.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/test_new/mutapp.js">
+      <file leaf-file-name="TEditor.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/autotest/editor/TEditor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="742" column="6" selection-start="24202" selection-end="24202" vertical-scroll-proportion="-7.96" vertical-offset="10931" max-vertical-offset="12270">
-              <folding>
-                <marker date="1472460485000" expanded="true" signature="22257:25666" placeholder="{...}" />
-              </folding>
+            <state line="109" column="46" selection-start="4979" selection-end="4979" vertical-scroll-proportion="0.5696552" vertical-offset="1222" max-vertical-offset="2685">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/products/test_new/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="43" selection-start="1644" selection-end="1644" vertical-scroll-proportion="0.5241379" vertical-offset="490" max-vertical-offset="1215">
+            <state line="60" column="43" selection-start="1764" selection-end="1764" vertical-scroll-proportion="0.0" vertical-offset="430" max-vertical-offset="1215">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="editor.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1012" column="54" selection-start="43179" selection-end="43179" vertical-scroll-proportion="0.0" vertical-offset="14956" max-vertical-offset="18345">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="85" column="21" selection-start="3486" selection-end="3499" vertical-scroll-proportion="-13.96" vertical-offset="926" max-vertical-offset="5685">
               <folding />
             </state>
           </provider>
@@ -55,16 +71,16 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/autotest/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="131" column="42" selection-start="7787" selection-end="7787" vertical-scroll-proportion="-16.791666" vertical-offset="1562" max-vertical-offset="2250">
+            <state line="142" column="21" selection-start="8486" selection-end="8486" vertical-scroll-proportion="-24.208334" vertical-offset="1549" max-vertical-offset="2250">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/test_new/index.html">
+      <file leaf-file-name="testHelpers.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/autotest/apps/helpers/test/testHelpers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="103" column="121" selection-start="4964" selection-end="4971" vertical-scroll-proportion="-11.083333" vertical-offset="1279" max-vertical-offset="3525">
+            <state line="246" column="51" selection-start="9540" selection-end="9551" vertical-scroll-proportion="-9.16" vertical-offset="3461" max-vertical-offset="4500">
               <folding />
             </state>
           </provider>
@@ -80,22 +96,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/js/model/app.js" />
         <option value="$PROJECT_DIR$/pub/editor.html" />
         <option value="$PROJECT_DIR$/pub/rasterization_cnt.html" />
         <option value="$PROJECT_DIR$/pub/js/util/previewService.js" />
         <option value="$PROJECT_DIR$/pub/js/config.js" />
         <option value="$PROJECT_DIR$/pub/autotest/product/qunitHappyPath.js" />
-        <option value="$PROJECT_DIR$/pub/js/editor.js" />
         <option value="$PROJECT_DIR$/pub/autotest/testQueue.js" />
         <option value="$PROJECT_DIR$/pub/js/util/queue.js" />
         <option value="$PROJECT_DIR$/pub/autotest/product/TProduct.js" />
-        <option value="$PROJECT_DIR$/pub/autotest/editor/TEditor.js" />
-        <option value="$PROJECT_DIR$/pub/autotest/index.html" />
-        <option value="$PROJECT_DIR$/pub/products/test_new/mutapp.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/index.html" />
-        <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppClientFramework.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/app.js" />
+        <option value="$PROJECT_DIR$/pub/js/editor.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/apps/helpers/test/testHelpers.js" />
+        <option value="$PROJECT_DIR$/pub/products/test_new/mutapp.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppClientFramework.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/index.html" />
+        <option value="$PROJECT_DIR$/pub/autotest/editor/TEditor.js" />
       </list>
     </option>
   </component>
@@ -349,13 +365,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/autotest/engine/qunitMutAppEngine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="33" selection-start="222" selection-end="222" vertical-scroll-proportion="0.0" vertical-offset="53" max-vertical-offset="765">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="936" column="13" selection-start="37021" selection-end="37021" vertical-scroll-proportion="0.33286518" vertical-offset="13803" max-vertical-offset="17415">
@@ -400,37 +409,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/editor/TEditor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="37" selection-start="4087" selection-end="4087" vertical-scroll-proportion="-7.52" vertical-offset="1222" max-vertical-offset="2685">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="24" selection-start="1625" selection-end="1625" vertical-scroll-proportion="0.32162923" vertical-offset="266" max-vertical-offset="5685">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/autotest/product/TProduct.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="40" column="47" selection-start="1051" selection-end="1051" vertical-scroll-proportion="0.37931034" vertical-offset="325" max-vertical-offset="3990">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1020" column="44" selection-start="43736" selection-end="43744" vertical-scroll-proportion="0.6516854" vertical-offset="14836" max-vertical-offset="18330">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="131" column="42" selection-start="7787" selection-end="7787" vertical-scroll-proportion="-16.791666" vertical-offset="1562" max-vertical-offset="2250">
           <folding />
         </state>
       </provider>
@@ -442,25 +423,60 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="85" column="21" selection-start="3486" selection-end="3499" vertical-scroll-proportion="-13.96" vertical-offset="926" max-vertical-offset="5685">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/helpers/test/testHelpers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="246" column="51" selection-start="9540" selection-end="9551" vertical-scroll-proportion="-9.16" vertical-offset="3461" max-vertical-offset="4500">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/test_new/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="43" selection-start="1764" selection-end="1764" vertical-scroll-proportion="0.0" vertical-offset="430" max-vertical-offset="1215">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitMutAppClientFramework.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="271" column="96" selection-start="10550" selection-end="10550" vertical-scroll-proportion="-21.48" vertical-offset="3528" max-vertical-offset="4215">
+        <state line="274" column="40" selection-start="11116" selection-end="11116" vertical-scroll-proportion="-23.28" vertical-offset="3528" max-vertical-offset="4215">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="142" column="21" selection-start="8486" selection-end="8486" vertical-scroll-proportion="-24.208334" vertical-offset="1549" max-vertical-offset="2250">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1012" column="54" selection-start="43179" selection-end="43179" vertical-scroll-proportion="0.0" vertical-offset="14956" max-vertical-offset="18345">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/test_new/mutapp.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="742" column="6" selection-start="24202" selection-end="24202" vertical-scroll-proportion="-7.96" vertical-offset="10931" max-vertical-offset="12270">
+        <state line="29" column="19" selection-start="1026" selection-end="1026" vertical-scroll-proportion="0.3539326" vertical-offset="183" max-vertical-offset="12270">
           <folding>
-            <marker date="1472460485000" expanded="true" signature="22257:25666" placeholder="{...}" />
+            <marker date="1472462123000" expanded="true" signature="-1:-1" placeholder="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/app.js">
+    <entry file="file://$PROJECT_DIR$/pub/autotest/editor/TEditor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="43" selection-start="1644" selection-end="1644" vertical-scroll-proportion="0.5241379" vertical-offset="490" max-vertical-offset="1215">
+        <state line="109" column="46" selection-start="4979" selection-end="4979" vertical-scroll-proportion="0.5696552" vertical-offset="1222" max-vertical-offset="2685">
           <folding />
         </state>
       </provider>

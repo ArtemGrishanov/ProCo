@@ -698,7 +698,7 @@ MutApp.Util = {
      * @param {Array} classesWhiteList
      */
     clarifyElement: function(element, classesWhiteList) {
-        var result = $('<div></div>').append(element).clone();
+        var result = element.clone();
         MutApp.Util.__clarifySubElement(result, classesWhiteList);
         return result;
     },
