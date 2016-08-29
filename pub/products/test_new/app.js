@@ -57,7 +57,8 @@ var TestApp = MutApp.extend({
                 id: id,
                 title: r.title,
                 description: r.description,
-                view: rs.$el
+                // удалить элементы, оставить только те которые в whitelist
+                view: MutApp.Util.clarifyElement(rs.$el, ['modal','modal_cnt','info_title','info_tx','b_title'])
             });
         }
 

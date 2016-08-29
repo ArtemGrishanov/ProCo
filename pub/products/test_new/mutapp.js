@@ -688,6 +688,74 @@ MutApp.Util = {
         else {
             obj[prop[0]] = value;
         }
+    },
+
+    /**
+     * Удалить в элементы все субэлементы, которые не содержать классов whitelist
+     * Однако, элементы внутри которых вложены элементы с whiteList, также надо оставить
+     *
+     * @param {} element
+     * @param {Array} classesWhiteList
+     */
+    clarifyElement: function(element, classesWhiteList) {
+        var result = $('<div></div>').append(element).clone();
+        MutApp.Util.__clarifySubElement(result, classesWhiteList);
+        return result;
+    },
+
+    /**
+     * Ищем в элементе потомков с классами.
+     * Потомки с классами classesWhiteList оставляем, остальные удаляем.
+     * Если был найден хотя бы один, возвращаем true
+     *
+     * @param element
+     * @param classesWhiteList
+     * @returns {boolean}
+     * @private
+     */
+    __clarifySubElement: function(element, classesWhiteList) {
+        var children = $(element).children();
+        if (children.length === 0) {
+            // конечный элемент, смотрим только на наличие классов
+            if (MutApp.Util.__containClass(element, classesWhiteList) === true) {
+                return true;
+            }
+            element.remove();
+            return false;
+        }
+        var foundChildWithWhiteClass = false;
+        for (var i = 0; i < children.length; i++) {
+            var c = children[i];
+            // если один из потомков имеет элемент с classesWhiteList то всю ветку надо оставлять
+            var r = MutApp.Util.__clarifySubElement(c, classesWhiteList);
+            if (r === true) {
+                // оставляем элемент
+                // и пометить что он содержит нужный элемент из classesWhiteList
+                foundChildWithWhiteClass = true;
+            }
+        }
+        // когда сам элемент имеет нужные классы или иметт таких потомков его надо оставить
+        if (MutApp.Util.__containClass(element, classesWhiteList)===true || foundChildWithWhiteClass===true) {
+            return true;
+        }
+        element.remove();
+        return false;
+    },
+
+    /**
+     *
+     * @param element
+     * @param classes
+     * @returns {boolean}
+     * @private
+     */
+    __containClass: function(element, classes) {
+        for (var i = 0; i < classes.length; i++) {
+            if ($(element).hasClass(classes[i])===true) {
+                return true;
+            }
+        }
+        return false;
     }
 };
 
