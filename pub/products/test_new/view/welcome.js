@@ -26,13 +26,8 @@ var StartScreen = MutApp.Screen.extend({
         applyStyles();
     },
 
-    /**
-     * Это appProperty
-     * Сам logo не является отдельным вью, так как не имеет своей логики
-     */
     logoPosition: {top: 200, left: 200},
-    logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
-    showLogo: false,
+    showLogo: true,
     startHeaderText: 'Тест',
     startDescription: 'Проверь свои знания',
     startButtonText: 'Начать',
@@ -74,11 +69,16 @@ var StartScreen = MutApp.Screen.extend({
 
     render: function() {
         this.$el.html(this.template['default']());
-        this.$el.find('.js-logo').
-            css('backgroundImage','url('+this.logoUrl+')');
-        this.$el.find('.js-start_logo').
-            css('top',this.logoPosition.top+'px').
-            css('left',this.logoPosition.left+'px');
+
+        // установка свойств логотипа
+        var $l = this.$el.find('.js-start_logo');
+        if (this.showLogo === true) {
+            $l.css('backgroundImage','url('+this.model.get('logoUrl')+')');
+            $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
+        }
+        else {
+            $l.hide();
+        }
 
         if (this.backgroundImg) {
             this.$el.find('.js-back_img').css('backgroundImage','url('+this.backgroundImg+')');
@@ -88,12 +88,6 @@ var StartScreen = MutApp.Screen.extend({
         this.$el.find('.js-start_header').text(this.startHeaderText);
         this.$el.find('.js-start_description').text(this.startDescription);
 
-        if (this.showLogo === true) {
-            this.$el.find('.js-start_logo').show();
-        }
-        else {
-            this.$el.find('.js-start_logo').hide();
-        }
         return this;
     }
 });

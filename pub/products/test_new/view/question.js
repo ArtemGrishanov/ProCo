@@ -25,7 +25,10 @@ var QuestionScreen = MutApp.Screen.extend({
      * @see MutApp
      */
     name: 'Вопрос',
-
+    /**
+     * индекс вопроса за который отвечает этот экран
+     */
+    currentQuestionIndex: undefined,
     /**
      * @see MutApp
      */
@@ -44,6 +47,8 @@ var QuestionScreen = MutApp.Screen.extend({
     questionProgressPosition: {top:30, left:30},
     topColontitleText: 'Текст колонтитула',
     backgroundImg: null,
+    logoPosition: {top: 200, left: 200},
+    showLogo: true,
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -85,6 +90,11 @@ var QuestionScreen = MutApp.Screen.extend({
             .css('height','100%'));
         param.screenRoot.append(this.$el);
         this.questionId = param.questionId;
+
+        // определяем индекс вопроса, за который отвечает этот экран
+        var q = this.model.getQuestionById(this.questionId);
+        this.currentQuestionIndex = this.model.get('quiz').indexOf(q);
+
         this.model.bind("change:currentQuestionId", function () {
             if ('question' === this.model.get('state') &&
                 this.questionId === this.model.get('currentQuestionId')) {
@@ -98,7 +108,7 @@ var QuestionScreen = MutApp.Screen.extend({
         var q = this.model.getQuestionById(this.questionId);
         this.$el.html(this.template['default'](q));
 
-        q.question.currentQuestionIndex = this.model.get('quiz').indexOf(q);
+        q.question.currentQuestionIndex = this.currentQuestionIndex;
         this.renderQuestion(q.question);
 
         this.renderAnswers(q.answer);
@@ -167,6 +177,7 @@ var QuestionScreen = MutApp.Screen.extend({
                         throw new Error('Option does not have uiTemplate attribute');
                     }
                 }
+
                 break;
             }
             case 'input': {
@@ -179,6 +190,16 @@ var QuestionScreen = MutApp.Screen.extend({
 //                this.$el.find('.js-answers_cnt').append($e);
 //                break;
             }
+        }
+
+        // установка свойств логотипа
+        var $l = this.$el.find('.js-question_logo');
+        if (this.showLogo === true) {
+            $l.css('backgroundImage','url('+this.model.get('logoUrl')+')');
+            $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
+        }
+        else {
+            $l.hide();
         }
     },
 

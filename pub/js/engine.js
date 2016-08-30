@@ -886,7 +886,7 @@ var Engine = {};
         if (params && params.values && params.values.app) {
             // установить значения из шаблона
             // сначала установить значения, так как на основе них потом создаются appProperty
-            success = startMutApp(param.values.app);
+            success = startMutApp(params.values.app);
         }
         else {
             success = startMutApp();

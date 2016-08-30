@@ -50,9 +50,9 @@ var config = {
             config.common.facebookAuthEnabled = false;
             return this;
         },
-        online: function() {
-            config.common.awsEnabled = true;
-            config.common.facebookAuthEnabled = true;
+        offline: function() {
+            config.common.awsEnabled = false;
+            config.common.facebookAuthEnabled = false;
             return this;
         }
     },

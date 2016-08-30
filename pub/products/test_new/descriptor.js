@@ -85,7 +85,7 @@ descriptor.css = [
 
 descriptor.app = [
     {
-        selector: 'id=startScr logoPosition, type=result logoPosition, type=result fbSharePosition',
+        selector: 'id=startScr logoPosition, type=questions logoPosition, type=result logoPosition, type=result fbSharePosition',
         rules: 'drag'
     },
     {
@@ -103,7 +103,7 @@ descriptor.app = [
         rules: 'imgUrl'
     },
     {
-        selector: 'type=questions showQuestionProgress, type=questions showBullits, type=questions showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions',
+        selector: 'id=startScr showLogo, type=questions showLogo, type=result showLogo, type=questions showQuestionProgress, type=questions showBullits, type=questions showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions',
         rules: 'trueFalse'
     },
             {
@@ -497,13 +497,13 @@ descriptor.triggers = {
             for (var j = 0; j < params.appScreens.length; j++) {
                 var as = params.appScreens[j];
                 // сейчас находимся на каком-то экране, мы должны знать индекс вопроса
-                var qi = as.data.currentQuestion;
+                var qi = as.currentQuestionIndex;
                 if (Number.isInteger(qi)) {
                     // должен остаться только один элемент с классом activeClass
                     var elements = $(as.view).find(selector);
                     elements.remove(activeClass);
                     // и только элементу с корректным ответом ставим activeClass
-                    var correntAnswerId = params.appWindow.getCorrectAnswerId(qi);
+                    var correntAnswerId = params.app._models[0].getCorrectAnswerId(qi);
                     if (correntAnswerId) {
                         for (var i = 0; i < elements.length; i++) {
                             if ($(elements[i]).attr('data-id') === correntAnswerId) {

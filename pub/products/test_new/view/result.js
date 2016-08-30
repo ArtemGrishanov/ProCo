@@ -36,7 +36,6 @@ var ResultScreen = MutApp.Screen.extend({
      */
     showLogo: true,
     logoPosition: {top: 100, left: 20},
-    logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
     restartButtonText: 'Заново',
     backgroundImg: null,
     /**
@@ -89,24 +88,24 @@ var ResultScreen = MutApp.Screen.extend({
         var r = this.model.getResultById(this.resultId);
         r.currentResultIndex = this.model.get('results').indexOf(r);
         this.$el.html(this.template['default'](r));
-        $('.js-logo').
-            css('backgroundImage','url('+this.logoUrl+')');
 
-        $('.js-result_logo').
-            css('top',this.logoPosition.top+'px').
-            css('left',this.logoPosition.left+'px');
+        // установка свойств логотипа
+        var $l = this.$el.find('.js-result_logo');
+        if (this.showLogo === true) {
+            $l.css('backgroundImage','url('+this.model.get('logoUrl')+')');
+            $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
+        }
+        else {
+            $l.hide();
+        }
 
+        // кнопка шаринга
         $('.js-mutapp_share_fb').
             css('top',this.fbSharePosition.top+'px').
             css('left',this.fbSharePosition.left+'px');
 
         this.$el.find('.js-restart').text(this.restartButtonText);
-        if (this.showLogo === true) {
-            this.$el.find('.js-result_logo').show();
-        }
-        else {
-            this.$el.find('.js-result_logo').hide();
-        }
+
         if (this.backgroundImg) {
             this.$el.find('.js-back_img').css('backgroundImage','url('+this.backgroundImg+')');
         }
