@@ -41,10 +41,6 @@ var QuestionScreen = MutApp.Screen.extend({
      */
     questionId: null,
 
-    showBullits: true,
-    showTopColontitle: true,
-    showQuestionProgress: true,
-    questionProgressPosition: {top:30, left:30},
     topColontitleText: 'Текст колонтитула',
     backgroundImg: null,
     logoPosition: {top: 200, left: 200},
@@ -128,15 +124,28 @@ var QuestionScreen = MutApp.Screen.extend({
         else {
             this.$el.find('.js-topColontitleText').hide();
         }
-        if (this.showQuestionProgress === true) {
-            this.$el.find('.js-question_progress').show();
+
+        // счетчик текущего номера вопроса
+        var $qp = this.$el.find('.js-question_progress');
+        if (this.model.get('showQuestionProgress') === true) {
+            $qp.show()
+               .text('Вопрос '+(this.currentQuestionIndex+1)+'/'+this.model.get('quiz').length);
+            $qp.css('top',this.model.get('questionProgressPosition').top+'px')
+               .css('left',this.model.get('questionProgressPosition').left+'px');
         }
         else {
-            this.$el.find('.js-question_progress').hide();
+            $qp.hide();
         }
-        this.$el.find('.js-question_progress').
-            css('top',this.questionProgressPosition.top+'px').
-            css('left',this.questionProgressPosition.left+'px');
+
+        // установка свойств логотипа
+        var $l = this.$el.find('.js-question_logo');
+        if (this.showLogo === true) {
+            $l.css('backgroundImage','url('+this.model.get('logoUrl')+')');
+            $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
+        }
+        else {
+            $l.hide();
+        }
 
         if (this.backgroundImg) {
             this.$el.find('.js-back_img').css('backgroundImage','url('+this.backgroundImg+')');
@@ -190,16 +199,6 @@ var QuestionScreen = MutApp.Screen.extend({
 //                this.$el.find('.js-answers_cnt').append($e);
 //                break;
             }
-        }
-
-        // установка свойств логотипа
-        var $l = this.$el.find('.js-question_logo');
-        if (this.showLogo === true) {
-            $l.css('backgroundImage','url('+this.model.get('logoUrl')+')');
-            $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
-        }
-        else {
-            $l.hide();
         }
     },
 

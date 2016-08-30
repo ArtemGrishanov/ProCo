@@ -89,7 +89,7 @@ descriptor.app = [
         rules: 'drag'
     },
     {
-        selector: 'type=questions questionProgressPosition',
+        selector: 'id=tm questionProgressPosition',
         updateScreens: true, // потому что в рамках одной сессии надо менять позицию этого элемента на нескольких экранах
         rules: 'drag'
     },
@@ -103,24 +103,36 @@ descriptor.app = [
         rules: 'imgUrl'
     },
     {
-        selector: 'id=startScr showLogo, type=questions showLogo, type=result showLogo, type=questions showQuestionProgress, type=questions showBullits, type=questions showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions',
+        selector: 'id=startScr showLogo, type=questions showLogo, type=result showLogo, id=tm showQuestionProgress, id=tm showBullits, id=tm showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions',
         rules: 'trueFalse'
     },
+            {
+                selector: 'id=startScr showLogo',
+                label: 'Лого на стартовой'
+            },
+            {
+                selector: 'type=questions showLogo',
+                label: 'Лого в вопросах'
+            },
+            {
+                selector: 'type=result showLogo',
+                label: 'Лого в результатах'
+            },
             {
                 selector: 'id=tm showBackgroundImage',
                 label: 'Показывать фоновую картинку',
                 rules: 'trueFalse'
             },
             {
-                selector: 'type=questions showBullits',
+                selector: 'id=tm showBullits',
                 label: 'Показывать буллиты вариантов ответа'
             },
             {
-                selector: 'type=questions showQuestionProgress',
+                selector: 'id=tm showQuestionProgress',
                 label: 'Показывать прогресс вопросов'
             },
             {
-                selector: 'type=questions showTopColontitle',
+                selector: 'id=tm showTopColontitle',
                 label: 'Верхний колонтитул'
             },
             {

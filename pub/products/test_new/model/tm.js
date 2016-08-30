@@ -15,7 +15,13 @@ var TestModel = MutApp.Model.extend({
          */
         showBackgroundImage: false,
         logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
+
+        showBullits: true,
+
+        showTopColontitle: true,
+
         showQuestionProgress: true,
+        questionProgressPosition: {top:30, left:30},
 
         currentQuestionId: null,
         currentQuestionIndex: undefined,

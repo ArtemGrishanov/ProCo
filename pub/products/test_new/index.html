@@ -27,7 +27,6 @@
             <div class="modal_cnt">
                 <div data-app-property="type=questions topColontitleText" class="js-topColontitleText topColontitle">Верхний колонтитул</div>
                 <div class="modal_hld question">
-                    <div class="question_number">Вопрос <span class="js-question_progress"></span></div>
                     <div class="js-question_cnt">
                         <!--Сюда программно добавляется шаблон вопроса-->
                     </div>
@@ -42,14 +41,15 @@
                     </div>
                 </div>
                 <div class="logo js-logo js-question_logo" data-app-property="type=questions logoPosition, type=questions showLogo, id=tm logoUrl">
+                <div data-app-property="id=tm questionProgressPosition" class="js-question_progress question_progress"></div>
             </div>
         </div>
     </script>
     <script id="id-question_text_template" type="text/template">
-        <div class="question_title" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
+        <div class="question_title js-question_text" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
     </script>
     <script id="id-question_text_photo_template" type="text/template">
-        <div class="question_title" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
+        <div class="question_title js-question_text" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
         <div class="question_grid">
             <div class="question_grid-i">
                 <img class="question_img" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.img" src="<%=img%>" />
