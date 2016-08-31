@@ -21,12 +21,6 @@ var TApp = {};
             app = appIFrame.contentWindow.app;
             assert.ok(app !== null, 'checkApp: app found in iframe');
         }
-//        else if (appObject._models) {
-//            app = appObject;
-//        }
-//        else {
-//            assert.ok(false, 'checkApp: unknown app object');
-//        }
         if (app.type === 'test') {
             // тип приложения - тест
             checkTestInStatic(assert, appIFrame);
@@ -51,8 +45,18 @@ var TApp = {};
         var appIframe = document.createElement('iframe');
         appIframe.onload = function() {
             callback(appIframe);
+            // у приложения всегда есть какие то дефолтные размеры
+            var w = width || appIframe.contentWindow.app.width;
+            var h = height || appIframe.contentWindow.app.height;
+            // айфрейм необходимо увеличить до размеров приложения чтобы видеть его полностью.
+            $(appIframe).width(w+'px').height(h+'px');
+            var d = $('<div class="aif_app_id">'+appIframe.contentWindow.app.id+'</div>');
+            //$(appIframe).contents().find('body').append(d);
+            //TODO контейнер для iframe
+            $('#id-product_iframe_cnt').css('position','relative').append(d);
         };
         var host = config.common.home;
+        $(appIframe).addClass('autotest_iframe __small');
         appIframe.src = host+src;
         $('#id-product_iframe_cnt').append(appIframe).show();
     }

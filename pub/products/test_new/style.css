@@ -244,6 +244,8 @@ img {
     text-align: center;
     white-space: nowrap;
     background-color: #fff;
+    background-size: cover;
+    background-position: center;
 }
 .modal.__active {
     display: block;

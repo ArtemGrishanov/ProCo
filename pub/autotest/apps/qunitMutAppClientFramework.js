@@ -274,3 +274,22 @@ QUnit.test("MutApp test: clarifyElement", function( assert ) {
     var expectedHtml = '<div class="modal __active js-back_color js-back_img" data-app-property="type=result backgroundImg"><div class="modal_cnt info"><div class="info_title" data-app-property="id=tm results.<%=currentResultIndex%>.title"><b class="b_title">&lt;%=title%&gt;</b></div><div class="info_tx" data-app-property="id=tm results.<%=currentResultIndex%>.description">&lt;%=description%&gt;</div><div class="foo_class"><div class="foo_2_class"><div class="info_tx">Useful element</div></div></div></div></div>';
     assert.ok($('<div></div>').append(ce).html()===expectedHtml, 'clarifyElement: ok');
 });
+
+QUnit.test("MutApp test: getUniqId", function( assert ) {
+    var v1 = MutApp.Util.getUniqId(6, null);
+    var v2 = MutApp.Util.getUniqId(6, null);
+    assert.ok(v1.length === 6, 'getUniqId');
+    assert.ok(v2.length === 6, 'getUniqId');
+    assert.ok(v1 !== v2, 'getUniqId');
+
+    var v1 = MutApp.Util.getUniqId(8, 'blch');
+    var v2 = MutApp.Util.getUniqId(8, 'er3434g34g3');
+    assert.ok(v1.length === 8, 'getUniqId');
+    assert.ok(v2.length === 8, 'getUniqId');
+    assert.ok(v1 !== v2, 'getUniqId');
+
+    var v1 = MutApp.Util.getUniqId(undefined, '32§3414');
+    var v2 = MutApp.Util.getUniqId(undefined, '33423t35t3');
+    assert.ok(v1 !== v2, 'getUniqId');
+    assert.ok(v1.length === v2.length, 'getUniqId');
+});

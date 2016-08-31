@@ -6,6 +6,8 @@ var TestApp = MutApp.extend({
 
     type: 'test',
 
+    id: MutApp.Util.getUniqId(6),
+
     screenRoot: $('#id-mutapp_screens'),
 
     initialize: function(param) {
@@ -71,6 +73,9 @@ var TestApp = MutApp.extend({
     },
 
     start: function() {
+        for (var i = 0; i < this._screens.length; i++) {
+            this._screens[i].$el.hide();
+        }
         this._models[0].start();
     }
 });
