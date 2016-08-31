@@ -83,7 +83,11 @@ var TEngine = {};
             assert.ok(cssString.length == 1, 'Engine.checkEngine: getCustomStylesString()');
         }
 
-        var body = $("#id-product_iframe_cnt").find('iframe').contents().find('body');
+        // находим необходимый айфрейм с приложением, их может быть несколько
+        var appIframe = findIframeWithApp($("#id-product_iframe_cnt"), app.id);
+        assert.ok(appIframe !== null, 'Engine.checkEngine: app iframe found with appId='+app.id);
+
+        var body = $(appIframe).contents().find('body');
         assert.ok(body.html().indexOf(cssString)>=0, 'Engine.checkEngine: productIframe contains custom styles');
         // custom cssString in iframe
     }
