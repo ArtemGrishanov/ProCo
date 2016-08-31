@@ -260,6 +260,8 @@ QUnit.test("MutApp test: Sharing", function( assert ) {
     assert.ok(!!app.shareDefaultImgUrl===true, 'defaultImgUrl in Sharer');
     assert.ok(app._shareEntities.length===0, 'entities in Sharer');
     assert.ok(!!app.share('fooId')===false, 'share() in Sharer');
+
+    // не устанавливали setShareEntities, поэтому фб апи не должно инициализироваться
     assert.ok(window.FB === undefined, 'FB === undefined');
     assert.ok($('#facebook-jssdk').length === 0, 'facebook-jssdk dont exist');
 });

@@ -70,8 +70,7 @@ QUnit.test("Queue test 2", function( assert ) {
 });
 
 QUnit.test("Queue test 3", function( assert ) {
-    assert.expect(2);
-    var done = assert.async(2);
+    var done = assert.async();
     Queue.push({
         run: function() {
 
@@ -94,6 +93,8 @@ QUnit.test("Queue test 3", function( assert ) {
                             assert.ok(true,'q3 run');
                             q3.release(this);
                             q2.release(this);
+
+                            done();
                         }
                     });
 

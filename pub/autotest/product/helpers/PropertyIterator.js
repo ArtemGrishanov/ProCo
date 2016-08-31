@@ -37,9 +37,10 @@ PropertyIterator.prototype._parseScreen = function(s) {
         var attr = $(e).attr('data-app-property');
         var keys = attr.split(',');
         for (var j = 0; j < keys.length; j++) {
-            if (this._iterated.indexOf(keys[j]) < 0 &&
-                this._queue.indexOf(keys[j]) < 0) {
-                this._queue.push(keys[j]);
+            var newK = keys[j].trim();
+            if (this._iterated.indexOf(newK) < 0 &&
+                this._queue.indexOf(newK) < 0) {
+                this._queue.push(newK);
             }
         }
     }

@@ -82,8 +82,9 @@ var TEditor = {};
             var attr = $(e).attr('data-app-property');
             var keys = attr.split(',');
             for (var j = 0; j < keys.length; j++) {
-                var ap = Engine.getAppProperty(keys[j]);
-                assert.ok(ap!==null, 'checkActiveScreen: AppProperty found='+ap.propertyString);
+                var k = keys[j].trim();
+                var ap = Engine.getAppProperty(k);
+                assert.ok(ap!==null, 'checkActiveScreen: AppProperty found='+k);
                 // формальная проверка каждого appProperty
                 // у каждого appProperty есть контрол
                 TEngine.checkAppProperty(assert, ap);

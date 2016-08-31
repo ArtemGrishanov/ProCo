@@ -103,7 +103,9 @@ var TEngine = {};
         // проверить в Engine, что оно в действительности установлено
         // проверить что в приложении оно тоже действительно установлено
         // проверить что во вью приложения оно реально установлено
-
+        if (appProperty===null) {
+            console.log('stop');
+        }
         assert.ok(typeof appProperty.propertyString === 'string', 'checkAppProperty');
 
         if (appProperty.type==='app') {
@@ -209,9 +211,6 @@ var TEngine = {};
                             viewsWithThisClass = findViewsContainingClass(allViews, [p.applyCssTo || p.cssSelector]);
                             assert.ok(viewsWithThisClass.length > 0, 'There are screens with this css appProperty=\''+p.propertyString+'\'');
                             for (var n = 0; n < viewsWithThisClass.length; n++) {
-                                if (p.propertyString === 'js-test_btn_backgroundColor') {
-                                    console.log('stop here');
-                                }
                                 // проверить значение css свойства p на экране view
                                 validateDomElement(assert, viewsWithThisClass[n], p, viewsWithThisClass[n].attr('id'));
                             }
