@@ -229,13 +229,7 @@ img {
     line-height: 30px;
     font-size: 14px;
 }
-.button.__sec {
-    background-color: transparent;
-    border: 1px #024889 solid;
-    height: 38px;
-    line-height: 38px;
-    color: #024889;
-}
+
 .button + .button {
     margin-left: 12px;
 }

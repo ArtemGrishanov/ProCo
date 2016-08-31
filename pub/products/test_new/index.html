@@ -30,14 +30,16 @@
                     <div class="js-question_cnt">
                         <!--Сюда программно добавляется шаблон вопроса-->
                     </div>
-                    <div class="js-answer_cnt">
+                    <div class="js-answer_cnt js-answers_wr">
                         <!--Сюда программно добавляются варианта ответов-->
                     </div>
                 </div>
                 <div class="js-explain explain_modal" style="display:none;">
                     <div class="explain_blk">
                         <div class="explain_title js-explanation_text"></div>
-                        <div><span class="js-test_btn js-next">Далее</span></div>
+                        <div class="js-btn_wr">
+                            <span class="button js-test_btn js-next">Далее</span>
+                        </div>
                     </div>
                 </div>
                 <div class="logo js-logo js-question_logo" data-app-property="type=questions logoPosition, type=questions showLogo, id=tm logoUrl">
@@ -51,8 +53,8 @@
     <script id="id-question_text_photo_template" type="text/template">
         <div class="question_title js-question_text" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
         <div class="question_grid">
-            <div class="question_grid-i">
-                <img class="question_img" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.img" src="<%=img%>" />
+            <div class="question_grid-i js-photo_cnt">
+                <img class="question_img js-photo" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.img" src="<%=img%>" />
             </div>
         </div>
     </script>
@@ -79,7 +81,16 @@
     </script>
 
     <script id="id-option_text_template" type="text/template">
-        <div class="question_i" data-id="<%=id%>"><%=text%></div>
+        <div class="question_i js-a_wr" data-id="<%=id%>" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options">
+            <div class="bullit"></div>
+            <span data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.text"><%=text%></span>
+        </div>
+        <!--<div class="a_wr" data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}">-->
+        <!--<div class="a_text">-->
+        <!--<div class="bullit"></div>-->
+        <!--<span data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}.text">{{answer_options_text}}</span>-->
+        <!--</div>-->
+        <!--</div>-->
     </script>
     <script id="id-option_img_template" type="text/template">
         <div class="question_grid-i" data-id="<%=id%>">
@@ -103,10 +114,10 @@
     <script id="id-result_template" type="text/template">
         <div class="modal __active js-back_color js-back_img" data-app-property="type=result backgroundImg">
             <div class="modal_cnt info">
-                <div class="info_title" data-app-property="id=tm results.<%=currentResultIndex%>.title"><b class="b_title"><%=title%></b></div>
-                <div class="info_tx" data-app-property="id=tm results.<%=currentResultIndex%>.description"><%=description%></div>
-                <div class="info_f">
-                    <div class="button __sec js-next js-restart js-test_btn">Пройти тест еще раз</div>
+                <div class="info_title js-result_title" data-app-property="id=tm results.<%=currentResultIndex%>.title"><b class="b_title"><%=title%></b></div>
+                <div class="info_tx js-result_description" data-app-property="id=tm results.<%=currentResultIndex%>.description"><%=description%></div>
+                <div class="info_f js-btn_wr">
+                    <div class="button js-next js-restart js-test_btn">Пройти тест еще раз</div>
                     <!--<div class="button js-details">Подробности</div>-->
                 </div>
                 <div class="js-mutapp_share_fb fb_share" data-app-property="type=result fbSharePosition"></div>

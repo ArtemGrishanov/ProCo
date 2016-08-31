@@ -175,6 +175,7 @@ var TEngine = {};
                 var saved = [];
                 // нужно склонировать массив, так как он по ходу теста может меняться, а нам надо постоянный
                 var appProps = JSON.parse(JSON.stringify(Engine.getAppPropertiesObjectPathes()));
+
                 var initialLength = appProps.length;
                 for (var i = 0; i < appProps.length; i++) {
                     var p = Engine.getAppProperty(appProps[i]);
@@ -182,9 +183,36 @@ var TEngine = {};
                     var newValue = generateValue(p);
                     if (newValue !== null) {
                         Engine.setValue(p, newValue);
-                        var actualProperty = Engine.getApp().getPropertiesBySelector(p.propertyString);
-                        assert.ok(actualProperty.length===1, 'actualProperty is array length=1');
-                        assert.ok(actualProperty[0].value === newValue, typeof p.propertyValue+' value set correctly for \''+p.propertyString+'\''+' value='+newValue);
+                        // проверить как прошла установка: получить реальное значение свойства из приложения
+                        if (p.type==='app') {
+                            var actualProperty = Engine.getApp().getPropertiesBySelector(p.propertyString);
+                            if (actualProperty === null) {
+                                assert.ok(false, 'actualProperty===null for appProperty=\''+p.propertyString+'\'');
+                            }
+                            assert.ok(actualProperty.length===1, 'actualProperty is array length=1 for appProperty=\''+p.propertyString+'\'');
+                            assert.ok(actualProperty[0].value === newValue, typeof p.propertyValue+' value set correctly for \''+p.propertyString+'\''+' value='+newValue);
+                        }
+                        else {
+                            // собрать все вью экранов заранее для последующей проверки стилей в них
+                            var allViews = [];
+                            for (var k = 0; k < Engine.getApp()._screens.length; k++) {
+                                // из всех экранов соберем вью для проверки выставления стилей
+                                // причем надо сделеать show() для применения стилей браузером
+                                allViews.push(Engine.getApp()._screens[k].$el.show());
+                            }
+                            var viewsWithThisClass = [];
+                            // отобрать экраны, которые содержат классы, имеющие отношение к свойству
+                            viewsWithThisClass = findViewsContainingClass(allViews, [p.applyCssTo || p.cssSelector]);
+                            assert.ok(viewsWithThisClass.length > 0, 'There are screens with this css appProperty=\''+p.propertyString+'\'');
+                            for (var n = 0; n < viewsWithThisClass.length; n++) {
+                                if (p.propertyString === 'js-test_btn_backgroundColor') {
+                                    console.log('stop here');
+                                }
+                                // проверить значение css свойства p на экране view
+                                validateDomElement(assert, viewsWithThisClass[n], p, viewsWithThisClass[n].attr('id'));
+                            }
+                        }
+
                         saved.push({'propertyString':p.propertyString, 'value':newValue});
                     }
                     else {
@@ -193,9 +221,16 @@ var TEngine = {};
                 }
 
                 for (var i = 0; i < saved.length; i++) {
-                    var actualProperty = Engine.getApp().getPropertiesBySelector(saved[i].propertyString);
-                    assert.ok(actualProperty.length===1, 'Second interation. actualProperty is array length=1');
-                    assert.ok(actualProperty[0].value === saved[i].value, 'Second interation. String value set correctly for \''+saved[i].propertyString+'\''+' value='+saved[i].value);
+                    var p = Engine.getAppProperty(saved[i].propertyString);
+                    if (p.type==='app') {
+                        var actualProperty = Engine.getApp().getPropertiesBySelector(saved[i].propertyString);
+                        assert.ok(actualProperty.length===1, 'Second interation. actualProperty is array length=1');
+                        assert.ok(actualProperty[0].value === saved[i].value, 'Second interation. String value set correctly for \''+saved[i].propertyString+'\''+' value='+saved[i].value);
+                    }
+                    else {
+                        //TODO повторная проверка css свойств
+                        // как и выше в предыдущем цикле
+                    }
                 }
 
                 assert.ok(initialLength===Engine.getAppProperties().length, 'Length');

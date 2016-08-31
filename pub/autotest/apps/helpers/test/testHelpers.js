@@ -272,8 +272,8 @@ function checkShareEntities(assert, app, appIframe) {
     assert.ok(app.share('unknownId')===false, 'checkShareEntities: share unknowm entity');
     assert.ok(app.share('resultScreen0',null,true)===true, 'checkShareEntities: share entity');
     // fb апи создаются только когда есть что шарить
-    assert.ok(!!appIframe.contentWindow.FB===true, 'checkShareEntities FB api exist. In offline mode this test fails');
-    assert.ok($(appIframe.contentDocument.body).find('#facebook-jssdk').length>0, 'checkShareEntities: facebook-jssdk exist. In offline mode this test fails');
+    assert.ok(!!appIframe.contentWindow.FB===true, 'checkShareEntities FB api exist. In offline mode this test fails, it s ok');
+    assert.ok($(appIframe.contentDocument.body).find('#facebook-jssdk').length>0, 'checkShareEntities: facebook-jssdk exist. In offline mode this test fails, it s ok');
 
     // проверка установки imgUrl
     // эти картинки формируются и устанавливаются редактором

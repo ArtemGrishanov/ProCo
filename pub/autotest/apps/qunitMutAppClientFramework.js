@@ -175,10 +175,10 @@ QUnit.test("MutApp test: Models", function( assert ) {
     assert.ok(p2[2].path === 'quiz.2.question.text', 'getPropertiesBySelector path');
     assert.ok(typeof p2[2].value === 'string', 'getPropertiesBySelector value');
 
-    var p3 = app.getPropertiesBySelector('type=question showBullits');
+    var p3 = app.getPropertiesBySelector('type=question showLogo');
     assert.ok(p3 !== null, 'getPropertiesBySelector');
     assert.ok(p3.length === 1, 'getPropertiesBySelector');
-    assert.ok(p3[0].path === 'showBullits', 'getPropertiesBySelector');
+    assert.ok(p3[0].path === 'showLogo', 'getPropertiesBySelector');
     assert.ok(p3[0].value === true, 'getPropertiesBySelector');
 
     // поиск по атрибутам модели

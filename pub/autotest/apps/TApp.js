@@ -54,7 +54,7 @@ var TApp = {};
         };
         var host = config.common.home;
         appIframe.src = host+src;
-        $('#id-product_iframe_cnt').append(appIframe);
+        $('#id-product_iframe_cnt').append(appIframe).show();
     }
 
     global.checkApp = checkApp;

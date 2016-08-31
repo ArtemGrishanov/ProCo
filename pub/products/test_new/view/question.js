@@ -169,7 +169,8 @@ var QuestionScreen = MutApp.Screen.extend({
                 for (var i = 0; i < answerData.options.length; i++) {
                     var o = answerData.options[i];
                     if (o.uiTemplate) {
-                        o.currentOption = i;
+                        o.currentQuestionIndex = this.currentQuestionIndex;
+                        o.currentOptionIndex = i;
                         var $e = $(this.template[o.uiTemplate](o));
                         $e.click((function(e) {
                             var oId = $(e.currentTarget).attr('data-id');

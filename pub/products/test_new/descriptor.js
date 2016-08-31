@@ -47,10 +47,10 @@ descriptor.css = [
         applyCssTo: '.js-btn_wr',
         rules: 'textAlign marginTop marginBottom paddingLeft'
     },
-    {
-        selector: '.js-test_btn',
-        rules: 'textAlign'
-    },
+//    {
+//        selector: '.js-test_btn',
+//        rules: 'textAlign'
+//    },
     {
         selector: '.js-photo',
         rules: 'textAlign marginTop marginBottom',
@@ -62,14 +62,21 @@ descriptor.css = [
         // все кнопки в состоянии навеения
         selector: '.js-test_btn:hover',
         rules: 'hoverBackgroundColor hoverFontColor hoverBorderColor',
+        applyCssTo: '.js-test_btn'
     },
     {
         selector: '.bullit',
         rules: 'borderWidth borderColor'
     },
     {
-        selector: '.a_wr:hover .bullit',
-        rules: 'hoverBorderWidth hoverBorderColor'
+        selector: '.bullit:hover',
+        rules: 'hoverBorderWidth hoverBorderColor',
+        applyCssTo: '.bullit'
+    },
+    {
+        selector: '.js-a_wr:hover',
+        rules: 'hoverBorderWidth hoverBorderColor',
+        applyCssTo: '.js-a_wr'
     },
     {
         selector: '.topColontitle',

@@ -45,6 +45,36 @@ function validateDomElement(assert, view, ap, screenId) {
     }
 }
 
+/**
+ * Отфильтровать вью и оставить только те, которые содержат указанные классы
+ *
+ * @param views
+ * @param classes
+ *
+ * @return {Array}
+ */
+function findViewsContainingClass(views, classes) {
+    var result = [];
+    for (var i = 0; i < views.length; i++) {
+        // var $e = $('<div></div>').append(views[i].clone()); - плохо, так как вью должен быть реально добавлен в dom дерево и показан
+        // так как html не возвращает код САМОГО элемента, то вручную добавляем содержимое атрибута class из корня
+        // не идеально, так как название класса может совпасть с чем-нибудь :)
+        var html = $(views[i]).html()+'\"'+$(views[i]).attr('class')+'\"';
+        for (var j = 0; j < classes.length; j++) {
+            // удяляем одну точку если она есть, так как может прийти не только имя класса, а весь селектор с точкой
+            classes[j] = classes[j].replace('.','');
+            var s = '[\\\"|\\\'|\\s]('+classes[j]+')[\\\"|\\\'|\\s]';
+            var r = RegExp(s);
+            var match = r.exec(html);
+            if (match && match[0] && match[1]) {
+                result.push(views[i]);
+                break;
+            }
+        }
+    }
+    return result;
+}
+
 function getElementByAppPropertyAttr(view, propertyString) {
     var result = [];
     var dataElems = $(view).find('[data-app-property]');
