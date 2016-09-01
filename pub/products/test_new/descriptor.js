@@ -29,6 +29,15 @@ descriptor.css = [
         rules: 'fontFamily fontColor fontSize textAlign paddingTop paddingBottom paddingLeft'
     },
     {
+        selector: '.js-option_text',
+        rules: 'fontFamily fontColor fontSize'
+    },
+    {
+        selector: '.js-option_text',
+        rules: 'textAlign',
+        applyCssTo: '.js-a_wr'
+    },
+    {
         selector: '.js-answers_wr',
         rules: 'textAlign fontFamily fontColor fontSize marginTop marginBottom paddingLeft'
     },

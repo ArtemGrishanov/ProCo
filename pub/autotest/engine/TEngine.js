@@ -27,29 +27,57 @@ var TEngine = {};
         var productConfig = config.products[name];
         assert.ok(productConfig !== null, 'Engine.checkEngine: Product config exist');
 
-        var appProps = Engine.getAppProperties();
-        assert.ok(appProps.length > productConfig.autotests.expectedPropertiesCount, 'Engine.checkEngine: More then '+productConfig.autotests.expectedPropertiesCount+' appProperties for test');
-        assert.ok(appProps.length === Engine.getAppPropertiesObjectPathes().length, 'Engine.checkEngine: App Properties and object pathes');
-        for (var i = 0; i < appProps.length; i++) {
-            if (appProps[i].type === 'app') {
-                var f = Engine.getAppProperty(appProps[i].propertyString);
-                assert.ok(f === appProps[i], 'Engine.checkEngine: getAppProperty search');
-
-                checkAppProperty(assert, appProps[i]);
-            }
-        }
-        // поиск дублирующихся пропертей
-        var d = duplicateCount(assert,appProps,'propertyString');
-        assert.ok(d === 0, 'Engine.checkEngine: Duplicates in app properties');
 
         var scrIds = Engine.getAppScreenIds();
+        // отдельно соберем вью экранов, они потребуются дальше для поиска по ним data-app-property атрибутов
+        var screenViews = [];
         assert.ok(scrIds.length >= productConfig.autotests.expectedScreensCount, 'Engine.checkEngine: There are some screens');
+        var elementsWithAppProperty = [];
         for (var i = 0; i < scrIds.length; i++) {
             var s = Engine.getAppScreen(scrIds[i]);
             assert.ok(s!==null,'Engine.checkEngine: Screen has finded');
 
             checkAppScreen(assert, s);
+
+            screenViews.push(s.view);
         }
+
+        var appProps = Engine.getAppProperties();
+        assert.ok(appProps.length > productConfig.autotests.expectedPropertiesCount, 'Engine.checkEngine: More then '+productConfig.autotests.expectedPropertiesCount+' appProperties for test');
+        assert.ok(appProps.length === Engine.getAppPropertiesObjectPathes().length, 'Engine.checkEngine: App Properties and object pathes');
+        for (var i = 0; i < appProps.length; i++) {
+            // будем искать чтобы для каждого appProperty хотя бы на одном экране appScreen был представлен элемент
+            var elementsWithAppProperty = [];
+            var p = appProps[i];
+
+            if (appProps[i].type === 'app') {
+                var f = Engine.getAppProperty(p.propertyString);
+                assert.ok(f === p, 'Engine.checkEngine: getAppProperty search');
+
+                checkAppProperty(assert, p);
+            }
+
+            for (var g = 0; g < screenViews.length; g++) {
+                var elms = getElementByAppPropertyAttr(screenViews[g], p.propertyString);
+                if (elms) {
+                    elementsWithAppProperty = elementsWithAppProperty.concat(elms);
+                }
+            }
+            if (p.propertyString==='js-test_btn:hover_hoverBackgroundColor') {
+                console.log('stop');
+            }
+            // проверяем что апп проперти встретилась хотя бы на одном экране, иначе это ошибка
+            if (p.filter===true) {
+                assert.ok(elementsWithAppProperty.length > 0, 'There are elements in app containind data-app-property attr for \''+ p.propertyString+'\'');
+            }
+            else {
+                // для остальных по идее это необязательно, контрол виден всегда
+            }
+        }
+
+        // поиск дублирующихся пропертей
+        var d = duplicateCount(assert,appProps,'propertyString');
+        assert.ok(d === 0, 'Engine.checkEngine: Duplicates in app properties');
 
         var trig = Engine.getAppTriggers();
         assert.ok(trig.length >= productConfig.autotests.expectedTriggersCount, 'There are some triggers');
@@ -201,11 +229,15 @@ var TEngine = {};
                         else {
                             // собрать все вью экранов заранее для последующей проверки стилей в них
                             var allViews = [];
+
+                            // Важно: это экраны из реального приложения app, а AppScreens из движка
                             for (var k = 0; k < Engine.getApp()._screens.length; k++) {
                                 // из всех экранов соберем вью для проверки выставления стилей
                                 // причем надо сделеать show() для применения стилей браузером
-                                allViews.push(Engine.getApp()._screens[k].$el.show());
+                                var v = Engine.getApp()._screens[k].$el.show();
+                                allViews.push(v);
                             }
+
                             var viewsWithThisClass = [];
                             // отобрать экраны, которые содержат классы, имеющие отношение к свойству
                             viewsWithThisClass = findViewsContainingClass(allViews, [p.applyCssTo || p.cssSelector]);
