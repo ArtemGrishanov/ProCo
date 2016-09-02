@@ -42,7 +42,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="logo js-logo js-question_logo" data-app-property="type=questions logoPosition, type=questions showLogo, id=tm logoUrl">
+                <div class="logo js-logo js-question_logo" data-app-property="type=questions logoPosition, type=questions showLogo, id=tm logoUrl"></div>
                 <div data-app-property="id=tm questionProgressPosition" class="js-question_progress question_progress"></div>
             </div>
         </div>
@@ -94,7 +94,7 @@
     </script>
     <script id="id-option_img_template" type="text/template">
         <div class="question_grid-i" data-id="<%=id%>">
-            <img class="question_img" src="<%=img%>" />
+            <img data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.img" class="question_img" src="<%=img%>" />
         </div>
     </script>
 

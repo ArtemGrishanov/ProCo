@@ -853,7 +853,7 @@ var Editor = {};
             }
         }
         else {
-            App.showLogin();
+            Modal.showLogin();
         }
     }
 
@@ -926,7 +926,7 @@ var Editor = {};
             }, appId);
         }
         else {
-            App.showLogin();
+            Modal.showLogin();
         }
     }
 
@@ -959,7 +959,7 @@ var Editor = {};
             }
         }
         else {
-            App.showLogin();
+            Modal.showLogin();
         }
     }
 
@@ -1214,5 +1214,8 @@ var Editor = {};
     global.findControlInfo = findControlInfo;
     global.getSlideGroupControls = function() { return slideGroupControls; };
     global.createPreviewsForShare = createPreviewsForShare;
+    global.deleteSelections = deleteSelections;
+    global.hideWorkspaceHints = hideWorkspaceHints;
+    global.getResourceManager = function() { return resourceManager; }
 
 })(Editor);

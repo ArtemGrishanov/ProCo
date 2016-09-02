@@ -8,12 +8,16 @@
 function ChooseImageQuick(propertyString, directiveName, $parent, productDOMElement, params) {
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
 
-    this.onProductElementDpubleClick = function() {
-        // resourceManager - объявлен в editor.js (singleton)
-        deleteSelections();
-        hideWorkspaceHints();
-        $('#id-control_cnt').empty();
-        resourceManager.show(this.onImageSelected.bind(this));
+    this.onProductElementDoubleClick = function() {
+        if (App.getAWSBucket() !== null) {
+            Editor.deleteSelections();
+            Editor.hideWorkspaceHints();
+            $('#id-control_cnt').empty();
+            Editor.getResourceManager().show(this.onImageSelected.bind(this));
+        }
+        else {
+            Modal.showLogin();
+        }
     };
 
     this.onImageSelected = function(url) {
@@ -30,7 +34,7 @@ function ChooseImageQuick(propertyString, directiveName, $parent, productDOMElem
     };
 
     if (this.$productDomElement) {
-        this.$productDomElement.on('dblclick', this.onProductElementDpubleClick.bind(this));
+        this.$productDomElement.on('dblclick', this.onProductElementDoubleClick.bind(this));
     }
     Engine.on('AppPropertyValueChanged', this.propertyString, this.onPropertyChanged.bind(this));
 }

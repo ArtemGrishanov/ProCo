@@ -50,6 +50,7 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
     };
 
     this.onPropertyChanged = function() {
+        console.log('drag: '+this.propertyString);
         if (this.elemPosition !== null) {
             //тот кто стал инициатором изменения не должен сам обрабатывать событие
             var p = Engine.getAppProperty(this.propertyString);

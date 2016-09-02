@@ -37,10 +37,11 @@ descriptor.css = [
         rules: 'textAlign',
         applyCssTo: '.js-a_wr'
     },
-    {
-        selector: '.js-answers_wr',
-        rules: 'textAlign fontFamily fontColor fontSize marginTop marginBottom paddingLeft'
-    },
+//    сомнительные настройки js-answers_wr: неконсистентно, кривое выделение, дублирование с тем что внутри
+//    {
+//        selector: '.js-answers_wr',
+//        rules: 'textAlign fontFamily fontColor fontSize marginTop marginBottom paddingLeft'
+//    },
     {
         // не объединяем с остальными текстами, так как нельзя выравнивать
         selector: '.js-question_progress',
@@ -106,7 +107,7 @@ descriptor.app = [
         rules: 'drag'
     },
     {
-        selector: 'id=tm logoUrl, id=tm quiz.{{number}}.question.img',
+        selector: 'id=tm logoUrl, id=tm quiz.{{number}}.question.img, id=tm quiz.{{number}}.answer.options.{{number}}.img',
         rules: 'imgUrl'
     },
     {

@@ -33,7 +33,8 @@ function ResourceManager(params) {
                 Prefix: prefix
             }, (function (err, data) {
                 if (err) {
-                    log('ERROR: ' + err, true);
+                    callback('error');
+                    log('ResourceManager: ' + err, true);
                 } else {
                     data.Contents.forEach((function (obj) {
                         // вырезаем имя файла, чтобы использовать его в качестве id для дальнейшей работы
@@ -54,7 +55,7 @@ function ResourceManager(params) {
                     log('Objects in dir '+prefix+':');
                     callback();
                 }
-                callback();
+//                callback();
             }).bind(this));
         }
     };
@@ -83,7 +84,7 @@ function ResourceManager(params) {
                 App.getAWSBucket().putObject(params, (function (err, data) {
                     if (err) {
                         //Not authorized to perform sts:AssumeRoleWithWebIdentity
-                        log('ERROR: ' + err, true);
+                        log('ResourceManager: ' + err, true);
                     } else {
                         // запросить заново и перестроить диалог
                         this.resourcesList = null;
