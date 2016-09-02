@@ -56,10 +56,6 @@ descriptor.css = [
         applyCssTo: '.js-btn_wr',
         rules: 'textAlign marginTop marginBottom paddingLeft'
     },
-//    {
-//        selector: '.js-test_btn',
-//        rules: 'textAlign'
-//    },
     {
         selector: '.js-photo',
         rules: 'textAlign marginTop marginBottom',
@@ -67,25 +63,25 @@ descriptor.css = [
         // но на самом деле свойства применяются к .js-photo_cnt
         applyCssTo: '.js-photo_cnt'
     },
-    {
-        // все кнопки в состоянии навеения
-        selector: '.js-test_btn:hover',
-        rules: 'hoverBackgroundColor hoverFontColor hoverBorderColor',
-        applyCssTo: '.js-test_btn'
-    },
+//    {
+//        // все кнопки в состоянии наведения
+//        selector: '.js-test_btn',
+//        rules: 'hoverBackgroundColor hoverFontColor hoverBorderColor',
+//        applyCssTo: '.js-test_btn:hover'
+//    },
     {
         selector: '.bullit',
         rules: 'borderWidth borderColor'
     },
+//    {js-a_wr
+//    {
+//        selector: '.js-a_wr:hover',
+//        rules: 'hoverBorderWidth hoverBorderColor',
+//        applyCssTo: '.js-a_wr'
+//    },
     {
-        selector: '.bullit:hover',
-        rules: 'hoverBorderWidth hoverBorderColor',
-        applyCssTo: '.bullit'
-    },
-    {
-        selector: '.js-a_wr:hover',
-        rules: 'hoverBorderWidth hoverBorderColor',
-        applyCssTo: '.js-a_wr'
+        selector: '.js-a_wr',
+        rules: 'borderWidth borderColor backgroundColor borderRadius'
     },
     {
         selector: '.topColontitle',
