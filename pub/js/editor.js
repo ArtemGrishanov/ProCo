@@ -715,7 +715,7 @@ var Editor = {};
                     // группой экранов может управлять массив.
                     // в случае вопросов теста: эта группа привязана к quiz, передается в промо проекте при создании экранов
                     // для остальных undefined
-                    sgc = createControl(firstScrInGroup.appProperyString, 'SlideGroupControl', 'SlideGroupControl', {}, $('#id-slides_cnt'));
+                    sgc = createControl(firstScrInGroup.arrayAppPropertyString, 'SlideGroupControl', 'SlideGroupControl', {}, $('#id-slides_cnt'));
                 }
                 else {
                     // подходящий контрол SlideGroupControl создавался ранее для управления этой группой экранов

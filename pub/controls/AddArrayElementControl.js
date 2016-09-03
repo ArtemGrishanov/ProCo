@@ -5,6 +5,11 @@
  */
 function AddArrayElementControl(propertyString, directiveName, $parent, productDOMElement, params) {
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
+
+    this.loadDirective(function(response, status, xhr){
+        this.$directive.click(this.onAddQuickButtonClick.bind(this));
+    });
+
     this.onAddQuickButtonClick = function(e) {
         var ap = Engine.getAppProperty(this.propertyString);
         var pp = Engine.getPrototypesForAppProperty(ap);

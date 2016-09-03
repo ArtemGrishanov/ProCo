@@ -58,19 +58,22 @@ var MutApp = function(param) {
         // значения которые надо установить по умолчанию при запуске приложения
         // значения могут относиться к Вью или Моделям
         if (param.defaults) {
-            this._defaults = param.defaults;
+            this._defaults = Array.isArray(param.defaults) ? param.defaults : [param.defaults];
             this._parsedDefaults = [];
-            for (var key in this._defaults) {
-                if (this._defaults.hasOwnProperty(key)) {
-                    var parsed = MutApp.Util.parseSelector(key);
-                    if (parsed !== null) {
-                        parsed.value = this._defaults[key];
-                        this._parsedDefaults.push(parsed);
-                    }
-                    else {
-                        // это простое свойство вида 'key1':'value1'
-                        // которое надо установить непосредственно в сам объект MutApp
-                        this[key] = this._defaults[key];
+            for (var i = 0; i < this._defaults.length; i++) {
+                var defProps = this._defaults[i];
+                for (var key in defProps) {
+                    if (defProps.hasOwnProperty(key)) {
+                        var parsed = MutApp.Util.parseSelector(key);
+                        if (parsed !== null) {
+                            parsed.value = defProps[key];
+                            this._parsedDefaults.push(parsed);
+                        }
+                        else {
+                            // это простое свойство вида 'key1':'value1'
+                            // которое надо установить непосредственно в сам объект MutApp
+                            this[key] = defProps[key];
+                        }
                     }
                 }
             }
@@ -481,6 +484,7 @@ MutApp.Screen = Backbone.View.extend({
         {key: 'id', value: null},
         {key: 'type', value: null},
         {key: 'group', value: null},
+        {key: 'arrayAppPropertyString', value: null},
         {key: 'name', value: null},
         {key: 'draggable', value: true},
         {key: 'canAdd', value: false},
@@ -662,7 +666,8 @@ MutApp.Util = {
     },
 
     /**
-     * Установить свойство используя object path
+     * Установить свойство используя object path.
+     * Свойство более высокого уровня должно перетирать дочерние.
      *
      * var obj = {},
      * assign(obj, "foo.bar.foobar", "Value");

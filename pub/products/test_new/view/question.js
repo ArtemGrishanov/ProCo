@@ -12,6 +12,13 @@ var QuestionScreen = MutApp.Screen.extend({
     id: 'questionScr',
     type: 'questions',
     /**
+     * Для контрола SlideGroupControl, который управляет порядком группы экранов
+     *
+     * Это свойство надо понимать так:
+     * Порядок этой вот группы экранов questions зависит от этого массива 'id=tm quiz'
+     */
+    arrayAppPropertyString: 'id=tm quiz',
+    /**
      * Тег для группировки экранов в редакторе
      * @see MutApp
      */

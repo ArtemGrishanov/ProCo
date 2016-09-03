@@ -248,6 +248,12 @@ var config = {
             parentId: 'id-static_controls_cnt',
             type: 'controlpanel'
         },
+        ChooseImage: {
+            defaultDirectiveIndex: 0,
+            directives: ['chooseimage'],
+            parentId: 'id-static_controls_cnt',
+            type: 'controlpanel'
+        },
         StringControl: {
             defaultDirectiveIndex: 0,
             directives: ['textinput', 'colorpicker'],

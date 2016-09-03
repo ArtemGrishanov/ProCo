@@ -45,6 +45,7 @@ QUnit.test("MutApp test: Screen", function( assert ) {
 
     assert.ok(s1.id !== undefined);
     assert.ok(s1.group !== undefined);
+    assert.ok(s1.arrayAppPropertyString !== undefined);
     assert.ok(s1.name !== undefined);
     assert.ok(s1.draggable !== undefined);
     assert.ok(s1.canAdd !== undefined);
@@ -185,6 +186,57 @@ QUnit.test("MutApp test: Models", function( assert ) {
     var p4 = app.getPropertiesBySelector('customAttr1=customValue1 data1');
     assert.ok(p4 !== null, 'getPropertiesBySelector');
     assert.ok(p4.length === 1, 'getPropertiesBySelector');
+
+    // проверка установки сложных свойств, которые конфликтуют друг с другом
+    var app2 = new SwimmingTest({
+        defaults: {
+            "id=tm objectValue": [
+                {
+                    url: 'http://example.org/1.jpg',
+                    text: 'qwerty'
+                },
+                {
+                    url: 'http://example.org/2.jpg',
+                    text: 'asdfg'
+                }
+            ],
+            "id=tm objectValue.0.text": "5678",
+            "id=tm objectValue.1.url": 'http://example.org/333.jpg'
+        }
+    });
+    assert.ok(app2.getPropertiesBySelector('id=tm objectValue.0.text')[0].value === '5678');
+    assert.ok(app2.getPropertiesBySelector('id=tm objectValue.0.url')[0].value === 'http://example.org/1.jpg');
+    assert.ok(app2.getPropertiesBySelector('id=tm objectValue.1.text')[0].value === 'asdfg');
+    assert.ok(app2.getPropertiesBySelector('id=tm objectValue.1.url')[0].value === 'http://example.org/333.jpg');
+
+    // альтернативная форма передачи параметра в виде массива
+    var app3 = new SwimmingTest({
+        defaults: [
+            {
+                "id=tm objectValue.0.text": "5678",
+                "id=tm objectValue.1.url": 'http://example.org/333.jpg',
+                "type=question data1": 'value1'
+            },
+            {
+                "id=tm objectValue": [
+                    {
+                        url: 'http://example.org/1.jpg',
+                        text: 'qwerty'
+                    },
+                    {
+                        url: 'http://example.org/2.jpg',
+//                        text: 'asdfg'
+                    }
+                ],
+                "type=question data2": 'value2',
+            }
+        ]
+    });
+    assert.ok(app3.getPropertiesBySelector('id=tm objectValue.0.text')[0].value === 'qwerty');
+    assert.ok(app3.getPropertiesBySelector('id=tm objectValue.0.url')[0].value === 'http://example.org/1.jpg');
+    assert.ok(app3.getPropertiesBySelector('id=tm objectValue.1.text') === null);
+    assert.ok(app3.getPropertiesBySelector('id=tm objectValue.1.url')[0].value === 'http://example.org/2.jpg');
+    assert.ok(app3.getPropertiesBySelector('type=question data2')[0].value === 'value2');
 });
 
 QUnit.test("MutApp test: multiapp", function( assert ) {
@@ -294,4 +346,35 @@ QUnit.test("MutApp test: getUniqId", function( assert ) {
     var v2 = MutApp.Util.getUniqId(undefined, '33423t35t3');
     assert.ok(v1 !== v2, 'getUniqId');
     assert.ok(v1.length === v2.length, 'getUniqId');
+});
+
+QUnit.test("MutApp test: assignByPropertyString", function( assert ) {
+    var o = {
+        root: {
+            arr: [
+                {text:'1', key1: 'value1'},
+                {text:'2'},
+                {text:'3'}
+            ]
+        }
+    };
+    MutApp.Util.assignByPropertyString(o, 'foo.bar.value', 123);
+    MutApp.Util.assignByPropertyString(o, 'root.arr.4.text', '4');
+
+    assert.ok(o.foo.bar.value===123, 'assignByPropertyString');
+    assert.ok(o.root.arr[4].text==='4', 'assignByPropertyString');
+
+    // запись свойства верхнего уровня должна переопределять весь объект
+    var newRoot = {
+        arr: [
+            {text: 'q'},
+            {text: 'w'}
+        ]
+    };
+    MutApp.Util.assignByPropertyString(o, 'root', newRoot);
+    assert.ok(o.root.arr[0].text==='q', 'assignByPropertyString');
+    assert.ok(o.root.arr[0].key1===undefined, 'assignByPropertyString');
+    assert.ok(o.root.arr[1].text==='w', 'assignByPropertyString');
+    assert.ok(o.root.arr[2]===undefined, 'assignByPropertyString');
+    assert.ok(o.root.arr.length===2, 'assignByPropertyString');
 });

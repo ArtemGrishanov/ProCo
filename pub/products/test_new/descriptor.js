@@ -238,10 +238,12 @@ descriptor.rules = {
     },
     imgUrl: {
         editable: true,
-        controls: "ChooseImageQuick",
+        controls: "ChooseImage",
         updateScreens: true,
         controlParams: {
-        }
+        },
+        label: 'Картинка',
+        filter: true
     },
     backgroundColor: {
         updateScreens: true,

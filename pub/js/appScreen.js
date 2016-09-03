@@ -43,6 +43,7 @@ var AppScreen = function(mutAppScreen) {
     this.canDelete = this._mutAppScreen.canDelete;
     this.canClone = this._mutAppScreen.canClone;
     this.draggable = this._mutAppScreen.draggable;
+    this.arrayAppPropertyString = this._mutAppScreen.arrayAppPropertyString;
     /**
      * Сразу выполнить во вью поиск атрибутов data-app-property и проанализировать их
      */

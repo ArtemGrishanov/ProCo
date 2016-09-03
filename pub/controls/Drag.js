@@ -9,7 +9,6 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
     this.elemPosition = null;
 
     this.onMouseUp = function(e) {
-        console.log('onMouseUp');
         // this.elemPosition - изначально =null, и определится только в onMouseMove
         if (this.isDragging === true && this.elemPosition) {
             // апдейт экранов нужен в том случае, когда показано несколько экранов сразу
@@ -21,7 +20,6 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
     };
 
     this.onMouseMove = function(e) {
-        console.log('onMouseMove');
         if (this.isDragging === true) {
             this.elemPosition = {
                 top: (e.pageY-this.startMousePosition.top)+this.startPosition.top,
@@ -35,7 +33,6 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
     };
 
     this.onMouseDown = function(e) {
-        console.log('onMouseDown');
         this.elemPosition = null;
         this.isDragging = true;
         this.startPosition = $(e.currentTarget).position();
@@ -50,7 +47,6 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
     };
 
     this.onPropertyChanged = function() {
-        console.log('drag: '+this.propertyString);
         if (this.elemPosition !== null) {
             //тот кто стал инициатором изменения не должен сам обрабатывать событие
             var p = Engine.getAppProperty(this.propertyString);

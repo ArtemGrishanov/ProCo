@@ -783,18 +783,24 @@ var Engine = {};
      * @param {string} 'id=tm showTextixLogo'
      * @param {*} newValue
      *
-     * @return {boolen}
+     * @return {boolean}
      */
     function setPropertyToMutApp(propertyString, newValue) {
         //TODO выбрать конструктор для приложения
         try {
             var apps = Engine.getAppPropertiesValues().app;
-            apps[propertyString] = newValue;
+            var newApps = {};
+            // Важно: необходимо склонировать устанавливаемое значение
+            // если это объект, то могуть быть субсвойства внутри этого объекта, устанавливамые отдельно как самостоятельное AppProperty
+            // в таком случае они будут переписывать родительский объект
+            // например, quiz.0.answer.0.text переписывал бы родительский quiz, даже если бы тот ставился позже
+            newApps[propertyString] = JSON.parse(JSON.stringify(newValue));
+
             productWindow.app = new productWindow.TestApp({
                 //TODO ширина и высота такие аппПроперти
                 width: config.products.test.defaultWidth,
                 height: config.products.test.defaultHeight,
-                defaults: apps
+                defaults: [apps, newApps]
             });
             productWindow.app.start();
         }
