@@ -162,41 +162,46 @@ TemplateCollection.prototype.getById = function(id) {
  * @param id - ид шаблона в коллекции
  */
 TemplateCollection.prototype.saveTemplate = function(callback,
-                                                     id,
+                                                     appId,
                                                      propertyValues,
                                                      descriptor,
                                                      title) {
-    var template = this.getById(id);
-    if (template) {
-        if (propertyValues) {
-            template.propertyValues = propertyValues;
-        }
-        if (descriptor) {
-            template.descriptor = descriptor;
-        }
-        if (title) {
-            template.title = title;
-        }
-        log('Saving project:' + appId);
-        var objKey = 'facebook-'+App.getUserData().id+'/app/'+appId+'.txt';
-        var params = {
-            Key: objKey,
-            ContentType: 'text/plain',
-            Body: template.serialize(),
-            ACL: 'public-read'
-        };
-        App.getAWSBucket().putObject(params, (function (err, data) {
-            if (err) {
-                log('ERROR: ' + err, true);
-                callback('error');
+    if (appId) {
+        var template = this.getById(appId);
+        if (template) {
+            if (propertyValues) {
+                template.propertyValues = propertyValues;
             }
-            else {
-                log('Saving task done:' + appId);
-                callback('ok');
+            if (descriptor) {
+                template.descriptor = descriptor;
             }
-        }).bind(this));
+            if (title) {
+                template.title = title;
+            }
+            log('Saving project:' + appId);
+            var objKey = 'facebook-'+App.getUserData().id+'/app/'+appId+'.txt';
+            var params = {
+                Key: objKey,
+                ContentType: 'text/plain',
+                Body: template.serialize(),
+                ACL: 'public-read'
+            };
+            App.getAWSBucket().putObject(params, (function (err, data) {
+                if (err) {
+                    log('ERROR: ' + err, true);
+                    callback('error');
+                }
+                else {
+                    log('Saving task done: ' + appId);
+                    callback('ok');
+                }
+            }).bind(this));
+        }
+        else {
+            log('TemplateCollection.saveTemplate: There is no template with id='+id, true);
+        }
     }
     else {
-        log('saveTemplate says: There is no template with id='+id, true);
+        log('TemplateCollection.saveTemplate: You must specify appId for saving', true);
     }
 }

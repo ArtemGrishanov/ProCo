@@ -123,18 +123,21 @@ var Publisher = {};
                     });
                     uploadProductResources({
                         taskType:'uploadRes',
-                        priority:8
+                        priority:8,
+                        maxWaitTime: 40000
                     });
                 });
                 overrideAppParams({
                     taskType:'overrideApp',
-                    priority:9
+                    priority:9,
+                    maxWaitTime: 10000
                 });
 
             });
             grabProductResources({
                 taskType:'grabResTask',
-                priority:10
+                priority:10,
+                maxWaitTime: 30000
             });
         }
     }
@@ -238,6 +241,9 @@ var Publisher = {};
                 if (param.priority) {
                     t.priority = param.priority;
                 }
+                if (param.maxWaitTime) {
+                    t.maxWaitTime = param.maxWaitTime;
+                }
                 Queue.push(t);
             }
         }
@@ -267,19 +273,26 @@ var Publisher = {};
             run: function() {
                 // здесь происходит подмена параметров промо приложения на новые. Те, которые были настроены пользователем.
                 var indexResource = getResourceByUrl(indexHtml);
-                var startFuncReg = /(function(?:\s)+start(?:\s)*\((?:\w)*\)(?:\s)*\{)/ig;
-                var match = startFuncReg.exec(indexResource.data);
-                var positionToInsert = match.index+match[1].length;
-                var overrideParamsStr = '\n'+config.common.tagsForOverridingParams[0]+'var o='+appStr+';'+'for(var key in o)if(o.hasOwnProperty(key))app[key]=o[key];'+config.common.tagsForOverridingParams[1]+'\n'
-                indexResource.data = indexResource.data.slice(0,positionToInsert) + overrideParamsStr + indexResource.data.slice(positionToInsert);
+                var writeAnchorReg = /(var\s+DEFAULT_PARAMS\s+=\s+{.*};)/ig;
+                var match = writeAnchorReg.exec(indexResource.data);
+                if (match && match[1]) {
+                    var positionToInsert = match.index+match[1].length;
 
-                // вставка кастомных css стилей
-                var endHeadReg = /<\/head>/ig;
-                var matchHead = endHeadReg.exec(indexResource.data);
-                var positionToInsertCss = matchHead.index;
-                var csss = '\n<style>'+cssStr+'</style>\n';
-                indexResource.data = indexResource.data.slice(0,positionToInsertCss) + csss + indexResource.data.slice(positionToInsertCss);
+                    overrideParamsStr = 'var DEFAULT_PARAMS = '+appStr+';';
+                    indexResource.data = indexResource.data.slice(0,positionToInsert) + overrideParamsStr + indexResource.data.slice(positionToInsert);
+                    //var overrideParamsStr = '\n'+config.common.tagsForOverridingParams[0]+'var o='+appStr+';'+'for(var key in o)if(o.hasOwnProperty(key))app[key]=o[key];'+config.common.tagsForOverridingParams[1]+'\n'
+                    //indexResource.data = indexResource.data.slice(0,positionToInsert) + overrideParamsStr + indexResource.data.slice(positionToInsert);
 
+                    // вставка кастомных css стилей
+                    var endHeadReg = /<\/head>/ig;
+                    var matchHead = endHeadReg.exec(indexResource.data);
+                    var positionToInsertCss = matchHead.index;
+                    var csss = '\n<style>'+cssStr+'</style>\n';
+                    indexResource.data = indexResource.data.slice(0,positionToInsertCss) + csss + indexResource.data.slice(positionToInsertCss);
+                }
+                else {
+                    log('Publisher.overrideAppParams: Cannot find write anchor', true);
+                }
                 Queue.release(this);
             }
         };
@@ -288,6 +301,9 @@ var Publisher = {};
         }
         if (param.priority) {
             t.priority = param.priority;
+        }
+        if (param.maxWaitTime) {
+            t.maxWaitTime = param.maxWaitTime;
         }
         Queue.push(t);
     }
@@ -327,6 +343,9 @@ var Publisher = {};
             }
             if (param.priority) {
                 t.priority = param.priority;
+            }
+            if (param.maxWaitTime) {
+                t.maxWaitTime = param.maxWaitTime;
             }
             Queue.push(t);
         }

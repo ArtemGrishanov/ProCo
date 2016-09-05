@@ -235,7 +235,10 @@
         var app = null;
         var tests = {};
         $(document).ready(function() {
-            app = new TestApp();
+            var DEFAULT_PARAMS = {};
+            app = new TestApp({
+                defaults: DEFAULT_PARAMS
+            });
             app.start();
         });
     </script>
