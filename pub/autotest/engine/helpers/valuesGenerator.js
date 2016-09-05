@@ -12,7 +12,7 @@ function generateValue(ap) {
     var control = ap.controls[0];
 
     if (ap.type === 'app') {
-        if (control.name === 'ChooseImageQuick') {
+        if (control.name === 'ChooseImage' || control.name === 'ChooseImageQuick') {
             result = randElem(GENDATA.ChooseQuickImage);
         }
         else if (typeof ap.propertyValue === 'string') {

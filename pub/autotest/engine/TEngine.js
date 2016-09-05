@@ -43,7 +43,7 @@ var TEngine = {};
         }
 
         var appProps = Engine.getAppProperties();
-        assert.ok(appProps.length > productConfig.autotests.expectedPropertiesCount, 'Engine.checkEngine: More then '+productConfig.autotests.expectedPropertiesCount+' appProperties for test');
+        assert.ok(appProps.length >= productConfig.autotests.expectedPropertiesCount, 'Engine.checkEngine: More then '+productConfig.autotests.expectedPropertiesCount+' appProperties for test');
         assert.ok(appProps.length === Engine.getAppPropertiesObjectPathes().length, 'Engine.checkEngine: App Properties and object pathes');
         for (var i = 0; i < appProps.length; i++) {
             // будем искать чтобы для каждого appProperty хотя бы на одном экране appScreen был представлен элемент
@@ -149,6 +149,18 @@ var TEngine = {};
         }
 
         assert.ok(!!appProperty.controls===true && appProperty.controls.length>0, 'checkAppProperty: control exist in '+appProperty.propertyString);
+
+        // если у свойства есть атрибут есть canAdd - это имена прототипов которые можно в него добавить
+        if (Array.isArray(appProperty.canAdd)===true) {
+            var pp = Engine.getPrototypesForAppProperty(appProperty);
+            assert.ok(pp.length===appProperty.canAdd.length, 'checkAppProperty: There are some prototypes for property \''+appProperty.propertyString+'\'');
+
+            for (var j = 0; j < pp.length; j++) {
+                assert.ok(!!pp[j].label===true, 'checkAppProperty: prototype label');
+                assert.ok(!!pp[j]._value===true, 'checkAppProperty: prototype _value');
+                assert.ok(pp[j].getValue()!==pp[j].getValue(), 'checkAppProperty: prototype getValue');
+            }
+        }
     }
 
     /**
@@ -204,75 +216,50 @@ var TEngine = {};
             Queue.release(this);
         }});
 
-        Queue.push({
-            run: function() {
-                var saved = [];
-                // нужно склонировать массив, так как он по ходу теста может меняться, а нам надо постоянный
-                var appProps = JSON.parse(JSON.stringify(Engine.getAppPropertiesObjectPathes()));
+        Queue.push({run: function() {
+            randomlyChangeValues(assert);
+            Queue.release(this);
+        }});
 
-                var initialLength = appProps.length;
-                for (var i = 0; i < appProps.length; i++) {
-                    var p = Engine.getAppProperty(appProps[i]);
-                    assert.ok(p!==null,'Property not null \''+appProps[i]+'\'');
-                    var newValue = generateValue(p);
-                    if (newValue !== null) {
-                        Engine.setValue(p, newValue);
-                        // проверить как прошла установка: получить реальное значение свойства из приложения
-                        if (p.type==='app') {
-                            var actualProperty = Engine.getApp().getPropertiesBySelector(p.propertyString);
-                            if (actualProperty === null) {
-                                assert.ok(false, 'actualProperty===null for appProperty=\''+p.propertyString+'\'');
-                            }
-                            assert.ok(actualProperty.length===1, 'actualProperty is array length=1 for appProperty=\''+p.propertyString+'\'');
-                            assert.ok(actualProperty[0].value === newValue, typeof p.propertyValue+' value set correctly for \''+p.propertyString+'\''+' value='+newValue);
-                        }
-                        else {
-                            // собрать все вью экранов заранее для последующей проверки стилей в них
-                            var allViews = [];
+        Queue.push({run: function() {
+            TEngine.checkEngine(assert, 'test');
+            Queue.release(this);
+        }});
 
-                            // Важно: это экраны из реального приложения app, а AppScreens из движка
-                            for (var k = 0; k < Engine.getApp()._screens.length; k++) {
-                                // из всех экранов соберем вью для проверки выставления стилей
-                                // причем надо сделеать show() для применения стилей браузером
-                                var v = Engine.getApp()._screens[k].$el.show();
-                                allViews.push(v);
-                            }
+        Queue.push({run: function() {
+            TApp.checkApp(assert, appIframe);
+            Queue.release(this);
+        }});
 
-                            var viewsWithThisClass = [];
-                            // отобрать экраны, которые содержат классы, имеющие отношение к свойству
-                            viewsWithThisClass = findViewsContainingClass(allViews, [p.applyCssTo || p.cssSelector]);
-                            assert.ok(viewsWithThisClass.length > 0, 'There are screens with this css appProperty=\''+p.propertyString+'\'');
-                            for (var n = 0; n < viewsWithThisClass.length; n++) {
-                                // проверить значение css свойства p на экране view
-                                validateDomElement(assert, viewsWithThisClass[n], p, viewsWithThisClass[n].attr('id'));
-                            }
-                        }
+        Queue.push({run: function(){
+            randomlyAddElementsInArrays(assert);
+            Queue.release(this);
+        }});
 
-                        saved.push({'propertyString':p.propertyString, 'value':newValue});
-                    }
-                    else {
-                        log('TEngine.scenarioChangeValues: Cannot generate value for \''+p.propertyString+'\'', true);
-                    }
-                }
+        Queue.push({run: function() {
+            randomlyChangeValues(assert);
+            Queue.release(this);
+        }});
 
-                for (var i = 0; i < saved.length; i++) {
-                    var p = Engine.getAppProperty(saved[i].propertyString);
-                    if (p.type==='app') {
-                        var actualProperty = Engine.getApp().getPropertiesBySelector(saved[i].propertyString);
-                        assert.ok(actualProperty.length===1, 'Second interation. actualProperty is array length=1');
-                        assert.ok(actualProperty[0].value === saved[i].value, 'Second interation. String value set correctly for \''+saved[i].propertyString+'\''+' value='+saved[i].value);
-                    }
-                    else {
-                        //TODO повторная проверка css свойств
-                        // как и выше в предыдущем цикле
-                    }
-                }
+        Queue.push({run: function() {
+            TEngine.checkEngine(assert, 'test');
+            Queue.release(this);
+        }});
 
-                assert.ok(initialLength===Engine.getAppProperties().length, 'Length');
+        Queue.push({run: function() {
+            TApp.checkApp(assert, appIframe);
+            Queue.release(this);
+        }});
 
-                Queue.release(this);
-            }
-        });
+        Queue.push({run: function(){
+            randomlyDeleteElementsInArrays(assert);
+            Queue.release(this);
+        }});
+
+        Queue.push({run: function() {
+            randomlyChangeValues(assert);
+            Queue.release(this);
+        }});
 
         Queue.push({run: function() {
             TEngine.checkEngine(assert, 'test');
@@ -290,6 +277,139 @@ var TEngine = {};
             // завершить тестовый сценарий
             done();
         }});
+    }
+
+    function randomlyAddElementsInArrays(assert) {
+        // сменить значение массивов id=tm quiz
+//        Engine.addArrayElement(appProperty, value, position);
+//        Engine.deleteArrayElement(appProperty, index);
+
+        // нужно склонировать массив, так как он по ходу теста может меняться, а нам надо постоянный
+        var appPropsKeys = JSON.parse(JSON.stringify(Engine.getAppPropertiesObjectPathes()));
+
+        for (var j = 0; j < appPropsKeys.length; j++) {
+            var ap = Engine.getAppProperty(appPropsKeys[j]);
+            if (Array.isArray(ap.canAdd)===true) {
+                // в это свойство можно добавлять прототипы, сделаем это
+                // добавим все возможные прототипы в рандомную позицию
+
+                var pp = Engine.getPrototypesForAppProperty(ap);
+                assert.ok(ap.canAdd.length===pp.length, 'TEngine.randomlyChangeArrays: prototypes count for \''+ap.propertyString+'\'');
+
+                for (var i = 0; i < pp.length; i++) {
+                    // предыдущее значение длины массива, мы собираемся увеличить на 1 этот массив
+                    var previousValueLength = Engine.getApp().getPropertiesBySelector(ap.propertyString)[0].value.length;
+
+                    var v = pp[i].getValue();
+                    assert.ok(v!==null && v!==undefined, 'TEngine.randomlyChangeArrays: new value from prototype');
+                    Engine.addArrayElement(ap, v);
+                    //TODO generate position ?
+
+                    var actualValueLength = Engine.getApp().getPropertiesBySelector(ap.propertyString)[0].value.length;
+                    assert.ok(actualValueLength===previousValueLength+1, 'TEngine.randomlyChangeArrays: length increased in \''+ap.propertyString+'\'');
+                }
+            }
+        }
+    }
+
+    /**
+     * Удалить из массива рандомный элемент
+     * Массив это appProperty свойство помеченное canAdd
+     *
+     * @param assert
+     */
+    function randomlyDeleteElementsInArrays(assert) {
+        // нужно склонировать массив, так как он по ходу теста может меняться, а нам надо постоянный
+        var appPropsKeys = JSON.parse(JSON.stringify(Engine.getAppPropertiesObjectPathes()));
+        var app = Engine.getApp();
+
+        for (var j = 0; j < appPropsKeys.length; j++) {
+            var ap = Engine.getAppProperty(appPropsKeys[j]);
+            if (ap===null) {
+                // элемент массива был удален и часть свойств могла исчезнуть - это норм
+            }
+            else {
+                if (Array.isArray(ap.canAdd)===true) {
+                    // предыдущее значение длины массива, мы собираемся увеличить на 1 этот массив
+                    var previousValueLength = Engine.getApp().getPropertiesBySelector(ap.propertyString)[0].value.length;
+
+                    Engine.deleteArrayElement(ap, getRandomArbitrary(0,previousValueLength-1));
+
+                    var actualValueLength = Engine.getApp().getPropertiesBySelector(ap.propertyString)[0].value.length;
+                    assert.ok(actualValueLength===previousValueLength-1, 'TEngine.randomlyChangeArrays: length decreased in \''+ap.propertyString+'\'');
+                }
+            }
+        }
+    }
+
+    /**
+     *
+     * @param assert
+     */
+    function randomlyChangeValues(assert) {
+        var saved = [];
+        // нужно склонировать массив, так как он по ходу теста может меняться, а нам надо постоянный
+        var appPropsKeys = JSON.parse(JSON.stringify(Engine.getAppPropertiesObjectPathes()));
+
+        var initialLength = appPropsKeys.length;
+        for (var i = 0; i < appPropsKeys.length; i++) {
+            var p = Engine.getAppProperty(appPropsKeys[i]);
+            assert.ok(p!==null,'Property not null \''+appPropsKeys[i]+'\'');
+            var newValue = generateValue(p);
+            if (newValue !== null) {
+                Engine.setValue(p, newValue);
+                // проверить как прошла установка: получить реальное значение свойства из приложения
+                if (p.type==='app') {
+                    var actualProperty = Engine.getApp().getPropertiesBySelector(p.propertyString);
+                    if (actualProperty === null) {
+                        assert.ok(false, 'actualProperty===null for appProperty=\''+p.propertyString+'\'');
+                    }
+                    assert.ok(actualProperty.length===1, 'actualProperty is array length=1 for appProperty=\''+p.propertyString+'\'');
+                    assert.ok(actualProperty[0].value === newValue, typeof p.propertyValue+' value set correctly for \''+p.propertyString+'\''+' value='+newValue);
+                }
+                else {
+                    // собрать все вью экранов заранее для последующей проверки стилей в них
+                    var allViews = [];
+
+                    // Важно: это экраны из реального приложения app, а AppScreens из движка
+                    for (var k = 0; k < Engine.getApp()._screens.length; k++) {
+                        // из всех экранов соберем вью для проверки выставления стилей
+                        // причем надо сделеать show() для применения стилей браузером
+                        var v = Engine.getApp()._screens[k].$el.show();
+                        allViews.push(v);
+                    }
+
+                    var viewsWithThisClass = [];
+                    // отобрать экраны, которые содержат классы, имеющие отношение к свойству
+                    viewsWithThisClass = findViewsContainingClass(allViews, [p.applyCssTo || p.cssSelector]);
+                    assert.ok(viewsWithThisClass.length > 0, 'There are screens with this css appProperty=\''+p.propertyString+'\'');
+                    for (var n = 0; n < viewsWithThisClass.length; n++) {
+                        // проверить значение css свойства p на экране view
+                        validateDomElement(assert, viewsWithThisClass[n], p, viewsWithThisClass[n].attr('id'));
+                    }
+                }
+
+                saved.push({'propertyString':p.propertyString, 'value':newValue});
+            }
+            else {
+                log('TEngine.scenarioChangeValues: Cannot generate value for \''+p.propertyString+'\'', true);
+            }
+        }
+
+        for (var i = 0; i < saved.length; i++) {
+            var p = Engine.getAppProperty(saved[i].propertyString);
+            if (p.type==='app') {
+                var actualProperty = Engine.getApp().getPropertiesBySelector(saved[i].propertyString);
+                assert.ok(actualProperty.length===1, 'Second interation. actualProperty is array length=1');
+                assert.ok(actualProperty[0].value === saved[i].value, 'Second interation. String value set correctly for \''+saved[i].propertyString+'\''+' value='+saved[i].value);
+            }
+            else {
+                //TODO повторная проверка css свойств
+                // как и выше в предыдущем цикле
+            }
+        }
+
+        assert.ok(initialLength===Engine.getAppProperties().length, 'Length');
     }
 
     /**

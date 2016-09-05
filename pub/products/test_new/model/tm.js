@@ -141,44 +141,7 @@ var TestModel = MutApp.Model.extend({
          * Описание результатов, которые можно получить
          * Результаты рассчитываются динамически. Сколько вопросов столько и результатов
          */
-        results: [],
-
-        // шаблон текстового вопроса
-        proto__text_slide: {
-            uiTemplate: 'id-slide_text_template',
-            text: 'Текст вопроса?',
-            options: [
-                {
-                    text: 'Вариант ответа 1',
-                    points: 1
-                },
-                {
-                    text: 'Вариант ответа 2'
-                }
-            ],
-            explanation: ''
-        },
-
-        // шаблон фото вопроса
-        proto__photo_question_slide: {
-            uiTemplate: 'id-slide_photo_template',
-            text: 'Текст фото вопроса?',
-            img: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/ocean.jpg',
-            options: [
-                {
-                    text: 'Вариант ответа 1',
-                    points: 1
-                },
-                {
-                    text: 'Вариант ответа 2'
-                }
-            ],
-            explanation: '' // пояснение к ответу
-        },
-
-        proto__option_text: {
-            text: 'Вариант ответа'
-        }
+        results: []
     },
 
     initialize: function(param) {
@@ -190,6 +153,16 @@ var TestModel = MutApp.Model.extend({
     },
 
     start: function() {
+        // проверить что существует верный ответ, если нет, то поставить первый
+        // пользователь или автотесты могут удалить верный ответ, тогда состояние приложения будет неконсистентно
+        for (var i = 0; i < this.attributes.quiz.length; i++) {
+            var aid = this.getCorrectAnswerId(i);
+            if (aid === null) {
+                // есть как минимум одна опция ответа
+                this.setCorrectAnswer(this.attributes.quiz[i].answer.options[0].id);
+            }
+        }
+
         this.next();
     },
 

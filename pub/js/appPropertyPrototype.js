@@ -3,7 +3,7 @@
  *
  *
  */
-var AppPropertyPrototype = function(key, app, descriptor) {
+var AppPropertyPrototype = function(key, descriptor) {
     if (descriptor.prototypes) {
         var prInfo = descriptor.prototypes[key];
         if (prInfo) {
@@ -18,9 +18,18 @@ var AppPropertyPrototype = function(key, app, descriptor) {
         }
     }
     this.key = key;
-    this.img = config.common.home+this.img;
-    // клонируем прототип. Нельзя отдавать наружу реальный объект из productWindow
-    this.value = JSON.parse(JSON.stringify(app[this.key]));
+    this.img = config.common.home + this.img;
+    // private
+    // нельзя отдавать значение по прямой ссылке
+    this._value = prInfo.data;
+};
+
+/**
+ * Возвратить клонированное значение прототипа
+ * @returns {*}
+ */
+AppPropertyPrototype.prototype.getValue = function() {
+    return JSON.parse(JSON.stringify(this._value));
 };
 
 /**
@@ -44,5 +53,5 @@ AppPropertyPrototype.validAttributes = {
     /**
      * Готовое значение, которе сразу можно добавлять и добавлять в проект
      */
-    value: null
+    _value: null
 };

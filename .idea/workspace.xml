@@ -26,46 +26,63 @@
       <file leaf-file-name="engine.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="797" column="0" selection-start="32034" selection-end="32034" vertical-scroll-proportion="-16.36" vertical-offset="11546" max-vertical-offset="17505">
+            <state line="367" column="41" selection-start="13966" selection-end="13966" vertical-scroll-proportion="-4.36" vertical-offset="5396" max-vertical-offset="16530">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SlideGroupControl.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/controls/SlideGroupControl.js">
+      <file leaf-file-name="TEngine.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/autotest/engine/TEngine.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="28" selection-start="1429" selection-end="1443" vertical-scroll-proportion="-9.32" vertical-offset="607" max-vertical-offset="10665">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="appScreen.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/js/appScreen.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="7" selection-start="792" selection-end="792" vertical-scroll-proportion="0.0" vertical-offset="120" max-vertical-offset="1980">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="editor.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="717" column="78" selection-start="30367" selection-end="30367" vertical-scroll-proportion="0.33333334" vertical-offset="10526" max-vertical-offset="18390">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="question.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/test_new/view/question.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="26" selection-start="488" selection-end="510" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3675">
+            <state line="39" column="38" selection-start="1215" selection-end="1215" vertical-scroll-proportion="0.5042135" vertical-offset="226" max-vertical-offset="7020">
               <folding>
                 <element signature="n#!!doc" expanded="true" />
+                <marker date="1473062826000" expanded="true" signature="115:20042" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="9185:11622" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="9884:9988" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="9901:9986" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="10011:10122" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="10028:10121" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="10145:10253" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="10162:10252" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="11673:13414" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="14896:18596" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="15221:17805" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="15440:17651" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="15625:16224" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="15776:15907" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="16246:17553" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="16552:16863" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="16578:16727" placeholder="//..." />
+                <marker date="1473062826000" expanded="true" signature="17324:17535" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="17669:17795" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="17854:18510" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="17956:18364" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="18382:18500" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="18400:18486" placeholder="//..." />
+                <marker date="1473062826000" expanded="true" signature="18602:18839" placeholder="/** Посчитать количество свойств в объекте ...*/" />
+                <marker date="1473062826000" expanded="true" signature="18898:19295" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="18953:19266" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="18996:19256" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="19051:19171" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="19096:19153" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="19193:19242" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="19301:19423" placeholder="/** Найти количество дубликатов в массиве по свойству ...*/" />
+                <marker date="1473062826000" expanded="true" signature="19481:19896" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="19554:19867" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="19607:19857" placeholder="{...}" />
+                <marker date="1473062826000" expanded="true" signature="19687:19843" placeholder="{...}" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="206" column="16" selection-start="8266" selection-end="8266" vertical-scroll-proportion="0.0" vertical-offset="2853" max-vertical-offset="5775">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -73,7 +90,16 @@
       <file leaf-file-name="tm.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/products/test_new/model/tm.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="35" selection-start="578" selection-end="578" vertical-scroll-proportion="0.0" vertical-offset="540" max-vertical-offset="6630">
+            <state line="160" column="53" selection-start="6255" selection-end="6255" vertical-scroll-proportion="-15.16" vertical-offset="2021" max-vertical-offset="6225">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="utils.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/util/utils.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="166" column="20" selection-start="6299" selection-end="6299" vertical-scroll-proportion="0.0" vertical-offset="2382" max-vertical-offset="5010">
               <folding />
             </state>
           </provider>
@@ -82,7 +108,7 @@
       <file leaf-file-name="mutapp.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/products/test_new/mutapp.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="488" column="29" selection-start="14978" selection-end="14978" vertical-scroll-proportion="0.0" vertical-offset="7029" max-vertical-offset="15360">
+            <state line="290" column="41" selection-start="9092" selection-end="9092" vertical-scroll-proportion="-18.16" vertical-offset="3896" max-vertical-offset="15360">
               <folding />
             </state>
           </provider>
@@ -91,19 +117,29 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/autotest/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="120" column="56" selection-start="7122" selection-end="7122" vertical-scroll-proportion="-10.208333" vertical-offset="1555" max-vertical-offset="2280">
+            <state line="146" column="21" selection-start="8758" selection-end="8758" vertical-scroll-proportion="-24.208334" vertical-offset="1609" max-vertical-offset="2310">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="appProperty.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/js/appProperty.js">
+      <file leaf-file-name="editor.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="28" selection-start="2034" selection-end="2034" vertical-scroll-proportion="0.0" vertical-offset="376" max-vertical-offset="2805">
+            <state line="644" column="30" selection-start="26838" selection-end="26856" vertical-scroll-proportion="0.0" vertical-offset="9414" max-vertical-offset="18495">
               <folding>
-                <element signature="n#!!doc" expanded="true" />
+                <marker date="1473005351000" expanded="true" signature="33868:33946" placeholder="//..." />
+                <marker date="1473005351000" expanded="true" signature="35080:35220" placeholder="//..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SlideGroupControl.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/controls/SlideGroupControl.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="605" column="23" selection-start="21201" selection-end="21201" vertical-scroll-proportion="0.0" vertical-offset="8829" max-vertical-offset="10620">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -118,22 +154,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/products/test_new/style.css" />
-        <option value="$PROJECT_DIR$/pub/css/editor.css" />
-        <option value="$PROJECT_DIR$/pub/controls/view/chooseimage.html" />
-        <option value="$PROJECT_DIR$/pub/js/config.js" />
-        <option value="$PROJECT_DIR$/pub/editor.html" />
-        <option value="$PROJECT_DIR$/pub/products/test_new/descriptor.js" />
         <option value="$PROJECT_DIR$/pub/controls/ChooseImage.js" />
         <option value="$PROJECT_DIR$/pub/controls/Drag.js" />
         <option value="$PROJECT_DIR$/pub/controls/AddArrayElementControl.js" />
-        <option value="$PROJECT_DIR$/pub/autotest/index.html" />
-        <option value="$PROJECT_DIR$/pub/js/engine.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/view/question.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/mutapp.js" />
         <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppClientFramework.js" />
         <option value="$PROJECT_DIR$/pub/js/appScreen.js" />
+        <option value="$PROJECT_DIR$/pub/js/appPropertyPrototype.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/engine/helpers/valuesGenerator.js" />
         <option value="$PROJECT_DIR$/pub/js/editor.js" />
+        <option value="$PROJECT_DIR$/pub/controls/SlideGroupControl.js" />
+        <option value="$PROJECT_DIR$/pub/products/test_new/descriptor.js" />
+        <option value="$PROJECT_DIR$/pub/products/test_new/model/tm.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/index.html" />
+        <option value="$PROJECT_DIR$/pub/js/engine.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/engine/TEngine.js" />
       </list>
     </option>
   </component>
@@ -244,7 +280,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
+              <option name="myItemId" value="i" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -298,6 +334,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="controls" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -329,12 +387,12 @@
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="options.lastSelected" value="coverage" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="coverage" />
     <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PublishConfig">
     <servers>
@@ -349,11 +407,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pub/products/test_new/i" />
       <recent name="$PROJECT_DIR$/pub/controls/view" />
       <recent name="$PROJECT_DIR$/pub/controls" />
       <recent name="$PROJECT_DIR$/pub" />
       <recent name="$PROJECT_DIR$/pub/i/samples" />
-      <recent name="$PROJECT_DIR$/pub/autotest" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/pub/autotest/layer1_app/helpers" />
@@ -369,6 +427,14 @@
       <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
       <method />
     </configuration>
+    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
+      <option name="VMOptions" />
+      <option name="arguments" />
+      <option name="filePath" />
+      <option name="scope" value="ALL" />
+      <option name="testName" />
+      <method />
+    </configuration>
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -377,14 +443,6 @@
       <option name="saveOutputToFile" value="false" />
       <option name="showConsoleOnStdErr" value="false" />
       <option name="showConsoleOnStdOut" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
-      <option name="VMOptions" />
-      <option name="arguments" />
-      <option name="filePath" />
-      <option name="scope" value="ALL" />
-      <option name="testName" />
       <method />
     </configuration>
     <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
@@ -442,7 +500,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18292683" sideWeight="0.5962815" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20086083" sideWeight="0.5962815" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32898173" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -471,119 +529,143 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/controls/view/addquickbutton.html">
+    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/helpers/test/testHelpers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="6" selection-start="155" selection-end="155" vertical-scroll-proportion="0.08559201" vertical-offset="0" max-vertical-offset="701">
-          <folding />
-        </state>
+        <state line="258" column="1" selection-start="10109" selection-end="10109" vertical-scroll-proportion="0.34691012" vertical-offset="3623" max-vertical-offset="4500" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/AddArrayElementControl.js">
+    <entry file="file://$PROJECT_DIR$/pub/autotest/engine/qunitMutAppEngine.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="0" selection-start="413" selection-end="413" vertical-scroll-proportion="0.22758621" vertical-offset="0" max-vertical-offset="725">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/AbstractControl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="71" selection-start="2555" selection-end="2598" vertical-scroll-proportion="0.37700146" vertical-offset="761" max-vertical-offset="1680">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitTest.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="725">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/descriptor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="163" column="55" selection-start="5623" selection-end="5630" vertical-scroll-proportion="-16.36" vertical-offset="2036" max-vertical-offset="9360">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/EcmaScript5.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="142" column="16" selection-start="2667" selection-end="2667" vertical-scroll-proportion="0.33333334" vertical-offset="1896" max-vertical-offset="2865">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/appProperty.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="28" selection-start="2034" selection-end="2034" vertical-scroll-proportion="0.0" vertical-offset="376" max-vertical-offset="2805">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="120" column="56" selection-start="7122" selection-end="7122" vertical-scroll-proportion="-10.208333" vertical-offset="1555" max-vertical-offset="2280">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/model/tm.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="35" selection-start="578" selection-end="578" vertical-scroll-proportion="0.0" vertical-offset="540" max-vertical-offset="6630">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="797" column="0" selection-start="32034" selection-end="32034" vertical-scroll-proportion="-16.36" vertical-offset="11546" max-vertical-offset="17505">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/mutapp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="488" column="29" selection-start="14978" selection-end="14978" vertical-scroll-proportion="0.0" vertical-offset="7029" max-vertical-offset="15360">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitMutAppClientFramework.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="39" selection-start="1276" selection-end="1276" vertical-scroll-proportion="0.3554217" vertical-offset="469" max-vertical-offset="5775">
-          <folding />
-        </state>
+        <state line="21" column="51" selection-start="699" selection-end="699" vertical-scroll-proportion="0.36797753" vertical-offset="53" max-vertical-offset="765" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/test_new/view/question.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="26" selection-start="488" selection-end="510" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3675">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
+        <state line="19" column="26" selection-start="488" selection-end="510" vertical-scroll-proportion="0.39310345" vertical-offset="0" max-vertical-offset="3675" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/appPropertyPrototype.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="31" selection-start="790" selection-end="790" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="930" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/engine/helpers/valuesGenerator.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="41" selection-start="250" selection-end="250" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1740" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/test_new/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="219" column="20" selection-start="13210" selection-end="13210" vertical-scroll-proportion="0.36773255" vertical-offset="3032" max-vertical-offset="3720" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/controls/SlideGroupControl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="28" selection-start="1429" selection-end="1443" vertical-scroll-proportion="-9.32" vertical-offset="607" max-vertical-offset="10665">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/appScreen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="7" selection-start="792" selection-end="792" vertical-scroll-proportion="0.0" vertical-offset="120" max-vertical-offset="1980">
+        <state line="605" column="23" selection-start="21201" selection-end="21201" vertical-scroll-proportion="0.0" vertical-offset="8829" max-vertical-offset="10620">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="717" column="78" selection-start="30367" selection-end="30367" vertical-scroll-proportion="0.33333334" vertical-offset="10526" max-vertical-offset="18390">
+        <state line="644" column="30" selection-start="26838" selection-end="26856" vertical-scroll-proportion="0.0" vertical-offset="9414" max-vertical-offset="18495">
+          <folding>
+            <marker date="1473005351000" expanded="true" signature="33868:33946" placeholder="//..." />
+            <marker date="1473005351000" expanded="true" signature="35080:35220" placeholder="//..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/test_new/descriptor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="347" column="14" selection-start="10509" selection-end="10515" vertical-scroll-proportion="0.33333334" vertical-offset="4976" max-vertical-offset="11070">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/test_new/mutapp.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="290" column="41" selection-start="9092" selection-end="9092" vertical-scroll-proportion="-18.16" vertical-offset="3896" max-vertical-offset="15360">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/util/utils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="166" column="20" selection-start="6299" selection-end="6299" vertical-scroll-proportion="0.0" vertical-offset="2382" max-vertical-offset="5010">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/test_new/model/tm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="160" column="53" selection-start="6255" selection-end="6255" vertical-scroll-proportion="-15.16" vertical-offset="2021" max-vertical-offset="6225">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="146" column="21" selection-start="8758" selection-end="8758" vertical-scroll-proportion="-24.208334" vertical-offset="1609" max-vertical-offset="2310">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="367" column="41" selection-start="13966" selection-end="13966" vertical-scroll-proportion="-4.36" vertical-offset="5396" max-vertical-offset="16530">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="206" column="16" selection-start="8266" selection-end="8266" vertical-scroll-proportion="0.0" vertical-offset="2853" max-vertical-offset="5775">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/engine/TEngine.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="38" selection-start="1215" selection-end="1215" vertical-scroll-proportion="0.5042135" vertical-offset="226" max-vertical-offset="7020">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <marker date="1473062826000" expanded="true" signature="115:20042" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="9185:11622" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="9884:9988" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="9901:9986" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="10011:10122" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="10028:10121" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="10145:10253" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="10162:10252" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="11673:13414" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="14896:18596" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="15221:17805" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="15440:17651" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="15625:16224" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="15776:15907" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="16246:17553" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="16552:16863" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="16578:16727" placeholder="//..." />
+            <marker date="1473062826000" expanded="true" signature="17324:17535" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="17669:17795" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="17854:18510" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="17956:18364" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="18382:18500" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="18400:18486" placeholder="//..." />
+            <marker date="1473062826000" expanded="true" signature="18602:18839" placeholder="/** Посчитать количество свойств в объекте ...*/" />
+            <marker date="1473062826000" expanded="true" signature="18898:19295" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="18953:19266" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="18996:19256" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="19051:19171" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="19096:19153" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="19193:19242" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="19301:19423" placeholder="/** Найти количество дубликатов в массиве по свойству ...*/" />
+            <marker date="1473062826000" expanded="true" signature="19481:19896" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="19554:19867" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="19607:19857" placeholder="{...}" />
+            <marker date="1473062826000" expanded="true" signature="19687:19843" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>

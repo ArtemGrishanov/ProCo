@@ -560,8 +560,10 @@ var Editor = {};
      * 1) Добавление контролов на панель справа.
      * 2) Обновление контрола слайдов (страниц) (один большой контрол)
      * 3) Привязка контролов к dom-элементам в продукте, Для быстрого редактирования.
+     *
+     * @param {array} [startActiveScreens] - стартовые экраны для показа
      */
-    function syncUIControlsToAppProperties() {
+    function syncUIControlsToAppProperties(startActiveScreens) {
         //TODO название метода не соответствует тому что здесь: полное пересоздание всех контролов
         uiControlsInfo = [];
         $('#id-static_controls_cnt').empty();
@@ -640,6 +642,9 @@ var Editor = {};
     //        $rootScope.$digest();
     //    });
 
+        if (startActiveScreens) {
+            activeScreens = startActiveScreens;
+        }
         if (activeScreens.length > 0) {
             // восстановить показ экранов, которые видели ранее
             showScreen(activeScreens);
@@ -794,7 +799,7 @@ var Editor = {};
      */
     function createControl(propertyString, viewName, name, params, controlParentView, productDOMElement) {
         var ctrl = null;
-    //    try {
+        try {
             // существует ли такой вью, если нет, берем по умолчанию
             if (viewName) {
                 // в случае с вью регистр важен, в конфиге директивы прописаны малым регистром
@@ -818,11 +823,11 @@ var Editor = {};
             // свойств может быть несколько, передаем массив
             var propertyStrArg = (propertyString && propertyString.indexOf(',')>=0)?propertyString.split(','):propertyString;
             ctrl = new window[name](propertyStrArg, viewName, cpv, productDOMElement, params);
-    //    }
-    //    catch(e) {
-    //        log(e, true);
-    //    }
-    //    log('Creating UI control for appProperty='+propertyString+' ui='+name);
+        }
+        catch(e) {
+            log(e, true);
+        }
+        log('Creating UI control for appProperty='+propertyString+' ui='+name);
         return ctrl;
     }
 
@@ -1217,5 +1222,7 @@ var Editor = {};
     global.deleteSelections = deleteSelections;
     global.hideWorkspaceHints = hideWorkspaceHints;
     global.getResourceManager = function() { return resourceManager; }
+    global.showSelectDialog = showSelectDialog;
+    global.syncUIControlsToAppProperties = syncUIControlsToAppProperties;
 
 })(Editor);

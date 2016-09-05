@@ -421,7 +421,7 @@ SlideGroupControl.prototype.addNewItem = function(position, newItem) {
                         icon: pp[i].img
                     });
                 }
-                showSelectDialog({
+                Editor.showSelectDialog({
                     caption: 'Новый слайд',
                     options: selectOptions,
                     callback: (function(selectedOptionId) {
@@ -429,10 +429,9 @@ SlideGroupControl.prototype.addNewItem = function(position, newItem) {
                             //TODO refactor
                             for (var j = 0; j < pp.length; j++) {
                                 if (pp[j].key == selectedOptionId) {
-                                    Engine.addArrayElement(ap, pp[j].value, p);
+                                    Engine.addArrayElement(ap, pp[j].getValue(), p);
                                     if (ap.updateScreens === true) {
-                                        activeScreens = [];
-                                        syncUIControlsToAppProperties();
+                                        Editor.syncUIControlsToAppProperties([]);
                                     }
                                 }
                             }
@@ -450,9 +449,8 @@ SlideGroupControl.prototype.addNewItem = function(position, newItem) {
             Engine.addArrayElement(ap, newItem, p);
             if (ap.updateScreens === true) {
                 //TODO запросить показ нового добавленного экрана, сейчас старый активен
-                activeScreens = [];
                 //TODO почему этот синк руками нельзя вызвать?
-                syncUIControlsToAppProperties();
+                Editor.syncUIControlsToAppProperties([]);
             }
         }
     }
@@ -494,8 +492,7 @@ SlideGroupControl.prototype.deleteItem = function(position) {
             Engine.deleteArrayElement(ap, position);
             if (ap.updateScreens === true) {
                 //TODO запросить показ ближайшего экрана, предыдущего от удаленного
-                activeScreens = [];
-                syncUIControlsToAppProperties();
+                Editor.syncUIControlsToAppProperties([]);
             }
         }
     }
@@ -573,7 +570,7 @@ SlideGroupControl.prototype.onMouseUp = function(e) {
         // quizScr0 всегда будет первым экраном (так задаются идишки в приложении) не важно как он выглядит,
         //  хотя с точки зрения пользователя вопрос сменился (визуально)
         // поэтому и надо переключать экран на другой, то есть на тот на чью позицию переместили вопрос
-        activeScreens = [this._slidesInfo[newPositionIndex].slide.propertyString];
+//        activeScreens = [this._slidesInfo[newPositionIndex].slide.propertyString];
 
         if (this.isOrderWasChanged() === true) {
             // изменили порядок при перетаскиввании, надо изменить теперь свойство
@@ -657,7 +654,7 @@ SlideGroupControl.prototype.onAddQuickButtonClick = function(e) {
         var protoIndex = params.prototypeIndex || 0;
         Engine.addArrayElement(ap, pp[protoIndex].value);
         if (ap.updateScreens === true) {
-            syncUIControlsToAppProperties();
+            Editor.syncUIControlsToAppProperties();
         }
     }
     else {

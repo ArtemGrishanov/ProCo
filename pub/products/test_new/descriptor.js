@@ -345,7 +345,7 @@ descriptor.rules = {
     },
     quizAddRule: {
         updateScreens: true,
-        canAdd: ["proto__text_slide","proto__photo_question_slide"],
+        canAdd: ["proto__q-text_a-text","proto__q-text_a-img","proto__q-text-img_a-text"],
         controls: [
             {
                 name: "AddArrayElementControl",
@@ -449,25 +449,139 @@ descriptor.rules = {
 
 /**
  * Описание прототипов
- * имя свойства - это также и имя значения в productIFrame.app
  * - лабел
  * - иконка
- * -
+ * - данные прототипа для клоинрования и использования
  *
  * @type {{}}
  */
 descriptor.prototypes = {
-    proto__text_slide: {
+    // шаблон текстового вопроса
+    "proto__q-text_a-text": {
         label: 'Текстовый вопрос',
-        img: '/products/test/i/editor/t1.jpg' // +devPrototypesHostName
+        img: '/products/test_new/i/editor/t1.jpg', // +devPrototypesHostName
+        data: {
+            question: {
+                uiTemplate: 'id-question_text_template',
+                text: 'Простой текстовый вопрос'
+            },
+            explanation: {
+                uiTemplate: 'id-explanation_text_template',
+                text: 'Объяснение ответа'
+            },
+            answer: {
+                type: 'radiobutton',
+                uiTemplate: 'id-answer_question_lst',
+                options: [
+                    {
+                        // атрибуты внутри используются для рендера uiTemplate
+                        uiTemplate: 'id-option_text_template',
+                        text: 'Вариант 1'
+                    },
+                    {
+                        uiTemplate: 'id-option_text_template',
+                        text: 'Вариант 2',
+                        points: 1
+                    },
+                    {
+                        uiTemplate: 'id-option_text_template',
+                        text: 'Вариант 3'
+                    },
+                    {
+                        uiTemplate: 'id-option_text_template',
+                        text: 'Вариант 4'
+                    }
+                ]
+            }
+        }
     },
-    proto__photo_question_slide: {
-        label: 'Фото вопрос',
-        img: '/products/test/i/editor/t2.jpg' // +devPrototypesHostName
-    },
-    proto__option_text: {
 
-    }
+    // шаблон фото вопроса
+    "proto__q-text-img_a-text": {
+        label: 'Фото вопрос',
+        img: '/products/test_new/i/editor/t2.jpg', // +devPrototypesHostName,
+        data: {
+            question: {
+                uiTemplate: 'id-question_text_photo_template',
+                text: 'Текст фото вопроса',
+                img: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/ocean.jpg'
+            },
+            explanation: {
+                uiTemplate: 'id-explanation_text_template',
+                text: 'Объяснение ответв'
+            },
+            answer: {
+                type: 'radiobutton',
+                uiTemplate: 'id-answer_question_lst_2',
+                options: [
+                    {
+                        uiTemplate: 'id-option_text_template',
+                        text: 'Вариант 1'
+                    },
+                    {
+                        uiTemplate: 'id-option_text_template',
+                        text: 'Вариант 2'
+                    },
+                    {
+                        uiTemplate: 'id-option_text_template',
+                        text: 'Вариант 3',
+                        points: 1
+                    },
+                    {
+                        uiTemplate: 'id-option_text_template',
+                        text: 'Вариант 4'
+                    }
+                ]
+            }
+        }
+    },
+
+    // шаблон с фотоответами
+    "proto__q-text_a-img": {
+        label: 'Фотоответы',
+        img: '/products/test_new/i/editor/t2.jpg',
+        data: {
+            question: {
+                uiTemplate: 'id-question_text_template',
+                text: 'Выберите верный ответ?'
+            },
+            explanation: {
+                uiTemplate: 'id-explanation_text_template',
+                text: 'Объяснение ответа'
+            },
+            answer: {
+                type: 'radiobutton',
+                uiTemplate: 'id-answer_question_grid_2',
+                options: [
+                    {
+                        uiTemplate: 'id-option_img_template',
+                        img: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/mur1.jpg',
+                        points: 1
+                    },
+                    {
+                        uiTemplate: 'id-option_img_template',
+                        img: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/mur2.jpg'
+                    }
+                ]
+            }
+        }
+    },
+
+    proto__option_text: {
+        label: 'Текстовый вариант ответа',
+        data: {
+            uiTemplate: 'id-option_text_template',
+            text: 'Вариант ответа'
+        }
+    },
+
+    proto__option_img: {
+        label: 'Ответ картинка',
+        data: {
+            uiTemplate: 'id-option_img_template',
+            img: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/ocean.jpg'
+        }
+    },
 };
 
 /**

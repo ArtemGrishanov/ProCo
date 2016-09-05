@@ -373,7 +373,7 @@ var Engine = {};
                 }
             }
             else {
-                log('Engine.createAppProperties: Cannot find property in mutapp by selector: '+s, true);
+                log('WARNING: Engine.createAppProperties: Cannot find property in mutapp by selector: '+s+'. It can be ok or not.', true);
             }
 
         }
@@ -627,15 +627,24 @@ var Engine = {};
         // подготовим новый массив и сделаем установку свойства
         var key = appProperty.propertyString;
         // проверяем что в промо проекте действительно есть такой массив
-        var obj = eval('productWindow.app'+convertToBracedString(key));
-        if (obj && Array.isArray(obj)) {
-            var newArray = JSON.parse(JSON.stringify(obj));
-            if (Number.isInteger(position) === false || position < 0) {
-                position = newArray.length;
+        var selected = Engine.getApp().getPropertiesBySelector(appProperty.propertyString);
+        if (selected.length===1) {
+            if (Array.isArray(selected[0].value)) {
+                // не вставляем значение в существующий, а готовим новый массив, чтобы заменить целиком
+                var newArray = JSON.parse(JSON.stringify(selected[0].value));
+                if (Number.isInteger(position) === false || position < 0) {
+                    position = newArray.length;
+                }
+                newArray.splice(position, -1, value);
+                // считается, что устанавливаем новый массив целиком
+                this.setValue(appProperty, newArray, attrs);
             }
-            newArray.splice(position, -1, value);
-            // считается, что устанавливаем новый массив целиком
-            this.setValue(appProperty, newArray, attrs);
+            else {
+                log('Engine.addArrayElement: you can add elements in array only \''+appProperty.propertyString+'\'');
+            }
+        }
+        else {
+            log('Engine.addArrayElement: must be only one result for \''+appProperty.propertyString+'\'');
         }
     }
 
@@ -653,14 +662,23 @@ var Engine = {};
         // подготовим новый массив и сделаем установку свойства
         var key = appProperty.propertyString;
         // проверяем что в промо проекте действительно есть такой массив
-        var obj = eval('productWindow.app'+convertToBracedString(key));
-        if (obj && Array.isArray(obj)) {
-            var newArray = JSON.parse(JSON.stringify(obj));
-            if (index >= 0 || index < newArray.length) {
-                newArray.splice(index,1);
-                // считается, что устанавливаем новый массив целиком
-                this.setValue(appProperty, newArray, attrs);
+        var selected = Engine.getApp().getPropertiesBySelector(appProperty.propertyString);
+        if (selected.length===1) {
+            if (Array.isArray(selected[0].value)) {
+                // не вставляем значение в существующий, а готовим новый массив, чтобы заменить целиком
+                var newArray = JSON.parse(JSON.stringify(selected[0].value));
+                if (index >= 0 || index < newArray.length) {
+                    newArray.splice(index,1);
+                    // считается, что устанавливаем новый массив целиком
+                    this.setValue(appProperty, newArray, attrs);
+                }
             }
+            else {
+                log('Engine.addArrayElement: you can add elements in array only \''+appProperty.propertyString+'\'');
+            }
+        }
+        else {
+            log('Engine.addArrayElement: must be only one result for \''+appProperty.propertyString+'\'');
         }
     }
 
@@ -761,6 +779,7 @@ var Engine = {};
     function startMutApp(defaults) {
         //TODO выбрать конструктор для приложения
         try {
+            delete productWindow.app;
             productWindow.app = new productWindow.TestApp({
                 //TODO ширина и высота такие аппПроперти
                 width: config.products.test.defaultWidth,
@@ -788,6 +807,7 @@ var Engine = {};
     function setPropertyToMutApp(propertyString, newValue) {
         //TODO выбрать конструктор для приложения
         try {
+            delete productWindow.app;
             var apps = Engine.getAppPropertiesValues().app;
             var newApps = {};
             // Важно: необходимо склонировать устанавливаемое значение
@@ -810,25 +830,6 @@ var Engine = {};
         }
         return true;
     }
-//    /**
-//     *
-//     * @param propertyString
-//     * @param value
-//     * @private
-//     */
-//    function _setAppValue(propertyString, value) {
-//        var stringifiedValue = JSON.stringify(value);
-//        try {
-//            eval('productWindow.app'+convertToBracedString(propertyString)+'='+stringifiedValue);
-//        }
-//        catch(e) {
-//            log('_setAppValue: '+propertyString+'='+value+' details:'+e,true)
-//        }
-//    }
-//
-//    function _setCssValue() {
-//        //TODO
-//    }
 
     function isErrorInTestResults() {
         if (testResults) {
@@ -840,23 +841,6 @@ var Engine = {};
         }
         return false;
     }
-
-//    /**
-//     * Подготовить параметры для передачи в промо приложение при запуске
-//     *
-//     * @returns {{engine: buildProductAppParams, startSlide: number}}
-//     */
-//    function buildProductAppParams() {
-//        var result = {
-//            engine: this,
-//            previewScreen: currentPreviewScreen
-//        };
-//        if (currentPreviewScreen) {
-//            // если экран для запуска указан, то надо также передать его данные
-//            result.previewScreenData = getAppScreen(currentPreviewScreen).data;
-//        }
-//        return result;
-//    }
 
     /**
      * Запуск платформы
@@ -947,9 +931,9 @@ var Engine = {};
     /**
      * Ищет доступные прототипы, которые можно было бы добавить в AppProperty
      * Только для массивов. AppProperty должна обязательно представлять массив.
-     * Прототипы собираются на лету
+     * Прототипы собираются "на лету"
      *
-     * @param appProperty app property для которого найти прототипы
+     * @param {AppProperty} appProperty свойство, для которого найти прототипы
      * @returns {array<AppPropertyPrototype>} например все прототипы слайдов, которые можно вставить в тест.
      */
     function getPrototypesForAppProperty(appProperty) {
@@ -957,11 +941,11 @@ var Engine = {};
             var canAddArr = appProperty.canAdd;
             var result = null;
             for (var i = 0; i < canAddArr.length; i++) {
-                if (productWindow.app.hasOwnProperty(canAddArr[i])) {
+                if (productWindow.descriptor.prototypes.hasOwnProperty(canAddArr[i])) {
                     if (result === null) {
                         result = [];
                     }
-                    var pr = new AppPropertyPrototype(canAddArr[i], productWindow.app, productWindow.descriptor);
+                    var pr = new AppPropertyPrototype(canAddArr[i], productWindow.descriptor);
                     result.push(pr);
                 }
             }
@@ -985,21 +969,6 @@ var Engine = {};
         }
         return null;
     }
-
-//    /**
-//     * Найти прототип по имени
-//     * @param name имя прототипа
-//     * @return {object}
-//     */
-//    function getPropertyPrototype(name) {
-//        for (var i = 0; i < propertyPrototypes.length; i++) {
-//                name нет такого поля
-//            if (name === propertyPrototypes[i].name) {
-//                return propertyPrototypes[i];
-//            }
-//        }
-//        return null;
-//    }
 
     /**
      * Вернуть свойства промо приложения
@@ -1047,40 +1016,6 @@ var Engine = {};
     function getAppTriggers() {
         return triggers;
     }
-
-//    /**
-//     * Создать шаблон из прототипа. Это набор дескрипторов, который можно применить к прототипу.
-//     * @deprecated
-//     * @returns {string} строка, сериализованный JSON объект
-//     */
-//    function exportTemplate() {
-//        // ид прототипа показывает для какого прототипа подходит этот шаблон
-//        var templObj = {
-//            prototype: config.products.tests.prototypeId,
-//            descriptors: {},
-//            themes: ''
-//        };
-//        // записать дескрипторы в шаблон
-//        for (var i = 0; i < appProperties.length; i++) {
-//            var p = appProperties[i];
-//            if (p.descriptor.editable === true) {
-//                for (var key in p.descriptor) {
-//                    if (p.descriptor.hasOwnProperty(key)) {
-//                        templObj.descriptors[key] = p.descriptor[key];
-//                    }
-//                }
-//            }
-//        }
-//        var templStr = null;
-//        try {
-//            templStr = JSON.stringify(templObj);
-//        }
-//        catch(e) {
-//            log('Error in serializing template error: ' + e, true);
-//            return null;
-//        }
-//        return templStr;
-//    }
 
     /**
      * Вернуть актуальные свойства приложения в виде строки.
