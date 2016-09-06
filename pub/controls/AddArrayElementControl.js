@@ -31,11 +31,11 @@ function AddArrayElementControl(propertyString, directiveName, $parent, productD
         var h = this.$productDomElement.height();
         // выровнена всегда стилями по центру экрана
         // по высоте - под последней опцией ответв
-        this.$directive.css('position','absolute')
-            .css('left','50%')
-            .css('margin-left','-62px')
-            .css('top', offset.top+h+'px')
-            .css('zIndex',config.editor.ui.quickControlsZIndex);
+//        this.$directive.css('position','absolute')
+//            .css('left','50%')
+//            .css('margin-left','-62px')
+//            .css('top', offset.top+h+'px')
+//            .css('zIndex',config.editor.ui.quickControlsZIndex);
     }
 }
 AddArrayElementControl.prototype = AbstractControl;

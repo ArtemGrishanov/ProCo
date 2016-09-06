@@ -120,6 +120,11 @@ var Editor = {};
      * @type {function}
      */
     var startCallback = null;
+    /**
+     * Панелька с контролами, которая всплывает рядом с элементом и указывает на него
+     * @type {QuickControlPanel}
+     */
+    var quickControlPanel = null;
 
     /**
      * Функция запуска редактора
@@ -159,6 +164,7 @@ var Editor = {};
             filterControls();
         });
         resourceManager = new ResourceManager();
+        quickControlPanel = new QuickControlPanel();
         function _initPublisher() {
             Publisher.init({
                 awsBucket: App.getAWSBucket(),
@@ -439,21 +445,28 @@ var Editor = {};
      */
     function bindControlsForAppPropertiesOnScreen($view, scrId) {
         var appScreen = Engine.getAppScreen(scrId);
+        var registeredElements = [];
         for (var k = 0; k < appScreen.appPropertyElements.length; k++) {
             // для всех элементов связанных с appProperty надо создать событие по клику.
             // в этот момент будет происходить фильтрация контролов на боковой панели
-            $(appScreen.appPropertyElements[k].domElement).click(function(e){
-                // сейчас для простоты удаляются все выделения перед показом следующего
-                deleteSelections();
-                // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
-                // задача - отфильтровать настройки на правой панели
-                var dataAppPropertyString = $(e.currentTarget).attr('data-app-property');
-                log(dataAppPropertyString + ' clicked');
-                showSelection($(e.currentTarget));
-                filterControls(dataAppPropertyString);
-                e.preventDefault();
-                e.stopPropagation();
-            });
+            // элемент, конечно, может быть привязан к нескольким appProperty, ведь содержит несколько значений в data-app-property
+            // надо избежать создания дублирующихся обработчиков
+            var de = appScreen.appPropertyElements[k].domElement;
+            if (registeredElements.indexOf(de) < 0) {
+                $(de).click(function(e){
+                    // сейчас для простоты удаляются все выделения перед показом следующего
+                    deleteSelections();
+                    // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
+                    // задача - отфильтровать настройки на правой панели
+                    var dataAppPropertyString = $(e.currentTarget).attr('data-app-property');
+                    log(dataAppPropertyString + ' clicked');
+                    showSelection($(e.currentTarget));
+                    filterControls(dataAppPropertyString, e.currentTarget);
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+                registeredElements.push(de);
+            }
             // контрола пока ещё не существует для настройки, надо создать
             var propertyString = appScreen.appPropertyElements[k].propertyString;
             var appProperty = Engine.getAppProperty(propertyString);
@@ -468,14 +481,16 @@ var Editor = {};
                     // здесь надо создавать только контролы которые находятся на рабочем поле, например textquickinput
                     // они пересоздаются каждый раз при переключении экрана
                     // "обычные" контролы создаются иначе
-                    if (config.controls[cn].type === 'workspace') {
+                    if (config.controls[cn].type === 'workspace' || config.controls[cn].type === 'quickcontrolpanel') {
                         // имя вью для контрола
                         var viewName = controlsInfo[j].params.viewName;
+                        // простейшая обертка для контрола, пока помещаем туда
+                        var wrapper = (config.controls[cn].type === 'quickcontrolpanel') ? $('<div></div>'): null;
                         var newControl = createControl(appProperty.propertyString,
                             viewName,
                             controlsInfo[j].name,
                             controlsInfo[j].params,
-                            null,
+                            wrapper,
                             appScreen.appPropertyElements[k].domElement);
                         if (newControl) {
                             // только если действительно получилось создать ui для настройки
@@ -483,7 +498,9 @@ var Editor = {};
                             uiControlsInfo.push({
                                 propertyString: propertyString,
                                 control: newControl,
-                                domElement: appScreen.appPropertyElements[k].domElement
+                                domElement: appScreen.appPropertyElements[k].domElement,
+                                type: config.controls[cn].type,
+                                wrapper: wrapper
                             });
                         }
                         else {
@@ -518,21 +535,35 @@ var Editor = {};
     //}
 
     /**
-     * Показать на боковой панели только те контролы, appPropertyString которых есть в dataAppPropertyString
+     * Отфильтровать и показать только те контролы, appPropertyString которых есть в dataAppPropertyString
+     * Это могут быть контролы на боковой панели или во всплывающей панели quickControlPanel
      *
      * @param {string} dataAppPropertyString например 'backgroundColor,showBackgroundImage'
+     * @param {domElement} element на который кликнул пользователь
      */
-    function filterControls(dataAppPropertyString) {
+    function filterControls(dataAppPropertyString, element) {
+        var quickControlPanelControls = [];
         if (dataAppPropertyString) {
             $('#id-static_controls_cnt').children().hide();
             // может быть несколько свойств через запятую: фон кнопки, ее бордер, цвет шрифта кнопки и так далее
             var keys = dataAppPropertyString.split(',');
             for (var i = 0; i < keys.length; i++) {
-                var c = findControlInfo(keys[i].trim());
-                // wrapper - это обертка в которой находится контрол на боковой панели
-                // надо скрыть его целиком, включая label
-                if (c && c.wrapper) {
-                    c.wrapper.show();
+                var cArr = findControlInfo(keys[i].trim(), element);
+
+                // результатов поиска может быть несколько
+                // например по id=tm quiz.0.answer.options - контрол добавлени и удаления
+                for (var j = 0; j < cArr.length; j++) {
+                    var c = cArr[j];
+                    // wrapper - это обертка в которой находится контрол на боковой панели
+                    // надо скрыть его целиком, включая label
+                    if (c && c.wrapper) {
+                        c.wrapper.show();
+                    }
+
+                    // контролы которые должны показаться на всплывающей панели quickControlPanel
+                    if (c && c.type === 'quickcontrolpanel') {
+                        quickControlPanelControls.push(c.wrapper);
+                    }
                 }
             }
         }
@@ -548,6 +579,14 @@ var Editor = {};
                     }
                 }
             }
+        }
+
+        // есть несколько контролов для всплывашки, которые надо показать
+        if (quickControlPanelControls.length > 0) {
+            quickControlPanel.show(element, quickControlPanelControls);
+        }
+        else {
+            quickControlPanel.hide();
         }
     }
 
@@ -763,26 +802,27 @@ var Editor = {};
 
     /**
      * Найти информацию об элементе управления
-     * @param propertyString свойство для которого ищем элемент управления
+     * @param {string} propertyString свойство для которого ищем элемент управления
      * @param [domElement]
-     * @returns {object|null}
+     * @returns {array}
      */
     function findControlInfo(propertyString, domElement) {
+        var results = [];
         for (var j = 0; j < uiControlsInfo.length; j++) {
             if (domElement) {
                 // если важен domElem
                 if (propertyString === uiControlsInfo[j].propertyString && domElement === uiControlsInfo[j].domElement) {
-                    return uiControlsInfo[j];
+                    results.push(uiControlsInfo[j]);
                 }
             }
             else {
                 // если domElem не важен
                 if (propertyString === uiControlsInfo[j].propertyString) {
-                    return uiControlsInfo[j];
+                    results.push(uiControlsInfo[j]);
                 }
             }
         }
-        return null;
+        return results;
     }
 
     /**
@@ -799,7 +839,7 @@ var Editor = {};
      */
     function createControl(propertyString, viewName, name, params, controlParentView, productDOMElement) {
         var ctrl = null;
-        try {
+//        try {
             // существует ли такой вью, если нет, берем по умолчанию
             if (viewName) {
                 // в случае с вью регистр важен, в конфиге директивы прописаны малым регистром
@@ -823,11 +863,11 @@ var Editor = {};
             // свойств может быть несколько, передаем массив
             var propertyStrArg = (propertyString && propertyString.indexOf(',')>=0)?propertyString.split(','):propertyString;
             ctrl = new window[name](propertyStrArg, viewName, cpv, productDOMElement, params);
-        }
-        catch(e) {
-            log(e, true);
-        }
-        log('Creating UI control for appProperty='+propertyString+' ui='+name);
+//        }
+//        catch(e) {
+//            log(e, true);
+//        }
+//        log('Creating UI control for appProperty='+propertyString+' ui='+name);
         return ctrl;
     }
 
@@ -1195,7 +1235,7 @@ var Editor = {};
     function showSelectDialog(params) {
         deleteSelections();
         hideWorkspaceHints();
-        $('#id-control_cnt').empty()
+        $('#id-control_cnt').empty();
         var dialog = new SelectDialog(params);
         $('#id-dialogs_view').empty().append(dialog.view).show();
     }
@@ -1208,6 +1248,38 @@ var Editor = {};
         $('#id-dialogs_view').empty().append(dialog.view).show();
     }
 
+    /**
+     * Найти контрол по строке, поиск будет производиться по нескольким полям.
+     * Надо для отладки
+     *
+     * @param {string} str
+     */
+    function findControl(str) {
+        var results1 = [];
+        var results2 = [];
+        var results3 = [];
+        for (var i = 0; i < uiControlsInfo.length; i++) {
+            var ci = uiControlsInfo[i];
+            if (ci.propertyString.indexOf(str) >= 0) {
+                // самый релевантный поиск по ключу: propertyString
+                results1.push(ci);
+            }
+            else {
+                if (ci.control.directiveName && ci.control.directiveName.indexOf(str) >= 0) {
+                    // вторая степерь релевантности: имя директивы
+                    results2.push(ci);
+                }
+                else {
+                    if (ci.type && ci.type.indexOf(str) >= 0) {
+                        // менее релевантный поиск - тип
+                        results3.push(ci);
+                    }
+                }
+            }
+        }
+        return results1.concat(results2).concat(results3);
+    }
+
     // public methods
     global.start = start;
     global.selectElementsOnScreen = selectElementsOnScreen;
@@ -1216,7 +1288,7 @@ var Editor = {};
     global.getActiveScreens = getActiveScreens;
     global.showScreen = showScreen;
     global.getAppContainerSize = function() { return appContainerSize; };
-    global.findControlInfo = findControlInfo;
+//    global.findControlInfo = findControlInfo;
     global.getSlideGroupControls = function() { return slideGroupControls; };
     global.createPreviewsForShare = createPreviewsForShare;
     global.deleteSelections = deleteSelections;
@@ -1224,5 +1296,6 @@ var Editor = {};
     global.getResourceManager = function() { return resourceManager; }
     global.showSelectDialog = showSelectDialog;
     global.syncUIControlsToAppProperties = syncUIControlsToAppProperties;
+    global.findControl = findControl;
 
 })(Editor);

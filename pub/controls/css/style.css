@@ -72,3 +72,47 @@ form input {
     background-color: #1cbf61;
     border-color: #16914a;
 }
+.qp {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+}
+.qp_back {
+    min-width: 38px;
+    height: 38px;
+    text-align: center;
+    margin: 0;
+    padding: 2px;
+    background-color: #000;
+    border-radius: 6px;
+}
+.qp_triangle {
+    margin: 0 auto;
+    padding: 0;
+    width: 16px;
+    height: 8px;
+    background-image: url(../i/Triangle-black.png);
+}
+.qp_item {
+    display: inline-block;
+    position: relative;
+    padding: 4px;
+    margin: 0;
+    min-width: 30px;
+    min-height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+}
+.qp_item+.qp_item {
+    margin-left: -4px;
+}
+.qp_item+.qp_item::before {
+    top: 4px;
+    left: 0;
+    content: '';
+    position: absolute;
+    width: 1px;
+    height: 30px;
+    background-color: #fff;
+}

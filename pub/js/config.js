@@ -234,13 +234,13 @@ var config = {
             defaultDirectiveIndex: 0,
             directives: ['addquickbutton','addscreenbutton'],
             parentId: 'id-control_cnt',
-            type: 'workspace' // контрол появляется на поле для редактиования, когда показывается экран приложения
+            type: 'quickcontrolpanel' // контрол появляется на всплывающей панельке рядом с элементом
         },
         DeleteQuickButton: {
             defaultDirectiveIndex: 0,
             directives: ['deletequickbutton'],
             parentId: 'id-control_cnt',
-            type: 'workspace' // контрол появляется на поле для редактиования, когда показывается экран приложения
+            type: 'quickcontrolpanel' // контрол появляется на всплывающей панельке рядом с элементом
         },
         OnOff: {
             defaultDirectiveIndex: 0,
@@ -303,6 +303,10 @@ var config = {
              * zIndex подсказок
              */
             hintZIndex: 30,
+            /**
+             * z-index панели быстрого редактирования, которая всплывает рядом с элементом и указывает на него
+             */
+            quickControlPanelZIndex: 35,
             /**
              * Отступы, насколько можно вынести перетаскиваемый элемент за границы группы
              */
