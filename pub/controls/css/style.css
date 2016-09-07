@@ -17,10 +17,10 @@ form input {
     cursor: pointer;
 }
 .delete_quick_btn {
-    background-image: url(../i/i-delete.png);
-    background-size: contain;
-    width: 18px;
-    height: 18px;
+    background: url(../i/Panel-delete.png) center no-repeat;
+    background-size: 24px 24px;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
 }
 .add_screen_btn {

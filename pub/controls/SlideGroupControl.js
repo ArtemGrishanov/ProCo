@@ -699,5 +699,6 @@ SlideGroupControl.prototype.setValue = function() {
         Engine.setValue(ap, newValue, {
             updateScreens:true
         });
+        Editor.syncUIControlsToAppProperties();
     },100);
 }

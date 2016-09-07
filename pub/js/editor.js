@@ -446,6 +446,11 @@ var Editor = {};
     function bindControlsForAppPropertiesOnScreen($view, scrId) {
         var appScreen = Engine.getAppScreen(scrId);
         var registeredElements = [];
+
+        // найти и удалить эти типы контролов
+        // при показе экрана они пересоздаются заново
+        clearControls(['workspace', 'quickcontrolpanel']);
+
         for (var k = 0; k < appScreen.appPropertyElements.length; k++) {
             // для всех элементов связанных с appProperty надо создать событие по клику.
             // в этот момент будет происходить фильтрация контролов на боковой панели
@@ -470,11 +475,8 @@ var Editor = {};
             // контрола пока ещё не существует для настройки, надо создать
             var propertyString = appScreen.appPropertyElements[k].propertyString;
             var appProperty = Engine.getAppProperty(propertyString);
-            //TODO объяснение снизу не понятно
-            //TODO remove иногда в атрибуте data-app-property содержится несколько ссылок на appProperty через запятую
-            //TODO remove в этом случае берем описание из дескриптора первого элемента [0]. Свойства должны быть идентичными, иначе это не имеет смысла
             if (appProperty) {
-                // не забыть что может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
+                // может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
                 var controlsInfo = appProperty.controls;
                 for (var j = 0; j < controlsInfo.length; j++) {
                     var cn = controlsInfo[j].name;
@@ -518,6 +520,26 @@ var Editor = {};
                 // нет свойства appProperty в Engine хотя во вью есть элемент с таким атрибутом data-app-property
                 // это значит ошибку в промо-продукте
                 log('AppProperty \''+propertyString+'\' not exist. But such attribute exists on the screen: \''+scrId+'\'', true);
+            }
+        }
+    }
+
+    /**
+     * Удалить контролы по типам
+     * @param {array} types
+     */
+    function clearControls(types) {
+        for (var i = 0; i < uiControlsInfo.length;/*no increment*/) {
+            var deleted = false;
+            for (var j = 0; j < types.length; j++) {
+                if (uiControlsInfo[i].type === types[j]) {
+                    uiControlsInfo.splice(i, 1);
+                    deleted = true;
+                    break;
+                }
+            }
+            if (deleted===false) {
+                i++;
             }
         }
     }
@@ -842,7 +864,7 @@ var Editor = {};
     function findControlInfo(propertyString, domElement) {
         var results = [];
         for (var j = 0; j < uiControlsInfo.length; j++) {
-            // TODO для контролов типа controlpanel я не сохранял элементы domElement
+            // TODO для контролов типа controlpanel я не сохранял элементы domElement, и в эту функцию передается undefined
             // поэтому такая заточка
             if (domElement && uiControlsInfo[j].type!=='controlpanel') {
                 // если важен domElem
