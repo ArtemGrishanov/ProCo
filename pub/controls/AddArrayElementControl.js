@@ -12,12 +12,14 @@ function AddArrayElementControl(propertyString, directiveName, $parent, productD
 
     this.onAddQuickButtonClick = function(e) {
         var ap = Engine.getAppProperty(this.propertyString);
-        var pp = Engine.getPrototypesForAppProperty(ap);
-        if (pp && pp.length > 0) {
-            var protoIndex = params.prototypeIndex || 0;
-            Engine.addArrayElement(ap, pp[protoIndex].value);
+        var protoIndex = params.prototypeIndex || 0;
+        var prototypeNameToAdd = ap.canAdd[protoIndex];
+        var proto = Engine.getPrototypeForAppProperty(ap, prototypeNameToAdd);
+
+        if (proto) {
+            Engine.addArrayElement(ap, proto.getValue());
             if (ap.updateScreens === true) {
-                syncUIControlsToAppProperties();
+                Editor.syncUIControlsToAppProperties();
             }
         }
         else {

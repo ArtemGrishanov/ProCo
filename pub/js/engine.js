@@ -937,6 +937,9 @@ var Engine = {};
      * @returns {array<AppPropertyPrototype>} например все прототипы слайдов, которые можно вставить в тест.
      */
     function getPrototypesForAppProperty(appProperty) {
+        //TODO один раз сформировать список прототипов и возвращать его
+        //один прототип может быть использован в нескольких местах для создания нового значения
+        //так как значение клонируется
         if (appProperty.isArray === true && appProperty.hasOwnProperty('canAdd')) {
             var canAddArr = appProperty.canAdd;
             var result = null;
@@ -950,6 +953,24 @@ var Engine = {};
                 }
             }
             return result;
+        }
+        return null;
+    }
+
+    /**
+     * Найти прототип по его имени для указанного appProperty
+     * @param appProperty
+     * @param prototypeName
+     * @returns {AppPrototype}
+     */
+    function getPrototypeForAppProperty(appProperty, prototypeName) {
+        var pp = getPrototypesForAppProperty(appProperty);
+        if (pp) {
+            for (var i = 0; i < pp.length; i++) {
+                if (pp[i].key === prototypeName) {
+                    return pp[i];
+                }
+            }
         }
         return null;
     }
@@ -1074,6 +1095,7 @@ var Engine = {};
     global.getAppPropertiesObjectPathes = getAppPropertiesObjectPathes;
     global.getAppProperties = getAppProperties;
     global.getPrototypesForAppProperty = getPrototypesForAppProperty;
+    global.getPrototypeForAppProperty = getPrototypeForAppProperty;
     global.getAppProperty = getAppProperty;
     global.addArrayElement = addArrayElement;
     global.deleteArrayElement = deleteArrayElement;

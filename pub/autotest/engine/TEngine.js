@@ -160,6 +160,10 @@ var TEngine = {};
                 assert.ok(!!pp[j]._value===true, 'checkAppProperty: prototype _value');
                 assert.ok(pp[j].getValue()!==pp[j].getValue(), 'checkAppProperty: prototype getValue');
             }
+
+            for (var j = 0; j < appProperty.canAdd.length; j++) {
+                assert.ok(Engine.getPrototypeForAppProperty(appProperty, appProperty.canAdd[j])!==null, 'checkAppProperty: getPrototypeForAppProperty');
+            }
         }
     }
 

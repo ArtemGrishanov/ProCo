@@ -6,17 +6,18 @@
  */
 function DeleteQuickButton(propertyString, directiveName, $parent, productDOMElement, params) {
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
-//    this.arrayDomElements = null;
-//    this.overedArrayElement = null;
-//    this.productDOMElement = productDOMElement;
+
+    // индекс опции, к которой привязан этот контрол
+    // этот индекс неявно находится в propertyString, например, quiz.1.answer.options.0.img (нолик в данном случае)
+    // но узнать его наверняка можно только с помощью доп атрибута для контрола
+    this.optionIndex = 0;
+    var optionIndexAttr = $(productDOMElement).attr('data-option-index');
+    if (Number.isInteger(parseInt(optionIndexAttr))===true) {
+        this.optionIndex = parseInt(optionIndexAttr);
+    }
 
     this.loadDirective(function(response, status, xhr){
-//        this.$directive.css('zIndex', config.editor.ui.quickControlsZIndex);
-//        this.$directive.css('position','absolute');
-//        this.$directive.css('display','none');
         this.$directive.on('click', this.onDeleteQuickButtonClick.bind(this));
-//        this.arrayDomElements = []
-
         var p = Engine.getAppProperty(this.propertyString);
         for (var i = 0; i < p.propertyValue.length; i++) {
             var e = $(this.productDOMElement).find('[data-app-property=\"'+this.propertyString+'.'+i+'\"]');
@@ -28,24 +29,8 @@ function DeleteQuickButton(propertyString, directiveName, $parent, productDOMEle
     });
 
     this.onDeleteQuickButtonClick = function(e) {
-//        if (this.overedArrayElement) {
-//            var index = this.arrayDomElements.indexOf(this.overedArrayElement);
-//            if (index >= 0) {
-
-                var p = Engine.getAppProperty(this.propertyString);
-//        TODO index
-                Engine.deleteArrayElement(p, 0);
-//            }
-//        }
+        var p = Engine.getAppProperty(this.propertyString);
+        Engine.deleteArrayElement(p, this.optionIndex);
     }
-//    this.onElementOver = function(e) {
-//        this.overedArrayElement = e.currentTarget;
-//        var pos = $(this.overedArrayElement).position();
-//        //TODO непонятно как позиционировать
-//        this.$directive.css('display','block');
-//        this.$directive.css('left', pos.left+'px');
-//        this.$directive.css('top', (pos.top+0)+'px')
-//    }
-
 }
 DeleteQuickButton.prototype = AbstractControl;

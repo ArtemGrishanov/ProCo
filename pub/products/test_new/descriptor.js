@@ -346,47 +346,57 @@ descriptor.rules = {
     quizAddRule: {
         updateScreens: true,
         canAdd: ["proto__q-text_a-text","proto__q-text_a-img","proto__q-text-img_a-text"],
-        controls: [
-            {
-                name: "AddArrayElementControl",
-                params: {
-                    viewName: "AddScreenButton",
-                    screenGroup: "questions",
-                    prototypeIndex: 0,
-                }
-            },
-            {
-                name: "AddArrayElementControl",
-                params: {
-                    viewName: "AddScreenButton",
-                    screenGroup: "questions",
-                    prototypeIndex: 1
-                }
-            }
-        ]
+//        добавлением слайдов занимается SlideGroupControl
+//        controls: [
+//            {
+//                name: "AddArrayElementControl",
+//                params: {
+//                    viewName: "AddScreenButton",
+//                    screenGroup: "questions",
+//                    prototypeIndex: 0,
+//                }
+//            },
+//            {
+//                name: "AddArrayElementControl",
+//                params: {
+//                    viewName: "AddScreenButton",
+//                    screenGroup: "questions",
+//                    prototypeIndex: 1
+//                }
+//            }
+//        ]
     },
     /**
      * Правила добавления опции ответа
      * сейчас текстовой
      */
     quizOptionEditRule: {
-        // несколько контролов, альтернативная форма объявления
+        canAdd: ["proto__option_text","proto__option_img"],
         controls: [
             {
                 name: "AddArrayElementControl",
                 params: {
-                    // params here
+                    viewName: "addquickbutton",
+                    prototypeIndex: 0,
+                    controlFilter: 'text'
+                }
+            },
+            {
+                name: "AddArrayElementControl",
+                params: {
+                    viewName: "addquickbutton",
+                    prototypeIndex: 1,
+                    controlFilter: 'img'
                 }
             },
             {
                 name: "DeleteQuickButton",
                 params: {
-                    // params here
+                    viewName: "deletequickbutton"
                 }
             }
         ],
-        updateScreens: true,
-        canAdd: ["proto__option_text"]
+        updateScreens: true
     },
     trueFalse: {
         updateScreens: true,

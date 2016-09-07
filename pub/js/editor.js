@@ -482,30 +482,35 @@ var Editor = {};
                     // они пересоздаются каждый раз при переключении экрана
                     // "обычные" контролы создаются иначе
                     if (config.controls[cn].type === 'workspace' || config.controls[cn].type === 'quickcontrolpanel') {
-                        // имя вью для контрола
-                        var viewName = controlsInfo[j].params.viewName;
-                        // простейшая обертка для контрола, пока помещаем туда
-                        var wrapper = (config.controls[cn].type === 'quickcontrolpanel') ? $('<div></div>'): null;
-                        var newControl = createControl(appProperty.propertyString,
-                            viewName,
-                            controlsInfo[j].name,
-                            controlsInfo[j].params,
-                            wrapper,
-                            appScreen.appPropertyElements[k].domElement);
-                        if (newControl) {
-                            // только если действительно получилось создать ui для настройки
-                            // не все контролы могут быть реализованы или некорректно указаны
-                            uiControlsInfo.push({
-                                propertyString: propertyString,
-                                control: newControl,
-                                domElement: appScreen.appPropertyElements[k].domElement,
-                                type: config.controls[cn].type,
-                                wrapper: wrapper
-                            });
+
+                        // на домэлемент можно повесить фильтр data-control-filter и в descriptor в параметрах также его указать
+                        if (checkControlFilter(de, controlsInfo[j].params)===true) {
+                            // имя вью для контрола
+                            var viewName = controlsInfo[j].params.viewName;
+                            // простейшая обертка для контрола, пока помещаем туда
+                            var wrapper = (config.controls[cn].type === 'quickcontrolpanel') ? $('<div></div>'): null;
+                            var newControl = createControl(appProperty.propertyString,
+                                viewName,
+                                controlsInfo[j].name,
+                                controlsInfo[j].params,
+                                wrapper,
+                                de);
+                            if (newControl) {
+                                // только если действительно получилось создать ui для настройки
+                                // не все контролы могут быть реализованы или некорректно указаны
+                                uiControlsInfo.push({
+                                    propertyString: propertyString,
+                                    control: newControl,
+                                    domElement: de,
+                                    type: config.controls[cn].type,
+                                    wrapper: wrapper
+                                });
+                            }
+                            else {
+                                log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+propertyString+ '\' on the screen '+scrId, true);
+                            }
                         }
-                        else {
-                            log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+propertyString+ '\' on the screen '+scrId, true);
-                        }
+
                     }
                 }
             }
@@ -517,6 +522,34 @@ var Editor = {};
         }
     }
 
+    /**
+     * Проверяет что для этого domElement можно создать контрол с параметрами
+     * Если никаких фильтров не задано, значит можно.
+     * Этот механизм используется при различных опциях ответов, для них нужны разные немного контролы. Хотя и описанные одним правилом в descriptor
+     *
+     * @param domElement
+     * @param controlParam
+     */
+    function checkControlFilter(domElement, controlParam) {
+        var filterAttr = $(domElement).attr('data-control-filter');
+        if (filterAttr) {
+            filterAttr = filterAttr.replace(new RegExp(/\s/, 'g'), '');
+            var filters = filterAttr.split(',')
+            for (var m = 0; m < filters.length; m++) {
+                // ожидаем выражение вида key=value
+                var pairs = filters[m].split('=');
+                if (pairs.length==2) {
+                    if (controlParam[pairs[0]]==pairs[1]) { //0=='0' должно быть равно
+                        return true;
+                    }
+                }
+            }
+            // атрибут задан, но подходящего условия не нашли
+            return false;
+        }
+        // если фильтр не указан вообще значит считаем что контрол подходит
+        return true;
+    }
     ///**
     // * Показать подсказки для экрана
     // * @param appScreen
@@ -809,7 +842,9 @@ var Editor = {};
     function findControlInfo(propertyString, domElement) {
         var results = [];
         for (var j = 0; j < uiControlsInfo.length; j++) {
-            if (domElement) {
+            // TODO для контролов типа controlpanel я не сохранял элементы domElement
+            // поэтому такая заточка
+            if (domElement && uiControlsInfo[j].type!=='controlpanel') {
                 // если важен domElem
                 if (propertyString === uiControlsInfo[j].propertyString && domElement === uiControlsInfo[j].domElement) {
                     results.push(uiControlsInfo[j]);
