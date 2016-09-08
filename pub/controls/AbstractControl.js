@@ -26,10 +26,10 @@ var AbstractControl = {
         }
         this.propertyString = propertyString;
         this.params = params;
-        if (this.directiveName) {
-            // в некоторых контролах нет никакой визуальной части
-            this.$directive = this.addDirective();
-        }
+//        if (this.directiveName) {
+//            // в некоторых контролах нет никакой визуальной части
+//            this.$directive = this.addDirective();
+//        }
         if (productDOMElement) {
             this.$productDomElement = $(productDOMElement);
         }

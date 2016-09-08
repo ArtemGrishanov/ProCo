@@ -104,9 +104,6 @@ form input {
     line-height: 30px;
     vertical-align: middle;
 }
-.qp_item+.qp_item {
-    margin-left: -4px;
-}
 .qp_item+.qp_item::before {
     top: 4px;
     left: 0;

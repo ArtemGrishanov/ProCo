@@ -282,6 +282,12 @@ var config = {
             directives: [],
             parentId: 'id-control_cnt',
             type: 'workspace' // контрол появляется на поле для редактиования, когда показывается экран приложения
+        },
+        CustomQuickPanelControl: {
+            defaultDirectiveIndex: 0,
+            directives: ['customquickpanelcontrol'],
+            parentId: 'id-control_cnt',
+            type: 'quickcontrolpanel' // контрол появляется на всплывающей панельке рядом с элементом
         }
     },
     editor: {

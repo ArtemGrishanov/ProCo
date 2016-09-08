@@ -26,18 +26,5 @@ function AddArrayElementControl(propertyString, directiveName, $parent, productD
             log('There is no prototypes for \''+this.propertyString+'\'', true);
         }
     }
-    this.$directive.on('click', this.onAddQuickButtonClick.bind(this));
-    if (this.$productDomElement) {
-        // берем offset, так как экран располагается внутри iframe
-        var offset = this.$productDomElement.offset();
-        var h = this.$productDomElement.height();
-        // выровнена всегда стилями по центру экрана
-        // по высоте - под последней опцией ответв
-//        this.$directive.css('position','absolute')
-//            .css('left','50%')
-//            .css('margin-left','-62px')
-//            .css('top', offset.top+h+'px')
-//            .css('zIndex',config.editor.ui.quickControlsZIndex);
-    }
 }
 AddArrayElementControl.prototype = AbstractControl;

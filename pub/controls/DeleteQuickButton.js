@@ -18,14 +18,6 @@ function DeleteQuickButton(propertyString, directiveName, $parent, productDOMEle
 
     this.loadDirective(function(response, status, xhr){
         this.$directive.on('click', this.onDeleteQuickButtonClick.bind(this));
-        var p = Engine.getAppProperty(this.propertyString);
-        for (var i = 0; i < p.propertyValue.length; i++) {
-            var e = $(this.productDOMElement).find('[data-app-property=\"'+this.propertyString+'.'+i+'\"]');
-            if (e) {
-//                this.arrayDomElements.push(e[0]);
-//                $(e).mouseover(this.onElementOver.bind(this));
-            }
-        }
     });
 
     this.onDeleteQuickButtonClick = function(e) {

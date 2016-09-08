@@ -399,7 +399,7 @@ var Editor = {};
                 }
                 catch (e)
                 {
-                    log('Error in trigger action: '+ e.message, true);
+                    log('Editor.applyTriggers: error in trigger action: '+ e.message, true);
                 }
             }
         }
@@ -613,6 +613,9 @@ var Editor = {};
                     // надо скрыть его целиком, включая label
                     if (c && c.wrapper) {
                         c.wrapper.show();
+                        if (c.control._onShow) {
+                            c.control._onShow();
+                        }
                     }
 
                     // контролы которые должны показаться на всплывающей панели quickControlPanel
@@ -625,12 +628,16 @@ var Editor = {};
         else {
             // сбрасываем фильтр - показываем всё что не имеет filter=true
             for (var i = 0; i < uiControlsInfo.length; i++) {
-                if (uiControlsInfo[i].type && uiControlsInfo[i].type === 'controlpanel') {
-                    if (uiControlsInfo[i].filter === true) {
-                        uiControlsInfo[i].wrapper.hide();
+                var c = uiControlsInfo[i];
+                if (c.type && c.type === 'controlpanel') {
+                    if (c.filter === true) {
+                        c.wrapper.hide();
                     }
                     else {
-                        uiControlsInfo[i].wrapper.show();
+                        c.wrapper.show();
+                        if (c.control._onShow) {
+                            c.control._onShow();
+                        }
                     }
                 }
             }
@@ -1345,7 +1352,6 @@ var Editor = {};
     global.getActiveScreens = getActiveScreens;
     global.showScreen = showScreen;
     global.getAppContainerSize = function() { return appContainerSize; };
-//    global.findControlInfo = findControlInfo;
     global.getSlideGroupControls = function() { return slideGroupControls; };
     global.createPreviewsForShare = createPreviewsForShare;
     global.deleteSelections = deleteSelections;

@@ -164,6 +164,13 @@ descriptor.app = [
         selector: "id=tm quiz.{{number}}.answer.options",
         rules: 'quizOptionEditRule'
     },
+    {
+        // TODO
+        // в реальности конструкция rules: 'quizOptionEditRule setCorrectAnswer' не поддерживается, наверное лень было сделать нормально
+        // В engine это вроде заложено, в AppProperty точно нет
+        selector: "id=tm quiz.{{number}}.answer.options.{{number}}",
+        rules: 'setCorrectAnswer'
+    }
 ];
 
 // правила, как редактировать свойства
@@ -376,7 +383,7 @@ descriptor.rules = {
             {
                 name: "AddArrayElementControl",
                 params: {
-                    viewName: "addquickbutton",
+//                    viewName: "addquickbutton",
                     prototypeIndex: 0,
                     controlFilter: 'text'
                 }
@@ -384,7 +391,7 @@ descriptor.rules = {
             {
                 name: "AddArrayElementControl",
                 params: {
-                    viewName: "addquickbutton",
+//                    viewName: "addquickbutton",
                     prototypeIndex: 1,
                     controlFilter: 'img'
                 }
@@ -392,11 +399,48 @@ descriptor.rules = {
             {
                 name: "DeleteQuickButton",
                 params: {
-                    viewName: "deletequickbutton"
+                    filter: "ok"
                 }
             }
         ],
         updateScreens: true
+    },
+    setCorrectAnswer: {
+        controls: [
+            {
+                name: "CustomQuickPanelControl",
+                params: {
+                    filter: 'ok',
+                    onClick: function(param) {
+                        // получаем ид опции
+                        var optionId = $(this.$productDomElement).attr('data-id');
+                        if (optionId) {
+                            this.setView('<div style="background-color:green;"><img src="controls/i/Panel-set-as-right.png"></div>');
+                            param.app._models[0].setCorrectAnswer(optionId);
+                        }
+                        else {
+                            log('Descriptor.setCorrectAnswer: option data-id is not set');
+                        }
+                    },
+                    onShow: function(param) {
+                        var optionId = $(this.$productDomElement).attr('data-id');
+                        var questionIndex = $(this.$productDomElement).attr('data-question-index');
+                        if (optionId && questionIndex) {
+                            var correctId = param.app._models[0].getCorrectAnswerId(questionIndex);
+                            if (correctId===optionId) {
+                                this.setView('<div style="background-color:green;"><img src="controls/i/Panel-set-as-right.png"></div>');
+                            }
+                            else {
+                                this.setView('<div style="cursor:pointer"><img src="controls/i/Panel-set-as-right.png"></div>');
+                            }
+                        }
+                        else {
+                            log('Descriptor.setCorrectAnswer: option data-id or data-question-index is not set');
+                        }
+                    }
+                }
+            }
+        ]
     },
     trueFalse: {
         updateScreens: true,
@@ -642,29 +686,46 @@ descriptor.triggers = {
          * @return {boolean} - был выполнен триггер или нет
          */
         action: function(params) {
-            var selector = '.bullit';
-            var activeClass = 'bullit_active';
+//            var selector = '.bullit';
+//            var activeClass = 'bullit_active';
             var result = false;
-            for (var j = 0; j < params.appScreens.length; j++) {
-                var as = params.appScreens[j];
-                // сейчас находимся на каком-то экране, мы должны знать индекс вопроса
-                var qi = as.currentQuestionIndex;
-                if (Number.isInteger(qi)) {
-                    // должен остаться только один элемент с классом activeClass
-                    var elements = $(as.view).find(selector);
-                    elements.remove(activeClass);
-                    // и только элементу с корректным ответом ставим activeClass
-                    var correntAnswerId = params.app._models[0].getCorrectAnswerId(qi);
-                    if (correntAnswerId) {
-                        for (var i = 0; i < elements.length; i++) {
-                            if ($(elements[i]).attr('data-id') === correntAnswerId) {
-                                $(elements[i]).addClass(activeClass);
-                            }
-                        }
-                    }
-                    result = true;
-                }
-            }
+//            for (var j = 0; j < params.appScreens.length; j++) {
+//                var as = params.appScreens[j];
+//                // сейчас находимся на каком-то экране, мы должны знать индекс вопроса
+//                var qi = as.currentQuestionIndex;
+//                if (Number.isInteger(qi)) {
+//                    // должен остаться только один элемент с классом activeClass
+//                    var elements = $(as.view).find(selector);
+//                    elements.remove(activeClass);
+//                    // и только элементу с корректным ответом ставим activeClass
+//                    var correntAnswerId = params.app._models[0].getCorrectAnswerId(qi);
+//                    if (correntAnswerId) {
+//                        for (var i = 0; i < elements.length; i++) {
+//                            if ($(elements[i]).attr('data-id') === correntAnswerId) {
+//                                $(elements[i]).addClass(activeClass);
+//                            }
+//                        }
+//                    }
+//                    result = true;
+//                }
+//            }
+
+            // control.onShow
+            // найти на экране атрибуты по id=tm quiz.{{number}}.answer.options
+
+            // создать доп контрол для каждой опции id=tm quiz.{{number}}.answer.options.{{number}}
+            // во всплывающей панели quickpanel
+
+            // custom control
+            // img свой
+            // и выставлять стейт-картинку, запрашивая у модели по data-option-id
+
+            // control.onClick
+            // обработчик соответственно по клику - ставить в модель верный ответ
+            // это кастомная логика и должна быть в descriptor
+
+            // и это получается не триггер в кастомный контрол
+
             return result;
         }
     },

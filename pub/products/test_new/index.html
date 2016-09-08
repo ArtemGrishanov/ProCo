@@ -81,7 +81,7 @@
     </script>
 
     <script id="id-option_text_template" type="text/template">
-        <div class="question_i js-a_wr" data-id="<%=id%>" data-option-index="<%=currentOptionIndex%>" data-control-filter="viewName=deletequickbutton,prototypeIndex=0" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options">
+        <div class="question_i js-a_wr" data-question-index="<%=currentQuestionIndex%>" data-id="<%=id%>" data-option-index="<%=currentOptionIndex%>" data-control-filter="filter=ok,prototypeIndex=0" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options, id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>">
             <div class="bullit"></div>
             <span class="js-option_text" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.text"><%=text%></span>
         </div>
@@ -94,7 +94,7 @@
     </script>
     <script id="id-option_img_template" type="text/template">
         <div class="question_grid-i" data-id="<%=id%>">
-            <img data-option-index="<%=currentOptionIndex%>" data-control-filter="viewName=deletequickbutton,prototypeIndex=1" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options, id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.img" class="question_img" src="<%=img%>" />
+            <img data-id="<%=id%>" data-question-index="<%=currentQuestionIndex%>" data-option-index="<%=currentOptionIndex%>" data-control-filter="filter=ok,prototypeIndex=1" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options, id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>, id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.img" class="question_img" src="<%=img%>" />
         </div>
     </script>
 
