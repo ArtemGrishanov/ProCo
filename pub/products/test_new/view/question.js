@@ -116,7 +116,7 @@ var QuestionScreen = MutApp.Screen.extend({
 
         this.renderAnswers(q.answer);
 
-        if (this.showBullits === true) {
+        if (this.model.get('showBullits') === true) {
             this.$el.find('.bullit').show();
         }
         else {

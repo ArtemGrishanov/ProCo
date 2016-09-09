@@ -128,8 +128,11 @@ QUnit.test("MutApp test: Models", function( assert ) {
 
     var app = new SwimmingTest({
         defaults: {
-            "appAttr1": 'appData1',
-            "appAttr2": true,
+            "testName=swimmingTest appAttr1": 'appData1',
+            "testName=swimmingTest appAttr2": true,
+
+            "invalid": 'value',
+
             "id=tm data1": "12345",
             "id=tm  data2": "5678",
             "id=welcomeCustomId data1": "welcomeCustomId",
@@ -139,10 +142,10 @@ QUnit.test("MutApp test: Models", function( assert ) {
     });
 
     assert.ok(app === app._models[0].application, 'application in model');
-    assert.ok(app._parsedDefaults.length === 5, 'parsed values');
+    assert.ok(app._parsedDefaults.length === 7, 'parsed values');
 
-    assert.ok(app.appAttr1 === 'appData1', 'default without selector goes to app');
-    assert.ok(app.appAttr2 === true, 'default without selector goes to app');
+    assert.ok(app.appAttr1 === 'appData1', 'app selector');
+    assert.ok(app.appAttr2 === true, 'app selector');
 
     assert.ok(app._models[0].attributes.data1 === '12345', 'default value has set');
     assert.ok(app._models[0].attributes.data2 === '5678', 'default value has set');

@@ -50,7 +50,7 @@ descriptor.css = [
     {
         // все кнопки
         selector: '.js-test_btn',
-        rules: 'backgroundColor fontColor fontSize fontFamily borderColor borderRadius paddingTop paddingBottom'
+        rules: 'backgroundColor fontColor fontSize fontFamily borderColor borderRadius borderWidth paddingTop paddingBottom'
     },
     {
         selector: '.js-test_btn',
@@ -170,11 +170,26 @@ descriptor.app = [
         // В engine это вроде заложено, в AppProperty точно нет
         selector: "id=tm quiz.{{number}}.answer.options.{{number}}",
         rules: 'setCorrectAnswer'
+    },
+    {
+        selector: 'type=test shareLink',
+        rules: 'url',
+        label: 'Шаринг в facebook',
+        filter: false
     }
 ];
 
 // правила, как редактировать свойства
 descriptor.rules = {
+    url: {
+        updateScreens: false,
+        controls: "StringControl",
+        controlParams: {
+            viewName: 'textinput'
+        },
+        label: 'Url',
+        filter: true
+    },
     text: {
         controls: 'TextQuickInput'
     },

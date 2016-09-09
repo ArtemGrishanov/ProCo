@@ -21,7 +21,13 @@ var MutApp = function(param) {
      * Также может быть ссылка на анонимную страницу на тестиксе
      * Или создатель теста может указать какую страницу шарить.
      */
-    this.shareDefaultLink = 'https://testix.me/',
+    this.shareDefaultLink = 'https://testix.me/';
+    /**
+     * Можно установить линк на страницу паблишера
+     * Или он будет установлен на конкретный проект (http://testix.me/13435255)
+     * @type {string}
+     */
+    this.shareLink = this.shareDefaultLink;
     /**
      * Массив сущностей для публикации
      * Например, ид какого-то результата или достижения (которых в приложении может быть несколько)
@@ -33,7 +39,6 @@ var MutApp = function(param) {
         //            description: 'Описание результата',
         //            view: domElement, // view из которого будет сделана картинка
         //            imgUrl: 'http://testix.me/.../32423534246.jpg' // картинка сгенерированная из view
-        //            link: 'http://testix.me/13435255'
         //        }
     ];
     /**
@@ -68,11 +73,16 @@ var MutApp = function(param) {
                         if (parsed !== null) {
                             parsed.value = defProps[key];
                             this._parsedDefaults.push(parsed);
+                            if (parsed.conditionValue === this[parsed.conditionKey]) {
+                                // если это свойство предназначено для самого mutapp-приложения (this)
+                                this[parsed.valueKey] = parsed.value;
+                            }
                         }
                         else {
                             // это простое свойство вида 'key1':'value1'
                             // которое надо установить непосредственно в сам объект MutApp
-                            this[key] = defProps[key];
+                            //this[key] = defProps[key];
+                            log('MutApp.constructor: Invalid selector=\''+key+'\'', true);
                         }
                     }
                 }
@@ -407,19 +417,19 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
         if (!!ent.imgUrl===false) {
             ent.imgUrl = this.shareDefaultImgUrl;
         }
-        if (!!ent.link===false) {
-            ent.link = this.shareDefaultLink;
+        if (!!this.shareLink===false) {
+            this.shareLink = this.shareDefaultLink;
         }
 
         if (serviceId === 'fb') {
             if (isFakeShare !== true) {
                 FB.ui({
                     method: 'feed',
-                    link: ent.link,
+                    link: this.shareLink,
                     name: ent.title,
                     description: ent.description,
                     picture: ent.imgUrl
-                }, function(response){
+                }, function(response) {
                     console.log(response);
                 });
             }

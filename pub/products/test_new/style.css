@@ -97,6 +97,7 @@
 .bullit {
     display: inline-block;
     border: 2px solid white;
+    border-color: #333;
     border-radius: 100px;
     width: 18px;
     height: 18px;
@@ -214,6 +215,7 @@ img {
 }
 .button {
     display: inline-block;
+    border: 0px solid;
     border-radius: 4px;
     background-color: #024889;
     color: #fff;
@@ -297,8 +299,6 @@ img {
     display: inline-block;
     vertical-align: middle;
     width: 480px;
-    margin-bottom: 48px;
-    margin-top: 20px;
     white-space: normal;
 }
 
@@ -306,7 +306,6 @@ img {
     font-size: 22px;
     color: #000;
     font-weight: 700;
-    margin: 0 -72px 24px;
 }
 .question_lst.__2 {
     display: -webkit-flex;
@@ -457,11 +456,9 @@ img {
 }
 .info_title {
     font-size: 36px;
-    margin: 0 auto 20px;
 }
 .info_tx {
     font-size: 18px;
-    margin: 0 auto 32px;
 }
 .info_f {
     font-size: 0;
