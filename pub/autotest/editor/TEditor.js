@@ -145,6 +145,9 @@ var TEditor = {};
         //TODO возможно ли более одного контрола у свойства
         var c = ap.controls[0];
         var newValue = generateValue(ap);
+        if (!!control===false) {
+            console.log('stop');
+        }
         switch(c.name) {
             case 'TextQuickInput': {
                 control.setControlValue(newValue);

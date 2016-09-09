@@ -63,9 +63,6 @@ var TEngine = {};
                     elementsWithAppProperty = elementsWithAppProperty.concat(elms);
                 }
             }
-            if (p.propertyString==='js-test_btn:hover_hoverBackgroundColor') {
-                console.log('stop');
-            }
             // проверяем что апп проперти встретилась хотя бы на одном экране, иначе это ошибка
             if (p.filter===true) {
                 assert.ok(elementsWithAppProperty.length > 0, 'There are elements in app containind data-app-property attr for \''+ p.propertyString+'\'');
@@ -131,9 +128,6 @@ var TEngine = {};
         // проверить в Engine, что оно в действительности установлено
         // проверить что в приложении оно тоже действительно установлено
         // проверить что во вью приложения оно реально установлено
-        if (appProperty===null) {
-            console.log('stop');
-        }
         assert.ok(typeof appProperty.propertyString === 'string', 'checkAppProperty');
 
         if (appProperty.type==='app') {
@@ -149,6 +143,9 @@ var TEngine = {};
         }
 
         assert.ok(!!appProperty.controls===true && appProperty.controls.length>0, 'checkAppProperty: control exist in '+appProperty.propertyString);
+        if (appProperty.controls===null) {
+            console.log('stop');
+        }
 
         // если у свойства есть атрибут есть canAdd - это имена прототипов которые можно в него добавить
         if (Array.isArray(appProperty.canAdd)===true) {

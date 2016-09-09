@@ -158,10 +158,9 @@ var TScenarios = {};
 
                             // найти информацию о контроле в редакторе
                             var ci = Editor.findControlInfo(p);
-                            assert.ok(ci && ci.control, 'happyPathApp: Finded info about control for \''+p+'\'');
-
+                            assert.ok(ci && ci.length>0, 'happyPathApp: Finded info about control for \''+p+'\'');
                             // генерируем новое значение и устанавливаем через контрол
-                            var newValue = TEditor.changeControlValue(ap, ci.control);
+                            var newValue = TEditor.changeControlValue(ap, ci[0].control);
 
                             if (newValue!==undefined) {
                                 // запоминаем сгенерированные новые значения на будущее

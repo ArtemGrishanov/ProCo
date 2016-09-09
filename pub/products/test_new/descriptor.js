@@ -353,25 +353,14 @@ descriptor.rules = {
     quizAddRule: {
         updateScreens: true,
         canAdd: ["proto__q-text_a-text","proto__q-text_a-img","proto__q-text-img_a-text"],
-//        добавлением слайдов занимается SlideGroupControl
-//        controls: [
-//            {
-//                name: "AddArrayElementControl",
-//                params: {
-//                    viewName: "AddScreenButton",
-//                    screenGroup: "questions",
-//                    prototypeIndex: 0,
-//                }
-//            },
-//            {
-//                name: "AddArrayElementControl",
-//                params: {
-//                    viewName: "AddScreenButton",
-//                    screenGroup: "questions",
-//                    prototypeIndex: 1
-//                }
-//            }
-//        ]
+        // добавлением слайдов занимается SlideGroupControl
+        controls: [
+            {
+                name: "SlideGroupControl",
+                params: {
+                }
+            }
+        ]
     },
     /**
      * Правила добавления опции ответа

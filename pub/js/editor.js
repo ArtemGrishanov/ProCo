@@ -1360,5 +1360,6 @@ var Editor = {};
     global.showSelectDialog = showSelectDialog;
     global.syncUIControlsToAppProperties = syncUIControlsToAppProperties;
     global.findControl = findControl;
+    global.findControlInfo = findControlInfo; // need for autotests
 
 })(Editor);

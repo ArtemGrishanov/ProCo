@@ -23,12 +23,6 @@ var AppProperty = function(propertyValue, propertyString, descriptor) {
     if (this.propertyString.charAt(0) === '.') {
         this.propertyString = this.propertyString.substr(1);
     }
-// может быть привязан позднее
-//    this.domElement = null;
-//    // если css селектор не указан, то автоматически формируем его из имени propertyString
-//    if (!descriptor.cssSelector) {
-//        descriptor.cssSelector = '.js-app_'+propertyString;
-//    }
     // декскриптор и его нормализация
     for (var key in AppProperty.validAttributes) {
         if (descriptor.hasOwnProperty(key)) {
@@ -133,33 +127,6 @@ AppProperty.prototype.parseControls = function(descriptor) {
     else {
         this.controls = [];
     }
-//    var reg = /((?:\w)+)(?:\(((?:\w|\,|=)*)\)){0,1}/ig;
-//    var res = [];
-//    while (match = reg.exec(str)) {
-//        // match[0] string itself
-//        var n = match[1];
-//        var p = {};
-//        if (match[2]) {
-//            // есть какие то параметры в описании контрола
-//            var preg = /((?:\w)+)\=((?:\w)+)/ig;
-//            var pmatch = null;
-//            while (pmatch = preg.exec(match[2])) {
-//                // булиновкие типы лучше сразу сделать, чтобы удобнее было потом работать
-//                if (pmatch[2] === 'false') {
-//                    pmatch[2] = false;
-//                }
-//                if (pmatch[2] === 'true') {
-//                    pmatch[2] = true;
-//                }
-//                p[pmatch[1]] = pmatch[2];
-//            }
-//        }
-//        res.push({
-//            name: n,
-//            params: p
-//        });
-//    }
-//    return res;
 }
 
 /**
