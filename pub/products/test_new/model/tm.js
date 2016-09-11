@@ -13,7 +13,7 @@ var TestModel = MutApp.Model.extend({
         /**
          * Единая настройка для всех экранов, пожтому здесь
          */
-        showBackgroundImage: false,
+        showBackgroundImage: true,
         logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
 
         showBullits: true,

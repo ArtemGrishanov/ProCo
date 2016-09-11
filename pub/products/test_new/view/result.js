@@ -106,9 +106,15 @@ var ResultScreen = MutApp.Screen.extend({
 
         this.$el.find('.js-restart').text(this.restartButtonText);
 
-        if (this.backgroundImg) {
-            this.$el.find('.js-back_img').css('backgroundImage','url('+this.backgroundImg+')');
+        if (this.model.get('showBackgroundImage')===true) {
+            if (this.backgroundImg) {
+                this.$el.find('.js-back_img').css('backgroundImage','url('+this.backgroundImg+')');
+            }
         }
+        else {
+            this.$el.find('.js-back_img').css('backgroundImage','none');
+        }
+
         return this;
     }
 });
