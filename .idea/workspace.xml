@@ -22,89 +22,74 @@
     <favorites_list name="ProCo" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="descriptor.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/test_new/descriptor.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="172" column="6" selection-start="6020" selection-end="6020" vertical-scroll-proportion="0.0" vertical-offset="2396" max-vertical-offset="12195">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mutapp.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/test_new/mutapp.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="71" column="68" selection-start="2632" selection-end="2632" vertical-scroll-proportion="0.0" vertical-offset="1065" max-vertical-offset="15510">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="qunitMutAppClientFramework.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitMutAppClientFramework.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="122" column="19" selection-start="3972" selection-end="3972" vertical-scroll-proportion="0.0" vertical-offset="1500" max-vertical-offset="5820">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/test_new/app.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="8" selection-start="90" selection-end="94" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="1290">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="style.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/test_new/style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="302" column="1" selection-start="5818" selection-end="5818" vertical-scroll-proportion="0.0" vertical-offset="4302" max-vertical-offset="7215">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="question.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/test_new/view/question.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="151" column="9" selection-start="5086" selection-end="5086" vertical-scroll-proportion="0.0" vertical-offset="1927" max-vertical-offset="3750">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="welcome.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/test_new/view/welcome.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="89" column="9" selection-start="2304" selection-end="2304" vertical-scroll-proportion="0.0" vertical-offset="745" max-vertical-offset="1545">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="result.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/test_new/view/result.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="116" column="0" selection-start="3331" selection-end="3331" vertical-scroll-proportion="0.0" vertical-offset="1083" max-vertical-offset="1875">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tm.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pub/products/test_new/model/tm.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="13" selection-start="800" selection-end="800" vertical-scroll-proportion="0.4059829" vertical-offset="180" max-vertical-offset="6225">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.6066434">
+      <split-first>
+        <leaf>
+          <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/pub/products/memoriz/index.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="24" column="64" selection-start="657" selection-end="657" vertical-scroll-proportion="-10.458333" vertical-offset="109" max-vertical-offset="840">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/pub/products/memoriz/app.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="16" column="0" selection-start="358" selection-end="358" vertical-scroll-proportion="0.0" vertical-offset="188" max-vertical-offset="900">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="gamescreen.js" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/pub/products/memoriz/view/gamescreen.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="34" column="75" selection-start="845" selection-end="845" vertical-scroll-proportion="0.64827585" vertical-offset="40" max-vertical-offset="1470">
+                  <folding>
+                    <element signature="e#2368#3686#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="memoriz.js" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/pub/products/memoriz/model/memoriz.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="126" column="34" selection-start="3908" selection-end="3908" vertical-scroll-proportion="0.0" vertical-offset="1620" max-vertical-offset="4605">
+                  <folding>
+                    <marker date="1473657645000" expanded="true" signature="696:770" placeholder="/** Единая настройка для всех экранов, пожтому здесь ...*/" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="memorizHelpers.js" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/pub/autotest/apps/helpers/memoriz/memorizHelpers.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="5" column="68" selection-start="233" selection-end="233" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="195">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="style.css" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/pub/products/memoriz/css/style.css">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="16" column="1" selection-start="291" selection-end="291" vertical-scroll-proportion="0.33103448" vertical-offset="0" max-vertical-offset="725">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -114,12 +99,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/controls/CustomQuickPanelControl.js" />
-        <option value="$PROJECT_DIR$/pub/controls/css/style.css" />
-        <option value="$PROJECT_DIR$/pub/js/appProperty.js" />
-        <option value="$PROJECT_DIR$/pub/autotest/engine/TEngine.js" />
-        <option value="$PROJECT_DIR$/pub/autotest/index.html" />
-        <option value="$PROJECT_DIR$/pub/js/editor.js" />
         <option value="$PROJECT_DIR$/pub/autotest/editor/TEditor.js" />
         <option value="$PROJECT_DIR$/pub/autotest/product/TProduct.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/style.css" />
@@ -130,6 +109,12 @@
         <option value="$PROJECT_DIR$/pub/products/test_new/view/welcome.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/view/result.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/model/tm.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/apps/helpers/memoriz/memorizHelpers.js" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/app.js" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/css/style.css" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/index.html" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/model/memoriz.js" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/view/gamescreen.js" />
       </list>
     </option>
   </component>
@@ -214,8 +199,26 @@
               <option name="myItemId" value="products" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="test_new" />
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="products" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="memoriz" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -237,7 +240,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="test_new" />
+              <option name="myItemId" value="memoriz" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -262,22 +265,12 @@
               <option name="myItemId" value="products" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
+              <option name="myItemId" value="memoriz" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
+              <option name="myItemId" value="model" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -296,6 +289,114 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="autotest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autotest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autotest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="helpers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autotest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="helpers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autotest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="helpers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="memoriz" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -327,11 +428,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pub/products/memoriz/model" />
+      <recent name="$PROJECT_DIR$/pub/products/memoriz/view" />
+      <recent name="$PROJECT_DIR$/pub/products/memoriz" />
+      <recent name="$PROJECT_DIR$/pub/products/memoriz/i" />
       <recent name="$PROJECT_DIR$/pub/controls/view" />
-      <recent name="$PROJECT_DIR$/pub/controls" />
-      <recent name="$PROJECT_DIR$/pub/controls/i" />
-      <recent name="$PROJECT_DIR$/pub/products/test_new/i" />
-      <recent name="$PROJECT_DIR$/pub" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/pub/autotest/layer1_app/helpers" />
@@ -420,7 +521,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15136299" sideWeight="0.5962815" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12984218" sideWeight="0.5962815" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32898173" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -449,101 +550,115 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="314" column="24" selection-start="10771" selection-end="10775" vertical-scroll-proportion="-9.16" vertical-offset="4481" max-vertical-offset="16860" />
+    <entry file="file://$PROJECT_DIR$/pub/products/test_new/i/fb.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/engine/TEngine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="146" column="12" selection-start="6849" selection-end="6849" vertical-scroll-proportion="-9.16" vertical-offset="1961" max-vertical-offset="7035" />
+    <entry file="file://$PROJECT_DIR$/pub/products/test_new/i/ocean.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/index.html">
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/jquery.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="98" column="18" selection-start="5439" selection-end="5439" vertical-scroll-proportion="-13.958333" vertical-offset="1135" max-vertical-offset="2325" />
+        <state line="3" column="38" selection-start="64196" selection-end="64196" vertical-scroll-proportion="0.06531204" vertical-offset="0" max-vertical-offset="689">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/test_new/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1339" column="21" selection-start="55994" selection-end="55994" vertical-scroll-proportion="0.0" vertical-offset="19823" max-vertical-offset="20550" />
+        <state line="243" column="13" selection-start="13743" selection-end="14709" vertical-scroll-proportion="3.9433138" vertical-offset="932" max-vertical-offset="3765">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/editor/TEditor.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/backbone.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="148" column="32" selection-start="6286" selection-end="6286" vertical-scroll-proportion="0.0" vertical-offset="1988" max-vertical-offset="2745" />
+        <state line="20" column="7" selection-start="973" selection-end="973" vertical-scroll-proportion="0.43541363" vertical-offset="0" max-vertical-offset="29280">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/product/TProduct.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/underscore.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="160" column="29" selection-start="6089" selection-end="6089" vertical-scroll-proportion="-9.76" vertical-offset="2156" max-vertical-offset="3975" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/qunitQueue.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="19" selection-start="591" selection-end="591" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1710" />
+        <state line="23" column="0" selection-start="922" selection-end="922" vertical-scroll-proportion="0.43541363" vertical-offset="0" max-vertical-offset="24435">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/test_new/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="8" selection-start="90" selection-end="94" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1290">
+        <state line="19" column="39" selection-start="441" selection-end="441" vertical-scroll-proportion="0.2949438" vertical-offset="75" max-vertical-offset="1290">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/style.css">
+    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/helpers/test/testHelpers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="302" column="1" selection-start="5818" selection-end="5818" vertical-scroll-proportion="0.0" vertical-offset="4302" max-vertical-offset="7215">
+        <state line="14" column="26" selection-start="620" selection-end="620" vertical-scroll-proportion="0.33426967" vertical-offset="0" max-vertical-offset="5100">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/descriptor.js">
+    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/helpers/memoriz/memorizHelpers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="172" column="6" selection-start="6020" selection-end="6020" vertical-scroll-proportion="0.0" vertical-offset="2396" max-vertical-offset="12195">
+        <state line="5" column="68" selection-start="233" selection-end="233" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="195">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/mutapp.js">
+    <entry file="file://$PROJECT_DIR$/pub/js/util/utils.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="68" selection-start="2632" selection-end="2632" vertical-scroll-proportion="0.0" vertical-offset="586" max-vertical-offset="15510">
+        <state line="20" column="28" selection-start="585" selection-end="585" vertical-scroll-proportion="0.44313148" vertical-offset="0" max-vertical-offset="5010">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitMutAppClientFramework.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="122" column="19" selection-start="3972" selection-end="3972" vertical-scroll-proportion="0.0" vertical-offset="1500" max-vertical-offset="5820">
+        <state line="24" column="64" selection-start="657" selection-end="657" vertical-scroll-proportion="-10.458333" vertical-offset="109" max-vertical-offset="840">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/view/question.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="151" column="9" selection-start="5086" selection-end="5086" vertical-scroll-proportion="0.0" vertical-offset="1927" max-vertical-offset="3750">
+        <state line="16" column="0" selection-start="358" selection-end="358" vertical-scroll-proportion="0.0" vertical-offset="188" max-vertical-offset="900">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/view/welcome.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/mutapp.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="89" column="9" selection-start="2304" selection-end="2304" vertical-scroll-proportion="0.0" vertical-offset="745" max-vertical-offset="1545">
+        <state line="783" column="4" selection-start="25619" selection-end="25619" vertical-scroll-proportion="0.33236575" vertical-offset="11516" max-vertical-offset="15510">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/view/result.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="116" column="0" selection-start="3331" selection-end="3331" vertical-scroll-proportion="0.0" vertical-offset="1083" max-vertical-offset="1875">
+        <state line="16" column="1" selection-start="291" selection-end="291" vertical-scroll-proportion="0.33103448" vertical-offset="0" max-vertical-offset="725">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/model/tm.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/model/memoriz.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="13" selection-start="800" selection-end="800" vertical-scroll-proportion="0.4059829" vertical-offset="180" max-vertical-offset="6225">
-          <folding />
+        <state line="126" column="34" selection-start="3908" selection-end="3908" vertical-scroll-proportion="0.0" vertical-offset="1620" max-vertical-offset="4605">
+          <folding>
+            <marker date="1473657645000" expanded="true" signature="696:770" placeholder="/** Единая настройка для всех экранов, пожтому здесь ...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/view/gamescreen.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="75" selection-start="845" selection-end="845" vertical-scroll-proportion="0.64827585" vertical-offset="40" max-vertical-offset="1470">
+          <folding>
+            <element signature="e#2368#3686#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

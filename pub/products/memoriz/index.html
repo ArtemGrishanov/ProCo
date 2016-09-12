@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Memoriz</title>
+    <meta charset="UTF-8">
+    <!--build:css style.css-->
+    <link href="css/style.css" rel="stylesheet">
+    <!--endbuild-->
+</head>
+<body>
+    <div id="id-mutapp_screens">
+
+    </div>
+
+    <!-- Игровое поле -->
+    <script id="id-game_screen_template" type="text/template">
+        <div class="card_field js-card-field">
+
+        </div>
+    </script>
+
+    <!-- Шаблон карточки, по умолчанию закрыт -->
+    <!-- В карточку может быть вставлено несколько видов контента -->
+    <script id="id-card_text_template" type="text/template">
+        <div data-card-id="<%=id%>" class="card __closed js-card">
+            <p><%=text%></p>
+        </div>
+    </script>
+
+    <!-- build:js index.min.js -->
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="underscore.js"></script>
+    <script type="text/javascript" src="backbone.js"></script>
+    <script type="text/javascript" src="mutapp.js"></script>
+    <script type="text/javascript" src="model/memoriz.js"></script>
+    <script type="text/javascript" src="view/gamescreen.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <!-- endbuild -->
+    <script>
+        var app = null;
+        var tests = {};
+        $(document).ready(function() {
+            var DEFAULT_PARAMS = {};
+            app = new MemorizApp({
+                defaults: DEFAULT_PARAMS
+            });
+            app.start();
+        });
+    </script>
+</body>
+</html>

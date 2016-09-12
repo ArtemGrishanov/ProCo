@@ -1,0 +1,17 @@
+.card {
+    display: inline-block;
+    width: 90px;
+    height: 140px;
+    border-radius: 10px;
+    border: 1px solid #aaa;
+    margin: 7px;
+    background-color: #eee;
+}
+.card.__closed {
+    background-color: #333;
+    cursor: pointer;
+}
+.card_field {
+    width: 400px;
+    height: 400px;
+}
