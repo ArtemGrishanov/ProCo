@@ -1,5 +1,5 @@
 .card_field {
-    width: 400px;
+    width: 660px;
     height: 400px;
 }
 
@@ -37,6 +37,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    overflow: hidden;
 }
 
 /* front pane, placed above back */
@@ -51,4 +52,6 @@
 .back {
     transform: rotateY(180deg);
     background: lightblue;
+    background-size: cover;
+    background-position: center;
 }

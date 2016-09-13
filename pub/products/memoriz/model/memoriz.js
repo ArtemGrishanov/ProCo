@@ -42,11 +42,13 @@ var MemorizModel = MutApp.Model.extend({
                 cards: [
                     {
                         uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 1'
+                        text: 'Ответ 1',
+                        img: 'i/o1.jpg'
                     },
                     {
                         uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 1'
+                        text: 'Ответ 1',
+                        img: 'i/o1.jpg'
                     }
                 ],
                 guessed: false,
@@ -59,11 +61,127 @@ var MemorizModel = MutApp.Model.extend({
                 cards: [
                     {
                         uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2'
+                        text: 'Ответ 2',
+                        img: 'i/o2.jpg'
                     },
                     {
                         uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2'
+                        text: 'Ответ 2',
+                        img: 'i/o2.jpg'
+                    }
+                ],
+                guessed: false,
+                explanation: {
+                    text: 'Пояснение к правильному ответу 2'
+                }
+            },
+            {
+                //id: null, set programmatically
+                cards: [
+                    {
+                        uiTemplate: 'id-card_text_template',
+                        text: 'Ответ 2',
+                        img: 'i/o3.jpg'
+                    },
+                    {
+                        uiTemplate: 'id-card_text_template',
+                        text: 'Ответ 2',
+                        img: 'i/o3.jpg'
+                    }
+                ],
+                guessed: false,
+                explanation: {
+                    text: 'Пояснение к правильному ответу 2'
+                }
+            },
+            {
+                //id: null, set programmatically
+                cards: [
+                    {
+                        uiTemplate: 'id-card_text_template',
+                        text: 'Ответ 2',
+                        img: 'i/o4.jpg'
+                    },
+                    {
+                        uiTemplate: 'id-card_text_template',
+                        text: 'Ответ 2',
+                        img: 'i/o4.jpg'
+                    }
+                ],
+                guessed: false,
+                explanation: {
+                    text: 'Пояснение к правильному ответу 2'
+                }
+            },
+            {
+                //id: null, set programmatically
+                cards: [
+                    {
+                        uiTemplate: 'id-card_text_template',
+                        text: 'Ответ 2',
+                        img: 'i/o5.jpg'
+                    },
+                    {
+                        uiTemplate: 'id-card_text_template',
+                        text: 'Ответ 2',
+                        img: 'i/o5.jpg'
+                    }
+                ],
+                guessed: false,
+                explanation: {
+                    text: 'Пояснение к правильному ответу 2'
+                }
+            },
+            {
+                //id: null, set programmatically
+                cards: [
+                    {
+                        uiTemplate: 'id-card_text_template',
+                        text: 'Ответ 2',
+                        img: 'i/o6.jpg'
+                    },
+                    {
+                        uiTemplate: 'id-card_text_template',
+                        text: 'Ответ 2',
+                        img: 'i/o6.jpg'
+                    }
+                ],
+                guessed: false,
+                explanation: {
+                    text: 'Пояснение к правильному ответу 2'
+                }
+            },
+            {
+                //id: null, set programmatically
+                cards: [
+                    {
+                        uiTemplate: 'id-card_text_template',
+                        text: 'Ответ 2',
+                        img: 'i/o7.jpg'
+                    },
+                    {
+                        uiTemplate: 'id-card_text_template',
+                        text: 'Ответ 2',
+                        img: 'i/o7.jpg'
+                    }
+                ],
+                guessed: false,
+                explanation: {
+                    text: 'Пояснение к правильному ответу 2'
+                }
+            },
+            {
+                //id: null, set programmatically
+                cards: [
+                    {
+                        uiTemplate: 'id-card_text_template',
+                        text: 'Ответ 2',
+                        img: 'i/o8.jpg'
+                    },
+                    {
+                        uiTemplate: 'id-card_text_template',
+                        text: 'Ответ 2',
+                        img: 'i/o8.jpg'
                     }
                 ],
                 guessed: false,
@@ -130,6 +248,7 @@ var MemorizModel = MutApp.Model.extend({
                 if (upc === 0) {
                     // показать объяснение, а дальше конец
                     console.log('Конец игры');
+                    alert('Ура! С днем рождения!');
                 }
                 else {
                     // показать объяснение и дальше игра

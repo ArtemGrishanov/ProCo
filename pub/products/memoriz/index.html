@@ -27,7 +27,7 @@
 
     <!-- Игровое поле -->
     <script id="id-game_screen_template" type="text/template">
-        <div class="card_field js-card-field">
+        <div class="card_field js-card-field js-back_color">
 
         </div>
     </script>
@@ -38,10 +38,11 @@
         <div data-card-id="<%=id%>" class="flip-container js-card">
             <div class="flipper hover">
                 <div class="front">
-                    <p>Front content</p>
+                    <!--<p>Front content</p>-->
                 </div>
-                <div class="back">
-                    <p><%=text%></p>
+                <div class="back" style="background-image:url(<%=img%>)">
+                    <!--<p><%=text%></p>-->
+                    <!--<img class="back_img" src="i/ocean.jpg"/>-->
                 </div>
             </div>
         </div>
