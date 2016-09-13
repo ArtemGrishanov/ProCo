@@ -295,8 +295,24 @@ var MemorizModel = MutApp.Model.extend({
                 result.push(p.cards[i]);
             }
         }
-        //TODO перемешать массив
+        this._shuffle(result);
         this.set({"gameCards": result});
+    },
+
+    /**
+     * Перемешать массив
+     *
+     * @param a
+     * @private
+     */
+    _shuffle: function(a) {
+        var j, x, i;
+        for (i = a.length; i; i--) {
+            j = Math.floor(Math.random() * i);
+            x = a[i - 1];
+            a[i - 1] = a[j];
+            a[j] = x;
+        }
     }
 
 });

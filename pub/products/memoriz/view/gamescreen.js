@@ -121,12 +121,12 @@ var GameScreen = MutApp.Screen.extend({
     },
 
     openCard: function(card) {
-        $('[data-card-id='+card.id+']').removeClass('__closed');
+        $('[data-card-id='+card.id+']').addClass('__opened');
     },
 
     closeCard: function(card) {
         setTimeout(function() {
-            $('[data-card-id='+card.id+']').addClass('__closed');
+            $('[data-card-id='+card.id+']').removeClass('__opened');
         }, 1000);
     }
 });

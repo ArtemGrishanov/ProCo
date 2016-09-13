@@ -210,6 +210,29 @@ var config = {
                 expectedSerializedAppStringLength: 4000
             }
         },
+        memoriz: {
+            /**
+             * Само приложение для загрузки через iframe
+             */
+            src: 'products/memoriz/index.html',
+            /**
+             * В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae
+             * Нужно для превью в контроле Slide
+             */
+            stylesForEmbed: '<link href="{{config.common.home}}/products/memoriz/style.css" rel="stylesheet"/>',
+            /**
+             * каталог откуда publisher будет брать все ресурсы для публикации проекта
+             */
+            baseProductUrl: 'products/memoriz/',
+            /**
+             * Ширина по умолчанию, если не задана
+             */
+            defaultWidth: 800,
+            /**
+             * Высота по умолчанию, если не задана
+             */
+            defaultHeight: 600,
+        },
         timeline: {
             stylesForEmbed: '<link href="{{config.common.home}}/products/timeline/style.css" rel="stylesheet"/>'
         },
