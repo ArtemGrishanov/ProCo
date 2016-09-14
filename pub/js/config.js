@@ -160,6 +160,10 @@ var config = {
         test: {
             prototypeId: 'test_v1.0',
             /**
+             * Имя функции с помощью которой создается приложение этого типа
+             */
+            constructorName: 'TestApp',
+            /**
              * Само приложение для загрузки через iframe
              */
             src: 'products/test_new/index.html',
@@ -212,6 +216,10 @@ var config = {
         },
         memoriz: {
             /**
+             * Имя функции с помощью которой создается приложение этого типа
+             */
+            constructorName: 'MemorizApp',
+            /**
              * Само приложение для загрузки через iframe
              */
             src: 'products/memoriz/index.html',
@@ -219,7 +227,7 @@ var config = {
              * В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae
              * Нужно для превью в контроле Slide
              */
-            stylesForEmbed: '<link href="{{config.common.home}}/products/memoriz/style.css" rel="stylesheet"/>',
+            stylesForEmbed: '<link href="{{config.common.home}}/products/memoriz/css/style.css" rel="stylesheet"/>',
             /**
              * каталог откуда publisher будет брать все ресурсы для публикации проекта
              */

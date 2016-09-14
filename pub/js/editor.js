@@ -232,13 +232,13 @@ var Editor = {};
     function onProductIframeLoaded() {
         iframeWindow = appIframe.contentWindow;
         // запуск движка с передачей информации о шаблоне
-        var params = null;
+        var params = {
+            appName: appName
+        };
         if (appTemplate) {
-            params = {
-                values: appTemplate.propertyValues
-                // не переписываем дескриптор, как плнировал изначально, а берем из материнского приложения всегда
-                //descriptor: appTemplate.descriptor
-            };
+            params.values = appTemplate.propertyValues;
+            // не переписываем дескриптор, как плнировал изначально, а берем из материнского приложения всегда
+            //descriptor: appTemplate.descriptor
         }
         Engine.startEngine(iframeWindow, params);
 

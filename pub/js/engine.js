@@ -18,6 +18,11 @@ var Engine = {};
      */
     var productWindow = null;
     /**
+     * Имя-тип загруженного приложения (test, memoriz и так далее)
+     * @type {null}
+     */
+    var appName = null;
+    /**
      * Свойства промо проекта, которые можно редактировать
      */
     var appProperties = [];
@@ -780,10 +785,11 @@ var Engine = {};
         //TODO выбрать конструктор для приложения
         try {
             delete productWindow.app;
-            productWindow.app = new productWindow.TestApp({
+            var cfg = config.products[appName];
+            productWindow.app = new productWindow[cfg.constructorName]({
                 //TODO ширина и высота такие аппПроперти
-                width: config.products.test.defaultWidth,
-                height: config.products.test.defaultHeight,
+                width: cfg.defaultWidth,
+                height: cfg.defaultHeight,
                 defaults: defaults
             });
             productWindow.app.start();
@@ -816,10 +822,11 @@ var Engine = {};
             // например, quiz.0.answer.0.text переписывал бы родительский quiz, даже если бы тот ставился позже
             newApps[propertyString] = JSON.parse(JSON.stringify(newValue));
 
-            productWindow.app = new productWindow.TestApp({
+            var cfg = config.products[appName];
+            productWindow.app = new productWindow[cfg.constructorName]({
                 //TODO ширина и высота такие аппПроперти
-                width: config.products.test.defaultWidth,
-                height: config.products.test.defaultHeight,
+                width: cfg.defaultWidth,
+                height: cfg.defaultHeight,
                 defaults: [apps, newApps]
             });
             productWindow.app.start();
@@ -851,9 +858,11 @@ var Engine = {};
      * @param {object} [params.values] свойства из шаблона например {"t_btn_paddingTop":"20","js-question_progress_fontColor":"#eee",...}
      * это объект ключ значение, чтобы установить его в appProperty
      * @param {object} [params.descriptor] дескриптор из шаблона
+     * @param {string} [params.appName] имя приложения: test, memoriz и так далее; они описаны в config.products[appName]
      */
     function startEngine(prodWindow, params) {
         productWindow = prodWindow;
+        appName = params.appName;
         if (params && params.descriptor) {
             // переписываем десриптором из шаблона
             productWindow.descriptor = params.descriptor;
@@ -863,6 +872,9 @@ var Engine = {};
         }
         if (productWindow.descriptor === undefined) {
             console.error('descriptor object must be specified');
+        }
+        if (!!appName===false) {
+            console.error('appName must be specified');
         }
 
 //        if (params && params.values && params.values.app) {
