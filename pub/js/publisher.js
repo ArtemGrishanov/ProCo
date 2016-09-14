@@ -117,7 +117,7 @@ var Publisher = {};
                         }
                         else {
                             log('All resources were uploaded.');
-                            var src = getDistribUrl()+indexHtml;
+                            var src = getDistribUrl();
                             callback('success', {src: src});
                         }
                     });
@@ -143,7 +143,7 @@ var Publisher = {};
     }
 
     function getDistribUrl() {
-        return config.common.awsHostName+config.common.awsBucketName+'/facebook-'+App.getUserData().id+'/pub/'+publishedAppId+'/';
+        return config.common.publishedProjectsHostName+App.getUserData().id+'/'+publishedAppId;
     }
 
     /**
@@ -175,7 +175,7 @@ var Publisher = {};
     function buildProductResourceList(codeStr) {
         productResources = [];
         //TODO поиск предполагает что ресурсы находятся рядом с html в baseUrl
-        var scriptExp = /src=(?:\"|\')((?:\w)+\.js)(?:\"|\')/ig;
+        var scriptExp = /src=(?:\"|\')((?:\w|\/)+\.js)(?:\"|\')/ig;
         var jsMatch = null;
         while ( (jsMatch = scriptExp.exec(codeStr)) !== null) {
             productResources.push({
@@ -320,7 +320,7 @@ var Publisher = {};
                 data: JSON.parse(JSON.stringify(productResources[i])),
                 run: function() {
                     log('Upload task run:' + this.data.url);
-                    var objKey = 'facebook-'+App.getUserData().id+'/pub/'+publishedAppId+'/'+this.data.url;
+                    var objKey = App.getUserData().id+'/'+publishedAppId+'/'+this.data.url;
                     var params = {
                         Key: objKey,
                         ContentType: this.data.type,

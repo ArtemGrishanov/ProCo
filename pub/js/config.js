@@ -84,8 +84,13 @@ var config = {
          */
         awsHostName: 'https://s3.eu-central-1.amazonaws.com/',
         awsBucketName: 'proconstructor',
+        awsPublishedProjectsBucketName: 'p.testix.me',
         awsRoleArn: 'arn:aws:iam::520270155749:role/ProCo_FBUsers',
         awsRegion: 'eu-central-1',
+        /**
+         * Хост для опубликованных проектов
+         */
+        publishedProjectsHostName: 'http://p.testix.me/',
         /**
          * Разрешает вывод в консоль console.log
          */
@@ -160,6 +165,10 @@ var config = {
         test: {
             prototypeId: 'test_v1.0',
             /**
+             * Имя функции с помощью которой создается приложение этого типа
+             */
+            constructorName: 'TestApp',
+            /**
              * Само приложение для загрузки через iframe
              */
             src: 'products/test_new/index.html',
@@ -209,6 +218,33 @@ var config = {
                 expectedTriggersCount: 3,
                 expectedSerializedAppStringLength: 4000
             }
+        },
+        memoriz: {
+            /**
+             * Имя функции с помощью которой создается приложение этого типа
+             */
+            constructorName: 'MemorizApp',
+            /**
+             * Само приложение для загрузки через iframe
+             */
+            src: 'products/memoriz/index.html',
+            /**
+             * В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae
+             * Нужно для превью в контроле Slide
+             */
+            stylesForEmbed: '<link href="{{config.common.home}}/products/memoriz/css/style.css" rel="stylesheet"/>',
+            /**
+             * каталог откуда publisher будет брать все ресурсы для публикации проекта
+             */
+            baseProductUrl: 'products/memoriz/',
+            /**
+             * Ширина по умолчанию, если не задана
+             */
+            defaultWidth: 800,
+            /**
+             * Высота по умолчанию, если не задана
+             */
+            defaultHeight: 600,
         },
         timeline: {
             stylesForEmbed: '<link href="{{config.common.home}}/products/timeline/style.css" rel="stylesheet"/>'

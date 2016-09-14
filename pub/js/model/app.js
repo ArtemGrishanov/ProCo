@@ -72,6 +72,7 @@ var App = App || {};
      * @type {object}
      */
     var bucket = null;
+    var bucketForPublishedProjects = null;
     /**
      * Обработчики на события внутри App
      * Например, на инициализацию апи AWS
@@ -262,6 +263,18 @@ var App = App || {};
                 RoleArn: config.common.awsRoleArn,
                 WebIdentityToken: accessToken
             });
+
+            bucketForPublishedProjects = new AWS.S3({
+                params: {
+                    Bucket: config.common.awsPublishedProjectsBucketName
+                }
+            });
+            bucketForPublishedProjects.config.credentials = new AWS.WebIdentityCredentials({
+                ProviderId: 'graph.facebook.com',
+                RoleArn: config.common.awsRoleArn,
+                WebIdentityToken: accessToken
+            });
+
             if (typeof callbacks[AWS_INIT_EVENT] === 'function') {
                 callbacks[AWS_INIT_EVENT]();
             }
@@ -302,12 +315,13 @@ var App = App || {};
                 getUserInfo();
             }
             // Первый раз должны проинициализировать апи для aws
-            if (config.common.awsEnabled === true && bucket === null) {
+            if (config.common.awsEnabled === true && bucket === null && bucketForPublishedProjects === null) {
                 initAWS(response.authResponse.accessToken);
             }
         } else {
             userData = null;
             bucket = null;
+            bucketForPublishedProjects = null;
             if (typeof callbacks[FB_CONNECTED] === 'function') {
                 callbacks[FB_CONNECTED]('not_authorized, unknown');
             }
@@ -453,10 +467,23 @@ var App = App || {};
         }
     }
 
+//    /**
+//     * Вернуть анонимный ид пользователя рассчитанный на основе его FB ид
+//     * @return {string}
+//     */
+//    function getUserAnonimId() {
+//        if (userData) {
+//            return MD5.calc('fb-'+userData.id).substr(0,8);
+//        }
+//        return null;
+//    }
+
     // public methoods below
     global.start = start;
+//    global.getUserAnonimId = getUserAnonimId;
     global.getUserData = function() { return userData; };
     global.getAWSBucket = function() { return bucket; };
+    global.getAWSBucketForPublishedProjects = function() { return bucketForPublishedProjects; };
     global.getDict = function() { return dict; };
     global.on = on;
     global.getFriends = getFriends;

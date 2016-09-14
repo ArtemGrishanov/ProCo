@@ -373,15 +373,22 @@ var TestModel = MutApp.Model.extend({
         for (var i = 0; i < resultsCount; i++) { //+1
             // если такого результата не существует, то создать.
             // это может случиться после добавления нового вопроса в тест
-            if (!this.attributes.results[i]) {
+            if (!!this.attributes.results[i] === false) {
                 // этот результат значит "ответил правильно на i вопросов"
-                this.attributes.results[i] = {
-                    minPoints: i,
-                    maxPoints: i,
-                    title: 'Название результата ' + i,
-                    description: 'Неплохо для начала.'
-                };
+                this.attributes.results[i] = {};
+            }
+            if (!!this.attributes.results[i].id === false) {
                 this.attributes.results[i].id = MD5.calc(this.attributes.results[i].title + this.attributes.results[i].description + i).substr(0,6);;
+            }
+            if (this.attributes.results[i].minPoints === undefined || this.attributes.results[i].maxPoints === undefined) {
+                this.attributes.results[i].minPoints = i;
+                this.attributes.results[i].maxPoints = i;
+            }
+            if (!!this.attributes.results[i].title === false) {
+                this.attributes.results[i].title = 'Название результата ' + i;
+            }
+            if (!!this.attributes.results[i].description === false) {
+                this.attributes.results[i].description = 'Комментарий к результату';
             }
         }
         if (this.attributes.results.length > resultsCount) {
