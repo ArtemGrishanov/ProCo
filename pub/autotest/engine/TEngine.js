@@ -198,14 +198,13 @@ var TEngine = {};
 
         var done = assert.async();
         var appIframe = null;
-//        var app = null;
 
         Queue.push({
             run: function() {
                 TApp.createApp(appName, function(iframe) {
                     appIframe = iframe;
                     assert.ok(true, 'App created');
-                    Engine.startEngine(appIframe.contentWindow);
+                    Engine.startEngine(appIframe.contentWindow, {appName:appName});
                     assert.ok(true, 'Engine started');
                     Queue.release(this);
                 });

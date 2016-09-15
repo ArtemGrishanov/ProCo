@@ -25,7 +25,7 @@ function uploadCanvas(callback, url, canvas) {
         Body: blob,
         ACL: 'public-read'
     };
-    App.getAWSBucket().putObject(params, (function (err, data) {
+    App.getAWSBucketForPublishedProjects().putObject(params, (function (err, data) {
         if (err) {
             //Not authorized to perform sts:AssumeRoleWithWebIdentity
             log('ERROR: ' + err, true);

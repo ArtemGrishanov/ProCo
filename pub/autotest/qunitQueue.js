@@ -26,7 +26,7 @@ QUnit.test("Queue test 1", function( assert ) {
         // correct
         assert.ok(true,'Tasks comleted with type: testType1');
         done();
-    }, 500, function () {
+    }, function () {
         // not correct
         assert.ok(false,'Cannot complete tasks with type: testType1');
         done();
@@ -60,9 +60,9 @@ QUnit.test("Queue test 2", function( assert ) {
     });
     Queue.onComplete('testType3', function(){
         // not correct
-        assert.ok(false,'Tasks comleted with type: testType3');
+        assert.ok(false,'Tasks completed with type: testType3');
         done();
-    }, 1000, function () {
+    }, function () {
         // correct
         assert.ok(true,'Cannot complete tasks with type: testType3');
         done();

@@ -782,12 +782,10 @@ var Engine = {};
      * @return {boolen}
      */
     function startMutApp(defaults) {
-        //TODO выбрать конструктор для приложения
         try {
             delete productWindow.app;
             var cfg = config.products[appName];
             productWindow.app = new productWindow[cfg.constructorName]({
-                //TODO ширина и высота такие аппПроперти
                 width: cfg.defaultWidth,
                 height: cfg.defaultHeight,
                 defaults: defaults
@@ -811,7 +809,6 @@ var Engine = {};
      * @return {boolean}
      */
     function setPropertyToMutApp(propertyString, newValue) {
-        //TODO выбрать конструктор для приложения
         try {
             delete productWindow.app;
             var apps = Engine.getAppPropertiesValues().app;
@@ -862,7 +859,7 @@ var Engine = {};
      */
     function startEngine(prodWindow, params) {
         productWindow = prodWindow;
-        appName = params.appName;
+        appName = (params) ? params.appName: null;
         if (params && params.descriptor) {
             // переписываем десриптором из шаблона
             productWindow.descriptor = params.descriptor;

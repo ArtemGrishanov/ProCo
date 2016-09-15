@@ -52,7 +52,6 @@ function __init_queue(global) {
      */
     var maxTimeForCompleteHandler = 10000; // millis
 
-    //TODO если стишком долго выполняется - закрыть таск через function release
     function doNext() {
         if (currentTask === null) {
             if (tasks.length > 0) {
@@ -76,10 +75,12 @@ function __init_queue(global) {
                 if (typeof currentTask.onFail === 'function') {
                     currentTask.onFail();
                 }
+                // Если таск никто на клиенте не релизит и ждем достаточно долго, то релизим здесь
+                // будут вызваны также обработчики onComplete внутри
+                Queue.release(currentTask, true);
                 currentTask = null;
             }
         }
-//        checkHandlersForExpiration(onCompleteHandlers);
     }
 
     /**
@@ -98,24 +99,6 @@ function __init_queue(global) {
         }
         return null;
     }
-
-//    /**
-//     * Проверить обработчики, какие из просрочились и их пора завершить
-//     * @param handlers
-//     */
-//    function checkHandlersForExpiration(handlers) {
-//        var now = new Date().getTime();
-//        for (var j = 0; j < handlers.length; j++) {
-//            if (now - handlers[j].registrationTime > handlers[j].maxWaitTime) {
-//                if (typeof handlers[j].onFail === 'function') {
-//                    handlers[j].onFail();
-//                }
-//                // удалем групповой обработчик как истекший
-//                handlers.splice(j,1);
-//                j--;
-//            }
-//        }
-//    }
 
     /**
      * Найти в массиве обработчиков задачи указанного типа type
@@ -156,9 +139,11 @@ function __init_queue(global) {
      * Завершить таск. Вызывается из клиентского кода.
      * Вызов указывает объекту Queue на то, что можно выполнять следующий таск.
      *
-     * @param t объект
+     * @param {object} t - объект-таск
+     * @param {boolean} [failed] - завершаем таск с ошибкой
      */
-    global.release = function(t) {
+    global.release = function(t, failed) {
+        failed = (failed === undefined) ? false: failed;
         if (currentTask === t) {
             if (t.hasOwnProperty('type')) {
                 for (var j = 0; j < onCompleteHandlers.length; j++) {
@@ -173,10 +158,18 @@ function __init_queue(global) {
                             }
                         }
                         if (notFound) {
-                            var clb = onCompleteHandlers[j].onSuccess;
+                            var clb = null;
+                            if (failed === true) {
+                                clb = onCompleteHandlers[j].onFail;
+                            }
+                            else {
+                                clb = onCompleteHandlers[j].onSuccess;
+                            }
                             // удалем обработчик для типа задач
                             onCompleteHandlers.splice(j,1);
-                            clb();
+                            if (clb) {
+                                clb();
+                            }
                         }
                     }
                 }
@@ -192,10 +185,9 @@ function __init_queue(global) {
      *
      * @param {string} type типа задачи
      * @param {Function} onSuccess функция для вызова после выполнения всех задач.
-//     * @param {Number} maxWaitTime максимальное время ожидания выполнения задач. Опционально. По умолчанию {$maxTimeForCompleteHandler}
      * @param {Function} onFail колбек при неудачном завершении. Например, время исполнения истекло, а задача не была завершена.
      */
-    global.onComplete = function(type, onSuccess, /*maxWaitTime,*/ onFail) {
+    global.onComplete = function(type, onSuccess, onFail) {
         // поиск: есть ли уже такой обработчик
         var p = findHandler(onCompleteHandlers, type);
         if (p >= 0) {
@@ -205,7 +197,6 @@ function __init_queue(global) {
         onCompleteHandlers.push({
             type: type,
             onSuccess: onSuccess,
-//            maxWaitTime: maxWaitTime || maxTimeForCompleteHandler,
             onFail: onFail,
             registrationTime: new Date().getTime()
         });

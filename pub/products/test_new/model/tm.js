@@ -378,7 +378,7 @@ var TestModel = MutApp.Model.extend({
                 this.attributes.results[i] = {};
             }
             if (!!this.attributes.results[i].id === false) {
-                this.attributes.results[i].id = MD5.calc(this.attributes.results[i].title + this.attributes.results[i].description + i).substr(0,6);;
+                this.attributes.results[i].id =  MutApp.Util.getUniqId(6);
             }
             if (this.attributes.results[i].minPoints === undefined || this.attributes.results[i].maxPoints === undefined) {
                 this.attributes.results[i].minPoints = i;

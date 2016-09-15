@@ -46,7 +46,7 @@ var MutApp = function(param) {
      *
      * @type {string}
      */
-    this.fbAppId = '518819781624579';
+    this.fbAppId = '1734391910154130';
     /**
      * Класс для кнопок шаринга
      * @type {string}

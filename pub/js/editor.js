@@ -965,20 +965,22 @@ var Editor = {};
 
     function onPublishClick() {
         if (App.getUserData() !== null) {
-            //TODO отделить пользовательскую зону для сохранения. другой домен например
-            //TODO прототипы для витрины и прочие ресы лежат в нашей доверенной зоне
             if (Publisher.isInited() === true) {
                 Modal.showLoading();
                 // appId - уникальный ид проекта, например appId
                 var app = Engine.getApp();
-                Publisher.publish({
-                    appId: appId,
-                    width: app.width,
-                    height: app.height,
-                    appStr: Engine.serializeAppValues(),
-                    cssStr: Engine.getCustomStylesString(),
-                    promoIframe: appIframe, //TODO возможно айрейм спрятать в engine тоже
-                    baseProductUrl: config.products[appName].baseProductUrl
+                // сначала создать превью-картинки для шаринга, записать ссылки на них в приложение
+                // и уже потом выкатывать приложение
+                createPreviewsForShare(function() {
+                    Publisher.publish({
+                        appId: appId,
+                        width: app.width,
+                        height: app.height,
+                        appStr: Engine.serializeAppValues(),
+                        cssStr: Engine.getCustomStylesString(),
+                        promoIframe: appIframe, //TODO возможно айрейм спрятать в engine тоже
+                        baseProductUrl: config.products[appName].baseProductUrl
+                    });
                 });
             }
         }
@@ -1129,14 +1131,13 @@ var Editor = {};
 
         if (App.getUserData() !== null || options.fakeUpload === true) {
 
-            Modal.showLoading();
             var app = Engine.getApp();
             var entities = app._shareEntities;
             shareToUpload = entities.length
 
             for (var i = 0; i < entities.length; i++) {
                 var e = entities[i];
-                var url = 'facebook-'+App.getUserData().id+'/app/'+config.common.shareFileNamePrefix+appId+'_'+e.id+'.jpg';
+                var url = App.getUserData().id+'/'+appId+'/'+config.common.shareFileNamePrefix+'_'+e.id+'.jpg';
                 (function(entityId, entityView, imageUrl){
 
                     // создать замыкание для сохранения значений entityId и imageUrl
@@ -1144,7 +1145,7 @@ var Editor = {};
                         log('createPreviewsForShare: preview created '+entityId+' '+imageUrl);
                         uploadCanvas(function(result) {
                             if (result === 'ok') {
-                                var fullImageUrl = config.common.awsHostName+config.common.awsBucketName+'/'+imageUrl;
+                                var fullImageUrl = config.common.publishedProjectsHostName+imageUrl;
                                 log('createPreviewsForShare: canvas uploaded '+entityId+' '+fullImageUrl);
                                 app.setImgForShare(entityId, fullImageUrl);
                                 preparedShareEntities.push({
@@ -1159,7 +1160,6 @@ var Editor = {};
                                 if (previewsReadyCallback) {
                                     previewsReadyCallback('ok', preparedShareEntities);
                                 }
-                                Modal.hideLoading();
                             }
                         }, imageUrl, canvas);
                     }, null, config.products[app.type].stylesForEmbed, appContainerSize.width, appContainerSize.height);
