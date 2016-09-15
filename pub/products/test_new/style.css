@@ -470,7 +470,7 @@ img {
     left: 20px;
     width: 64px;
     height: 64px;
-    background-image: url(i/fb.png);
+    background-image: url(https://s3.eu-central-1.amazonaws.com/testix.me/i/products/fb.png);
     background-size: 64px 64px;
     cursor: pointer;
 }

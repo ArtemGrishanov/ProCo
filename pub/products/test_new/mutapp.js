@@ -2,7 +2,6 @@
  * Created by artyom.grishanov on 06.07.16.
  *
  */
-
 var MutApp = function(param) {
     this.title = null;
     this.description = null;
@@ -46,7 +45,7 @@ var MutApp = function(param) {
      *
      * @type {string}
      */
-    this.fbAppId = '518819781624579';
+    this.fbAppId = '1734391910154130';
     /**
      * Класс для кнопок шаринга
      * @type {string}
@@ -57,7 +56,7 @@ var MutApp = function(param) {
     if (param) {
         if (this.screenRoot) {
             this.screenRoot.empty();
-            this.screenRoot.width(this.width).height(this.height);
+            this.screenRoot.width(this.width).height(this.height).css('position','relative');;
         }
 
         // значения которые надо установить по умолчанию при запуске приложения

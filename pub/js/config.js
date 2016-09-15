@@ -150,7 +150,21 @@ var config = {
         /**
          * Id элемента, в который пишутся кастомные стили во время редактирования в редакторе
          */
-        previewCustomStylesId: 'id-custom_style'
+        previewCustomStylesId: 'id-custom_style',
+        /**
+         * Анонимная страница для публикации
+         */
+        anonymPageForPublishing: 'templates/anonymPage/index.html',
+        anonymPageStylesForPublishing: 'css/common.css',
+        /**
+         * Место куда в анонимную страницу вставлять код проекта при публикации
+         */
+        anonymPageAnchorToEmbed: '<!--embed_code-->',
+        /**
+         * Если в прилжении стоит вот такая ссылка, то она будет автоматически заменена при старте редактора
+         * на ссылку вида http://p.testix.me/121947341568004/be169f9a66
+         */
+        defaultShareLinkToChange: 'https://testix.me/'
     },
     /**
      * Конфигурация витрины

@@ -179,11 +179,29 @@ var Editor = {};
                 _initPublisher();
             });
         }
+        App.on(USER_DATA_RECEIVED, function() {
+            trySetDefaultShareLink();
+        });
         window.onbeforeunload = confirmExit;
         $('.js-app_preview').click(onPreviewClick);
         $('.js-app_publish').click(onPublishClick);
         $('.js-app_save_template').click(saveTemplate);
         $('.js-back_to_editor').click(onBackToEditorClick);
+    }
+
+    /**
+     * Попробовать установить ссылку для шаринга автоматически
+     */
+    function trySetDefaultShareLink() {
+        var pp = Engine.find('shareLink');
+        if (pp && pp.length > 0) {
+            if (pp[0].propertyValue == config.common.defaultShareLinkToChange) {
+                Engine.setValue(pp[0], Publisher.getAnonymLink(appId));
+            }
+        }
+        else {
+            log('setDefaultShareLink: can not find shareLink property', true);
+        }
     }
 
     /**
@@ -952,8 +970,11 @@ var Editor = {};
             if (Publisher.isInited() === true) {
                 Modal.showLoading();
                 // appId - уникальный ид проекта, например appId
+                var app = Engine.getApp();
                 Publisher.publish({
                     appId: appId,
+                    width: app.width,
+                    height: app.height,
                     appStr: Engine.serializeAppValues(),
                     cssStr: Engine.getCustomStylesString(),
                     promoIframe: appIframe, //TODO возможно айрейм спрятать в engine тоже
@@ -1213,11 +1234,10 @@ var Editor = {};
     function showEmbedDialog(result, data) {
         Modal.hideLoading();
         if (result === 'success') {
-            var iframeUrl = data.src;
-            var ec = '<iframe src="'+iframeUrl+'" style="display:block;width:800px;height:600px;padding:0;border:none;"></iframe>';
+
             showPublishDialog({
-                link: iframeUrl,
-                embedCode: ec
+                link: Publisher.getAnonymLink(),
+                embedCode: Publisher.getEmbedCode()
             });
             // надо сохранить статус публикации
             sessionPublishDate = new Date().toString();

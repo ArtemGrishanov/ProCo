@@ -5,6 +5,11 @@
 var Publisher = {};
 (function(global) {
     var indexHtml = 'index.html';
+    /**
+     * Префикс к хтмлке продукта, чтобы не путать с анонимкой при публикации
+     * @type {string}
+     */
+    var indexPrefix = 'p_';
     var bucket = null;
     /**
      * Указывает, была ли последняя публикация продукта успешной или нет
@@ -51,6 +56,16 @@ var Publisher = {};
      * @type {null}
      */
     var baseProductUrl = null;
+    /**
+     * Ширина приложения
+     * @type {number}
+     */
+    var appWidth = 800;
+    /**
+     * Высота приложения
+     * @type {number}
+     */
+    var appHeight = 600;
 
     /**
      * Инициаоизация модуля.
@@ -73,6 +88,8 @@ var Publisher = {};
      * 4) Загружаются в хранилище в персональный каталог пользователя
      *
      * @params.appId {string} - уникальный ид проекта, типа c31ab01f0c
+     * @params.width {number} - ширина проекта, для ембед кода
+     * @params.height {number} - высота проекта для ембед кода
      * @params.appStr {string} - app свойства промо приложения, который надо перезаписать
      * @params.cssStr {string} - css стили приложения, которые надо добавить в index.html
      * @params.cssStr {string} - css стили приложения, которые надо добавить в index.html
@@ -84,6 +101,8 @@ var Publisher = {};
             publishedAppId = params.appId;
             appStr = params.appStr;
             cssStr = params.cssStr;
+            appWidth = params.width;
+            appHeight = params.height;
             promoIframe = params.promoIframe;
             baseProductUrl = params.baseProductUrl;
             errorInPublish = false;
@@ -105,7 +124,7 @@ var Publisher = {};
     //            }
 
                 // удалим лишние параметры внутри приложения если они там есть
-                var indexRes = getResourceByUrl(indexHtml);
+                var indexRes = getResourceByUrl(indexPrefix+indexHtml);
                 indexRes.data = deleteOverridedAppParams(indexRes.data);
 
                 Queue.onComplete('overrideApp', function() {
@@ -117,8 +136,7 @@ var Publisher = {};
                         }
                         else {
                             log('All resources were uploaded.');
-                            var src = getDistribUrl();
-                            callback('success', {src: src});
+                            callback('success', null);
                         }
                     });
                     uploadProductResources({
@@ -132,7 +150,11 @@ var Publisher = {};
                     priority:9,
                     maxWaitTime: 10000
                 });
-
+                embedIframeToAnonymPage({
+                    taskType:'overrideApp',
+                    priority:9,
+                    maxWaitTime: 10000
+                });
             });
             grabProductResources({
                 taskType:'grabResTask',
@@ -142,8 +164,21 @@ var Publisher = {};
         }
     }
 
-    function getDistribUrl() {
-        return config.common.publishedProjectsHostName+App.getUserData().id+'/'+publishedAppId;
+    /**
+     * Ссылка на анонимку, которой можно поделиться, на которую можно зайти.
+     * @returns {string}
+     */
+    function getAnonymLink(appId) {
+        var appId = appId || publishedAppId;
+        return config.common.publishedProjectsHostName+App.getUserData().id+'/'+appId;
+    }
+
+    /**
+     * HTML код для вставки на сайт
+     * @returns {string}
+     */
+    function getEmbedCode() {
+        return '<iframe src=\"'+getAnonymLink()+'/'+indexPrefix+indexHtml+'\" style="display:block;width:'+appWidth+'px;height:'+appHeight+'px;margin:0 auto;padding:0;border:none;"></iframe>';
     }
 
     /**
@@ -162,8 +197,15 @@ var Publisher = {};
      */
     function getResourceByUrl(url) {
         for (var i = 0; i < productResources.length; i++) {
-            if (productResources[i].url === url) {
-                return productResources[i];
+            if (productResources[i].destUrl) {
+                if (productResources[i].destUrl === url) {
+                    return productResources[i];
+                }
+            }
+            else {
+                if (productResources[i].url === url) {
+                    return productResources[i];
+                }
             }
         }
         return null;
@@ -174,19 +216,33 @@ var Publisher = {};
      */
     function buildProductResourceList(codeStr) {
         productResources = [];
+        productResources.push({
+            baseUrl: '',
+            url: config.common.anonymPageForPublishing,
+            destUrl: 'index.html', // сделать анонимку страницей, открываемой по умолчанию
+            type: 'text/html'
+        });
+        productResources.push({
+            baseUrl: '',
+            url: config.common.anonymPageStylesForPublishing,
+            destUrl: 'common.css',
+            type: 'text/css'
+        });
         //TODO поиск предполагает что ресурсы находятся рядом с html в baseUrl
         var scriptExp = /src=(?:\"|\')((?:\w|\/)+\.js)(?:\"|\')/ig;
         var jsMatch = null;
         while ( (jsMatch = scriptExp.exec(codeStr)) !== null) {
             productResources.push({
+                baseUrl: baseProductUrl,
                 type: 'text/javascript',
                 url: jsMatch[1]
             });
         }
-        var cssExp = /href=(?:\"|')((?:\w)+.css)(?:\"|')/ig;
+        var cssExp = /href=(?:\"|')((?:\w|\/)+.css)(?:\"|')/ig;
         var cssMatch = null;
         while ( (cssMatch = cssExp.exec(codeStr)) !== null) {
             productResources.push({
+                baseUrl: baseProductUrl,
                 type: 'text/css',
                 url: cssMatch[1]
             });
@@ -195,7 +251,11 @@ var Publisher = {};
 
         // добавляем главный html файл
         productResources.push({
+            baseUrl: baseProductUrl,
             url: indexHtml,
+            // destUrl - это опциональный параметр с целью переписать имя главной хтмлки проекта, так как
+            // в каталоге будет враппер с таким же именем и он должен открываться при заходе на анонимку
+            destUrl: indexPrefix+indexHtml,
             type: 'text/html'
         });
     }
@@ -213,9 +273,9 @@ var Publisher = {};
                     // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
                     data: JSON.parse(JSON.stringify(productResources[i])),
                     run: function() {
-                        log('Grab task run:' + baseProductUrl + this.data.url);
+                        log('Grab task run:' + this.data.baseUrl + this.data.url);
                         var client = new XMLHttpRequest();
-                        client.open('GET', baseProductUrl + this.data.url);
+                        client.open('GET', this.data.baseUrl + this.data.url);
                         client.onreadystatechange = (function(e) {
                             if (e.target.readyState == 4) {
                                 if(e.target.status == 200) {
@@ -224,7 +284,7 @@ var Publisher = {};
                                     setDataToResource(this.data.url, e.target.responseText);
                                 }
                                 else {
-                                    log('Resource request failed: '+ myRequest.statusText, true);
+                                    log('Resource request failed: '+ e.target.statusText, true);
                                 }
                                 // даем понять, что таск завершен
                                 Queue.release(this);
@@ -272,7 +332,7 @@ var Publisher = {};
             data: '',
             run: function() {
                 // здесь происходит подмена параметров промо приложения на новые. Те, которые были настроены пользователем.
-                var indexResource = getResourceByUrl(indexHtml);
+                var indexResource = getResourceByUrl(indexPrefix+indexHtml);
                 var writeAnchorReg = /(var\s+DEFAULT_PARAMS\s+=\s+{.*};)/ig;
                 var match = writeAnchorReg.exec(indexResource.data);
                 if (match && match[1]) {
@@ -309,6 +369,33 @@ var Publisher = {};
     }
 
     /**
+     * Вставить айфрейм в анонимку
+     *
+     * @param param
+     */
+    function embedIframeToAnonymPage(param) {
+        var t = {
+            data: '',
+            run: function() {
+                // destUrl анонимной страницы == 'index.html'
+                var indexResource = getResourceByUrl('index.html');
+                indexResource.data = indexResource.data.replace(config.common.anonymPageAnchorToEmbed, getEmbedCode());
+                Queue.release(this);
+            }
+        };
+        if (param.taskType) {
+            t.type = param.taskType;
+        }
+        if (param.priority) {
+            t.priority = param.priority;
+        }
+        if (param.maxWaitTime) {
+            t.maxWaitTime = param.maxWaitTime;
+        }
+        Queue.push(t);
+    }
+
+    /**
      * Сохранить все статические ресурсы проекта в хранилище
      *
      * @param param
@@ -319,8 +406,9 @@ var Publisher = {};
                 // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
                 data: JSON.parse(JSON.stringify(productResources[i])),
                 run: function() {
-                    log('Upload task run:' + this.data.url);
-                    var objKey = App.getUserData().id+'/'+publishedAppId+'/'+this.data.url;
+                    var u = this.data.destUrl || this.data.url;
+                    log('Upload task run:' + u);
+                    var objKey = App.getUserData().id+'/'+publishedAppId+'/'+u;
                     var params = {
                         Key: objKey,
                         ContentType: this.data.type,
@@ -333,7 +421,7 @@ var Publisher = {};
                             errorInPublish = true;
                             log('ERROR: ' + err, true);
                         }
-                        log('Upload task done:' + this.data.url);
+                        log('Upload task done:' + u);
                         Queue.release(this);
                     }).bind(this));
                 }
@@ -353,6 +441,8 @@ var Publisher = {};
 
     global.init = init;
     global.publish = publish;
+    global.getEmbedCode = getEmbedCode;
+    global.getAnonymLink = getAnonymLink;
     global.isInited = function() {return isInited;}
     global.isError = function() {return errorInPublish;}
 

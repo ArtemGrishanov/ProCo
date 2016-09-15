@@ -79,7 +79,7 @@ function __init_queue(global) {
                 currentTask = null;
             }
         }
-        checkHandlersForExpiration(onCompleteHandlers);
+//        checkHandlersForExpiration(onCompleteHandlers);
     }
 
     /**
@@ -99,23 +99,23 @@ function __init_queue(global) {
         return null;
     }
 
-    /**
-     * Проверить обработчики, какие из просрочились и их пора завершить
-     * @param handlers
-     */
-    function checkHandlersForExpiration(handlers) {
-        var now = new Date().getTime();
-        for (var j = 0; j < handlers.length; j++) {
-            if (now - handlers[j].registrationTime > handlers[j].maxWaitTime) {
-                if (typeof handlers[j].onFail === 'function') {
-                    handlers[j].onFail();
-                }
-                // удалем групповой обработчик как истекший
-                handlers.splice(j,1);
-                j--;
-            }
-        }
-    }
+//    /**
+//     * Проверить обработчики, какие из просрочились и их пора завершить
+//     * @param handlers
+//     */
+//    function checkHandlersForExpiration(handlers) {
+//        var now = new Date().getTime();
+//        for (var j = 0; j < handlers.length; j++) {
+//            if (now - handlers[j].registrationTime > handlers[j].maxWaitTime) {
+//                if (typeof handlers[j].onFail === 'function') {
+//                    handlers[j].onFail();
+//                }
+//                // удалем групповой обработчик как истекший
+//                handlers.splice(j,1);
+//                j--;
+//            }
+//        }
+//    }
 
     /**
      * Найти в массиве обработчиков задачи указанного типа type
@@ -192,10 +192,10 @@ function __init_queue(global) {
      *
      * @param {string} type типа задачи
      * @param {Function} onSuccess функция для вызова после выполнения всех задач.
-     * @param {Number} maxWaitTime максимальное время ожидания выполнения задач. Опционально. По умолчанию {$maxTimeForCompleteHandler}
+//     * @param {Number} maxWaitTime максимальное время ожидания выполнения задач. Опционально. По умолчанию {$maxTimeForCompleteHandler}
      * @param {Function} onFail колбек при неудачном завершении. Например, время исполнения истекло, а задача не была завершена.
      */
-    global.onComplete = function(type, onSuccess, maxWaitTime, onFail) {
+    global.onComplete = function(type, onSuccess, /*maxWaitTime,*/ onFail) {
         // поиск: есть ли уже такой обработчик
         var p = findHandler(onCompleteHandlers, type);
         if (p >= 0) {
@@ -205,7 +205,7 @@ function __init_queue(global) {
         onCompleteHandlers.push({
             type: type,
             onSuccess: onSuccess,
-            maxWaitTime: maxWaitTime || maxTimeForCompleteHandler,
+//            maxWaitTime: maxWaitTime || maxTimeForCompleteHandler,
             onFail: onFail,
             registrationTime: new Date().getTime()
         });
