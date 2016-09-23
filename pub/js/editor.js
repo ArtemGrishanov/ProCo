@@ -1105,10 +1105,13 @@ var Editor = {};
         // проверяем что надо генеритьб првеью для проекта если только пользователь ранее не установил свое кастомное превью
         // его не надо перезаписывать
         if (config.common.previewAutoGeneration === true) {
+            var app = Engine.getApp();
             var url = 'facebook-'+App.getUserData().id+'/app/'+appId+'.jpg';
-            previewService.create(previewScreensIframeBody, function(canvas) {
-                uploadCanvas(null, url, canvas);
-            });
+
+            previewService.createInIframe(previewScreensIframeBody, function(canvas) {
+                uploadCanvas(App.getAWSBucket(), null, url, canvas);
+            }, null, config.products[app.type].stylesForEmbed, appContainerSize.width, appContainerSize.height);
+
             return url;
         }
         return null;
@@ -1120,16 +1123,19 @@ var Editor = {};
      * Затем обратно полученные урлы ставим в приложение
      *
      * @param {function} previewsReadyCallback
-     * @param {boolean} options.fakeUpload - если true, то на самом деле не отправлять картинки на сервер
+     * @param {boolean} options.upload - если true, то на самом деле не отправлять картинки на сервер
      */
     var shareToUpload = 0;
     var preparedShareEntities = [];
     function createPreviewsForShare(previewsReadyCallback, options) {
         options = options || {};
-        options.fakeUpload = options.fakeUpload || false;
+        if (options.hasOwnProperty('upload')===false) {
+            options.upload = true;
+        }
+
         preparedShareEntities = [];
 
-        if (App.getUserData() !== null || options.fakeUpload === true) {
+        if (App.getUserData() !== null) {
 
             var app = Engine.getApp();
             var entities = app._shareEntities;
@@ -1143,11 +1149,18 @@ var Editor = {};
                     // создать замыкание для сохранения значений entityId и imageUrl
                     previewService.createInIframe(entityView, function(canvas) {
                         log('createPreviewsForShare: preview created '+entityId+' '+imageUrl);
-                        uploadCanvas(function(result) {
+                        uploadCanvas(App.getAWSBucketForPublishedProjects(), function(result) {
                             if (result === 'ok') {
                                 var fullImageUrl = config.common.publishedProjectsHostName+imageUrl;
                                 log('createPreviewsForShare: canvas uploaded '+entityId+' '+fullImageUrl);
-                                app.setImgForShare(entityId, fullImageUrl);
+
+                                // дописать в хранилище картинок картинку для публикации
+                                var shP = Engine.getAppProperty(config.common.shareImagesAppPropertyString);
+                                shP.propertyValue[entityId] = fullImageUrl;
+                                Engine.setValue(shP, shP.propertyValue);
+                                // app.setImgForShare(entityId, fullImageUrl);
+
+                                // эта переменная только нужна для возврата в колбек, для автотестов пока что
                                 preparedShareEntities.push({
                                     entityId: entityId,
                                     imageUrl: fullImageUrl,
@@ -1171,6 +1184,22 @@ var Editor = {};
         else {
             Modal.showLogin();
         }
+    }
+
+    /**
+     * Сгенерировать превьюшки для шаринга и вывести их в DOM чтобы оценить их корректность
+     * Для ручного тестирования
+     *
+     */
+    function testPreviewsForShare() {
+        createPreviewsForShare(function(result, entities) {
+                for (var i = 0; i < entities.length; i++) {
+                    var $e = $('<div></div>').append(entities[i].canvas).css('border','4px dashed gray');
+                    $('#id-share_previews_test').append($e);
+                }
+                $('#id-share_previews_test').show();
+            },
+            {upload: false});
     }
 
     /**
@@ -1374,6 +1403,7 @@ var Editor = {};
     global.getAppContainerSize = function() { return appContainerSize; };
     global.getSlideGroupControls = function() { return slideGroupControls; };
     global.createPreviewsForShare = createPreviewsForShare;
+    global.testPreviewsForShare = testPreviewsForShare;
     global.deleteSelections = deleteSelections;
     global.hideWorkspaceHints = hideWorkspaceHints;
     global.getResourceManager = function() { return resourceManager; }

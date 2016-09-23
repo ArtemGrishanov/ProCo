@@ -4,6 +4,7 @@
  */
 
 var MutApp = function(param) {
+    this.appConstructor = 'mutapp';
     this.title = null;
     this.description = null;
     this._models = [];
@@ -41,6 +42,13 @@ var MutApp = function(param) {
         //            imgUrl: 'http://testix.me/.../32423534246.jpg' // картинка сгенерированная из view
         //        }
     ];
+    /**
+     * Объект ключ значение для хранения ссылок на картинки шаринга
+     *
+     * entityId: 'http://testix.me/.../32423534246.jpg' //картинка сгенерированная из view
+     * @type {object}
+     */
+    this._shareImages = {};
     /**
      * Ид для публикации
      *
@@ -385,21 +393,21 @@ MutApp.prototype.findShareEntity = function(entityId) {
     return null;
 };
 
-/**
- * Установить картинку для шаринга
- *
- * @param {string} entityId
- * @param {string} imgUrl
- * @returns {*}
- */
-MutApp.prototype.setImgForShare = function(entityId, imgUrl) {
-    for (var i = 0; i < this._shareEntities.length; i++) {
-        if (this._shareEntities[i].id === entityId) {
-            this._shareEntities[i].imgUrl = imgUrl;
-            break;
-        }
-    }
-};
+///**
+// * Установить картинку для шаринга
+// *
+// * @param {string} entityId
+// * @param {string} imgUrl
+// * @returns {*}
+// */
+//MutApp.prototype.setImgForShare = function(entityId, imgUrl) {
+//    for (var i = 0; i < this._shareEntities.length; i++) {
+//        if (this._shareEntities[i].id === entityId) {
+//            this._shareEntities[i].imgUrl = imgUrl;
+//            break;
+//        }
+//    }
+//};
 
 /**
  * Опубликовать сущность
@@ -414,8 +422,9 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
     serviceId = serviceId || 'fb';
     var ent = this.findShareEntity(entityId);
     if (ent) {
-        if (!!ent.imgUrl===false) {
-            ent.imgUrl = this.shareDefaultImgUrl;
+        var imgUrl = this._shareImages[entityId];
+        if (!!imgUrl === false) {
+            imgUrl = this.shareDefaultImgUrl;
         }
         if (!!this.shareLink===false) {
             this.shareLink = this.shareDefaultLink;
@@ -428,7 +437,7 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
                     link: this.shareLink,
                     name: ent.title,
                     description: ent.description,
-                    picture: ent.imgUrl
+                    picture: imgUrl
                 }, function(response) {
                     console.log(response);
                 });

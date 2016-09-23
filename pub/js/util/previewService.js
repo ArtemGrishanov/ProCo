@@ -20,40 +20,40 @@ var previewService = {};
      * @param callback
      * @param {html2canvas|rasterizeHTML} type - разные либы/типы генерации которые можно попробовать
      */
-    function create(html, callback, type) {
-        type = type || 'html2canvas';
-        // работает, но плохо с буллитами. Появляются непонятные линии
-        var t = {
-            run: function() {
-                if (type === 'html2canvas') {
-                    html2canvas(html, {
-                        onrendered: (function(canvas) {
-                            callback(canvas);
-                            Queue.release(this);
-                        }).bind(this)
-                    },{
-                        // options for render
-                        background: '#fff'
-                    });
-                }
-                else if (type === 'rasterizeHTML') {
-                    // !!не работает
-                    var canvas = document.getElementById("id-preview_canvas");
-                    rasterizeHTML.drawHTML(productScreensCnt.html(),canvas)
-                        .then(function success(renderResult) {
-                            console.log(renderResult);
-                            //callback(renderResult.image);
-                            callback(renderResult.svg);
-                        }, function error(e) {
-                            console.log(e);
-                            callback(null);
-                        });
-                    $('body').append(canvas);
-                }
-            }
-        };
-        Queue.push(t);
-    }
+//    function create(html, callback, type) {
+//        type = type || 'html2canvas';
+//        // работает, но плохо с буллитами. Появляются непонятные линии
+//        var t = {
+//            run: function() {
+//                if (type === 'html2canvas') {
+//                    html2canvas(html, {
+//                        onrendered: (function(canvas) {
+//                            callback(canvas);
+//                            Queue.release(this);
+//                        }).bind(this)
+//                    },{
+//                        // options for render
+//                        background: '#fff'
+//                    });
+//                }
+//                else if (type === 'rasterizeHTML') {
+//                    // !!не работает
+//                    var canvas = document.getElementById("id-preview_canvas");
+//                    rasterizeHTML.drawHTML(productScreensCnt.html(),canvas)
+//                        .then(function success(renderResult) {
+//                            console.log(renderResult);
+//                            //callback(renderResult.image);
+//                            callback(renderResult.svg);
+//                        }, function error(e) {
+//                            console.log(e);
+//                            callback(null);
+//                        });
+//                    $('body').append(canvas);
+//                }
+//            }
+//        };
+//        Queue.push(t);
+//    }
 
     /**
      * Создать превью с помощью дополнительного iframe
@@ -79,6 +79,8 @@ var previewService = {};
                     var cnt = $('#id-html_rasterization_iframe').contents().find('#id-html_rasterization_cnt');
                     // стили от этого вью добавляем,
                     $("#id-html_rasterization_iframe").contents().find('head').append(stylesToEmbed);
+                    // в превью контейнер дописать кастомные стили, которые получились в результате редактирования css appProperties
+                    Engine.writeCssRulesTo($("#id-html_rasterization_iframe").contents().find('body'));
                     // Обязательно display !== none
                     $(html).show();
                     $("#id-html_rasterization_iframe").width(width).height(height);
@@ -99,7 +101,7 @@ var previewService = {};
     }
 
     // public methods
-    global.create = create;
+//    global.create = create;
     global.createInIframe = createInIframe;
 
 })(previewService);

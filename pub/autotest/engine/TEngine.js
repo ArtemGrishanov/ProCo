@@ -142,9 +142,12 @@ var TEngine = {};
             assert.ok(false, 'checkApppropety: Unknown type='+appProperty.type);
         }
 
-        assert.ok(!!appProperty.controls===true && appProperty.controls.length>0, 'checkAppProperty: control exist in '+appProperty.propertyString);
-        if (appProperty.controls===null) {
-            console.log('stop');
+        // TODO: заточка. Для одного свойства понадобилось убрать контролы совсем.
+        if (appProperty.label!=='Картинка для шары, скрытое свойство') {
+            assert.ok(!!appProperty.controls===true && appProperty.controls.length>0, 'checkAppProperty: control exist in '+appProperty.propertyString);
+            if (appProperty.controls===null) {
+                console.log('stop');
+            }
         }
 
         // если у свойства есть атрибут есть canAdd - это имена прототипов которые можно в него добавить

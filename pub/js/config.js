@@ -164,7 +164,11 @@ var config = {
          * Если в прилжении стоит вот такая ссылка, то она будет автоматически заменена при старте редактора
          * на ссылку вида http://p.testix.me/121947341568004/be169f9a66
          */
-        defaultShareLinkToChange: 'https://testix.me/'
+        defaultShareLinkToChange: 'https://testix.me/',
+        /**
+         * Редактор по этому идентификатору ищет свойство и записывает туда картинки для публикации
+         */
+        shareImagesAppPropertyString: 'appConstructor=mutapp _shareImages'
     },
     /**
      * Конфигурация витрины

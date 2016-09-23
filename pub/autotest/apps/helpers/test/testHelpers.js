@@ -280,9 +280,10 @@ function checkShareEntities(assert, app, appIframe) {
     var shareTestImg = 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/share_test.jpg';
     for (var i = 0; i < app._shareEntities.length; i++) {
         var e = app._shareEntities[i];
-        // редактор этим методом устанавливает картинки
-        app.setImgForShare(e.id, shareTestImg);
-        assert.ok(e.imgUrl===shareTestImg,'checkShareEntities: Imgurl was set to share entity');
+        // устанавливаем картинки для шаринга, редактор так тоже делает
+        app._shareImages[e.id] = shareTestImg;
+        // тут проверять нечего получается... при вызове share будет взята именна эта картинка
+        // assert.ok(e.imgUrl===shareTestImg,'checkShareEntities: Imgurl was set to share entity');
     }
 
     // проверка наличия кнопки для публикации

@@ -11,21 +11,22 @@ function generateValue(ap) {
     var result = null;
     var control = ap.controls[0];
 
-    if (ap.type === 'app') {
-        if (control.name === 'ChooseImage' || control.name === 'ChooseImageQuick') {
-            result = randElem(GENDATA.ChooseQuickImage);
+    if (control) {
+        if (ap.type === 'app') {
+            if (control.name === 'ChooseImage' || control.name === 'ChooseImageQuick') {
+                result = randElem(GENDATA.ChooseQuickImage);
+            }
+            else if (typeof ap.propertyValue === 'string') {
+                result = 'rand_string_'+Math.trunc(Math.random()*10000);
+            }
+            else if (typeof ap.propertyValue === 'boolean') {
+                result = Math.random()<.5;
+            }
         }
-        else if (typeof ap.propertyValue === 'string') {
-            result = 'rand_string_'+Math.trunc(Math.random()*10000);
-        }
-        else if (typeof ap.propertyValue === 'boolean') {
-            result = Math.random()<.5;
+        else if (ap.type === 'css') {
+            result = generateCssValue(ap.cssProperty);
         }
     }
-    else if (ap.type === 'css') {
-        result = generateCssValue(ap.cssProperty);
-    }
-
 
     return result;
 }
