@@ -104,7 +104,7 @@ var ResultScreen = MutApp.Screen.extend({
             css('top',this.fbSharePosition.top+'px').
             css('left',this.fbSharePosition.left+'px');
 
-        this.$el.find('.js-restart').text(this.restartButtonText);
+        this.$el.find('.js-restart').html(this.restartButtonText);
 
         if (this.model.get('showBackgroundImage')===true) {
             if (this.backgroundImg) {

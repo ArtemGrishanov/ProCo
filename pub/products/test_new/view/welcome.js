@@ -89,9 +89,9 @@ var StartScreen = MutApp.Screen.extend({
             this.$el.find('.js-back_img').css('backgroundImage','none');
         }
 
-        this.$el.find('.js-start_btn').text(this.startButtonText);
-        this.$el.find('.js-start_header').text(this.startHeaderText);
-        this.$el.find('.js-start_description').text(this.startDescription);
+        this.$el.find('.js-start_btn').html(this.startButtonText);
+        this.$el.find('.js-start_header').html(this.startHeaderText);
+        this.$el.find('.js-start_description').html(this.startDescription);
 
         return this;
     }

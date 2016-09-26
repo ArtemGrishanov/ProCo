@@ -921,6 +921,8 @@ var Editor = {};
      */
     function createControl(propertyString, viewName, name, params, controlParentView, productDOMElement) {
         var ctrl = null;
+        params = params || {};
+        params.iFrame = $('#id-product_screens_cnt')[0];
 //        try {
             // существует ли такой вью, если нет, берем по умолчанию
             if (viewName) {
