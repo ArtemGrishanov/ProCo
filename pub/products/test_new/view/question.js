@@ -52,6 +52,10 @@ var QuestionScreen = MutApp.Screen.extend({
     backgroundImg: null,
     logoPosition: {top: 200, left: 200},
     showLogo: true,
+    /**
+     * Задержка для показа explanation
+     */
+    explanationPauseDelay: 2000,
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -192,6 +196,14 @@ var QuestionScreen = MutApp.Screen.extend({
                                 success,
                                 this.model.get('quiz')[this.model.get('currentQuestionIndex')].explanation
                             );
+
+                            // автоматически скрываем explanation блок через пару секунд
+                            // этот вариант приемлем пока нет полноценного экрана с объяснением
+                            //TODO пользователь должен управлять настройкой нужно ли ему такое поведение
+                            setTimeout((function(){
+                                this.model.next();
+                            }).bind(this), this.explanationPauseDelay);
+
                         }).bind(this));
                         $ea.append($e); // ea is js-options_cnt
                     }
@@ -234,11 +246,11 @@ var QuestionScreen = MutApp.Screen.extend({
         this.$el.find('.js-explain').show();
         // обработчик на js-next уже установлен через backbone events
         if (success === true) {
-            this.$el.find('.js-explanation_text').text('Верно');
+//            this.$el.find('.js-explanation_text').text('Верно');
             this.$el.find('.explain_blk').removeClass('__err');
         }
         else {
-            this.$el.find('.js-explanation_text').text('Неверно');
+//            this.$el.find('.js-explanation_text').text('Неверно');
             this.$el.find('.explain_blk').addClass('__err');
         }
     }
