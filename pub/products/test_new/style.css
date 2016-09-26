@@ -143,11 +143,11 @@
     height: 140px;
     border-radius: 4px;
     background-color: #fff;
-    background: url(i/icon-layer-right.png) center no-repeat;
+    background: url(https://s3.eu-central-1.amazonaws.com/testix.me/i/products/test_new/icon-layer-right.png) center no-repeat;
     background-color: #fff;
 }
 .explain_blk.__err {
-    background-image: url(i/icon-layer-wrong.png);
+    background-image: url(https://s3.eu-central-1.amazonaws.com/testix.me/i/products/test_new/icon-layer-wrong.png);
 }
 .explain_title {
     padding: 4px;
@@ -162,6 +162,7 @@
     background-repeat: no-repeat;
     top: 0;
     left: 0;
+    cursor: pointer;
 }
 .question_progress {
     position: absolute;

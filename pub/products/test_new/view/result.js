@@ -54,11 +54,20 @@ var ResultScreen = MutApp.Screen.extend({
 
     events: {
         "click .js-next": "onNextClick",
-        "click .js-mutapp_share_fb": "onFBShareClick"
+        "click .js-mutapp_share_fb": "onFBShareClick",
+        "click .js-logo": "onLogoClick"
     },
 
     onNextClick: function(e) {
         this.model.next();
+    },
+
+    onLogoClick: function(e) {
+        var ll = this.model.get('logoLink');
+        if (ll) {
+            var win = window.open(ll, '_blank');
+            win.focus();
+        }
     },
 
     onFBShareClick: function(e) {

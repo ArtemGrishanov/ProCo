@@ -45,11 +45,20 @@ var StartScreen = MutApp.Screen.extend({
     },
 
     events: {
-        "click .js-next": "onNextClick"
+        "click .js-next": "onNextClick",
+        "click .js-logo": "onLogoClick"
     },
 
     onNextClick: function(e) {
         this.model.next();
+    },
+
+    onLogoClick: function(e) {
+        var ll = this.model.get('logoLink');
+        if (ll) {
+            var win = window.open(ll, '_blank');
+            win.focus();
+        }
     },
 
     initialize: function (param) {

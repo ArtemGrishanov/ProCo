@@ -178,6 +178,12 @@ descriptor.app = [
         filter: false
     },
     {
+        selector: 'id=tm logoLink',
+        rules: 'url',
+        label: 'Лого ссылка',
+        filter: false
+    },
+    {
         // свойство для настройки картинок для шаринга
         selector: 'appConstructor=mutapp _shareImages',
         updateScreens: false,

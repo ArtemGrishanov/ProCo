@@ -15,6 +15,10 @@ var TestModel = MutApp.Model.extend({
          */
         showBackgroundImage: true,
         logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
+        /**
+         * Переход по ссылке на лого на этот урл
+         */
+        logoLink: undefined,
 
         showBullits: true,
 
