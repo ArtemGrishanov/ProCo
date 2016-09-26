@@ -12,7 +12,7 @@
 </head>
 <body style="background-color: #888">
 
-
+    <div id="id-content" contenteditable="true">text input here<br>sdfsdfw<br>line 3</div>
     <!--<div id="id-modal_cnt" class="scr">-->
         <!--&lt;!&ndash; parent for modals &ndash;&gt;-->
     <!--</div>-->
@@ -30,6 +30,31 @@
     <script type="text/javascript" src="js/view/modals/Modal.js"></script>
     <!-- endbuild -->
     <script>
+        $editables = $('[contenteditable=true]');
+
+        $editables.filter("p,span,div").on('keypress',function(e){
+            if(e.keyCode==13){ //enter && shift
+
+                e.preventDefault(); //Prevent default browser behavior
+                if (window.getSelection) {
+                    var selection = window.getSelection(),
+                            range = selection.getRangeAt(0),
+                            br = document.createElement("br"),
+                            textNode = document.createTextNode("\u00a0"); //Passing " " directly will not end up being shown correctly
+                    range.deleteContents();//required or not?
+                    range.insertNode(br);
+                    range.collapse(false);
+                    range.insertNode(textNode);
+                    range.selectNodeContents(textNode);
+
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    return false;
+                }
+
+            }
+        });
+
         var o = {
             data1: 123,
             data2: 'ssserrt',

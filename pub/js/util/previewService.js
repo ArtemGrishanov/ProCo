@@ -67,9 +67,6 @@ var previewService = {};
      * @param height высота вью
      */
     function createInIframe(html, callback, type, stylesToEmbed, width, height) {
-//        ps.create(html, function(canvas) {
-//            callback(canvas);
-//        });
         type = type || 'html2canvas';
         var t = {
             run: function() {
@@ -82,10 +79,10 @@ var previewService = {};
                     // в превью контейнер дописать кастомные стили, которые получились в результате редактирования css appProperties
                     Engine.writeCssRulesTo($("#id-html_rasterization_iframe").contents().find('body'));
                     // Обязательно display !== none
-                    $(html).show();
+                    var $cloned = $(html).clone().show();
                     $("#id-html_rasterization_iframe").width(width).height(height);
-                    $(cnt).width(width).height(height).empty().append(html);
-                    html2canvas(html, {
+                    $(cnt).width(width).height(height).empty().append($cloned);
+                    html2canvas($cloned, {
                         onrendered: (function(canvas) {
                             callback(canvas);
                             Queue.release(this);

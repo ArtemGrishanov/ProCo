@@ -22,7 +22,7 @@ var config = {
             return this;
         },
         test: function() {
-            config.common.home = 'http://proco.surge.sh/';
+            config.common.home = 'http://test.testix.me/';
             config.common.facebookAppId = '515132035326687';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
@@ -194,7 +194,7 @@ var config = {
              * В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae
              * Нужно для превью в контроле Slide
              */
-            stylesForEmbed: '<link href="{{config.common.home}}/products/test_new/style.css" rel="stylesheet"/>',
+            stylesForEmbed: '<link href="{{config.common.home}}products/test_new/style.css" rel="stylesheet"/>',
             /**
              * каталог откуда publisher будет брать все ресурсы для публикации проекта
              */

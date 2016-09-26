@@ -58,3 +58,18 @@ config
     selector: '.js-photo',
     rules: 'marginTop marginBottom'
 }
+
+        {
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::proconstructor"
+            ],
+            "Effect": "Allow",
+            "Condition": {
+                "StringEquals": {
+                    "s3:prefix": "facebook-${graph.facebook.com:id}/pub"
+                }
+            }
+        },
