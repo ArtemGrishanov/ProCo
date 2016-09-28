@@ -2,7 +2,6 @@
  * Created by artyom.grishanov on 06.07.16.
  *
  */
-
 var MutApp = function(param) {
     this.appConstructor = 'mutapp';
     this.title = null;
@@ -39,7 +38,6 @@ var MutApp = function(param) {
         //            title: 'Название результата',
         //            description: 'Описание результата',
         //            view: domElement, // view из которого будет сделана картинка
-        //            imgUrl: 'http://testix.me/.../32423534246.jpg' // картинка сгенерированная из view
         //        }
     ];
     /**
@@ -65,7 +63,7 @@ var MutApp = function(param) {
     if (param) {
         if (this.screenRoot) {
             this.screenRoot.empty();
-            this.screenRoot.width(this.width).height(this.height).css('position','relative');
+            this.screenRoot.width(this.width).height(this.height).css('position','relative');;
         }
 
         // значения которые надо установить по умолчанию при запуске приложения
@@ -429,14 +427,15 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
         if (!!this.shareLink===false) {
             this.shareLink = this.shareDefaultLink;
         }
-
+        var name = ent.title.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
+        var description = ent.description.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
         if (serviceId === 'fb') {
             if (isFakeShare !== true) {
                 FB.ui({
                     method: 'feed',
                     link: this.shareLink,
-                    name: ent.title,
-                    description: ent.description,
+                    name: name,
+                    description: description,
                     picture: imgUrl
                 }, function(response) {
                     console.log(response);

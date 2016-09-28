@@ -17,10 +17,11 @@ var TestApp = MutApp.extend({
             application: this
         }));
 
-        this.addScreen(new StartScreen({
+        var startScr = new StartScreen({
             model: tm,
             screenRoot: this.screenRoot
-        }));
+        });
+        this.addScreen(startScr);
 
         // для всех вопросов создается по отдельному экрану
         var quiz = tm.get('quiz');
@@ -41,6 +42,8 @@ var TestApp = MutApp.extend({
         var results = tm.get('results');
         var rs = null;
         var sEntities = [];
+        // пожелание Олега сделать описания для шаринга именно таким образом, взять тексты с первого слайда.
+        var descForShare = startScr.startHeaderText + ' - ' + startScr.startDescription;
         for (var i = 0; i < results.length; i++) {
             var r = results[i];
 
@@ -58,7 +61,7 @@ var TestApp = MutApp.extend({
             sEntities.push({
                 id: id,
                 title: r.title,
-                description: r.description,
+                description: descForShare,
                 // удалить элементы, оставить только те которые в whitelist
                 view: MutApp.Util.clarifyElement(rs.$el, ['modal','modal_cnt','info_title','info_tx','b_title'])
             });
