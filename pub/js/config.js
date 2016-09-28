@@ -60,7 +60,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev'],
+        configurationSetsOnStart: ['dev'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -87,6 +87,17 @@ var config = {
         awsPublishedProjectsBucketName: 'p.testix.me',
         awsRoleArn: 'arn:aws:iam::520270155749:role/ProCo_FBUsers',
         awsRegion: 'eu-central-1',
+        /**
+         * Доступен ли редактор для запуска всем пользователям.
+         * Если нет, то будет покаано сообщение "пока в разработке"
+         * Но по прямой ссылке можно будет всегда зайти
+         */
+        editorIsUnderConstruction: true,
+        /**
+         * Список fb ид пользователей которые могут зайти в редактор в то время как
+         * editorIsUnderConstruction === true
+         */
+        editorIsUnderConstructionWhitelist: ['1045302892173346','121947341568004','127867420975996'],
         /**
          * Хост для опубликованных проектов
          */

@@ -86,10 +86,11 @@ var previewService = {};
                         onrendered: (function(canvas) {
                             callback(canvas);
                             Queue.release(this);
-                        }).bind(this)
-                    },{
-                        // options for render
-                        background: '#fff'
+                        }).bind(this),
+                        background: '#eee',
+                        allowTaint: false,
+                        useCORS: true,
+                        taintTest: false
                     });
                 }
             }

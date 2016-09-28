@@ -17,19 +17,29 @@ var myProjectsView = {};
             if (appName) {
                 // открытие пустого шаблона
                 // параметр подготовлен для открытия проекта любого типа
-                window.location.href = 'editor.html?app='+appName;
+                // window.location.href = 'editor.html?app='+appName;
+                App.openEditor({
+                    appName:appName
+                });
             }
         });
     }
 
     function onEditClick(e) {
         var url = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
-        window.location.href = 'editor.html?'+config.common.templateUrlParamName+'='+url;
+        // window.location.href = 'editor.html?'+config.common.templateUrlParamName+'='+url;
+        App.openEditor({
+            templateUrl:url
+        });
     }
 
     function onCloneClick(e) {
         var url = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
-        window.location.href = 'editor.html?'+config.common.templateUrlParamName+'='+url+'&'+config.common.cloneParamName+'=true';
+        // window.location.href = 'editor.html?'+config.common.templateUrlParamName+'='+url+'&'+config.common.cloneParamName+'=true';
+        App.openEditor({
+            templateUrl:url,
+            clone:true
+        });
     }
 
     /**

@@ -1176,7 +1176,7 @@ var Editor = {};
                                     previewsReadyCallback('ok', preparedShareEntities);
                                 }
                             }
-                        }, imageUrl, canvas);
+                        }, imageUrl, canvas, options.upload===false);
                     }, null, config.products[app.type].stylesForEmbed, appContainerSize.width, appContainerSize.height);
 
                 })(e.id, e.view, url);
@@ -1192,8 +1192,9 @@ var Editor = {};
      * Сгенерировать превьюшки для шаринга и вывести их в DOM чтобы оценить их корректность
      * Для ручного тестирования
      *
+     * @param {boolean} upload - загружать ли картинки на сервер. По умолчанию не загружать
      */
-    function testPreviewsForShare() {
+    function testPreviewsForShare(upload) {
         createPreviewsForShare(function(result, entities) {
                 for (var i = 0; i < entities.length; i++) {
                     var $e = $('<div></div>').append(entities[i].canvas).css('border','4px dashed gray');
@@ -1201,7 +1202,7 @@ var Editor = {};
                 }
                 $('#id-share_previews_test').show();
             },
-            {upload: false});
+            {upload: upload});
     }
 
     /**

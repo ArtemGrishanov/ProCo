@@ -2,6 +2,8 @@
  * Created by artyom.grishanov on 16.06.16.
  *
  * На модальных окошках опробую новый шаблон наследования
+ *
+ * @param param.text
  */
 var MessageModal = function(param) {
     param = param || {};

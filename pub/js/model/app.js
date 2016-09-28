@@ -467,6 +467,40 @@ var App = App || {};
         }
     }
 
+    /**
+     * Запуск редактора с параметрами
+     *
+     * @param param.appName
+     * @param param.templateUrl
+     * @param param.needNewId
+     * @param param.clone
+     */
+    function openEditor(param) {
+        // доступен ли редактор для запуска или только по прямой ссылке
+        if (config.common.editorIsUnderConstruction === false ||
+            (userData !== null && config.common.editorIsUnderConstructionWhitelist.indexOf(userData.id) >= 0)) {
+            var url = 'editor.html?';
+            if (param.appName) {
+                url += 'app='+param.appName;
+            }
+            else {
+                if (param.templateUrl) {
+                    url += config.common.templateUrlParamName+'='+param.templateUrl+'&';
+                }
+                if (typeof param.needNewId === 'boolean') {
+                    url += config.common.needNewIdParamName+'='+param.needNewId+'&';
+                }
+                if (typeof param.clone === 'boolean') {
+                    url += config.common.cloneParamName+'='+param.clone+'&';
+                }
+            }
+            window.location.href = url;
+        }
+        else {
+            Modal.showMessage({text: 'Редактор пока что в разработке, напишите нам.'});
+        }
+    }
+
 //    /**
 //     * Вернуть анонимный ид пользователя рассчитанный на основе его FB ид
 //     * @return {string}
@@ -488,6 +522,7 @@ var App = App || {};
     global.on = on;
     global.getFriends = getFriends;
     global.requestLogin = requestLogin;
+    global.openEditor = openEditor;
 
     // шаблоны. Получить
     global.getUserTemplates = function() { return (userTemplateCollection !== null) ? userTemplateCollection.templates: null; }
