@@ -43,6 +43,25 @@ var myProjectsView = {};
     }
 
     /**
+     * Операция удаления с подтверждением
+     *
+     * @param e
+     */
+    function onDeleteClick(e) {
+        if (confirm('Удалить этот проект?') === true) {
+            Modal.showLoading();
+            var templateId = $(e.currentTarget).parent().parent().attr('data-id');
+            App.deleteTemplate(function(result) {
+                if (result === 'ok') {
+                    // удалить вью из списка
+                    $(userTemplateViews[templateId]).remove();
+                }
+                Modal.hideLoading();
+            }, templateId);
+        }
+    }
+
+    /**
      * Отрисовать список моих проектов
      */
     function render(myTemplates) {
@@ -65,6 +84,7 @@ var myProjectsView = {};
         $cnt.append($e);
         $e.find('.js-edit').click(onEditClick);
         $e.find('.js_app-clone').click(onCloneClick);
+        $e.find('.js-delete_item').click(onDeleteClick);
         $e.attr('data-id',templateData.id);
         return $e;
     }
@@ -89,7 +109,7 @@ var myProjectsView = {};
             if (template.previewUrl) {
                 $(v).find('.js-preview').css('backgroundImage','url('+config.common.awsHostName+'/'+config.common.awsBucketName+'/'+template.previewUrl+')');
             }
-// for test            template.publishDate = 'Mon Apr 25 2016 12:37:00 GMT+0300 (MSK)';
+            // for test            template.publishDate = 'Mon Apr 25 2016 12:37:00 GMT+0300 (MSK)';
             if (template.publishDate) {
                 var d = new Date(template.publishDate);
                 $(v).find('.js-publish').addClass('__published').text('Опубликован ' + d.toLocaleDateString());

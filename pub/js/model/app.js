@@ -468,6 +468,22 @@ var App = App || {};
     }
 
     /**
+     * Удалить шаблон с сервера и из коллекции локально
+     *
+     * @param {function} callback
+     * @param {string} templateId
+     */
+    function deleteTemplate(callback, templateId) {
+        //запрос на амазон на удаление
+        //плюс локально удалить из коллекции
+        if (userTemplateCollection) {
+            userTemplateCollection.delete(function(result){
+                callback(result);
+            }, templateId);
+        }
+    }
+
+    /**
      * Запуск редактора с параметрами
      *
      * @param param.appName
@@ -514,7 +530,7 @@ var App = App || {};
 
     // public methoods below
     global.start = start;
-//    global.getUserAnonimId = getUserAnonimId;
+    // global.getUserAnonimId = getUserAnonimId;
     global.getUserData = function() { return userData; };
     global.getAWSBucket = function() { return bucket; };
     global.getAWSBucketForPublishedProjects = function() { return bucketForPublishedProjects; };
@@ -528,4 +544,5 @@ var App = App || {};
     global.getUserTemplates = function() { return (userTemplateCollection !== null) ? userTemplateCollection.templates: null; }
     // шаблоны. Запросить с колбеком
     global.requestUserTemplates = requestUserTemplates;
+    global.deleteTemplate = deleteTemplate;
 })(App);

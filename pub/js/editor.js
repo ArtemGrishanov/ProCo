@@ -163,6 +163,11 @@ var Editor = {};
             // любой клик по документу сбрасывает фильтр контролов
             filterControls();
         });
+        $('#id-app_preview_img').change(function() {
+            // загрузка пользовательского превью для шаблона
+            // сразу без превью - аплоад
+            uploadUserCustomTemplatePreview();
+        });
         resourceManager = new ResourceManager();
         quickControlPanel = new QuickControlPanel();
         function _initPublisher() {
@@ -1063,11 +1068,6 @@ var Editor = {};
             Modal.showLogin();
         }
     }
-
-    $('#id-app_preview_img').change((function() {
-        // сразу без превью - аплоад
-        this.uploadUserCustomTemplatePreview();
-    }).bind(this));
 
     function uploadUserCustomTemplatePreview() {
         if (App.getAWSBucket() !== null) {

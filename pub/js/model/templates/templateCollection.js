@@ -143,6 +143,42 @@ TemplateCollection.prototype.loadTemplatesInfo = function(callback) {
 }
 
 /**
+ * Удалить шаблон из коллекции,
+ * при этом он удаляется и из хранилища AWS
+ *
+ * @param {function} callback
+ * @param {string} id
+ */
+TemplateCollection.prototype.delete = function(callback, id) {
+    var template = this.getById(id);
+    if (template) {
+        log('Deleting project:' + id);
+        var objKey = 'facebook-'+App.getUserData().id+'/app/'+id+'.txt';
+        var params = {
+            Key: objKey
+        };
+        App.getAWSBucket().deleteObject(params, (function (err, data) {
+            if (err) {
+                log('ERROR: ' + err, true);
+                callback('error');
+            }
+            else {
+                log('Deleting task done: ' + id);
+                var delIndex = this.templates.indexOf(template);
+                if (delIndex >= 0) {
+                    // удаляем также из локальной коллекции этот шаблон
+                    this.templates.splice(delIndex, 1);
+                }
+                callback('ok');
+            }
+        }).bind(this));
+    }
+    else {
+        callback('error');
+    }
+}
+
+/**
  * Получить шаблон коллекции по его ид
  *
  * @param id
