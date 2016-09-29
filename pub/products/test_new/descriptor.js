@@ -116,9 +116,13 @@ descriptor.app = [
         rules: 'imgUrl'
     },
     {
-        selector: 'id=startScr showLogo, type=questions showLogo, type=result showLogo, id=tm showQuestionProgress, id=tm showBullits, id=tm showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions',
+        selector: 'type=questions showExplanation, id=startScr showLogo, type=questions showLogo, type=result showLogo, id=tm showQuestionProgress, id=tm showBullits, id=tm showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions',
         rules: 'trueFalse'
     },
+            {
+                selector: 'type=questions showExplanation',
+                label: 'Показывать фидбек'
+            },
             {
                 selector: 'id=startScr showLogo',
                 label: 'Лого на стартовой'

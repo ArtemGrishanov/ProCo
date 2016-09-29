@@ -56,6 +56,10 @@ var QuestionScreen = MutApp.Screen.extend({
      * Задержка для показа explanation
      */
     explanationPauseDelay: 2000,
+    /**
+     * Показывать ли экран объяснения после ответа на вопрос или сразу переходить к следующему вопросу
+     */
+    showExplanation: true,
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -200,19 +204,24 @@ var QuestionScreen = MutApp.Screen.extend({
                         $e.click((function(e) {
                             var oId = $(e.currentTarget).attr('data-id');
                             var success = this.model.answer(oId);
-                            //TODO showExplanation через модель
-                            this.renderExplanation(
-                                success,
-                                this.model.get('quiz')[this.model.get('currentQuestionIndex')].explanation
-                            );
 
-                            // автоматически скрываем explanation блок через пару секунд
-                            // этот вариант приемлем пока нет полноценного экрана с объяснением
-                            //TODO пользователь должен управлять настройкой нужно ли ему такое поведение
-                            setTimeout((function(){
+                            if (this.showExplanation === true) {
+                                //TODO showExplanation через модель
+                                this.renderExplanation(
+                                    success,
+                                    this.model.get('quiz')[this.model.get('currentQuestionIndex')].explanation
+                                );
+                                // автоматически скрываем explanation блок через пару секунд
+                                // этот вариант приемлем пока нет полноценного экрана с объяснением
+                                //TODO пользователь должен управлять настройкой нужно ли ему такое поведение
+                                setTimeout((function(){
+                                    this.model.next();
+                                }).bind(this), this.explanationPauseDelay);
+                            }
+                            else {
+                                // не показывать объяснение верного-неверного ответа, сразу к следующему вопросу
                                 this.model.next();
-                            }).bind(this), this.explanationPauseDelay);
-
+                            }
                         }).bind(this));
                         $ea.append($e); // ea is js-options_cnt
                     }
