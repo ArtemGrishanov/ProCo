@@ -99,7 +99,7 @@ var QuestionScreen = MutApp.Screen.extend({
         if (ll) {
             var win = window.open(ll, '_blank');
             win.focus();
-            this.application.stat('Test', 'logoclick');
+            this.model.application.stat('Test', 'logoclick');
         }
     },
 
