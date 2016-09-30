@@ -979,11 +979,13 @@ var Editor = {};
                 // сначала создать превью-картинки для шаринга, записать ссылки на них в приложение
                 // и уже потом выкатывать приложение
                 createPreviewsForShare(function() {
+                    // нужно дописать свойство "опубликованности" именно в опубликованное приложение
+                    var appStr = addIsPublishedParam(Engine.serializeAppValues());
                     Publisher.publish({
                         appId: appId,
                         width: app.width,
                         height: app.height,
-                        appStr: Engine.serializeAppValues(),
+                        appStr: appStr,
                         cssStr: Engine.getCustomStylesString(),
                         promoIframe: appIframe, //TODO возможно айрейм спрятать в engine тоже
                         baseProductUrl: config.products[appName].baseProductUrl
@@ -994,6 +996,17 @@ var Editor = {};
         else {
             Modal.showLogin();
         }
+    }
+
+    /**
+     * Добавить параметр, признак публикации
+     *
+     * @param paramStr
+     * @returns {*}
+     */
+    function addIsPublishedParam(paramStr) {
+        var r = /^{"/ig;
+        return paramStr.replace(r, '{"appConstructor=mutapp isPublished":true,"');
     }
 
     /**

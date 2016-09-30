@@ -186,6 +186,8 @@ var TestModel = MutApp.Model.extend({
                     currentQuestionId: this.attributes.quiz[0].id,
                     state: 'question'
                 });
+                this.application.stat('Test', 'start', 'First question');
+                this.application.stat('Test', 'next', 'question', 1);
                 break;
             }
             case 'question': {
@@ -195,6 +197,7 @@ var TestModel = MutApp.Model.extend({
                         currentQuestionIndex: ni,
                         currentQuestionId: this.attributes.quiz[ni].id
                     });
+                    this.application.stat('Test', 'next', 'question', ni+1);
                 }
                 else {
                     // конец теста, финальный скрин
@@ -204,6 +207,7 @@ var TestModel = MutApp.Model.extend({
                         currentQuestionId: null,
                         currentQuestionIndex: undefined
                     });
+                    this.application.stat('Test', 'result', this.attributes.currentResult.title, this.attributes.resultPoints);
                 }
                 break;
             }

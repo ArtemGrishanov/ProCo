@@ -196,6 +196,14 @@ descriptor.app = [
         // нет правил и контролов - надо чтобы это свойство было скрытым и пользователь его не настраивал
         // редактор сам настраивает, когда создает превью
     },
+    {
+        // Google Analytics id
+        selector: 'appConstructor=mutapp gaId',
+        updateScreens: false,
+        label: 'Google Analytics Id',
+        filter: false,
+        rules: 'url'
+    }
 ];
 
 // правила, как редактировать свойства

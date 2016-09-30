@@ -79,6 +79,8 @@ QUnit.test("MutApp test: Models", function( assert ) {
 
         testName: 'swimmingTest',
 
+        undefinedProperty: undefined,
+
         screenRoot: $('#id-swimming_test'),
 
         initialize: function(param) {
@@ -189,6 +191,13 @@ QUnit.test("MutApp test: Models", function( assert ) {
     var p4 = app.getPropertiesBySelector('customAttr1=customValue1 data1');
     assert.ok(p4 !== null, 'getPropertiesBySelector');
     assert.ok(p4.length === 1, 'getPropertiesBySelector');
+
+    // undefined значения также должны выбираться
+    var p5 = app.getPropertiesBySelector('testName=swimmingTest undefinedProperty');
+    assert.ok(p5 !== null, 'getPropertiesBySelector');
+    assert.ok(p5.length === 1, 'getPropertiesBySelector');
+    assert.ok(p5[0].path === 'undefinedProperty', 'getPropertiesBySelector');
+    assert.ok(p5[0].value === undefined, 'getPropertiesBySelector');
 
     // проверка установки сложных свойств, которые конфликтуют друг с другом
     var app2 = new SwimmingTest({

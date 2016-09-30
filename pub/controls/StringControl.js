@@ -20,7 +20,7 @@ function StringControl(propertyString, directiveName, $parent, productDOMElement
 
     this.onPropertyChanged = function() {
         if (this.$input) {
-            var v = this.$input.val() || undefined;
+            var v = this.$input.val() || null;
             var p = Engine.getAppProperty(this.propertyString);
             if (p.propertyValue !== v) {
                 this.$input.val(p.propertyValue);
@@ -34,7 +34,7 @@ function StringControl(propertyString, directiveName, $parent, productDOMElement
     setInterval((function(){
         if (this.$input) {
             var p = Engine.getAppProperty(this.propertyString);
-            var v = this.$input.val() || undefined;
+            var v = this.$input.val() || null;
             if (p.propertyValue !== v) {
                 Engine.setValue(p, v);
             }

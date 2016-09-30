@@ -4,6 +4,12 @@
  */
 var MutApp = function(param) {
     this.appConstructor = 'mutapp';
+    /**
+     * Если isPublished === true, то запущено опубликованные приложение.
+     * Например, только в опубликованном приложении надо собирать статистику.
+     * @type {boolean}
+     */
+    this.isPublished = false;
     this.title = null;
     this.description = null;
     this._models = [];
@@ -58,6 +64,11 @@ var MutApp = function(param) {
      * @type {string}
      */
     this.shareFBbtnClass = 'js-mutapp_share_fb';
+    /**
+     * Идентификатор Google Analytics
+     * @type {null}
+     */
+    this.gaId = undefined;
 
     // далее установка динамических свойств для приложения
     if (param) {
@@ -94,6 +105,12 @@ var MutApp = function(param) {
                 }
             }
         }
+    }
+
+    // инициализация апи для статистики, если задан идентификатор Google Analytics
+    // при использовании другого или нескольких провайдеров надо будет рефакторить
+    if (this.gaId && this.isPublished === true) {
+        this.initStatistics(this.gaId);
     }
 
     // вызов конструктора initialize, аналогично backbone
@@ -304,7 +321,7 @@ MutApp.prototype.getPropertiesBySelector = function(selector) {
             // тогда и не надо искать значения во всех entities, достаточно лишь первого
             // Отличаться значения в приложении не должны в таком случае
             for (var i = 0; i < entities.length; i++) {
-                var finded = MutApp.Util.getPropertiesBySelector(entities[i], parsedSelector.valueKey)
+                var finded = MutApp.Util.getPropertiesBySelector(entities[i], parsedSelector.valueKey);
                 if (finded && finded.length > 0) {
                     result = finded;
                     break;
@@ -440,6 +457,7 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
                 }, function(response) {
                     console.log(response);
                 });
+                this.stat('app','feed', name);
             }
             return true;
         }
@@ -447,6 +465,45 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
         //TODO other providers
     }
     return false;
+};
+
+/**
+ * Инициализация аналитики
+ * Однако статистику не надо инициализировать когда мы находимся в редкторе или режиме превью.
+ * Только опубликованное приложение нас интересует
+ *
+ * @param {string} gaId например "UA-84925568-2"
+ */
+MutApp.prototype.initStatistics = function(gaId) {
+    var gaCode = '<script>(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,\'script\',\'https://www.google-analytics.com/analytics.js\',\'ga\');ga(\'create\', \'{{ga_id}}\', \'auto\');ga(\'send\', \'pageview\');{{init_event}}</script>';
+    gaCode = gaCode.replace('{{ga_id}}', gaId);
+    gaCode = gaCode.replace('{{init_event}}', 'ga(\'send\', \'event\', \'app\', \'init_analytics\');');
+    $('body').append(gaCode);
+};
+
+/**
+ * Отправить событие в систему сбора статистики
+ *
+ * @param {string} category, например Videos
+ * @param {string} action, например Play
+ * @param {string} [label], например 'Fall Campaign' название клипа
+ * @param {number} [value], например 10 - длительность
+ */
+MutApp.prototype.stat = function(category, action, label, value) {
+    if (window.ga && this.isPublished === true) {
+        var statData = {
+            hitType: 'event',
+            eventCategory: category,
+            eventAction: action,
+        };
+        if (label) {
+            statData.eventLabel = label;
+        }
+        if (value) {
+            statData.eventValue = value
+        }
+        window.ga('send', statData);
+    }
 };
 
 //MutApp.prototype.back function() {
@@ -646,10 +703,10 @@ MutApp.Util = {
         if (parts[0].indexOf('{{number')===0) {
             // найти все числовые свойтсва в объекте
             for (var objkey in obj) {
-                if (((isModel===true && obj.attributes.hasOwnProperty(objKey)) || obj[objkey]!==undefined) && isNaN(objkey)===false) {
+                if (MutApp.Util.objectHasProperty(obj, objkey) === true && isNaN(objkey)===false) {
                     // нашли совпадение. Например, это индекс массива
                     // у модели надо брать значение из атрибутов
-                    var o = (isModel===true) ? obj.attributes[objKey]: obj[objkey];
+                    var o = (isModel===true) ? obj.attributes[objkey]: obj[objkey];
                     if (restSelector.length > 0) {
                         // смотрим дальше вглубь пока не закончится селектор
                         result=result.concat(this.getPropertiesBySelector(o, restSelector, path+objkey));
@@ -664,7 +721,7 @@ MutApp.Util = {
                 }
             }
         }
-        if ((isModel===true && obj.attributes.hasOwnProperty(parts[0])) || obj[parts[0]]!==undefined) {
+        if (MutApp.Util.objectHasProperty(obj, parts[0]) === true) {
             // нашли совпадение. Например, это индекс массива
             // у модели надо брать значение из атрибутов
             var o = (isModel===true) ? obj.attributes[parts[0]]: obj[parts[0]];
@@ -681,6 +738,22 @@ MutApp.Util = {
             }
         }
         return result;
+    },
+
+    /**
+     * Проверить содержит ли объект obj свойство key
+     * учитывая то что в MutApp model свойства содержаться также в attributes
+     *
+     * @param {object} obj
+     * @param {string} key
+     */
+    objectHasProperty: function(obj, key) {
+        if (obj instanceof MutApp.Model === true) {
+            if (obj.attributes[key] !== undefined || obj.attributes.hasOwnProperty(key) === true || key in obj === true) {
+                return true;
+            }
+        }
+        return obj[key] !== undefined || obj.hasOwnProperty(key) === true || key in obj === true;
     },
 
     /**
