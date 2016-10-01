@@ -43,10 +43,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="result.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="result.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/products/test_new/view/result.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="69" column="61" selection-start="1568" selection-end="1568" vertical-scroll-proportion="0.6827586" vertical-offset="540" max-vertical-offset="2025">
+            <state line="69" column="61" selection-start="1568" selection-end="1568" vertical-scroll-proportion="0.0" vertical-offset="540" max-vertical-offset="2025">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_index.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/test_index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="18" column="91" selection-start="782" selection-end="833" vertical-scroll-proportion="0.39244187" vertical-offset="0" max-vertical-offset="2640">
               <folding />
             </state>
           </provider>
@@ -62,7 +71,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/my_templates.html" />
         <option value="$PROJECT_DIR$/pub/js/model/templates/templateCollection.js" />
         <option value="$PROJECT_DIR$/pub/js/model/app.js" />
         <option value="$PROJECT_DIR$/pub/js/view/my_projects.js" />
@@ -78,6 +86,7 @@
         <option value="$PROJECT_DIR$/pub/products/test_new/view/welcome.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/view/question.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/view/result.js" />
+        <option value="$PROJECT_DIR$/pub/test_index.html" />
       </list>
     </option>
   </component>
@@ -382,7 +391,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="7" />
+    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -419,13 +428,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="479" column="19" selection-start="16454" selection-end="16454" vertical-scroll-proportion="0.4206696" vertical-offset="6611" max-vertical-offset="8010">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/model/templates/templateCollection.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="143" column="0" selection-start="5227" selection-end="5227" vertical-scroll-proportion="0.68413794" vertical-offset="1649" max-vertical-offset="3720">
@@ -528,7 +530,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/test_new/view/result.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="61" selection-start="1568" selection-end="1568" vertical-scroll-proportion="0.6827586" vertical-offset="540" max-vertical-offset="2025">
+        <state line="69" column="61" selection-start="1568" selection-end="1568" vertical-scroll-proportion="0.0" vertical-offset="540" max-vertical-offset="2025">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/test_index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="91" selection-start="782" selection-end="833" vertical-scroll-proportion="0.39244187" vertical-offset="0" max-vertical-offset="2640">
           <folding />
         </state>
       </provider>
