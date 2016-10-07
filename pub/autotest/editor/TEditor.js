@@ -106,9 +106,12 @@ var TEditor = {};
 
                 for (var i = 0; i < prepareSharedEntities.length; i++) {
                     var e = prepareSharedEntities[i];
-                    assert.ok(!!e.canvas === true, 'checkShare: canvas');
-                    assert.ok(e.canvas.width > 100, 'checkShare: canvas.width');
-                    assert.ok(e.canvas.height > 100, 'checkShare: canvas.height');
+                    // канваса может и не быть если сам пользователь установил картинку, то есть editor ее не генерировал
+                    if (e.canvas) {
+                        assert.ok(!!e.canvas === true, 'checkShare: canvas');
+                        assert.ok(e.canvas.width > 100, 'checkShare: canvas.width');
+                        assert.ok(e.canvas.height > 100, 'checkShare: canvas.height');
+                    }
                     assert.ok(e.imageUrl.length > 20, 'checkShare: imgUrl');
                     assert.ok(!!e.entityId === true, 'checkShare: entityId');
                     // проверить урлы в приложении что установка прошла

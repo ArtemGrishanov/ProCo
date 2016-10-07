@@ -1158,47 +1158,110 @@ var Editor = {};
 
             for (var i = 0; i < entities.length; i++) {
                 var e = entities[i];
-                var url = App.getUserData().id+'/'+appId+'/'+config.common.shareFileNamePrefix+'_'+e.id+'.jpg';
-                (function(entityId, entityView, imageUrl){
 
-                    // создать замыкание для сохранения значений entityId и imageUrl
-                    previewService.createInIframe(entityView, function(canvas) {
-                        log('createPreviewsForShare: preview created '+entityId+' '+imageUrl);
-                        uploadCanvas(App.getAWSBucketForPublishedProjects(), function(result) {
-                            if (result === 'ok') {
-                                var fullImageUrl = config.common.publishedProjectsHostName+imageUrl;
-                                log('createPreviewsForShare: canvas uploaded '+entityId+' '+fullImageUrl);
+                // проверим, надо ли генерировать картинки для шаринга для каждого entity
+                // если пользователь задает картинки сам, то не надо генерировать ничего
+                if (needToGeneratePreview(e.id) === true) {
 
-                                // дописать в хранилище картинок картинку для публикации
-                                var shP = Engine.getAppProperty(config.common.shareImagesAppPropertyString);
-                                shP.propertyValue[entityId] = fullImageUrl;
-                                Engine.setValue(shP, shP.propertyValue);
-                                // app.setImgForShare(entityId, fullImageUrl);
+                    var url = App.getUserData().id+'/'+appId+'/'+config.common.shareFileNamePrefix+'_'+e.id+'.jpg';
+                    (function(entityId, entityView, imageUrl){
 
-                                // эта переменная только нужна для возврата в колбек, для автотестов пока что
-                                preparedShareEntities.push({
-                                    entityId: entityId,
-                                    imageUrl: fullImageUrl,
-                                    canvas: canvas
-                                });
-                            }
-                            shareToUpload--;
-                            if (shareToUpload===0) {
-                                // загрузили все картинки
-                                if (previewsReadyCallback) {
-                                    previewsReadyCallback('ok', preparedShareEntities);
+                        // создать замыкание для сохранения значений entityId и imageUrl
+                        previewService.createInIframe(entityView, function(canvas) {
+                            log('createPreviewsForShare: preview created '+entityId+' '+imageUrl);
+                            uploadCanvas(App.getAWSBucketForPublishedProjects(), function(result) {
+                                if (result === 'ok') {
+                                    var fullImageUrl = config.common.publishedProjectsHostName+imageUrl;
+                                    log('createPreviewsForShare: canvas uploaded '+entityId+' '+fullImageUrl);
+
+                                    // дописать в хранилище картинок картинку для публикации
+                                    setShareImageUrl(entityId, fullImageUrl);
+
+                                    // эта переменная только нужна для возврата в колбек, для автотестов
+                                    preparedShareEntities.push({
+                                        entityId: entityId,
+                                        imageUrl: fullImageUrl,
+                                        canvas: canvas
+                                    });
                                 }
-                            }
-                        }, imageUrl, canvas, options.upload===false);
-                    }, null, config.products[app.type].stylesForEmbed, appContainerSize.width, appContainerSize.height);
+                                shareToUpload--;
+                                if (shareToUpload===0) {
+                                    // загрузили все картинки
+                                    if (previewsReadyCallback) {
+                                        previewsReadyCallback('ok', preparedShareEntities);
+                                    }
+                                }
+                            }, imageUrl, canvas, options.upload===false);
+                        }, null, config.products[app.type].stylesForEmbed, appContainerSize.width, appContainerSize.height);
 
-                })(e.id, e.view, url);
+                    })(e.id, e.view, url);
+                }
+                else {
+                    // не надо генерировал превью, пользователь установил превью сам
+                    log('createPreviewsForShare: dont need generate preview for '+ e.id);
+                    // эта переменная только нужна для возврата в колбек, для автотестов
+                    var imageUrl = Engine.getAppProperty(config.common.shareImagesAppPropertyString).propertyValue[e.id];
+                    preparedShareEntities.push({
+                        entityId: e.id,
+                        imageUrl: imageUrl,
+                        canvas: null
+                    });
+                    shareToUpload--;
+                    if (shareToUpload===0) {
+                        // загрузили все картинки
+                        if (previewsReadyCallback) {
+                            previewsReadyCallback('ok', preparedShareEntities);
+                        }
+                    }
+                }
             }
 
         }
         else {
             Modal.showLogin();
         }
+    }
+
+    /**
+     * Установить картинку для шаринга для сущности по ид
+     *
+     * @param {string} shareEntityId
+     * @param {string} url
+     */
+    function setShareImageUrl(shareEntityId, url) {
+        var shP = Engine.getAppProperty(config.common.shareImagesAppPropertyString);
+        shP.propertyValue[shareEntityId] = url;
+        Engine.setValue(shP, shP.propertyValue);
+    }
+
+    /**
+     * Надо ли генерировать превью для этого ентити или нет
+     * Если картинки еще нет или ее по ее урлу можно сказать что она автогенерированная, значит надо
+     * Если урл картинки кастомный, то он был задан пользователем. Пользователь сам обновит картинку
+     *
+     * @param {string} shareEntityId - строковый индентификатор сущности для шаринга
+     * @return {boolean}
+     */
+    function needToGeneratePreview(shareEntityId) {
+        // это мапа entityId:imageUrl
+        var shP = Engine.getAppProperty(config.common.shareImagesAppPropertyString);
+        var shareImageUrl = shP.propertyValue[shareEntityId];
+        if (!!shareImageUrl === false || shareImageIsAutogenerated(shP.propertyValue[shareEntityId]) === true) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Определить по формату url, является ли картинка автогенерированной или нет
+     *
+     * @param {string} url
+     * @returns {boolean}
+     */
+    function shareImageIsAutogenerated(url) {
+        var s = '^(http|https):\\/\\/p\\.testix.me\\/[0-9]+\\/[0-9a-z]+\\/'+config.common.shareFileNamePrefix+'_'+'([0-9A-z]|\\_)+\\.jpg';
+        var reg = RegExp(s, 'ig');
+        return reg.test(url);
     }
 
     /**
@@ -1427,5 +1490,6 @@ var Editor = {};
     global.syncUIControlsToAppProperties = syncUIControlsToAppProperties;
     global.findControl = findControl;
     global.findControlInfo = findControlInfo; // need for autotests
+    global.setShareImageUrl = setShareImageUrl;
 
 })(Editor);
