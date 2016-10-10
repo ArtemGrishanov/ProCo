@@ -55,7 +55,7 @@ var QuestionScreen = MutApp.Screen.extend({
     /**
      * Задержка для показа explanation
      */
-    explanationPauseDelay: 2000,
+    explanationPauseDelay: 1100,
     /**
      * Показывать ли экран объяснения после ответа на вопрос или сразу переходить к следующему вопросу
      */
