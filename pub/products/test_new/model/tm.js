@@ -208,10 +208,16 @@ var TestModel = MutApp.Model.extend({
                         currentQuestionIndex: undefined
                     });
                     this.application.stat('Test', 'result', this.attributes.currentResult.title, this.attributes.resultPoints);
+                    // показать рекомендации с небольшой задержкой
+                    var a = this.application;
+                    setTimeout(function() {
+                        a.showRecommendations();
+                    }, 2000);
                 }
                 break;
             }
             case 'result': {
+                this.application.hideRecommendations();
                 this.set({
                     state: 'welcome',
                     resultPoints: 0,
@@ -220,6 +226,7 @@ var TestModel = MutApp.Model.extend({
                 break;
             }
             default: {
+                this.application.hideRecommendations();
                 this.set({
                     state: 'welcome',
                     resultPoints: 0,

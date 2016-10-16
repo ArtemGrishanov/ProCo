@@ -3,6 +3,12 @@
  *
  */
 var MutApp = function(param) {
+    this.id = MutApp.Util.getUniqId(6);
+    /**
+     * Окно загрузчика, который, возможно, встроил этот проект на страницу
+     * @type {window}
+     */
+    this.loaderWindow = null;
     this.appConstructor = 'mutapp';
     /**
      * Если isPublished === true, то запущено опубликованные приложение.
@@ -115,6 +121,9 @@ var MutApp = function(param) {
 
     // вызов конструктора initialize, аналогично backbone
     this.initialize.apply(this, arguments);
+
+    // подписка на postMessage
+    window.addEventListener("message", this.receiveMessage.bind(this), false);
 };
 /**
  * dom-элемент в котором помещаются все экраны
@@ -503,6 +512,42 @@ MutApp.prototype.stat = function(category, action, label, value) {
             statData.eventValue = value
         }
         window.ga('send', statData);
+    }
+};
+
+/**
+ * Получить и обработать сообщение
+ * @param event
+ */
+MutApp.prototype.receiveMessage = function(event) {
+    // это событие означает, что лоадер встроил это приложение на страницу
+    // надо запомнить его, чтобы потом можно было отослать какое-то сообщение
+    if (event.data && event.data.method === 'init') {
+        this.loaderWindow = event.source;
+    }
+};
+
+/**
+ * Отправить запрос на показ других релевантных промо проектов
+ * Это возможно только когда проект был загружен с помощью loader.js
+ */
+MutApp.prototype.showRecommendations = function() {
+    if (this.loaderWindow) {
+        this.loaderWindow.postMessage({
+            method: 'showRecommendations'
+        }, '*');
+    }
+};
+
+/**
+ * Отправить запрос на скрытие рекомендаций, например когда начинаем тест повторно.
+ * Это возможно только когда проект был загружен с помощью loader.js
+ */
+MutApp.prototype.hideRecommendations = function() {
+    if (this.loaderWindow) {
+        this.loaderWindow.postMessage({
+            method: 'hideRecommendations'
+        }, '*');
     }
 };
 

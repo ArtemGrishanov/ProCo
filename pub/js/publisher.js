@@ -178,7 +178,8 @@ var Publisher = {};
      * @returns {string}
      */
     function getEmbedCode() {
-        return '<iframe src=\"'+getAnonymLink()+'/'+indexPrefix+indexHtml+'\" style="display:block;width:'+appWidth+'px;height:'+appHeight+'px;margin:0 auto;padding:0;border:none;"></iframe>';
+        //return '<iframe src=\"'+getAnonymLink()+'/'+indexPrefix+indexHtml+'\" style="display:block;width:'+appWidth+'px;height:'+appHeight+'px;margin:0 auto;padding:0;border:none;"></iframe>';
+        return '<div class="testix_project" data-width=\"'+appWidth+'px\" data-height=\"'+appHeight+'px\" data-published=\"'+getAnonymLink()+'/'+indexPrefix+indexHtml+'\"><script src="//testix.me/js/loader.js" async></script></div>';
     }
 
     /**

@@ -18,6 +18,7 @@ QUnit.test("MutApp test: basics", function( assert ) {
     assert.ok(app._screens !== undefined, 'screens in app');
     assert.ok(app._models !== undefined, 'models in app');
     assert.ok(app.inited === true, 'app inited');
+    assert.ok(!!app.id === true, 'app id');
 });
 
 QUnit.test("MutApp test: Screen", function( assert ) {

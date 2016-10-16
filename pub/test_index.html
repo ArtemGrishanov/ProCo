@@ -5,167 +5,51 @@
     <meta charset="utf-8">
     <link href='https://fonts.googleapis.com/css?family=Roboto&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
     <!--build:css css/test_index.min.css-->
-    <link href="css/common.css" rel="stylesheet" type='text/css'>
-    <link href="css/editor.css" rel="stylesheet" type='text/css'>
-    <link href="controls/css/style.css" rel="stylesheet" type='text/css'>
+    <!--<link href="css/common.css" rel="stylesheet" type='text/css'>-->
+    <!--<link href="css/editor.css" rel="stylesheet" type='text/css'>-->
+    <!--<link href="controls/css/style.css" rel="stylesheet" type='text/css'>-->
     <!--endbuild-->
 </head>
 <body style="background-color: #888">
-    <div style="width:500px;">
-        <div class="quizz-container" data-width="100%" data-height="auto" data-quiz="120406"></div>
-        <script src="//dcc4iyjchzom0.cloudfront.net/widget/loader.js" async></script>
-    </div>
+    <!--<div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/0c675b7d34/p_index.html"><script src="js/loader.js" async></script></div>-->
+    <!--<div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/0d37e9f9b3/p_index.html"><script src="js/loader.js" async></script></div>-->
+    <div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/0d37e9f9b3/p_index.html"><script src="//testix.me/js/loader.js" async></script></div>
+    <!--<div style="width:500px;">-->
+        <!--<div class="quizz-container" data-width="100%" data-height="auto" data-quiz="120406"></div>-->
+        <!--<script src="//dcc4iyjchzom0.cloudfront.net/widget/loader.js" async></script>-->
+    <!--</div>-->
 
-    <script type="text/javascript" src="//static.apester.com/js/sdk/v1.1/apester-sdk.min.js"></script>
-    <interaction id="57bd9b5dec3cf49f6eb7a565"></interaction>
+    <!--<script type="text/javascript" src="//static.apester.com/js/sdk/v1.1/apester-sdk.min.js"></script>-->
+    <!--<interaction id="57bd9b5dec3cf49f6eb7a565"></interaction>-->
 
-    <div id="id-content" contenteditable="true">text input here<br>sdfsdfw<br>line 3</div>
     <!--<img id="id-img" crossorigin="anonymous" src="https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-1045302892173346/res/1345+%D0%BF%D0%BE%D0%BB%D0%B8%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B8%CC%86-%D0%B8%D0%BD%D1%81%D1%82%D0%B8%D1%82%D1%83%D1%82-%D0%B2-%D0%BA%D0%B8%D0%B5%D0%B2%D0%B5+%D1%84%D0%BE%D1%82%D0%BE+%D1%81%D1%82%D0%B0%D1%80%D0%BE%D0%B3%D0%BE+%D0%BA%D0%B8%D0%B5%D0%B2%D0%B0+1915+%D0%B3%D0%BE%D0%B4.jpeg"/>-->
-    <div></div>
+    <!--<iframe src="http://p.testix.me/127867420975996/1fe2b6f8a1/p_index.html" style="display:block;width:800px;height:600px;margin:0 auto;padding:0;border:none;"></iframe>-->
     <!--<div id="id-modal_cnt" class="scr">-->
         <!--&lt;!&ndash; parent for modals &ndash;&gt;-->
     <!--</div>-->
-    <canvas id="id-canvas"></canvas>
-    <script>
-        setTimeout(function(){
-            // var c = document.createElement('canvas');
-            var c = document.getElementById('id-canvas');
-            var ctx = c.getContext('2d');
-            var img = document.getElementById('id-img');
-            ctx.drawImage(img, 0, 0);
-            var data = ctx.getImageData(0,0, c.width, c.height);
-        }, 1000);
-    </script>
-    <script type="text/javascript" src="lib/jquery.js"></script>
-    <!-- build:js test_index.min.js -->
-    <script type="text/javascript" src="js/config.js"></script>
-    <script type="text/javascript" src="js/model/app.js"></script>
-    <script type="text/javascript" src="js/util/utils.js"></script>
-    <script type="text/javascript" src="js/engine.js"></script>
-    <script type="text/javascript" src="js/appProperty.js"></script>
-    <script type="text/javascript" src="js/view/storefront.js"></script>
-    <script type="text/javascript" src="js/view/modals/AbstractModal.js"></script>
-    <script type="text/javascript" src="js/view/modals/LoadingModal.js"></script>
-    <script type="text/javascript" src="js/view/modals/MessageModal.js"></script>
-    <script type="text/javascript" src="js/view/modals/Modal.js"></script>
-    <!-- endbuild -->
-    <script>
-        $editables = $('[contenteditable=true]');
-
-        $editables.filter("p,span,div").on('keypress',function(e){
-            if(e.keyCode==13){ //enter && shift
-
-                e.preventDefault(); //Prevent default browser behavior
-                if (window.getSelection) {
-                    var selection = window.getSelection(),
-                            range = selection.getRangeAt(0),
-                            br = document.createElement("br"),
-                            textNode = document.createTextNode("\u00a0"); //Passing " " directly will not end up being shown correctly
-                    range.deleteContents();//required or not?
-                    range.insertNode(br);
-                    range.collapse(false);
-                    range.insertNode(textNode);
-                    range.selectNodeContents(textNode);
-
-                    selection.removeAllRanges();
-                    selection.addRange(range);
-                    return false;
-                }
-
-            }
-        });
-
-        var o = {
-            data1: 123,
-            data2: 'ssserrt',
-            data3: function() {
-                var i = 1 + 3;
-                console.log('result='+i);
-            }
-        };
-
-        var so = JSON.stringify(o, function(key, val) {
-            if (typeof val === 'function') {
-                return val + ''; // implicitly `toString` it
-            }
-            return val;
-        });
-
-        var formatsB2C = [
-            {name: 'Social Media Content', usagePercent: 90, interactive: 0.2},
-            {name: 'Illustrations/Photos', usagePercent: 87},
-            {name: 'eNewsletters', usagePercent: 83},
-            {name: 'Videos', usagePercent: 82},
-            {name: 'Articles', usagePercent: 81, interactive: 0.1},
-            {name: 'Blogs', usagePercent: 77},
-            {name: 'In-person Events', usagePercent: 73},
-            {name: 'Infographics', usagePercent: 62, interactive: 0.2},
-            {name: 'Microsites/Separate website hubs', usagePercent: 52, interactive: 1},
-            {name: 'Online presentations', usagePercent: 48, interactive: 0.5},
-            {name: 'Branded content tools', usagePercent: 46},
-            {name: 'Mobile Apps', usagePercent: 43, interactive: 1},
-            {name: 'Print Magazines', usagePercent: 41},
-            {name: 'Webinars/Webcasts', usagePercent: 40},
-            {name: 'Case Studies', usagePercent: 38},
-            {name: 'Research Reports', usagePercent: 36},
-            {name: 'Print newsletters', usagePercent: 35},
-            {name: 'White papers', usagePercent: 32},
-            {name: 'Digital magazines', usagePercent: 31},
-            {name: 'Books', usagePercent: 31},
-            {name: 'eBooks', usagePercent: 30},
-            {name: 'Virtual conferences', usagePercent: 26},
-            {name: 'Games gamification', usagePercent: 22},
-            {name: 'Podcasts', usagePercent: 21}
-        ];
-
-        var formatsB2B = [
-            {name: 'Social Media Content', usagePercent: 93, interactive: 0.2},
-            {name: 'Case studies', usagePercent: 82},
-            {name: 'blogs', usagePercent: 81},
-            {name: 'eNewsletters', usagePercent: 81},
-            {name: 'in-person events', usagePercent: 81},
-            {name: 'Articles on your website', usagePercent: 79, interactive: 0.1},
-            {name: 'Videos', usagePercent: 79},
-            {name: 'Illustrations/photos', usagePercent: 76},
-            {name: 'Whitepapers', usagePercent: 71},
-            {name: 'Infographics', usagePercent: 67, interactive: 0.2},
-            {name: 'Webinars podcasts', usagePercent: 66},
-            {name: 'Online presentation', usagePercent: 65, interactive: 0.5},
-            {name: 'Research reports', usagePercent: 49},
-            {name: 'Microsites/separate website hubs', usagePercent: 47, interactive: 1},
-            {name: 'Branded content tools', usagePercent: 42},
-            {name: 'eBooks', usagePercent: 39},
-            {name: 'Print magazines', usagePercent: 36},
-            {name: 'Books', usagePercent: 30},
-            {name: 'Digital magazines', usagePercent: 26},
-            {name: 'Mobile apps', usagePercent: 28, interactive: 1},
-            {name: 'Virtual conferences', usagePercent: 25},
-            {name: 'Podcasts', usagePercent: 23},
-            {name: 'Print newsletters', usagePercent: 22},
-            {name: 'Games/gamification', usagePercent: 12, interactive: 1}
-        ];
-
-        function calcInterativePercent(data) {
-            var sum = 0, sumInt = 0;
-            var result = 0;
-
-            for (var i = 0; i < data.length; i++) {
-                sum += data[i].usagePercent;
-                if (data[i].interactive > 0) {
-                    sumInt += data[i].usagePercent*data[i].interactive;
-                    sum+= data[i].usagePercent*(1-data[i].interactive);
-                }
-                else {
-                    sum += data[i].usagePercent;
-                }
-            }
-
-            console.log('Interactive: '+(sumInt/(sumInt+sum)));
-            console.log('Static: '+(sum/(sumInt+sum)));
-        }
-
-//        calcInterativePercent(formatsB2C);
-//        calcInterativePercent(formatsB2B);
-    </script>
+    <!--<canvas id="id-canvas"></canvas>-->
+    <!--<script>-->
+        <!--setTimeout(function(){-->
+            <!--// var c = document.createElement('canvas');-->
+            <!--var c = document.getElementById('id-canvas');-->
+            <!--var ctx = c.getContext('2d');-->
+            <!--var img = document.getElementById('id-img');-->
+            <!--ctx.drawImage(img, 0, 0);-->
+            <!--var data = ctx.getImageData(0,0, c.width, c.height);-->
+        <!--}, 1000);-->
+    <!--</script>-->
+    <!--<script type="text/javascript" src="lib/jquery.js"></script>-->
+    <!--&lt;!&ndash; build:js test_index.min.js &ndash;&gt;-->
+    <!--<script type="text/javascript" src="js/config.js"></script>-->
+    <!--<script type="text/javascript" src="js/model/app.js"></script>-->
+    <!--<script type="text/javascript" src="js/util/utils.js"></script>-->
+    <!--<script type="text/javascript" src="js/engine.js"></script>-->
+    <!--<script type="text/javascript" src="js/appProperty.js"></script>-->
+    <!--<script type="text/javascript" src="js/view/storefront.js"></script>-->
+    <!--<script type="text/javascript" src="js/view/modals/AbstractModal.js"></script>-->
+    <!--<script type="text/javascript" src="js/view/modals/LoadingModal.js"></script>-->
+    <!--<script type="text/javascript" src="js/view/modals/MessageModal.js"></script>-->
+    <!--<script type="text/javascript" src="js/view/modals/Modal.js"></script>-->
+    <!--&lt;!&ndash; endbuild &ndash;&gt;-->
 </body>
 </html>

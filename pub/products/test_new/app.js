@@ -6,8 +6,6 @@ var TestApp = MutApp.extend({
 
     type: 'test',
 
-    id: MutApp.Util.getUniqId(6),
-
     screenRoot: $('#id-mutapp_screens'),
 
     initialize: function(param) {
