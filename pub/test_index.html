@@ -9,11 +9,82 @@
     <!--<link href="css/editor.css" rel="stylesheet" type='text/css'>-->
     <!--<link href="controls/css/style.css" rel="stylesheet" type='text/css'>-->
     <!--endbuild-->
+    <script type="text/javascript" src="lib/jquery.js"></script>
+    <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 </head>
 <body style="background-color: #888">
     <!--<div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/0c675b7d34/p_index.html"><script src="js/loader.js" async></script></div>-->
     <!--<div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/0d37e9f9b3/p_index.html"><script src="js/loader.js" async></script></div>-->
     <div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/0d37e9f9b3/p_index.html"><script src="//testix.me/js/loader.js" async></script></div>
+    <div id="id-vk"></div>
+    <script type="text/javascript">
+        function test() {
+            var d = document.getElementById('id-vk');
+                $('#id-vk').html(VK.Share.button({
+                    url: 'http://jam-i.net/quiz',
+                    title: 'Знаешь ли ты Киев?',
+                    description: '5 из 12 - ты Интелигент',
+                    image: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-1045302892173346/res/Result-8.jpg',
+                    noparse: true
+                }, {
+                    type: 'custom',
+                    text: '<img src="http://testix.me/i/products/vk.png" />'
+                }));
+        }
+
+        function vktest() {
+            Share.vkontakte('http://jam-i.net/quiz',
+                    'Знаешь ли ты Киев?',
+                    'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-1045302892173346/res/Result-8.jpg',
+                    '8 из 12 - ты Интелигент'
+            );
+        }
+
+        var Share = {
+            vkontakte: function(purl, ptitle, pimg, text) {
+                url  = 'http://vkontakte.ru/share.php?';
+                url += 'url='          + encodeURIComponent(purl);
+                url += '&title='       + encodeURIComponent(ptitle);
+                url += '&description=' + encodeURIComponent(text);
+                url += '&image='       + encodeURIComponent(pimg);
+                url += '&noparse=true';
+                Share.popup(url);
+            },
+            odnoklassniki: function(purl, text) {
+                url  = 'http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1';
+                url += '&st.comments=' + encodeURIComponent(text);
+                url += '&st._surl='    + encodeURIComponent(purl);
+                Share.popup(url);
+            },
+            facebook: function(purl, ptitle, pimg, text) {
+                url  = 'http://www.facebook.com/sharer.php?s=100';
+                url += '&p[title]='     + encodeURIComponent(ptitle);
+                url += '&p[summary]='   + encodeURIComponent(text);
+                url += '&p[url]='       + encodeURIComponent(purl);
+                url += '&p[images][0]=' + encodeURIComponent(pimg);
+                Share.popup(url);
+            },
+            twitter: function(purl, ptitle) {
+                url  = 'http://twitter.com/share?';
+                url += 'text='      + encodeURIComponent(ptitle);
+                url += '&url='      + encodeURIComponent(purl);
+                url += '&counturl=' + encodeURIComponent(purl);
+                Share.popup(url);
+            },
+            mailru: function(purl, ptitle, pimg, text) {
+                url  = 'http://connect.mail.ru/share?';
+                url += 'url='          + encodeURIComponent(purl);
+                url += '&title='       + encodeURIComponent(ptitle);
+                url += '&description=' + encodeURIComponent(text);
+                url += '&imageurl='    + encodeURIComponent(pimg);
+                Share.popup(url)
+            },
+
+            popup: function(url) {
+                window.open(url,'','toolbar=0,status=0,width=626,height=436');
+            }
+        };
+    </script>
     <!--<div style="width:500px;">-->
         <!--<div class="quizz-container" data-width="100%" data-height="auto" data-quiz="120406"></div>-->
         <!--<script src="//dcc4iyjchzom0.cloudfront.net/widget/loader.js" async></script>-->
@@ -38,7 +109,6 @@
             <!--var data = ctx.getImageData(0,0, c.width, c.height);-->
         <!--}, 1000);-->
     <!--</script>-->
-    <!--<script type="text/javascript" src="lib/jquery.js"></script>-->
     <!--&lt;!&ndash; build:js test_index.min.js &ndash;&gt;-->
     <!--<script type="text/javascript" src="js/config.js"></script>-->
     <!--<script type="text/javascript" src="js/model/app.js"></script>-->

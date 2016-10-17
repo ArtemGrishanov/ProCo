@@ -98,7 +98,7 @@ descriptor.css = [
 
 descriptor.app = [
     {
-        selector: 'id=startScr logoPosition, type=questions logoPosition, type=result logoPosition, type=result fbSharePosition',
+        selector: 'id=startScr logoPosition, type=questions logoPosition, type=result logoPosition, type=result fbSharePosition, type=result vkSharePosition',
         rules: 'drag'
     },
     {

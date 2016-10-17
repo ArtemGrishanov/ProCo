@@ -293,4 +293,6 @@ function checkShareEntities(assert, app, appIframe) {
         count += app._screens[i].$el.find('.'+shareFBbtnClass).length;
     }
     assert.ok(count>0, 'checkShareEntities: There are some share buttons in app');
+
+    assert.ok(!!appIframe.contentWindow.VK===true, 'checkShareEntities VK api exist. In offline mode this test fails, it s ok');
 }

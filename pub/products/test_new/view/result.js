@@ -42,6 +42,10 @@ var ResultScreen = MutApp.Screen.extend({
      * Позиция кнопки для шаринга результата в фб
      */
     fbSharePosition: {top: 10, left: 10},
+    /**
+     * Позиция кнопки для шаринга результата в ВКонтакте
+     */
+    vkSharePosition: {top: 120, left: 10},
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -55,6 +59,7 @@ var ResultScreen = MutApp.Screen.extend({
     events: {
         "click .js-next": "onNextClick",
         "click .js-mutapp_share_fb": "onFBShareClick",
+        "click .js-mutapp_share_vk": "onVKShareClick",
         "click .js-logo": "onLogoClick"
     },
 
@@ -75,6 +80,12 @@ var ResultScreen = MutApp.Screen.extend({
         // ид экрана выступает также и в роли идентификатора для постинга
         // это определили при создании приложения в app.js
         this.model.application.share(this.id);
+    },
+
+    onVKShareClick: function(e) {
+        // ид экрана выступает также и в роли идентификатора для постинга
+        // это определили при создании приложения в app.js
+        this.model.application.share(this.id, 'vk');
     },
 
     initialize: function (param) {
@@ -113,6 +124,9 @@ var ResultScreen = MutApp.Screen.extend({
         $('.js-mutapp_share_fb').
             css('top',this.fbSharePosition.top+'px').
             css('left',this.fbSharePosition.left+'px');
+        $('.js-mutapp_share_vk').
+            css('top',this.vkSharePosition.top+'px').
+            css('left',this.vkSharePosition.left+'px');
 
         this.$el.find('.js-restart').html(this.restartButtonText);
 

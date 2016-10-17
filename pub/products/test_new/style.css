@@ -482,3 +482,13 @@ img {
     background-size: 64px 64px;
     cursor: pointer;
 }
+.vk_share {
+    position: absolute;
+    top: 120px;
+    left: 20px;
+    width: 64px;
+    height: 64px;
+    background-image: url(https://s3.eu-central-1.amazonaws.com/testix.me/i/products/vk_64.png);
+    background-size: 64px 64px;
+    cursor: pointer;
+}

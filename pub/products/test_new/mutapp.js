@@ -470,6 +470,33 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
             }
             return true;
         }
+        else if (serviceId === 'vk') {
+            if (isFakeShare !== true) {
+                // способ построения ссылки взят из интернета и не рекомендован официально ВК
+                var url = 'http://vkontakte.ru/share.php?';
+                url += 'url='          + encodeURIComponent(this.shareLink);
+                url += '&title='       + encodeURIComponent(name);
+                url += '&description=' + encodeURIComponent(description);
+                url += '&image='       + encodeURIComponent(imgUrl);
+                url += '&noparse=true';
+                window.open(url,'','toolbar=0,status=0,width=626,height=436');
+                // но вот такой официальный код я заставил работать только под localhost
+                // в приложении параметр noparse не работал
+//                $(vks).html(
+//                    VK.Share.button({
+//                            url: this.model.application.shareLink,
+//                            title: e.title,
+//                            description: e.description,
+//                            image: this.model.application._shareImages[this.id],
+//                            noparse: true
+//                        }, {
+//                            type: 'custom',
+//                            text: '<img src="http://testix.me/i/products/vk_64.png" />'
+//                    )
+//                );
+            }
+            return true;
+        }
 
         //TODO other providers
     }
