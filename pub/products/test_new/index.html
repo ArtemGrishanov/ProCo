@@ -11,8 +11,8 @@
     <div id="id-mutapp_screens">
     </div>
     <script id="id-welcome_template" type="text/template">
-        <div class="modal __active js-back_color js-back_img" data-app-property="id=startScr backgroundImg">
-            <div class="modal_cnt info">
+        <div class="modal __active js-back_color js-back_img" data-app-property="id=startScr backgroundImg, id=startScr shadowEnable">
+            <div class="modal_cnt info js-back_shadow">
                 <div class="info_title js-start_header" data-app-property="id=startScr startHeaderText"><b>Дзюдо: </b>иппон или вазаари</div>
                 <div class="info_tx js-start_description" data-app-property="id=startScr startDescription">Пройдите тест и узнайте, как хорошо вы разбираетесь в этом виде восточных единоборств</div>
                 <div class="info_f js-btn_wr">
@@ -23,8 +23,8 @@
         </div>
     </script>
     <script id="id-slide_template" type="text/template">
-        <div class="modal __active js-back_color js-back_img" data-app-property="type=questions backgroundImg">
-            <div class="modal_cnt">
+        <div class="modal __active js-back_color js-back_img" data-app-property="type=questions backgroundImg, type=questions shadowEnable">
+            <div class="modal_cnt js-back_shadow">
                 <div data-app-property="type=questions topColontitleText" class="js-topColontitleText topColontitle">Верхний колонтитул</div>
                 <div class="modal_hld question">
                     <div class="js-question_cnt">
@@ -112,8 +112,8 @@
         </div>
     </script>
     <script id="id-result_template" type="text/template">
-        <div class="modal __active js-back_color js-back_img" data-app-property="type=result backgroundImg">
-            <div class="modal_cnt info">
+        <div class="modal __active js-back_color js-back_img" data-app-property="type=result backgroundImg, type=result shadowEnable">
+            <div class="modal_cnt info js-back_shadow">
                 <div class="info_title js-result_title" data-app-property="id=tm results.<%=currentResultIndex%>.title"><%=title%></div>
                 <div class="info_tx js-result_description" data-app-property="id=tm results.<%=currentResultIndex%>.description"><%=description%></div>
                 <div class="info_f js-btn_wr">

@@ -38,6 +38,8 @@ var ResultScreen = MutApp.Screen.extend({
     logoPosition: {top: 100, left: 20},
     restartButtonText: 'Заново',
     backgroundImg: null,
+
+    shadowEnable: false,
     /**
      * Позиция кнопки для шаринга результата в фб
      */
@@ -137,6 +139,13 @@ var ResultScreen = MutApp.Screen.extend({
         }
         else {
             this.$el.find('.js-back_img').css('backgroundImage','none');
+        }
+
+        if (this.shadowEnable === true) {
+            this.$el.find('.js-back_shadow').css('background-color','rgba(0,0,0,0.4)');
+        }
+        else {
+            this.$el.find('.js-back_shadow').css('background-color','');
         }
 
         return this;

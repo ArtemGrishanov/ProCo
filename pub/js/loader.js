@@ -49,9 +49,9 @@ if (window.textix === undefined) {
             'display:none;' +
             'position:absolute;' +
             'width:100%;' +
-            'height:172px;' +
             'left:0;' +
             'bottom:0;' +
+            'height:172px;' +
             'background-color:rgba(0,0,0,.7);' +
             'color:#fff;' +
             'transition: all .3s ease 0s;' +
@@ -411,6 +411,11 @@ if (window.textix === undefined) {
                     info.recomPanel.style.display = 'block';
                     // по умолчанию панеь сначала показывается в развернутом виде, без модификатора __close
                     info.recomPanel.setAttribute('class','tstx_rec_panel');
+                    info.recomPanel.style.bottom = '-172px'; // высота панели по классу tstx_rec_panel
+                    setTimeout(function() {
+                        // начало анимации, панелька начнем двигаться в положение bottom:0
+                        info.recomPanel.style.bottom = '';
+                    }, 50);
                     info.close.setAttribute('class','tstx_rec_close');
                 }
 

@@ -32,6 +32,7 @@ var StartScreen = MutApp.Screen.extend({
     startDescription: 'Проверь свои знания',
     startButtonText: 'Начать',
     backgroundImg: null,
+    shadowEnable: false,
 
 
     /**
@@ -102,6 +103,13 @@ var StartScreen = MutApp.Screen.extend({
         this.$el.find('.js-start_btn').html(this.startButtonText);
         this.$el.find('.js-start_header').html(this.startHeaderText);
         this.$el.find('.js-start_description').html(this.startDescription);
+
+        if (this.shadowEnable === true) {
+            this.$el.find('.js-back_shadow').css('background-color','rgba(0,0,0,0.4)');
+        }
+        else {
+            this.$el.find('.js-back_shadow').css('background-color','');
+        }
 
         return this;
     }

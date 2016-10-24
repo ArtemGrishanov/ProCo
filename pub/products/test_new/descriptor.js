@@ -116,7 +116,7 @@ descriptor.app = [
         rules: 'imgUrl'
     },
     {
-        selector: 'type=questions showExplanation, id=startScr showLogo, type=questions showLogo, type=result showLogo, id=tm showQuestionProgress, id=tm showBullits, id=tm showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions',
+        selector: 'type=questions showExplanation, id=startScr showLogo, type=questions showLogo, type=result showLogo, id=tm showQuestionProgress, id=tm showBullits, id=tm showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions, id=startScr shadowEnable, type=questions shadowEnable, type=result shadowEnable',
         rules: 'trueFalse'
     },
             {
@@ -155,6 +155,18 @@ descriptor.app = [
             {
                 selector: 'id=tm randomizeQuestions',
                 label: 'Перемешивать вопросы'
+            },
+            {
+                selector: 'id=startScr shadowEnable',
+                label: 'Затемнение фона'
+            },
+            {
+                selector: 'type=questions shadowEnable',
+                label: 'Затемнение фона'
+            },
+            {
+                selector: 'type=result shadowEnable',
+                label: 'Затемнение фона'
             },
     {
         selector: 'id=tm quiz.{{number}}.question.text, id=tm quiz.{{number}}.answer.options.{{number}}.text, id=tm results.{{number}}.title, id=tm results.{{number}}.description, id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText, type=result restartButtonText, type=questions topColontitleText',

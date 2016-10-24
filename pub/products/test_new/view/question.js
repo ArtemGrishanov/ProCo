@@ -61,6 +61,8 @@ var QuestionScreen = MutApp.Screen.extend({
      */
     showExplanation: true,
 
+    shadowEnable: false,
+
     /**
      * Контейнер в котором будет происходить рендер этого вью
      */
@@ -179,6 +181,13 @@ var QuestionScreen = MutApp.Screen.extend({
         }
         else {
             this.$el.find('.js-back_img').css('backgroundImage','none');
+        }
+
+        if (this.shadowEnable === true) {
+            this.$el.find('.js-back_shadow').css('background-color','rgba(0,0,0,0.4)');
+        }
+        else {
+            this.$el.find('.js-back_shadow').css('background-color','');
         }
 
         return this;
