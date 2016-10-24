@@ -690,6 +690,7 @@ var Editor = {};
     function syncUIControlsToAppProperties(startActiveScreens) {
         //TODO название метода не соответствует тому что здесь: полное пересоздание всех контролов
         uiControlsInfo = [];
+        $('#id-static-no_filter_controls').empty();
         $('#id-static_controls_cnt').empty();
         $('#id-control_cnt').empty();
 
@@ -712,8 +713,11 @@ var Editor = {};
                                 parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
                             }
                             else {
-                                // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на правую панель
-                                var $cc = $($('#id-static_control_cnt_template').html()).appendTo('#id-static_controls_cnt');
+                                // выбираем панель по принципу: фильтруется контрол или нет
+                                var parentPanelId = (ap.filter === true) ? '#id-static_controls_cnt': '#id-static-no_filter_controls';
+
+                                // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на панель настроек
+                                var $cc = $($('#id-static_control_cnt_template').html()).appendTo(parentPanelId);
                                 if (ap.label) {
                                     $cc.find('.js-label').text(ap.label);
                                 }
@@ -754,17 +758,6 @@ var Editor = {};
                 initColorpickers();
             }, 10000);
         }, 6000);
-
-        // скомпилировать новые angular derictives (которые соответствуют контролам)
-    //    var $injector = angular.injector(['ng', 'procoApp']);
-    //    $injector.invoke(function ($rootScope, $compile) {
-    //        $compile($('#id-slides_cnt')[0])($rootScope);
-    //        $rootScope.$digest();
-    //    });
-    //    $injector.invoke(function ($rootScope, $compile) {
-    //        $compile($('#id-static_controls_cnt')[0])($rootScope);
-    //        $rootScope.$digest();
-    //    });
 
         if (startActiveScreens) {
             activeScreens = startActiveScreens;

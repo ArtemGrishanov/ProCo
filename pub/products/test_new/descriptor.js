@@ -158,15 +158,18 @@ descriptor.app = [
             },
             {
                 selector: 'id=startScr shadowEnable',
-                label: 'Затемнение фона'
+                label: 'Затемнение фона',
+                filter: true
             },
             {
                 selector: 'type=questions shadowEnable',
-                label: 'Затемнение фона'
+                label: 'Затемнение фона',
+                filter: true
             },
             {
                 selector: 'type=result shadowEnable',
-                label: 'Затемнение фона'
+                label: 'Затемнение фона',
+                filter: true
             },
     {
         selector: 'id=tm quiz.{{number}}.question.text, id=tm quiz.{{number}}.answer.options.{{number}}.text, id=tm results.{{number}}.title, id=tm results.{{number}}.description, id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText, type=result restartButtonText, type=questions topColontitleText',
