@@ -3,6 +3,7 @@
 <head>
     <title>Test</title>
     <meta charset="UTF-8">
+    <link href="../common/css/style.css" rel="stylesheet">
     <!--build:css style.css-->
     <link href="style.css" rel="stylesheet">
     <!--endbuild-->
@@ -118,10 +119,15 @@
                 <div class="info_tx js-result_description" data-app-property="id=tm results.<%=currentResultIndex%>.description"><%=description%></div>
                 <div class="info_f js-btn_wr">
                     <div class="button js-next js-restart js-test_btn" data-app-property="type=result restartButtonText">Пройти тест еще раз</div>
-                    <!--<div class="button js-details">Подробности</div>-->
                 </div>
-                <div class="js-mutapp_share_fb fb_share" data-app-property="type=result fbSharePosition"></div>
-                <div class="js-mutapp_share_vk vk_share" data-app-property="type=result vkSharePosition"></div>
+                <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="type=result fbSharePosition">
+                    <span class="tstx_share_i"></span>
+                    Поделиться
+                </div>
+                <div class="tstx_share_btn __vk js-mutapp_share_vk" data-app-property="type=result vkSharePosition">
+                    <span class="tstx_share_i __vk"></span>
+                    Поделиться
+                </div>
                 <div class="logo js-logo js-result_logo" data-app-property="type=result logoPosition, type=result showLogo, id=tm logoUrl"></div>
             </div>
         </div>

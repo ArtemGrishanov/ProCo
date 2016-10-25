@@ -1,0 +1,40 @@
+.tstx_share_btn {
+    position: absolute;
+    width: 215px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #4166b7;
+    font-family: HelveticaNeue, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.tstx_share_btn.__vk {
+    background-color: #5579a2;
+}
+
+.tstx_share_i {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    display: block;
+    background-image: url(../i/fb-share-icon.png);
+    width: 22px;
+    height: 20px;
+}
+.tstx_share_i.__vk {
+    background-image: url(../i/vk-share-icon.png);
+}
+
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 1.5dppx) {
+    .tstx_share_i {
+        background-image: url(../i/fb-share-icon@2x.png);
+        background-size: 22px 20px;
+    }
+    .tstx_share_i.__vk {
+        background-image: url(../i/vk-share-icon@2x.png);
+        background-size: 22px 20px;
+    }
+}

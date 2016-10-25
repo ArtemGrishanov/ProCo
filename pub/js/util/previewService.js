@@ -62,7 +62,7 @@ var previewService = {};
      * @param html
      * @param callback
      * @param type
-     * @param stylesToEmbed
+     * @param Array stylesToEmbed
      * @param width ширина вью
      * @param height высота вью
      */
@@ -75,7 +75,10 @@ var previewService = {};
                     var ps = $('#id-html_rasterization_iframe')[0].contentWindow.previewService;
                     var cnt = $('#id-html_rasterization_iframe').contents().find('#id-html_rasterization_cnt');
                     // стили от этого вью добавляем,
-                    $("#id-html_rasterization_iframe").contents().find('head').append(stylesToEmbed);
+                    var $h = $("#id-html_rasterization_iframe").contents().find('head');
+                    for (var i = 0; i < stylesToEmbed.length; i++) {
+                        $h.append(stylesToEmbed[i]);
+                    }
                     // в превью контейнер дописать кастомные стили, которые получились в результате редактирования css appProperties
                     Engine.writeCssRulesTo($("#id-html_rasterization_iframe").contents().find('body'));
                     // Обязательно display !== none

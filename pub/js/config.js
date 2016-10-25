@@ -190,6 +190,16 @@ var config = {
         templates: []
     },
     products: {
+        /**
+         * Общие для всех продуктов настройки
+         */
+        common: {
+            /**
+             * Продукт может подключить эти общие для всех стили.
+             * Там например содержаться кнопки для шаринга
+             */
+            styles: '<link href="{{config.common.home}}products/common/css/style.css" rel="stylesheet"/>'
+        },
         // конфигурация для каждого типа промо-приложений
         test: {
             prototypeId: 'test_v1.0',
@@ -450,6 +460,9 @@ if (config.common.configurationSetsOnStart && config.common.configurationSetsOnS
     }
 }
 
+config.products.common.styles = config.products.common.styles.replace('{{config.common.home}}',config.common.home);
 for (var key in config.products) {
-    config.products[key].stylesForEmbed = config.products[key].stylesForEmbed.replace('{{config.common.home}}',config.common.home);
+    if (config.products[key].stylesForEmbed) {
+        config.products[key].stylesForEmbed = config.products[key].stylesForEmbed.replace('{{config.common.home}}',config.common.home);
+    }
 }

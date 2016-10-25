@@ -277,7 +277,9 @@ var Editor = {};
             // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
             .height(appContainerSize.height+2*config.editor.ui.screen_blocks_border_width);
         // в поле для редактирования подтягиваем стили продукта
-        $("#id-product_screens_cnt").contents().find('head').append(config.products[app.type].stylesForEmbed);
+        var $h = $("#id-product_screens_cnt").contents().find('head');
+        $h.append(config.products.common.styles);
+        $h.append(config.products[app.type].stylesForEmbed);
 
         if (config.common.editorUiEnable === true) {
             showEditor();
@@ -1118,7 +1120,7 @@ var Editor = {};
 
             previewService.createInIframe(previewScreensIframeBody, function(canvas) {
                 uploadCanvas(App.getAWSBucket(), null, url, canvas);
-            }, null, config.products[app.type].stylesForEmbed, appContainerSize.width, appContainerSize.height);
+            }, null, [config.products.common.styles, config.products[app.type].stylesForEmbed], appContainerSize.width, appContainerSize.height);
 
             return url;
         }
@@ -1185,7 +1187,7 @@ var Editor = {};
                                     }
                                 }
                             }, imageUrl, canvas, options.upload===false);
-                        }, null, config.products[app.type].stylesForEmbed, appContainerSize.width, appContainerSize.height);
+                        }, null, [config.products.common.styles, config.products[app.type].stylesForEmbed], appContainerSize.width, appContainerSize.height);
 
                     })(e.id, e.view, url);
                 }

@@ -30,7 +30,9 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
         var productType = Engine.getApp().type;
         var productConfig = config.products[productType];
         if (productConfig) {
-            $previewDocument.find('head').append(productConfig.stylesForEmbed);
+            var $h = $previewDocument.find('head');
+            $h.append(config.products.common.styles);
+            $h.append(productConfig.stylesForEmbed);
         }
         else {
             log('Slide.onPreviewIFrameLoaded: Unknown product type', true);
