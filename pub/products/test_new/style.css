@@ -163,12 +163,14 @@
     top: 0;
     left: 0;
     cursor: pointer;
+    margin: 20px auto;
 }
 .question_progress {
     position: absolute;
     top: 0;
     left: 0;
     color: #444;
+    margin: 20px auto;
 }
 .topColontitle {
     margin: 0;
@@ -249,7 +251,7 @@ img {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     text-align: center;
     white-space: nowrap;
     background-color: #fff;
@@ -259,53 +261,21 @@ img {
 .modal.__active {
     display: block;
 }
-/* before для выравнивания по высоте */
-/*.modal:before {*/
-    /*content: '';*/
-    /*position: relative;*/
-    /*display: inline-block;*/
-    /*vertical-align: middle;*/
-    /*height: 100%;*/
-/*}*/
-/*.modal_overlay {*/
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*left: 0;*/
-    /*width: 100%;*/
-    /*height: 100%;*/
-    /*background-color: rgba(0,0,0,0.5);*/
-/*}*/
+
 .modal_cnt {
     position: relative;
     display: inline-block;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     border-radius: 4px;
 }
-/* before нужен был для выравнивания по высоте */
-/*.modal_cnt:before {*/
-    /*content: '';*/
-    /*position: relative;*/
-    /*height: 100%;*/
-    /*display: inline-block;*/
-    /*vertical-align: middle;*/
-/*}*/
-/*.modal_cnt:after {*/
-    /*content: '';*/
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*left: 0;*/
-    /*width: 238px;*/
-    /*height: 128px;*/
-    /*background-image: url("../i/Left-top-corner.png");*/
-    /*background-repeat: no-repeat;*/
-/*}*/
 
 .modal_hld {
     position: relative;
     display: inline-block;
     vertical-align: middle;
-    width: 480px;
+    /*width: 480px;*/
+    width: 100%;
     white-space: normal;
 }
 
@@ -313,6 +283,12 @@ img {
     font-size: 22px;
     color: #000;
     font-weight: 700;
+    max-width: 480px;
+    margin: 0 auto;
+}
+.question_lst {
+    max-width: 480px;
+    margin: 0 auto;
 }
 .question_lst.__2 {
     display: -webkit-flex;
@@ -321,7 +297,8 @@ img {
     -webkit-flex-wrap: wrap;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    margin-top: 20px;
+    max-width: 480px;
+    margin: 20px auto;
     overflow: hidden;
 }
 .question_i {
@@ -346,16 +323,15 @@ img {
 .question_grid {
     white-space: nowrap;
     font-size: 0;
-    width: 776px;
+    width: 100%;
     text-align: center;
-    margin-left: -150px;
 }
 .question_grid-i {
     position: relative;
     display: inline-block;
     vertical-align: top;
     height: 180px;
-    width: 360px;
+    max-width: 480px;
 }
 .question_grid.__2 .question_grid-i + .question_grid-i {
     margin-left: 24px;
@@ -382,6 +358,66 @@ img {
     border-radius: 4px;
     cursor: pointer;
 }
+
+@media (max-width:600px)  {
+    /* using body for making this rules more important then 'js-*' rules from engine.js */
+    body .info_title {
+        padding-top: 60px;
+    }
+    body .info_tx {
+        padding-top: 28px;
+    }
+    body .js-logo {
+        position: initial;
+        padding-top: 42px;
+    }
+    body .js-question_progress {
+        position: initial;
+    }
+    body .js-mutapp_share_fb {
+        position: initial;
+    }
+    body .js-mutapp_share_vk {
+        position: initial;
+    }
+    body .js-btn_wr {
+        padding-top: 32px;
+    }
+
+    .modal {
+        box-sizing: border-box;
+        padding: 0 25px 0 25px;
+    }
+    .modal_hld {
+        width: 100%;
+        min-width: 300px;
+    }
+    .question_lst.__2 {
+
+    }
+    .question_lst.__2 .question_i {
+        float: none;
+        width: 100%;
+        margin: 0 4px 12px;
+    }
+
+    .question_grid.__2 .question_grid-i + .question_grid-i {
+        margin-left: 0;
+    }
+    .question_grid.__3 .question_grid-i + .question_grid-i {
+        margin-left: 0;
+    }
+    .question_grid.__2 {
+
+    }
+    .question_grid.__2 .question_grid-i {
+        display: block;
+        text-align: center;
+        width: 100%;
+        margin: 0 0 20px 0;
+    }
+}
+
 @supports (object-fit: cover) {
     .question_img {
         width: 100%;
@@ -471,24 +507,3 @@ img {
 .info_f {
     font-size: 0;
 }
-
-/*.fb_share {*/
-    /*position: absolute;*/
-    /*top: 20px;*/
-    /*left: 20px;*/
-    /*width: 64px;*/
-    /*height: 64px;*/
-    /*background-image: url(https://s3.eu-central-1.amazonaws.com/testix.me/i/products/fb.png);*/
-    /*background-size: 64px 64px;*/
-    /*cursor: pointer;*/
-/*}*/
-/*.vk_share {*/
-    /*position: absolute;*/
-    /*top: 120px;*/
-    /*left: 20px;*/
-    /*width: 64px;*/
-    /*height: 64px;*/
-    /*background-image: url(https://s3.eu-central-1.amazonaws.com/testix.me/i/products/vk_64.png);*/
-    /*background-size: 64px 64px;*/
-    /*cursor: pointer;*/
-/*}*/

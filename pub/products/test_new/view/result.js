@@ -95,7 +95,7 @@ var ResultScreen = MutApp.Screen.extend({
         this.setElement($('<div></div>')
             .attr('id',this.id)
             .css('width','100%')
-            .css('height','100%'));
+            .css('min-height','100%'));
         this.resultId = param.resultId;
         param.screenRoot.append(this.$el);
         this.model.bind("change:state", function () {

@@ -80,7 +80,10 @@ var MutApp = function(param) {
     if (param) {
         if (this.screenRoot) {
             this.screenRoot.empty();
-            this.screenRoot.width(this.width).height(this.height).css('position','relative');;
+            this.screenRoot.css('max-width',this.width+'px')
+                .css('width','100%')
+                .css('min-height',this.height+'px')
+                .css('position','relative');
         }
 
         // значения которые надо установить по умолчанию при запуске приложения

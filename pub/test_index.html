@@ -3,7 +3,8 @@
 <head>
     <title></title>
     <meta charset="utf-8">
-    <link href='https://fonts.googleapis.com/css?family=Roboto&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <!--<link href='https://fonts.googleapis.com/css?family=Roboto&subset=latin,cyrillic' rel='stylesheet' type='text/css'>-->
     <!--build:css css/test_index.min.css-->
     <link href="products/common/css/style.css" rel="stylesheet" type='text/css'>
     <!--<link href="css/editor.css" rel="stylesheet" type='text/css'>-->
@@ -13,110 +14,8 @@
     <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 </head>
 <body style="background-color: #888">
-    <!--<div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/0c675b7d34/p_index.html"><script src="js/loader.js" async></script></div>-->
-    <!--<div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/0d37e9f9b3/p_index.html"><script src="js/loader.js" async></script></div>-->
-    <!--<div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/0d37e9f9b3/p_index.html"><script src="js/loader.js" async></script></div>-->
     <div id="id-vk"></div>
-    <div class="tstx_share_btn">
-        <span class="tstx_share_i"></span>
-        Поделиться
-    </div>
-    <div class="tstx_share_btn __vk">
-        <span class="tstx_share_i __vk"></span>
-        Поделиться
-    </div>
-    <script type="text/javascript">
-        function test() {
-            var d = document.getElementById('id-vk');
-                $('#id-vk').html(VK.Share.button({
-                    url: 'http://jam-i.net/quiz',
-                    title: 'Знаешь ли ты Киев?',
-                    description: '5 из 12 - ты Интелигент',
-                    image: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-1045302892173346/res/Result-8.jpg',
-                    noparse: true
-                }, {
-                    type: 'custom',
-                    text: '<img src="http://testix.me/i/products/vk.png" />'
-                }));
-        }
-
-        function vktest() {
-            Share.vkontakte('http://jam-i.net/quiz',
-                    'Знаешь ли ты Киев?',
-                    'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-1045302892173346/res/Result-8.jpg',
-                    '8 из 12 - ты Интелигент'
-            );
-        }
-
-        var Share = {
-            vkontakte: function(purl, ptitle, pimg, text) {
-                url  = 'http://vkontakte.ru/share.php?';
-                url += 'url='          + encodeURIComponent(purl);
-                url += '&title='       + encodeURIComponent(ptitle);
-                url += '&description=' + encodeURIComponent(text);
-                url += '&image='       + encodeURIComponent(pimg);
-                url += '&noparse=true';
-                Share.popup(url);
-            },
-            odnoklassniki: function(purl, text) {
-                url  = 'http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1';
-                url += '&st.comments=' + encodeURIComponent(text);
-                url += '&st._surl='    + encodeURIComponent(purl);
-                Share.popup(url);
-            },
-            facebook: function(purl, ptitle, pimg, text) {
-                url  = 'http://www.facebook.com/sharer.php?s=100';
-                url += '&p[title]='     + encodeURIComponent(ptitle);
-                url += '&p[summary]='   + encodeURIComponent(text);
-                url += '&p[url]='       + encodeURIComponent(purl);
-                url += '&p[images][0]=' + encodeURIComponent(pimg);
-                Share.popup(url);
-            },
-            twitter: function(purl, ptitle) {
-                url  = 'http://twitter.com/share?';
-                url += 'text='      + encodeURIComponent(ptitle);
-                url += '&url='      + encodeURIComponent(purl);
-                url += '&counturl=' + encodeURIComponent(purl);
-                Share.popup(url);
-            },
-            mailru: function(purl, ptitle, pimg, text) {
-                url  = 'http://connect.mail.ru/share?';
-                url += 'url='          + encodeURIComponent(purl);
-                url += '&title='       + encodeURIComponent(ptitle);
-                url += '&description=' + encodeURIComponent(text);
-                url += '&imageurl='    + encodeURIComponent(pimg);
-                Share.popup(url)
-            },
-
-            popup: function(url) {
-                window.open(url,'','toolbar=0,status=0,width=626,height=436');
-            }
-        };
-    </script>
-    <!--<div style="width:500px;">-->
-        <!--<div class="quizz-container" data-width="100%" data-height="auto" data-quiz="120406"></div>-->
-        <!--<script src="//dcc4iyjchzom0.cloudfront.net/widget/loader.js" async></script>-->
-    <!--</div>-->
-
-    <!--<script type="text/javascript" src="//static.apester.com/js/sdk/v1.1/apester-sdk.min.js"></script>-->
-    <!--<interaction id="57bd9b5dec3cf49f6eb7a565"></interaction>-->
-
-    <!--<img id="id-img" crossorigin="anonymous" src="https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-1045302892173346/res/1345+%D0%BF%D0%BE%D0%BB%D0%B8%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B8%CC%86-%D0%B8%D0%BD%D1%81%D1%82%D0%B8%D1%82%D1%83%D1%82-%D0%B2-%D0%BA%D0%B8%D0%B5%D0%B2%D0%B5+%D1%84%D0%BE%D1%82%D0%BE+%D1%81%D1%82%D0%B0%D1%80%D0%BE%D0%B3%D0%BE+%D0%BA%D0%B8%D0%B5%D0%B2%D0%B0+1915+%D0%B3%D0%BE%D0%B4.jpeg"/>-->
-    <!--<iframe src="http://p.testix.me/127867420975996/1fe2b6f8a1/p_index.html" style="display:block;width:800px;height:600px;margin:0 auto;padding:0;border:none;"></iframe>-->
-    <!--<div id="id-modal_cnt" class="scr">-->
-        <!--&lt;!&ndash; parent for modals &ndash;&gt;-->
-    <!--</div>-->
-    <!--<canvas id="id-canvas"></canvas>-->
-    <!--<script>-->
-        <!--setTimeout(function(){-->
-            <!--// var c = document.createElement('canvas');-->
-            <!--var c = document.getElementById('id-canvas');-->
-            <!--var ctx = c.getContext('2d');-->
-            <!--var img = document.getElementById('id-img');-->
-            <!--ctx.drawImage(img, 0, 0);-->
-            <!--var data = ctx.getImageData(0,0, c.width, c.height);-->
-        <!--}, 1000);-->
-    <!--</script>-->
+    <!--<script type="text/javascript" src="lib/jquery.js"></script>-->
     <!--&lt;!&ndash; build:js test_index.min.js &ndash;&gt;-->
     <!--<script type="text/javascript" src="js/config.js"></script>-->
     <!--<script type="text/javascript" src="js/model/app.js"></script>-->

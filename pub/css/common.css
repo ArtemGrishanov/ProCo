@@ -238,8 +238,10 @@ html, body {
     min-width: 225px;
 }
 .top {
+    position: relative;
     width: 100%;
-    height: 50px;
+    min-width: 300px;
+    height: 52px;
     background-color: #343434;
 }
 .top_proj_name {
@@ -305,11 +307,14 @@ html, body {
     width: 49%;
 }
 .toolbar_user {
-    display: inline-block;
-    vertical-align: top;
-    min-width: 80px;
-    width: 10%;
-    padding-top: 5px;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    /*display: inline-block;*/
+    /*vertical-align: top;*/
+    /*min-width: 80px;*/
+    /*width: 10%;*/
+    padding: 5px;
     cursor: pointer;
 }
 .user_avatar {

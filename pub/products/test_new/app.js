@@ -8,8 +8,15 @@ var TestApp = MutApp.extend({
 
     screenRoot: $('#id-mutapp_screens'),
 
+    /**
+     * Ширина меньше которой приложение начинает адаптироваться под узкий экран
+     */
+    smallWidthPx: 600,
+
     initialize: function(param) {
         console.log('TestApp initialize');
+        this.isSmallWidth = $(window).width() < this.smallWidthPx;
+
         // связь модели с приложением swimming test
         var tm = this.addModel(new TestModel({
             application: this
