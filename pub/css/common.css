@@ -278,9 +278,11 @@ html, body {
     height: 97px;
 }
 .top_toolbar {
+    position: relative;
     display: inline-block;
+    white-space : nowrap;
     vertical-align: top;
-    width: 88%;
+    width: 100%;
     padding-top: 8px;
 }
 .top_toolbar.__full {
@@ -290,14 +292,14 @@ html, body {
     display: inline-block;
     vertical-align: top;
     text-align: left;
-    width: 49%;
+    width: 45%;
     padding-top: 4px;
 }
 .toolbar_right {
     display: inline-block;
     vertical-align: top;
     text-align: right;
-    width: 49%;
+    width: 53%;
     padding-top: 4px;
 }
 .toolbar_btns {
@@ -305,16 +307,18 @@ html, body {
     vertical-align: top;
     text-align: right;
     width: 49%;
+    min-width: 530px;
 }
 .toolbar_user {
-    position: absolute;
-    top: 0;
-    right: 10px;
-    /*display: inline-block;*/
-    /*vertical-align: top;*/
-    /*min-width: 80px;*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*right: 10px;*/
+    display: inline-block;
+    vertical-align: top;
+    min-width: 80px;
     /*width: 10%;*/
-    padding: 5px;
+    /*padding: 5px;*/
+    margin-top: -2px;
     cursor: pointer;
 }
 .user_avatar {
