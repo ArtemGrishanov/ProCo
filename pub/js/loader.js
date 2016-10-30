@@ -134,7 +134,7 @@ if (window.textix === undefined) {
                     var w = parseInt(e.getAttribute('data-width')) || '800';
                     var h = parseInt(e.getAttribute('data-height')) || '600';
                     var p = e.getAttribute('data-published');
-                    e.style.width = w+'px';
+//                    e.style.width = w+'px';
                     e.style.height = h+'px';
 
                     createIframe(p, e, w, h);
@@ -157,8 +157,10 @@ if (window.textix === undefined) {
             var panelElems = createRecommendationPanel(parentNode, width);
             var iframe = document.createElement('iframe');
             iframe.style.border = 0;
-            iframe.style.width = width+'px';
-            iframe.style.height = height+'px';
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.maxWidth = width+'px';
+            iframe.style.maxHeight = height+'px';
             iframe.onload = function() {
                 // надо сохранить ид приложения для связи
                 //var appId = iframe.contentWindow.app.id;

@@ -192,6 +192,8 @@ var Editor = {};
         $('.js-app_publish').click(onPublishClick);
         $('.js-app_save_template').click(saveTemplate);
         $('.js-back_to_editor').click(onBackToEditorClick);
+        $('#id-to_mob_preview').click(toMobPreview);
+        $('#id-to_desktop_preview').click(toDesktopPreview);
     }
 
     /**
@@ -272,6 +274,14 @@ var Editor = {};
             height: app.height
         };
 
+        //TODO данная установка свойств размерности аналогична loader.js
+        // можно провести унификацию
+        $(appIframe).css('border','0')
+            .css('width','100%')
+            .css('height','100%')
+            .css('maxWidth',appContainerSize.width)
+            .css('maxHeight',appContainerSize.height);
+
         // нужна ширина для горизонтального выравнивания
         $('#id-product_cnt').width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width)
             // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
@@ -280,6 +290,8 @@ var Editor = {};
         var $h = $("#id-product_screens_cnt").contents().find('head');
         $h.append(config.products.common.styles);
         $h.append(config.products[app.type].stylesForEmbed);
+        $h = $(appIframe).contents().find('head');
+        $h.append(config.products.common.styles);
 
         if (config.common.editorUiEnable === true) {
             showEditor();
@@ -1393,6 +1405,24 @@ var Editor = {};
      */
     function onBackToEditorClick() {
         showEditor();
+    }
+
+    function toDesktopPreview() {
+        $('#id-product_iframe_cnt').removeClass('__mob');
+        $(appIframe).css('border','0')
+            .css('width',appContainerSize.width+'px')
+            .css('height',appContainerSize.height+'px')
+            .css('maxWidth',appContainerSize.width)
+            .css('maxHeight',appContainerSize.height);
+    }
+
+    function toMobPreview() {
+        $('#id-product_iframe_cnt').addClass('__mob');
+        $(appIframe).css('border','0')
+            .css('width','100%')
+            .css('height','100%')
+            .css('maxWidth',appContainerSize.width)
+            .css('maxHeight',appContainerSize.height);
     }
 
     function deleteSelections() {

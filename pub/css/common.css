@@ -711,12 +711,18 @@ html, body {
     margin: 0 auto;
     text-align: center;
 }
-/* TODO как определять размер промо-приложения? */
+.proto_wr.__mob {
+    background: url(../i/phone_1x.png); /* (308+13*2)x(532+74*2) */
+    width: 306px;
+    height: 540px;
+    padding: 73px 13px 68px;
+}
+
 .proto_cnt {
     display: inline-block;
-    width: 800px;
-    height: 600px;
-    /*border: #ff2211 solid 10px;*/
+    /*width: 800px;*/
+    /*height: 600px;*/
+    border: none;
     padding: 0;
     margin: 0;
 }

@@ -3,7 +3,8 @@
 <head>
     <title>Test</title>
     <meta charset="UTF-8">
-    <link href="../common/css/style.css" rel="stylesheet">
+    <!-- этот файл кладется при публикации из products/common/css/tstx_cmn_products.css -->
+    <link href="tstx_cmn_products.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <!--build:css style.css-->
     <link href="style.css" rel="stylesheet">
@@ -119,9 +120,6 @@
                 <div class="info_title js-result_title" data-app-property="id=tm results.<%=currentResultIndex%>.title"><%=title%></div>
                 <div class="info_tx js-result_description" data-app-property="id=tm results.<%=currentResultIndex%>.description"><%=description%></div>
                 <div class="js-mutapp_share_fb fb_share" data-app-property="type=result fbSharePosition"></div>
-                <div class="info_f js-btn_wr">
-                    <div class="button js-next js-restart js-test_btn" data-app-property="type=result restartButtonText">Пройти тест еще раз</div>
-                </div>
                 <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="type=result fbSharePosition">
                     <span class="tstx_share_i"></span>
                     Поделиться
@@ -129,6 +127,9 @@
                 <div class="tstx_share_btn __vk js-mutapp_share_vk" data-app-property="type=result vkSharePosition">
                     <span class="tstx_share_i __vk"></span>
                     Поделиться
+                </div>
+                <div class="info_f js-btn_wr js-restart_btn_wr">
+                    <div class="button js-next js-restart js-test_btn" data-app-property="type=result restartButtonText">Пройти тест еще раз</div>
                 </div>
                 <div class="logo js-logo js-result_logo" data-app-property="type=result logoPosition, type=result showLogo, id=tm logoUrl"></div>
             </div>

@@ -198,7 +198,9 @@ var config = {
              * Продукт может подключить эти общие для всех стили.
              * Там например содержаться кнопки для шаринга
              */
-            styles: '<link href="{{config.common.home}}products/common/css/style.css" rel="stylesheet"/>'
+            styles: '<link href="{{config.common.home}}products/common/css/tstx_cmn_products.css" rel="stylesheet"/>',
+            stylesForPublishing: 'products/common/css/tstx_cmn_products.css',
+            stylesFileName: 'tstx_cmn_products.css'
         },
         // конфигурация для каждого типа промо-приложений
         test: {

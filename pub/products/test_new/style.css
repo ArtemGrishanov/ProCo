@@ -228,9 +228,10 @@ img {
     border-radius: 4px;
     background-color: #024889;
     color: #fff;
+    min-width: 195px;
     min-height: 40px;
     line-height: 40px;
-    padding: 0 32px;
+    padding: 0 10px;
     cursor: pointer;
     font-size: 18px;
 }
@@ -366,22 +367,39 @@ img {
     }
     body .info_tx {
         padding-top: 28px;
+        padding-bottom: 16px;
+    }
+    body .question_title {
+        padding-top: 24px;
+        padding-bottom: 26px;
+    }
+    body .question_progress {
+        padding-top: 40px;
+        padding-bottom: 0;
+        margin: 0 auto;
     }
     body .js-logo {
         position: initial;
-        padding-top: 42px;
+        margin-top: 42px;
     }
     body .js-question_progress {
         position: initial;
     }
     body .js-mutapp_share_fb {
-        position: initial;
+        position: relative;
+        margin-top: 16px;
+        top:0 !important; /* изменение контролом drag меняет эти свойства. Подумать как обойтись без important */
+        left:0 !important;
     }
     body .js-mutapp_share_vk {
-        position: initial;
+        position: relative;
+        margin-top: 16px;
+        top:0 !important;
+        left:0 !important;
     }
     body .js-btn_wr {
-        padding-top: 32px;
+        padding-top: 16px;
+        margin-top: 0;
     }
 
     .modal {
@@ -390,7 +408,7 @@ img {
     }
     .modal_hld {
         width: 100%;
-        min-width: 300px;
+        min-width: 250px;
     }
     .question_lst.__2 {
 

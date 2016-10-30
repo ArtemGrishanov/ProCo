@@ -229,6 +229,12 @@ var Publisher = {};
             destUrl: 'common.css',
             type: 'text/css'
         });
+        productResources.push({
+            baseUrl: '',
+            url: config.products.common.stylesForPublishing,
+            destUrl: 'tstx_cmn_products.css',
+            type: 'text/css'
+        });
         //TODO поиск предполагает что ресурсы находятся рядом с html в baseUrl
         var scriptExp = /src=(?:\"|\')((?:\w|\/)+\.js)(?:\"|\')/ig;
         var jsMatch = null;
@@ -242,11 +248,13 @@ var Publisher = {};
         var cssExp = /href=(?:\"|')((?:\w|\/)+.css)(?:\"|')/ig;
         var cssMatch = null;
         while ( (cssMatch = cssExp.exec(codeStr)) !== null) {
-            productResources.push({
-                baseUrl: baseProductUrl,
-                type: 'text/css',
-                url: cssMatch[1]
-            });
+            if (cssMatch[1] !== config.products.common.stylesFileName) {
+                productResources.push({
+                    baseUrl: baseProductUrl,
+                    type: 'text/css',
+                    url: cssMatch[1]
+                });
+            }
         }
         //TODO img (только "свои" картинки) Из инетов пока не рассматриваем варианты
 
