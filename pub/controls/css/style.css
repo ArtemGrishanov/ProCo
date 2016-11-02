@@ -28,8 +28,8 @@ form input {
 }
 .slide_thumb {
     position: relative;
-    width: 166px;
-    height: 102px;
+    width: 120px;
+    height: 90px;
     background-color: #888; /* 888 - for test #fff;*/
     cursor: pointer;
     overflow: hidden;

@@ -10,10 +10,10 @@
  */
 function SlideGroupControl(propertyString, directiveName, $parent, productDOMElement, params) {
     //TODO надо высчитать вместе с отступами
-    this._elemWidth = 194;
-    this._elemRightPadding = 7;
+    this._elemWidth = 120; //120 ширина превью + 16px  was 152
+    this._elemRightPadding = 37;
     //TODO ширина промежуточной кнопки, надо высчитьывать программно
-    this._btnWidth = 23;
+    this._btnWidth = 21;
     this.collapsed = false;
     this.draggable = false;
     this.canAdd = false;
@@ -135,8 +135,11 @@ SlideGroupControl.prototype.updateScreens = function() {
         this.canDelete = this.canDeleteScreens(myScreens);
         this.canClone = this.canCloneScreens(myScreens);
 
+        if (myScreens && myScreens.length > 1 && this.collapsed !== true) {
+            this.$directive.addClass('__array');
+        }
+
         // смотрим сколько слайдов нам надо под экраны
-        //
         var mySlides = [];
         if (this.collapsed === true) {
             // один контрол нужен
@@ -366,22 +369,18 @@ SlideGroupControl.prototype.arrangeItems = function(params) {
             else {
                 $wr.find('.js-clone').hide();
             }
-            if (params.canAdd === true && i < this._slidesInfo.length-1) {
+            if (params.canAdd === true && i < this._slidesInfo.length/*-1*/) {
                 // промежуточные кнопки для быстрого добавления элемента в нужную позицию
                 $wr.find('.js-insert').attr('data-insert-index',i+1).show();
-//                if (i < params.items.length-1) {
-//                    l += config.editor.ui.slideInterimBtnMargins;
-//                    var $ib = $(interimBtnTemplate).css('left',l+'px').attr('data-insert-index',i+1).click(this.onInsertButtonClick.bind(this));
-//                    $cnt.append($ib);
-//                    this.insertButtons.push($ib);
-//                    l += (this._btnWidth+config.editor.ui.slideInterimBtnMargins);
-//                }
             }
             else {
                 $wr.find('.js-insert').attr('data-insert-index','undefined').hide();
-                l -= this._btnWidth;
+                //l -= this._btnWidth;
             }
-            l += this._elemWidth+this._elemRightPadding;
+            l += this._elemWidth;
+            if (params.canAdd === true) {
+                l += this._elemRightPadding;
+            }
         }
         if (params.canAdd === true) {
             // показывать ли кнопку добавления в конце

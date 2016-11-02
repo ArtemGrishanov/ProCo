@@ -28,13 +28,16 @@
 .slide_group {
     display: inline-block;
     vertical-align: top;
-    padding: 17px 10px 0 30px;
-    height: 177px;
+    padding: 14px 27px 0 27px;
     border-right: solid 1px #343434;
 }
+.slide_group.__array {
+    padding-right: 0;
+}
 .slide_group_label {
-    margin-left: 5px;
-    margin-bottom: 5px;
+    color: #bdbdbd;
+    font-size: 14px;
+    margin: 3px 0 5px 0;
 }
 .slide_group_items {
 
@@ -44,6 +47,7 @@
     position: relative;
     display: inline-block;
     vertical-align: top;
+    height: 90px; /* ?? другого способа задать не придумал */
 }
 .btn_plus_green {
     background: url("../i/i_plus_green.png");
@@ -53,12 +57,13 @@
 }
 .btn_class_gray {
     background: url("../i/i_plus_gray.png");
-    width: 23px;
-    height: 22px;
+    width: 21px;
+    height: 21px;
     cursor: pointer;
+    margin-left: 4px;
 }
 .slides_mt1 {
-    margin-top: 40px;
+    margin-top: 36px;
 }
 .slides_mt2 {
     margin-top: 30px;
@@ -69,10 +74,10 @@
 .screen_controls_cnt {
     width: 100%;
     white-space: nowrap;
-    height: 191px; /* 177 + 14 - scroll height */
+    height: 134px;
     background-color: #545454;
     overflow-y: hidden;
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 .item_wr {
     position: absolute;
@@ -80,7 +85,6 @@
     top: 0;
     display: inline-block;
     vertical-align: top;
-    margin: 0 5px 0 5px;
 }
 .sl_item_cnt {
     display: inline-block;
@@ -99,19 +103,23 @@
 .item_control {
     display: inline-block;
     vertical-align: top;
-    width: 82px;
+    width: 60px;
     height: 29px;
     background-color: #343434;
     cursor: pointer;
 }
 .item_control.__red {
-    background: url('../i/delete-slide.png') no-repeat center;
+    background-image: url('../i/delete-slide.png');
+    background-repeat: no-repeat;
+    background-position: center;
 }
 .item_control.__red:hover {
     background-color: #ff5f5f;
 }
 .item_control.__green {
-    background: url('../i/clone-slide.png') no-repeat center;
+    background-image: url('../i/clone-slide.png');
+    background-repeat: no-repeat;
+    background-position: center;
 }
 .item_control.__green:hover {
     background-color: #1cbf61;
