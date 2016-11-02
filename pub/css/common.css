@@ -217,7 +217,7 @@ html, body {
 }
 .pbtn {
     display: inline-block;
-    border: none;/*#979797 solid 1px;*/
+    border: #979797 solid 1px;
     border-radius: 4px;
     min-width: 128px;
     padding: 12px 7px 12px 7px;

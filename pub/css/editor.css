@@ -73,6 +73,7 @@
     margin-left: 10px;
 }
 .screen_controls_cnt {
+    position: relative;
     width: 100%;
     white-space: nowrap;
     height: 134px;
@@ -86,6 +87,23 @@
     overflow-x: scroll;
     padding-bottom: 17px;
     width: 100%;
+}
+.tstx_arr {
+    position:absolute;
+    top:0;
+    left:0;
+    background-color:rgba(0,0,0,0.69);
+    background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAgCAYAAAASYli2AAAABGdBTUEAALGPC/xhBQAAAN1JREFUSA3tlsENgkAQRdEDVzqgBumCQiiFTqzBqzEeqMAabMCjB3xf3WRDuMCfgyZM8tlkCW9nhr+bLYpfi3EcazSgk50bkAbdkeJqAQG06CEScUbVaiAfd+iJFEdUOrD+jfk8egdUfrMRStl1DqwCoD4p1LfWgckWN5EI/dGDA8ttIWjtwDZbLOgezY6zhdYFeEEKzxaw9jOF7Gbmlk2RWWzJWh5o3F7N6wEcc5pMoHHnXQKTadzWy6Bxh0MGnR5fTXq3etxspU3wn7byriLJMpQvWw3IvywlaD6+AG8e5N/U7yaIAAAAAElFTkSuQmCC);
+    background-position:center;
+    background-repeat:no-repeat;
+    width:56px;
+    height:132px;
+    cursor:pointer;
+}
+.tstx_arr.__right {
+    background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAgCAYAAAASYli2AAAABGdBTUEAALGPC/xhBQAAAMlJREFUSA3tlsEJg1AQRCWHf7WD1KBdWIil2ElqyFUCgVSQGtKARw8/b0AheNMdwYAD4789191x+UWxh3LOd/zCVwsf0BNLH1yHoUBK3GNpwI0DmgDdREQjbsNQAQB1Ik7qXNAWoKqUVHUKg4E0WP2U1N/SAa0BafLSG8djJcgE4zhjRcTCgxKAXv5nrB6q/qLHIUQffX+SdSjAPNsIkG9fAvNtdGDL5VBtTgUw3/oCdsZixSissdB7Af5eRbbHYv4IgN7L0gx2nF+/H+Tg/MC2SgAAAABJRU5ErkJggg==);
+    right:0;
+    left:initial;
 }
 .item_wr {
     position: absolute;
@@ -176,10 +194,13 @@
 .select_dialog_options_cnt {
     width: 100%;
     height: 326px;
-    margin: 50px 0 30px 0;
+    margin: 30px 0 18px 0;
+    padding: 20px 0 20px;
     text-align: center;
     overflow-y: scroll;
     overflow-x: hidden;
+    border-top: 1px solid #979797;
+    border-bottom: 1px solid #979797;
 }
 .select_dialog_loading_anim {
     width: 220px;
@@ -201,15 +222,12 @@
     position: relative;
     width: 206px;
     height: 127px;
-    /*width: 273px;*/
-    /*height: 168px;*/
     background-size: contain;
     border: #bfbfbf solid 2px;
     background: url(../../products/test/i/editor/t1.jpg) no-repeat center;
 }
 .select_dialog_option_thumb_cnt.__upload {
     background: url(../i/upload-photo.png);
-    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -230,8 +248,9 @@
     border: #1cbf61 solid 3px;
 }
 .select_dialog_option_label {
-    margin-top: 9px;
+    margin-bottom: 9px;
     width: 206px;
+    font-size: 14px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
