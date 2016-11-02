@@ -26,7 +26,7 @@
       <file leaf-file-name="editor.css" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pub/css/editor.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="23" selection-start="727" selection-end="727" vertical-scroll-proportion="0.39714286" vertical-offset="307" max-vertical-offset="5985">
+            <state line="87" column="16" selection-start="1712" selection-end="1712" vertical-scroll-proportion="0.62482756" vertical-offset="852" max-vertical-offset="6120">
               <folding />
             </state>
           </provider>
@@ -44,7 +44,16 @@
       <file leaf-file-name="editor.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="848" column="40" selection-start="35496" selection-end="35506" vertical-scroll-proportion="-9.16" vertical-offset="12491" max-vertical-offset="22875">
+            <state line="842" column="13" selection-start="35237" selection-end="35237" vertical-scroll-proportion="-5.56" vertical-offset="12491" max-vertical-offset="22875">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="editor.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/editor.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="60" column="57" selection-start="3464" selection-end="3464" vertical-scroll-proportion="-4.8163266" vertical-offset="664" max-vertical-offset="6060">
               <folding />
             </state>
           </provider>
@@ -65,7 +74,6 @@
         <option value="$PROJECT_DIR$/pub/products/common/css/tstx_cmn_products.css" />
         <option value="$PROJECT_DIR$/pub/js/editor.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/style.css" />
-        <option value="$PROJECT_DIR$/pub/editor.html" />
         <option value="$PROJECT_DIR$/pub/css/common.css" />
         <option value="$PROJECT_DIR$/pub/templates/anonymPage/index.html" />
         <option value="$PROJECT_DIR$/pub/my_templates.html" />
@@ -75,6 +83,7 @@
         <option value="$PROJECT_DIR$/pub/controls/css/style.css" />
         <option value="$PROJECT_DIR$/pub/controls/view/slidegroupcontrol.html" />
         <option value="$PROJECT_DIR$/pub/controls/SlideGroupControl.js" />
+        <option value="$PROJECT_DIR$/pub/editor.html" />
         <option value="$PROJECT_DIR$/pub/css/editor.css" />
       </list>
     </option>
@@ -489,13 +498,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="848" column="40" selection-start="35496" selection-end="35506" vertical-scroll-proportion="-9.16" vertical-offset="12491" max-vertical-offset="22875">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/controls/view/slidegroupcontrol.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="26" column="10" selection-start="1250" selection-end="1250" vertical-scroll-proportion="-7.9591837" vertical-offset="0" max-vertical-offset="600">
@@ -520,9 +522,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="842" column="13" selection-start="35237" selection-end="35237" vertical-scroll-proportion="-5.56" vertical-offset="12491" max-vertical-offset="22875">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/editor.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="57" selection-start="3464" selection-end="3464" vertical-scroll-proportion="-4.8163266" vertical-offset="664" max-vertical-offset="6060">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pub/css/editor.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="23" selection-start="727" selection-end="727" vertical-scroll-proportion="0.39714286" vertical-offset="307" max-vertical-offset="5985">
+        <state line="87" column="16" selection-start="1712" selection-end="1712" vertical-scroll-proportion="0.62482756" vertical-offset="852" max-vertical-offset="6120">
           <folding />
         </state>
       </provider>

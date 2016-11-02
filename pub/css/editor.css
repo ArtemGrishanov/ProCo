@@ -38,6 +38,7 @@
     color: #bdbdbd;
     font-size: 14px;
     margin: 3px 0 5px 0;
+    text-align: left;
 }
 .slide_group_items {
 
@@ -77,7 +78,14 @@
     height: 134px;
     background-color: #545454;
     overflow-y: hidden;
-    overflow-x: auto;
+    overflow-x: hidden;
+    text-align: center;
+}
+.slide_group_wr {
+    display: inline-block;
+    overflow-x: scroll;
+    padding-bottom: 17px;
+    width: 100%;
 }
 .item_wr {
     position: absolute;
@@ -96,6 +104,7 @@
 }
 .item_controls{
     display: none;
+    text-align: left;
 }
 .item_wr:hover .item_controls{
     display : block;
