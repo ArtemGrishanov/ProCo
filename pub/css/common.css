@@ -27,6 +27,11 @@ html, body {
     text-align: center;
     padding: 20px;
 }
+.modal.__smallbox {
+    width: 320px;
+    height: 140px;
+    padding-top: 40px;
+}
 .scr_wr {
     position: relative;
     height: 100%;
@@ -75,7 +80,7 @@ html, body {
     background-image: url(../i/q);
 }
 .link {
-    color: #0000ff;
+    color: #4c77b8;
     text-decoration: underline;
 }
 .tx {
@@ -225,6 +230,10 @@ html, body {
     background-color: #fff;
     text-align: center;
     cursor: pointer;
+}
+.pbtn:hover {
+    text-decoration: none;
+    color: #333;
 }
 .pbtn.__green {
     background-color: #1cbf61;
