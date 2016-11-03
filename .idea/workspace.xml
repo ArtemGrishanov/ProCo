@@ -23,10 +23,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="editor.css" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="editor.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/css/editor.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="252" column="20" selection-start="6129" selection-end="6129" vertical-scroll-proportion="0.3988355" vertical-offset="3506" max-vertical-offset="6405">
+            <state line="87" column="23" selection-start="1717" selection-end="1717" vertical-scroll-proportion="0.0" vertical-offset="1006" max-vertical-offset="6465">
               <folding />
             </state>
           </provider>
@@ -35,7 +35,16 @@
       <file leaf-file-name="editor.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="842" column="13" selection-start="35237" selection-end="35237" vertical-scroll-proportion="-5.56" vertical-offset="12491" max-vertical-offset="22875">
+            <state line="1463" column="32" selection-start="61207" selection-end="61207" vertical-scroll-proportion="-10.56" vertical-offset="21681" max-vertical-offset="22875">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="publishDialog.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/js/publishDialog.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="44" column="0" selection-start="1478" selection-end="1478" vertical-scroll-proportion="0.5391705" vertical-offset="309" max-vertical-offset="1095">
               <folding />
             </state>
           </provider>
@@ -50,6 +59,17 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="editor.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/editor.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="264" column="61" selection-start="12897" selection-end="12897" vertical-scroll-proportion="-17.125" vertical-offset="3549" max-vertical-offset="6105">
+              <folding>
+                <marker date="1478163464000" expanded="true" signature="3405:3786" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FindManager">
@@ -60,7 +80,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/js/config.js" />
         <option value="$PROJECT_DIR$/pub/js/publisher.js" />
         <option value="$PROJECT_DIR$/pub/products/common/css/tstx_cmn_products.css" />
         <option value="$PROJECT_DIR$/pub/js/editor.js" />
@@ -74,15 +93,17 @@
         <option value="$PROJECT_DIR$/pub/controls/view/slidegroupcontrol.html" />
         <option value="$PROJECT_DIR$/pub/controls/SlideGroupControl.js" />
         <option value="$PROJECT_DIR$/pub/css/common.css" />
-        <option value="$PROJECT_DIR$/pub/editor.html" />
         <option value="$PROJECT_DIR$/pub/css/editor.css" />
+        <option value="$PROJECT_DIR$/pub/js/publishDialog.js" />
+        <option value="$PROJECT_DIR$/pub/editor.html" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
-    <option name="width" value="1440" />
-    <option name="height" value="873" />
+    <option name="x" value="10" />
+    <option name="y" value="31" />
+    <option name="width" value="1353" />
+    <option name="height" value="799" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -156,7 +177,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
+              <option name="myItemId" value="lib" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -174,29 +195,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="anonymPage" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="i" />
+              <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -309,11 +308,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pub/lib" />
       <recent name="$PROJECT_DIR$/pub/i" />
       <recent name="$PROJECT_DIR$/pub/products/memoriz" />
       <recent name="$PROJECT_DIR$/pub/products/test_new/i" />
       <recent name="$PROJECT_DIR$/pub/products/memoriz/model" />
-      <recent name="$PROJECT_DIR$/pub/products/memoriz/view" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/pub/i/products/test_new" />
@@ -394,7 +393,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <frame x="10" y="31" width="1353" height="799" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -402,7 +401,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2123386" sideWeight="0.5962815" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20657995" sideWeight="0.5962815" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32898173" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -431,22 +430,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/templates/anonymPage/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="51" selection-start="1021" selection-end="1021" vertical-scroll-proportion="-6.122449" vertical-offset="15" max-vertical-offset="1095">
-          <folding>
-            <element signature="n#style#0;n#img#0;n#div#0;n#noscript#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/info.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="39" selection-start="570" selection-end="570" vertical-scroll-proportion="-10.625" vertical-offset="0" max-vertical-offset="1515">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="22" column="0" selection-start="891" selection-end="891" vertical-scroll-proportion="-13.75" vertical-offset="0" max-vertical-offset="3195">
@@ -515,6 +498,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/pub/templates/loadingModal.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="6" selection-start="229" selection-end="229" vertical-scroll-proportion="0.14978603" vertical-offset="0" max-vertical-offset="701">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/lib/clipboard.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="37" selection-start="144" selection-end="144" vertical-scroll-proportion="0.021067416" vertical-offset="0" max-vertical-offset="712">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/css/editor.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="87" column="23" selection-start="1717" selection-end="1717" vertical-scroll-proportion="0.0" vertical-offset="1006" max-vertical-offset="6465">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1463" column="32" selection-start="61207" selection-end="61207" vertical-scroll-proportion="-10.56" vertical-offset="21681" max-vertical-offset="22875">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pub/css/common.css">
       <provider selected="true" editor-type-id="text-editor">
         <state line="219" column="30" selection-start="4000" selection-end="4000" vertical-scroll-proportion="-11.12" vertical-offset="3007" max-vertical-offset="11790">
@@ -524,21 +535,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/editor.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="167" column="51" selection-start="8375" selection-end="8375" vertical-scroll-proportion="0.19758673" vertical-offset="2374" max-vertical-offset="6090">
-          <folding />
+        <state line="264" column="61" selection-start="12897" selection-end="12897" vertical-scroll-proportion="-17.125" vertical-offset="3549" max-vertical-offset="6105">
+          <folding>
+            <marker date="1478163464000" expanded="true" signature="3405:3786" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
+    <entry file="file://$PROJECT_DIR$/pub/js/publishDialog.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="842" column="13" selection-start="35237" selection-end="35237" vertical-scroll-proportion="-5.56" vertical-offset="12491" max-vertical-offset="22875">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/css/editor.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="252" column="20" selection-start="6129" selection-end="6129" vertical-scroll-proportion="0.3988355" vertical-offset="3506" max-vertical-offset="6405">
+        <state line="44" column="0" selection-start="1478" selection-end="1478" vertical-scroll-proportion="0.5391705" vertical-offset="309" max-vertical-offset="1095">
           <folding />
         </state>
       </provider>

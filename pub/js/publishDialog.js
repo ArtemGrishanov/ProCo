@@ -42,4 +42,26 @@ function PublishDialog(params) {
 
     var ti = (params && params.tabId) || '1';
     this.showTab(ti);
+
+    try {
+        var cLink = new Clipboard('.js-copy_link');
+        cLink.on('success', function(event) {
+            event.clearSelection();
+            $(event.trigger).text('Скопировано');
+        });
+        cLink.on('error', function(event) {
+
+        });
+        var cEmbedCode = new Clipboard('.js-copy_embed_code');
+        cEmbedCode.on('success', function(event) {
+            event.clearSelection();
+            $(event.trigger).text('Скопировано');
+        });
+        cEmbedCode.on('error', function(event) {
+
+        });
+    }
+    catch(e) {
+        console.error(e);
+    }
 }
