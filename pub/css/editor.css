@@ -89,6 +89,7 @@
     padding-bottom: 17px;
     width: 100%;
     height: 134px;
+    transition: all 0.5s ease;
 }
 .tstx_arr {
     position:absolute;
@@ -101,6 +102,7 @@
     width:56px;
     height:134px;
     cursor:pointer;
+    transition: all 0.5s ease;
 }
 .tstx_arr.__right {
     background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAgCAYAAAASYli2AAAABGdBTUEAALGPC/xhBQAAAMlJREFUSA3tlsEJg1AQRCWHf7WD1KBdWIil2ElqyFUCgVSQGtKARw8/b0AheNMdwYAD4789191x+UWxh3LOd/zCVwsf0BNLH1yHoUBK3GNpwI0DmgDdREQjbsNQAQB1Ik7qXNAWoKqUVHUKg4E0WP2U1N/SAa0BafLSG8djJcgE4zhjRcTCgxKAXv5nrB6q/qLHIUQffX+SdSjAPNsIkG9fAvNtdGDL5VBtTgUw3/oCdsZixSissdB7Af5eRbbHYv4IgN7L0gx2nF+/H+Tg/MC2SgAAAABJRU5ErkJggg==);

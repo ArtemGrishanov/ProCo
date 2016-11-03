@@ -125,6 +125,11 @@ var Editor = {};
      * @type {QuickControlPanel}
      */
     var quickControlPanel = null;
+    /**
+     * Таймер для запуска проверки на показ стрелок прокрутки при изменении размеров окна
+     * @type {null}
+     */
+    var resizeWindowTimerId = null;
 
     /**
      * Функция запуска редактора
@@ -194,6 +199,10 @@ var Editor = {};
         $('.js-back_to_editor').click(onBackToEditorClick);
         $('#id-to_mob_preview').click(toMobPreview);
         $('#id-to_desktop_preview').click(toDesktopPreview);
+        $(window).resize(onWindowResize);
+        $('.js-slide_arr_left').mousedown(toLeftArrSlideClick);
+        $('.js-slide_arr_right').mousedown(toRightArrSlideClick);
+        setInterval(slidesArrowControlInterval, 30);
     }
 
     /**
@@ -298,7 +307,6 @@ var Editor = {};
             createScreenControls();
             syncUIControlsToAppProperties();
             workspaceOffset = $('#id-product_screens_cnt').offset();
-            Modal.hideLoading();
             // проверить что редактор готов, и вызвать колбек
             checkEditorIsReady();
         }
@@ -327,7 +335,9 @@ var Editor = {};
                 }
             }
             if (slideGroupControlIsLoaded===true) {
+                checkScreenGroupsArrowsState();
                 clearInterval(intervalId);
+                Modal.hideLoading();
                 if (typeof startCallback === 'function') {
                     startCallback();
                 }
@@ -788,6 +798,9 @@ var Editor = {};
                 showScreen([Engine.getAppScreenIds()[0]]);
             }, 1000);
         }
+
+        // стрелки управления прокруткой, нормализация
+        checkScreenGroupsArrowsState();
     }
 
     function initColorpickers() {
@@ -1390,6 +1403,21 @@ var Editor = {};
     }
 
     /**
+     * Изменение окна браузера
+     */
+    function onWindowResize() {
+        if (resizeWindowTimerId) {
+            clearTimeout(resizeWindowTimerId);
+            resizeWindowTimerId = null;
+        }
+        // при изменении размеров окна не надо делать проверку слишком часто
+        resizeWindowTimerId = setTimeout(function() {
+            checkScreenGroupsArrowsState();
+            resizeWindowTimerId = null;
+        }, 1000)
+    }
+
+    /**
      * Запустить промо приложение в iframe
      */
     function onPreviewClick() {
@@ -1423,6 +1451,35 @@ var Editor = {};
             .css('height','100%')
             .css('maxWidth',appContainerSize.width)
             .css('maxHeight',appContainerSize.height);
+    }
+
+    var $slidesCnt = null;
+    var slidesCntSpeed = 0;
+    function slidesArrowControlInterval() {
+        if ($slidesCnt === null) {
+            $slidesCnt = $('#id-slides_cnt');
+        }
+        if (slidesCntSpeed > 0) {
+            // левая стрелка
+            $slidesCnt.scrollLeft($slidesCnt.scrollLeft()+slidesCntSpeed);
+            --slidesCntSpeed;
+        } else if (slidesCntSpeed < 0) {
+            // правая стрелка
+            $slidesCnt.scrollLeft($slidesCnt.scrollLeft()+slidesCntSpeed);
+            ++slidesCntSpeed;
+        }
+    }
+
+    function toLeftArrSlideClick() {
+        slidesCntSpeed = -config.editor.ui.slidesScrollSpeed;
+//        var sc = $('#id-slides_cnt');
+//        sc.scrollLeft(sc.scrollLeft()-config.editor.ui.slidesScrollStep);
+    }
+
+    function toRightArrSlideClick() {
+        slidesCntSpeed = config.editor.ui.slidesScrollSpeed;
+//        var sc = $('#id-slides_cnt');
+//        sc.scrollLeft(sc.scrollLeft()+config.editor.ui.slidesScrollStep);
     }
 
     function deleteSelections() {
@@ -1495,6 +1552,30 @@ var Editor = {};
             }
         }
         return results1.concat(results2).concat(results3);
+    }
+
+    /**
+     * Сделать проверку на показ стрелок прокрутки панели экранов
+     */
+    function checkScreenGroupsArrowsState() {
+        var sumW = 0;
+        for (var i = 0; i < slideGroupControls.length; i++) {
+            if (slideGroupControls[i].$directive) {
+                sumW += slideGroupControls[i].$directive.width();
+            }
+            else {
+                // директивы слайдов могут быть еще не загружены
+                return;
+            }
+        }
+        if ($('#id-slides_cnt').width() < sumW) {
+            $('.js-slide_arr_left').show();
+            $('.js-slide_arr_right').show();
+        }
+        else {
+            $('.js-slide_arr_left').hide();
+            $('.js-slide_arr_right').hide();
+        }
     }
 
     // public methods

@@ -412,7 +412,11 @@ var config = {
              * Толщина обводки в стиле product_cnt.css/.screen_block
              * Надо для расчета ширины контейнера
              */
-            screen_blocks_border_width: 4
+            screen_blocks_border_width: 4,
+            /**
+             * Скорость прокрутки превью слайдов
+             */
+            slidesScrollSpeed: 20
         }
     },
     ui: {
