@@ -88,7 +88,7 @@ function ResourceManager(params) {
                     } else {
                         // запросить заново и перестроить диалог
                         this.resourcesList = null;
-                        this.show();
+                        this.show(this.selectCallback);
                     }
                 }).bind(this));
             }
@@ -161,7 +161,7 @@ function ResourceManager(params) {
         if (this.resourcesList) {
             for (var i = 0; i < this.resourcesList.length; i++) {
                 selectOptions.push({
-                    id: this.resourcesList[i].key,
+                    id: encodeURIComponent(this.resourcesList[i].key),
                     label: this.resourcesList[i].id,
                     icon: this.getUserResourceBaseUrl()+this.resourcesList[i].key,
                 });

@@ -15,6 +15,7 @@ function SelectDialog(params) {
     this.selectedOptionId = null;
     this.view = null;
     this.loader = null;
+    this.cnt = null;
     /**
      * Установить опции для выбора
      * Можно установить в любой момент, прежние опции удалятся
@@ -22,9 +23,10 @@ function SelectDialog(params) {
      */
     this.setOptions = function(options) {
         var optionHtml = $('#id-select_dialog_option_template').html();
-        var $cnt = this.view.find('.js-options_cnt').empty();
+        var $cnt = this.cnt.empty();
         if (options) {
             $(this.loader).hide();
+            $(this.cnt).show();
             for (var i = 0; i < options.length; i++) {
                 // htmlElement - это когда уже указано что вставлять в элемент выбора, готовый html элемент
                 //    например кнопка "Загрузить" в списке картинок явно отличается от них
@@ -51,9 +53,11 @@ function SelectDialog(params) {
         else {
             if (params.showLoader === true) {
                 $(this.loader).show();
+                $(this.cnt).hide();
             }
             else {
                 $(this.loader).hide();
+                $(this.cnt).show();
             }
         }
     };
@@ -62,6 +66,7 @@ function SelectDialog(params) {
     var html = $('#id-select_dialog_template').html();
     this.view = $(html);
     this.loader = this.view.find('.js-loader');
+    this.cnt = this.view.find('.js-options_cnt');
     this.view.find('.js-caption').text(params.caption);
     this.view.find('.js-confirm').click((function(e) {
         params.callback(this.selectedOptionId);
@@ -77,9 +82,11 @@ function SelectDialog(params) {
     else {
         if (params.showLoader === true) {
             $(this.loader).show();
+            $(this.cnt).hide();
         }
         else {
             $(this.loader).hide();
+            $(this.cnt).show();
         }
     }
 }

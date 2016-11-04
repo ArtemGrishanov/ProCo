@@ -228,9 +228,9 @@
     position: relative;
     width: 206px;
     height: 127px;
+    background: url(../../products/test/i/editor/t1.jpg) no-repeat center;
     background-size: contain;
     border: #bfbfbf solid 2px;
-    background: url(../../products/test/i/editor/t1.jpg) no-repeat center;
 }
 .select_dialog_option_thumb_cnt.__upload {
     background: url(../i/upload-photo.png);
