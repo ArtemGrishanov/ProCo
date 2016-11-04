@@ -62,6 +62,11 @@ var App = App || {};
      */
     var userData = null;
     /**
+     * Статус который возвращает FB api (например connected - подключено)
+     * @type {null}
+     */
+    var responseStatus = null;
+    /**
      * Сохраненные проекты пользователя
      * Коллекция шаблонов пользователя
      */
@@ -305,6 +310,7 @@ var App = App || {};
         // app know the current login status of the person.
         // Full docs on the response object can be found in the documentation
         // for FB.getLoginStatus().
+        responseStatus = response.status;
         if (response.status === 'connected') {
             // событие: установлена свзяь с фб, пользователь вошел
             if (typeof callbacks[FB_CONNECTED] === 'function') {
@@ -415,8 +421,14 @@ var App = App || {};
             $('#id-modal_cnt').empty().hide();
         }
         else {
-            $('.js-login').show();
-            $('.js-show_login').show();
+            if (responseStatus === 'connected') {
+                $('.js-show_login').hide();
+                $('.js-login').hide();
+            }
+            else {
+                $('.js-show_login').show();
+                $('.js-login').show();
+            }
             $('.js-user_ctx_menu').hide();
             $('.js-profile_picture').empty().hide();
             $('.js-user_name').text('');
