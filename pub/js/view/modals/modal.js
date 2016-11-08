@@ -6,7 +6,7 @@
  * Ограничения
  * 1) Предполашается что есть котейнер для размещения модалок на веб странице config.ui.modalsParentSelector
  *    Этот контейнер показывается пока есть хотя бы одно активное модальное окно.
- * 2) В один момент может быть показано только одно окно одного типа
+ * 2) В один момент может быть показано только одно окно одного типа (например только один message)
  *
  *
  * Для добавления нового окна:
@@ -82,5 +82,8 @@ var Modal = {};
 
     global.showLoading = function (data) { _show(LoadingModal, data) };
     global.hideLoading = function () { _hide(LoadingModal) };
+
+    global.showPreviewShareImage = function (data) { _show(PreviewShareImageModal, data) };
+    global.hidePreviewShareImage = function () { _hide(PreviewShareImageModal) };
 
 })(Modal);

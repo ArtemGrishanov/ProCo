@@ -32,6 +32,11 @@ html, body {
     height: 140px;
     padding-top: 40px;
 }
+.modal.__sharepreview {
+    width: 806px;
+    height: 511px;
+    padding: 45px 42px 22px 42px;
+}
 .scr_wr {
     position: relative;
     height: 100%;
@@ -104,6 +109,9 @@ html, body {
 }
 .tx.__light {
     font-weight: 100;
+}
+.tx.__12 {
+    font-size: 12px;
 }
 .tx.__16 {
     font-size: 16px;
@@ -192,6 +200,11 @@ html, body {
 }
 .close_dialog_btn.__grey {
     background-image: url(../i/Krestik-dark.png);
+}
+.close_dialog_btn.__small {
+    background-size: 20px 20px;
+    top: 10px;
+    right: 10px;
 }
 .close_dialog_btn:hover {
     -webkit-animation:spin 0.3s linear;
@@ -791,4 +804,36 @@ html, body {
         -webkit-transform: rotate(360deg);
         transform: rotate(360deg);
     }
+}
+
+.shp_top {
+    position: relative;
+    height: 63px;
+}
+.shp_img {
+    width: 806px;
+    height: 430px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.shp_bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding-bottom: 18px;
+    text-align: center;
+}
+.shp_top_leftcol {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: left;
+}
+.shp_top_rightcol {
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: right;
 }

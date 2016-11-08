@@ -200,7 +200,8 @@ var config = {
              */
             styles: '<link href="{{config.common.home}}products/common/css/tstx_cmn_products.css" rel="stylesheet"/>',
             stylesForPublishing: 'products/common/css/tstx_cmn_products.css',
-            stylesFileName: 'tstx_cmn_products.css'
+            stylesFileName: 'tstx_cmn_products.css',
+            defaultShareImageRecommendedSize: '1200x620'
         },
         // конфигурация для каждого типа промо-приложений
         test: {
@@ -454,6 +455,10 @@ var config = {
         messageModal: {
             templateUrl: 'templates/messageModal.html',
             defZIndex: 102
+        },
+        previewShareImageModal: {
+            templateUrl: 'templates/previewShareImageModal.html',
+            defZIndex: 90
         }
     }
 };

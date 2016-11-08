@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <!--<link href='https://fonts.googleapis.com/css?family=Roboto&subset=latin,cyrillic' rel='stylesheet' type='text/css'>-->
     <!--build:css css/test_index.min.css-->
+    <link href="css/common.css" rel="stylesheet" type='text/css'>
     <link href="products/common/css/style.css" rel="stylesheet" type='text/css'>
     <!--<link href="css/editor.css" rel="stylesheet" type='text/css'>-->
     <!--<link href="controls/css/style.css" rel="stylesheet" type='text/css'>-->
@@ -14,8 +15,29 @@
     <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
 </head>
 <body style="background-color: #888">
+    <div class="modal_wr">
+        <div class="modal __sharepreview">
+            <div class="shp_top">
+                <div class="shp_top_leftcol">
+                    <span class="tx __12">Это изображение появится в социальной сети,<br>если пользователь поделится результатом<span class="js-result_label"></span></span>
+                </div>
+                <div class="shp_top_rightcol">
+                    <span class="pbtn __green js-load">Загрузить другое изображение</span>
+                </div>
+            </div>
+            <div class="shp_img js-image" style="background-image: url(http://webneel.com/daily/sites/default/files/images/daily/05-2014/12-sunrise-picture.jpg)">
+                <!--background-image + contain-->
+            </div>
+            <div class="shp_bottom">
+                <p class="tx __12">Рекомендуемый размер изображения:<span class="js-img_size"></span></p>
+            </div>
+            <span class="close_dialog_btn __small __grey js-close"></span>
+        </div>
+    </div>
+
+
     <!--<div id="id-vk"></div>-->
-    <div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/870dcd0a6b/p_index.html"><script src="//testix.me/js/loader.js" async></script></div>
+    <!--<div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/870dcd0a6b/p_index.html"><script src="//testix.me/js/loader.js" async></script></div>-->
     <!--<script type="text/javascript" src="lib/jquery.js"></script>-->
     <!--&lt;!&ndash; build:js test_index.min.js &ndash;&gt;-->
     <!--<script type="text/javascript" src="js/config.js"></script>-->

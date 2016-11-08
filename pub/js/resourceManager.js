@@ -98,12 +98,22 @@ function ResourceManager(params) {
     /**
      * Показать диалог с выбором ресурсов
      * Предварительно нужно загрузить ресурсы loadResources
+     *
+     * @param {function} clb - функция которая будет вызвана при выборе ресурса. Передастся url обратно
+     * @param {number} [param.zIndex] - z-индекс с которым показать диалог. Нужно при одновременном показе с модальными окнами.
+     * Вообще, если сделать все на modal то этого скорее всего будет не нужно
      */
-    this.show = function(clb) {
+    this.show = function(clb, param) {
         this.selectCallback = clb;
         // сейчас инитим каждый раз, так как диалог удаляется из DOM и все обработчики слетают
         // ничего более умного не делал пока
         this.initDialog();
+        if (param.zIndex) {
+            this.dialog.view.css('zIndex',param.zIndex);
+        }
+        else {
+            this.dialog.view.css('zIndex','auto');
+        }
         $('#id-dialogs_view').empty().append(this.dialog.view).show();
         if (App.getUserData() !== null) {
             if (this.resourcesList === null) {
