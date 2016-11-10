@@ -49,16 +49,10 @@ var MutApp = function(param) {
         //            id: 'result1',
         //            title: 'Название результата',
         //            description: 'Описание результата',
-        //            view: domElement, // view из которого будет сделана картинка
+        //            view: domElement, // view из которого будет сделана картинка,
+        //            imgUrl: string
         //        }
     ];
-    /**
-     * Объект ключ значение для хранения ссылок на картинки шаринга
-     *
-     * entityId: 'http://testix.me/.../32423534246.jpg' //картинка сгенерированная из view
-     * @type {object}
-     */
-    this._shareImages = {};
     /**
      * Ид для публикации
      *
@@ -101,7 +95,8 @@ var MutApp = function(param) {
                             this._parsedDefaults.push(parsed);
                             if (parsed.conditionValue === this[parsed.conditionKey]) {
                                 // если это свойство предназначено для самого mutapp-приложения (this)
-                                this[parsed.valueKey] = parsed.value;
+                                // this[parsed.valueKey] = parsed.value;
+                                MutApp.Util.assignByPropertyString(this, parsed.valueKey, parsed.value);
                             }
                         }
                         else {
@@ -402,7 +397,28 @@ MutApp.prototype.getEntities = function(filterKey, filterValue) {
  * @param {Array} arr - ид елемента для публикации
  */
 MutApp.prototype.setShareEntities = function(arr) {
-    this._shareEntities = arr;
+    // к этому времени уже могут быть установлены движком часть свойств в конструкторе. Например сохраненные картинки _shareEntities.2.imgUrl
+    // id: id,
+    // title: r.title,
+    // description: descForShare,
+    // удалить элементы, оставить только те которые в whitelist
+    // view: MutApp.Util.clarifyElement(rs.$el, ['modal','modal_cnt','info_title','info_tx','b_title']),
+    // imgUrl: null
+    var result = [];
+    for (var i = 0; i < arr.length; i++) {
+        var e = arr[i];
+        if (this._shareEntities[i]) {
+            for (var key in this._shareEntities[i]) {
+                if (this._shareEntities[i].hasOwnProperty(key) === true) {
+                    // свойства this._shareEntities более приоритетны, так как они могуть прийти из defaults при запуске приложения
+                    // например _shareEntities.{{number}}.imgUrl
+                    e[key] = this._shareEntities[i][key];
+                }
+            }
+        }
+        result.push(e);
+    }
+    this._shareEntities = result;
     this.fbInit(this.fbAppId);
 };
 
@@ -420,22 +436,6 @@ MutApp.prototype.findShareEntity = function(entityId) {
     return null;
 };
 
-///**
-// * Установить картинку для шаринга
-// *
-// * @param {string} entityId
-// * @param {string} imgUrl
-// * @returns {*}
-// */
-//MutApp.prototype.setImgForShare = function(entityId, imgUrl) {
-//    for (var i = 0; i < this._shareEntities.length; i++) {
-//        if (this._shareEntities[i].id === entityId) {
-//            this._shareEntities[i].imgUrl = imgUrl;
-//            break;
-//        }
-//    }
-//};
-
 /**
  * Опубликовать сущность
  *
@@ -449,7 +449,7 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
     serviceId = serviceId || 'fb';
     var ent = this.findShareEntity(entityId);
     if (ent) {
-        var imgUrl = this._shareImages[entityId];
+        var imgUrl = ent.imgUrl;
         if (!!imgUrl === false) {
             imgUrl = this.shareDefaultImgUrl;
         }
@@ -490,7 +490,7 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
 //                            url: this.model.application.shareLink,
 //                            title: e.title,
 //                            description: e.description,
-//                            image: this.model.application._shareImages[this.id],
+//                            image: imgUrl,
 //                            noparse: true
 //                        }, {
 //                            type: 'custom',

@@ -68,7 +68,8 @@ var TestApp = MutApp.extend({
                 title: r.title,
                 description: descForShare,
                 // удалить элементы, оставить только те которые в whitelist
-                view: MutApp.Util.clarifyElement(rs.$el, ['modal','modal_cnt','info_title','info_tx','b_title'])
+                view: MutApp.Util.clarifyElement(rs.$el, ['modal','modal_cnt','info_title','info_tx','b_title']),
+                imgUrl: null
             });
         }
 

@@ -203,13 +203,12 @@ descriptor.app = [
         filter: false
     },
     {
-        // свойство для настройки картинок для шаринга
-        selector: 'appConstructor=mutapp _shareImages',
+        // свойство для настройки кастомного урла картинки для публикации
+        selector: 'appConstructor=mutapp _shareEntities.{{number}}.imgUrl',
+        rules: 'imgForShare',
         updateScreens: false,
-        label: 'Картинка для шары, скрытое свойство',
-        filter: false
-        // нет правил и контролов - надо чтобы это свойство было скрытым и пользователь его не настраивал
-        // редактор сам настраивает, когда создает превью
+        label: 'Картинка для публикации в соцсеть',
+        filter: true
     },
     {
         // Google Analytics id
@@ -305,6 +304,17 @@ descriptor.rules = {
         controls: "ChooseImage",
         updateScreens: true,
         controlParams: {
+        },
+        label: 'Картинка',
+        filter: true
+    },
+    imgForShare: {
+        editable: true,
+        controls: "ChooseImage",
+        updateScreens: true,
+        controlParams: {
+            // контрол для настройки картинки публикации
+            usePreviewShareImageModal: true
         },
         label: 'Картинка',
         filter: true

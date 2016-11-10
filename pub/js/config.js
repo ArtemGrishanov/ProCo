@@ -179,7 +179,7 @@ var config = {
         /**
          * Редактор по этому идентификатору ищет свойство и записывает туда картинки для публикации
          */
-        shareImagesAppPropertyString: 'appConstructor=mutapp _shareImages'
+        shareImagesAppPropertyString: 'appConstructor=mutapp _shareEntities.{{number}}.imgUrl'
     },
     /**
      * Конфигурация витрины

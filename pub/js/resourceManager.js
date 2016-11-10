@@ -108,7 +108,7 @@ function ResourceManager(params) {
         // сейчас инитим каждый раз, так как диалог удаляется из DOM и все обработчики слетают
         // ничего более умного не делал пока
         this.initDialog();
-        if (param.zIndex) {
+        if (param && param.zIndex) {
             this.dialog.view.css('zIndex',param.zIndex);
         }
         else {
