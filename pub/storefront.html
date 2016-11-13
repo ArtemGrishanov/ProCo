@@ -45,21 +45,18 @@
                 <a href="storefront.html" class="menu_tab __selected">Галерея шаблонов</a>
                 <a href="my_templates.html" class="menu_tab">Мои тесты</a>
                 <a href="info.html" class="menu_tab">Как это работает</a>
-                <a href="info.html" class="menu_tab">Решения для бизнеса</a>
-                <a href="info.html" class="menu_tab">Помощь</a>
+                <!--<a href="info.html" class="menu_tab">Решения для бизнеса</a>-->
+                <a href="info.html" class="menu_tab">Контакты</a>
             </div>
         </div>
         <div class="st_cnt">
             <div class="st_filter">
-                <div class="st_filter_ctg_i __selected">Все</div>
-                <div class="st_filter_ctg_i">Медиа</div>
-                <div class="st_filter_ctg_i">Банки</div>
-                <div class="st_filter_ctg_i">Путешествия</div>
-                <div class="st_filter_ctg_i">Музыка</div>
-                <div class="st_filter_ctg_i">Мода</div>
-                <div class="st_filter_ctg_i">Спорт</div>
+                <div class="st_filter_ctg_i __selected js-category" data-category="test">Тесты</div>
+                <div class="st_filter_ctg_i js-category" data-category="memoriz">Мемориз</div>
+                <div class="st_filter_ctg_i js-category" data-category="timeline">Таймлайн</div>
+                <div class="st_filter_ctg_i js-category" data-category="zoommap">Zoom-карта</div>
             </div>
-            <div class="st_templates_wr">
+            <div class="st_templates_wr js-category_storefront" data-category="test">
                 <h1 class="header tx __light">Создайте свой тест легко и быстро</br>с помощью шаблонов</h1>
                 <div class="st_items_cnt">
                     <div class="st_item __center pr40 pb40" data-template-url="facebook-121947341568004/app/c0266dd8f4.txt">
@@ -80,34 +77,26 @@
                         </div>
                         <div class="st_item_name tx __16 __grey __light">География</div>
                     </div>
-
-                    <!--<div class="st_item __center pr40 pb40" data-template-url="facebook-902609146442342/app/16807c295d.txt">-->
-                        <!--<div class="st_item_img __active" style="background-image:url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/16807c295d.jpg)">-->
-                            <!--<div class="st_item_op">-->
-                                <!--<div class="st_item_op_line mt90"><div class="pbtn js-edit">Редактировать</div></div>-->
-                                <!--<div class="st_item_op_line"><div class="pbtn js_app-preview">Посмотреть</div></div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="st_item_name tx __16 __grey __light">Свадебная тема</div>-->
-                    <!--</div>-->
-                    <!--<div class="st_item __center pr40 pb40" data-template-url="facebook-902609146442342/app/f7be373260.txt">-->
-                        <!--<div class="st_item_img __active" style="background-image:url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/f7be373260.jpg)">-->
-                            <!--<div class="st_item_op">-->
-                                <!--<div class="st_item_op_line mt90"><div class="pbtn js-edit">Редактировать</div></div>-->
-                                <!--<div class="st_item_op_line"><div class="pbtn js_app-preview">Посмотреть</div></div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="st_item_name tx __16 __grey __light">C2H5OH</div>-->
-                    <!--</div>-->
-                    <!--<div class="st_item __center pr40 pb40" data-template-url="facebook-902609146442342/app/ad2788472b.txt">-->
-                        <!--<div class="st_item_img __active" style="background-image:url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/app/ad2788472b.jpg)">-->
-                            <!--<div class="st_item_op">-->
-                                <!--<div class="st_item_op_line mt90"><div class="pbtn js-edit">Редактировать</div></div>-->
-                                <!--<div class="st_item_op_line"><div class="pbtn js_app-preview">Посмотреть</div></div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="st_item_name tx __16 __grey __light">Тест по географии</div>-->
-                    <!--</div>-->
+                </div>
+            </div>
+            <div class="st_templates_wr js-category_storefront" data-category="timeline" style="display:none;">
+                <h1 class="st_coming_soon_h tx">Таймлайн</h1>
+                <div class="st_coming_soon_bbl_wr">
+                    <span class="st_coming_soon_bbl">скоро на Testix</span>
+                </div>
+                <p class="st_coming_soon_desc tx __18">Лучший способ наглядно показать хронологию событий:<br>эволюцию технологий, последовательность политических<br>решений или этапы развития вашей компании</p>
+                <div class="st_coming_soon_img">
+                    <img src="i/products/timeline/timeline-img.png"/>
+                </div>
+            </div>
+            <div class="st_templates_wr js-category_storefront" data-category="memoriz" style="display:none;">
+                <h1 class="st_coming_soon_h tx">Мемориз</h1>
+                <div class="st_coming_soon_bbl_wr">
+                    <span class="st_coming_soon_bbl">скоро на Testix</span>
+                </div>
+                <p class="st_coming_soon_desc tx __18">Покажите связь предметов или явлений при помощи<br>механики «мемориз». Каждая карточка имеет свою пару.<br> Позвольте вашим читателям найти соответствие.</p>
+                <div class="st_coming_soon_img">
+                    <img src="i/products/memoriz/memoriz-img.png"/>
                 </div>
             </div>
         </div>

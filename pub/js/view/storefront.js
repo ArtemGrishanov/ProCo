@@ -54,6 +54,12 @@ var storefrontView = {};
                 //window.location.href = 'editor.html?'+config.common.templateUrlParamName+'='+activeTemplateUrl+'&'+config.common.needNewIdParamName+'=true';
             }
         });
+        $('.js-category').click(function(e) {
+            $('.js-category').removeClass('__selected');
+            var catId = $(e.currentTarget).addClass('__selected').attr('data-category');
+            $('.js-category_storefront').hide();
+            $('.js-category_storefront[data-category="'+catId+'"]').show();
+        });
     }
 
     /**

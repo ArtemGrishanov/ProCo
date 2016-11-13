@@ -187,7 +187,22 @@ var config = {
      * Устанавливается через применение настроек configurationSet
      */
     storefront: {
-        templates: []
+        templates: [],
+        categories: {
+            test: {
+                // шаблоны встроены прямо в верстку, НЕ создаются программно
+                enabled: true
+            },
+            memoriz: {
+                enabled: false
+            },
+            timeline: {
+                enabled: false
+            },
+            zoommap: {
+                enabled: false
+            }
+        }
     },
     products: {
         /**
