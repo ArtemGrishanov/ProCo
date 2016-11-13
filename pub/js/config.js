@@ -328,7 +328,7 @@ var config = {
         },
         ChooseImage: {
             defaultDirectiveIndex: 0,
-            directives: ['chooseimage'],
+            directives: ['chooseimage','chooseimagepreview'],
             parentId: 'id-static_controls_cnt',
             type: 'controlpanel'
         },

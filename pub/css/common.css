@@ -87,6 +87,7 @@ html, body {
 .link {
     color: #4c77b8;
     text-decoration: underline;
+    cursor: pointer;
 }
 .tx {
     font-family: 'Roboto', sans-serif;
@@ -816,6 +817,7 @@ html, body {
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    border: 1px solid #979797;
 }
 .shp_bottom {
     position: absolute;

@@ -113,3 +113,15 @@ form input {
     height: 30px;
     background-color: #fff;
 }
+.choose_image_wr {
+    text-align: center;
+    cursor: pointer;
+}
+.choose_image {
+    width: 162px;
+    min-height: 122px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    border: 1px solid #979797;
+}

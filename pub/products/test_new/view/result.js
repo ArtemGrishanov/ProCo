@@ -43,11 +43,11 @@ var ResultScreen = MutApp.Screen.extend({
     /**
      * Позиция кнопки для шаринга результата в фб
      */
-    fbSharePosition: {top: 10, left: 10},
+    fbSharePosition: {top: 219, left: 294},
     /**
      * Позиция кнопки для шаринга результата в ВКонтакте
      */
-    vkSharePosition: {top: 120, left: 10},
+    vkSharePosition: {top: 270, left: 294},
 
     /**
      * Контейнер в котором будет происходить рендер этого вью

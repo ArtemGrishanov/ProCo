@@ -314,7 +314,8 @@ descriptor.rules = {
         updateScreens: true,
         controlParams: {
             // контрол для настройки картинки публикации
-            usePreviewShareImageModal: true
+            usePreviewShareImageModal: true,
+            viewName: 'ChooseImagePreview'
         },
         label: 'Картинка',
         filter: true

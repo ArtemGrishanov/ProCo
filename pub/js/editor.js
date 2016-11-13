@@ -980,16 +980,6 @@ var Editor = {};
         return ctrl;
     }
 
-    function onEditClick() {
-        //TODO смотреть по engine AppProperties что можно редактировать
-        var fontColors = config.products.tests.fontColors;
-        var fontFamilies = config.products.tests.fontFamilies;
-        var backgrounds = config.products.tests.backgrounds;
-        Engine.setValue('fontColor',fontColors[getRandomArbitrary(0,fontColors.length-1)]);
-        Engine.setValue('fontFamily',fontFamilies[getRandomArbitrary(0,fontFamilies.length-1)]);
-        Engine.setValue('background',backgrounds[getRandomArbitrary(0,backgrounds.length-1)]);
-    }
-
     function onPublishClick() {
         if (App.getUserData() !== null) {
             if (Publisher.isInited() === true) {
@@ -1162,7 +1152,6 @@ var Editor = {};
      * @param {function} previewsReadyCallback
      * @param {boolean} options.upload - если true, то на самом деле не отправлять картинки на сервер
      */
-    var shareToUpload = 0;
     var preparedShareEntities = [];
     function createPreviewsForShare(previewsReadyCallback, options) {
         options = options || {};
@@ -1174,112 +1163,26 @@ var Editor = {};
 
         if (App.getUserData() !== null) {
 
-            var app = Engine.getApp();
-            var entities = app._shareEntities;
-            shareToUpload = entities.length
-
-            for (var i = 0; i < entities.length; i++) {
-                var e = entities[i];
-
-                // проверим, надо ли генерировать картинки для шаринга для каждого entity
-                // если пользователь задает картинки сам, то не надо генерировать ничего
-                if (needToGeneratePreview(e) === true) {
-
-                    var url = App.getUserData().id+'/'+appId+'/'+config.common.shareFileNamePrefix+'_'+e.id+'.jpg';
-                    (function(entityId, entityIndex, entityView, imageUrl){
-
-                        // создать замыкание для сохранения значений entityId и imageUrl
-                        previewService.createInIframe(entityView, function(canvas) {
-                            log('createPreviewsForShare: preview created '+entityId+' '+imageUrl);
-                            uploadCanvas(App.getAWSBucketForPublishedProjects(), function(result) {
-                                if (result === 'ok') {
-                                    var fullImageUrl = config.common.publishedProjectsHostName+imageUrl;
-                                    log('createPreviewsForShare: canvas uploaded '+entityId+' '+fullImageUrl);
-
-                                    // дописать в хранилище картинок картинку для публикации
-                                    setShareImageUrl(entityIndex, fullImageUrl);
-
-                                    // эта переменная только нужна для возврата в колбек, для автотестов
-                                    preparedShareEntities.push({
-                                        entityId: entityId,
-                                        imageUrl: fullImageUrl,
-                                        canvas: canvas
-                                    });
-                                }
-                                shareToUpload--;
-                                if (shareToUpload===0) {
-                                    // загрузили все картинки
-                                    if (previewsReadyCallback) {
-                                        previewsReadyCallback('ok', preparedShareEntities);
-                                    }
-                                }
-                            }, imageUrl, canvas, options.upload===false);
-                        }, null, [config.products.common.styles, config.products[app.type].stylesForEmbed], appContainerSize.width, appContainerSize.height);
-
-                    })(e.id, i, e.view, url);
+            // генерация канвасов заново и аплоад их с получением урла
+            shareImageService.requestImageUrls((function(){
+                // перед публикацией переустановка всех урлов картинок для публикации
+                var app = Engine.getApp();
+                for (var i = 0; i < app._shareEntities.length; i++) {
+                    var url = shareImageService.findImageInfo(app._shareEntities[i].id).imgUrl;
+                    var ps = config.common.shareImagesAppPropertyString.replace('{{number}}',i);
+                    var ap = Engine.getAppProperty(ps);
+                    Engine.setValue(ap, url);
                 }
-                else {
-                    // не надо генерировал превью, пользователь установил превью сам
-                    log('createPreviewsForShare: dont need generate preview for '+ e.id);
-                    // эта переменная только нужна для возврата в колбек, для автотестов
-                    var imageUrl = Engine.getAppProperty(config.common.shareImagesAppPropertyString).propertyValue[e.id];
-                    preparedShareEntities.push({
-                        entityId: e.id,
-                        imageUrl: imageUrl,
-                        canvas: null
-                    });
-                    shareToUpload--;
-                    if (shareToUpload===0) {
-                        // загрузили все картинки
-                        if (previewsReadyCallback) {
-                            previewsReadyCallback('ok', preparedShareEntities);
-                        }
-                    }
-                }
-            }
+
+                // далее может начать работать publisher
+                previewsReadyCallback();
+
+            }).bind(this));
 
         }
         else {
             Modal.showLogin();
         }
-    }
-
-    /**
-     * Установить картинку для шаринга для сущности по ид
-     *
-     * @param {number} entityIndex
-     * @param {string} url
-     */
-    function setShareImageUrl(entityIndex, url) {
-        var shP = Engine.getAppProperty(config.common.shareImagesAppPropertyString.replace('{{number}}',entityIndex));
-        Engine.setValue(shP, url);
-    }
-
-    /**
-     * Надо ли генерировать превью для этого ентити или нет
-     * Если картинки еще нет или ее по ее урлу можно сказать что она автогенерированная, значит надо создать
-     * Если урл картинки кастомный, то он был задан пользователем. Пользователь сам обновит картинку
-     *
-     * @param {object} entity - объект публикации
-     * @return {boolean}
-     */
-    function needToGeneratePreview(entity) {
-        if (!!entity.imgUrl === false || shareImageIsAutogenerated(entity.imgUrl) === true) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Определить по формату url, является ли картинка автогенерированной или нет
-     *
-     * @param {string} url
-     * @returns {boolean}
-     */
-    function shareImageIsAutogenerated(url) {
-        var s = '^(http|https):\\/\\/p\\.testix.me\\/[0-9]+\\/[0-9a-z]+\\/'+config.common.shareFileNamePrefix+'_'+'([0-9A-z]|\\_)+\\.jpg';
-        var reg = RegExp(s, 'ig');
-        return reg.test(url);
     }
 
     /**
@@ -1594,6 +1497,6 @@ var Editor = {};
     global.syncUIControlsToAppProperties = syncUIControlsToAppProperties;
     global.findControl = findControl;
     global.findControlInfo = findControlInfo; // need for autotests
-    global.setShareImageUrl = setShareImageUrl;
+    global.getAppId = function() { return appId; };
 
 })(Editor);
