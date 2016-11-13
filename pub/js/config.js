@@ -339,7 +339,8 @@ var config = {
             defaultDirectiveIndex: 0,
             directives: ['onoffswitcher'],
             parentId: 'id-static_controls_cnt',
-            type: 'controlpanel'
+            type: 'controlpanel',
+            labelInControl: true // label будет записан внуть контрола в элемент js-label
         },
         ChooseImage: {
             defaultDirectiveIndex: 0,

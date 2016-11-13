@@ -125,3 +125,8 @@ form input {
     background-position: center;
     border: 1px solid #979797;
 }
+.settings_panel .control_checkbox {
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+}

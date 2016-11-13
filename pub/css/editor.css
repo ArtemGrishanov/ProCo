@@ -164,11 +164,9 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 180px;
+    width: 200px;
     height: 100%;
-    /* TODO 1000px - в расчете на то что хватит под все контролы которые появятся */
     min-height: 1000px;
-    padding: 12px;
     background-color: #eee;
     border: 1px solid #bbb;
     color: #000;
@@ -178,7 +176,10 @@
     left: initial;
 }
 .settings_panel input{
-    width: 146px
+    width: 160px
+}
+.settings_panel .colorpicker input{
+    width: 129px
 }
 .select_dialog_back {
     margin: -275px -400px;
@@ -294,14 +295,22 @@
     bottom: -3px;
     left: -3px;
 }
+.control_cnt_wr {
+    padding: 6px 12px 6px 12px;
+    border-bottom: 1px solid #d8d8d8;
+}
 .control_cnt {
-    margin-bottom: 7px;
 }
 .control_label {
+    display: inline-block;
     margin: 0;
     font-size: 14px;
     font-family: Roboto-Regular, Arial, san-serif;
     color: #636363;
+}
+.control_label.__checkbox {
+    width: 150px;
+    vertical-align: top;
 }
 
 /* Диалог публикации */

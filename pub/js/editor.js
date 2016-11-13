@@ -743,7 +743,15 @@ var Editor = {};
                                 // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на панель настроек
                                 var $cc = $($('#id-static_control_cnt_template').html()).appendTo(parentPanelId);
                                 if (ap.label) {
-                                    $cc.find('.js-label').text(ap.label);
+                                    if (config.controls[c.name].labelInControl === true) {
+                                        // метка находится внутри самого контрола а не вовне как обычно
+                                        // UI контрола будет загружен после, поэтому пробрасываем внутрь контрола label
+                                        c.params.__label = ap.label;
+                                        $cc.find('.js-label').remove();
+                                    }
+                                    else {
+                                        $cc.find('.js-label').text(ap.label);
+                                    }
                                 }
                                 if (ap.filter === true) {
                                     // свойства с этим атрибутом filter=true показываются только при клике на соответствующих элемент в промо-приложении

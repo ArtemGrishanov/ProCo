@@ -6,6 +6,7 @@
  */
 function OnOff(propertyString, directiveName, $parent, productDOMElement, params) {
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
+    this.__label = params.__label;
 
     this.loadDirective(function(response, status, xhr){
         // каждый переключатель требует свой уникальный ид, так работает этот bootstrap компонент
@@ -21,6 +22,9 @@ function OnOff(propertyString, directiveName, $parent, productDOMElement, params
             var ap = Engine.getAppProperty(propertyString);
             Engine.setValue(ap, v);
         });
+        if (this.__label) {
+            this.$directive.find('.js-label').text(this.__label);
+        }
     });
 }
 OnOff.prototype = AbstractControl;
