@@ -14,11 +14,11 @@ var config = {
             config.common.facebookAppId = '518819781624579';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
-            config.storefront.templates = [
-                { url:'facebook-121947341568004/app/c0266dd8f4.txt', title:'Города'},
-                { url:'facebook-1008194042550518/app/f3590442f2.txt', title:'География'},
-                { url:'facebook-1045302892173346/app/3ca02ca183.txt', title:'Медуза'}
-            ];
+//            config.storefront.templates = [
+//                { url:'facebook-121947341568004/app/c0266dd8f4.txt', title:'Города'},
+//                { url:'facebook-1008194042550518/app/f3590442f2.txt', title:'География'},
+//                { url:'facebook-1045302892173346/app/3ca02ca183.txt', title:'Медуза'}
+//            ];
             return this;
         },
         test: function() {
@@ -26,11 +26,11 @@ var config = {
             config.common.facebookAppId = '515132035326687';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
-            config.storefront.templates = [
-                { url:'facebook-121947341568004/app/c0266dd8f4.txt', title:'Города'},
-                { url:'facebook-1008194042550518/app/f3590442f2.txt', title:'География'},
-                { url:'facebook-1045302892173346/app/3ca02ca183.txt', title:'Медуза'}
-            ];
+//            config.storefront.templates = [
+//                { url:'facebook-121947341568004/app/c0266dd8f4.txt', title:'Города'},
+//                { url:'facebook-1008194042550518/app/f3590442f2.txt', title:'География'},
+//                { url:'facebook-1045302892173346/app/3ca02ca183.txt', title:'Медуза'}
+//            ];
             return this;
         },
         prod: function () {
@@ -179,7 +179,11 @@ var config = {
         /**
          * Редактор по этому идентификатору ищет свойство и записывает туда картинки для публикации
          */
-        shareImagesAppPropertyString: 'appConstructor=mutapp _shareEntities.{{number}}.imgUrl'
+        shareImagesAppPropertyString: 'appConstructor=mutapp _shareEntities.{{number}}.imgUrl',
+        /**
+         * Шаблон для кода встраивания
+         */
+        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"><script src="//testix.me/js/loader.js" async></script></div>'
     },
     /**
      * Конфигурация витрины
@@ -187,11 +191,25 @@ var config = {
      * Устанавливается через применение настроек configurationSet
      */
     storefront: {
+        /**
+         * Категория, которая открывается по умолчанию
+         */
+        defaultCategory: 'test',
         templates: [],
         categories: {
             test: {
                 // шаблоны встроены прямо в верстку, НЕ создаются программно
-                enabled: true
+                enabled: true,
+                entities: [
+                    {
+                        name: 'Знаешь ли ты Киев?',
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/storefront/test/870dcd0a6b.jpg',
+                        published: 'https://s3.eu-central-1.amazonaws.com/proconstructor/storefront/test/870dcd0a6b/p_index.html',
+                        template: 'storefront/test/870dcd0a6b.txt',
+                        width: '800px',
+                        height: '600px'
+                    }
+                ]
             },
             memoriz: {
                 enabled: false

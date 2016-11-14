@@ -178,8 +178,11 @@ var Publisher = {};
      * @returns {string}
      */
     function getEmbedCode() {
-        //return '<iframe src=\"'+getAnonymLink()+'/'+indexPrefix+indexHtml+'\" style="display:block;width:'+appWidth+'px;height:'+appHeight+'px;margin:0 auto;padding:0;border:none;"></iframe>';
-        return '<div class="testix_project" data-width=\"'+appWidth+'px\" data-height=\"'+appHeight+'px\" data-published=\"'+getAnonymLink()+'/'+indexPrefix+indexHtml+'\"><script src="//testix.me/js/loader.js" async></script></div>';
+        var embedCode = config.common.embedCodeTemplate;
+        embedCode = embedCode.replace('{{width}}', appWidth+'px')
+            .replace('{{height}}', appHeight+'px')
+            .replace('{{published}}', getAnonymLink()+'/'+indexPrefix+indexHtml);
+        return embedCode;
     }
 
     /**

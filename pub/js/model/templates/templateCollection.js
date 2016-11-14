@@ -46,7 +46,7 @@ TemplateCollection.prototype.add = function(template) {
  * @returns {*}
  */
 TemplateCollection.prototype.getIdFromUrl = function(url) {
-    var reg = new RegExp('facebook-[0-9]+\/app\/([A-z0-9]+)\.txt','g');
+    var reg = new RegExp('\/([A-z0-9]+)\.txt$','g');
     var match = reg.exec(url);
     if (match && match[1]) {
         return match[1];
