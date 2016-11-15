@@ -109,7 +109,10 @@ var TEngine = {};
         }
 
         // находим необходимый айфрейм с приложением, их может быть несколько
-        var appIframe = findIframeWithApp($("#id-product_iframe_cnt"), app.id);
+        var appIframe = findIframeWithApp($("#id-autotest_iframes"), app.id);
+        if (!appIframe) {
+            appIframe = findIframeWithApp($("#id-product_iframe_cnt"), app.id);
+        }
         assert.ok(appIframe !== null, 'Engine.checkEngine: app iframe found with appId='+app.id);
 
         var body = $(appIframe).contents().find('body');

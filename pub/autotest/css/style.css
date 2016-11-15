@@ -1,10 +1,18 @@
-.autotest_iframe {
+.autotest_iframe_wr {
+    position: relative;
     outline: 5px dashed black;
     box-shadow: 0 0 0 5px yellow;
+    margin: 7px;
+
+    /* пока просто не получилось красиво выровнять маленькие превьюшки, оставил большими */
+    /*transform: scale(0.5, 0.5);*/
+    /*transform-origin: 0 0;*/
+}
+.autotest_iframe {
+    transform: none;
 }
 .autotest_iframe.__small {
-    transform: scale(0.5, 0.5);
-    transform-origin: 0 0;
+
 }
 .aif_app_id {
     position: absolute;
@@ -13,4 +21,12 @@
     font-size: 24px;
     color: #000;
     box-shadow: 0 0 2px 2px yellow;
+}
+.hidden_editor_components {
+    position: absolute;
+    top: -9999px;
+    left: 0;
+}
+.iframe_autotest_cnt {
+    width: 100%;
 }

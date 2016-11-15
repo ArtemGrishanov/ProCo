@@ -15,6 +15,10 @@ QUnit.test("Happy path app", function( assert ) {
     //TScenarios.happyPathApp(assert, 'memoriz');
 });
 
+QUnit.test("Happy path app: happyGenerateShareCanvases", function( assert ) {
+    TScenarios.happyGenerateShareCanvases(assert, 'test');
+});
+
 //QUnit.test("Happy path templates", function( assert ) {
 //    TScenarios.happyPathTemplate(assert, config.storefront.templates[0].url);
 //});

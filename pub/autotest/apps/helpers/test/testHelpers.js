@@ -258,15 +258,24 @@ function checkScreen(assert, screen, screenRoot) {
     assert.ok($(screenRoot).find(screen.$el).length > 0, 'checkScreen: screen.$el in screenRoot');
 }
 
-function checkShareEntities(assert, app, appIframe) {
+function checkShareEntities(assert, app, appIframe, imgUrlsNotNull) {
     var model = app._models[0];
     assert.ok(app._shareEntities.length===model.get('results').length, 'checkShareEntities: _shareEntities.length===results.length');
 
     // проверка вью в сущностях для публикации
     for (var i = 0; i < app._shareEntities.length; i++) {
         var e = app._shareEntities[i];
+        assert.ok(!!e.id===true,'checkShareEntities: Id exist in share entity');
         assert.ok(!!e.view===true,'checkShareEntities: View exist in share entity');
-        assert.ok(!!e.imgUrl===false,'checkShareEntities: Imgurl dont exist in share entity');
+        assert.ok(!!e.title===true,'checkShareEntities: Title exist in share entity');
+        assert.ok(!!e.description===true,'checkShareEntities: Description exist in share entity');
+        // imgUrl задается позже редактором
+        if (imgUrlsNotNull === true) {
+            if (!!e.imgUrl===true) {
+                var stopHere = true;
+            }
+            assert.ok(!!e.imgUrl===true,'checkShareEntities: Imgurl dont exist in share entity');
+        }
     }
 
     assert.ok(app.share('unknownId')===false, 'checkShareEntities: share unknowm entity');
@@ -281,7 +290,7 @@ function checkShareEntities(assert, app, appIframe) {
     for (var i = 0; i < app._shareEntities.length; i++) {
         var e = app._shareEntities[i];
         // устанавливаем картинки для шаринга, редактор так тоже делает
-        app._shareImages[e.id] = shareTestImg;
+        e.imgUrl = shareTestImg;
         // тут проверять нечего получается... при вызове share будет взята именна эта картинка
         // assert.ok(e.imgUrl===shareTestImg,'checkShareEntities: Imgurl was set to share entity');
     }

@@ -32,6 +32,8 @@ var TApp = {};
     }
 
     /**
+     * Создать тестовое приложение
+     * Все тестовые приложения собираются в едином месте id-autotest_iframes
      *
      * @param appName
      * @param width
@@ -41,8 +43,16 @@ var TApp = {};
      * @constructor
      */
     function createApp(appName, callback, width, height, defaults) {
+        // iframe для загрузки приложения
         var src = config.products[appName].src;
         var appIframe = document.createElement('iframe');
+        $(appIframe).addClass('autotest_iframe __small');
+
+        // у айфрема есть обертка для доп информации и позиционирования
+        var $iframeWr = $('<div class="autotest_iframe_wr"></div>').width('1px').height('1px');
+        $('#id-autotest_iframes').append($iframeWr);
+        $iframeWr.append(appIframe);
+
         appIframe.onload = function() {
             callback(appIframe);
             // у приложения всегда есть какие то дефолтные размеры
@@ -50,15 +60,12 @@ var TApp = {};
             var h = height || appIframe.contentWindow.app.height;
             // айфрейм необходимо увеличить до размеров приложения чтобы видеть его полностью.
             $(appIframe).width(w+'px').height(h+'px');
-            var d = $('<div class="aif_app_id">'+appIframe.contentWindow.app.id+'</div>');
-            //$(appIframe).contents().find('body').append(d);
-            //TODO контейнер для iframe
-            $('#id-product_iframe_cnt').css('position','relative').append(d);
+            $iframeWr.width(w+'px').height(h+'px');
+            var idLabel = $('<div class="aif_app_id">'+appIframe.contentWindow.app.id+'</div>');
+            $iframeWr.append(idLabel);
         };
         var host = config.common.home;
-        $(appIframe).addClass('autotest_iframe __small');
         appIframe.src = host+src;
-        $('#id-product_iframe_cnt').append(appIframe).show();
     }
 
     global.checkApp = checkApp;

@@ -95,29 +95,14 @@ var TEditor = {};
     /**
      * Проверить подготовку к шарингу
      * Опреации с картинками
+     * Внутри сервис shareImageService подготовит канвасы и сразу зааплоадит их
      */
     function checkShare(assert, callback) {
-        //невозможно запустить проверку так как будет "задача в задаче", а очередь одна
         Editor.createPreviewsForShare(function(result, prepareSharedEntities) {
             if (result==='ok') {
                 var app = Engine.getApp();
-                assert.ok(app._shareEntities.length > 0, 'checkShare: prepareSharedEntities length > 0');
-                assert.ok(app._shareEntities.length === prepareSharedEntities.length, 'checkShare: prepareSharedEntities length');
-
-                for (var i = 0; i < prepareSharedEntities.length; i++) {
-                    var e = prepareSharedEntities[i];
-                    // канваса может и не быть если сам пользователь установил картинку, то есть editor ее не генерировал
-                    if (e.canvas) {
-                        assert.ok(!!e.canvas === true, 'checkShare: canvas');
-                        assert.ok(e.canvas.width > 100, 'checkShare: canvas.width');
-                        assert.ok(e.canvas.height > 100, 'checkShare: canvas.height');
-                    }
-                    assert.ok(e.imageUrl.length > 20, 'checkShare: imgUrl');
-                    assert.ok(!!e.entityId === true, 'checkShare: entityId');
-                    // проверить урлы в приложении что установка прошла
-                    assert.ok(app._shareImages[e.entityId] === e.imageUrl, 'checkShare: image url was set');
-                }
-
+                var appIframe = Editor.getAppIframe();
+                checkShareEntities(assert, app, appIframe, true);
                 callback();
             }
             else {

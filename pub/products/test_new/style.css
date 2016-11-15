@@ -403,6 +403,10 @@ img {
         padding-top: 16px;
         margin-top: 0;
     }
+    body .js-download_btn_wr {
+        padding-top: 16px;
+        margin-top: 0;
+    }
 
     .modal {
         box-sizing: border-box;

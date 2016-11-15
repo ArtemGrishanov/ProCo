@@ -51,17 +51,23 @@ var TScenarios = {};
         //это тоже может быть ошибкой
 
         if (config.common.facebookAuthEnabled === true) {
-            App.on(FB_CONNECTED, function(result) {
-                //TODO просто стартуем, окно логина не переведено на модал и автоматически скрывается
-                if (result === 'connected') {
-                    startEditor(appName);
-                }
-                else {
-                    // canClose:false - леер нельзя закрыть
-                    Modal.showLogin({text:'Войдите для создания своего проекта',canClose:false});
-                }
-            });
-            App.start();
+            if (App.getUserData()) {
+                App.start();
+                startEditor(appName);
+            }
+            else {
+                App.on(FB_CONNECTED, function(result) {
+                    //TODO просто стартуем, окно логина не переведено на модал и автоматически скрывается
+                    if (result === 'connected') {
+                        startEditor(appName);
+                    }
+                    else {
+                        // canClose:false - леер нельзя закрыть
+                        Modal.showLogin({text:'Войдите для создания своего проекта',canClose:false});
+                    }
+                });
+                App.start();
+            }
         }
         else {
             App.start();
@@ -81,22 +87,6 @@ var TScenarios = {};
                 }
             });
         }
-
-//        scenarioQueue.push({
-//            run: function() {
-//                // запуск редактора
-//                // в нормальном режиме эти параметры передаются через url-get строку
-//                Editor.start({
-//                    app: appName,
-//                    //template: '' // другой режим запуска возможен, через шаблон
-//                    callback: function() {
-//                        log('happyPathApp: Editor started');
-//                        assert.ok(true, 'Editor started');
-//                    }
-//                });
-//            }
-//            //,maxWaitTime:99999999
-//        });
 
         function doScenarion() {
             scenarioQueue.push({run: function() {
@@ -252,8 +242,62 @@ var TScenarios = {};
         //...
     }
 
+    function happyGenerateShareCanvases(assert, appName) {
+        appName = appName || 'test';
+        var done = assert.async();
+        // отдельная очередь для этого сценария
+        var scenarioQueue = Queue.create();
+        var appIframe = null;
+        var previewBody = null;
+        if (config.common.facebookAuthEnabled === true) {
+            if (App.getUserData()) {
+                App.start();
+                startEditor(appName);
+            }
+            else {
+                App.on(FB_CONNECTED, function(result) {
+                    //TODO просто стартуем, окно логина не переведено на модал и автоматически скрывается
+                    if (result === 'connected') {
+                        startEditor(appName);
+                    }
+                    else {
+                        // canClose:false - леер нельзя закрыть
+                        Modal.showLogin({text:'Войдите для создания своего проекта',canClose:false});
+                    }
+                });
+                App.start();
+            }
+        }
+        else {
+            assert.ok(false, 'happyGenerateShareCanvases: need online mode to upload images');
+        }
+        function startEditor(appName) {
+            Editor.start({
+                app: appName,
+                //template: '' // другой режим запуска возможен, через шаблон
+                callback: function() {
+                    log('happyGenerateShareCanvases: Editor started');
+                    assert.ok(true, 'Editor started');
+                    previewBody = $("#id-product_screens_cnt").contents().find('body');
+                    assert.ok(!!previewBody===true, 'Preview body saved');
+                    doScenarion();
+                }
+            });
+        }
+        function doScenarion() {
+            scenarioQueue.push({run: function() {
+                TEditor.checkShare(assert, function() {
+                    scenarioQueue.release(this);
+                    // конец всего сценария
+                    done();
+                });
+            }});
+        } //doScenario function
+    }
+
     global.happyTest = happyTest;
     global.happyPathApp = happyPathApp;
     global.happyPathTemplate = happyPathTemplate;
+    global.happyGenerateShareCanvases = happyGenerateShareCanvases;
 
 })(TScenarios);
