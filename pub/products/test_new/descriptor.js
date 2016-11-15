@@ -53,8 +53,18 @@ descriptor.css = [
         rules: 'backgroundColor fontColor fontSize fontFamily borderColor borderRadius borderWidth paddingTop paddingBottom'
     },
     {
+        // кнопка "скачать", чтобы можно было отдельный стиль задать
+        selector: '.js-download_btn',
+        rules: 'backgroundColor fontColor fontSize fontFamily borderColor borderRadius borderWidth paddingTop paddingBottom'
+    },
+    {
         selector: '.js-test_btn',
         applyCssTo: '.js-btn_wr',
+        rules: 'textAlign marginTop marginBottom paddingLeft'
+    },
+    {
+        selector: '.js-download_btn',
+        applyCssTo: '.js-download_btn_wr',
         rules: 'textAlign marginTop marginBottom paddingLeft'
     },
     {
@@ -116,7 +126,7 @@ descriptor.app = [
         rules: 'imgUrl'
     },
     {
-        selector: 'type=questions showExplanation, id=startScr showLogo, type=questions showLogo, type=result showLogo, id=tm showQuestionProgress, id=tm showBullits, id=tm showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions, id=startScr shadowEnable, type=questions shadowEnable, type=result shadowEnable',
+        selector: 'type=result showDownload, type=questions showExplanation, id=startScr showLogo, type=questions showLogo, type=result showLogo, id=tm showQuestionProgress, id=tm showBullits, id=tm showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions, id=startScr shadowEnable, type=questions shadowEnable, type=result shadowEnable',
         rules: 'trueFalse'
     },
             {
@@ -134,6 +144,10 @@ descriptor.app = [
             {
                 selector: 'type=result showLogo',
                 label: 'Лого в результатах'
+            },
+            {
+                selector: 'type=result showDownload',
+                label: 'Кнопка "Скачать" на экране результата'
             },
             {
                 selector: 'id=tm showBackgroundImage',
@@ -172,7 +186,7 @@ descriptor.app = [
                 filter: true
             },
     {
-        selector: 'id=tm quiz.{{number}}.question.text, id=tm quiz.{{number}}.answer.options.{{number}}.text, id=tm results.{{number}}.title, id=tm results.{{number}}.description, id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText, type=result restartButtonText, type=questions topColontitleText',
+        selector: 'id=tm quiz.{{number}}.question.text, id=tm quiz.{{number}}.answer.options.{{number}}.text, id=tm results.{{number}}.title, id=tm results.{{number}}.description, id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText, type=result restartButtonText, type=result downloadButtonText, type=questions topColontitleText',
         rules: 'text'
     },
     {
@@ -200,6 +214,12 @@ descriptor.app = [
         selector: 'id=tm logoLink',
         rules: 'url',
         label: 'Лого ссылка',
+        filter: false
+    },
+    {
+        selector: 'id=tm downloadLink',
+        rules: 'url',
+        label: 'Ссылка по кнопке "Скачать"',
         filter: false
     },
     {

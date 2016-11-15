@@ -38,8 +38,9 @@ var ResultScreen = MutApp.Screen.extend({
     logoPosition: {top: 100, left: 20},
     restartButtonText: 'Заново',
     backgroundImg: null,
-
     shadowEnable: false,
+    showDownload: false,
+    downloadButtonText: 'Скачать',
     /**
      * Позиция кнопки для шаринга результата в фб
      */
@@ -62,7 +63,8 @@ var ResultScreen = MutApp.Screen.extend({
         "click .js-next": "onNextClick",
         "click .js-mutapp_share_fb": "onFBShareClick",
         "click .js-mutapp_share_vk": "onVKShareClick",
-        "click .js-logo": "onLogoClick"
+        "click .js-logo": "onLogoClick",
+        "click .js-download_btn": "onDownloadClick"
     },
 
     onNextClick: function(e) {
@@ -75,6 +77,15 @@ var ResultScreen = MutApp.Screen.extend({
             var win = window.open(ll, '_blank');
             win.focus();
             this.model.application.stat('Test', 'logoclick');
+        }
+    },
+
+    onDownloadClick: function(e) {
+        var dl = this.model.get('downloadLink');
+        if (dl) {
+            var win = window.open(dl, '_blank');
+            win.focus();
+            this.model.application.stat('Test', 'downloadclick');
         }
     },
 
@@ -122,6 +133,14 @@ var ResultScreen = MutApp.Screen.extend({
             $l.hide();
         }
 
+        var $dl = this.$el.find('.js-download_btn_wr');
+        if (this.showDownload === true) {
+            $dl.show();
+        }
+        else {
+            $dl.hide();
+        }
+
         // кнопка шаринга
         $('.js-mutapp_share_fb').
             css('top',this.fbSharePosition.top+'px').
@@ -131,6 +150,8 @@ var ResultScreen = MutApp.Screen.extend({
             css('left',this.vkSharePosition.left+'px');
 
         this.$el.find('.js-restart').html(this.restartButtonText);
+
+        this.$el.find('.js-download_btn').html(this.downloadButtonText);
 
         if (this.model.get('showBackgroundImage')===true) {
             if (this.backgroundImg) {

@@ -98,7 +98,7 @@ AppScreen.prototype.findAndAttachAppProperty = function() {
                     });
                 }
                 else {
-                    log('AppScreen.findAndAttachAppProperties: there is no appProperty for \''+tspAtr+'\'',true);
+                    log('AppScreen.findAndAttachAppProperties: Engine does not has this appProperty \''+tspAtr+'\' (but it was found on screen)',true);
                 }
             }
         }

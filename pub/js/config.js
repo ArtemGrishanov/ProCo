@@ -60,7 +60,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev'], //dev test prod
+        configurationSetsOnStart: ['prod'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error

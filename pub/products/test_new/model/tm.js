@@ -19,6 +19,10 @@ var TestModel = MutApp.Model.extend({
          * Переход по ссылке на лого на этот урл
          */
         logoLink: undefined,
+        /**
+         * Кнопка Скачать в конце теста. По сути тоже кнопка со ссылкой
+         */
+        downloadLink: undefined,
 
         showBullits: true,
 
