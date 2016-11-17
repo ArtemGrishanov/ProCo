@@ -220,38 +220,34 @@ var Publisher = {};
      */
     function buildProductResourceList(codeStr) {
         productResources = [];
-        productResources.push({
-            baseUrl: '',
-            url: config.common.anonymPageForPublishing,
-            destUrl: 'index.html', // сделать анонимку страницей, открываемой по умолчанию
-            type: 'text/html'
-        });
-        productResources.push({
-            baseUrl: '',
-            url: config.common.anonymPageStylesForPublishing,
-            destUrl: 'common.css',
-            type: 'text/css'
-        });
-        productResources.push({
-            baseUrl: '',
-            url: config.products.common.stylesForPublishing,
-            destUrl: 'tstx_cmn_products.css',
-            type: 'text/css'
-        });
+
+        // специальные ресурсы для публикации описаны в свойства config.products.common.publishResources
+        for (var i = 0; i < config.products.common.publishResources.length; i++) {
+            var c = JSON.parse(JSON.stringify(config.products.common.publishResources[i]));
+            if (c.baseUrl === undefined) {
+                c.baseUrl = baseProductUrl;
+            }
+            productResources.push(c);
+        }
+
         //TODO поиск предполагает что ресурсы находятся рядом с html в baseUrl
         var scriptExp = /src=(?:\"|\')((?:\w|\/)+\.js)(?:\"|\')/ig;
         var jsMatch = null;
         while ( (jsMatch = scriptExp.exec(codeStr)) !== null) {
-            productResources.push({
-                baseUrl: baseProductUrl,
-                type: 'text/javascript',
-                url: jsMatch[1]
-            });
+            // если этот ресурс не был отдельно записан в config.products.common.publishResources
+            if (getResourceByUrl(jsMatch[1]) === null) {
+                productResources.push({
+                    baseUrl: baseProductUrl,
+                    type: 'text/javascript',
+                    url: jsMatch[1]
+                });
+            }
         }
         var cssExp = /href=(?:\"|')((?:\w|\/)+.css)(?:\"|')/ig;
         var cssMatch = null;
         while ( (cssMatch = cssExp.exec(codeStr)) !== null) {
-            if (cssMatch[1] !== config.products.common.stylesFileName) {
+            // если этот ресурс не был отдельно записан в config.products.common.publishResources
+            if (getResourceByUrl(cssMatch[1]) === null) {
                 productResources.push({
                     baseUrl: baseProductUrl,
                     type: 'text/css',
@@ -259,17 +255,29 @@ var Publisher = {};
                 });
             }
         }
-        //TODO img (только "свои" картинки) Из инетов пока не рассматриваем варианты
+    }
 
-        // добавляем главный html файл
-        productResources.push({
-            baseUrl: baseProductUrl,
-            url: indexHtml,
-            // destUrl - это опциональный параметр с целью переписать имя главной хтмлки проекта, так как
-            // в каталоге будет враппер с таким же именем и он должен открываться при заходе на анонимку
-            destUrl: indexPrefix+indexHtml,
-            type: 'text/html'
-        });
+    /**
+     * Заменить подстроку в этом ресурсе согласно конфигу
+     * Нужно для подмены адресов скриптов, стилей при публикации, например
+     * from: <script type="text/javascript" src="../common/js/mutapp.js"></script>
+     * to: <script type="text/javascript" src="mutapp.js"></script>
+     *
+     * @param {object} resourceData
+     * @param {string} src
+     * @returns {string}
+     */
+    function replaceStringInResource(resourceData, src) {
+        var result = src;
+        if (resourceData.replace) {
+            var p, re;
+            for (var i = 0; i < resourceData.replace.length; i++) {
+                p = resourceData.replace[i].from;
+                re = new RegExp(p, "g");
+                result = result.replace(re, resourceData.replace[i].to);
+            }
+        }
+        return result;
     }
 
     /**
@@ -293,7 +301,12 @@ var Publisher = {};
                                 if(e.target.status == 200) {
                                     // task context
                                     log('Grab task done:' + this.data.url);
-                                    setDataToResource(this.data.url, e.target.responseText);
+                                    var text = e.target.responseText;
+                                    if (this.data.replace) {
+                                        // надо произвести замену текста
+                                        text = replaceStringInResource(this.data, text);
+                                    }
+                                    setDataToResource(this.data.url, text);
                                 }
                                 else {
                                     log('Resource request failed: '+ e.target.statusText, true);

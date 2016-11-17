@@ -165,8 +165,8 @@ var config = {
         /**
          * Анонимная страница для публикации
          */
-        anonymPageForPublishing: 'templates/anonymPage/index.html',
-        anonymPageStylesForPublishing: 'css/common.css',
+        //        anonymPageForPublishing: 'templates/anonymPage/index.html',
+        //        anonymPageStylesForPublishing: 'css/common.css',
         /**
          * Место куда в анонимную страницу вставлять код проекта при публикации
          */
@@ -232,9 +232,46 @@ var config = {
              * Там например содержаться кнопки для шаринга
              */
             styles: '<link href="{{config.common.home}}products/common/css/tstx_cmn_products.css" rel="stylesheet"/>',
-            stylesForPublishing: 'products/common/css/tstx_cmn_products.css',
-            stylesFileName: 'tstx_cmn_products.css',
-            defaultShareImageRecommendedSize: '1200x620'
+//            stylesForPublishing: '',
+//            stylesFileName: 'tstx_cmn_products.css',
+            defaultShareImageRecommendedSize: '1200x620',
+            publishResources: [
+                {
+                    // ex: products/test_new/
+                    baseUrl: undefined, // не указана, значит будет установлена publisher.js
+                    // index.html промо проекта
+                    url: 'index.html',
+                    destUrl: 'p_index.html',
+                    type: 'text/html',
+                    // замена подстроки в этом файле при публикации
+                    replace: [{
+                        from: '<script type="text/javascript" src="../common/js/mutapp.js"></script>',
+                        to: '<script type="text/javascript" src="mutapp.js"></script>'
+                    },{
+                        from: '<link href="../common/css/tstx_cmn_products.css" rel="stylesheet">',
+                        to: '<link href="tstx_cmn_products.css" rel="stylesheet">'
+                    }]
+                },
+                {
+                    baseUrl: '', // not needed
+                    url: 'templates/anonymPage/index.html',
+                    // анонимка должна открываться по умолчанию
+                    destUrl: 'index.html',
+                    type: 'text/html'
+                },
+                {
+                    baseUrl: '', // not needed
+                    url: 'css/common.css',
+                    destUrl: 'common.css',
+                    type: 'text/css'
+                },
+                {
+                    baseUrl: '', // not needed
+                    url: 'products/common/css/tstx_cmn_products.css',
+                    desctUrl: 'tstx_cmn_products.css',
+                    type: 'text/css'
+                }
+            ]
         },
         // конфигурация для каждого типа промо-приложений
         test: {
