@@ -12,8 +12,8 @@ var config = {
         dev: function() {
             config.common.home = 'http://localhost:63342/ProCo/pub/';
             config.common.facebookAppId = '518819781624579';
-            config.common.awsEnabled = false;
-            config.common.facebookAuthEnabled = false;
+            config.common.awsEnabled = true;
+            config.common.facebookAuthEnabled = true;
 //            config.storefront.templates = [
 //                { url:'facebook-121947341568004/app/c0266dd8f4.txt', title:'Города'},
 //                { url:'facebook-1008194042550518/app/f3590442f2.txt', title:'География'},
