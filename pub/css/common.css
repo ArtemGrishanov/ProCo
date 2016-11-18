@@ -120,6 +120,9 @@ html, body {
 .tx.__18 {
     font-size: 18px;
 }
+.tx.__20 {
+    font-size: 20px;
+}
 .tx.__24 {
     font-size: 24px;
 }
@@ -415,7 +418,7 @@ html, body {
     text-decoration: none;
 }
 .menu_tab.__selected {
-    border-bottom: 8px solid #4c77b8;
+    border-bottom: 4px solid #00b7ff;
 }
 .header {
     margin: 0;
@@ -609,8 +612,8 @@ html, body {
 
 .main_footer {
     height: 22px;
-    background-color: #343434;
-    padding: 16px 24px 16px 24px;
+    background-color: #2c2c2c;
+    padding: 16px 24px;
     text-align: right;
 }
 
@@ -840,3 +843,170 @@ html, body {
     right: 0;
     text-align: right;
 }
+.hiw_header {
+    width: 100%;
+    margin: 0 auto;
+    padding: 54px 0;
+    font-size: 28px;
+    text-align: center;
+    color: #fff;
+    background-color: #01a7e9;
+}
+.hiw_story_wr {
+    width: 100%;
+    height: 332px;
+    background-color: #fff;
+}
+.hiw_story {
+    width: 1280px;
+    margin: 0 auto;
+    white-space : nowrap;
+    font-size: 16px;
+    color: #464646;
+    text-align: center;
+}
+.hiw_story_item {
+    position: relative;
+    display: inline-block;
+    vertical-align: bottom;
+    width: 425px;
+    height: 332px;
+}
+.hiw_text {
+    position: absolute;
+    padding: 20px 35px;
+    background-repeat: no-repeat;
+    text-align: left;
+}
+.hiw_text.__1 {
+    left: 70px;
+    top: 10px;
+}
+.hiw_text.__2 {
+    left: 114px;
+    top: -10px;
+    background-image: url(../i/howitworks/bubble-001.png);
+    background-size: 294px 119px;
+    width: 294px;
+    height: 119px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .hiw_text.__2 {
+        background-image: url(../i/howitworks/bubble-001@2x.png);
+    }
+}
+.hiw_text.__3 {
+    left: 160px;
+    top: 30px;
+    background-image: url(../i/howitworks/bubble-002.png);
+    background-size: 234px 123px;
+    width: 234px;
+    height: 123px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .hiw_text.__3 {
+        background-image: url(../i/howitworks/bubble-002@2x.png);
+    }
+}
+
+.hiw_img {
+    position: absolute;
+}
+.hiw_img.__1 {
+    left: 60px;
+    bottom: 0;
+    background-image: url(../i/howitworks/howitworks-1.png);
+    background-size: 283px 250px;
+    width: 283px;
+    height: 250px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .hiw_img.__1 {
+        background-image: url(../i/howitworks/howitworks-1@2x.png);
+    }
+}
+.hiw_img.__2 {
+    left: 0;
+    bottom: 0;
+    background-image: url(../i/howitworks/howitworks-2.png);
+    background-size: 329px 281px;
+    width: 329px;
+    height: 281px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .hiw_img.__2 {
+        background-image: url(../i/howitworks/howitworks-2@2x.png);
+    }
+}
+.hiw_img.__3 {
+    left: -10px;
+    bottom: 0;
+    background-image: url(../i/howitworks/howitworks-3.png);
+    background-size: 425px 280px;
+    width: 425px;
+    height: 280px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .hiw_img.__3 {
+        background-image: url(../i/howitworks/howitworks-3@2x.png);
+    }
+}
+
+.hiw_action_wr {
+    width: 100%;
+    background-color: #343434;
+}
+.hiw_action {
+    width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+.hiw_act_item {
+    display: inline-block;
+    vertical-align: top;
+    width: 230px;
+    padding: 42px 30px;
+    text-align: left;
+    color: #fff;
+    white-space: initial;
+}
+.hiw_act_num {
+    width: 19px;
+    height: 19px;
+    padding: 9px 11px 12px;
+    background-color: #00a7e9;
+    border-radius: 99px;
+    text-align: center;
+}
+.hiw_act_h {
+    margin: 20px 0;
+}
+.hiw_call_wr {
+    width: 100%;
+    background-color: #343434;
+}
+.hiw_call {
+    position: relative;
+    width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 30px 0 80px;
+}
+.hiw_call_winner {
+    position: absolute;
+    right: 30px;
+    bottom: 0;
+    width: 127px;
+    height: 271px;
+    background-image: url(../i/howitworks/howitworks-4.png);
+    background-size: 127px 271px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .hiw_call_winner {
+        background-image: url(../i/howitworks/howitworks-4@2x.png);
+    }
+}
+.hiw_selection {
+    background-color: #00a7e9;
+}
+
