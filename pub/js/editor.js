@@ -337,7 +337,10 @@ var Editor = {};
             if (slideGroupControlIsLoaded===true) {
                 checkScreenGroupsArrowsState();
                 clearInterval(intervalId);
-                Modal.hideLoading();
+                // даем еще чуть повиесеть так как там грузятся UI директивы для контролов боковой панели
+                setInterval(function() {
+                    Modal.hideLoading();
+                }, 1500);
                 if (typeof startCallback === 'function') {
                     startCallback();
                 }

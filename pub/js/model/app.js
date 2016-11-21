@@ -418,7 +418,7 @@ var App = App || {};
             //TODO показать/скрыть кнопку Выйти/Войти
             // ава показать-заменить на кнопку войти
             //
-            $('#id-modal_cnt').empty().hide();
+            // $('#id-modal_cnt').empty().hide();
         }
         else {
             if (responseStatus === 'connected') {
