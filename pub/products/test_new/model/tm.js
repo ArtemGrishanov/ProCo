@@ -31,6 +31,9 @@ var TestModel = MutApp.Model.extend({
         showQuestionProgress: true,
         questionProgressPosition: {top:30, left:30},
 
+        fbShareEnabled: true,
+        vkShareEnabled: true,
+
         currentQuestionId: null,
         currentQuestionIndex: undefined,
         /**

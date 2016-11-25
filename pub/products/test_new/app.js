@@ -47,8 +47,6 @@ var TestApp = MutApp.extend({
         var results = tm.get('results');
         var rs = null;
         var sEntities = [];
-        // пожелание Олега сделать описания для шаринга именно таким образом, взять тексты с первого слайда.
-        var descForShare = startScr.startHeaderText + ' - ' + startScr.startDescription;
         for (var i = 0; i < results.length; i++) {
             var r = results[i];
 
@@ -65,8 +63,8 @@ var TestApp = MutApp.extend({
             // в тесте это количество результатов
             sEntities.push({
                 id: id,
-                title: r.title,
-                description: descForShare,
+                title: startScr.startHeaderText,
+                description: startScr.startDescription,
                 // удалить элементы, оставить только те которые в whitelist
                 view: MutApp.Util.clarifyElement(rs.$el, ['modal','modal_cnt','info_title','info_tx','b_title']),
                 imgUrl: null

@@ -141,6 +141,19 @@ var ResultScreen = MutApp.Screen.extend({
             $dl.hide();
         }
 
+        if (this.model.get('fbShareEnabled')===true) {
+            this.$el.find('.js-mutapp_share_fb').show();
+        }
+        else {
+            this.$el.find('.js-mutapp_share_fb').hide();
+        }
+        if (this.model.get('vkShareEnabled')===true) {
+            this.$el.find('.js-mutapp_share_vk').show();
+        }
+        else {
+            this.$el.find('.js-mutapp_share_vk').hide();
+        }
+
         // кнопка шаринга
         $('.js-mutapp_share_fb').
             css('top',this.fbSharePosition.top+'px').

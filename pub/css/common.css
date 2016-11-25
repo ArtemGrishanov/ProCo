@@ -325,6 +325,13 @@ html, body {
     width: 45%;
     padding-top: 4px;
 }
+.toolbar_center {
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    width: 8%;
+    min-width: 40px;
+}
 .toolbar_right {
     display: inline-block;
     vertical-align: top;
@@ -338,6 +345,9 @@ html, body {
     text-align: right;
     width: 49%;
     min-width: 530px;
+}
+.toolbar_btns.__45 {
+    width: 45%;
 }
 .toolbar_user {
     /*position: absolute;*/
@@ -751,6 +761,22 @@ html, body {
     width: 306px;
     height: 540px;
     padding: 73px 13px 68px;
+}
+.pre_mob {
+    display: inline-block;
+    background-image: url(../i/icon-mobile-small.png);
+    width: 19px;
+    height: 31px;
+    cursor: pointer;
+    margin: 0 4px;
+}
+.pre_desk {
+    display: inline-block;
+    background-image: url(../i/icon-desktop-small.png);
+    width: 38px;
+    height: 31px;
+    cursor: pointer;
+    margin: 0 4px;
 }
 
 .proto_cnt {

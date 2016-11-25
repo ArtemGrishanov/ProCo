@@ -126,7 +126,7 @@ descriptor.app = [
         rules: 'imgUrl'
     },
     {
-        selector: 'type=result showDownload, type=questions showExplanation, id=startScr showLogo, type=questions showLogo, type=result showLogo, id=tm showQuestionProgress, id=tm showBullits, id=tm showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions, id=startScr shadowEnable, type=questions shadowEnable, type=result shadowEnable',
+        selector: 'type=result showDownload, type=questions showExplanation, id=startScr showLogo, type=questions showLogo, type=result showLogo, id=tm fbShareEnabled, id=tm vkShareEnabled, id=tm showQuestionProgress, id=tm showBullits, id=tm showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions, id=startScr shadowEnable, type=questions shadowEnable, type=result shadowEnable',
         rules: 'trueFalse'
     },
             {
@@ -157,6 +157,14 @@ descriptor.app = [
             {
                 selector: 'id=tm showBullits',
                 label: 'Показывать буллиты вариантов ответа'
+            },
+            {
+                selector: 'id=tm fbShareEnabled',
+                label: 'Включить шаринг результата в Facebook'
+            },
+            {
+                selector: 'id=tm vkShareEnabled',
+                label: 'Включить шаринг результата во ВКонтакте'
             },
             {
                 selector: 'id=tm showQuestionProgress',
