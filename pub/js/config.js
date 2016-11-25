@@ -88,6 +88,11 @@ var config = {
         awsRoleArn: 'arn:aws:iam::520270155749:role/ProCo_FBUsers',
         awsRegion: 'eu-central-1',
         /**
+         * Задержка перед возможностью релогина
+         * Применяется когда сессия устаревает
+         */
+        RELOGIN_DELAY: 60000, // 1 min
+        /**
          * Доступен ли редактор для запуска всем пользователям.
          * Если нет, то будет покаано сообщение "пока в разработке"
          * Но по прямой ссылке можно будет всегда зайти
@@ -185,6 +190,17 @@ var config = {
          */
         embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"><script src="//testix.me/js/loader.js" async></script></div>'
     },
+    storage: {
+        /**
+         * Максимальное время которое может занять аплоад нового ресурса, картинки
+         */
+        putNewResourceMaxDelay: 12000,
+        /**
+         * Сколько по времени можем ждать ответа от сервисов типа aws
+         * для аплоада оно может быть увеличено, так как там большие файлы могут быть
+         */
+        responseMaxDuration: 6000
+    },
     /**
      * Конфигурация витрины
      * Используется для построения витрины и также автотестов на шаблоны
@@ -268,8 +284,14 @@ var config = {
                 {
                     baseUrl: '', // not needed
                     url: 'products/common/css/tstx_cmn_products.css',
-                    desctUrl: 'tstx_cmn_products.css',
+                    destUrl: 'tstx_cmn_products.css',
                     type: 'text/css'
+                },
+                {
+                    baseUrl: '', // not needed
+                    url: 'products/common/js/mutapp.js',
+                    destUrl: 'mutapp.js',
+                    type: 'text/javascript'
                 }
             ]
         },

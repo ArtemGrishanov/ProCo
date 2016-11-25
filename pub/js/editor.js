@@ -338,7 +338,7 @@ var Editor = {};
                 checkScreenGroupsArrowsState();
                 clearInterval(intervalId);
                 // даем еще чуть повиесеть так как там грузятся UI директивы для контролов боковой панели
-                setInterval(function() {
+                setTimeout(function() {
                     Modal.hideLoading();
                 }, 1500);
                 if (typeof startCallback === 'function') {
@@ -1095,7 +1095,9 @@ var Editor = {};
                         alert('Не удалось сохранить проект');
                     }
                 }
-                Modal.hideLoading();
+                if (Publisher.isPublishing() !== true) {
+                    Modal.hideLoading();
+                }
             }, appId);
         }
         else {
@@ -1114,7 +1116,7 @@ var Editor = {};
                     Body: file,
                     ACL: 'public-read'
                 };
-                App.getAWSBucket().putObject(params, (function (err, data) {
+                s3util.requestStorage('putObject', params, (function (err, data) {
                     if (err) {
                         //Not authorized to perform sts:AssumeRoleWithWebIdentity
                         log('ERROR: ' + err, true);

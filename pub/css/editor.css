@@ -229,7 +229,8 @@
     position: relative;
     width: 206px;
     height: 127px;
-    background: url(../../products/test/i/editor/t1.jpg) no-repeat center;
+    background-repeat: no-repeat;
+    background-position: center;
     background-size: contain;
     border: #bfbfbf solid 2px;
 }

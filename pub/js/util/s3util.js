@@ -4,6 +4,109 @@
  * Несколько функций по работе с s3
  * Не смогу логически отнести их пока к какому то модуля или классу
  */
+var s3util = {};
+(function(global) {
+
+    var pool = [];
+    var activeRequest = null;
+
+    function timer() {
+        if (activeRequest === null && pool.length > 0) {
+            activeRequest = pool.shift();
+        }
+        if (activeRequest && activeRequest.performed!==true) {
+            // надо убедиться что для этого запроса есть bucket
+            // в случае relogin-а нужно время чтобы заново создать его
+            if (getBucket(activeRequest.bucketName)) {
+                activeRequest.timestamp = new Date().getTime();
+                activeRequest.performed = true;
+                doRequest(activeRequest);
+            }
+        }
+        if (activeRequest) {
+            // проверка на зависшие по каким-то причинам запросы
+            if (new Date().getTime()-activeRequest.timestamp > activeRequest.maxDuration) {
+                if (activeRequest) activeRequest.callback('error', null);
+                activeRequest = null;
+            }
+        }
+    }
+
+    function doRequest(r) {
+        //bucket
+        //params
+        //callback
+        var b = getBucket(r.bucketName);
+        b[r.method](r.params, onRequest);
+    }
+
+    function onRequest(err, data) {
+        if (err) {
+            log('onRequest: ' + err, true);
+            if (err.code === 'CredentialsError') {
+                // пытаемся обновить устаревшую сессию
+                var canRelogin = App.relogin();
+                if (canRelogin) {
+                    // повторно выполнить этот запрос
+                    activeRequest.performed = false;
+                    pool.unshift(activeRequest);
+                    activeRequest = null;
+                }
+                else {
+                    if (activeRequest) activeRequest.callback('error', data);
+                }
+            }
+            else {
+                if (activeRequest) activeRequest.callback('error', data);
+            }
+        }
+        else {
+            if (activeRequest) activeRequest.callback(null, data);
+        }
+        activeRequest = null;
+    }
+
+    function requestStorage(method, params, callback, maxDuration) {
+        pool.push({
+            bucketName: 's3://proconstructor',
+            method: method,
+            params: params,
+            callback: callback,
+            maxDuration: maxDuration || config.storage.responseMaxDuration
+        });
+    }
+
+    function requestPub(method, params, callback, maxDuration) {
+        pool.push({
+            bucketName: 's3://p.testix.me',
+            method: method,
+            params: params,
+            callback: callback,
+            maxDuration: maxDuration || config.storage.responseMaxDuration
+        });
+    }
+
+    /**
+     * Вернуть по имени bucket из App
+     * @param {string} bucketName
+     */
+    function getBucket(bucketName) {
+        //TODO правильно перенести из App бакеты в этот класс и осуществлять полное управление здесь. Но пока не стал - дорого
+        if (bucketName === 's3://proconstructor') {
+            return App.getAWSBucket();
+        }
+        else if (bucketName === 's3://p.testix.me') {
+            return App.getAWSBucketForPublishedProjects();
+        }
+        return null;
+    }
+
+    setInterval(timer, 50);
+
+    global.requestStorage = requestStorage;
+    global.requestPub = requestPub;
+
+})(s3util);
 
 /**
  * Зааплоадить канвас по урлу

@@ -10,7 +10,6 @@ var Publisher = {};
      * @type {string}
      */
     var indexPrefix = 'p_';
-    var bucket = null;
     /**
      * Указывает, была ли последняя публикация продукта успешной или нет
      * @type {boolean}
@@ -66,16 +65,19 @@ var Publisher = {};
      * @type {number}
      */
     var appHeight = 600;
+    /**
+     * Показывает, что в данный момент идет процесс публикации
+     * @type {boolean}
+     */
+    var isPublishing = false;
 
     /**
      * Инициаоизация модуля.
      * Передача важных параметров, необходимых для работы
      *
-     * @param.awsBucket {object} - объект апи aws для аплоада
      * @param.callback {function} - функция вызываемая по умолчанию
      */
     function init(params) {
-        bucket = params.awsBucket;
         callback = params.callback;
         isInited = true;
     }
@@ -98,6 +100,7 @@ var Publisher = {};
      */
     function publish(params) {
         if (App.getUserData() !== null) {
+            isPublishing = true;
             publishedAppId = params.appId;
             appStr = params.appStr;
             cssStr = params.cssStr;
@@ -131,6 +134,7 @@ var Publisher = {};
                     log('Apps were overrided.');
 
                     Queue.onComplete('uploadRes', function() {
+                        isPublishing = false
                         if (errorInPublish === true) {
                             callback('error', null);
                         }
@@ -440,7 +444,7 @@ var Publisher = {};
                         Body: this.data.data,
                         ACL: 'public-read'
                     };
-                    bucket.putObject(params, (function (err, data) {
+                    s3util.requestPub('putObject', params, (function (err, data) {
                         // task object context
                         if (err) {
                             errorInPublish = true;
@@ -470,5 +474,6 @@ var Publisher = {};
     global.getAnonymLink = getAnonymLink;
     global.isInited = function() {return isInited;}
     global.isError = function() {return errorInPublish;}
+    global.isPublishing = function() {return isPublishing;}
 
 })(Publisher);

@@ -45,7 +45,7 @@ function SelectDialog(params) {
                 }
                 $e.attr('data-id',options[i].id).find('.js-option_label').text(options[i].label);
                 if (options[i].icon) {
-                    $e.find('.js-option_icon').css('backgroundImage','url('+options[i].icon+')');
+                    $e.find('.js-option_icon').css('backgroundImage','url("'+options[i].icon+'")');
                 }
                 $cnt.append($e);
             }

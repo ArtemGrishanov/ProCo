@@ -67,6 +67,17 @@ var App = App || {};
      */
     var responseStatus = null;
     /**
+     * Был получен при авторизации в ФБ
+     * @type {null}
+     */
+    var accessToken = null;
+    /**
+     * Время последнего создания бакета
+     * Нужно для контроля при пересоздании бакетов, если сессия устарела
+     * @type {null}
+     */
+    var loginTime = null;
+    /**
      * Сохраненные проекты пользователя
      * Коллекция шаблонов пользователя
      */
@@ -253,37 +264,56 @@ var App = App || {};
      * Инициализация апи для работы с хранилищем Amazon
      * Должна проходить после успешной авторизации через фб, так как нужен user_id
      *
-     * @param {string} accessToken - fb access token, that was got after authorization
+     * @param {string} token - fb access token, that was got after authorization
      */
-    function initAWS(accessToken) {
+    function initAWS(token) {
         if (config.common.awsEnabled === true) {
             AWS.config.region = config.common.awsRegion;
             bucket = new AWS.S3({
                 params: {
-                    Bucket: config.common.awsBucketName
+                    Bucket: config.common.awsBucketName,
+                    CacheControl: 'no-cache'
                 }
             });
             bucket.config.credentials = new AWS.WebIdentityCredentials({
                 ProviderId: 'graph.facebook.com',
                 RoleArn: config.common.awsRoleArn,
-                WebIdentityToken: accessToken
+                WebIdentityToken: token
             });
 
             bucketForPublishedProjects = new AWS.S3({
                 params: {
-                    Bucket: config.common.awsPublishedProjectsBucketName
+                    Bucket: config.common.awsPublishedProjectsBucketName,
+                    CacheControl: 'no-cache'
                 }
             });
             bucketForPublishedProjects.config.credentials = new AWS.WebIdentityCredentials({
                 ProviderId: 'graph.facebook.com',
                 RoleArn: config.common.awsRoleArn,
-                WebIdentityToken: accessToken
+                WebIdentityToken: token
             });
 
             if (typeof callbacks[AWS_INIT_EVENT] === 'function') {
                 callbacks[AWS_INIT_EVENT]();
             }
         }
+    }
+
+    /**
+     * Создать заново интерфейс для работы с s3, так как сессия может истечь при долгом простое
+     * Будет получена ошибка IDPRejectedClaim: Missing credentials in config
+     * Тогда нужно вызвать этот метод и попробовать снова
+     */
+    function relogin() {
+        bucket = null;
+        bucketForPublishedProjects = null;
+        if (new Date().getTime() - loginTime < config.common.RELOGIN_DELAY) {
+            // чтобы нельзя было слишком часто перелогиниваться
+            return false;
+        }
+        // fb accessToken надо также пересоздать чтобы заново создать aws buckets
+        requestLogin();
+        return true;
     }
 
     /**
@@ -320,9 +350,10 @@ var App = App || {};
             if (userData === null) {
                 getUserInfo();
             }
+            accessToken = response.authResponse.accessToken;
             // Первый раз должны проинициализировать апи для aws
             if (config.common.awsEnabled === true && bucket === null && bucketForPublishedProjects === null) {
-                initAWS(response.authResponse.accessToken);
+                initAWS(accessToken);
             }
         } else {
             userData = null;
@@ -341,6 +372,7 @@ var App = App || {};
      */
     function requestLogin() {
         if (FB) {
+            loginTime = new Date().getTime();
             FB.login(function(response) {
                 statusChangeCallback(response);
             }, {scope:'user_friends,email'});
@@ -551,6 +583,7 @@ var App = App || {};
     global.getFriends = getFriends;
     global.requestLogin = requestLogin;
     global.openEditor = openEditor;
+    global.relogin = relogin;
 
     // шаблоны. Получить
     global.getUserTemplates = function() { return (userTemplateCollection !== null) ? userTemplateCollection.templates: null; }

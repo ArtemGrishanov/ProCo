@@ -29,11 +29,8 @@ function ResourceManager(params) {
         if (App.getAWSBucket() !== null) {
             // все кастомне ресы находятся в каталоге /res в пользовательском каталоге
             var prefix = 'facebook-' + App.getUserData().id + '/res';
-            App.getAWSBucket().listObjects({
-                Prefix: prefix
-            }, (function (err, data) {
+            s3util.requestStorage('listObjects',{Prefix: prefix}, (function (err, data) {
                 if (err) {
-                    callback('error');
                     log('ResourceManager: ' + err, true);
                 } else {
                     data.Contents.forEach((function (obj) {
@@ -53,9 +50,8 @@ function ResourceManager(params) {
                         }
                     }).bind(this));
                     log('Objects in dir '+prefix+':');
-                    callback();
                 }
-//                callback();
+                callback();
             }).bind(this));
         }
     };
@@ -81,16 +77,15 @@ function ResourceManager(params) {
                     Body: file,
                     ACL: 'public-read'
                 };
-                App.getAWSBucket().putObject(params, (function (err, data) {
+                s3util.requestStorage('putObject', params, (function (err, data) {
                     if (err) {
-                        //Not authorized to perform sts:AssumeRoleWithWebIdentity
                         log('ResourceManager: ' + err, true);
-                    } else {
-                        // запросить заново и перестроить диалог
-                        this.resourcesList = null;
-                        this.show(this.selectCallback);
+                        Modal.showMessage({text:'Не удалось загрузить ресурс. Попробуйте еще раз.'});
                     }
-                }).bind(this));
+                    // запросить заново и перестроить диалог
+                    this.resourcesList = null;
+                    this.show(this.selectCallback);
+                }).bind(this), config.storage.putNewResourceMaxDelay);
             }
         }
     };

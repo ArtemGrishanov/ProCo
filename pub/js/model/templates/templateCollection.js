@@ -65,9 +65,7 @@ TemplateCollection.prototype.loadTemplateList = function(callback) {
     var prefix = this.folder;
     var thisCollection = this;
     thisCollection.templates = [];
-    App.getAWSBucket().listObjects({
-        Prefix: prefix
-    }, function (err, data) {
+    s3util.requestStorage('listObjects', {Prefix: prefix}, function(err, data) {
         if (err) {
             log('ERROR: ' + err, true);
         } else {
@@ -157,7 +155,7 @@ TemplateCollection.prototype.delete = function(callback, id) {
         var params = {
             Key: objKey
         };
-        App.getAWSBucket().deleteObject(params, (function (err, data) {
+        s3util.requestStorage('deleteObject', params, (function (err, data) {
             if (err) {
                 log('ERROR: ' + err, true);
                 callback('error');
@@ -171,7 +169,7 @@ TemplateCollection.prototype.delete = function(callback, id) {
                 }
                 callback('ok');
             }
-        }).bind(this));
+        }).bind(this))
     }
     else {
         callback('error');
@@ -222,7 +220,7 @@ TemplateCollection.prototype.saveTemplate = function(callback,
                 Body: template.serialize(),
                 ACL: 'public-read'
             };
-            App.getAWSBucket().putObject(params, (function (err, data) {
+            s3util.requestStorage('putObject', params, (function (err, data) {
                 if (err) {
                     log('ERROR: ' + err, true);
                     callback('error');
