@@ -20,6 +20,8 @@ function ResourceManager(params) {
     this.resourcesList = null;
     // колбек который будет вызван после выбора ресурса, передается в show
     this.selectCallback = null;
+    // z-index который получит это окно
+    this.zIndex = null;
 
     /**
      * Загрузить список ресурсов пользователя в this.resourcesList
@@ -41,12 +43,24 @@ function ResourceManager(params) {
                         if (match && match[1]) {
                             var id = match[1];
                             this.resourcesList = this.resourcesList || [];
-                            this.resourcesList.push({
+                            var time = new Date(obj.LastModified);
+                            var newItem = {
                                 // key example facebook-902609146442342/app/abc123.txt
                                 key: obj.Key,
                                 id: id,
-                                lastModified: obj.LastModified
-                            });
+                                lastModified: obj.LastModified,
+                                time: time
+                            };
+                            for (var i = 0; i < this.resourcesList.length; i++) {
+                                if (time > this.resourcesList[i].time) {
+                                    this.resourcesList.splice(i,-1,newItem);
+                                    newItem = null;
+                                    break;
+                                }
+                            }
+                            if (newItem) {
+                                this.resourcesList.push(newItem);
+                            }
                         }
                     }).bind(this));
                     log('Objects in dir '+prefix+':');
@@ -84,7 +98,7 @@ function ResourceManager(params) {
                     }
                     // запросить заново и перестроить диалог
                     this.resourcesList = null;
-                    this.show(this.selectCallback);
+                    this.show(this.selectCallback, {zIndex:this.zIndex});
                 }).bind(this), config.storage.putNewResourceMaxDelay);
             }
         }
@@ -104,9 +118,11 @@ function ResourceManager(params) {
         // ничего более умного не делал пока
         this.initDialog();
         if (param && param.zIndex) {
-            this.dialog.view.css('zIndex',param.zIndex);
+            this.zIndex = param.zIndex;
+            this.dialog.view.css('zIndex', this.zIndex);
         }
         else {
+            this.zIndex = null;
             this.dialog.view.css('zIndex','auto');
         }
         $('#id-dialogs_view').empty().append(this.dialog.view).show();

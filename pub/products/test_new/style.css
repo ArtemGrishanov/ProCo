@@ -79,11 +79,11 @@
     color: #fff;
     background-color: hsla(154,48%,54%,1);
 }
-.q_wr {
-    margin: 30px 0 30px;
-    font-size: 30px;
-    font-weight: 900;
-}
+/*.q_wr {*/
+    /*margin: 30px 0 30px;*/
+    /*font-size: 30px;*/
+    /*font-weight: 900;*/
+/*}*/
 .q_wr.__photo {
     margin: 5px;
 }
@@ -285,7 +285,7 @@ img {
 .question_title {
     font-size: 22px;
     color: #000;
-    font-weight: 700;
+    /*font-weight: 700;*/
     max-width: 480px;
     margin: 0 auto;
 }
@@ -451,7 +451,7 @@ img {
 }
 .answer_title {
     font-size: 24px;
-    font-weight: 700;
+    /*font-weight: 700;*/
     margin-bottom: 24px;
 }
 .answer_title:before {
