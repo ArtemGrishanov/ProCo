@@ -129,10 +129,6 @@ var config = {
          */
         cloneParamName: 'clone',
         /**
-         * Имя get параметра для указания, что нужно сгенерировать новый ид для приложения
-         */
-        needNewIdParamName: 'newId',
-        /**
          * Параметр передающий ссылку на опубликованное приложение
          */
         publishedProjParamName: 'pp',
@@ -218,9 +214,49 @@ var config = {
                 enabled: true,
                 entities: [
                     {
+                        name: 'Testix. Дефолтный тест-туториал',
+                        img: 'http://p.testix.me/storefront/test/7e7fef7bcf.jpg',
+                        published: 'http://p.testix.me/storefront/test/7e7fef7bcf/p_index.html',
+                        template: 'storefront/test/7e7fef7bcf.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        name: 'Независимое издание',
+                        img: 'http://p.testix.me/storefront/test/e33f556579.jpg',
+                        published: 'http://p.testix.me/storefront/test/e33f556579/p_index.html',
+                        template: 'storefront/test/e33f556579.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        name: 'Финансовое издание',
+                        img: 'http://p.testix.me/storefront/test/85c20b7628.jpg',
+                        published: 'http://p.testix.me/storefront/test/85c20b7628/p_index.html',
+                        template: 'storefront/test/85c20b7628.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        name: 'Психология и отношения',
+                        img: 'http://p.testix.me/storefront/test/25ea1c433b.jpg',
+                        published: 'http://p.testix.me/storefront/test/25ea1c433b/p_index.html',
+                        template: 'storefront/test/25ea1c433b.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        name: 'Картины',
+                        img: 'http://p.testix.me/storefront/test/9000e567da.jpg',
+                        published: 'http://p.testix.me/storefront/test/9000e567da/p_index.html',
+                        template: 'storefront/test/9000e567da.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
                         name: 'Знаешь ли ты Киев?',
-                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/storefront/test/870dcd0a6b.jpg',
-                        published: 'https://s3.eu-central-1.amazonaws.com/proconstructor/storefront/test/870dcd0a6b/p_index.html',
+                        img: 'http://p.testix.me/storefront/test/870dcd0a6b.jpg',
+                        published: 'http://p.testix.me/storefront/test/870dcd0a6b/p_index.html',
                         template: 'storefront/test/870dcd0a6b.txt',
                         width: '800px',
                         height: '600px'

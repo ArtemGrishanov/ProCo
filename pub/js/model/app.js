@@ -532,7 +532,6 @@ var App = App || {};
      *
      * @param param.appName
      * @param param.templateUrl
-     * @param param.needNewId
      * @param param.clone
      */
     function openEditor(param) {
@@ -546,9 +545,6 @@ var App = App || {};
             else {
                 if (param.templateUrl) {
                     url += config.common.templateUrlParamName+'='+param.templateUrl+'&';
-                }
-                if (typeof param.needNewId === 'boolean') {
-                    url += config.common.needNewIdParamName+'='+param.needNewId+'&';
                 }
                 if (typeof param.clone === 'boolean') {
                     url += config.common.cloneParamName+'='+param.clone+'&';

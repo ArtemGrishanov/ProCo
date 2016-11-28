@@ -130,6 +130,11 @@ var Editor = {};
      * @type {null}
      */
     var resizeWindowTimerId = null;
+    /**
+     * Признак того, что вошли в редактор с указанием клонировать шаблон
+     * @type {boolean}
+     */
+    var cloneTemplate = false;
 
     /**
      * Функция запуска редактора
@@ -150,9 +155,8 @@ var Editor = {};
         // сначала смотрим, есть ли ссылка на шаблон
         var t = getQueryParams(document.location.search)[config.common.templateUrlParamName] || param[config.common.templateUrlParamName];
         if (t) {
-            var clone = getQueryParams(document.location.search)[config.common.cloneParamName] === 'true' || param[config.common.cloneParamName] === 'true';
-            var needNewId = getQueryParams(document.location.search)[config.common.needNewIdParamName] === 'true' || param[config.common.needNewIdParamName] === 'true';
-            openTemplate(t, clone, needNewId);
+            cloneTemplate = getQueryParams(document.location.search)[config.common.cloneParamName] === 'true' || param[config.common.cloneParamName] === 'true';
+            openTemplate(t, cloneTemplate);
         }
         else {
             // если ссылки на шаблон нет, то открываем по имени промо-проекта, если оно есть
@@ -189,9 +193,6 @@ var Editor = {};
                 _initPublisher();
             });
         }
-        App.on(USER_DATA_RECEIVED, function() {
-            trySetDefaultShareLink();
-        });
         window.onbeforeunload = confirmExit;
         $('.js-app_preview').click(onPreviewClick);
         $('.js-app_publish').click(onPublishClick);
@@ -207,11 +208,16 @@ var Editor = {};
 
     /**
      * Попробовать установить ссылку для шаринга автоматически
+     * По умолчанию в mutapp стоит ссылка на testix.me при шаринге
+     * Если это так, то сменяем на ссылку этого проекта, например "http://p.testix.me/121947341568004/da3b379c56"
+     * Если же проект былл клонирован, или открыт с витрины, то тоже надо сменить
+     *
+     * @param {boolean} forceChange сменить в любом случае (с витрины или клонирование)
      */
-    function trySetDefaultShareLink() {
+    function trySetDefaultShareLink(forceChange) {
         var pp = Engine.find('shareLink');
         if (pp && pp.length > 0) {
-            if (pp[0].propertyValue == config.common.defaultShareLinkToChange) {
+            if (forceChange === true || pp[0].propertyValue == config.common.defaultShareLinkToChange) {
                 Engine.setValue(pp[0], Publisher.getAnonymLink(appId));
             }
         }
@@ -275,6 +281,16 @@ var Editor = {};
             //descriptor: appTemplate.descriptor
         }
         Engine.startEngine(iframeWindow, params);
+
+        // для установки ссылки шаринга требуются данные пользователя, ответ от апи возможно надо подождать
+        if (App.getUserData()) {
+            trySetDefaultShareLink(cloneTemplate === true);
+        }
+        else {
+            App.on(USER_DATA_RECEIVED, function(){
+                trySetDefaultShareLink(cloneTemplate === true);
+            });
+        }
 
         var app = Engine.getApp();
         // выставляем размер приложения, как оно будет видно пользователю при редактировании
@@ -1225,7 +1241,7 @@ var Editor = {};
      * @param {string} templateUrl
      * @param {boolean} clone - клонировать ли открываемый шаблон. Технически это просто смена appId
      */
-    function openTemplate(templateUrl, clone, needNewAppId) {
+    function openTemplate(templateUrl, clone) {
         openedTemplateCollection = new TemplateCollection({
             // в ручную добавили в коллекцию один шаблон, останется только получить инфо о нем
             templateUrls: [templateUrl]
@@ -1244,10 +1260,7 @@ var Editor = {};
                     // appId уже был сгенерирован при старте редактора start
                     // title не указываем, это новый проект-клон
                     appTemplate.title = null;
-                }
-                if (needNewAppId === true) {
-                    // такой параметр передается когда мы переходим из витрины, нужен новый ид, а не из шаблона
-                    appId = getUniqId().substr(22);
+                    //appId = getUniqId().substr(22);
                 }
                 // после загрузки шаблона надо загрузить код самого промо проекта
                 // там далее в колбеке на загрузку iframe есть запуск движка

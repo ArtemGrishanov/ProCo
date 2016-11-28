@@ -89,7 +89,7 @@ var storefrontView = {};
             activeTemplateUrl = d;
             App.openEditor({
                 templateUrl:activeTemplateUrl,
-                needNewId:true
+                clone:true
             });
         }
     }
@@ -103,9 +103,8 @@ var storefrontView = {};
             if (activeTemplateUrl) {
                 App.openEditor({
                     templateUrl:activeTemplateUrl,
-                    needNewId:true
+                    clone:true
                 });
-                //window.location.href = 'editor.html?'+config.common.templateUrlParamName+'='+activeTemplateUrl+'&'+config.common.needNewIdParamName+'=true';
             }
         });
         $('.js-category').click(function(e) {
