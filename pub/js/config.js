@@ -14,11 +14,6 @@ var config = {
             config.common.facebookAppId = '518819781624579';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
-//            config.storefront.templates = [
-//                { url:'facebook-121947341568004/app/c0266dd8f4.txt', title:'Города'},
-//                { url:'facebook-1008194042550518/app/f3590442f2.txt', title:'География'},
-//                { url:'facebook-1045302892173346/app/3ca02ca183.txt', title:'Медуза'}
-//            ];
             return this;
         },
         test: function() {
@@ -26,11 +21,6 @@ var config = {
             config.common.facebookAppId = '515132035326687';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
-//            config.storefront.templates = [
-//                { url:'facebook-121947341568004/app/c0266dd8f4.txt', title:'Города'},
-//                { url:'facebook-1008194042550518/app/f3590442f2.txt', title:'География'},
-//                { url:'facebook-1045302892173346/app/3ca02ca183.txt', title:'Медуза'}
-//            ];
             return this;
         },
         prod: function () {
@@ -38,11 +28,6 @@ var config = {
             config.common.facebookAppId = '1734391910154130';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
-            config.storefront.templates = [
-                { url:'facebook-121947341568004/app/c0266dd8f4.txt', title:'Города'},
-                { url:'facebook-1008194042550518/app/f3590442f2.txt', title:'География'},
-                { url:'facebook-1045302892173346/app/3ca02ca183.txt', title:'Медуза'}
-            ];
             return this;
         },
         offline: function() {

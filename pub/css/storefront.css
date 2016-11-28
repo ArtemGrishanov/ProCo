@@ -32,7 +32,7 @@ html, body {
 }
 .st_items_cnt {
     margin: 0 auto;
-    width: 980px; /* 2 slide in row */
+    text-align: center;
 }
 .st_rows_wr {
     width: 100%;
@@ -53,6 +53,7 @@ html, body {
     position: relative;
     display: inline-block;
     vertical-align: top;
+    margin: 20px;
 }
 .st_item.__center {
     text-align: center;
