@@ -14,6 +14,22 @@ var storefrontView = {};
      * @type {{}}
      */
     var loadedCategories = {};
+    /**
+     * Элементы витрины которые показаны в данный момент
+     * @type {Array}
+     */
+    var items = [];
+
+    /**
+     * for mob
+     * @type {null}
+     */
+    var activeItemOperationLayer = null;
+    /**
+     * for mob
+     * @type {null}
+     */
+    var activeMobTemplateUrl = null;
 
     /**
      * В текущей открытой категории проектов найти нужный по ссылке на шаблон (она выступает как бы в роли ид)
@@ -42,6 +58,7 @@ var storefrontView = {};
      */
     function showCategory(catId) {
         activeCategory = catId;
+        items = [];
         if (!loadedCategories[activeCategory]) {
             var info = config.storefront.categories[catId];
             if (info && info.enabled === true && info.entities) {
@@ -56,6 +73,10 @@ var storefrontView = {};
                     $e.find('.js-edit').click(onEditClick);
                     $e.find('.js_app-preview').click(onPreviewClick);
                     $cnt.append($e);
+                    if (App.isTouchMobile() === true) {
+                        $e.click(onItemClick);
+                    }
+                    items.push($e);
                 }
             }
             loadedCategories[activeCategory] = true;
@@ -68,7 +89,12 @@ var storefrontView = {};
      * Запустить превью: встроить опубликованный проект стандартным образом через loader.js
      */
     function onPreviewClick(e) {
+        console.log('onPreviewClick');
         var d = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
+        if (App.isTouchMobile() === true && activeMobTemplateUrl !== d) {
+            // для моба должны сначала кликнуть на этом шаблоне и показать опции
+            return;
+        }
         var info = findEntityInfo(d);
         if (d && info) {
             activeTemplateUrl = d;
@@ -81,10 +107,17 @@ var storefrontView = {};
             $('.scr_wr').addClass('__shadow');
             $('#id-app_preview').show();
         }
+        e.preventDefault();
+        e.stopPropagation();
     }
 
     function onEditClick(e) {
+        console.log('onEditClick');
         var d = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
+        if (App.isTouchMobile() === true && activeMobTemplateUrl !== d) {
+            // для моба должны сначала кликнуть на этом шаблоне и показать опции
+            return;
+        }
         if (d) {
             activeTemplateUrl = d;
             App.openEditor({
@@ -92,6 +125,23 @@ var storefrontView = {};
                 clone:true
             });
         }
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    /**
+     * На мобе показ леера операций делается кликом а не ховером, как на вебе
+     */
+    function onItemClick(e) {
+        console.log('onItemClick');
+        if (activeItemOperationLayer) {
+            activeItemOperationLayer.hide();
+        }
+        activeItemOperationLayer = $(e.currentTarget).find('.js-item-operations').show();
+        activeMobTemplateUrl = $(e.currentTarget).attr('data-template-url');
+        console.log('activeMobTemplateUrl='+activeMobTemplateUrl);
+        e.preventDefault();
+        e.stopPropagation();
     }
 
     function init() {

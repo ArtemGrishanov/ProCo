@@ -4,6 +4,7 @@
     <title>Главная</title>
     <meta charset="UTF-8">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <meta name='viewport' content='width=device-width,initial-scale=1,user-scalable=no'>
     <!--build:css css/index.min.css-->
     <link href="css/common.css" rel="stylesheet"/>
     <link href="css/storefront.css" rel="stylesheet"/>
@@ -23,11 +24,11 @@
         </div>
         <div class="menu_tabs_wr">
             <div class="menu_tabs">
-                <a href="storefront.html" class="menu_tab">Галерея шаблонов</a>
-                <a href="my_templates.html" class="menu_tab">Мои тесты</a>
-                <a href="howitworks.html" class="menu_tab">Как это работает</a>
+                <a href="storefront.html" class="menu_tab pts_string pts_menu_gallery">Галерея шаблонов</a>
+                <a href="my_templates.html" class="menu_tab pts_string pts_my_projects">Мои тесты</a>
+                <a href="howitworks.html" class="menu_tab pts_string pts_how_it_works">Как это работает</a>
                 <!--<a href="info.html" class="menu_tab">Решения для бизнеса</a>-->
-                <a href="contact.html" class="menu_tab">Контакты</a>
+                <a href="contact.html" class="menu_tab pts_string pts_contacts">Контакты</a>
             </div>
         </div>
         <div class="main_title">
@@ -38,10 +39,14 @@
                     <h2 class="main_title_header2 tx __white __light pts_string pts_main_desc">Онлайн-конструктор тестов<br>и спецпроектов</h2>
                     <!--<p class="main_title_desc tx __white __light __24 pts_string pts_how_it_helps_to_business">Узнайте, как спецпроекты<br>могут помочь вашему бизнесу</p>-->
                     <div class="main_title_btns_wr">
-                        <span class="pbtn __long js-video pts_string pts_watch_video">Посмотрите видео</span>
-                        <a href="storefront.html">
-                            <span class="pbtn __green __long ml24 pts_string pts_create_spec">Создайте спецпроект</span>
-                        </a>
+                        <div class="main_title_btn_wr">
+                            <span class="pbtn __long js-video pts_string pts_watch_video">Посмотрите видео</span>
+                        </div>
+                        <div class="main_title_btn_wr">
+                            <a href="storefront.html">
+                                <span class="pbtn __green __long pts_string pts_create_spec">Создайте спецпроект</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -52,7 +57,7 @@
                     <h3 class="whats_it_elem_h tx __black __24 pts_string pts_special_what_is_it">Что такое спецпроекты?</h3>
                     <p class="whats_it_elem_p tx __light __16 __grey pts_string pts_spec_descr">Спецпроекты – это тесты, таймлайны, инфографика и другие нестандартные форматы. Спецпроекты позволяют рассказать о сложных вещах простым языком и часто в игровой форме.</p>
                 </div>
-                <div class="whats_it_elem ml80">
+                <div class="whats_it_elem">
                     <h3 class="whats_it_elem_h tx __black __24 pts_string pts_business_solutions">Решения для бизнеса</h3>
                     <p class="whats_it_elem_p tx __light __16 __grey pts_string pts_buss_descr">Выгодная альтернатива стандартным рекламным форматам. Создавайте эффективные спецпроекты в поддержку вашего бренда, которыми люди будут делиться в социальных сетях.</p>
                 </div>
@@ -65,12 +70,12 @@
                     <p class="main_whom_h tx __bold __24 __white pts_string pts_to_bloggers">Блогерам</p>
                     <p class="main_whom_p tx __white __18 __light pts_string pts_surprise_them">Удивляйте ваших<br>читателей необычными<br>форматами</p>
                 </div>
-                <div class="main_whom_elem  __demo ml32">
+                <div class="main_whom_elem  __demo">
                     <div class="main_whom_icon __demo __news"></div>
                     <p class="main_whom_h tx __bold __24 __white pts_string pts_to_media">Интернет-изданиям</p>
                     <p class="main_whom_p tx __white __18 __light pts_string pts_attract_new_readers">Используйте спецпроекты<br>для привлечения новых<br>читателей</p>
                 </div>
-                <div class="main_whom_elem  __demo ml32">
+                <div class="main_whom_elem  __demo">
                     <div class="main_whom_icon __demo __companies"></div>
                     <p class="main_whom_h tx __bold __24 __white pts_string pts_to_companies">Компаниям</p>
                     <p class="main_whom_p tx __white __18 __light pts_string pts_increase_reach">Увеличьте охват аудитории<br>за счет вирусного эффекта<br>спецпроекта</p>
@@ -137,7 +142,7 @@
                         <!--<source src="http://st.mycdn.me/static/pro42/1-0-0/mafia2015_video/common/i/Mafiatrailer_24fps.ogv" type="video/ogg">-->
                     <!--</video>-->
                     <!--<iframe src="https://player.vimeo.com/video/144986013" width="640" height="351" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>-->
-                    <iframe width="854" height="480" src="https://www.youtube.com/embed/im5wxydnJgg" frameborder="0" allowfullscreen></iframe>
+                    <iframe class="tutorial_video" width="854" height="480" src="https://www.youtube.com/embed/im5wxydnJgg" frameborder="0" allowfullscreen></iframe>
                     <div class="close_dialog_btn __ext js-video_close"></div>
                 </div>
             </div>
@@ -202,6 +207,10 @@
     <!--<script src="//dcc4iyjchzom0.cloudfront.net/widget/loader.js" async></script>-->
 
     <!--<iframe id="quizWidget-120406" width="100%" height="700px" frameborder="0" border="none" src="https://app.qzzr.com/quiz/120406/widget"></iframe>-->
-
+    <!-- BEGIN JIVOSITE CODE {literal} -->
+    <script type='text/javascript'>
+        (function(){ var widget_id = '45oOHsZGmj';var d=document;var w=window;function l(){
+            var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();</script>
+    <!-- {/literal} END JIVOSITE CODE -->
 </body>
 </html>

@@ -45,7 +45,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev'], //dev test prod
+        configurationSetsOnStart: ['prod'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -82,7 +82,7 @@ var config = {
          * Если нет, то будет покаано сообщение "пока в разработке"
          * Но по прямой ссылке можно будет всегда зайти
          */
-        editorIsUnderConstruction: true,
+        editorIsUnderConstruction: false,
         /**
          * Список fb ид пользователей которые могут зайти в редактор в то время как
          * editorIsUnderConstruction === true

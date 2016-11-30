@@ -349,6 +349,9 @@
     <!-- endbuild -->
     <script>
         $(document).ready(function() {
+            if (App.isMobile() === true) {
+                Modal.showMessage({text:'Редактором удобнее пользоваться в полной версии сайта'});
+            }
             if (config.common.facebookAuthEnable === true) {
                 App.on(FB_CONNECTED, function(result) {
                     //TODO просто стартуем, окно логина не переведено на модал и автоматически скрывается
@@ -399,5 +402,10 @@
     <!-- /Yandex.Metrika counter -->
 
     <canvas id="id-preview_canvas" width="600" height="400"></canvas>
+    <!-- BEGIN JIVOSITE CODE {literal} -->
+    <script type='text/javascript'>
+        (function(){ var widget_id = '45oOHsZGmj';var d=document;var w=window;function l(){
+            var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();</script>
+    <!-- {/literal} END JIVOSITE CODE -->
 </body>
 </html>

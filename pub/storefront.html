@@ -4,6 +4,7 @@
     <title>Витрина шаблонов</title>
     <meta charset="UTF-8"/>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <meta name='viewport' content='width=device-width,initial-scale=1,user-scalable=no'>
     <!--build:css css/storefront.min.css-->
     <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="lib/bootstrap/css/checkbox-radio-switch.css" rel="stylesheet"/>
@@ -46,7 +47,7 @@
                 <a href="my_templates.html" class="menu_tab">Мои тесты</a>
                 <a href="howitworks.html" class="menu_tab">Как это работает</a>
                 <!--<a href="info.html" class="menu_tab">Решения для бизнеса</a>-->
-                <a href="contacts.html" class="menu_tab">Контакты</a>
+                <a href="contact.html" class="menu_tab">Контакты</a>
             </div>
         </div>
         <div class="st_cnt">
@@ -94,13 +95,13 @@
         </div>
     </div>
     <!-- сделать модалкой -->
-    <div id="id-app_preview" class="scr" style="display:none;">
+    <div id="id-app_preview" style="display:none;">
         <div class="st_preview_app_wr">
             <div class="st_preview_app">
                 <div class="st_preview_top_panel">
                     <div class="st_preview_header">Понравился шаблон? Создайте свой тест!</div>
                     <div class="st_icon_arrow_left ml24"></div>
-                    <div class="pbtn __green ml24 js-edit_active">Редактировать</div>
+                    <div class="pbtn __green st_preview_edit_btn js-edit_active">Редактировать</div>
                 </div>
                 <div id="id-app_iframe_cnt" class="st_preview_iframe_cnt"></div>
                 <div class="close_dialog_btn __ext js-close"></div>
@@ -131,8 +132,8 @@
     <script id="id-storefront_entity_template" type="text/template">
         <div class="st_item __center" data-template-url="{{template}}">
             <div class="st_item_img __active" style="background-image:url({{img}})">
-                <div class="st_item_op">
-                    <div class="st_item_op_line mt90"><div class="pbtn js-edit">Редактировать</div></div>
+                <div class="st_item_op js-item-operations">
+                    <div class="st_item_op_line"><div class="pbtn js-edit">Редактировать</div></div>
                     <div class="st_item_op_line"><div class="pbtn js_app-preview">Посмотреть</div></div>
                 </div>
             </div>
@@ -188,5 +189,10 @@
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/37720792" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
+    <!-- BEGIN JIVOSITE CODE {literal} -->
+    <script type='text/javascript'>
+        (function(){ var widget_id = '45oOHsZGmj';var d=document;var w=window;function l(){
+            var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();</script>
+    <!-- {/literal} END JIVOSITE CODE -->
 </body>
 </html>
