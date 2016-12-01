@@ -31,6 +31,8 @@ var storefrontView = {};
      */
     var activeMobTemplateUrl = null;
 
+    var bodyScrollTop = 0;
+
     /**
      * В текущей открытой категории проектов найти нужный по ссылке на шаблон (она выступает как бы в роли ид)
      *
@@ -89,7 +91,6 @@ var storefrontView = {};
      * Запустить превью: встроить опубликованный проект стандартным образом через loader.js
      */
     function onPreviewClick(e) {
-        console.log('onPreviewClick');
         var d = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
         if (App.isTouchMobile() === true && activeMobTemplateUrl !== d) {
             // для моба должны сначала кликнуть на этом шаблоне и показать опции
@@ -106,13 +107,18 @@ var storefrontView = {};
             $('#id-app_iframe_cnt').empty().append(embedCode);
             $('.scr_wr').addClass('__shadow');
             $('#id-app_preview').show();
+
+            if (App.isTouchMobile() === true) {
+                bodyScrollTop = $('body').scrollTop();
+                $('#id-storefront_scr').hide();
+                $('body').scrollTop(0);
+            }
         }
         e.preventDefault();
         e.stopPropagation();
     }
 
     function onEditClick(e) {
-        console.log('onEditClick');
         var d = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
         if (App.isTouchMobile() === true && activeMobTemplateUrl !== d) {
             // для моба должны сначала кликнуть на этом шаблоне и показать опции
@@ -133,13 +139,11 @@ var storefrontView = {};
      * На мобе показ леера операций делается кликом а не ховером, как на вебе
      */
     function onItemClick(e) {
-        console.log('onItemClick');
         if (activeItemOperationLayer) {
             activeItemOperationLayer.hide();
         }
         activeItemOperationLayer = $(e.currentTarget).find('.js-item-operations').show();
         activeMobTemplateUrl = $(e.currentTarget).attr('data-template-url');
-        console.log('activeMobTemplateUrl='+activeMobTemplateUrl);
         e.preventDefault();
         e.stopPropagation();
     }
@@ -147,6 +151,11 @@ var storefrontView = {};
     function init() {
         $('.js-close').click(function(e) {
             $('#id-app_preview').hide();
+            if (App.isTouchMobile() === true) {
+                $('#id-storefront_scr').show();
+                console.log(bodyScrollTop);
+                $('body').scrollTop(bodyScrollTop);
+            }
             $('.scr_wr').removeClass('__shadow');
         });
         $('.js-edit_active').click(function(e) {

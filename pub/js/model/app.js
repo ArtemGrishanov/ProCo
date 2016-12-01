@@ -102,11 +102,6 @@ var App = App || {};
      */
     var isMob = undefined;
     /**
-     *
-     * @type {boolean}
-     */
-    var isTouchMobDevice = false;
-    /**
      * Язык который стоит в интерфейсе по умолчанию
      * @type {string}
      */
@@ -184,9 +179,8 @@ var App = App || {};
     }
 
     function start() {
-        if (("ontouchstart" in document.documentElement) && isMobile()===true) {
+        if (isTouchMobile() === true) {
             document.documentElement.className += " touch";
-            isTouchMobDevice = true;
         }
         else {
             document.documentElement.className += " no-touch";
@@ -593,6 +587,14 @@ var App = App || {};
         return isMob;
     };
 
+    /**
+     * Устройство с редимом touch чтобы в некоторых местах по другому реализовать взаимодействие
+     * @returns {boolean}
+     */
+    function isTouchMobile() {
+        return ("ontouchstart" in document.documentElement) && isMobile()===true;
+    }
+
     // public methoods below
     global.start = start;
     // global.getUserAnonimId = getUserAnonimId;
@@ -606,7 +608,7 @@ var App = App || {};
     global.openEditor = openEditor;
     global.relogin = relogin;
     global.isMobile = isMobile;
-    global.isTouchMobile = function () { return isTouchMobDevice; }
+    global.isTouchMobile = isTouchMobile;
 
     // шаблоны. Получить
     global.getUserTemplates = function() { return (userTemplateCollection !== null) ? userTemplateCollection.templates: null; }

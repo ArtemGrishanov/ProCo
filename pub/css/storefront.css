@@ -162,6 +162,9 @@ html, body {
     height: 100%;
     background-color: rgba(63, 63, 63, 0.9);
 }
+.touch .st_preview_app_wr  {
+    position: relative;
+}
 .st_preview_app {
     position: relative;
     width: 800px;
