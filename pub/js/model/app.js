@@ -409,6 +409,7 @@ var App = App || {};
                     if (typeof callbacks[USER_DATA_RECEIVED] === 'function') {
                         callbacks[USER_DATA_RECEIVED]('ok');
                     }
+                    stat('Testix.me', 'Login', 'Facebook_login', userData.id);
                     //getFriends();
             });
         }
@@ -456,6 +457,7 @@ var App = App || {};
      */
     function updateUI() {
         if (userData) {
+            Modal.hideLogin();
             $('.js-login').hide();
             $('.js-show_login').hide();
             $('.js-user_ctx_menu').show().find('#id-user_ctx_menu').hide();
@@ -471,6 +473,7 @@ var App = App || {};
             if (responseStatus === 'connected') {
                 $('.js-show_login').hide();
                 $('.js-login').hide();
+                Modal.hideLogin();
             }
             else {
                 $('.js-show_login').show();
@@ -595,6 +598,32 @@ var App = App || {};
         return ("ontouchstart" in document.documentElement) && isMobile()===true;
     }
 
+    /**
+     * Отправить событие в систему сбора статистики
+     * В html уже включен код инициализации
+     *
+     * @param {string} category, например Videos
+     * @param {string} action, например Play
+     * @param {string} [label], например 'Fall Campaign' название клипа
+     * @param {number} [value], например 10 - длительность
+     */
+    function stat(category, action, label, value) {
+        if (window.ga) {
+            var statData = {
+                hitType: 'event',
+                eventCategory: category,
+                eventAction: action,
+            };
+            if (label) {
+                statData.eventLabel = label;
+            }
+            if (value) {
+                statData.eventValue = value
+            }
+            window.ga('send', statData);
+        }
+    };
+
     // public methoods below
     global.start = start;
     // global.getUserAnonimId = getUserAnonimId;
@@ -609,6 +638,7 @@ var App = App || {};
     global.relogin = relogin;
     global.isMobile = isMobile;
     global.isTouchMobile = isTouchMobile;
+    global.stat = stat;
 
     // шаблоны. Получить
     global.getUserTemplates = function() { return (userTemplateCollection !== null) ? userTemplateCollection.templates: null; }

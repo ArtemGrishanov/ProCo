@@ -101,6 +101,7 @@ var Publisher = {};
     function publish(params) {
         if (App.getUserData() !== null) {
             isPublishing = true;
+            App.stat('Testix.me', 'Publish_started');
             publishedAppId = params.appId;
             appStr = params.appStr;
             cssStr = params.cssStr;
@@ -141,6 +142,7 @@ var Publisher = {};
                         else {
                             log('All resources were uploaded.');
                             callback('success', null);
+                            App.stat('Testix.me', 'Publish_completed');
                         }
                     });
                     uploadProductResources({

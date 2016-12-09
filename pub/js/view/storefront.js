@@ -85,6 +85,9 @@ var storefrontView = {};
         }
         $('.js-category_storefront').hide();
         $('.js-category_storefront[data-category="'+activeCategory+'"]').show();
+
+        // показ страницы с активной категорией
+        window.ga('send', 'pageview', '/storefront_'+activeCategory);
     }
 
     /**
@@ -107,6 +110,7 @@ var storefrontView = {};
             $('#id-app_iframe_cnt').empty().append(embedCode);
             $('.scr_wr').addClass('__shadow');
             $('#id-app_preview').show();
+            window.ga('send', 'pageview', '/storefront_app_preview');
 
             if (App.isTouchMobile() === true) {
                 bodyScrollTop = $('body').scrollTop();

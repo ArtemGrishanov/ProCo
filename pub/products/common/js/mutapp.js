@@ -474,6 +474,12 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
                     this.showRecommendations();
                 }).bind(this));
                 this.stat('app','feed', name);
+                if (this.loaderWindow) {
+                    this.loaderWindow.postMessage({
+                        method: 'shareDialog',
+                        provider: 'Facebook'
+                    }, '*');
+                }
             }
             return true;
         }
@@ -487,6 +493,12 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
                 url += '&image='       + encodeURIComponent(imgUrl);
                 url += '&noparse=true';
                 window.open(url,'','toolbar=0,status=0,width=626,height=436');
+                if (this.loaderWindow) {
+                    this.loaderWindow.postMessage({
+                        method: 'shareDialog',
+                        provider: 'Vkontakte'
+                    }, '*');
+                }
                 // но вот такой официальный код я заставил работать только под localhost
                 // в приложении параметр noparse не работал
 //                $(vks).html(

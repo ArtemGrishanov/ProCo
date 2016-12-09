@@ -1105,6 +1105,7 @@ var Editor = {};
                     if (showResultMessage === true) {
                         alert('Сохранено');
                     }
+                    App.stat('Testix.me', 'Template_saved');
                 }
                 else {
                     if (showResultMessage === true) {

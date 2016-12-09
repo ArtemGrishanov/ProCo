@@ -154,9 +154,58 @@ if (window.textix === undefined) {
 
                     createIframe(p, e, w, h);
                     createPoweredLabel(e);
+                    initGA(e);
                 }
             }
+
         }
+
+        /**
+         * Инициализировать Google Analytics api
+         * @param cnt куда встроить скрипт ga
+         */
+        function initGA(cnt) {
+            var gaId = 'UA-88595022-1';
+            if (!window.ga) {
+                var gaCode = '<script>(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,\'script\',\'https://www.google-analytics.com/analytics.js\',\'ga\');ga(\'create\', \'{{ga_id}}\', \'auto\', {{params}});ga(\'testixTracker.send\', \'pageview\');{{init_event}}</script>';
+                gaCode = gaCode.replace('{{ga_id}}', gaId);
+                gaCode = gaCode.replace('{{params}}', '{\'name\':\'testixTracker\'}');
+                gaCode = gaCode.replace('{{init_event}}', 'ga(\'testixTracker.send\', \'event\', \'TestixLoader\', \'Init_analytics\');');
+                var d = document.createElement('div');
+                d.innerHTML = gaCode;
+                cnt.appendChild(d.firstChild);
+            }
+            else {
+                window.ga('create', gaId, 'auto', {'name': 'testixTracker'});
+            }
+        }
+
+
+        /**
+         * Отправить событие в систему сбора статистики
+         *
+         * @param {string} category, например Videos
+         * @param {string} action, например Play
+         * @param {string} [label], например 'Fall Campaign' название клипа
+         * @param {number} [value], например 10 - длительность
+         */
+        function stat(category, action, label, value) {
+            if (window.ga) {
+                var statData = {
+                    hitType: 'event',
+                    eventCategory: category,
+                    eventAction: action,
+                };
+                if (label) {
+                    statData.eventLabel = label;
+                }
+                if (value) {
+                    statData.eventValue = value
+                }
+                window.ga('testixTracker.send', statData);
+            }
+        };
+
 
         /**
          * Вставить метку "TESTIX" со ссылкой на сайт
@@ -205,7 +254,7 @@ if (window.textix === undefined) {
                     close: panelElems.close,
                     panelWidth: 0
                 });
-
+                stat('TestixLoader','Iframe_Loaded');
                 requestRecommendation(iframe.contentWindow);
             };
             iframe.src = url;
@@ -362,6 +411,7 @@ if (window.textix === undefined) {
             info.parentNode.removeChild(info.iframe);
             info.parentNode.removeChild(info.recomPanel);
             createIframe(recommendationUrl, info.parentNode, info.width, info.height);
+            stat('TestixLoader','Open_Recommendation');
         }
 
         /**
@@ -459,6 +509,8 @@ if (window.textix === undefined) {
                     info.leftArrow.style.display = 'none';
                     info.rightArrow.style.display = 'none';
                 }
+
+                stat('TestixLoader','Show_Recommendations');
             }
         }
 
@@ -475,6 +527,9 @@ if (window.textix === undefined) {
             }
             if (event.data.method === 'hideRecommendations') {
                 hideRecommendation(event.source);
+            }
+            if (event.data.method === 'shareDialog') {
+                stat('TestixLoader','Share_Dialog_Open', event.data.provider);
             }
         }
 
