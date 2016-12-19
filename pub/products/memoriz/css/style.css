@@ -1,3 +1,96 @@
+html,
+body {
+    position: relative;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+img {
+    border: 0 none;
+}
+.wrapper {
+    position: relative;
+    height: 100%;
+    overflow: auto;
+}
+.container {
+    min-width: 960px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 42px 0;
+}
+.content {
+    padding: 16px;
+    background-color: #eee;
+    overflow: hidden;
+}
+
+.title {
+    font-size: 28px;
+    color: #4f4f4f;
+    margin-bottom: 22px;
+}
+.button {
+    display: inline-block;
+    border: 0px solid;
+    border-radius: 4px;
+    background-color: #024889;
+    color: #fff;
+    min-width: 195px;
+    min-height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+.button.__small {
+    padding: 0 16px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+}
+
+.button + .button {
+    margin-left: 12px;
+}
+
+.modal {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #fff;
+    background-size: cover;
+    background-position: center;
+}
+.modal.__active {
+    display: block;
+}
+
+.modal_cnt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    width: 100%;
+    min-height: 100%;
+    border-radius: 4px;
+}
+
+.modal_hld {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    /*width: 480px;*/
+    width: 100%;
+    white-space: normal;
+}
+
 .card_field {
     width: 660px;
     height: 400px;

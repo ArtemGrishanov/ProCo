@@ -19,6 +19,10 @@ descriptor.app = [
         rules: 'url',
         label: 'Шаринг в facebook',
         filter: false
+    },
+    {
+        selector: 'id=mm pairs',
+        rules: 'pairAddRule'
     }
 ];
 
@@ -208,9 +212,9 @@ descriptor.rules = {
         cssProperty: 'border-bottom-color',
         filter: true
     },
-    quizAddRule: {
+    pairAddRule: {
         updateScreens: true,
-        canAdd: ["proto__q-text_a-text","proto__q-text_a-img","proto__q-text-img_a-text"],
+        canAdd: ["proto__сard-photo"],
         // добавлением слайдов занимается SlideGroupControl
         controls: [
             {
@@ -288,7 +292,30 @@ descriptor.rules = {
  * @type {{}}
  */
 descriptor.prototypes = {
-
+    // шаблон простой фото-карточки
+    "proto__сard-photo": {
+        label: 'Фото-пара',
+        img: 'products/test_new/i/editor/Icon-text-vopros.png', // +devPrototypesHostName
+        data: {
+            //id: null, set programmatically
+            cards: [
+                {
+                    uiTemplate: 'id-card_text_template',
+                    text: 'Ответ 1',
+                    img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/ocean.jpg'
+                },
+                {
+                    uiTemplate: 'id-card_text_template',
+                    text: 'Ответ 1',
+                    img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/ocean.jpg'
+                }
+            ],
+            guessed: false,
+            explanation: {
+                text: 'Пояснение к правильному ответу'
+            }
+        }
+    }
 };
 
 /**

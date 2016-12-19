@@ -26,6 +26,20 @@
         <!--</div>-->
     <!--</div>-->
 
+    <!-- Стартовый экран -->
+    <script id="id-welcome_template" type="text/template">
+        <div class="modal __active js-back_color js-back_img" data-app-property="id=startScr backgroundImg, id=startScr shadowEnable">
+            <div class="modal_cnt info js-back_shadow">
+                <div class="info_title js-start_header" data-app-property="id=startScr startHeaderText"><b>Дзюдо: </b>иппон или вазаари</div>
+                <div class="info_tx js-start_description" data-app-property="id=startScr startDescription">Пройдите тест и узнайте, как хорошо вы разбираетесь в этом виде восточных единоборств</div>
+                <div class="info_f js-btn_wr">
+                    <div class="button js-test_btn js-next js-start_btn" data-app-property="id=startScr startButtonText">Пройти тест</div>
+                </div>
+                <div class="logo js-logo js-start_logo" data-app-property="id=startScr logoPosition, id=startScr showLogo, id=tm logoUrl"></div>
+            </div>
+        </div>
+    </script>
+
     <!-- Игровое поле -->
     <script id="id-game_screen_template" type="text/template">
         <div class="card_field js-card-field js-back_color">
@@ -33,10 +47,26 @@
         </div>
     </script>
 
+    <!-- Экран пояснения -->
+    <script id="id-opened_screen_template" type="text/template">
+        <div class="js-opened_cards">
+            <div class="js-card1">
+
+            </div>
+            <div class="js-card2">
+
+            </div>
+        </div>
+        <div><%=text%></div>
+        <div class="info_f js-btn_wr">
+            <div class="button js-test_btn js-close_opened_layer" data-app-property="id=startScr startButtonText">Далее</div>
+        </div>
+    </script>
+
     <!-- Шаблон карточки, по умолчанию закрыт -->
     <!-- В карточку может быть вставлено несколько видов контента -->
     <script id="id-card_text_template" type="text/template">
-        <div data-card-id="<%=id%>" class="flip-container js-card">
+        <div data-card-id="<%=id%>" class="flip-container js-card <%=mod%>">
             <div class="flipper hover">
                 <div class="front">
                     <!--<p>Front content</p>-->
@@ -49,13 +79,42 @@
         </div>
     </script>
 
+    <!-- экран результата -->
+    <script id="id-result_template" type="text/template">
+        <div class="modal __active js-back_color js-back_img" data-app-property="type=result backgroundImg, type=result shadowEnable">
+            <div class="modal_cnt info js-back_shadow">
+                <div class="info_title js-result_title" data-app-property="id=tm results.<%=currentResultIndex%>.title"><%=title%></div>
+                <div class="info_tx js-result_description" data-app-property="id=tm results.<%=currentResultIndex%>.description"><%=description%></div>
+                <div class="js-mutapp_share_fb fb_share" data-app-property="type=result fbSharePosition"></div>
+                <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="type=result fbSharePosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
+                    <span class="tstx_share_i"></span>
+                    Поделиться
+                </div>
+                <div class="tstx_share_btn __vk js-mutapp_share_vk" data-app-property="type=result vkSharePosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
+                    <span class="tstx_share_i __vk"></span>
+                    Поделиться
+                </div>
+                <div class="info_f js-btn_wr js-restart_btn_wr">
+                    <div class="button js-next js-restart js-test_btn" data-app-property="type=result restartButtonText">Пройти тест еще раз</div>
+                </div>
+                <div class="info_f js-download_btn_wr">
+                    <div class="button js-download_btn" data-app-property="type=result downloadButtonText, type=result showDownload">Скачать</div>
+                </div>
+                <div class="logo js-logo js-result_logo" data-app-property="type=result logoPosition, type=result showLogo, id=tm logoUrl"></div>
+            </div>
+        </div>
+    </script>
+
     <!-- build:js index.min.js -->
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="underscore.js"></script>
     <script type="text/javascript" src="backbone.js"></script>
     <script type="text/javascript" src="../common/js/mutapp.js"></script>
     <script type="text/javascript" src="model/memoriz.js"></script>
+    <script type="text/javascript" src="view/welcome.js"></script>
     <script type="text/javascript" src="view/gamescreen.js"></script>
+    <script type="text/javascript" src="view/openedscreen.js"></script>
+    <script type="text/javascript" src="view/result.js"></script>
     <script type="text/javascript" src="app.js"></script>
     <script type="text/javascript" src="descriptor.js"></script>
     <!-- endbuild -->

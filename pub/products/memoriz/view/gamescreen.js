@@ -11,7 +11,7 @@ var GameScreen = MutApp.Screen.extend({
      * @see MutApp
      */
     name: 'Игровое поле',
-
+    group: 'gamescreen',
     topColontitleText: 'Текст колонтитула',
     backgroundImg: null,
     logoPosition: {top: 200, left: 200},
@@ -85,8 +85,18 @@ var GameScreen = MutApp.Screen.extend({
         var $cardField = this.$el.find('.js-card-field');
         var cards = this.model.get('gameCards');
         for (var i = 0; i < cards.length; i++) {
-            $cardField.append(this.template[cards[i].uiTemplate](cards[i]));
+            var c = cards[i];
+            // проверить открыта ли уже эта карта или нет. Если открыта, ставим класс открытия
+            var p = this.model.getPairForCardId(c.id);
+            if (p.guessed === true) {
+                c.mod = '__opened';
+            }
+            else {
+                c.mod = '';
+            }
+            $cardField.append(this.template[c.uiTemplate](c));
         }
+        //this.attributes.pairs[i].guessed
 
         if (this.showTopColontitle === true) {
             var $c = this.$el.find('.js-topColontitleText').show();

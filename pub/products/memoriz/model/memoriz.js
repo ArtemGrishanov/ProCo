@@ -20,6 +20,10 @@ var MemorizModel = MutApp.Model.extend({
         state: null,
         currentResult: null,
         resultPoints: 0,
+        /**
+         * Показывать ли экран пояснения или нет при отгадывании каждой пары
+         */
+        showExplanation: true,
         /*
          * Единая настройка для всех экранов, пожтому здесь
          */
@@ -33,6 +37,7 @@ var MemorizModel = MutApp.Model.extend({
          */
         openedCard1: null,
         openedCard2: null,
+        lastOpenedPair: null,
         /**
          * Структура вопросов с ответами
          */
@@ -43,17 +48,17 @@ var MemorizModel = MutApp.Model.extend({
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 1',
-                        img: 'i/o1.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o1.jpg'
                     },
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 1',
-                        img: 'i/o1.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o1.jpg'
                     }
                 ],
                 guessed: false,
                 explanation: {
-                    text: 'Пояснение к правильному ответу 1'
+                    text: 'Пояснение к правильному ответу'
                 }
             },
             {
@@ -62,17 +67,17 @@ var MemorizModel = MutApp.Model.extend({
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 2',
-                        img: 'i/o2.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o2.jpg'
                     },
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 2',
-                        img: 'i/o2.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o2.jpg'
                     }
                 ],
                 guessed: false,
                 explanation: {
-                    text: 'Пояснение к правильному ответу 2'
+                    text: 'Пояснение к правильному ответу'
                 }
             },
             {
@@ -81,17 +86,17 @@ var MemorizModel = MutApp.Model.extend({
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 2',
-                        img: 'i/o3.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o3.jpg'
                     },
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 2',
-                        img: 'i/o3.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o3.jpg'
                     }
                 ],
                 guessed: false,
                 explanation: {
-                    text: 'Пояснение к правильному ответу 2'
+                    text: 'Пояснение к правильному ответу'
                 }
             },
             {
@@ -100,17 +105,17 @@ var MemorizModel = MutApp.Model.extend({
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 2',
-                        img: 'i/o4.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o4.jpg'
                     },
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 2',
-                        img: 'i/o4.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o4.jpg'
                     }
                 ],
                 guessed: false,
                 explanation: {
-                    text: 'Пояснение к правильному ответу 2'
+                    text: 'Пояснение к правильному ответу'
                 }
             },
             {
@@ -119,17 +124,17 @@ var MemorizModel = MutApp.Model.extend({
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 2',
-                        img: 'i/o5.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o5.jpg'
                     },
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 2',
-                        img: 'i/o5.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o5.jpg'
                     }
                 ],
                 guessed: false,
                 explanation: {
-                    text: 'Пояснение к правильному ответу 2'
+                    text: 'Пояснение к правильному ответу'
                 }
             },
             {
@@ -138,17 +143,17 @@ var MemorizModel = MutApp.Model.extend({
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 2',
-                        img: 'i/o6.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o6.jpg'
                     },
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 2',
-                        img: 'i/o6.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o6.jpg'
                     }
                 ],
                 guessed: false,
                 explanation: {
-                    text: 'Пояснение к правильному ответу 2'
+                    text: 'Пояснение к правильному ответу'
                 }
             },
             {
@@ -157,17 +162,17 @@ var MemorizModel = MutApp.Model.extend({
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 2',
-                        img: 'i/o7.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o7.jpg'
                     },
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 2',
-                        img: 'i/o7.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o7.jpg'
                     }
                 ],
                 guessed: false,
                 explanation: {
-                    text: 'Пояснение к правильному ответу 2'
+                    text: 'Пояснение к правильному ответу'
                 }
             },
             {
@@ -176,17 +181,17 @@ var MemorizModel = MutApp.Model.extend({
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 2',
-                        img: 'i/o8.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o8.jpg'
                     },
                     {
                         uiTemplate: 'id-card_text_template',
                         text: 'Ответ 2',
-                        img: 'i/o8.jpg'
+                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o8.jpg'
                     }
                 ],
                 guessed: false,
                 explanation: {
-                    text: 'Пояснение к правильному ответу 2'
+                    text: 'Пояснение к правильному ответу'
                 }
             }
         ],
@@ -200,9 +205,14 @@ var MemorizModel = MutApp.Model.extend({
 
         /**
          * Описание результатов, которые можно получить
-         * Результаты рассчитываются динамически. Сколько вопросов столько и результатов
          */
-        results: [],
+        RESULTS_COUNT: 1,
+        results: [
+            {
+                title: 'Заголовок результата',
+                description: 'Описание результата'
+            }
+        ],
         /**
          * Признак того, что пользователь угадал или нет при последнем вскрытии карт
          */
@@ -213,14 +223,13 @@ var MemorizModel = MutApp.Model.extend({
         //TODO не очень красиво смотрится этот вызов
         // задача: перед кодом пользователя в initialize сделать привязку application, установить апп проперти
         this.super.initialize.call(this, param);
-        this._makeUidForPairsAndCards();
-        this._makeGameCards();
+        this._makeIdsForPairsAndCards();
+        this._initPairsAndCards();
 //        this.updateResults();
     },
 
     start: function() {
-        this.set({state: 'game'});
-//        this.next();
+        this.next();
     },
 
     /**
@@ -239,19 +248,20 @@ var MemorizModel = MutApp.Model.extend({
             this.set({'openedCard2': c});
             var p1 = this.getPairForCardId(this.attributes.openedCard1.id);
             var p2 = this.getPairForCardId(c.id);
+            // проверяем, что объект-пара из массива pairs один и тот же для карточек
             if (p1 === p2) {
                 // угадал
                 this.set({'guessed':true});
                 p1.guessed = true;
-                // проверить закончена игра или нет
-                var upc = this.getUnguessedPairsCount();
-                if (upc === 0) {
-                    // показать объяснение, а дальше конец
-                    console.log('Конец игры');
-                    alert('Ура! С днем рождения!');
+                if (this.attributes.showExplanation === true) {
+                    this.set({
+                        state: 'opened',
+                        lastOpenedPair: p1
+                    });
                 }
                 else {
-                    // показать объяснение и дальше игра
+                    // проверка что игра закончена есть только внутри next
+                    this.next();
                 }
             }
             else {
@@ -272,36 +282,46 @@ var MemorizModel = MutApp.Model.extend({
     next: function() {
         switch (this.attributes.state) {
             case 'welcome': {
+                this._initPairsAndCards();
                 this.set({
                     resultPoints: 0,
-                    currentResult: null
-                });
-                // перемещать вопросы при переходе к тесту
-                if (this.attributes.randomizeQuestions === true) {
-                    this.attributes.quiz = _.shuffle(this.attributes.quiz);
-                }
-                this.set({
-                    currentQuestionIndex: 0,
-                    currentQuestionId: this.attributes.quiz[0].id,
-                    state: 'question'
+                    currentResult: null,
+                    state: 'game'
                 });
                 break;
             }
             case 'game': {
-                if (this.attributes.currentQuestionIndex < this.attributes.quiz.length-1) {
-                    var ni = this.attributes.currentQuestionIndex+1;
+                var upc = this.getUnguessedPairsCount();
+                if (upc === 0) {
+                    // показать объяснение, а дальше конец
+                    console.log('Конец игры из game');
                     this.set({
-                        currentQuestionIndex: ni,
-                        currentQuestionId: this.attributes.quiz[ni].id
+                        //TODO select res from timer
+                        currentResult: this.attributes.results[0],
+                        state: 'result'
                     });
                 }
                 else {
-                    // конец теста, финальный скрин
+
+                }
+                break;
+            }
+            case 'opened': {
+                // экран показывающий пояснения после вскрытия карт
+                var upc = this.getUnguessedPairsCount();
+                if (upc === 0) {
+                    // показать объяснение, а дальше конец
+                    console.log('Конец игры с opened');
                     this.set({
-                        currentResult: this.getResultByPoints(this.attributes.resultPoints),
-                        state: 'result',
-                        currentQuestionId: null,
-                        currentQuestionIndex: undefined
+                        //TODO select res from timer
+                        currentResult: this.attributes.results[0],
+                        state: 'result'
+                    });
+                }
+                else {
+                    // показать объяснение и дальше игра
+                    this.set({
+                        state: 'game'
                     });
                 }
                 break;
@@ -326,6 +346,20 @@ var MemorizModel = MutApp.Model.extend({
     },
 
     /**
+     * Найти пару по Id
+     * @param {string} id
+     * @returns {*}
+     */
+    getPairById: function(id) {
+        for (var i = 0; i < this.attributes.pairs.length; i++) {
+            if (id === this.attributes.pairs[i].id) {
+                return this.attributes.pairs[i];
+            }
+        }
+        return null;
+    },
+
+    /**
      * Найти карту по Id
      * @param {string} id
      * @returns {*}
@@ -341,7 +375,7 @@ var MemorizModel = MutApp.Model.extend({
 
 
     /**
-     * Вернуть ид пары по карте.
+     * Вернуть пару из массива pairs по ид карты.
      *
      * @param {string} cardId
      * @returns {*}
@@ -389,9 +423,24 @@ var MemorizModel = MutApp.Model.extend({
     },
 
     /**
+     * Найти результат по ид
+     * Нужно потому, что каждый экран отвечает за свой результат
+     * @param {string} id - уник ид результата
+     */
+    getResultById: function(id) {
+        for (var i = 0; i < this.attributes.results.length; i++) {
+            var r = this.attributes.results[i];
+            if (r.id === id) {
+                return r;
+            }
+        }
+        return null;
+    },
+
+    /**
      * Сгенерировать уникальные идишки для пар и карт
      */
-    _makeUidForPairsAndCards: function() {
+    _makeIdsForPairsAndCards: function() {
         for (var j = 0; j < this.attributes.pairs.length; j++) {
             var p = this.attributes.pairs[j];
             p.id = MutApp.Util.getUniqId(6);
@@ -403,14 +452,16 @@ var MemorizModel = MutApp.Model.extend({
     },
 
     /**
-     * Собрать карточки для игры
+     * Подгтовить карточки для начла игры
      * @private
      */
-    _makeGameCards: function() {
+    _initPairsAndCards: function() {
         var result = [];
         for (var j = 0; j < this.attributes.pairs.length; j++) {
             var p = this.attributes.pairs[j];
+            p.guessed = false;
             for (var i = 0; i < p.cards.length; i++) {
+                p.cards[i].mod = '';
                 result.push(p.cards[i]);
             }
         }
