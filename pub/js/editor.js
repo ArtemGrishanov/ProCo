@@ -1274,6 +1274,10 @@ var Editor = {};
     }
 
     function showEditor() {
+        // когда видим редактор, должен быть включен этот режим предпросмотра
+        // так как пользователь работает (редактирует) с десктоп версией приложения
+        // с превью id-product_iframe_cnt берутся экраны для редактирования
+        toDesktopPreview();
         $(appIframe).addClass('__hidden');
         $('#id-editor_view').show();
         $('#id-preview_view').hide();
@@ -1283,6 +1287,7 @@ var Editor = {};
         $(appIframe).removeClass('__hidden');
         $('#id-editor_view').hide();
         $('#id-preview_view').show();
+        Engine.restartApp();
     }
 
     /**
@@ -1371,6 +1376,8 @@ var Editor = {};
             .css('height',appContainerSize.height+'px')
             .css('maxWidth',appContainerSize.width)
             .css('maxHeight',appContainerSize.height);
+        // нужно перезапустить приложение чтобы оно корректно обработало свой новый размер
+        Engine.restartApp();
     }
 
     function toMobPreview() {
@@ -1380,6 +1387,8 @@ var Editor = {};
             .css('height','100%')
             .css('maxWidth',appContainerSize.width)
             .css('maxHeight',appContainerSize.height);
+        // нужно перезапустить приложение чтобы оно корректно обработало свой новый размер
+        Engine.restartApp();
     }
 
     var $slidesCnt = null;

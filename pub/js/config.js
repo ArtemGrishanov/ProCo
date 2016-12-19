@@ -14,8 +14,6 @@ var config = {
             config.common.facebookAppId = '518819781624579';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
-            // статистика считается только на продакшне
-            config.common.GA_ID = 'UA-88595022-1';
             return this;
         },
         test: function() {
@@ -47,7 +45,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev'], //dev test prod
+        configurationSetsOnStart: ['prod'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -201,6 +199,7 @@ var config = {
                 enabled: true,
                 entities: [
                     {
+                        //  стандартный тест: http://p.testix.me/1045302892173346/7e7fef7bcf
                         name: 'Testix. Дефолтный тест-туториал',
                         img: 'http://p.testix.me/storefront/test/7e7fef7bcf.jpg',
                         published: 'http://p.testix.me/storefront/test/7e7fef7bcf/p_index.html',
@@ -209,6 +208,7 @@ var config = {
                         height: '600px'
                     },
                     {
+                        //  угадайте книгу по цитате: http://p.testix.me/1045302892173346/e33f556579
                         name: 'Независимое издание',
                         img: 'http://p.testix.me/storefront/test/e33f556579.jpg',
                         published: 'http://p.testix.me/storefront/test/e33f556579/p_index.html',
@@ -217,6 +217,7 @@ var config = {
                         height: '600px'
                     },
                     {
+                        //  любят ли вас деньги: http://p.testix.me/1045302892173346/85c20b7628
                         name: 'Финансовое издание',
                         img: 'http://p.testix.me/storefront/test/85c20b7628.jpg',
                         published: 'http://p.testix.me/storefront/test/85c20b7628/p_index.html',
@@ -225,6 +226,7 @@ var config = {
                         height: '600px'
                     },
                     {
+                        //  тест по психологии новый: http://p.testix.me/1045302892173346/1059f38c8b
                         name: 'Психология и отношения',
                         img: 'http://p.testix.me/storefront/test/25ea1c433b.jpg',
                         published: 'http://p.testix.me/storefront/test/25ea1c433b/p_index.html',
@@ -233,6 +235,7 @@ var config = {
                         height: '600px'
                     },
                     {
+                        //  тест для художников: http://p.testix.me/1045302892173346/9000e567da
                         name: 'Картины',
                         img: 'http://p.testix.me/storefront/test/9000e567da.jpg',
                         published: 'http://p.testix.me/storefront/test/9000e567da/p_index.html',
@@ -241,6 +244,7 @@ var config = {
                         height: '600px'
                     },
                     {
+                        //  Киев: http://p.testix.me/1045302892173346/870dcd0a6b
                         name: 'Знаешь ли ты Киев?',
                         img: 'http://p.testix.me/storefront/test/870dcd0a6b.jpg',
                         published: 'http://p.testix.me/storefront/test/870dcd0a6b/p_index.html',
@@ -248,6 +252,8 @@ var config = {
                         width: '800px',
                         height: '600px'
                     }
+                    // http://p.testix.me/1045302892173346/d61333fd5e
+                    // http://p.testix.me/1045302892173346/e4d58cd89b
                 ]
             },
             memoriz: {

@@ -598,7 +598,7 @@ descriptor.prototypes = {
     // шаблон текстового вопроса
     "proto__q-text_a-text": {
         label: 'Текстовый вопрос',
-        img: '/products/test_new/i/editor/Icon-text-vopros.png', // +devPrototypesHostName
+        img: 'products/test_new/i/editor/Icon-text-vopros.png', // +devPrototypesHostName
         data: {
             question: {
                 uiTemplate: 'id-question_text_template',
@@ -638,7 +638,7 @@ descriptor.prototypes = {
     // шаблон фото вопроса
     "proto__q-text-img_a-text": {
         label: 'Фото вопрос',
-        img: '/products/test_new/i/editor/Icon-fotovopros.png', // +devPrototypesHostName,
+        img: 'products/test_new/i/editor/Icon-fotovopros.png', // +devPrototypesHostName,
         data: {
             question: {
                 uiTemplate: 'id-question_text_photo_template',
@@ -678,7 +678,7 @@ descriptor.prototypes = {
     // шаблон с фотоответами
     "proto__q-text_a-img": {
         label: 'Фотоответы',
-        img: '/products/test_new/i/editor/Icon-fotootvet.png',
+        img: 'products/test_new/i/editor/Icon-fotootvet.png',
         data: {
             question: {
                 uiTemplate: 'id-question_text_template',

@@ -121,6 +121,12 @@ var ResultScreen = MutApp.Screen.extend({
     render: function() {
         var r = this.model.getResultById(this.resultId);
         r.currentResultIndex = this.model.get('results').indexOf(r);
+        if (this.model.application.isSmallWidth() === true) {
+            //description title
+            r = JSON.parse(JSON.stringify(r));
+            if (r.title) r.title = r.title.replace(/<br>/g,' ');
+            if (r.description) r.description = r.description.replace(/<br>/g,' ');
+        }
         this.$el.html(this.template['default'](r));
 
         // установка свойств логотипа

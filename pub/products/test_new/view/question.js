@@ -195,6 +195,10 @@ var QuestionScreen = MutApp.Screen.extend({
 
     renderQuestion: function(questionData) {
         var q = this.model.getQuestionById(this.questionId);
+        if (this.model.application.isSmallWidth() === true) {
+            q = JSON.parse(JSON.stringify(q));
+            if (q.text) q.text = q.text.replace(/<br>/g,' ');
+        }
         this.$el.find('.js-question_cnt').html(this.template[questionData.uiTemplate](questionData));
     },
 

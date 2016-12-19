@@ -835,6 +835,31 @@ var Engine = {};
         return true;
     }
 
+    /**
+     * Перезапустить mutapp приложение
+     * Например, может быть нужно когда меняется размер приложения
+     * @returns {boolean}
+     */
+    function restartApp() {
+        try {
+            delete productWindow.app;
+            var apps = Engine.getAppPropertiesValues().app;
+            var cfg = config.products[appName];
+            productWindow.app = new productWindow[cfg.constructorName]({
+                //TODO ширина и высота такие аппПроперти
+                width: cfg.defaultWidth,
+                height: cfg.defaultHeight,
+                defaults: [apps]
+            });
+            productWindow.app.start();
+        }
+        catch(e) {
+            log('Engine.restartApp: '+ e.message, true);
+            return false;
+        }
+        return true;
+    }
+
     function isErrorInTestResults() {
         if (testResults) {
             for (var i = 0; i < testResults.length; i++) {
@@ -1098,6 +1123,7 @@ var Engine = {};
     global.getApp = getApp;
     global.parseSelector = function(s) { return productWindow.MutApp.Util.parseSelector(s) };
     global.find = find;
+    global.restartApp = restartApp;
 
     // методы для работы со свойствами appProperties
     global.setValue = setValue;

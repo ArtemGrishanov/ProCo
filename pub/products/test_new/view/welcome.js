@@ -100,9 +100,17 @@ var StartScreen = MutApp.Screen.extend({
             this.$el.find('.js-back_img').css('backgroundImage','none');
         }
 
-        this.$el.find('.js-start_btn').html(this.startButtonText);
-        this.$el.find('.js-start_header').html(this.startHeaderText);
-        this.$el.find('.js-start_description').html(this.startDescription);
+        var sbt = this.startButtonText;
+        var sht = this.startHeaderText;
+        var sd = this.startDescription;
+        if (this.model.application.isSmallWidth() === true) {
+            sbt = sbt.replace(/<br>/g,' ');
+            sht = sht.replace(/<br>/g,' ');
+            sd = sd.replace(/<br>/g,' ');
+        }
+        this.$el.find('.js-start_btn').html(sbt);
+        this.$el.find('.js-start_header').html(sht);
+        this.$el.find('.js-start_description').html(sd);
 
         if (this.shadowEnable === true) {
             this.$el.find('.js-back_shadow').css('background-color','rgba(0,0,0,0.4)');
