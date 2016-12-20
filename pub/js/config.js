@@ -45,7 +45,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev'], //dev test prod
+        configurationSetsOnStart: ['prod'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -226,11 +226,11 @@ var config = {
                         height: '600px'
                     },
                     {
-                        //  тест по психологии новый: http://p.testix.me/1045302892173346/1059f38c8b
+                        //  тест по психологии "Ты душа компании или зануда": http://p.testix.me/1045302892173346/1059f38c8b
                         name: 'Психология и отношения',
-                        img: 'http://p.testix.me/storefront/test/25ea1c433b.jpg',
-                        published: 'http://p.testix.me/storefront/test/25ea1c433b/p_index.html',
-                        template: 'storefront/test/25ea1c433b.txt',
+                        img: 'http://p.testix.me/storefront/test/1059f38c8b.jpg',
+                        published: 'http://p.testix.me/storefront/test/1059f38c8b/p_index.html',
+                        template: 'storefront/test/1059f38c8b.txt',
                         width: '800px',
                         height: '600px'
                     },
@@ -243,17 +243,42 @@ var config = {
                         width: '800px',
                         height: '600px'
                     },
+//                    {
+//                        //  Киев: http://p.testix.me/1045302892173346/870dcd0a6b
+//                        name: 'Знаешь ли ты Киев?',
+//                        img: 'http://p.testix.me/storefront/test/870dcd0a6b.jpg',
+//                        published: 'http://p.testix.me/storefront/test/870dcd0a6b/p_index.html',
+//                        template: 'storefront/test/870dcd0a6b.txt',
+//                        width: '800px',
+//                        height: '600px'
+//                    }
                     {
-                        //  Киев: http://p.testix.me/1045302892173346/870dcd0a6b
-                        name: 'Знаешь ли ты Киев?',
-                        img: 'http://p.testix.me/storefront/test/870dcd0a6b.jpg',
-                        published: 'http://p.testix.me/storefront/test/870dcd0a6b/p_index.html',
-                        template: 'storefront/test/870dcd0a6b.txt',
+                        // тест по географии "Пенза или Пиза": http://p.testix.me/1045302892173346/d61333fd5e
+                        name: 'Тест по географии',
+                        img: 'http://p.testix.me/storefront/test/d61333fd5e.jpg',
+                        published: 'http://p.testix.me/storefront/test/d61333fd5e/p_index.html',
+                        template: 'storefront/test/d61333fd5e.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        // тест по русскому языку: http://p.testix.me/1045302892173346/e4d58cd89b
+                        name: 'Тест по русскому языку',
+                        img: 'http://p.testix.me/storefront/test/e4d58cd89b.jpg',
+                        published: 'http://p.testix.me/storefront/test/e4d58cd89b/p_index.html',
+                        template: 'storefront/test/e4d58cd89b.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        // тест "Какой вы инвестор": http://p.testix.me/1045302892173346/39d1a71943
+                        name: 'Какой вы инвестор?',
+                        img: 'http://p.testix.me/storefront/test/39d1a71943.jpg',
+                        published: 'http://p.testix.me/storefront/test/39d1a71943/p_index.html',
+                        template: 'storefront/test/39d1a71943.txt',
                         width: '800px',
                         height: '600px'
                     }
-                    // http://p.testix.me/1045302892173346/d61333fd5e
-                    // http://p.testix.me/1045302892173346/e4d58cd89b
                 ]
             },
             memoriz: {
