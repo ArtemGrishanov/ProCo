@@ -10,10 +10,104 @@ descriptor.css = [
         label: 'Цвет фона',
         filter: false,
         rules: 'backgroundColor'
+    },
+    {
+        selector: '.js-card-field',
+        label: 'Отступ до края',
+        filter: true,
+        rules: 'padding'
     }
 ];
 
 descriptor.app = [
+    {
+        selector: 'id=startScr logoPosition, type=opened logoPosition, id=gamescreen logoPosition, type=result logoPosition, type=result fbSharePosition, type=result vkSharePosition',
+        rules: 'drag'
+    },
+    {
+        selector: 'id=mm showBackCardTexture, type=result showDownload, id=mm showExplanation, id=gamescreen showLogo, id=startScr showLogo, type=opened showLogo, type=result showLogo, id=mm fbShareEnabled, id=mm vkShareEnabled, id=mm showTopColontitle, id=mm showBackgroundImage, id=startScr shadowEnable, type=opened shadowEnable, id=gamescreen shadowEnable, type=result shadowEnable',
+        rules: 'trueFalse'
+    },
+        {
+            selector: 'id=mm showBackCardTexture',
+            label: 'Показывать "рубашку" карточки'
+        },
+        {
+            selector: 'id=mm showExplanation',
+            label: 'Показывать леер объяснения ответа'
+        },
+        {
+            selector: 'id=startScr showLogo',
+            label: 'Лого на стартовой'
+        },
+        {
+            selector: 'type=opened showLogo',
+            label: 'Лого в вопросах'
+        },
+        {
+            selector: 'id=gamescreen showLogo',
+            label: 'Лого на игровом поле'
+        },
+        {
+            selector: 'type=result showLogo',
+            label: 'Лого в результатах'
+        },
+        {
+            selector: 'type=result showDownload',
+            label: 'Кнопка "Скачать" на экране результата'
+        },
+        {
+            selector: 'id=mm showBackgroundImage',
+            label: 'Показывать фоновую картинку',
+            rules: 'trueFalse'
+        },
+        {
+            selector: 'id=mm fbShareEnabled',
+            label: 'Включить шаринг результата в Facebook'
+        },
+        {
+            selector: 'id=mm vkShareEnabled',
+            label: 'Включить шаринг результата во ВКонтакте'
+        },
+        {
+            selector: 'id=mm showTopColontitle',
+            label: 'Верхний колонтитул'
+        },
+        {
+            selector: 'id=startScr shadowEnable',
+            label: 'Затемнение фона',
+            filter: true
+        },
+        {
+            selector: 'id=gamescreen shadowEnable',
+            label: 'Затемнение фона',
+            filter: true
+        },
+        {
+            selector: 'type=opened shadowEnable',
+            label: 'Затемнение фона',
+            filter: true
+        },
+        {
+            selector: 'type=result shadowEnable',
+            label: 'Затемнение фона',
+            filter: true
+        },
+
+
+    {
+        selector: 'type=opened nextButtonText, id=mm pairs.{{number}}.explanation.text, id=mm pairs.{{number}}.explanation.title, id=mm results.{{number}}.title, id=mm results.{{number}}.description, id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText, type=result restartButtonText, type=result downloadButtonText, type=opened topColontitleText',
+        rules: 'text'
+    },
+    {
+        selector: 'id=startScr backgroundImg, type=opened backgroundImg, type=result backgroundImg, id=mm backCardTexture',
+        updateScreens: true,
+        rules: 'imgUrl'
+    },
+    {
+        selector: 'id=mm backCardTexture',
+        label: 'Картинка для "рубашки" карточки',
+    },
     {
         selector: 'type=memoriz shareLink',
         rules: 'url',
@@ -23,6 +117,45 @@ descriptor.app = [
     {
         selector: 'id=mm pairs',
         rules: 'pairAddRule'
+    },
+    {
+        selector: 'id=mm pairs.{{number}}.cards.{{number}}.img, id=mm logoUrl',
+        updateScreen: true,
+        rules: 'imgUrl'
+    },
+    {
+        selector: 'type=memoriz shareLink',
+        rules: 'url',
+        label: 'Шаринг в facebook',
+        filter: false
+    },
+    {
+        selector: 'id=mm logoLink',
+        rules: 'url',
+        label: 'Лого ссылка',
+        filter: false
+    },
+    {
+        selector: 'id=mm downloadLink',
+        rules: 'url',
+        label: 'Ссылка по кнопке "Скачать"',
+        filter: false
+    },
+    {
+        // свойство для настройки кастомного урла картинки для публикации
+        selector: 'appConstructor=mutapp _shareEntities.{{number}}.imgUrl',
+        rules: 'imgForShare',
+        updateScreens: false,
+        label: 'Картинка для публикации в соцсеть',
+        filter: true
+    },
+    {
+        // Google Analytics id
+        selector: 'appConstructor=mutapp gaId',
+        updateScreens: false,
+        label: 'Google Analytics Id',
+        filter: false,
+        rules: 'url'
     }
 ];
 
@@ -233,6 +366,14 @@ descriptor.rules = {
         },
         label: "Вкл/Откл"
     },
+    padding: {
+        label: 'Паддинг',
+        controls: 'StringControl',
+        updateScreens: true,
+        cssProperty: 'padding',
+        cssValuePattern: '{{number}}px',
+        filter: true
+    },
     paddingTop: {
         label: 'Паддинг сверху',
         controls: 'StringControl',
@@ -279,6 +420,18 @@ descriptor.rules = {
         updateScreens: true,
         cssProperty: 'margin-left',
         cssValuePattern: '{{number}}px',
+        filter: true
+    },
+    imgForShare: {
+        editable: true,
+        controls: "ChooseImage",
+        updateScreens: true,
+        controlParams: {
+            // контрол для настройки картинки публикации
+            usePreviewShareImageModal: true,
+            viewName: 'ChooseImagePreview'
+        },
+        label: 'Картинка',
         filter: true
     }
 };

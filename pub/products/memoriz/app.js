@@ -43,6 +43,7 @@ var MemorizApp = MutApp.extend({
         }
 
         var r = null;
+        var sEntities = [];
         for (var i = 0; i < mm.attributes.results.length; i++) {
             r = mm.attributes.results[i];
             var rs = new ResultScreen({
@@ -52,18 +53,18 @@ var MemorizApp = MutApp.extend({
                 screenRoot: this.screenRoot
             });
             this.addScreen(rs);
+
+            sEntities.push({
+                id: id,
+                title: startScr.startHeaderText,
+                description: startScr.startDescription,
+                // удалить элементы, оставить только те которые в whitelist
+                view: MutApp.Util.clarifyElement(rs.$el, ['modal','modal_cnt','info_title','info_tx','b_title']),
+                imgUrl: null
+            });
         }
 
-//        var sEntities = [];
-//        sEntities.push({
-//            id: id,
-//            title: r.title,
-//            description: r.description,
-//            // удалить элементы, оставить только те которые в whitelist
-//            view: MutApp.Util.clarifyElement(rs.$el, [/*'modal','modal_cnt','info_title','info_tx','b_title'*/])
-//        });
-//
-//        this.setShareEntities(sEntities);
+        this.setShareEntities(sEntities);
     },
 
     start: function() {

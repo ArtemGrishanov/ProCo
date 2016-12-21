@@ -420,7 +420,7 @@ var config = {
              * В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae
              * Нужно для превью в контроле Slide
              */
-            stylesForEmbed: '<link href="{{config.common.home}}/products/memoriz/css/style.css" rel="stylesheet"/>',
+            stylesForEmbed: '<link href="{{config.common.home}}products/memoriz/css/style.css" rel="stylesheet"/>',
             /**
              * каталог откуда publisher будет брать все ресурсы для публикации проекта
              */
@@ -435,10 +435,10 @@ var config = {
             defaultHeight: 600,
         },
         timeline: {
-            stylesForEmbed: '<link href="{{config.common.home}}/products/timeline/style.css" rel="stylesheet"/>'
+            stylesForEmbed: '<link href="{{config.common.home}}products/timeline/style.css" rel="stylesheet"/>'
         },
         smartimage: {
-            stylesForEmbed: '<link href="{{config.common.home}}/products/smartimage/style.css" rel="stylesheet"/>'
+            stylesForEmbed: '<link href="{{config.common.home}}products/smartimage/style.css" rel="stylesheet"/>'
         }
     },
     controls: {

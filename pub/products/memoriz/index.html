@@ -35,40 +35,44 @@
                 <div class="info_f js-btn_wr">
                     <div class="button js-test_btn js-next js-start_btn" data-app-property="id=startScr startButtonText">Пройти тест</div>
                 </div>
-                <div class="logo js-logo js-start_logo" data-app-property="id=startScr logoPosition, id=startScr showLogo, id=tm logoUrl"></div>
+                <div class="logo js-logo js-start_logo" data-app-property="id=startScr logoPosition, id=startScr showLogo, id=mm logoUrl"></div>
             </div>
         </div>
     </script>
 
     <!-- Игровое поле -->
     <script id="id-game_screen_template" type="text/template">
-        <div class="card_field js-card-field js-back_color">
+        <div class="modal __active js-back_color js-back_img" data-app-property="type=opened backgroundImg, type=opened shadowEnable">
+            <div class="modal_cnt info js-back_shadow">
+                <div class="card_field js-card-field">
 
+                </div>
+                <div class="logo js-logo js-gamescreen_logo" data-app-property="type=opened logoPosition, type=opened showLogo, id=mm logoUrl"></div>
+            </div>
         </div>
     </script>
 
     <!-- Экран пояснения -->
     <script id="id-opened_screen_template" type="text/template">
-        <div class="js-opened_cards">
-            <div class="js-card1">
-
+        <div class="modal __active js-back_color js-back_img" data-app-property="type=opened backgroundImg, type=opened shadowEnable">
+            <div class="modal_cnt info js-back_shadow">
+                <div class="title" data-app-property="id=mm pairs.<%=pairIndex%>.explanation.title"><%=title%></div>
+                <div class="js-opened_cards"></div>
+                <div data-app-property="id=mm pairs.<%=pairIndex%>.explanation.text"><%=text%></div>
+                <div class="info_f js-btn_wr">
+                    <div class="button js-test_btn js-close_opened_layer" data-app-property="type=opened nextButtonText">Далее</div>
+                </div>
+                <div class="logo js-logo js-opened_logo" data-app-property="type=opened logoPosition, type=opened showLogo, id=mm logoUrl"></div>
             </div>
-            <div class="js-card2">
-
-            </div>
-        </div>
-        <div><%=text%></div>
-        <div class="info_f js-btn_wr">
-            <div class="button js-test_btn js-close_opened_layer" data-app-property="id=startScr startButtonText">Далее</div>
         </div>
     </script>
 
     <!-- Шаблон карточки, по умолчанию закрыт -->
     <!-- В карточку может быть вставлено несколько видов контента -->
     <script id="id-card_text_template" type="text/template">
-        <div data-card-id="<%=id%>" class="flip-container js-card <%=mod%>">
+        <div data-card-id="<%=id%>" class="flip-container js-card <%=mod%>" data-app-property="id=mm pairs.<%=pairIndex%>.cards.<%=cardIndex%>.img">
             <div class="flipper hover">
-                <div class="front">
+                <div class="front js-card_front" data-app-property="id=mm backCardTexture">
                     <!--<p>Front content</p>-->
                 </div>
                 <div class="back" style="background-image:url(<%=img%>)">
@@ -83,9 +87,8 @@
     <script id="id-result_template" type="text/template">
         <div class="modal __active js-back_color js-back_img" data-app-property="type=result backgroundImg, type=result shadowEnable">
             <div class="modal_cnt info js-back_shadow">
-                <div class="info_title js-result_title" data-app-property="id=tm results.<%=currentResultIndex%>.title"><%=title%></div>
-                <div class="info_tx js-result_description" data-app-property="id=tm results.<%=currentResultIndex%>.description"><%=description%></div>
-                <div class="js-mutapp_share_fb fb_share" data-app-property="type=result fbSharePosition"></div>
+                <div class="info_title js-result_title" data-app-property="id=mm results.<%=currentResultIndex%>.title"><%=title%></div>
+                <div class="info_tx js-result_description" data-app-property="id=mm results.<%=currentResultIndex%>.description"><%=description%></div>
                 <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="type=result fbSharePosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
                     <span class="tstx_share_i"></span>
                     Поделиться
@@ -100,7 +103,7 @@
                 <div class="info_f js-download_btn_wr">
                     <div class="button js-download_btn" data-app-property="type=result downloadButtonText, type=result showDownload">Скачать</div>
                 </div>
-                <div class="logo js-logo js-result_logo" data-app-property="type=result logoPosition, type=result showLogo, id=tm logoUrl"></div>
+                <div class="logo js-logo js-result_logo" data-app-property="type=result logoPosition, type=result showLogo, id=mm logoUrl"></div>
             </div>
         </div>
     </script>

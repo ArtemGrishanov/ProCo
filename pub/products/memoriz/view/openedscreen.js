@@ -34,8 +34,10 @@ var OpenedScreen = MutApp.Screen.extend({
 
     topColontitleText: 'Текст колонтитула',
     backgroundImg: null,
+    shadowEnable: false,
     logoPosition: {top: 200, left: 200},
     showLogo: true,
+    nextButtonText: 'Далее',
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -80,13 +82,19 @@ var OpenedScreen = MutApp.Screen.extend({
 
     render: function() {
         var pair = this.model.getPairById(this.pairId);
+        var pairIndex = this.model.attributes.pairs.indexOf(pair);
+        pair.explanation.pairIndex = pairIndex;
         this.$el.html(this.template['default'](pair.explanation));
 
         var $cc = this.$el.find('.js-opened_cards');
         for (var i = 0; i < pair.cards.length; i++) {
+            pair.cards[i].cardIndex = i;
+            pair.cards[i].pairIndex = pairIndex;
             $cc.append(this.template[pair.cards[i].uiTemplate](pair.cards[i]));
         }
         $cc.find('.js-card').addClass('__opened');
+
+        this.$el.find('.js-close_opened_layer').html(this.nextButtonText);
 
         if (this.showTopColontitle === true) {
             var $c = this.$el.find('.js-topColontitleText').show();
@@ -99,7 +107,7 @@ var OpenedScreen = MutApp.Screen.extend({
         }
 
         // установка свойств логотипа
-        var $l = this.$el.find('.js-question_logo');
+        var $l = this.$el.find('.js-opened_logo');
         if (this.showLogo === true) {
             $l.css('backgroundImage','url('+this.model.get('logoUrl')+')');
             $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
@@ -115,6 +123,13 @@ var OpenedScreen = MutApp.Screen.extend({
         }
         else {
             this.$el.find('.js-back_img').css('backgroundImage','none');
+        }
+
+        if (this.shadowEnable === true) {
+            this.$el.find('.js-back_shadow').css('background-color','rgba(0,0,0,0.4)');
+        }
+        else {
+            this.$el.find('.js-back_shadow').css('background-color','');
         }
 
         return this;

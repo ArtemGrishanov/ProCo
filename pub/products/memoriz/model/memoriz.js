@@ -29,8 +29,13 @@ var MemorizModel = MutApp.Model.extend({
          */
         showBackgroundImage: true,
         logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
-
+        logoLink: null,
+        downloadLink: null,
+        backCardTexture: null,
+        showBackCardTexture: true,
         showTopColontitle: true,
+        fbShareEnabled: true,
+        vkShareEnabled: true,
 
         /**
          * Открываемые пользователем карты, первая и вторая
@@ -58,6 +63,7 @@ var MemorizModel = MutApp.Model.extend({
                 ],
                 guessed: false,
                 explanation: {
+                    title: 'Заголовок',
                     text: 'Пояснение к правильному ответу'
                 }
             },
@@ -77,6 +83,7 @@ var MemorizModel = MutApp.Model.extend({
                 ],
                 guessed: false,
                 explanation: {
+                    title: 'Заголовок',
                     text: 'Пояснение к правильному ответу'
                 }
             },
@@ -96,6 +103,7 @@ var MemorizModel = MutApp.Model.extend({
                 ],
                 guessed: false,
                 explanation: {
+                    title: 'Заголовок',
                     text: 'Пояснение к правильному ответу'
                 }
             },
@@ -115,85 +123,90 @@ var MemorizModel = MutApp.Model.extend({
                 ],
                 guessed: false,
                 explanation: {
-                    text: 'Пояснение к правильному ответу'
-                }
-            },
-            {
-                //id: null, set programmatically
-                cards: [
-                    {
-                        uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2',
-                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o5.jpg'
-                    },
-                    {
-                        uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2',
-                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o5.jpg'
-                    }
-                ],
-                guessed: false,
-                explanation: {
-                    text: 'Пояснение к правильному ответу'
-                }
-            },
-            {
-                //id: null, set programmatically
-                cards: [
-                    {
-                        uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2',
-                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o6.jpg'
-                    },
-                    {
-                        uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2',
-                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o6.jpg'
-                    }
-                ],
-                guessed: false,
-                explanation: {
-                    text: 'Пояснение к правильному ответу'
-                }
-            },
-            {
-                //id: null, set programmatically
-                cards: [
-                    {
-                        uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2',
-                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o7.jpg'
-                    },
-                    {
-                        uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2',
-                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o7.jpg'
-                    }
-                ],
-                guessed: false,
-                explanation: {
-                    text: 'Пояснение к правильному ответу'
-                }
-            },
-            {
-                //id: null, set programmatically
-                cards: [
-                    {
-                        uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2',
-                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o8.jpg'
-                    },
-                    {
-                        uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2',
-                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o8.jpg'
-                    }
-                ],
-                guessed: false,
-                explanation: {
+                    title: 'Заголовок',
                     text: 'Пояснение к правильному ответу'
                 }
             }
+//            ,{
+//                //id: null, set programmatically
+//                cards: [
+//                    {
+//                        uiTemplate: 'id-card_text_template',
+//                        text: 'Ответ 2',
+//                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o5.jpg'
+//                    },
+//                    {
+//                        uiTemplate: 'id-card_text_template',
+//                        text: 'Ответ 2',
+//                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o5.jpg'
+//                    }
+//                ],
+//                guessed: false,
+//                explanation: {
+//                    title: 'Заголовок',
+//                    text: 'Пояснение к правильному ответу'
+//                }
+//            },
+//            {
+//                //id: null, set programmatically
+//                cards: [
+//                    {
+//                        uiTemplate: 'id-card_text_template',
+//                        text: 'Ответ 2',
+//                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o6.jpg'
+//                    },
+//                    {
+//                        uiTemplate: 'id-card_text_template',
+//                        text: 'Ответ 2',
+//                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o6.jpg'
+//                    }
+//                ],
+//                guessed: false,
+//                explanation: {
+//                    title: 'Заголовок',
+//                    text: 'Пояснение к правильному ответу'
+//                }
+//            },
+//            {
+//                //id: null, set programmatically
+//                cards: [
+//                    {
+//                        uiTemplate: 'id-card_text_template',
+//                        text: 'Ответ 2',
+//                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o7.jpg'
+//                    },
+//                    {
+//                        uiTemplate: 'id-card_text_template',
+//                        text: 'Ответ 2',
+//                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o7.jpg'
+//                    }
+//                ],
+//                guessed: false,
+//                explanation: {
+//                    title: 'Заголовок',
+//                    text: 'Пояснение к правильному ответу'
+//                }
+//            },
+//            {
+//                //id: null, set programmatically
+//                cards: [
+//                    {
+//                        uiTemplate: 'id-card_text_template',
+//                        text: 'Ответ 2',
+//                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o8.jpg'
+//                    },
+//                    {
+//                        uiTemplate: 'id-card_text_template',
+//                        text: 'Ответ 2',
+//                        img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o8.jpg'
+//                    }
+//                ],
+//                guessed: false,
+//                explanation: {
+//                    title: 'Заголовок',
+//                    text: 'Пояснение к правильному ответу'
+//                }
+//            }
         ],
 
         /**

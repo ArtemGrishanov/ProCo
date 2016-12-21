@@ -16,6 +16,7 @@ var GameScreen = MutApp.Screen.extend({
     backgroundImg: null,
     logoPosition: {top: 200, left: 200},
     showLogo: true,
+    shadowEnable: false,
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -94,7 +95,16 @@ var GameScreen = MutApp.Screen.extend({
             else {
                 c.mod = '';
             }
+            c.pairIndex = '-';
+            c.cardIndex = '-';
             $cardField.append(this.template[c.uiTemplate](c));
+        }
+
+        if (this.model.get('showBackCardTexture')===true) {
+            var textureUrl = this.model.get('backCardTexture');
+            if (textureUrl) {
+                $cardField.find('.js-card_front').css('backgroundImage','url('+textureUrl+')');
+            }
         }
         //this.attributes.pairs[i].guessed
 
@@ -109,7 +119,7 @@ var GameScreen = MutApp.Screen.extend({
         }
 
         // установка свойств логотипа
-        var $l = this.$el.find('.js-question_logo');
+        var $l = this.$el.find('.js-gamescreen_logo');
         if (this.showLogo === true) {
             $l.css('backgroundImage','url('+this.model.get('logoUrl')+')');
             $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
