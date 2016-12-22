@@ -16,7 +16,29 @@ descriptor.css = [
         label: 'Отступ до края',
         filter: true,
         rules: 'padding'
-    }
+    },
+    {
+        // перечислил все классы к которым применять правила
+        selector: '.js-start_header .js-start_description .js-result_title .js-result_description .js-explanation_text .js-explanation_title',
+        // можно прописать сразу несколько правил, получается отношение "многие ко многим"
+        // это позволит делать наборы правил
+        rules: 'fontFamily fontColor fontSize textAlign paddingTop paddingBottom paddingLeft'
+    },
+    {
+        // все кнопки
+        selector: '.js-test_btn',
+        rules: 'backgroundColor fontColor fontSize fontFamily borderColor borderRadius borderWidth paddingTop paddingBottom'
+    },
+    {
+        // кнопка "скачать", чтобы можно было отдельный стиль задать
+        selector: '.js-download_btn',
+        rules: 'backgroundColor fontColor fontSize fontFamily borderColor borderRadius borderWidth paddingTop paddingBottom'
+    },
+    {
+        selector: '.js-test_btn',
+        applyCssTo: '.js-btn_wr',
+        rules: 'textAlign marginTop marginBottom paddingLeft'
+    },
 ];
 
 descriptor.app = [
@@ -100,7 +122,7 @@ descriptor.app = [
         rules: 'text'
     },
     {
-        selector: 'id=startScr backgroundImg, type=opened backgroundImg, type=result backgroundImg, id=mm backCardTexture',
+        selector: 'id=startScr backgroundImg, id=gamescreen backgroundImg, type=opened backgroundImg, type=result backgroundImg, id=mm backCardTexture',
         updateScreens: true,
         rules: 'imgUrl'
     },
@@ -465,6 +487,7 @@ descriptor.prototypes = {
             ],
             guessed: false,
             explanation: {
+                title: 'Заголовок',
                 text: 'Пояснение к правильному ответу'
             }
         }

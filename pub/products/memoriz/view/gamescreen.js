@@ -137,6 +137,13 @@ var GameScreen = MutApp.Screen.extend({
             this.$el.find('.js-back_img').css('backgroundImage','none');
         }
 
+        if (this.shadowEnable === true) {
+            this.$el.find('.js-back_shadow').css('background-color','rgba(0,0,0,0.4)');
+        }
+        else {
+            this.$el.find('.js-back_shadow').css('background-color','');
+        }
+
         return this;
     },
 

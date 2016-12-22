@@ -19,10 +19,11 @@ var MemorizApp = MutApp.extend({
         }));
         this.model = mm;
 
-        this.addScreen(new StartScreen({
+        var startScr = new StartScreen({
             model: mm,
             screenRoot: this.screenRoot
-        }));
+        });
+        this.addScreen(startScr);
 
         var gs = new GameScreen({
             model: mm,
@@ -31,6 +32,7 @@ var MemorizApp = MutApp.extend({
         this.addScreen(gs);
 
         var os = null;
+        var id = null;
         for (var i = 0; i < mm.attributes.pairs.length; i++) {
             id = 'openedScreen'+i;
             os = new OpenedScreen({
@@ -46,8 +48,9 @@ var MemorizApp = MutApp.extend({
         var sEntities = [];
         for (var i = 0; i < mm.attributes.results.length; i++) {
             r = mm.attributes.results[i];
+            id = 'result'+i;
             var rs = new ResultScreen({
-                id: 'result'+i,
+                id: id,
                 model: mm,
                 resultId: r.id,
                 screenRoot: this.screenRoot
