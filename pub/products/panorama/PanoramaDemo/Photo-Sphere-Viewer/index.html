@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Демо</title>
+    <link rel="stylesheet" href="dist/photo-sphere-viewer.min.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/editor.css">
+    <style>
+        #photosphere {
+            width: 660px;
+            height: 660px;
+        }
+        canvas {
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div id="id-main_view">
+        <button onclick="onSelectClick(event);">Выберите картинку</button>
+        <button onclick="onPreviewEmbeddedPano(event);">Превью панорамы</button>
+        <button onclick="onPublishToFB(event);">Опубликовать в Facebook</button>
+        <div id="id-dialogs_view" class="scr_dialog" style="display: none;">
+            <!-- для показа диалогов поверх остальных вью -->
+        </div>
+        <!--<input type="file" id="files" label="Посмотреть XMP"/>-->
+        <div id="canvas_cnt" style="display:none;">
+            <p>С этим канвасом мы работаем, добавляем на него пины и текст</p>
+            <div id="canvas_place" style="max-width:800px;">
+
+            </div>
+        </div>
+    </div>
+    <div id="id-preview_embed" style="display:none">
+        <button onclick="onPreviewEmbeddedBack(event);">Назад</button>
+        <p>Именно так будет выглядеть панорама если пользователь опубликует ее у себя на сайте (не в facebook)</p>
+        <div id="photosphere"></div>
+    </div>
+    <script>
+        function onPreviewEmbeddedPano() {
+            $('#id-preview_embed').show();
+            $('#id-main_view').hide();
+            uploadPanoCanvas(function(){
+                createPhotoSphereViewer(hostName + awsImageUrl);
+            });
+        }
+        function onPreviewEmbeddedBack() {
+            $('#id-preview_embed').hide();
+            $('#id-main_view').show();
+        }
+        function onPublishToFB() {
+            alert('Фото сначала будет загружено на Testix, а потом на Facebook. Дождитесь сообщения о конце загрузки.');
+            uploadPanoCanvas(function(){
+                uploadPhoto(hostName + awsImageUrl, 'From api: '+configPano.id);
+            });
+        }
+    </script>
+
+    <script src="jquery.js"></script>
+    <script src="utils.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script src="piexif.js"></script>
+    <script src="selectDialog.js"></script>
+    <script src="s3util.js"></script>
+    <script src="resourceManager.js"></script>
+    <script src="jpeg_encoder.js"></script>
+    <script src="panoconfig.js"></script>
+    <script src="bower_components/three.js/three.min.js"></script>
+    <script src="bower_components/D.js/lib/D.min.js"></script>
+    <script src="bower_components/uevent/uevent.min.js"></script>
+    <script src="bower_components/doT/doT.min.js"></script>
+    <script src="dist/photo-sphere-viewer.js"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
+
+    <!-- Шаблон для группы Slide соответствующх группе экранов -->
+    <script id="id-select_dialog_template" type="text/template">
+        <div class="modal_wr">
+            <div class="select_dialog_back">
+                <div class="select_dialog_caption">
+                    <span class="js-caption">Выбрать</span>
+                </div>
+                <div class="loading_anim_wr js-loader" style="display:none;margin-top:50px;margin-bottom:250px;">
+                    <div class="loading_anim"></div>
+                </div>
+                <div class="select_dialog_options_cnt js-options_cnt">
+                    <!-- Сюда будут программно добавлять опции -->
+                </div>
+                <div class="select_dialog_button_cnt">
+                    <span class="pbtn js-cancel">Отмена</span>
+                    <span class="pbtn __green js-confirm">Добавить</span>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- шаблон элемента который вставляются в диалг выбора -->
+    <script id="id-select_dialog_option_template" type="text/template">
+        <div class="select_dialog_option js-option">
+            <div class="select_dialog_option_thumb_cnt js-option_icon">
+                <!-- Этому элементу надо указать backgroundImage -->
+            </div>
+            <div class="select_dialog_option_label">
+                <span class="js-option_label">Картинка и текст</span>
+            </div>
+        </div>
+    </script>
+
+    <!-- шаблон элемента для аплоада файла который вставляются в диалг выбора -->
+    <script id="id-fileChooser_option_template" type="text/template">
+        <div class="select_dialog_option js-option">
+            <div class="select_dialog_option_thumb_cnt __upload">
+            </div>
+            <div class="select_dialog_option_label">
+                <span class="js-option_label"></span>
+            </div>
+            <div class="file_input_wr">
+                <input class="file_input" type="file" accept="image/*"/>
+            </div>
+        </div>
+    </script>
+
+    <script>
+        var srcImgUrl = null;
+        var srcImage = null;
+        var dataTest = null;
+        var file = null;
+        var exifObj = null;
+        var exifStr = null;
+        var data = null
+        var configPano = null;
+        var panoCanvas = null;
+        var resourceManager = null;
+        var awsImageUrl = null;
+        var hostName = 'https://s3.eu-central-1.amazonaws.com/proconstructor/';
+        var viewer = null;
+
+//        function initFB() {
+//            window.fbAsyncInit = function() {
+//                FB.init({
+//                    appId      : '518819781624579',
+//                    cookie     : true,  // enable cookies to allow the server to access
+//                    // the session
+//                    xfbml      : true,  // parse social plugins on this page
+//                    version    : 'v2.5' // use graph api version 2.5
+//                });
+//                // Now that we've initialized the JavaScript SDK, we call
+//                // FB.getLoginStatus().  This function gets the state of the
+//                // person visiting this page and can return one of three states to
+//                // the callback you provide.  They can be:
+//                //
+//                // 1. Logged into your app ('connected')
+//                // 2. Logged into Facebook, but not your app ('not_authorized')
+//                // 3. Not logged into Facebook and can't tell if they are logged into
+//                //    your app or not.
+//                //
+//                // These three cases are handled in the callback function.
+//                FB.getLoginStatus(function(response) {
+//                    // если приложение в тестовом режиме, то пользователь должен быть добавлен в приложение руками
+//                    // иначе никакого колбека не будет, ни с каким статусом
+//                    statusChangeCallback(response);
+//                });
+//            };
+//            // Load the SDK asynchronously
+//            (function(d, s, id) {
+//                var js, fjs = d.getElementsByTagName(s)[0];
+//                if (d.getElementById(id)) return;
+//                js = d.createElement(s); js.id = id;
+//                js.src = "//connect.facebook.net/en_US/sdk.js";
+//                fjs.parentNode.insertBefore(js, fjs);
+//            }(document, 'script', 'facebook-jssdk'));
+//        }
+
+        function statusChangeCallback(response) {
+            console.log('statusChangeCallback');
+            console.log(response);
+            if (response.status === 'connected') {
+                accessToken = response.authResponse.accessToken;
+                initAWS(accessToken);
+            } else {
+                //not_authorized, unknown
+            }
+        }
+
+//        function initAWS(token) {
+//            if (config.common.awsEnabled === true) {
+//                AWS.config.region = config.common.awsRegion;
+//                bucket = new AWS.S3({
+//                    params: {
+//                        Bucket: config.common.awsBucketName,
+//                        CacheControl: 'no-cache'
+//                    }
+//                });
+//                bucket.config.credentials = new AWS.WebIdentityCredentials({
+//                    ProviderId: 'graph.facebook.com',
+//                    RoleArn: config.common.awsRoleArn,
+//                    WebIdentityToken: token
+//                });
+//
+//                bucketForPublishedProjects = new AWS.S3({
+//                    params: {
+//                        Bucket: config.common.awsPublishedProjectsBucketName,
+//                        CacheControl: 'no-cache'
+//                    }
+//                });
+//                bucketForPublishedProjects.config.credentials = new AWS.WebIdentityCredentials({
+//                    ProviderId: 'graph.facebook.com',
+//                    RoleArn: config.common.awsRoleArn,
+//                    WebIdentityToken: token
+//                });
+//                resourceManager = new ResourceManager();
+//            }
+//        }
+
+        function onSelectClick(e) {
+            resourceManager.show(this.onImageSelected.bind(this));
+        }
+
+        function onImageSelected(url) {
+            srcImgUrl = url;
+            createImage(srcImgUrl); // createPanoCanvas будет вызвано после автоматом
+        }
+
+        function uploadPhoto(url, caption) {
+            if (window.confirm('Будет запрошено разрешение на публикацию фото в Facebook. Ок?')) {
+                FB.login(function(response) {
+                    if (response.status === 'connected') {
+                        FB.api(
+                                "/me/photos",
+                                "POST",
+                                {
+                                    url: url,
+                                    caption: caption,
+                                    allow_spherical_photo: true
+                                },
+                                function (response) {
+                                    if (response && !response.error) {
+                                        /* handle the result */
+                                        alert('Загружено на Facebook. Иди посмотри.');
+                                    }
+                                    else {
+                                        alert('error');
+                                    }
+                                }
+                        );
+                    } else {
+                        //not_authorized, unknown
+                    }
+                }, {
+                    scope:'user_friends,publish_actions,user_photos',
+                    auth_type: 'rerequest'
+                });
+            }
+        }
+
+        function createImage(url) {
+            srcImage = new Image();
+            srcImage.crossOrigin = 'anonymous';
+            srcImage.onload = function () {
+//                var canvas = document.createElement('canvas');
+//                canvas.width = this.naturalWidth; // or 'width' if you want a special/scaled size
+//                canvas.height = this.naturalHeight; // or 'height' if you want a special/scaled size
+//
+//                console.log('Origin canvas size: '+canvas.width+'x'+canvas.height);
+//                canvas.getContext('2d').drawImage(this, 0, 0);
+//
+//                // Get raw image data
+////                callback(canvas.toDataURL('image/jpg').replace(/^data:image\/(png|jpg);base64,/, ''));
+//
+//                // ... or get as Data URI
+//                callback(canvas.toDataURL('image/jpeg'));
+                console.log('Image loaded: '+srcImage.width+'x'+srcImage.height);
+                configPano = createConfig(srcImage.width, srcImage.height);
+                if (configPano) {
+                    console.log('Configuration created: '+configPano.id);
+                    createPanoCanvas();
+//                    createPhotoSphereViewer(srcImgUrl);
+                }
+                else {
+                    alert('Не удается создать конфигурацию для картинки этого размера. Картинка будет расширена.');
+                    configPano = createConfig(errorData.srcWidth, errorData.srcHeight, {vfov: errorData.targetVFOV});
+                    if (configPano) {
+                        console.log('Configuration created: '+configPano.id);
+                        createPanoCanvas();
+                    }
+                    else {
+                        alert('Опять не удается создать конфигурацию.');
+                    }
+                }
+            };
+            srcImage.onerror = function(e) {
+                console.error("Cannot load image");
+            }
+            srcImage.src = url;
+        }
+
+        /**
+         */
+        function createPanoCanvas() {
+            panoCanvas = document.createElement('canvas');
+            $(panoCanvas).click(onPanoCanvasClick);
+            panoCanvas.width = configPano.srcWidth;
+            panoCanvas.height = configPano.srcHeight;
+            var ctx = panoCanvas.getContext('2d');
+            //ctx.drawImage(srcImage,0,0,srcImage.width,srcImage.height,0,0,panoCanvas.width,panoCanvas.height);
+            var dx = Math.round((panoCanvas.width-srcImage.width)/2);
+            var dy = Math.round((panoCanvas.height-srcImage.height)/2);
+            ctx.drawImage(srcImage, dx, dy);
+            $('#canvas_place').empty().append(panoCanvas);
+            $('#canvas_cnt').show();
+        }
+
+        function onPanoCanvasClick(e) {
+            console.log(e.offsetX+' '+ e.offsetY);
+            createPin(panoCanvas, e.offsetX, e.offsetY);
+        }
+
+        var PIN_WIDTH = 300, PIN_HEIGHT = 80;
+        var PIN_COLOR = '#33bbed', FONT_COLOR = '#ffffff';
+        var CNV_MAX_WIDTH = 800;
+        function createPin(cnv, x, y) {
+            var r = cnv.width / CNV_MAX_WIDTH;
+            x = x * r;
+            y = y * r;
+            var ctx = cnv.getContext('2d');
+            ctx.fillStyle = PIN_COLOR;
+            ctx.fillRect(x-PIN_WIDTH/2,y-PIN_HEIGHT/2,PIN_WIDTH,PIN_HEIGHT)
+            ctx.fillStyle = FONT_COLOR;
+            ctx.font = "48px Arial";
+            ctx.textBaseline = 'middle';
+            ctx.fillText('Text Sample', 20+x-PIN_WIDTH/2, y);
+        }
+
+        function createPhotoSphereViewer(url) {
+            $('#photosphere').empty();
+            var longtitude = Math.PI/180*(configPano.srcHFOV/2);
+            var latitude = Math.PI/180*(configPano.targetVFOW/2);
+            viewer = PhotoSphereViewer({
+                //panorama: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Trafalgar_Square_360_Panorama_Cropped_Sky%2C_London_-_Jun_2009.jpg',
+                panorama: url,
+                container: 'photosphere',
+                longitude_range: [-longtitude, longtitude],
+                latitude_range: [-latitude,latitude],
+                size: {width:660,height:660},
+                pano_data: {
+                    full_width: configPano.panoWidth,
+                    full_height: configPano.panoHeight,
+                    cropped_width: configPano.croppedWidth,
+                    cropped_height: configPano.croppedHeight,
+                    cropped_x: configPano.croppedX,
+                    cropped_y: configPano.croppedY
+                },
+                time_anim:false
+//                min_fov: 1,
+//                max_fov: 179
+            });
+        }
+
+//        function patchEXIF(data) {
+//            exifObj = piexif.load(data);
+//            exifStr = piexif.dump(exifObj);
+//            console.log('EXIF string: '+exifStr);
+//            var zeroth = {};
+//            var exif = {};
+//            var gps = {};
+//            zeroth[piexif.ImageIFD.Make] = "Apple";
+//            zeroth[piexif.ImageIFD.Model] = "iPhone 7";
+//            exifObj = {"0th":zeroth, "Exif":exif, "GPS":gps};
+//            exifStr = piexif.dump(exifObj);
+//            console.log('new EXIF string: '+exifStr);
+//            var result = piexif.insert(exifStr, data);
+//            console.log('DataUri after insertion. Length:'+result.length);
+//            return result;
+//        }
+
+        function handleFileSelect(evt) {
+            file = evt.target.files[0];
+
+//            var zeroth = {};
+//            var exif = {};
+//            var gps = {};
+//            zeroth[piexif.ImageIFD.Make] = "Make";
+//            zeroth[piexif.ImageIFD.XResolution] = [777, 1];
+//            zeroth[piexif.ImageIFD.YResolution] = [777, 1];
+//            zeroth[piexif.ImageIFD.Software] = "Piexifjs";
+//            exif[piexif.ExifIFD.DateTimeOriginal] = "2010:10:10 10:10:10";
+//            exif[piexif.ExifIFD.LensMake] = "LensMake";
+//            exif[piexif.ExifIFD.Sharpness] = 777;
+//            exif[piexif.ExifIFD.LensSpecification] = [[1, 1], [1, 1], [1, 1], [1, 1]];
+//            gps[piexif.GPSIFD.GPSVersionID] = [7, 7, 7, 7];
+//            gps[piexif.GPSIFD.GPSDateStamp] = "1999:99:99 99:99:99";
+//            exifObj = {"0th":zeroth, "Exif":exif, "GPS":gps};
+//            exifStr = piexif.dump(exifObj);
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var arrayBuffer = e.target.result;
+                var poseInfo = getPoseInfo(arrayBuffer);
+//                data = e.target.result;
+//                exifObj = piexif.load(data);
+
+//                if (!poseInfo) {
+//                    alert('Failed to get the pose info.');
+//                    return;
+//                }
+//                alert('heading: ' + poseInfo.heading + '\n' +
+//                        'pitch: ' + poseInfo.pitch + '\n' +
+//                        'roll: ' + poseInfo.roll);
+
+
+//                var inserted = piexif.insert(exifStr, e.target.result);
+//                var image = new Image();
+//                image.src = inserted;
+//                image.width = 200;
+//                var el = $("<div></div>").append(image);
+//                $("#resized").prepend(el);
+//                exifObj = piexif.load(e.target.result);
+            };
+//            reader.readAsDataURL(file);
+            reader.readAsArrayBuffer(file);
+        }
+
+        function getPoseInfo(arrayBuffer) {
+            console.log('Star parsing exif.');
+            var pos = 0;
+//            try {
+                if (read2Bytes() != 0xFFD8)
+                    return null;
+                while (pos + 4 < arrayBuffer.byteLength) {
+                    var marker = read2Bytes();
+                    var size = read2Bytes();
+//                    if (marker == 0xFFDA)
+//                        break;
+                    if (marker == 0xFFE1 || marker == 0xFFE2 || marker == 0xFFE3 || marker == 0xFFE4 || marker == 0xFFE5 ||marker == 0xFFE6 ||marker == 0xFFE7 ||marker == 0xFFE8 ||marker == 0xFFE9 ||marker == 0xFFEA||marker == 0xFFEB||marker == 0xFFEC||marker == 0xFFED||marker == 0xFFEE||marker == 0xFFEF) {
+                        console.log('Metadata marker APPn found: ' + new Number(marker).toString(16));
+                        if (isXmp()) {
+                            console.log('XMP block was found');
+                            var dom = getXmp(size);
+                            if (!dom)
+                                return null;
+                            console.log('XMP tree was built');
+                            console.log(dom.documentElement.innerHTML);
+                            var list = getLeafs(dom);
+                            //return getHadingPitchRoll(list);
+                            //TODO detect gpano info
+                        }
+                    }
+                    pos += size - 2;
+                }
+//            } catch (e) {
+//                console.error(e.toString());
+//            }
+            return null;
+
+            function read2Bytes() {
+                var bytes =  new Uint8Array(arrayBuffer, pos, 2);
+                pos += 2;
+                return bytes[0] * 0x100 + bytes[1];
+            }
+            function isXmp() {
+                var bytes = new Uint8Array(arrayBuffer, pos, 29);
+                var t = String.fromCharCode.apply(null, bytes);
+                // 29 байт это неймспейс (нулевой символ в конце - обязательно)
+                console.log('Namespace: '+t);
+                return t == 'http://ns.adobe.com/xap/1.0/\0';
+            }
+            function getXmp(size) {
+                var xmpStr = String.fromCharCode.apply(
+                        null,
+                        new Uint8Array(arrayBuffer, pos + 29, size - 31));
+                var startPos = xmpStr.search('<x:xmpmeta ');
+                var endPos = xmpStr.search('</x:xmpmeta>');
+                if (startPos == -1 || endPos == -1)
+                    return null;
+                xmpStr = xmpStr.substr(startPos, endPos - startPos + 12);
+                var dom = (new DOMParser()).parseFromString(
+                        xmpStr, 'text/xml');
+                return dom;
+            }
+            function getLeafs(node) {
+                var list = [];
+                if (node.childNodes.length == 1 &&
+                        node.childNodes[0].nodeType == 3) {
+                    return [[node.nodeName, node.childNodes[0].nodeValue]];
+                }
+                for (var i = 0; i < node.childNodes.length; ++i)
+                    list = list.concat(getLeafs(node.childNodes[i]));
+                return list;
+            }
+            function getHadingPitchRoll(list) {
+                var heading = 0, pitch = 0, roll = 0;
+                list.forEach(function(item) {
+                    if (item[0] == 'GPano:PoseHeadingDegrees')
+                        heading = item[1];
+                    if (item[0] == 'GPano:PosePitchDegrees')
+                        pitch = item[1];
+                    if (item[0] == 'GPano:PoseRollDegrees')
+                        roll = item[1];
+                });
+                return {heading: heading, pitch: pitch, roll: roll};
+            }
+        }
+
+        function uploadPanoCanvas(callback) {
+//            var data64 = panoCanvas.toDataURL('image/jpeg');
+//            data64 = patchEXIF(data64);
+            awsImageUrl = 'facebook-'+App.getUserData().id+'/panorama_test/forFBUpload.jpg';
+            console.log('Start uploading to: ' + awsImageUrl);
+
+            //uploadCanvas(bucket, null, awsImageUrl, data64);
+            uploadCanvas(App.getAWSBucket(), callback, awsImageUrl, panoCanvas);
+        }
+
+        function uploadCanvas(bucket, callback, url, canvas, fakeUpload) {
+            JPEGEncoder(70);
+            var theImgData = (canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
+            var rawData = encode(theImgData, 70, true);
+            var blob = new Blob([rawData.buffer], {type: 'image/jpeg'});
+            var params = {
+                Key: url,
+                ContentType: 'image/jpeg',
+                Body: blob,
+                ACL: 'public-read'
+            };
+            bucket.putObject(params, (function (err, data) {
+                if (err) {
+                    //Not authorized to perform sts:AssumeRoleWithWebIdentity
+                    alert('ERROR: ' + err, true);
+                    if (callback) {
+                        callback('error');
+                    }
+                } else {
+                    alert('Фото загружено в хранилище Testix');
+                    if (callback) {
+                        callback('ok');
+                    }
+                }
+            }).bind(this));
+        }
+    </script>
+    <script>
+        App.on(AWS_INIT_EVENT, function() {
+            window.resourceManager = new ResourceManager();
+        });
+        App.start();
+        //initFB();
+        // document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+        //srcImgUrl = '../images/4000x2443.jpg';
+        srcImgUrl = '../images/6000x1217.jpg';
+        createImage(srcImgUrl);
+    </script>
+</body>
+</html>

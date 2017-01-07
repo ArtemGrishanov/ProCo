@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="../dist/photo-sphere-viewer.css">
+
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    #photosphere {
+      width: 100%;
+      height: 100%;
+    }
+
+    .psv-button.custom-button {
+      font-size: 22px;
+      line-height: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="photosphere"></div>
+
+<script src="../bower_components/three.js/three.min.js"></script>
+<script src="../bower_components/D.js/lib/D.min.js"></script>
+<script src="../bower_components/uevent/uevent.min.js"></script>
+<script src="../bower_components/doT/doT.min.js"></script>
+<script src="../bower_components/three.js-examples/examples/js/renderers/CanvasRenderer.js"></script>
+<script src="../bower_components/three.js-examples/examples/js/renderers/Projector.js"></script>
+<script src="../bower_components/three.js-examples/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="../bower_components/three.js-examples/examples/js/postprocessing/RenderPass.js"></script>
+<script src="../bower_components/three.js-examples/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="../bower_components/three.js-examples/examples/js/postprocessing/MaskPass.js"></script>
+<script src="../bower_components/three.js-examples/examples/js/shaders/CopyShader.js"></script>
+<script src="../bower_components/three.js-examples/examples/js/controls/DeviceOrientationControls.js"></script>
+<script src="../dist/photo-sphere-viewer.js"></script>
+
+<script type="text/template" id="pin-content">
+<h1>HTML Ipsum Presents</h1>
+
+<p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+
+<h2>Header Level 2</h2>
+
+<ol>
+   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+   <li>Aliquam tincidunt mauris eu risus.</li>
+</ol>
+
+<blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
+
+<h3>Header Level 3</h3>
+
+<ul>
+   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+   <li>Aliquam tincidunt mauris eu risus.</li>
+</ul>
+
+<pre><code>
+#header h1 a {
+	display: block;
+	width: 300px;
+	height: 80px;
+}
+</code></pre>
+</script>
+
+<svg id="patterns">
+  <defs>
+    <pattern id="dots" x="10" y="10" width="30" height="30" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="10" style="stroke: none; fill: rgba(255,0,0,0.4)" />
+    </pattern>
+    <pattern id="points" x="10" y="10" width="15" height="15" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="0.8" style="stroke: none; fill: red" />
+    </pattern>
+  </defs>
+</svg>
+
+<script>
+  var PSV = new PhotoSphereViewer({
+    panorama: 'Bryce-Canyon-National-Park-Mark-Doliner.jpg',
+    container: 'photosphere',
+    loading_img: 'photosphere-logo.gif',
+    navbar: [
+      'autorotate', 'zoom', 'download', 'markers',
+      'spacer-1',
+      {
+        title: 'Change image',
+        className: 'custom-button',
+        content: '↻',
+        onClick: (function() {
+          var i = false;
+
+          return function() {
+            i = !i;
+            PSV.clearMarkers();
+
+            PSV.setPanorama(i ? 'Bryce-Canyon-By-Jess-Beauchemin.jpg' : 'Bryce-Canyon-National-Park-Mark-Doliner.jpg', {
+              longitude: i ? 3.7153696451829257 : 3.8484510006474992,
+              latitude: i ? 0.57417649320975916 : -0.24434609527920628
+            }, true)
+              .then(function() {
+                PSV.setCaption(i ? 'Bryce Canyon National Park <b>&copy; Jess Beauchemin</b>' : 'Bryce Canyon National Park <b>&copy; Mark Doliner</b>');
+              });
+          }
+        }())
+      },
+      {
+        id: 'disabled',
+        title: 'This button is disabled',
+        content: '❌',
+        enabled: false
+      },
+      'caption',
+      'gyroscope',
+      'fullscreen'
+    ],
+    caption: 'Bryce Canyon National Park <b>&copy; Mark Doliner</b>',
+    longitude_range: [-7*Math.PI/8, 7*Math.PI/8],
+    latitude_range: [-3*Math.PI/4, 3*Math.PI/4],
+    anim_speed: '-2rpm',
+    default_fov: 50,
+    fisheye: true,
+    move_speed: 1.1,
+    time_anim: false,
+    gyroscope: true,
+    webgl: true,
+    transition: {
+      duration: 1000,
+      loader: true,
+      blur: true
+    },
+    markers: (function(){
+      var a = [];
+      for (var i=0; i<Math.PI*2; i+=Math.PI/4) {
+        for (var j=-Math.PI/2+Math.PI/4; j<Math.PI/2; j+=Math.PI/4) {
+          a.push({
+            id: '#' + a.length,
+            tooltip: '#' + a.length,
+            latitude: j,
+            longitude: i,
+            image: 'pin.png',
+            width: 32,
+            height: 32,
+            anchor: 'bottom center',
+            data: {
+              deletable: true
+            }
+          });
+        }
+      }
+
+      a.push({
+        id: 'the-path',
+        name: 'The path',
+        content: '<img src="pin2.png" style="width:100%"/><img src="pin.png" style="width:100%"/>',
+        x: 3900,
+        y: 1650,
+        image: 'pin2.png',
+        width: 32,
+        height: 32,
+        anchor: 'bottom center'
+      });
+
+      a.push({
+        id: 'lorem',
+        tooltip: {
+          content: 'Lorem ipsum dolor ist amet et consecturo.',
+          position: 'bottom right'
+        },
+        content: document.getElementById('pin-content').innerHTML,
+        latitude: 0,
+        longitude: 0.20,
+        image: 'pin2.png',
+        width: 32,
+        height: 32,
+        anchor: 'bottom center'
+      });
+
+      a.push({
+        id: 'gif',
+        image: 'http://strangeplanet.fr/files/avatars/sleep-round.gif',
+        width: 100,
+        height: 100,
+        x: 2060,
+        y: 960
+      });
+
+      a.push({
+        id: 'text',
+        html: 'This <b>is</b> text <img src="pin3.png" style="height: 24px; vertical-align: top;"/>',
+        anchor: 'bottom right',
+        style: {
+          color: 'white',
+          fontSize: '20px',
+          fontFamily: 'Helvetica, sans-serif',
+          textAlign: 'center'
+        },
+        latitude: -0.2,
+        longitude: 0.5
+      });
+
+      a.push({
+        id: 'polygon',
+        content: 'This mountain is so great it has dots on it!',
+        polygon_px: [3184,794,3268,841,3367,1194,3327,1307,3065,1221,3097,847],
+        svgStyle: {
+          fill: 'url(#points)', //'rgba(255,0,0,0.3)',
+          stroke: 'rgba(255, 0, 50, 0.8)',
+          'stroke-width': '2px'
+        },
+        tooltip: {
+          content: 'This is a mountain',
+          position: 'right bottom'
+        }
+      });
+
+      a.push({
+        id: 'polygon-sky',
+        svgStyle: {
+          fill: 'rgba(0, 190, 255, 0.1)'
+        },
+        polygon_rad: (function() {
+          var points = [];
+
+          for (var i = 0; i < Math.PI*2; i+= Math.PI/8) {
+            points.push(i);
+            points.push(Math.PI/8);
+          }
+
+          return points;
+        }())
+      });
+
+      a.push({
+        id: 'circle',
+        tooltip: 'A circle of radius 30',
+        circle: 30,
+        svgStyle: {
+          fill: 'rgba(255,255,0,0.3)',
+          stroke: 'yellow',
+          'stroke-width': '2px'
+        },
+        longitude: 0,
+        latitude: -0.1,
+        anchor: 'center right'
+      });
+
+      a.push({
+        id: 'ellipse',
+        tooltip: 'An ellipse of radius 60/30',
+        ellipse: [60, 30],
+        svgStyle: {
+          fill: 'rgba(255,255,0,0.3)',
+          stroke: 'yellow',
+          'stroke-width': '2px'
+        },
+        longitude: 0,
+        latitude: -0.1,
+        anchor: 'center left'
+      });
+
+      a.push({
+        id: 'rect',
+        tooltip: 'A square a side 60',
+        rect: [60, 60],
+        svgStyle: {
+          fill: 'rgba(255,255,0,0.3)',
+          stroke: 'yellow',
+          'stroke-width': '2px'
+        },
+        longitude: 0,
+        latitude: -0.2,
+        anchor: 'center right'
+      });
+
+      a.push({
+        id: 'path',
+        tooltip: 'A custom path',
+        path: 'M 0 0 L 60 60 L 60 0 L 0 60 L 0 0',
+        svgStyle: {
+          fill: 'rgba(255,255,0,0.3)',
+          stroke: 'yellow',
+          'stroke-width': '2px'
+        },
+        longitude: 0,
+        latitude: -0.2,
+        anchor: 'center left'
+      });
+
+      return a;
+    }())
+  });
+
+  PSV.on('click', function(e) {
+    if (e.marker && !e.marker.isPolygon()) {
+      return;
+    }
+    PSV.addMarker({
+      id: '#' + Math.random(),
+      tooltip: 'Generated marker',
+      longitude: e.longitude,
+      latitude: e.latitude,
+      image: 'pin.png',
+      width: 32,
+      height: 32,
+      anchor: 'bottom center',
+      data: {
+        deletable: true
+      }
+    });
+  });
+
+  PSV.on('select-marker', function(marker) {
+    if (marker.data && marker.data.deletable) {
+      PSV.removeMarker(marker);
+    }
+    else if (marker.id === 'gif') {
+      var width = (Math.random()*0.4 + 0.8) * marker.width;
+      PSV.updateMarker({
+        id: marker.id,
+        width: width,
+        height: width
+      });
+    }
+  });
+</script>
+
+<script>
+  document.write('<script src="//' + location.host.split(':')[0] + ':35729/livereload.js" async defer><' + '/script>');
+</script>
+</body>
+</html>

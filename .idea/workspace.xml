@@ -23,19 +23,30 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="editor.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
+      <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/Photo-Sphere-Viewer/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="222" column="9" selection-start="7818" selection-end="7818" vertical-scroll-proportion="0.4643377" vertical-offset="3011" max-vertical-offset="23010">
+            <state line="280" column="94" selection-start="12164" selection-end="12164" vertical-scroll-proportion="0.55377907" vertical-offset="3819" max-vertical-offset="8385">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
+      <file leaf-file-name="panoconfig.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/Photo-Sphere-Viewer/panoconfig.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="22" selection-start="864" selection-end="882" vertical-scroll-proportion="-9.16" vertical-offset="11" max-vertical-offset="8625">
+            <state line="47" column="14" selection-start="1608" selection-end="1608" vertical-scroll-proportion="-18.76" vertical-offset="236" max-vertical-offset="5565">
+              <folding>
+                <marker date="1483641019000" expanded="true" signature="1507:1567" placeholder="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="notes.txt" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/notes.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="21" column="37" selection-start="841" selection-end="841" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1605">
               <folding />
             </state>
           </provider>
@@ -51,27 +62,27 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/js/selectDialog.js" />
-        <option value="$PROJECT_DIR$/pub/products/test_new/model/tm.js" />
-        <option value="$PROJECT_DIR$/pub/products/test_new/descriptor.js" />
-        <option value="$PROJECT_DIR$/pub/products/test_new/view/result.js" />
-        <option value="$PROJECT_DIR$/pub/products/test_new/app.js" />
-        <option value="$PROJECT_DIR$/pub/css/editor.css" />
+        <option value="$PROJECT_DIR$/pub/my_templates.html" />
+        <option value="$PROJECT_DIR$/pub/howitworks.html" />
+        <option value="$PROJECT_DIR$/pub/contact.html" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/descriptor.js" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/index.html" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/view/gamescreen.js" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/app.js" />
+        <option value="$PROJECT_DIR$/pub/templates/anonymPage/index.html" />
         <option value="$PROJECT_DIR$/pub/editor.html" />
-        <option value="$PROJECT_DIR$/pub/css/common.css" />
-        <option value="$PROJECT_DIR$/pub/products/test_new/style.css" />
-        <option value="$PROJECT_DIR$/pub/js/resourceManager.js" />
-        <option value="$PROJECT_DIR$/pub/storefront.html" />
-        <option value="$PROJECT_DIR$/pub/css/storefront.css" />
+        <option value="$PROJECT_DIR$/pub/test_index.html" />
         <option value="$PROJECT_DIR$/pub/js/config.js" />
-        <option value="$PROJECT_DIR$/pub/js/view/storefront.js" />
-        <option value="$PROJECT_DIR$/pub/js/model/app.js" />
-        <option value="$PROJECT_DIR$/pub/js/editor.js" />
+        <option value="$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/Photo-Sphere-Viewer/app.js" />
+        <option value="$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/Photo-Sphere-Viewer/config.js" />
+        <option value="$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/notes.txt" />
+        <option value="$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/Photo-Sphere-Viewer/panoconfig.js" />
+        <option value="$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/Photo-Sphere-Viewer/index.html" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-3" />
+    <option name="x" value="17" />
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="873" />
@@ -102,6 +113,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -166,13 +178,80 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="i" />
+              <option name="myItemId" value="products" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="panorama" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PanoramaDemo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="products" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="panorama" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PanoramaDemo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Photo-Sphere-Viewer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="products" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="panorama" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PanoramaDemo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="images" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -199,11 +278,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/pub/i/products/zoom_map" />
-      <recent name="$PROJECT_DIR$/pub/i" />
-      <recent name="$PROJECT_DIR$/pub/products/test_new/i/editor" />
+      <recent name="$PROJECT_DIR$/pub/products/panorama" />
       <recent name="$PROJECT_DIR$/pub" />
-      <recent name="$PROJECT_DIR$/pub/i/howitworks" />
+      <recent name="$PROJECT_DIR$/temp/icons" />
+      <recent name="$PROJECT_DIR$/pub/products/memoriz/view" />
+      <recent name="$PROJECT_DIR$/pub/i/products/zoom_map" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/temp" />
@@ -284,7 +363,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-3" y="23" width="1440" height="873" extended-state="6" />
+    <frame x="17" y="23" width="1440" height="873" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -292,7 +371,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19081779" sideWeight="0.5962815" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.223099" sideWeight="0.5962815" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32898173" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -317,120 +396,119 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="5" />
+      <option name="time" value="7" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/i/icon-desktop-small.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/css/common.css">
+    <entry file="file://$PROJECT_DIR$/pub/js/util/utils.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="769" column="20" selection-start="14318" selection-end="14318" vertical-scroll-proportion="0.44250363" vertical-offset="11231" max-vertical-offset="15825">
+        <state line="181" column="3" selection-start="6559" selection-end="6559" vertical-scroll-proportion="0.21103448" vertical-offset="2562" max-vertical-offset="5010">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/editor.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="13" selection-start="5119" selection-end="5119" vertical-scroll-proportion="0.14932127" vertical-offset="1221" max-vertical-offset="6120">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/i/products/memoriz/memoriz-img.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="26" selection-start="6189" selection-end="6189" vertical-scroll-proportion="0.35755813" vertical-offset="1299" max-vertical-offset="2565">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="85" column="3" selection-start="1593" selection-end="1677" vertical-scroll-proportion="0.3551674" vertical-offset="1031" max-vertical-offset="8070">
-          <folding>
-            <marker date="1480171825000" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/resourceManager.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="36" selection-start="1959" selection-end="1959" vertical-scroll-proportion="0.41048035" vertical-offset="303" max-vertical-offset="3045">
+        <state line="164" column="7" selection-start="7188" selection-end="7188" vertical-scroll-proportion="0.3005618" vertical-offset="2246" max-vertical-offset="3045">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/view/modals/previewShareImageModal.js">
+    <entry file="file://$PROJECT_DIR$/pub/css/common.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="17" selection-start="1671" selection-end="1676" vertical-scroll-proportion="0.33333334" vertical-offset="311" max-vertical-offset="1485">
-          <folding />
-        </state>
+        <state line="51" column="12" selection-start="883" selection-end="892" vertical-scroll-proportion="0.33285713" vertical-offset="532" max-vertical-offset="18285" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/i/icon-arrow-left.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/css/storefront.css">
+    <entry file="file://$PROJECT_DIR$/pub/editor.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="193" column="19" selection-start="3566" selection-end="3566" vertical-scroll-proportion="0.37571427" vertical-offset="2632" max-vertical-offset="3345">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/storefront.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="50" selection-start="5840" selection-end="5858" vertical-scroll-proportion="0.33333334" vertical-offset="1294" max-vertical-offset="2955">
+        <state line="116" column="14" selection-start="6566" selection-end="6566" vertical-scroll-proportion="0.3139535" vertical-offset="489" max-vertical-offset="5355">
           <folding>
-            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="tag#div#0;tag#body#0;tag#html#0" expanded="false" />
+            <element signature="n#style#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
+    <entry file="file://$PROJECT_DIR$/pub/js/selectDialog.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="639" column="43" selection-start="25368" selection-end="25370" vertical-scroll-proportion="0.33333334" vertical-offset="9356" max-vertical-offset="16995">
+        <state line="18" column="7" selection-start="782" selection-end="782" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1455">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/.idea/.name">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="12" selection-start="12" selection-end="12" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="725">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/config.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="307" column="44" selection-start="12789" selection-end="12793" vertical-scroll-proportion="0.33333334" vertical-offset="4376" max-vertical-offset="8145">
+        <state line="53" column="22" selection-start="2065" selection-end="2065" vertical-scroll-proportion="0.48314607" vertical-offset="451" max-vertical-offset="8490">
           <folding>
-            <element signature="e#20758#22678#0" expanded="false" />
-            <element signature="e#22688#22741#0" expanded="false" />
-            <element signature="e#23349#23842#0" expanded="false" />
+            <element signature="e#22150#24070#0" expanded="false" />
+            <element signature="e#24080#24133#0" expanded="false" />
+            <element signature="e#24741#25234#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/view/storefront.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/Photo-Sphere-Viewer/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="45" selection-start="3821" selection-end="3821" vertical-scroll-proportion="0.41048035" vertical-offset="1233" max-vertical-offset="1920">
+        <state line="396" column="37" selection-start="13636" selection-end="13636" vertical-scroll-proportion="0.48617175" vertical-offset="5606" max-vertical-offset="9735">
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/Photo-Sphere-Viewer/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="11" selection-start="1814" selection-end="1814" vertical-scroll-proportion="0.5828652" vertical-offset="305" max-vertical-offset="9540">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/images/6000x1710.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/images/6000x3664.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/images/6000x1356.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/notes.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="22" selection-start="864" selection-end="882" vertical-scroll-proportion="-9.16" vertical-offset="11" max-vertical-offset="8625">
+        <state line="21" column="37" selection-start="841" selection-end="841" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1605">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/Photo-Sphere-Viewer/panoconfig.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="222" column="9" selection-start="7818" selection-end="7818" vertical-scroll-proportion="0.4643377" vertical-offset="3011" max-vertical-offset="23010">
+        <state line="47" column="14" selection-start="1608" selection-end="1608" vertical-scroll-proportion="-18.76" vertical-offset="236" max-vertical-offset="5565">
+          <folding>
+            <marker date="1483641019000" expanded="true" signature="1507:1567" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/images/6000x1217.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/panorama/PanoramaDemo/Photo-Sphere-Viewer/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="280" column="94" selection-start="12164" selection-end="12164" vertical-scroll-proportion="0.55377907" vertical-offset="3819" max-vertical-offset="8385">
           <folding />
         </state>
       </provider>

@@ -1,0 +1,19 @@
+linters:
+  PropertySortOrder:
+    enabled: false
+
+  SingleLinePerSelector:
+    enabled: false
+
+  SelectorDepth:
+    max_depth: 4
+
+  NestingDepth:
+    max_depth: 4
+
+  HexLength:
+    enabled: false
+
+  VendorPrefix:
+    exclude:
+      - src/scss/_mixins.scss
