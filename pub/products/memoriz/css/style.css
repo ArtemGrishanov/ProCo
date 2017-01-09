@@ -107,6 +107,7 @@ img {
     /*transform: rotateY(180deg);*/
 /*}*/
 .flip-container.__opened .flipper {
+    -webkit-transform: rotateY(180deg);
     transform: rotateY(180deg);
 }
 
@@ -136,12 +137,14 @@ img {
 .front {
     z-index: 2;
     /* for firefox 31 */
+    -webkit-transform: rotateY(0deg);
     transform: rotateY(0deg);
     background: lightgreen;
 }
 
 /* back, initially hidden pane */
 .back {
+    -webkit-transform: rotateY(180deg);
     transform: rotateY(180deg);
     background: lightblue;
     background-size: cover;

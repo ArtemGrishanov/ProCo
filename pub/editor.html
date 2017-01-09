@@ -353,15 +353,14 @@
             if (App.isMobile() === true) {
                 Modal.showMessage({text:'Редактором удобнее пользоваться в полной версии сайта'});
             }
-            if (config.common.facebookAuthEnable === true) {
+            if (config.common.facebookAuthEnabled === true) {
                 App.on(FB_CONNECTED, function(result) {
-                    //TODO просто стартуем, окно логина не переведено на модал и автоматически скрывается
                     if (result === 'connected') {
                         Modal.hideLogin();
                         Editor.start();
                     }
                     else {
-                        // canClose:false - леер нельзя закрыть
+                        // canClose:false - значит что, этот леер нельзя закрыть
                         Modal.showLogin({text:'Войдите для создания своего проекта',canClose:false});
                     }
                 });

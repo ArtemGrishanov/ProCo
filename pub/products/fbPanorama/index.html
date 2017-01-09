@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Panorama</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <!--build:css style.css-->
+    <!-- этот файл кладется при публикации из products/common/css/tstx_cmn_products.css -->
+    <link href="../common/css/tstx_cmn_products.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <!--endbuild-->
+</head>
+<body>
+    <div id="id-mutapp_screens">
+
+    </div>
+
+    <script id="id-panorama_edit_template" type="text/template">
+        <div class="modal __active js-back_color js-back_img" data-app-property="id=startScr backgroundImg, id=startScr shadowEnable">
+            <div class="modal_cnt info js-back_shadow">
+                <div class="pano_preview js-pano js-pins_cnt" data-app-property="id=mm panoramaImageSrc" style="background-image:url(<%=backgroundImage%>)"></div>
+                <div class="logo js-logo js-start_logo" data-app-property="id=startScr logoPosition, id=startScr showLogo, id=mm logoUrl"></div>
+            </div>
+        </div>
+    </script>
+
+    <script id="id-text_pin_template" type="text/template">
+        <div class="pin_wr"><%=text%></div>
+    </script>
+
+    <!-- build:js index.min.js -->
+    <script type="text/javascript" src="../common/js/jquery.js"></script>
+    <script type="text/javascript" src="../common/js/underscore.js"></script>
+    <script type="text/javascript" src="../common/js/backbone.js"></script>
+    <script type="text/javascript" src="../common/js/mutapp.js"></script>
+    <script type="text/javascript" src="model/m.js"></script>
+    <script type="text/javascript" src="view/panoramaEditScreen.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <!--<script type="text/javascript" src="descriptor.js"></script>-->
+    <!-- endbuild -->
+    <script>
+        var app = null;
+        var tests = {};
+        $(document).ready(function() {
+            var DEFAULT_PARAMS = {};
+            app = new FbPanoramaApp({
+                defaults: DEFAULT_PARAMS
+            });
+            app.start();
+        });
+    </script>
+</body>
+</html>

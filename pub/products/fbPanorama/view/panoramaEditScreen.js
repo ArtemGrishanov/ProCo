@@ -1,11 +1,11 @@
 /**
- * Created by artyom.grishanov on 19.12.16.
+ * Created by artyom.grishanov on 09.01.17.
  */
-var StartScreen = MutApp.Screen.extend({
+var PanoramaEditScreen = MutApp.Screen.extend({
     /**
      * @see MutApp
      */
-    id: 'startScr',
+    id: 'panoramaEditScr',
 
     /**
      * Тег для группировки экранов в редакторе
@@ -17,15 +17,14 @@ var StartScreen = MutApp.Screen.extend({
      * Метка которая показывается в редакторе, рядом с превью экрана
      * @see MutApp
      */
-    name: 'Стартовый экран',
+    name: 'Панорама',
 
     logoPosition: {top: 200, left: 200},
     showLogo: true,
-    startHeaderText: 'Мемориз',
-    startDescription: 'Проверь свою память',
-    startButtonText: 'Начать',
-    backgroundImg: null,
-    shadowEnable: false,
+    /**
+     * Масштаб панорамы, который отображается на превью
+     */
+    previewScale: 0.25,
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -34,16 +33,12 @@ var StartScreen = MutApp.Screen.extend({
     el: null,
 
     template: {
-        "default": _.template($('#id-welcome_template').html())
+        "default": _.template($('#id-panorama_edit_template').html()),
+        "id-text_pin_template": _.template($('#id-text_pin_template').html())
     },
 
     events: {
-        "click .js-next": "onNextClick",
         "click .js-logo": "onLogoClick"
-    },
-
-    onNextClick: function(e) {
-        this.model.next();
     },
 
     onLogoClick: function(e) {
@@ -62,8 +57,8 @@ var StartScreen = MutApp.Screen.extend({
             .css('width','100%')
             .css('min-height','100%'));
         param.screenRoot.append(this.$el);
-        this.model.bind("change:state", function () {
-            if ('welcome' === this.model.get('state')) {
+        this.model.bind("change:panoramaImage", function () {
+            if (this.model.get('panoramaImage') !== null) {
                 this.render();
                 this.model.application.showScreen(this);
             }
@@ -71,7 +66,30 @@ var StartScreen = MutApp.Screen.extend({
     },
 
     render: function() {
-        this.$el.html(this.template['default']());
+        console.log('panoramaEditScreen render()');
+        this.$el.html(this.template['default']({
+            backgroundImage: this.model.get('panoramaImgSrc')
+        }));
+        var pImg = this.model.get('panoramaImage');
+        if (pImg) {
+            var w = pImg.width * this.previewScale;
+            var h = pImg.height * this.previewScale;
+            this.$el.find('.js-pano').width(w+'px').height(h+'px');
+        }
+        else {
+            //TODO show progress loader
+        }
+
+        // отрисовка пинов
+        var $pinsCnt = this.$el.find('.js-pins_cnt');
+        for (var i = 0; i < this.model.attributes.pins.length; i++) {
+            var p = this.model.attributes.pins[i];
+            var $pel = $(this.template[p.uiTemplate](p.data));
+            var top = Math.round(p.y*this.previewScale);
+            var left = Math.round(p.x*this.previewScale);
+            $pel.css('top',top).css('left',left);
+            $pinsCnt.append($pel);
+        }
 
         // установка свойств логотипа
         var $l = this.$el.find('.js-start_logo');
@@ -81,34 +99,6 @@ var StartScreen = MutApp.Screen.extend({
         }
         else {
             $l.hide();
-        }
-
-        if (this.model.get('showBackgroundImage')===true) {
-            if (this.backgroundImg) {
-                this.$el.find('.js-back_img').css('backgroundImage','url('+this.backgroundImg+')');
-            }
-        }
-        else {
-            this.$el.find('.js-back_img').css('backgroundImage','none');
-        }
-
-        var sbt = this.startButtonText;
-        var sht = this.startHeaderText;
-        var sd = this.startDescription;
-        if (this.model.application.isSmallWidth() === true) {
-            sbt = sbt.replace(/<br>/g,' ');
-            sht = sht.replace(/<br>/g,' ');
-            sd = sd.replace(/<br>/g,' ');
-        }
-        this.$el.find('.js-start_btn').html(sbt);
-        this.$el.find('.js-start_header').html(sht);
-        this.$el.find('.js-start_description').html(sd);
-
-        if (this.shadowEnable === true) {
-            this.$el.find('.js-back_shadow').css('background-color','rgba(0,0,0,0.4)');
-        }
-        else {
-            this.$el.find('.js-back_shadow').css('background-color','');
         }
 
         return this;
