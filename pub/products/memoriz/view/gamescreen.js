@@ -22,6 +22,7 @@ var GameScreen = MutApp.Screen.extend({
      * Контейнер в котором будет происходить рендер этого вью
      */
     el: null,
+    canTouch: true,
 
     template: {
         "default": _.template($('#id-game_screen_template').html()),
@@ -33,9 +34,10 @@ var GameScreen = MutApp.Screen.extend({
     },
 
     onCardClick: function(e) {
-        //TODO можно быстро накликать и привести вью в невалидное состояние
-        var cardId = $(e.currentTarget).attr('data-card-id');
-        this.model.touchCard(cardId);
+        if (this.canTouch === true) {
+            var cardId = $(e.currentTarget).attr('data-card-id');
+            this.model.touchCard(cardId);
+        }
     },
 
     initialize: function (param) {
@@ -48,6 +50,7 @@ var GameScreen = MutApp.Screen.extend({
 
         this.model.bind("change:state", function() {
             if ('game' === this.model.get('state')) {
+                this.canTouch = true;
                 this.render();
                 this.model.application.showScreen(this);
             }
@@ -70,6 +73,7 @@ var GameScreen = MutApp.Screen.extend({
             // открыть вторую карту или закрыть все
             var c2 = this.model.get('openedCard2');
             if (c2 !== null) {
+                this.canTouch = false;
                 this.openCard(c2);
             }
             else {
@@ -152,8 +156,9 @@ var GameScreen = MutApp.Screen.extend({
     },
 
     closeCard: function(card) {
-        setTimeout(function() {
+        setTimeout((function() {
+            this.canTouch = true;
             $('[data-card-id='+card.id+']').removeClass('__opened');
-        }, 1000);
+        }).bind(this), 1000);
     }
 });

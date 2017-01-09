@@ -29,6 +29,10 @@
     background-image: url(//testix.me/products/common/i/vk-share-icon.png);
 }
 
+@media (max-width:600px)  {
+
+}
+
 @media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 1.5dppx) {
     .tstx_share_i {
         background-image: url(//testix.me/products/common/i/fb-share-icon@2x.png);

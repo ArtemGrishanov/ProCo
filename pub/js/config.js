@@ -45,7 +45,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['prod'], //dev test prod
+        configurationSetsOnStart: ['dev'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -286,6 +286,8 @@ var config = {
                 entities: [
                     {
                         //Фильмы и режиссеры  http://p.testix.me/121947341568004/6842f5cd6d/
+                        //Автомобили http://p.testix.me/1045302892173346/06cc56a6dc
+                        //Красотки http://p.testix.me/1045302892173346/e78a9cd599/
                     }
                 ]
             },

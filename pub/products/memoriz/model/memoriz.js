@@ -251,12 +251,17 @@ var MemorizModel = MutApp.Model.extend({
      * @param {string} cardId
      */
     touchCard: function(cardId) {
+        var p = this.getPairForCardId(cardId);
+        if (p.guessed === true) {
+            // клик по уже отгаданной карте
+            return;
+        }
         var c = this.getGameCardById(cardId);
         if (this.attributes.openedCard1 === null) {
             // первый раз кликнули в карту
             this.set({'openedCard1': c});
         }
-        else {
+        else if (this.attributes.openedCard2 === null && this.attributes.openedCard1.id !== cardId) {
             // второй раз кликнули в карту: либо ошибка, либо пара отгадана
             this.set({'openedCard2': c});
             var p1 = this.getPairForCardId(this.attributes.openedCard1.id);
@@ -286,6 +291,9 @@ var MemorizModel = MutApp.Model.extend({
                 'openedCard1': null,
                 'openedCard2': null
             });
+        }
+        else {
+
         }
     },
 

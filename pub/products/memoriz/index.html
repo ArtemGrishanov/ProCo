@@ -3,7 +3,9 @@
 <head>
     <title>Memoriz</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <!--build:css style.css-->
+    <!-- этот файл кладется при публикации из products/common/css/tstx_cmn_products.css -->
     <link href="../common/css/tstx_cmn_products.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <!--endbuild-->
@@ -12,19 +14,6 @@
     <div id="id-mutapp_screens">
 
     </div>
-
-    <!--<div class="flip-container">-->
-        <!--<div class="flipper hover">-->
-            <!--<div class="front">-->
-                <!--&lt;!&ndash; front content &ndash;&gt;-->
-                <!--<p>Front content</p>-->
-            <!--</div>-->
-            <!--<div class="back">-->
-                <!--&lt;!&ndash; back content &ndash;&gt;-->
-                <!--<p>Back content</p>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
 
     <!-- Стартовый экран -->
     <script id="id-welcome_template" type="text/template">
@@ -56,9 +45,9 @@
     <script id="id-opened_screen_template" type="text/template">
         <div class="modal __active js-back_color js-back_img" data-app-property="type=opened backgroundImg, type=opened shadowEnable">
             <div class="modal_cnt info js-back_shadow">
-                <div class="title js-explanation_title" data-app-property="id=mm pairs.<%=pairIndex%>.explanation.title"><%=title%></div>
+                <div class="info_title js-explanation_title" data-app-property="id=mm pairs.<%=pairIndex%>.explanation.title"><%=title%></div>
                 <div class="js-opened_cards"></div>
-                <div data-app-property="id=mm pairs.<%=pairIndex%>.explanation.text" class="js-explanation_text"><%=text%></div>
+                <div data-app-property="id=mm pairs.<%=pairIndex%>.explanation.text" class="explanation js-explanation_text"><%=text%></div>
                 <div class="js-btn_wr">
                     <div class="button js-test_btn js-close_opened_layer" data-app-property="type=opened nextButtonText">Далее</div>
                 </div>

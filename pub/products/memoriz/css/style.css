@@ -26,10 +26,6 @@ img {
     overflow: hidden;
 }
 
-.title {
-    font-size: 28px;
-    color: #4f4f4f;
-}
 .button {
     display: inline-block;
     border: 0px solid;
@@ -62,7 +58,7 @@ img {
     width: 100%;
     min-height: 100%;
     text-align: center;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
     background-color: #fff;
     background-size: cover;
     background-position: center;
@@ -163,4 +159,70 @@ img {
     left: 0;
     cursor: pointer;
     margin: 20px auto;
+}
+
+@media (max-width:600px)  {
+    /* using body for making this rules more important then 'js-*' rules from engine.js */
+    body .info_title {
+        padding: 60px 0 16px;
+    }
+    body .info_tx {
+        padding: 16px 0 16px;
+    }
+    body .explanation {
+        padding: 16px 0 16px;
+    }
+    body .js-logo {
+        position: initial;
+        margin-top: 42px;
+    }
+    body .js-btn_wr {
+        padding-top: 16px;
+        margin-top: 0;
+    }
+    body .js-download_btn_wr {
+        padding-top: 16px;
+        margin-top: 0;
+    }
+    .modal_cnt {
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+    .modal {
+
+    }
+    body .js-mutapp_share_fb {
+        position: relative;
+        margin-top: 16px;
+        top:0 !important; /* изменение контролом drag меняет эти свойства. Подумать как обойтись без important */
+        left:0 !important;
+    }
+    body .js-mutapp_share_vk {
+        position: relative;
+        margin-top: 16px;
+        top:0 !important;
+        left:0 !important;
+    }
+
+    body .card_field {
+        padding: 6px;
+    }
+}
+@media (max-width:320px)  {
+    body .flip-container,
+    body .front,
+    body .back {
+        width: 78px;
+        height: 116px;
+        border-radius: 8px;
+    }
+}
+@media (max-width:310px)  {
+    body .flip-container,
+    body .front,
+    body .back {
+        width: 68px;
+        height: 110px;
+        border-radius: 8px;
+    }
 }
