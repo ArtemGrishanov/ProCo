@@ -75,27 +75,35 @@ var PanoramaEditScreen = MutApp.Screen.extend({
     },
 
     render: function() {
-        console.log('panoramaEditScreen render() + image');
-        this.$el.html(this.template['default']({
-            backgroundImage: this.model.get('panoramaImgSrc')
-        }));
+
         var pImg = this.model.get('panoramaImage');
         if (pImg) {
+            console.log('panoramaEditScreen.render(): +image');
+            this.$el.html(this.template['default']({
+                backgroundImage: this.model.get('panoramaImgSrc')
+            }));
             var w = pImg.width * this.previewScale;
             var h = pImg.height * this.previewScale;
             this.$el.find('.js-pano').width(w+'px').height(h+'px');
+            // отрисовка пинов
+            var $pinsCnt = this.$el.find('.js-pins_cnt');
+            for (var i = 0; i < this.model.attributes.pins.length; i++) {
+                var p = this.model.attributes.pins[i];
+                p.data.pinIndex = i;
+                var $pel = $(this.template[p.uiTemplate](p.data));
+                var top = Math.round(p.position.top*this.previewScale);
+                var left = Math.round(p.position.left*this.previewScale);
+                $pel.css('top',top).css('left',left);
+                $pinsCnt.append($pel);
+            }
         }
-        // отрисовка пинов
-        var $pinsCnt = this.$el.find('.js-pins_cnt');
-        for (var i = 0; i < this.model.attributes.pins.length; i++) {
-            var p = this.model.attributes.pins[i];
-            var $pel = $(this.template[p.uiTemplate](p.data));
-            var top = Math.round(p.y*this.previewScale);
-            var left = Math.round(p.x*this.previewScale);
-            $pel.css('top',top).css('left',left);
-            $pinsCnt.append($pel);
+        else {
+            console.log('panoramaEditScreen.render(): no image');
+            this.$el.html(this.template['default']({
+                backgroundImage: ''
+            }));
+            //TODO show progress loader
         }
-        //TODO show progress loader
 
         // установка свойств логотипа
         var $l = this.$el.find('.js-start_logo');
@@ -107,6 +115,7 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             $l.hide();
         }
 
+        this.renderChecksum = Math.random();
         return this;
     }
 });

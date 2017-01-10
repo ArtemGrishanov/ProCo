@@ -9,10 +9,32 @@ descriptor.css = [
 ];
 
 descriptor.app = [
+    {
+        selector: 'id=mm pins',
+        rules: 'createPin'
+    },
+    {
+        selector: 'id=mm panoramaImgSrc',
+        rules: 'imgUrl'
+    },
+    {
+        selector: 'id=mm pins.{{number}}.position',
+        rules: 'drag',
+        updateScreens: false
+    }
 ];
 
 // правила, как редактировать свойства
 descriptor.rules = {
+    // с помощью клика по dom-елементу добавляется элемент в массив
+    createPin: {
+        updateScreens: false,
+        controls: 'ClickAndAddToArray',
+        canAdd: ["proto__pin_text"],
+        controlParams: {
+
+        }
+    },
     url: {
         updateScreens: false,
         controls: "StringControl",
@@ -197,18 +219,6 @@ descriptor.rules = {
         cssProperty: 'border-bottom-color',
         filter: true
     },
-    pairAddRule: {
-        updateScreens: true,
-        canAdd: ["proto__сard-photo"],
-        // добавлением слайдов занимается SlideGroupControl
-        controls: [
-            {
-                name: "SlideGroupControl",
-                params: {
-                }
-            }
-        ]
-    },
     trueFalse: {
         updateScreens: true,
         runTests: false,
@@ -298,28 +308,19 @@ descriptor.rules = {
  */
 descriptor.prototypes = {
     // шаблон простой фото-карточки
-    "proto__сard-photo": {
-        label: 'Фото-пара',
-        img: 'products/test_new/i/editor/Icon-text-vopros.png', // +devPrototypesHostName
+    "proto__pin_text": {
+        label: 'Текстовый пин',
+        img: null, // картинка для мультивыбора в диалоге
         data: {
-            //id: null, set programmatically
-            cards: [
-                {
-                    uiTemplate: 'id-card_text_template',
-                    text: 'Ответ 1',
-                    img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/ocean.jpg'
-                },
-                {
-                    uiTemplate: 'id-card_text_template',
-                    text: 'Ответ 1',
-                    img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/ocean.jpg'
-                }
-            ],
-            guessed: false,
-            explanation: {
-                title: 'Заголовок',
-                text: 'Пояснение к правильному ответу'
-            }
+            id: '12345678',
+            data: {
+                text: 'Пример метки<br>на панораме'
+            },
+            position: {
+                left: 400,
+                top: 280
+            },
+            uiTemplate: 'id-text_pin_template'
         }
     }
 };

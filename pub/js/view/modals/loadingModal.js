@@ -20,5 +20,4 @@ LoadingModal.prototype = Object.create(AbstractModal.prototype);
 LoadingModal.prototype.constructor = LoadingModal;
 
 LoadingModal.prototype.render = function() {
-    console.log('Loading render');
 }

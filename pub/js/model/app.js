@@ -349,8 +349,6 @@ var App = App || {};
      * @param response
      */
     function statusChangeCallback(response) {
-        console.log('statusChangeCallback');
-        console.log(response);
         // The response object is returned with a status field that lets the
         // app know the current login status of the person.
         // Full docs on the response object can be found in the documentation
@@ -403,7 +401,6 @@ var App = App || {};
             FB.api('/me',
                 {fields: "id,about,age_range,picture,bio,birthday,context,email,first_name,gender,hometown,link,location,middle_name,name,timezone,website,work"},
                 function(response) {
-                    console.log('Successful login for: ' + response.name);
                     userData = response;
                     updateUI();
                     if (typeof callbacks[USER_DATA_RECEIVED] === 'function') {
@@ -423,7 +420,6 @@ var App = App || {};
             FB.api(userData.id+'/friends',
                 {fields: "id,about,age_range,picture,bio,birthday,context,email,first_name,gender,hometown,link,location,middle_name,name,timezone,website,work"},
                 function(response) {
-                    console.log('Successful getfriends');
                 });
         }
     }

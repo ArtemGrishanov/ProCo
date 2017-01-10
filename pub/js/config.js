@@ -482,6 +482,12 @@ var config = {
             parentId: 'id-control_cnt',
             type: 'workspace' // контрол появляется на поле для редактиования, когда показывается экран приложения
         },
+        ClickAndAddToArray: {
+            defaultDirectiveIndex: -1, // view не используется
+            directives: [],
+            parentId: 'id-control_cnt',
+            type: 'workspace' // контрол появляется на поле для редактиования, когда показывается экран приложения
+        },
         Slide: {
             defaultDirectiveIndex: 0,
             directiveLoadPriority: 10, // специальный приоритет для более быстрой загрузки контрола, высокий для более важных

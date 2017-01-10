@@ -19,8 +19,10 @@ var FbPanoramaModel = MutApp.Model.extend({
                 data: {
                     text: 'Пример метки<br>на панораме'
                 },
-                x: 400,
-                y: 280,
+                position: {
+                    left: 400,
+                    top: 280
+                },
                 uiTemplate: 'id-text_pin_template'
             }
         ]

@@ -536,6 +536,17 @@ var Engine = {};
     }
 
     /**
+     * В приложении произошел рендер экрана.
+     * Надо обновить его.
+     *
+     * @param {MutApp.Screen} mutAppScreen
+     */
+    function onScreenRender(mutAppScreen) {
+        console.log('Engine:onScreenRender');
+        createAppScreens();
+    }
+
+    /**
      * вставить во view данные
      *
      * @param view
@@ -788,7 +799,8 @@ var Engine = {};
             productWindow.app = new productWindow[cfg.constructorName]({
                 width: cfg.defaultWidth,
                 height: cfg.defaultHeight,
-                defaults: defaults
+                defaults: defaults,
+                screensRenderCallbacks: [onScreenRender]
             });
             productWindow.app.start();
         }
@@ -824,7 +836,8 @@ var Engine = {};
                 //TODO ширина и высота такие аппПроперти
                 width: cfg.defaultWidth,
                 height: cfg.defaultHeight,
-                defaults: [apps, newApps]
+                defaults: [apps, newApps],
+                screensRenderCallbacks: [onScreenRender]
             });
             productWindow.app.start();
         }
@@ -849,7 +862,8 @@ var Engine = {};
                 //TODO ширина и высота такие аппПроперти
                 width: cfg.defaultWidth,
                 height: cfg.defaultHeight,
-                defaults: [apps]
+                defaults: [apps],
+                screensRenderCallbacks: [onScreenRender]
             });
             productWindow.app.start();
         }

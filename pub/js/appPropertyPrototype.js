@@ -26,10 +26,20 @@ var AppPropertyPrototype = function(key, descriptor) {
 
 /**
  * Возвратить клонированное значение прототипа
+ *
+ * @param {object} [extendProperties] - возможность добавить/переписать свойства. Опционально
  * @returns {*}
  */
-AppPropertyPrototype.prototype.getValue = function() {
-    return JSON.parse(JSON.stringify(this._value));
+AppPropertyPrototype.prototype.getValue = function(extendProperties) {
+    var r = JSON.parse(JSON.stringify(this._value));
+    if (extendProperties) {
+        for (var key in extendProperties) {
+            if (extendProperties.hasOwnProperty(key)) {
+                r[key] = extendProperties[key];
+            }
+        }
+    }
+    return r;
 };
 
 /**
