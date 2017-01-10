@@ -27,9 +27,9 @@ var FbPanoramaApp = MutApp.extend({
     },
 
     start: function() {
-        for (var i = 0; i < this._screens.length; i++) {
-            this._screens[i].$el.hide();
-        }
+//        for (var i = 0; i < this._screens.length; i++) {
+//            this._screens[i].$el.hide();
+//        }
         this._models[0].start();
     }
 });

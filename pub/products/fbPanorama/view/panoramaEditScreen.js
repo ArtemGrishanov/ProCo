@@ -18,13 +18,17 @@ var PanoramaEditScreen = MutApp.Screen.extend({
      * @see MutApp
      */
     name: 'Панорама',
-
+    /**
+     * Какую по умолчанию показывать высоту картинки на экране превью
+     * Из этого будет рассчитан масштаб previewScale
+     */
+    DEF_PANORAMA_PREVIEW_HEIGHT: 600,
     logoPosition: {top: 200, left: 200},
     showLogo: true,
     /**
      * Масштаб панорамы, который отображается на превью
      */
-    previewScale: 0.25,
+    previewScale: undefined,
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -59,6 +63,11 @@ var PanoramaEditScreen = MutApp.Screen.extend({
         param.screenRoot.append(this.$el);
         this.model.bind("change:panoramaImage", function () {
             if (this.model.get('panoramaImage') !== null) {
+
+                if (this.previewScale === undefined) {
+                    this.previewScale = this.DEF_PANORAMA_PREVIEW_HEIGHT/this.model.get('panoramaImage').height;
+                }
+
                 this.render();
                 this.model.application.showScreen(this);
             }
@@ -66,7 +75,7 @@ var PanoramaEditScreen = MutApp.Screen.extend({
     },
 
     render: function() {
-        console.log('panoramaEditScreen render()');
+        console.log('panoramaEditScreen render() + image');
         this.$el.html(this.template['default']({
             backgroundImage: this.model.get('panoramaImgSrc')
         }));
@@ -76,10 +85,6 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             var h = pImg.height * this.previewScale;
             this.$el.find('.js-pano').width(w+'px').height(h+'px');
         }
-        else {
-            //TODO show progress loader
-        }
-
         // отрисовка пинов
         var $pinsCnt = this.$el.find('.js-pins_cnt');
         for (var i = 0; i < this.model.attributes.pins.length; i++) {
@@ -90,6 +95,7 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             $pel.css('top',top).css('left',left);
             $pinsCnt.append($pel);
         }
+        //TODO show progress loader
 
         // установка свойств логотипа
         var $l = this.$el.find('.js-start_logo');
