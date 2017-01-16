@@ -536,14 +536,23 @@ var Engine = {};
     }
 
     /**
-     * В приложении произошел рендер экрана.
-     * Надо обновить его.
+     * Обработка события об изменениях в приложении: рендер экрана, изменения размеров приложения и тп
      *
-     * @param {MutApp.Screen} mutAppScreen
+     * @param {Object} e
      */
-    function onScreenRender(mutAppScreen) {
-        console.log('Engine:onScreenRender');
-        createAppScreens();
+    function onAppChanged(e) {
+
+        switch (e.type) {
+            case 'mutapp_app_size_changed': {
+                console.log('Engine:mutapp_app_size_changed = ' + e.app.width+'x'+ e.app.height);
+                break;
+            }
+            case 'mutapp_screen_rendered': {
+                console.log('Engine:mutapp_screen_rendered = ' + e.screen.id);
+                createAppScreens();
+                break;
+            }
+        }
     }
 
     /**
@@ -800,7 +809,7 @@ var Engine = {};
                 width: cfg.defaultWidth,
                 height: cfg.defaultHeight,
                 defaults: defaults,
-                screensRenderCallbacks: [onScreenRender]
+                appChangeCallbacks: [onAppChanged]
             });
             productWindow.app.start();
         }
@@ -837,7 +846,7 @@ var Engine = {};
                 width: cfg.defaultWidth,
                 height: cfg.defaultHeight,
                 defaults: [apps, newApps],
-                screensRenderCallbacks: [onScreenRender]
+                appChangeCallbacks: [onAppChanged]
             });
             productWindow.app.start();
         }
@@ -863,7 +872,7 @@ var Engine = {};
                 width: cfg.defaultWidth,
                 height: cfg.defaultHeight,
                 defaults: [apps],
-                screensRenderCallbacks: [onScreenRender]
+                appChangeCallbacks: [onAppChanged]
             });
             productWindow.app.start();
         }

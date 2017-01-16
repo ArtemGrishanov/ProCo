@@ -17,18 +17,21 @@ var MutApp = function(param) {
     this.loaderWindow = null;
     this.appConstructor = 'mutapp';
     /**
-     * Колбеки в которые будет приходить информация о перерисовке экранов.
-     * Только при условии что экран внутри render() будет менять контрольную сумму renderChecksum
+     * Колбеки в которые будет приходить информация о перерисовке экранов и прочих изменениях
      * @type {Array}
      * @private
      */
-    this._renderCallbacks = [];
+    this._appChangeCallbacks = [];
     /**
-     * Хеши экранов для отслеживания новых рендеров
+     * Предыдущее состояние приложения
      * @type {{}}
      * @private
      */
-    this._previousScreensRenderChecksum = {};
+    this._previousAppState = {
+        width: undefined,
+        height: undefined,
+        screensRenderChecksum: {}
+    };
     /**
      * Если isPublished === true, то запущено опубликованные приложение.
      * Например, только в опубликованном приложении надо собирать статистику.
@@ -131,12 +134,12 @@ var MutApp = function(param) {
             }
         }
 
-        if (param.screensRenderCallbacks) {
-            if (Object.prototype.toString.call(param.screensRenderCallbacks) === '[object Array]') {
-                this._screensRenderCallbacks = param.screensRenderCallbacks;
+        if (param.appChangeCallbacks) {
+            if (Object.prototype.toString.call(param.appChangeCallbacks) === '[object Array]') {
+                this._appChangeCallbacks = param.appChangeCallbacks;
             }
             else {
-                log('MutApp.constructor: screensRenderCallbacks must be Array', true);
+                log('MutApp.constructor: appChangeCallbacks must be Array', true);
             }
 
         }
@@ -159,6 +162,10 @@ var MutApp = function(param) {
         this.onAppMonitorTimer();
     }).bind(this),200);
 };
+
+MutApp.SCREEN_RENDERED = 'mutapp_screen_rendered';
+MutApp.APP_SIZE_CHANGED = 'mutapp_app_size_changed';
+
 /**
  * dom-элемент в котором помещаются все экраны
  * Создается в конструкторе приложения
@@ -668,17 +675,34 @@ MutApp.prototype.isSmallWidth = function() {
  * Таймер, мониторящий состояние приложения
  */
 MutApp.prototype.onAppMonitorTimer = function() {
-    // проверка хешей экранов: произошел ли render() какого либо экрана
-    if (this._screensRenderCallbacks && this._screensRenderCallbacks.length > 0) {
+    if (this._appChangeCallbacks && this._appChangeCallbacks.length > 0) {
+        // проверка изменения размеров приложения
+        if (this._previousAppState.width !== this.width || this._previousAppState.height !== this.height) {
+            var event = {
+                type: MutApp.APP_SIZE_CHANGED,
+                app: this
+            };
+            for (var j = 0; j < this._appChangeCallbacks.length; j++) {
+                this._appChangeCallbacks[j](event);
+            }
+            this._previousAppState.width = this.width;
+            this._previousAppState.height = this.height;
+        }
+
+        // проверка хешей экранов: произошел ли render() какого либо экрана
         var v = null;
         for (var i = 0; i < this._screens.length; i++) {
             v = this._screens[i];
             // если renderChecksum не меняется (undefined) то колбек не будет вызван
-            if (v.renderChecksum !== this._previousScreensRenderChecksum[v]) {
-                for (var j = 0; j < this._screensRenderCallbacks.length; j++) {
-                    this._screensRenderCallbacks[j](v);
+            if (v.renderChecksum !== this._previousAppState.screensRenderChecksum[v]) {
+                var event = {
+                    type: MutApp.SCREEN_RENDERED,
+                    screen: v
+                };
+                for (var j = 0; j < this._appChangeCallbacks.length; j++) {
+                    this._appChangeCallbacks[j](event);
                 }
-                this._previousScreensRenderChecksum[v] = v.renderChecksum;
+                this._previousAppState.screensRenderChecksum[v] = v.renderChecksum;
             }
         }
     }

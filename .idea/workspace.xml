@@ -23,78 +23,84 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="descriptor.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/descriptor.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="312" column="57" selection-start="7975" selection-end="7975" vertical-scroll-proportion="-6.68" vertical-offset="4513" max-vertical-offset="5235">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Drag.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/controls/Drag.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="22" selection-start="995" selection-end="996" vertical-scroll-proportion="-13.2" vertical-offset="15" max-vertical-offset="1155">
+            <state line="61" column="36" selection-start="2524" selection-end="2524" vertical-scroll-proportion="0.0" vertical-offset="710" max-vertical-offset="1560">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="descriptor.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pub/products/test_new/descriptor.js">
+      <file leaf-file-name="engine.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="322" column="8" selection-start="10472" selection-end="10476" vertical-scroll-proportion="0.33283132" vertical-offset="4609" max-vertical-offset="13410">
+            <state line="759" column="13" selection-start="30729" selection-end="30729" vertical-scroll-proportion="-8.24" vertical-offset="11179" max-vertical-offset="17730">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="panoramaEditScreen.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/view/panoramaEditScreen.js">
+      <file leaf-file-name="editor.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="94" column="49" selection-start="2983" selection-end="2983" vertical-scroll-proportion="-9.0" vertical-offset="1185" max-vertical-offset="1890">
+            <state line="407" column="51" selection-start="15741" selection-end="15755" vertical-scroll-proportion="-8.84" vertical-offset="5884" max-vertical-offset="23310">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClickAndAddToArray.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/controls/ClickAndAddToArray.js">
+      <file leaf-file-name="descriptor.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/descriptor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="14" selection-start="1004" selection-end="1004" vertical-scroll-proportion="-14.4" vertical-offset="0" max-vertical-offset="825">
+            <state line="20" column="5" selection-start="299" selection-end="535" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5400">
               <folding>
-                <marker date="1484046864000" expanded="true" signature="335:459" placeholder="{...}" />
-                <marker date="1484046864000" expanded="true" signature="335:458" placeholder="{...}" />
+                <marker date="1484414805000" expanded="true" signature="118:624" placeholder="[...]" />
+                <marker date="1484414805000" expanded="true" signature="124:190" placeholder="{&quot;selector&quot;: 'id=mm pins'...}" />
+                <marker date="1484414805000" expanded="true" signature="196:292" placeholder="{&quot;selector&quot;: 'id=mm panoramaImgSrc'...}" />
+                <marker date="1484414805000" expanded="true" signature="298:534" placeholder="{&quot;selector&quot;: 'id=mm pins.{{number}}.position'...}" />
+                <marker date="1484414805000" expanded="true" signature="685:8025" placeholder="{...}" />
+                <marker date="1484414805000" expanded="true" signature="8178:8617" placeholder="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="appPropertyPrototype.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/js/appPropertyPrototype.js">
+      <file leaf-file-name="TextQuickInput.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/controls/TextQuickInput.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="13" selection-start="1169" selection-end="1169" vertical-scroll-proportion="0.0" vertical-offset="303" max-vertical-offset="1080">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/js/config.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="489" column="10" selection-start="20905" selection-end="20905" vertical-scroll-proportion="0.0" vertical-offset="6324" max-vertical-offset="9435">
+            <state line="40" column="37" selection-start="1739" selection-end="1739" vertical-scroll-proportion="-14.48" vertical-offset="238" max-vertical-offset="1365">
               <folding>
-                <element signature="e#13423#15272#0" expanded="false" />
+                <marker date="1484417489000" expanded="true" signature="851:2066" placeholder="{...}" />
+                <marker date="1484417489000" expanded="true" signature="2820:2989" placeholder="{...}" />
+                <marker date="1484417489000" expanded="true" signature="2914:2946" placeholder="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="m.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/model/m.js">
+      <file leaf-file-name="fbPanorama.txt" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/fbPanorama.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="18" selection-start="668" selection-end="668" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="900">
+            <state line="13" column="0" selection-start="626" selection-end="626" vertical-scroll-proportion="0.28301886" vertical-offset="0" max-vertical-offset="689">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TextQuickInputDraggable.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/controls/TextQuickInputDraggable.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="27" selection-start="586" selection-end="586" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2175">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/test_index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="29" column="29" selection-start="1201" selection-end="1201" vertical-scroll-proportion="-14.375" vertical-offset="90" max-vertical-offset="990">
               <folding />
             </state>
           </provider>
@@ -103,16 +109,16 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="80" selection-start="1205" selection-end="1205" vertical-scroll-proportion="-6.1836734" vertical-offset="102" max-vertical-offset="915">
+            <state line="27" column="82" selection-start="1207" selection-end="1241" vertical-scroll-proportion="-14.375" vertical-offset="60" max-vertical-offset="915">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="appScreen.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/js/appScreen.js">
+      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="40" selection-start="134" selection-end="134" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1980">
+            <state line="12" column="16" selection-start="249" selection-end="249" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="600">
               <folding />
             </state>
           </provider>
@@ -128,26 +134,27 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/products/memoriz/view/welcome.js" />
-        <option value="$PROJECT_DIR$/pub/products/memoriz/view/result.js" />
-        <option value="$PROJECT_DIR$/pub/products/fbPanorama/css/style.css" />
-        <option value="$PROJECT_DIR$/pub/products/fbPanorama/app.js" />
-        <option value="$PROJECT_DIR$/pub/js/view/modals/loadingModal.js" />
-        <option value="$PROJECT_DIR$/pub/js/model/app.js" />
-        <option value="$PROJECT_DIR$/pub/products/common/js/mutapp.js" />
-        <option value="$PROJECT_DIR$/pub/js/engine.js" />
-        <option value="$PROJECT_DIR$/pub/js/config.js" />
-        <option value="$PROJECT_DIR$/pub/editor.html" />
         <option value="$PROJECT_DIR$/pub/js/appPropertyPrototype.js" />
-        <option value="$PROJECT_DIR$/pub/controls/ClickAndAddToArray.js" />
-        <option value="$PROJECT_DIR$/pub/products/fbPanorama/index.html" />
-        <option value="$PROJECT_DIR$/pub/products/fbPanorama/view/panoramaEditScreen.js" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/model/m.js" />
+        <option value="$PROJECT_DIR$/pub/css/product_cnt.css" />
+        <option value="$PROJECT_DIR$/pub/css/editor.css" />
+        <option value="$PROJECT_DIR$/pub/controls/ClickAndAddToArray.js" />
+        <option value="$PROJECT_DIR$/pub/products/common/js/mutapp.js" />
+        <option value="$PROJECT_DIR$/pub/products/fbPanorama/view/panoramaEditScreen.js" />
+        <option value="$PROJECT_DIR$/pub/js/editor.js" />
+        <option value="$PROJECT_DIR$/pub/products/fbPanorama/index.html" />
+        <option value="$PROJECT_DIR$/pub/test_index.html" />
+        <option value="$PROJECT_DIR$/pub/js/config.js" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/descriptor.js" />
+        <option value="$PROJECT_DIR$/pub/controls/Drag.js" />
+        <option value="$PROJECT_DIR$/pub/js/engine.js" />
+        <option value="$PROJECT_DIR$/pub/controls/TextQuickInput.js" />
+        <option value="$PROJECT_DIR$/pub/products/fbPanorama/fbPanorama.txt" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="-4" />
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="873" />
@@ -228,8 +235,26 @@
               <option name="myItemId" value="products" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="test_new" />
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="products" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="memoriz" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -248,6 +273,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="products" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fbPanorama" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -382,7 +429,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <frame x="-4" y="23" width="1440" height="873" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -419,121 +466,129 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/PanoramaDemo/Photo-Sphere-Viewer/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="314" column="56" selection-start="13468" selection-end="13563" vertical-scroll-proportion="0.35625" vertical-offset="4482" max-vertical-offset="8385">
-          <folding>
-            <element signature="n#style#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1095" column="23" selection-start="42568" selection-end="42576" vertical-scroll-proportion="0.33283132" vertical-offset="16204" max-vertical-offset="17595">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/appScreen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="40" selection-start="134" selection-end="134" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1980">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/descriptor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="24" selection-start="350" selection-end="350" vertical-scroll-proportion="-0.071117565" vertical-offset="304" max-vertical-offset="7770">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="662" column="60" selection-start="24552" selection-end="24552" vertical-scroll-proportion="0.0" vertical-offset="9826" max-vertical-offset="19545">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/appPropertyPrototype.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="13" selection-start="1169" selection-end="1169" vertical-scroll-proportion="0.0" vertical-offset="303" max-vertical-offset="1080">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="453" column="13" selection-start="17071" selection-end="17071" vertical-scroll-proportion="0.0" vertical-offset="6219" max-vertical-offset="23160">
+        <state line="165" column="48" selection-start="5883" selection-end="5905" vertical-scroll-proportion="0.33283132" vertical-offset="2254" max-vertical-offset="19905">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/controls/ClickAndAddToArray.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="14" selection-start="1004" selection-end="1004" vertical-scroll-proportion="-14.4" vertical-offset="0" max-vertical-offset="825">
+        <state line="39" column="32" selection-start="1499" selection-end="1515" vertical-scroll-proportion="-13.28" vertical-offset="253" max-vertical-offset="930">
           <folding>
-            <marker date="1484046864000" expanded="true" signature="335:459" placeholder="{...}" />
-            <marker date="1484046864000" expanded="true" signature="335:458" placeholder="{...}" />
+            <marker date="1484229671000" expanded="true" signature="-1:-1" placeholder="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/editor.html">
+    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/view/panoramaEditScreen.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="330" column="55" selection-start="17024" selection-end="17024" vertical-scroll-proportion="0.3804511" vertical-offset="4697" max-vertical-offset="6390">
+        <state line="73" column="0" selection-start="2235" selection-end="2235" vertical-scroll-proportion="0.0" vertical-offset="732" max-vertical-offset="1950">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="16" selection-start="249" selection-end="249" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="600">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/descriptor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="117" column="0" selection-start="3916" selection-end="3916" vertical-scroll-proportion="0.24246988" vertical-offset="1594" max-vertical-offset="7770">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="82" selection-start="1207" selection-end="1241" vertical-scroll-proportion="-14.375" vertical-offset="60" max-vertical-offset="915">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/config.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="489" column="10" selection-start="20905" selection-end="20905" vertical-scroll-proportion="0.0" vertical-offset="6324" max-vertical-offset="9435">
+        <state line="29" column="53" selection-start="1237" selection-end="1237" vertical-scroll-proportion="0.44992742" vertical-offset="125" max-vertical-offset="9525">
           <folding>
-            <element signature="e#13423#15272#0" expanded="false" />
+            <element signature="e#13433#15282#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/index.html">
+    <entry file="file://$PROJECT_DIR$/pub/test_index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="80" selection-start="1205" selection-end="1205" vertical-scroll-proportion="-6.1836734" vertical-offset="102" max-vertical-offset="915">
+        <state line="29" column="29" selection-start="1201" selection-end="1201" vertical-scroll-proportion="-14.375" vertical-offset="90" max-vertical-offset="990">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/view/panoramaEditScreen.js">
+    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="49" selection-start="2983" selection-end="2983" vertical-scroll-proportion="-9.0" vertical-offset="1185" max-vertical-offset="1890">
+        <state line="407" column="51" selection-start="15741" selection-end="15755" vertical-scroll-proportion="-8.84" vertical-offset="5884" max-vertical-offset="23310">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/model/m.js">
+    <entry file="file://$PROJECT_DIR$/pub/controls/TextQuickInputDraggable.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="18" selection-start="668" selection-end="668" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="900">
+        <state line="13" column="27" selection-start="586" selection-end="586" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2175">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/descriptor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="312" column="57" selection-start="7975" selection-end="7975" vertical-scroll-proportion="-6.68" vertical-offset="4513" max-vertical-offset="5235">
-          <folding />
+        <state line="20" column="5" selection-start="299" selection-end="535" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5400">
+          <folding>
+            <marker date="1484414805000" expanded="true" signature="118:624" placeholder="[...]" />
+            <marker date="1484414805000" expanded="true" signature="124:190" placeholder="{&quot;selector&quot;: 'id=mm pins'...}" />
+            <marker date="1484414805000" expanded="true" signature="196:292" placeholder="{&quot;selector&quot;: 'id=mm panoramaImgSrc'...}" />
+            <marker date="1484414805000" expanded="true" signature="298:534" placeholder="{&quot;selector&quot;: 'id=mm pins.{{number}}.position'...}" />
+            <marker date="1484414805000" expanded="true" signature="685:8025" placeholder="{...}" />
+            <marker date="1484414805000" expanded="true" signature="8178:8617" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/controls/Drag.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="22" selection-start="995" selection-end="996" vertical-scroll-proportion="-13.2" vertical-offset="15" max-vertical-offset="1155">
+        <state line="61" column="36" selection-start="2524" selection-end="2524" vertical-scroll-proportion="0.0" vertical-offset="710" max-vertical-offset="1560">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/descriptor.js">
+    <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="322" column="8" selection-start="10472" selection-end="10476" vertical-scroll-proportion="0.33283132" vertical-offset="4609" max-vertical-offset="13410">
+        <state line="759" column="13" selection-start="30729" selection-end="30729" vertical-scroll-proportion="-8.24" vertical-offset="11179" max-vertical-offset="17730">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/PanoramaDemo/notes.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="0" selection-start="870" selection-end="870" vertical-scroll-proportion="0.5007257" vertical-offset="0" max-vertical-offset="1605">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/TextQuickInput.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="37" selection-start="1739" selection-end="1739" vertical-scroll-proportion="-14.48" vertical-offset="238" max-vertical-offset="1365">
+          <folding>
+            <marker date="1484417489000" expanded="true" signature="851:2066" placeholder="{...}" />
+            <marker date="1484417489000" expanded="true" signature="2820:2989" placeholder="{...}" />
+            <marker date="1484417489000" expanded="true" signature="2914:2946" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/fbPanorama.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="0" selection-start="626" selection-end="626" vertical-scroll-proportion="0.28301886" vertical-offset="0" max-vertical-offset="689">
           <folding />
         </state>
       </provider>

@@ -62,10 +62,14 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             .css('min-height','100%'));
         param.screenRoot.append(this.$el);
         this.model.bind("change:panoramaImage", function () {
-            if (this.model.get('panoramaImage') !== null) {
 
+            var pImg = this.model.get('panoramaImage');
+            if (pImg) {
                 if (this.previewScale === undefined) {
-                    this.previewScale = this.DEF_PANORAMA_PREVIEW_HEIGHT/this.model.get('panoramaImage').height;
+                    this.previewScale = this.DEF_PANORAMA_PREVIEW_HEIGHT/pImg.height;
+                    // приложение получить свой новый актуальный размер в зависимости от загруженной картинки и масштаба
+                    this.model.application.width = Math.round(pImg.width * this.previewScale);
+                    this.model.application.height = this.DEF_PANORAMA_PREVIEW_HEIGHT;
                 }
 
                 this.render();
@@ -82,7 +86,7 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             this.$el.html(this.template['default']({
                 backgroundImage: this.model.get('panoramaImgSrc')
             }));
-            var w = pImg.width * this.previewScale;
+            var w = Math.round(pImg.width * this.previewScale);
             var h = pImg.height * this.previewScale;
             this.$el.find('.js-pano').width(w+'px').height(h+'px');
             // отрисовка пинов

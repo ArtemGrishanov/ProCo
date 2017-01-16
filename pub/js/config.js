@@ -45,7 +45,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev'], //dev test prod
+        configurationSetsOnStart: ['dev','offline'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -600,11 +600,17 @@ var config = {
              * Толщина обводки в стиле product_cnt.css/.screen_block
              * Надо для расчета ширины контейнера
              */
-            screen_blocks_border_width: 4,
+            screen_blocks_border_width: 0, //было 4px, убрал обводку
             /**
              * Скорость прокрутки превью слайдов
              */
-            slidesScrollSpeed: 20
+            slidesScrollSpeed: 20,
+            /**
+             * Прибавка к высоте для id_product_cnt
+             * Чтобы влазили: screen_blocks_padding (см выше), editor.css->.workspace_screens_iframe:top=20px, высота горизонтального системного скрол бара 20px примерно
+             * который появляется если нужна горизонтальная прокрутка
+             */
+            id_product_cnt_additional_height: 60
         }
     },
     ui: {

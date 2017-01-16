@@ -15,12 +15,21 @@ descriptor.app = [
     },
     {
         selector: 'id=mm panoramaImgSrc',
-        rules: 'imgUrl'
+        rules: 'imgUrl',
+        filter: false
     },
     {
         selector: 'id=mm pins.{{number}}.position',
         rules: 'drag',
-        updateScreens: false
+        controlParams: {
+            scale: 'id=panoramaEditScr previewScale'
+        },
+        updateScreens: false,
+        updateAppProperties: false
+    },
+    {
+        selector: 'id=mm pins.{{number}}.data.text',
+        rules: 'text'
     }
 ];
 
@@ -32,8 +41,8 @@ descriptor.rules = {
         controls: 'ClickAndAddToArray',
         canAdd: ["proto__pin_text"],
         controlParams: {
-
-        }
+            scale: 'id=panoramaEditScr previewScale'
+        },
     },
     url: {
         updateScreens: false,
@@ -45,7 +54,9 @@ descriptor.rules = {
         filter: true
     },
     text: {
-        controls: 'TextQuickInput'
+        controls: 'TextQuickInput',
+        updateScreens: false,
+        createAppProperties: false
     },
     textAlign: {
         updateScreens: true,

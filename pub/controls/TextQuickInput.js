@@ -12,8 +12,8 @@ function TextQuickInput(propertyString, directiveName, $parent, productDOMElemen
     this.screenDocument = params.iFrame.contentDocument;
 
     this.setValueFromInput = function() {
-        var p = Engine.getAppProperty(this.propertyString);
-        Engine.setValue(p, this.$productDomElement.html());
+//        var p = Engine.getAppProperty(this.propertyString);
+//        Engine.setValue(p, this.$productDomElement.html());
     };
 
     this.onProductElementInput = function() {

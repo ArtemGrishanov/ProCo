@@ -292,26 +292,16 @@ var Editor = {};
             });
         }
 
-        var app = Engine.getApp();
-        // выставляем размер приложения, как оно будет видно пользователю при редактировании
-        appContainerSize = {
-            width: app.width,
-            height: app.height
-        };
-
-        //TODO данная установка свойств размерности аналогична loader.js
-        // можно провести унификацию
-        $(appIframe).css('border','0')
-            .css('width','100%')
-            .css('height','100%')
-            .css('maxWidth',appContainerSize.width)
-            .css('maxHeight',appContainerSize.height);
+        updateAppContainerSize();
 
         // нужна ширина для горизонтального выравнивания
-        $('#id-product_cnt').width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width)
-            // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
-            .height(appContainerSize.height+2*config.editor.ui.screen_blocks_border_width);
+//        $('#id-product_cnt')
+//            //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
+//            //.width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width)
+//            // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
+//            .height(appContainerSize.height+2*config.editor.ui.screen_blocks_border_width+config.editor.ui.id_product_cnt_additional_height);
         // в поле для редактирования подтягиваем стили продукта
+        var app = Engine.getApp();
         var $h = $("#id-product_screens_cnt").contents().find('head');
         $h.append(config.products.common.styles);
         $h.append(config.products[app.type].stylesForEmbed);
@@ -376,6 +366,7 @@ var Editor = {};
         activeScreens = ids;
         // надо скрыть все активные подсказки, если таковые есть. На новом экране будут новые подсказки
         hideWorkspaceHints();
+        updateAppContainerSize();
         activeScreenHints = [];
         activeTriggers = [];
         // каждый раз удаляем quick-контролы и создаем их заново. Не слишком эффективно мб но просто и надежно
@@ -410,8 +401,11 @@ var Editor = {};
                 log('Editor.showScreen: appScreen not found '+ids[i]);
             }
         }
+        //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
+        // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
+        $('#id-product_cnt').height(previewHeight + config.editor.ui.id_product_cnt_additional_height);
         // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
-        $('#id-product_screens_cnt').width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
+        $('#id-product_screens_cnt, #id-control_cnt').width(appContainerSize.width + 2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
         // боковые панели вытягиваем также вслед за экранами
         $('.js-setting_panel').height(previewHeight);
 
@@ -423,6 +417,22 @@ var Editor = {};
             // любой клик по промо-проекту сбрасывает подсказки
             hideWorkspaceHints();
         });
+    }
+
+    function updateAppContainerSize() {
+        var app = Engine.getApp();
+        // выставляем первоначальный размер приложения, возможно, оно будет меняться
+        appContainerSize = {
+            width: app.width,
+            height: app.height
+        };
+        //TODO данная установка свойств размерности аналогична loader.js
+        // можно провести унификацию
+        $(appIframe).css('border','0')
+            .css('width','100%')
+            .css('height','100%')
+            .css('maxWidth',appContainerSize.width)
+            .css('maxHeight',appContainerSize.height);
     }
 
     function createPreviewScreenBlock(view) {

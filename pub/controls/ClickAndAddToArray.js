@@ -6,9 +6,23 @@
 function ClickAndAddToArray(propertyString, directiveName, $parent, productDOMElement, params) {
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
     this.elemPosition = null;
-
-//            var ap1 = Engine.getAppProperty(this.propertyString);
-//            Engine.setValue(ap1, this.elemPosition);
+    // возможность задать масштаб. Действия контрола будут учитывать этот масштаб
+    this.scale = 1;
+    if (params.scale) {
+        if (!isNaN(parseFloat(params.scale)) && isFinite(params.scale)) {
+            this.scale = parseFloat(params.scale);
+        }
+        else if (Engine.parseSelector(params.scale) !== null) {
+            var s = undefined;
+            try {
+                s = Engine.getApp().getPropertiesBySelector(params.scale)[0].value;
+            }
+            catch (err) {}
+            if (s !== undefined) {
+                this.scale = s;
+            }
+        }
+    }
 
     this.onMouseClick = function(e) {
         console.log(e.offsetX+' '+ e.offsetY);
@@ -19,17 +33,10 @@ function ClickAndAddToArray(propertyString, directiveName, $parent, productDOMEl
         var proto = Engine.getPrototypeForAppProperty(ap, prototypeNameToAdd);
 
         if (proto) {
-            //TODO
-            // Надо делать проброс масштаба через параметр типа params.scale
-            // А в дескрипторе писать типа: scale: 'id=panoScr previewScale'
-            //
-            //
-            var app = Engine.getApp();
-            var scale = app.getPropertiesBySelector('id=panoramaEditScr previewScale')[0].value;
-            Engine.addArrayElement(ap, proto.getValue({
-                left: e.offsetX/scale,
-                top: e.offsetY/scale
-            }));
+            Engine.addArrayElement(ap, proto.getValue({position:{
+                left: Math.round(e.offsetX/this.scale),
+                top: Math.round(e.offsetY/this.scale)
+            }}));
             if (ap.updateScreens === true) {
                 Editor.syncUIControlsToAppProperties();
             }
