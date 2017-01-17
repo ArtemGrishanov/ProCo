@@ -307,6 +307,13 @@ html, body {
     width: 193px;
     height: 97px;
 }
+.logo_beta {
+    display: inline-block;
+    vertical-align: top;
+    background: url(../i/Beta.png) center no-repeat;
+    width: 29px;
+    height: 13px;
+}
 .top_toolbar {
     position: relative;
     display: inline-block;
@@ -1042,6 +1049,13 @@ html, body {
 @media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
     .hiw_call_winner {
         background-image: url(../i/howitworks/howitworks-4@2x.png);
+    }
+    .logo {
+
+    }
+    .logo_beta {
+        background-image: url(../i/Beta@2x.png);
+        background-size: 29px 13px;
     }
 }
 .hiw_selection {
