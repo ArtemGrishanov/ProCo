@@ -23,46 +23,53 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="contact.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/contact.html">
+      <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="51" selection-start="743" selection-end="743" vertical-scroll-proportion="-11.25" vertical-offset="0" max-vertical-offset="1920">
+            <state line="54" column="11" selection-start="2091" selection-end="2091" vertical-scroll-proportion="0.0" vertical-offset="540" max-vertical-offset="9345">
+              <folding>
+                <element signature="e#13424#15273#0" expanded="false" />
+                <marker date="1484665261000" expanded="true" signature="12876:20299" placeholder="{...}" />
+                <marker date="1484665261000" expanded="true" signature="17913:18941" placeholder="{&quot;constructorName&quot;: 'MemorizApp'...}" />
+                <marker date="1484665261000" expanded="true" signature="18829:18899" placeholder="/** Высота по умолчанию, если не задана ...*/" />
+                <marker date="1484665261000" expanded="true" signature="18963:20003" placeholder="{&quot;constructorName&quot;: 'FbPanoramaApp'...}" />
+                <marker date="1484665261000" expanded="true" signature="19132:19208" placeholder="/** Само приложение для загрузки через iframe ...*/" />
+                <marker date="1484665261000" expanded="true" signature="19272:19474" placeholder="/** В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae ...*/" />
+                <marker date="1484665261000" expanded="true" signature="19606:19712" placeholder="/** каталог откуда publisher будет брать все ресурсы для публикации проекта ...*/" />
+                <marker date="1484665261000" expanded="true" signature="19777:19847" placeholder="/** Ширина по умолчанию, если не задана ...*/" />
+                <marker date="1484665261000" expanded="true" signature="19891:19961" placeholder="/** Высота по умолчанию, если не задана ...*/" />
+                <marker date="1484665261000" expanded="true" signature="20023:20146" placeholder="{&quot;stylesForEmbed&quot;: '&lt;link href=&quot;{{config.common.home}}products/timeline/style.css&quot; rel=&quot;stylesheet&quot;/&gt;'...}" />
+                <marker date="1484665261000" expanded="true" signature="20168:20293" placeholder="{&quot;stylesForEmbed&quot;: '&lt;link href=&quot;{{config.common.home}}products/smartimage/style.css&quot; rel=&quot;stylesheet&quot;/&gt;'...}" />
+                <marker date="1484665261000" expanded="true" signature="20315:23365" placeholder="{...}" />
+                <marker date="1484665261000" expanded="true" signature="20341:20618" placeholder="{&quot;parentId&quot;: 'id-control_cnt'...}" />
+                <marker date="1484665261000" expanded="true" signature="23115:23359" placeholder="{&quot;defaultDirectiveIndex&quot;: 0...}" />
+                <marker date="1484665261000" expanded="true" signature="23407:23540" placeholder="/** z-index который ставится рамку выделения, которая появляется при клике на элемент промо приложения ...*/" />
+                <marker date="1484665261000" expanded="true" signature="23591:23767" placeholder="/** z-index который ставится на контрол при его активации (показе). ...*/" />
+                <marker date="1484665261000" expanded="true" signature="23817:23933" placeholder="/** z-index который ставится элементу при перетаскивании внутри контрола ArrayControl ...*/" />
+                <marker date="1484665261000" expanded="true" signature="23986:24037" placeholder="/** zIndex подсказок ...*/" />
+                <marker date="1484665261000" expanded="true" signature="24078:24208" placeholder="/** z-index панели быстрого редактирования, которая всплывает рядом с элементом и указывает на него ...*/" />
+                <marker date="1484665261000" expanded="true" signature="24262:24371" placeholder="/** Отступы, насколько можно вынести перетаскиваемый элемент за границы группы ...*/" />
+                <marker date="1484665261000" expanded="true" signature="24469:24570" placeholder="/** Отступы слева и справа от промежуточных кнопок в слайдереэ экранов ...*/" />
+                <marker date="1484665261000" expanded="true" signature="24622:24709" placeholder="/** Отступ от хинта до элемента, на который он указывает ...*/" />
+                <marker date="1484665261000" expanded="true" signature="24754:24935" placeholder="/** боттом паддинг в стиле product_cnt.css/.screen_block ...*/" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="engine.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="18" column="29" selection-start="432" selection-end="432" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="17385">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="howitworks.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/howitworks.html">
+      <file leaf-file-name="descriptor.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/descriptor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="51" selection-start="754" selection-end="754" vertical-scroll-proportion="-11.25" vertical-offset="0" max-vertical-offset="2580">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="info.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/info.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="51" selection-start="742" selection-end="742" vertical-scroll-proportion="-11.25" vertical-offset="0" max-vertical-offset="1755">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="my_templates.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/my_templates.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="51" selection-start="1032" selection-end="1032" vertical-scroll-proportion="-13.75" vertical-offset="0" max-vertical-offset="2400">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="storefront.html" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pub/storefront.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="51" selection-start="1058" selection-end="1058" vertical-scroll-proportion="0.47965115" vertical-offset="0" max-vertical-offset="3210">
+            <state line="19" column="33" selection-start="318" selection-end="318" vertical-scroll-proportion="0.39310345" vertical-offset="0" max-vertical-offset="5220">
               <folding />
             </state>
           </provider>
@@ -78,10 +85,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/js/engine.js" />
-        <option value="$PROJECT_DIR$/pub/products/test_new/descriptor.js" />
-        <option value="$PROJECT_DIR$/pub/products/fbPanorama/index.html" />
-        <option value="$PROJECT_DIR$/pub/js/editor.js" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/descriptor.js" />
         <option value="$PROJECT_DIR$/pub/controls/Drag.js" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/fbPanorama.txt" />
@@ -94,6 +97,10 @@
         <option value="$PROJECT_DIR$/pub/info.html" />
         <option value="$PROJECT_DIR$/pub/my_templates.html" />
         <option value="$PROJECT_DIR$/pub/storefront.html" />
+        <option value="$PROJECT_DIR$/pub/products/common/js/mutapp.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/index.html" />
+        <option value="$PROJECT_DIR$/pub/js/config.js" />
+        <option value="$PROJECT_DIR$/pub/js/engine.js" />
       </list>
     </option>
   </component>
@@ -158,25 +165,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="i" />
+              <option name="myItemId" value="backups" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -330,191 +319,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="43" selection-start="1230" selection-end="1230" vertical-scroll-proportion="-4.3469386" vertical-offset="192" max-vertical-offset="870">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="548" column="36" selection-start="23283" selection-end="23283" vertical-scroll-proportion="-8.84" vertical-offset="7369" max-vertical-offset="9345">
-          <folding>
-            <element signature="e#13423#15272#0" expanded="false" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;parentId&quot;: 'id-control_cnt'...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/*...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Толщина обводки в стиле product_cnt.css/.screen_block ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Скорость прокрутки превью слайдов ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Прибавка к высоте для id_product_cnt ...*/" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="902" column="56" selection-start="36141" selection-end="36141" vertical-scroll-proportion="0.0" vertical-offset="13284" max-vertical-offset="17385">
-          <folding>
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Устанавливает быстро значения appProperty ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;updateScreens&quot;: false...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Проверяет выражение на верность. ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;result&quot;: 'error'...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;result&quot;: 'success'...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Ищет в дексрипторе пресеты, то есть наборы свойств, которые применяются разом. ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Разобрать декскриптор на правила ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Создание appProperty для управления css-промо проекта вынесено в отдельную функцию ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Создать триггеры - индивидуальная логика по управлению проектом ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Создать экраны в промоприложении. ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Обработка события об изменениях в приложении: рендер экрана, изменения размеров приложения и тп ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Разослать события определенного типа и для определенного свойства ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Добавить элемент в массив ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Установить значение в продукт, в объект app[key] = value ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Старт приложения ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Поменять одно свойтство приложения ...*/" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/Drag.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="6" selection-start="1913" selection-end="1913" vertical-scroll-proportion="-16.88" vertical-offset="238" max-vertical-offset="1155">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/descriptor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="20" selection-start="75" selection-end="75" vertical-scroll-proportion="-2.4" vertical-offset="0" max-vertical-offset="5220">
-          <folding>
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="[...]" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;viewName&quot;: &quot;AltButtons&quot;...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="[...]" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;viewName&quot;: &quot;Dropdown&quot;...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;viewName&quot;: 'ColorPicker'...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;updateScreens&quot;: false...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;updateScreens&quot;: true...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;viewName&quot;: 'ColorPicker'...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;viewName&quot;: 'ColorPicker'...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;viewName&quot;: 'ColorPicker'...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;updateScreens&quot;: true...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;viewName&quot;: &quot;OnOffSwitcher&quot;...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;viewName&quot;: &quot;textinput&quot;...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{&quot;viewName&quot;: &quot;ColorPicker&quot;...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1418" column="39" selection-start="58898" selection-end="58898" vertical-scroll-proportion="0.0" vertical-offset="21135" max-vertical-offset="23160">
-          <folding>
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Html объект, рамка выделения ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Выделенный элемент, вокруг которого рисуется рамка выделения $selectionBorder ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Запустить промо приложение в iframe ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Клик по кнопке Назад в предпросмотре ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Найти контрол по строке, поиск будет производиться по нескольким полям. ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="/** Сделать проверку на показ стрелок прокрутки панели экранов ...*/" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1484662111000" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/controls/TextQuickInput.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="36" column="13" selection-start="1396" selection-end="1396" vertical-scroll-proportion="0.43034482" vertical-offset="228" max-vertical-offset="1365">
@@ -582,7 +386,74 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/storefront.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="51" selection-start="1058" selection-end="1058" vertical-scroll-proportion="0.47965115" vertical-offset="0" max-vertical-offset="3210">
+        <state line="31" column="47" selection-start="1802" selection-end="1802" vertical-scroll-proportion="-19.375" vertical-offset="0" max-vertical-offset="3210">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/test_new/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="145" column="55" selection-start="8994" selection-end="8994" vertical-scroll-proportion="-12.416667" vertical-offset="1877" max-vertical-offset="2565">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="633" column="19" selection-start="23579" selection-end="23579" vertical-scroll-proportion="-12.16" vertical-offset="9191" max-vertical-offset="18750">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="118" column="30" selection-start="6967" selection-end="6967" vertical-scroll-proportion="0.16289593" vertical-offset="1662" max-vertical-offset="2385">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="54" column="11" selection-start="2091" selection-end="2091" vertical-scroll-proportion="0.0" vertical-offset="540" max-vertical-offset="9345">
+          <folding>
+            <element signature="e#13424#15273#0" expanded="false" />
+            <marker date="1484665261000" expanded="true" signature="12876:20299" placeholder="{...}" />
+            <marker date="1484665261000" expanded="true" signature="17913:18941" placeholder="{&quot;constructorName&quot;: 'MemorizApp'...}" />
+            <marker date="1484665261000" expanded="true" signature="18829:18899" placeholder="/** Высота по умолчанию, если не задана ...*/" />
+            <marker date="1484665261000" expanded="true" signature="18963:20003" placeholder="{&quot;constructorName&quot;: 'FbPanoramaApp'...}" />
+            <marker date="1484665261000" expanded="true" signature="19132:19208" placeholder="/** Само приложение для загрузки через iframe ...*/" />
+            <marker date="1484665261000" expanded="true" signature="19272:19474" placeholder="/** В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae ...*/" />
+            <marker date="1484665261000" expanded="true" signature="19606:19712" placeholder="/** каталог откуда publisher будет брать все ресурсы для публикации проекта ...*/" />
+            <marker date="1484665261000" expanded="true" signature="19777:19847" placeholder="/** Ширина по умолчанию, если не задана ...*/" />
+            <marker date="1484665261000" expanded="true" signature="19891:19961" placeholder="/** Высота по умолчанию, если не задана ...*/" />
+            <marker date="1484665261000" expanded="true" signature="20023:20146" placeholder="{&quot;stylesForEmbed&quot;: '&lt;link href=&quot;{{config.common.home}}products/timeline/style.css&quot; rel=&quot;stylesheet&quot;/&gt;'...}" />
+            <marker date="1484665261000" expanded="true" signature="20168:20293" placeholder="{&quot;stylesForEmbed&quot;: '&lt;link href=&quot;{{config.common.home}}products/smartimage/style.css&quot; rel=&quot;stylesheet&quot;/&gt;'...}" />
+            <marker date="1484665261000" expanded="true" signature="20315:23365" placeholder="{...}" />
+            <marker date="1484665261000" expanded="true" signature="20341:20618" placeholder="{&quot;parentId&quot;: 'id-control_cnt'...}" />
+            <marker date="1484665261000" expanded="true" signature="23115:23359" placeholder="{&quot;defaultDirectiveIndex&quot;: 0...}" />
+            <marker date="1484665261000" expanded="true" signature="23407:23540" placeholder="/** z-index который ставится рамку выделения, которая появляется при клике на элемент промо приложения ...*/" />
+            <marker date="1484665261000" expanded="true" signature="23591:23767" placeholder="/** z-index который ставится на контрол при его активации (показе). ...*/" />
+            <marker date="1484665261000" expanded="true" signature="23817:23933" placeholder="/** z-index который ставится элементу при перетаскивании внутри контрола ArrayControl ...*/" />
+            <marker date="1484665261000" expanded="true" signature="23986:24037" placeholder="/** zIndex подсказок ...*/" />
+            <marker date="1484665261000" expanded="true" signature="24078:24208" placeholder="/** z-index панели быстрого редактирования, которая всплывает рядом с элементом и указывает на него ...*/" />
+            <marker date="1484665261000" expanded="true" signature="24262:24371" placeholder="/** Отступы, насколько можно вынести перетаскиваемый элемент за границы группы ...*/" />
+            <marker date="1484665261000" expanded="true" signature="24469:24570" placeholder="/** Отступы слева и справа от промежуточных кнопок в слайдереэ экранов ...*/" />
+            <marker date="1484665261000" expanded="true" signature="24622:24709" placeholder="/** Отступ от хинта до элемента, на который он указывает ...*/" />
+            <marker date="1484665261000" expanded="true" signature="24754:24935" placeholder="/** боттом паддинг в стиле product_cnt.css/.screen_block ...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="29" selection-start="432" selection-end="432" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="17385">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/descriptor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="33" selection-start="318" selection-end="318" vertical-scroll-proportion="0.39310345" vertical-offset="0" max-vertical-offset="5220">
           <folding />
         </state>
       </provider>
