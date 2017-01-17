@@ -630,7 +630,14 @@ MutApp.prototype.isSmallWidth = function() {
     if (typeof this._isSmallWidth === true) {
         return this._isSmallWidth;
     }
-    this._isSmallWidth = $(window).width() <= this.SMALL_WIDTH_PX;
+    var ww = $(window).width();
+    if (ww === 0) {
+        //TODO баг, разобраться. Когда стартует приложение в редакторе. Влияет на превью экрана
+        this._isSmallWidth = false;
+    }
+    else {
+        this._isSmallWidth = (ww <= this.SMALL_WIDTH_PX);
+    }
     return this._isSmallWidth;
 };
 
