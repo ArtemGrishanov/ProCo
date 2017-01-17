@@ -199,15 +199,6 @@ var Engine = {};
         return result;
     }
 
-//    function setAppPropertiesValues(values) {
-//        todo change
-//        for (var key in values) {
-//            if (values.hasOwnProperty(key)) {
-//                _setAppValue(key, values[key])
-//            }
-//        }
-//    }
-
     /**
      * Устанавливает быстро значения appProperty
      * propertyString:propertyValue
@@ -713,9 +704,13 @@ var Engine = {};
      *
      * @public
      * @param {AppProperty} appProperty объект-обертка свойства в промо приложении. Например, 'results[0].title' или 'randomizeQuestions'
-     * @param {*} value
-     * @param {boolean} [attrs.updateScreens] - Надо ли апдейтить экраны после применения свойства.
-     * @param {boolean} [attrs.updateAppProperties] - Надо ли апдейтить список свойств
+     * @param {*} value - новое значение свойства, тип может быть любым
+     * @param {boolean} [attrs.restartApp] - Надо ли перезапускать приложение mutapp. По умолчанию true, в болшинстве случаев надо, так как изменения должны быть видны на экране.
+     * Но иногда изменения незначительны или произведены самим контролом на превью экрана (TextQuickInput меняет текст на превью, Drag перетаскивает элемент)
+     * Если restartApp===true, только тогда имеют смысл updateScreens и updateAppProperties, так как если приложение не перезапускается, то
+     * и экраны и список свойств не обновляется.
+     * @param {boolean} [attrs.updateScreens] - Надо ли апдейтить экраны после применения свойства (если restartApp===true)
+     * @param {boolean} [attrs.updateAppProperties] - Надо ли апдейтить список свойств (если restartApp===true)
      * @param {boolean} [attrs.runTests] - Надо ли искать и запускать тесты
      * Например, при добавлении нового варианта ответа в тесте или вопроса -- конечно, надо.
      * При изменении текста вопроса - нет, не надо.
@@ -723,6 +718,9 @@ var Engine = {};
      */
     function setValue(appProperty, value, attrs) {
         var attributes = attrs || {};
+        if (attributes.hasOwnProperty('restartApp') === false) {
+            attributes.restartApp = appProperty.restartApp;
+        }
         if (attributes.hasOwnProperty('updateScreens') === false) {
             attributes.updateScreens = appProperty.updateScreens;
         }
@@ -738,7 +736,10 @@ var Engine = {};
         log('Changing property \''+pStr+'\'='+stringifiedValue, false, false);
 
         if (appProperty.type === 'app') {
-            var success = setPropertyToMutApp(pStr, value);
+            var success = true;
+            if (attributes.restartApp === true) {
+                success = setPropertyToMutApp(pStr, value);
+            }
             if (success === true) {
                 operationsCount++;
                 appProperty.propertyValue = value;
@@ -761,12 +762,11 @@ var Engine = {};
         }
 
         // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
-        //TODO нужен более умный алгоритм. Пересоздавать только свойства в массиве. Есть ли другие случаи?
-        if (attributes.updateAppProperties === true) {
+        if (attributes.restartApp === true && attributes.updateAppProperties === true) {
             clearAppProperties();
             createAppProperties(productWindow.descriptor);
         }
-        if (attributes.updateScreens === true) {
+        if (attributes.restartApp === true && attributes.updateScreens === true) {
             createAppScreens();
         }
         // рассылка события для ключа pStr

@@ -12,11 +12,12 @@ function TextQuickInput(propertyString, directiveName, $parent, productDOMElemen
     this.screenDocument = params.iFrame.contentDocument;
 
     this.setValueFromInput = function() {
-//        var p = Engine.getAppProperty(this.propertyString);
-//        Engine.setValue(p, this.$productDomElement.html());
+        var p = Engine.getAppProperty(this.propertyString);
+        Engine.setValue(p, this.$productDomElement.html());
     };
 
     this.onProductElementInput = function() {
+        Editor.updateSelection();
         this.setValueFromInput();
     };
 
@@ -47,6 +48,7 @@ function TextQuickInput(propertyString, directiveName, $parent, productDOMElemen
                 selection.addRange(range);
 
                 // также надо сделать обновление свойства. Так как в "input" событие не попадем
+                Editor.updateSelection();
                 this.setValueFromInput();
 
                 return false;

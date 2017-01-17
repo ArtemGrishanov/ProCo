@@ -25,11 +25,13 @@ descriptor.app = [
             scale: 'id=panoramaEditScr previewScale'
         },
         updateScreens: false,
-        updateAppProperties: false
+        updateAppProperties: false,
+        restartApp: false
     },
     {
         selector: 'id=mm pins.{{number}}.data.text',
-        rules: 'text'
+        rules: 'text',
+        restartApp: false
     }
 ];
 

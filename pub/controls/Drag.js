@@ -35,9 +35,6 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
             Engine.setValue(ap1, {
                 top: Math.round(this.elemPosition.top / this.scale),
                 left: Math.round(this.elemPosition.left / this.scale)
-            },{
-                updateScreens: ap1.updateScreens,
-                updateAppProperties: ap1.updateAppProperties
             });
         }
         this.isDragging = false;
@@ -56,6 +53,7 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
 //                top: Math.round(this.elemPosition.top / this.scale),
 //                left: Math.round(this.elemPosition.left / this.scale)
 //            });
+            Editor.updateSelection();
         }
     };
 
@@ -77,10 +75,12 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
         if (this.elemPosition !== null) {
             //тот кто стал инициатором изменения не должен сам обрабатывать событие
             var p = Engine.getAppProperty(this.propertyString);
+            var l = Math.round(p.propertyValue.left * this.scale);
+            var t = Math.round(p.propertyValue.top * this.scale);
             // проверка что хотя бы одна из координат изменилась, тогда обновить
-            if (this.$productDomElement && (this.elemPosition.left !== p.propertyValue.left || this.elemPosition.top !== p.propertyValue.top)) {
-                this.elemPosition.left = p.propertyValue.left;
-                this.elemPosition.top = p.propertyValue.top;
+            if (this.$productDomElement && (this.elemPosition.left !== l || this.elemPosition.top !== t)) {
+                this.elemPosition.left = l;
+                this.elemPosition.top = t;
                 this.$productDomElement.css('left',this.elemPosition.left+'px');
                 this.$productDomElement.css('top',this.elemPosition.top+'px');
             }

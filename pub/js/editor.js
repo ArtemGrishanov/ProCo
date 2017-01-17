@@ -111,9 +111,15 @@ var Editor = {};
      * @type {number}
      */
     var operationsCount = 0;
-
-    var selectionBorders = [];
-
+    /**
+     * Html объект, рамка выделения
+     * @type {Array}
+     */
+    var $selectionBorder = null;
+    /**
+     * Выделенный элемент, вокруг которого рисуется рамка выделения $selectionBorder
+     * @type {null}
+     */
     var selectedElem = null;
     /**
      * Функция колбек на запуск редактора
@@ -1430,28 +1436,40 @@ var Editor = {};
 //        sc.scrollLeft(sc.scrollLeft()+config.editor.ui.slidesScrollStep);
     }
 
-    function deleteSelections() {
-        selectedElem = null;
-        selectionBorders.forEach(function(e){
-            e.remove();
-        });
-    }
-
     function getActiveScreens() {
         return activeScreens;
     }
 
     function showSelection($elem) {
         selectedElem = $elem;
-        var $seletionBorder = $($('#id-elem_selection_template').html());
+        if ($selectionBorder === null) {
+            $selectionBorder = $($('#id-elem_selection_template').html());
+            $selectionBorder.css('zIndex', config.editor.ui.selectionBorderZIndex);
+            $('#id-control_cnt').append($selectionBorder);
+        }
         var eo = $elem.offset(); // position() не подходит в данном случае
-        $seletionBorder.css('top',eo.top+'px');
-        $seletionBorder.css('left',eo.left+'px');
-        $seletionBorder.css('width',$elem.outerWidth(false)-1+'px'); // false - not including margins
-        $seletionBorder.css('height',$elem.outerHeight(false)-1+'px');
-        $seletionBorder.css('zIndex', config.editor.ui.selectionBorderZIndex);
-        $('#id-control_cnt').append($seletionBorder);
-        selectionBorders.push($seletionBorder);
+        $selectionBorder.css('top',eo.top+'px');
+        $selectionBorder.css('left',eo.left+'px');
+        $selectionBorder.css('width',$elem.outerWidth(false)-1+'px'); // false - not including margins
+        $selectionBorder.css('height',$elem.outerHeight(false)-1+'px');
+        $selectionBorder.show();
+    }
+
+    function updateSelection() {
+        var eo = $(selectedElem).offset(); // position() не подходит в данном случае
+        $selectionBorder.css('top',eo.top+'px');
+        $selectionBorder.css('left',eo.left+'px');
+        $selectionBorder.css('width',$(selectedElem).outerWidth(false)-1+'px'); // false - not including margins
+        $selectionBorder.css('height',$(selectedElem).outerHeight(false)-1+'px');
+    }
+
+    function deleteSelections() {
+        console.log('deleteSelections');
+        selectedElem = null;
+        if ($selectionBorder) {
+            $selectionBorder.hide();
+        }
+        $selectionBorder = null;
     }
 
     function showSelectDialog(params) {
@@ -1545,5 +1563,6 @@ var Editor = {};
     global.findControl = findControl;
     global.findControlInfo = findControlInfo; // need for autotests
     global.getAppId = function() { return appId; };
+    global.updateSelection = updateSelection;
 
 })(Editor);
