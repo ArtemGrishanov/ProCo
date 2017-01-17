@@ -13,6 +13,10 @@ descriptor.app = [
         selector: 'id=mm pins',
         rules: 'createPin'
     },
+//    {
+//        selector: 'id=mm pins',
+//        rules: 'deletePin'
+//    },
     {
         selector: 'id=mm panoramaImgSrc',
         rules: 'imgUrl',
@@ -45,6 +49,17 @@ descriptor.rules = {
         controlParams: {
             scale: 'id=panoramaEditScr previewScale'
         },
+    },
+    deletePin: {
+        controls: [
+            {
+                name: "DeleteQuickButton",
+                params: {
+                    //filter: ""
+                }
+            }
+        ],
+        updateScreens: true
     },
     url: {
         updateScreens: false,

@@ -67,8 +67,8 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
         };
         // обрабатываем только первое нажатие и дальше стоппим обработку событий
         // так как могут два элемента для перетаскивания наложиться друг на друга
-//        e.stopPropagation();
-//        e.preventDefault();
+        e.stopPropagation();
+        e.preventDefault();
     };
 
     this.onPropertyChanged = function() {
