@@ -1,4 +1,6 @@
 TODO:
+Перестает работать DeleteQuickBtn, после показа панели два раза
+Не работает textquick ввод текста
 Drag restartApp === false поставить
 Копятся обработчики Engine.on при пересоздании контролов.
 
@@ -36,3 +38,4 @@ Drag: updateScreens изменил ?
     - Не соблюдался масштаб при Drag:onPropertyChanged контрол улетал за область потом возвращался из-за пересоздания экрана
 seletion update при драге и вводе
 addArrayElement deleteArrayElement переделать на значение из propertyValue а не приложения
+Сделал возможность в дескрипторе selector== id=mm pins(createPins) делать + getAppProperty(propertyStringOrSelector)

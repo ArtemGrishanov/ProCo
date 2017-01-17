@@ -691,18 +691,18 @@ var Editor = {};
                 // например по id=tm quiz.0.answer.options - контрол добавлени и удаления
                 for (var j = 0; j < cArr.length; j++) {
                     var c = cArr[j];
-                    // wrapper - это обертка в которой находится контрол на боковой панели
-                    // надо скрыть его целиком, включая label
-                    if (c && c.wrapper) {
-                        c.wrapper.show();
-                        if (c.control._onShow) {
-                            c.control._onShow();
-                        }
-                    }
-
                     // контролы которые должны показаться на всплывающей панели quickControlPanel
                     if (c && c.type === 'quickcontrolpanel') {
-                        quickControlPanelControls.push(c.wrapper);
+                        // событие _onShow будет вызвано позже для этого типа 'quickcontrolpanel'
+                        quickControlPanelControls.push(c);
+                    }
+                    else {
+                        if (c && c.wrapper) {
+                            c.wrapper.show();
+                            if (c.control._onShow) {
+                                c.control._onShow();
+                            }
+                        }
                     }
                 }
             }
@@ -728,6 +728,12 @@ var Editor = {};
         // есть несколько контролов для всплывашки, которые надо показать
         if (quickControlPanelControls.length > 0) {
             quickControlPanel.show(element, quickControlPanelControls);
+            for (var n = 0; n < quickControlPanelControls.length; n++) {
+                var c = quickControlPanelControls[n];
+                if (c.control._onShow) {
+                    c.control._onShow();
+                }
+            }
         }
         else {
             quickControlPanel.hide();
@@ -1564,5 +1570,6 @@ var Editor = {};
     global.findControlInfo = findControlInfo; // need for autotests
     global.getAppId = function() { return appId; };
     global.updateSelection = updateSelection;
+    global.getQuickControlPanel = function() { return quickControlPanel; }
 
 })(Editor);

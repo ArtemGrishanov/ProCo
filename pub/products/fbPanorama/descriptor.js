@@ -10,13 +10,13 @@ descriptor.css = [
 
 descriptor.app = [
     {
-        selector: 'id=mm pins',
+        selector: 'id=mm pins(createPin)',
         rules: 'createPin'
     },
-//    {
-//        selector: 'id=mm pins',
-//        rules: 'deletePin'
-//    },
+    {
+        selector: 'id=mm pins(deletePin)',
+        rules: 'deletePin'
+    },
     {
         selector: 'id=mm panoramaImgSrc',
         rules: 'imgUrl',

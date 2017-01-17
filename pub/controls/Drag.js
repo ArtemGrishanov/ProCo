@@ -54,6 +54,7 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
 //                left: Math.round(this.elemPosition.left / this.scale)
 //            });
             Editor.updateSelection();
+            Editor.getQuickControlPanel().updatePosition(this.$productDomElement);
         }
     };
 

@@ -1067,13 +1067,14 @@ var Engine = {};
     /**
      * Найти свойство по строке
      *
-     * @param propertyString строка свойства, например "background" или "quiz.2.options.1.points"
+     * @param {string} propertyString строка свойства, например "background" или "quiz.2.options.1.points"
+     * Или селектор. Обычно селектор и propertyString идентичны но иногда нет: id=mm pins(createPins)
      *
      * @return {AppProperty}
      */
-    function getAppProperty(propertyString) {
+    function getAppProperty(propertyStringOrSelector) {
         for (var i = 0; i < appProperties.length; i++) {
-            if (propertyString === appProperties[i].propertyString) {
+            if (propertyStringOrSelector === appProperties[i].propertyString || propertyStringOrSelector === appProperties[i].selector) {
                 return appProperties[i];
             }
         }
