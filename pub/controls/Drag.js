@@ -7,6 +7,7 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
     this.isDragging = false;
     this.elemPosition = null;
+    this.onMouseDownStopPropagation = params.hasOwnProperty('onMouseDownStopPropagation') ? params.onMouseDownStopPropagation: true;
 
     // возможность задать масштаб. Действия контрола будут учитывать этот масштаб
     this.scale = 1;
@@ -68,8 +69,10 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
         };
         // обрабатываем только первое нажатие и дальше стоппим обработку событий
         // так как могут два элемента для перетаскивания наложиться друг на друга
-        e.stopPropagation();
-        e.preventDefault();
+        if (this.onMouseDownStopPropagation === true) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
     };
 
     this.onPropertyChanged = function() {

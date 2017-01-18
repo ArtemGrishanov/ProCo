@@ -26,7 +26,8 @@ descriptor.app = [
         selector: 'id=mm pins.{{number}}.position',
         rules: 'drag',
         controlParams: {
-            scale: 'id=panoramaEditScr previewScale'
+            scale: 'id=panoramaEditScr previewScale',
+            onMouseDownStopPropagation: false
         },
         updateScreens: false,
         updateAppProperties: false,
