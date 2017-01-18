@@ -405,6 +405,7 @@ img {
         box-sizing: border-box;
     }
     .modal {
+        overflow: auto;
         /*box-sizing: border-box;*/
         /*padding: 0 25px 0 25px;*/
     }
