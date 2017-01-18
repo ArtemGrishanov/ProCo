@@ -39,3 +39,5 @@ Drag: updateScreens изменил ?
 seletion update при драге и вводе
 addArrayElement deleteArrayElement переделать на значение из propertyValue а не приложения
 Сделал возможность в дескрипторе selector== id=mm pins(createPins) делать + getAppProperty(propertyStringOrSelector)
+drag доп параметр
+drag updateSelection updateQuickPanelPosition
