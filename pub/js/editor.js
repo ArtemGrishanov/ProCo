@@ -105,6 +105,11 @@ var Editor = {};
      */
     var appContainerSize = {width: 800, height: 600};
     /**
+     * Режим предпросмотра проекта
+     * @type {string} desktop || mobile
+     */
+    var previewMode = 'desktop';
+    /**
      * Количество сделанный операция по редактированию пользователем
      * При сохранении шаблона синхронизируется с таким же счетччиком engine
      * если этот четчик меньше чем в engine то будет блокировка при закрытии страницы
@@ -434,11 +439,20 @@ var Editor = {};
         };
         //TODO данная установка свойств размерности аналогична loader.js
         // можно провести унификацию
-        $(appIframe).css('border','0')
-            .css('width','100%')
-            .css('height','100%')
-            .css('maxWidth',appContainerSize.width)
-            .css('maxHeight',appContainerSize.height);
+        if (previewMode === 'mobile') {
+            $(appIframe).css('border','0')
+                .css('width','100%')
+                .css('height','100%')
+                .css('maxWidth',appContainerSize.width)
+                .css('maxHeight',appContainerSize.height);
+        }
+        else if (previewMode === 'desktop') {
+            $(appIframe).css('border','0')
+                .css('width',appContainerSize.width+'px')
+                .css('height',appContainerSize.height+'px')
+                .css('maxWidth',appContainerSize.width)
+                .css('maxHeight',appContainerSize.height);
+        }
     }
 
     function createPreviewScreenBlock(view) {
@@ -1392,6 +1406,7 @@ var Editor = {};
     }
 
     function toDesktopPreview() {
+        previewMode = 'desktop';
         $('#id-product_iframe_cnt').removeClass('__mob');
         $(appIframe).css('border','0')
             .css('width',appContainerSize.width+'px')
@@ -1403,6 +1418,7 @@ var Editor = {};
     }
 
     function toMobPreview() {
+        previewMode = 'mobile';
         $('#id-product_iframe_cnt').addClass('__mob');
         $(appIframe).css('border','0')
             .css('width','100%')
