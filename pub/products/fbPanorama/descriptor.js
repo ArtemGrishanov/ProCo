@@ -26,7 +26,7 @@ descriptor.app = [
         selector: 'id=mm pins.{{number}}.position',
         rules: 'drag',
         controlParams: {
-            scale: 'id=panoramaEditScr previewScale',
+            scale: 'id=mm previewScale',
             onMouseDownStopPropagation: false
         },
         updateScreens: false,
@@ -48,7 +48,7 @@ descriptor.rules = {
         controls: 'ClickAndAddToArray',
         canAdd: ["proto__pin_text"],
         controlParams: {
-            scale: 'id=panoramaEditScr previewScale'
+            scale: 'id=mm previewScale'
         },
     },
     deletePin: {

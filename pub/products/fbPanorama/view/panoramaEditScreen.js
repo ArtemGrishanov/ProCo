@@ -18,11 +18,6 @@ var PanoramaEditScreen = MutApp.Screen.extend({
      * @see MutApp
      */
     name: 'Панорама',
-    /**
-     * Какую по умолчанию показывать высоту картинки на экране превью
-     * Из этого будет рассчитан масштаб previewScale
-     */
-    DEF_PANORAMA_PREVIEW_HEIGHT: 600,
     logoPosition: {top: 200, left: 200},
     showLogo: true,
     /**
@@ -62,32 +57,21 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             .css('min-height','100%'));
         param.screenRoot.append(this.$el);
         this.model.bind("change:panoramaImage", function () {
-
-            var pImg = this.model.get('panoramaImage');
-            if (pImg) {
-                if (this.previewScale === undefined) {
-                    this.previewScale = this.DEF_PANORAMA_PREVIEW_HEIGHT/pImg.height;
-                    // приложение получить свой новый актуальный размер в зависимости от загруженной картинки и масштаба
-                    this.model.application.width = Math.round(pImg.width * this.previewScale);
-                    this.model.application.height = this.DEF_PANORAMA_PREVIEW_HEIGHT;
-                }
-
-                this.render();
-                this.model.application.showScreen(this);
-            }
+            this.render();
         }, this);
     },
 
     render: function() {
 
+        var ps = this.model.get('previewScale');
         var pImg = this.model.get('panoramaImage');
         if (pImg) {
             console.log('panoramaEditScreen.render(): +image');
             this.$el.html(this.template['default']({
                 backgroundImage: this.model.get('panoramaImgSrc')
             }));
-            var w = Math.round(pImg.width * this.previewScale);
-            var h = pImg.height * this.previewScale;
+            var w = Math.round(pImg.width * ps);
+            var h = pImg.height * ps;
             this.$el.find('.js-pano').width(w+'px').height(h+'px');
             // отрисовка пинов
             var $pinsCnt = this.$el.find('.js-pins_cnt');
@@ -95,8 +79,8 @@ var PanoramaEditScreen = MutApp.Screen.extend({
                 var p = this.model.attributes.pins[i];
                 p.data.pinIndex = i;
                 var $pel = $(this.template[p.uiTemplate](p.data));
-                var top = Math.round(p.position.top*this.previewScale);
-                var left = Math.round(p.position.left*this.previewScale);
+                var top = Math.round(p.position.top*ps);
+                var left = Math.round(p.position.left*ps);
                 $pel.css('top',top).css('left',left);
                 $pinsCnt.append($pel);
             }

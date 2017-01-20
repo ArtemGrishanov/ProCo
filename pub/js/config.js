@@ -45,7 +45,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['test'], //dev test prod
+        configurationSetsOnStart: ['dev'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -169,7 +169,13 @@ var config = {
         /**
          * Шаблон для кода встраивания
          */
-        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"><script src="//testix.me/js/loader.js" async></script></div>'
+        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"><script src="//testix.me/js/loader.js" async></script></div>',
+        /**
+         * Превью и прочие генерируемые канвасы
+         * Также влияет на качество панорам. Там вес критичен
+         * Значение 100 - дает слишком большой вес файла
+         */
+        JPEGEncoderQuality: 70
     },
     storage: {
         /**
@@ -467,6 +473,12 @@ var config = {
              * Высота по умолчанию, если не задана
              */
             defaultHeight: 600,
+            /**
+             * Кастомный класс паблишера, который будет испльзоваться при публикации
+             * Файл с кодом лежит в products/fbPanorama
+             *
+             */
+            customPublisherObject: 'fbPanoramaPublisher'
         },
         timeline: {
             stylesForEmbed: '<link href="{{config.common.home}}products/timeline/style.css" rel="stylesheet"/>'

@@ -694,7 +694,7 @@ MutApp.prototype.onAppMonitorTimer = function() {
         for (var i = 0; i < this._screens.length; i++) {
             v = this._screens[i];
             // если renderChecksum не меняется (undefined) то колбек не будет вызван
-            if (v.renderChecksum !== this._previousAppState.screensRenderChecksum[v]) {
+            if (v.renderChecksum !== this._previousAppState.screensRenderChecksum[v.id]) {
                 var event = {
                     type: MutApp.SCREEN_RENDERED,
                     screen: v
@@ -702,7 +702,7 @@ MutApp.prototype.onAppMonitorTimer = function() {
                 for (var j = 0; j < this._appChangeCallbacks.length; j++) {
                     this._appChangeCallbacks[j](event);
                 }
-                this._previousAppState.screensRenderChecksum[v] = v.renderChecksum;
+                this._previousAppState.screensRenderChecksum[v.id] = v.renderChecksum;
             }
         }
     }

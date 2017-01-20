@@ -146,6 +146,12 @@ var Editor = {};
      * @type {boolean}
      */
     var cloneTemplate = false;
+    /**
+     * Активный паблишер который используетсмя в данный момент
+     * Обыно это дефолтный Publisher, но у проектов есть и кастомные
+     * @type {null}
+     */
+    var activePublisher = null;
 
     /**
      * Функция запуска редактора
@@ -190,20 +196,6 @@ var Editor = {};
         });
         resourceManager = new ResourceManager();
         quickControlPanel = new QuickControlPanel();
-        function _initPublisher() {
-            Publisher.init({
-                awsBucket: App.getAWSBucketForPublishedProjects(),
-                callback: showEmbedDialog
-            });
-        }
-        if (App.getAWSBucket() !== null) {
-            _initPublisher();
-        }
-        else {
-            App.on(AWS_INIT_EVENT, function() {
-                _initPublisher();
-            });
-        }
         window.onbeforeunload = confirmExit;
         $('.js-app_preview').click(onPreviewClick);
         $('.js-app_publish').click(onPublishClick);
@@ -1045,26 +1037,32 @@ var Editor = {};
 
     function onPublishClick() {
         if (App.getUserData() !== null) {
-            if (Publisher.isInited() === true) {
-                Modal.showLoading();
-                // appId - уникальный ид проекта, например appId
-                var app = Engine.getApp();
-                // сначала создать превью-картинки для шаринга, записать ссылки на них в приложение
-                // и уже потом выкатывать приложение
-                createPreviewsForShare(function() {
-                    // нужно дописать свойство "опубликованности" именно в опубликованное приложение
-                    var appStr = addIsPublishedParam(Engine.serializeAppValues());
-                    Publisher.publish({
-                        appId: appId,
-                        width: app.width,
-                        height: app.height,
-                        appStr: appStr,
-                        cssStr: Engine.getCustomStylesString(),
-                        promoIframe: appIframe, //TODO возможно айрейм спрятать в engine тоже
-                        baseProductUrl: config.products[appName].baseProductUrl
-                    });
+            Modal.showLoading();
+            // appId - уникальный ид проекта, например appId
+            var app = Engine.getApp();
+            // сначала создать превью-картинки для шаринга, записать ссылки на них в приложение
+            // и уже потом выкатывать приложение
+            createPreviewsForShare(function() {
+                if (config.products[appName].customPublisherObject) {
+                    activePublisher = window[config.products[appName].customPublisherObject];
+                }
+                else {
+                    activePublisher = Publisher;
+                }
+                // нужно дописать свойство "опубликованности" именно в опубликованное приложение
+                var appStr = addIsPublishedParam(Engine.serializeAppValues());
+                activePublisher.publish({
+                    appId: appId,
+                    width: app.width,
+                    height: app.height,
+                    appStr: appStr,
+                    cssStr: Engine.getCustomStylesString(),
+                    promoIframe: appIframe, //TODO возможно айрейм спрятать в engine тоже
+                    baseProductUrl: config.products[appName].baseProductUrl,
+                    //awsBucket: App.getAWSBucketForPublishedProjects(),
+                    callback: showEmbedDialog
                 });
-            }
+            });
         }
         else {
             Modal.showLogin();
@@ -1148,7 +1146,7 @@ var Editor = {};
                         alert('Не удалось сохранить проект');
                     }
                 }
-                if (Publisher.isPublishing() !== true) {
+                if (activePublisher.isPublishing() !== true) {
                     Modal.hideLoading();
                 }
             }, appId);
@@ -1230,21 +1228,28 @@ var Editor = {};
 
         if (App.getUserData() !== null) {
 
-            // генерация канвасов заново и аплоад их с получением урла
-            shareImageService.requestImageUrls((function(){
-                // перед публикацией переустановка всех урлов картинок для публикации
-                var app = Engine.getApp();
-                for (var i = 0; i < app._shareEntities.length; i++) {
-                    var url = shareImageService.findImageInfo(app._shareEntities[i].id).imgUrl;
-                    var ps = config.common.shareImagesAppPropertyString.replace('{{number}}',i);
-                    var ap = Engine.getAppProperty(ps);
-                    Engine.setValue(ap, url);
-                }
+            var app = Engine.getApp();
+            if (app._shareEntities && app._shareEntities.length > 0) {
+                // генерация канвасов заново и аплоад их с получением урла
+                shareImageService.requestImageUrls((function(){
+                    // перед публикацией переустановка всех урлов картинок для публикации
+                    var app = Engine.getApp();
+                    for (var i = 0; i < app._shareEntities.length; i++) {
+                        var url = shareImageService.findImageInfo(app._shareEntities[i].id).imgUrl;
+                        var ps = config.common.shareImagesAppPropertyString.replace('{{number}}',i);
+                        var ap = Engine.getAppProperty(ps);
+                        Engine.setValue(ap, url);
+                    }
 
-                // далее может начать работать publisher
+                    // далее может начать работать publisher
+                    previewsReadyCallback('ok');
+
+                }).bind(this));
+            }
+            else {
+                // не из чего делать предпросмотр
                 previewsReadyCallback('ok');
-
-            }).bind(this));
+            }
 
         }
         else {
@@ -1334,8 +1339,8 @@ var Editor = {};
         if (result === 'success') {
 
             showPublishDialog({
-                link: Publisher.getAnonymLink(),
-                embedCode: Publisher.getEmbedCode()
+                link: activePublisher.getAnonymLink(),
+                embedCode: activePublisher.getEmbedCode()
             });
             // надо сохранить статус публикации
             sessionPublishDate = new Date().toString();

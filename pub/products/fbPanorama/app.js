@@ -19,11 +19,17 @@ var FbPanoramaApp = MutApp.extend({
         }));
         this.model = mm;
 
-        var startScr = new PanoramaEditScreen({
+        var editScr = new PanoramaEditScreen({
             model: mm,
             screenRoot: this.screenRoot
         });
-        this.addScreen(startScr);
+        this.addScreen(editScr);
+
+        var canvasScr = new CanvasScreen({
+            model: mm,
+            screenRoot: this.screenRoot
+        });
+        this.addScreen(canvasScr);
     },
 
     start: function() {

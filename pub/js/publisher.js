@@ -20,11 +20,6 @@ var Publisher = {};
      */
     var productResources = [];
     /**
-     *
-     * @type {boolean}
-     */
-    var isInited = false;
-    /**
      * Уникальный ид проекта, который публикуется.
      * @type {string}
      */
@@ -72,17 +67,6 @@ var Publisher = {};
     var isPublishing = false;
 
     /**
-     * Инициаоизация модуля.
-     * Передача важных параметров, необходимых для работы
-     *
-     * @param.callback {function} - функция вызываемая по умолчанию
-     */
-    function init(params) {
-        callback = params.callback;
-        isInited = true;
-    }
-
-    /**
      * Сохранить промо проект на сервере
      * 1) Для этого сначала составляется список всех ресурсов проекта: css, js, картинки
      * 2) Затем они скачиваются
@@ -97,11 +81,13 @@ var Publisher = {};
      * @params.cssStr {string} - css стили приложения, которые надо добавить в index.html
      * @params.promoIframe {iFrame} - iframe приложения прототипа, который меняем
      * @params.baseProductUrl {string} - базовый каталог спецпроекта для работы с ресурсами, например 'products/test'
+     * @params.awsBucket {Object}
      */
     function publish(params) {
         if (App.getUserData() !== null) {
             isPublishing = true;
             App.stat('Testix.me', 'Publish_started');
+            callback = params.callback;
             publishedAppId = params.appId;
             appStr = params.appStr;
             cssStr = params.cssStr;
@@ -470,11 +456,9 @@ var Publisher = {};
         }
     }
 
-    global.init = init;
     global.publish = publish;
     global.getEmbedCode = getEmbedCode;
     global.getAnonymLink = getAnonymLink;
-    global.isInited = function() {return isInited;}
     global.isError = function() {return errorInPublish;}
     global.isPublishing = function() {return isPublishing;}
 
