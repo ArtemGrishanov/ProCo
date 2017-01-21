@@ -169,13 +169,7 @@ var config = {
         /**
          * Шаблон для кода встраивания
          */
-        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"><script src="//testix.me/js/loader.js" async></script></div>',
-        /**
-         * Превью и прочие генерируемые канвасы
-         * Также влияет на качество панорам. Там вес критичен
-         * Значение 100 - дает слишком большой вес файла
-         */
-        JPEGEncoderQuality: 70
+        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"><script src="//testix.me/js/loader.js" async></script></div>'
     },
     storage: {
         /**
@@ -187,6 +181,23 @@ var config = {
          * для аплоада оно может быть увеличено, так как там большие файлы могут быть
          */
         responseMaxDuration: 6000
+    },
+    jpegEncoder: {
+        /**
+         * Превью и прочие генерируемые канвасы
+         * Также влияет на качество панорам. Там вес критичен
+         * Значение 100 - дает слишком большой вес файла
+         */
+        JPEGEncoderQuality: 70,
+        writeAPP0: true,
+        writeAPP1: false,
+        /**
+         * Данные используемые для записи в раздер APP1 в jpeg
+         */
+        APP1DATA: {
+            namespace: '',
+            string: ''
+        }
     },
     /**
      * Конфигурация витрины
@@ -291,7 +302,8 @@ var config = {
                 enabled: false,
                 entities: [
                     {
-                        //Фильмы и режиссеры  http://p.testix.me/121947341568004/6842f5cd6d/
+                        //пустой шаблон
+                        //Фильмы и режиссеры http://p.testix.me/121947341568004/6842f5cd6d/
                         //Автомобили http://p.testix.me/1045302892173346/06cc56a6dc
                         //Красотки http://p.testix.me/1045302892173346/e78a9cd599/
                     }

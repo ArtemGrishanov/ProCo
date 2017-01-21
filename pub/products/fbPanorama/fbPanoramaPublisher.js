@@ -79,8 +79,8 @@ var fbPanoramaPublisher = {};
             errorInPublish = false;
             facebookPostId = null;
 
+            setupJPEGEncoder(promoIframe.contentWindow.app.model.attributes.panoConfig.xmp);
             var panoCanvas = promoIframe.contentWindow.app.model.createPanoCanvas();
-
             uploadPanoCanvas(panoCanvas, function(result) {
                 if (result === 'ok') {
                     uploadPhoto(config.common.publishedProjectsHostName + awsImageUrl, 'My panorama by testix.me');
@@ -88,9 +88,23 @@ var fbPanoramaPublisher = {};
                 else {
                     errorInPublish = true;
                     isPublishing = false
+                    setupJPEGEncoder(null);
                     callback('error', null);
                 }
             });
+        }
+    }
+
+    function setupJPEGEncoder(xmpString) {
+        if (xmpString) {
+            config.jpegEncoder.APP1DATA.namespace = 'http://ns.adobe.com/xap/1.0/\0';
+            config.jpegEncoder.APP1DATA.string = xmpString;
+            config.jpegEncoder.writeAPP0 = false;
+            config.jpegEncoder.writeAPP1 = true;
+        }
+        else {
+            config.jpegEncoder.writeAPP0 = true;
+            config.jpegEncoder.writeAPP1 = false;
         }
     }
 
@@ -124,6 +138,7 @@ var fbPanoramaPublisher = {};
                             }
 
                             isPublishing = false
+                            setupJPEGEncoder(null);
                             if (errorInPublish === true) {
                                 callback('error', null);
                             }
@@ -144,6 +159,7 @@ var fbPanoramaPublisher = {};
         }
         else {
             isPublishing = false
+            setupJPEGEncoder(null);
             callback('error', null);
         }
     }

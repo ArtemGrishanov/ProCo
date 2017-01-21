@@ -14,8 +14,8 @@ var FbPanoramaModel = MutApp.Model.extend({
          * Из этого будет рассчитан масштаб previewScale
          */
         DEF_PANORAMA_PREVIEW_HEIGHT: 600,
-        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/6000x3562.jpg',
-//        panoramaImgSrc: 'http://localhost:63342/ProCo/pub/i/samples/6000x3562.jpg',
+//        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/6000x3562.jpg',
+        panoramaImgSrc: 'http://localhost:63342/ProCo/pub/i/samples/6000x3562.jpg',
         panoramaImage: null,
         previewScale: 1,
         pins: [
@@ -49,8 +49,26 @@ var FbPanoramaModel = MutApp.Model.extend({
         var img = new Image();
         img.crossOrigin = 'anonymous';
         img.onload = (function() {
+            // пытаемся создать конфигурацию панорамы на основе размеров картинки. Размеры могут подойти сразу
+            var cp = panoConfig.createConfig(img.width, img.height);
+            if (cp) {
+                console.log('Model.setPanoramaImage: Configuration created = '+cp.id);
+            }
+            else {
+                console.log('Model.setPanoramaImage: Не удается создать конфигурацию для картинки этого размера. Картинка будет расширена.');
+                cp = panoConfig.createConfig(errorData.srcWidth, errorData.srcHeight, {vfov: errorData.targetVFOV});
+                if (cp) {
+                    console.log('Model.setPanoramaImage: Configuration created: '+cp.id);
+                }
+                else {
+                    cp = null;
+                    console.log('Model.setPanoramaImage: Опять не удается создать конфигурацию.');
+                }
+            }
+
             // устанавливаем только когда изображение загружено
             this.set({
+                panoConfig: cp,
                 previewScale: this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT/img.height,
                 panoramaImage: img
             });
@@ -66,15 +84,11 @@ var FbPanoramaModel = MutApp.Model.extend({
     },
 
     createPanoCanvas: function() {
-        var configPano = {
-            srcWidth: this.attributes.panoramaImage.width,
-            srcHeight: this.attributes.panoramaImage.height
-        };
         return panoDrawing.createPanoCanvas({
             img: this.attributes.panoramaImage,
             pins: this.attributes.pins,
-            width: configPano.srcWidth,
-            height: configPano.srcHeight,
+            width: this.attributes.panoConfig.srcWidth,
+            height: this.attributes.panoConfig.srcHeight,
         });
     }
 });

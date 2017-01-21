@@ -120,10 +120,10 @@ var s3util = {};
  */
 function uploadCanvas(bucket, callback, url, canvas, fakeUpload) {
     if (fakeUpload !== true) {
-        JPEGEncoder(config.common.JPEGEncoderQuality);
+        JPEGEncoder(config.jpegEncoder.JPEGEncoderQuality);
         var theImgData = (canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
         // Encode the image and get a URI back, set toRaw to true
-        var rawData = encode(theImgData, config.common.JPEGEncoderQuality, true);
+        var rawData = encode(theImgData, config.jpegEncoder.JPEGEncoderQuality, true);
         var blob = new Blob([rawData.buffer], {type: 'image/jpeg'});
         var params = {
             Key: url,

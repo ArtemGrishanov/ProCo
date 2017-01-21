@@ -41,3 +41,4 @@ addArrayElement deleteArrayElement переделать на значение и
 Сделал возможность в дескрипторе selector== id=mm pins(createPins) делать + getAppProperty(propertyStringOrSelector)
 drag доп параметр
 drag updateSelection updateQuickPanelPosition
+Кастомный паблишер
