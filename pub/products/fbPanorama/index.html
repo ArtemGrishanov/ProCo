@@ -18,7 +18,9 @@
     <script id="id-panorama_edit_template" type="text/template">
         <div class="modal __active js-back_color js-back_img">
             <div class="modal_cnt info js-back_shadow">
-                <div class="pano_preview js-pano js-pins_cnt" data-app-property="id=mm panoramaImgSrc, id=mm pins(createPin)" style="background-image:url(<%=backgroundImage%>)"></div>
+                <div class="pano_cnt js-pano js-pins_cnt" data-app-property="id=mm pins(createPin)">
+                    <div class="pano_img js-pano_image" data-app-property="id=mm panoramaImgSrc" style="background-image:url(<%=backgroundImage%>)"></div>
+                </div>
                 <div class="logo js-logo js-start_logo" data-app-property="id=startScr logoPosition, id=startScr showLogo, id=mm logoUrl"></div>
             </div>
         </div>

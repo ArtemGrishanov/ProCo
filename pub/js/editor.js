@@ -1483,11 +1483,13 @@ var Editor = {};
     }
 
     function updateSelection() {
-        var eo = $(selectedElem).offset(); // position() не подходит в данном случае
-        $selectionBorder.css('top',eo.top+'px');
-        $selectionBorder.css('left',eo.left+'px');
-        $selectionBorder.css('width',$(selectedElem).outerWidth(false)-1+'px'); // false - not including margins
-        $selectionBorder.css('height',$(selectedElem).outerHeight(false)-1+'px');
+        if ($selectionBorder) {
+            var eo = $(selectedElem).offset(); // position() не подходит в данном случае
+            $selectionBorder.css('top',eo.top+'px');
+            $selectionBorder.css('left',eo.left+'px');
+            $selectionBorder.css('width',$(selectedElem).outerWidth(false)-1+'px'); // false - not including margins
+            $selectionBorder.css('height',$(selectedElem).outerHeight(false)-1+'px');
+        }
     }
 
     function deleteSelections() {

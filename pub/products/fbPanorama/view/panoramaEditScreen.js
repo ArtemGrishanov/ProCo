@@ -64,15 +64,25 @@ var PanoramaEditScreen = MutApp.Screen.extend({
     render: function() {
 
         var ps = this.model.get('previewScale');
-        var pImg = this.model.get('panoramaImage');
-        if (pImg) {
+        var panoConfig = this.model.get('panoConfig');
+        var panoImage = this.model.get('panoramaImage');
+        if (panoConfig) {
             console.log('panoramaEditScreen.render(): +image');
             this.$el.html(this.template['default']({
                 backgroundImage: this.model.get('panoramaImgSrc')
             }));
-            var w = Math.round(pImg.width * ps);
-            var h = pImg.height * ps;
-            this.$el.find('.js-pano').width(w+'px').height(h+'px');
+
+            var cntWidth = Math.round(panoConfig.srcWidth * ps);
+            var cntHeight = Math.round(panoConfig.srcHeight * ps);
+            var $panoCnt = this.$el.find('.js-pano').width(cntWidth+'px').height(cntHeight+'px');
+
+            // если картинка меньше контейнера, надо ее выровнять по центру внутри него. Так же делается при отрисовке канваса
+            var $panoImg = this.$el.find('.js-pano_image');
+            var panoImgWidth = Math.round(panoImage.width * ps);
+            var panoImgHeight = Math.round(panoImage.height * ps);
+            $panoImg.width(panoImgWidth+'px').height(panoImgHeight+'px');
+            $panoImg.css('top', Math.round((cntHeight-panoImgHeight)/2)+'px').css('left', Math.round((cntWidth-panoImgWidth)/2)+'px');
+
             // отрисовка пинов
             var $pinsCnt = this.$el.find('.js-pins_cnt');
             for (var i = 0; i < this.model.attributes.pins.length; i++) {

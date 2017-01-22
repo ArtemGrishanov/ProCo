@@ -4,7 +4,7 @@
 var panoDrawing = {};
 (function canvas(global) {
     // эти настройки покаж жестко заданы
-    var PIN_PADDING = 20, PIN_COLOR = '#33bbed', PIN_FONT_COLOR = '#ffffff', PIN_FONT_HEIGHT = 90;
+    var PIN_PADDING = 40, PIN_COLOR = '#33bbed', PIN_FONT_COLOR = '#ffffff', PIN_FONT_HEIGHT = 66, BACK_COLOR = '#aaa', PIN_FONT_FAMILY = 'Times New Roman';
 
     var panoCanvas = null;
     var configPano = null;
@@ -18,7 +18,7 @@ var panoDrawing = {};
         var x = param.left, y = param.top;
         param.text = param.text.replace(/(&nbsp;)*/g,"");
         var lines = param.text.split('<br>');
-        ctx.font = PIN_FONT_HEIGHT + "px Arial";
+        ctx.font = PIN_FONT_HEIGHT + "px " + PIN_FONT_FAMILY;
         ctx.textBaseline = 'top';
         var maxLineWidth = 0;
         for (var i = 0; i < lines.length; i++) {
@@ -52,6 +52,8 @@ var panoDrawing = {};
         panoCanvas.width = param.width;
         panoCanvas.height = param.height;
         var ctx = panoCanvas.getContext('2d');
+        ctx.fillStyle = BACK_COLOR;
+        ctx.fillRect(0, 0, panoCanvas.width, panoCanvas.height)
         var dx = Math.round((panoCanvas.width-param.img.width)/2);
         var dy = Math.round((panoCanvas.height-param.img.height)/2);
         ctx.drawImage(param.img, dx, dy);

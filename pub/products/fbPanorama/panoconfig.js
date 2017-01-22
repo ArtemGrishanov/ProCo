@@ -267,5 +267,6 @@ var panoConfig = {};
     testConfigs();
 
     global.createConfig = createConfig;
+    global.getErrorData = function() { return errorData; };
 
 })(panoConfig);

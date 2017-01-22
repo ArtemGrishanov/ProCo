@@ -15,7 +15,8 @@ var FbPanoramaModel = MutApp.Model.extend({
          */
         DEF_PANORAMA_PREVIEW_HEIGHT: 600,
 //        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/6000x3562.jpg',
-        panoramaImgSrc: 'http://localhost:63342/ProCo/pub/i/samples/6000x3562.jpg',
+//        panoramaImgSrc: 'http://localhost:63342/ProCo/pub/i/samples/6000x3562.jpg',
+        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F6000x1356.jpg',
         panoramaImage: null,
         previewScale: 1,
         pins: [
@@ -56,7 +57,8 @@ var FbPanoramaModel = MutApp.Model.extend({
             }
             else {
                 console.log('Model.setPanoramaImage: Не удается создать конфигурацию для картинки этого размера. Картинка будет расширена.');
-                cp = panoConfig.createConfig(errorData.srcWidth, errorData.srcHeight, {vfov: errorData.targetVFOV});
+                cp = panoConfig.createConfig(panoConfig.getErrorData().srcWidth, panoConfig.getErrorData().srcHeight,
+                    {vfov: panoConfig.getErrorData().targetVFOV});
                 if (cp) {
                     console.log('Model.setPanoramaImage: Configuration created: '+cp.id);
                 }
@@ -69,7 +71,7 @@ var FbPanoramaModel = MutApp.Model.extend({
             // устанавливаем только когда изображение загружено
             this.set({
                 panoConfig: cp,
-                previewScale: this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT/img.height,
+                previewScale: this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT / cp.srcHeight,
                 panoramaImage: img
             });
             // приложение получить свой новый актуальный размер в зависимости от загруженной картинки и масштаба

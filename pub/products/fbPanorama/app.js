@@ -11,6 +11,8 @@ var FbPanoramaApp = MutApp.extend({
 
     // для удобства отладки ссылка просто
     model: null,
+    editScr: null,
+    canvasScr: null,
 
     initialize: function(param) {
         console.log('FbPanoramaApp initialize');
@@ -19,17 +21,17 @@ var FbPanoramaApp = MutApp.extend({
         }));
         this.model = mm;
 
-        var editScr = new PanoramaEditScreen({
+        this.editScr = new PanoramaEditScreen({
             model: mm,
             screenRoot: this.screenRoot
         });
-        this.addScreen(editScr);
+        this.addScreen(this.editScr);
 
-        var canvasScr = new CanvasScreen({
+        this.canvasScr = new CanvasScreen({
             model: mm,
             screenRoot: this.screenRoot
         });
-        this.addScreen(canvasScr);
+        this.addScreen(this.canvasScr);
     },
 
     start: function() {
@@ -37,5 +39,13 @@ var FbPanoramaApp = MutApp.extend({
 //            this._screens[i].$el.hide();
 //        }
         this._models[0].start();
+    },
+
+    showEdit: function() {
+        this.showScreen(this.editScr);
+    },
+
+    showCanvas: function() {
+        this.showScreen(this.canvasScr);
     }
 });
