@@ -899,15 +899,17 @@ var Editor = {};
             for (var i = 0; i < appScreenIds.length; i++) {
                 var s = appScreenIds[i];
                 var screen = Engine.getAppScreen(s);
-                if (typeof screen.group !== "string") {
-                    // если группа не указана, экран будет один в своей группе
-                    screen.group = screen.id;
+                if (screen.hideScreen === false) {
+                    if (typeof screen.group !== "string") {
+                        // если группа не указана, экран будет один в своей группе
+                        screen.group = screen.id;
+                    }
+                    if (groups.hasOwnProperty(screen.group) === false) {
+                        // группа новая, создаем
+                        groups[screen.group] = [];
+                    }
+                    groups[screen.group].push(s);
                 }
-                if (groups.hasOwnProperty(screen.group) === false) {
-                    // группа новая, создаем
-                    groups[screen.group] = [];
-                }
-                groups[screen.group].push(s);
             }
 
             // далее начнем создать контролы и вью для групп экранов

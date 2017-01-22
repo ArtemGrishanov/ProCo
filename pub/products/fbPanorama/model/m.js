@@ -14,9 +14,10 @@ var FbPanoramaModel = MutApp.Model.extend({
          * Из этого будет рассчитан масштаб previewScale
          */
         DEF_PANORAMA_PREVIEW_HEIGHT: 600,
-//        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/6000x3562.jpg',
+        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/6000x3562.jpg',
 //        panoramaImgSrc: 'http://localhost:63342/ProCo/pub/i/samples/6000x3562.jpg',
-        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F6000x1356.jpg',
+//        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F6000x1356.jpg',
+//        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F1600x1000.jpg',
         panoramaImage: null,
         previewScale: 1,
         pins: [
@@ -91,6 +92,7 @@ var FbPanoramaModel = MutApp.Model.extend({
             pins: this.attributes.pins,
             width: this.attributes.panoConfig.srcWidth,
             height: this.attributes.panoConfig.srcHeight,
+            pinScale: 1/this.attributes.previewScale
         });
     }
 });

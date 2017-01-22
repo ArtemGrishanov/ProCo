@@ -35,6 +35,11 @@ var AppScreen = function(mutAppScreen) {
      */
     this.name = this._mutAppScreen.name;
     /**
+     * Не показывать скрин на панели контролов
+     * @type {*}
+     */
+    this.hideScreen = this._mutAppScreen.hideScreen;
+    /**
      * Схлопывание экранов в один контрол
      * @type {*}
      */

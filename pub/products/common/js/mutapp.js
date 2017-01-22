@@ -767,6 +767,7 @@ MutApp.Screen = Backbone.View.extend({
         {key: 'group', value: null},
         {key: 'arrayAppPropertyString', value: null},
         {key: 'name', value: null},
+        {key: 'hideScreen', value: false},
         {key: 'draggable', value: true},
         {key: 'canAdd', value: false},
         {key: 'canClone', value: false},
