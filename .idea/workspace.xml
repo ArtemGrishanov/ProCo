@@ -35,7 +35,7 @@
       <file leaf-file-name="fbPanorama.txt" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/fbPanorama.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="45" selection-start="2104" selection-end="2128" vertical-scroll-proportion="0.8525281" vertical-offset="23" max-vertical-offset="735">
+            <state line="36" column="27" selection-start="1670" selection-end="1670" vertical-scroll-proportion="0.7261236" vertical-offset="23" max-vertical-offset="750">
               <folding />
             </state>
           </provider>
@@ -96,7 +96,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/products/fbPanorama/fbPanorama.txt" />
         <option value="$PROJECT_DIR$/pub/js/util/s3util.js" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/fbPanoramaPublisher.js" />
         <option value="$PROJECT_DIR$/pub/lib/jpeg_encoder.js" />
@@ -112,6 +111,7 @@
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/model/m.js" />
         <option value="$PROJECT_DIR$/pub/js/config.js" />
         <option value="$PROJECT_DIR$/pub/js/editor.js" />
+        <option value="$PROJECT_DIR$/pub/products/fbPanorama/fbPanorama.txt" />
       </list>
     </option>
   </component>
@@ -584,7 +584,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/fbPanorama.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="45" selection-start="2104" selection-end="2128" vertical-scroll-proportion="0.8525281" vertical-offset="23" max-vertical-offset="735">
+        <state line="36" column="27" selection-start="1670" selection-end="1670" vertical-scroll-proportion="0.7261236" vertical-offset="23" max-vertical-offset="750">
           <folding />
         </state>
       </provider>

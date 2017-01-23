@@ -34,6 +34,7 @@ Drag: updateScreens изменил ?
 Создал TextQuickInputDraggable зачем то
 
 Сделано.
+onAppChange: renderChecksum
 Мигание пина после перетаскивания происходит. Выяснить
     - Не соблюдался масштаб при Drag:onPropertyChanged контрол улетал за область потом возвращался из-за пересоздания экрана
 seletion update при драге и вводе
