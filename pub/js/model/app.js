@@ -188,8 +188,23 @@ var App = App || {};
         if (config.common.facebookAuthEnabled === true) {
             initFB();
         }
+        initScripts();
         initUIHandlers();
         initLang('RU');
+    }
+
+    /**
+     * В зависимости от конфига добавить на страницу доп скрипты типа GA или плагинов для обратной связи
+     */
+    function initScripts() {
+        for (var key in config.scripts) {
+            if (config.scripts.hasOwnProperty(key)) {
+                var sc = config.scripts[key];
+                if (sc.enable === true) {
+                    $('body').append(sc.code);
+                }
+            }
+        }
     }
 
     /**
