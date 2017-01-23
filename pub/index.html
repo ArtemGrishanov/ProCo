@@ -14,31 +14,46 @@
 <body>
     <div class="scr_wr">
         <div class="top">
-            <div class="top_toolbar __full">
+            <div class="top_toolbar">
                 <div class="toolbar_left">
                     <a class="logo ml24" href="index.html"></a>
                     <span class="logo_beta"></span>
+                    <a href="storefront.html" class="menu_tab pts_string pts_menu_gallery">Галерея шаблонов</a>
+                    <!--<a href="my_templates.html" class="menu_tab pts_string pts_my_projects">Мои тесты</a>-->
+                    <a href="howitworks.html" class="menu_tab pts_string pts_how_it_works">Как это работает</a>
+                    <a href="faq.html" class="menu_tab pts_string pts_faq">FAQ</a>
+                    <a href="contact.html" class="menu_tab pts_string pts_contacts">Контакты</a>
                 </div>
                 <div class="toolbar_right">
-                    <span class="tx __18 lang_item __active __light js-lang" data-lang="RU">RU</span><span class="tx __18 lang_item __leftborder __light js-lang" data-lang="EN">EN</span>
+                    <div class="lang_switcher mt6">
+                        <span class="tx __18 lang_item __active __light js-lang" data-lang="RU">RU</span><span class="tx __18 lang_item __leftborder __light js-lang" data-lang="EN">EN</span>
+                    </div>
+                    <div id="id-user_toolbar" class="toolbar_user ml12">
+                        <div style="display:none" class="user_avatar js-profile_picture"></div>
+                        <span style="display:none" class="pbtn __blue __small mt2 js-show_login" style="display:none;">Войти</span>
+                        <div style="display:none" class="dropdown_btn js-user_ctx_menu">
+                            <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
+                                <a href="my_templates.html"><div class="ctx_menu_item" onclick="onMyTemplatesClick();">
+                                    Мои проекты
+                                </div></a>
+                                <div class="ctx_menu_item">
+                                    Настройки профиля
+                                </div>
+                                <div class="ctx_menu_item js-logout">
+                                    Выйти
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="menu_tabs_wr">
-            <div class="menu_tabs">
-                <a href="storefront.html" class="menu_tab pts_string pts_menu_gallery">Галерея шаблонов</a>
-                <a href="my_templates.html" class="menu_tab pts_string pts_my_projects">Мои тесты</a>
-                <a href="howitworks.html" class="menu_tab pts_string pts_how_it_works">Как это работает</a>
-                <!--<a href="info.html" class="menu_tab">Решения для бизнеса</a>-->
-                <a href="contact.html" class="menu_tab pts_string pts_contacts">Контакты</a>
             </div>
         </div>
         <div class="main_title">
             <div class="main_title_shadow"></div>
             <div class="main_title_content_wr">
                 <div class="main_title_content">
-                    <div class="main_title_logo"></div>
-                    <h2 class="main_title_header2 tx __white __light pts_string pts_main_desc">Онлайн-конструктор тестов<br>и спецпроектов</h2>
+                    <div class="logo __big"></div>
+                    <h2 class="main_title_header2 tx __white __light pts_string pts_main_desc">Конструктор интерактивного контента</h2>
                     <!--<p class="main_title_desc tx __white __light __24 pts_string pts_how_it_helps_to_business">Узнайте, как спецпроекты<br>могут помочь вашему бизнесу</p>-->
                     <div class="main_title_btns_wr">
                         <div class="main_title_btn_wr">
@@ -46,9 +61,36 @@
                         </div>
                         <div class="main_title_btn_wr">
                             <a href="storefront.html">
-                                <span class="pbtn __green __long pts_string pts_create_spec">Создайте спецпроект</span>
+                                <span class="pbtn __red __long pts_string pts_create_spec">Создать проект бесплатно</span>
                             </a>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main_format_cards">
+            <div class="content_wr">
+                <div class="format_cards_cnt">
+                    <div class="format_card">
+                        <p class="format_card_h tx __light __graphite __28">Тесты</p>
+                        <div class="format_preview __test"></div>
+                        <p class="format_card_t tx __black __18">Сделайте свой красивый тест  из готовых шаблонов</p>
+                        <p class="format_card_d tx __light __grey __16">Добавьте ваш контент – и тест готов. Настраивайте постинг в соцсети и добавляйте ссылки на статистику.</p>
+                        <div class="format_card_icon_down __1"></div>
+                    </div>
+                    <div class="format_card">
+                        <p class="format_card_h tx __light __graphite __28">Мини игры</p>
+                        <div class="format_preview __memoriz"></div>
+                        <p class="format_card_t tx __black __18">Создавайте собственные игры прямо в браузере</p>
+                        <p class="format_card_d tx __light __grey __16">Просто подберите нужные изображения – и у вас готовая игра «Мемори»!</p>
+                        <div class="format_card_icon_down __2"></div>
+                    </div>
+                    <div class="format_card">
+                        <p class="format_card_h tx __light __graphite __28">Панорамы</p>
+                        <div class="format_preview __fbPano"></div>
+                        <p class="format_card_t tx __black __18">Удивляйте уникальными форматами</p>
+                        <p class="format_card_d tx __light __grey __16">Загрузите фотографию, добавьте подписи и опубликуйте в вашем facebook в виде панорамы 360°!</p>
+                        <div class="format_card_icon_down __3"></div>
                     </div>
                 </div>
             </div>

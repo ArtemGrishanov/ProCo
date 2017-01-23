@@ -115,7 +115,7 @@ var App = App || {};
 
         },
         'EN': {
-            main_desc: 'Create quizes and<br>other special projects online',
+            main_desc: 'Interactive content builder',
             special_what_is_it: 'What special project is?',
             business_solutions: 'Business solutions',
             spec_descr: 'Special projects are quizes, timelines, infografics and other formats. They can easily tell about complex topics, and using game ways frequently.',
@@ -135,12 +135,13 @@ var App = App || {};
             learn_more: 'Want to know more about Testix? Write to us!',
             send_message: 'Send message',
             watch_video: 'Video',
-            create_spec: 'Create project',
+            create_spec: 'Create project for free',
             how_it_helps_to_business: 'Learn how special project<br>can support your business',
             menu_gallery: 'Template gallery',
             my_projects: 'My projects',
             how_it_works: 'How it works',
-            contacts: 'Contacts'
+            contacts: 'Contacts',
+            faq: 'FAQ'
         }
     };
 

@@ -49,15 +49,9 @@ html, body {
     height: 100%;
     min-width: 1024px;
 }
-/*.scr_dialog {*/
-    /*position: fixed;*/
-    /*top: 0;*/
-    /*left: 0;*/
-    /*width: 100%;*/
-    /*height: 100%;*/
-    /*background-color: rgba(63, 63, 63, 0.9);*/
-    /*padding-top: 50px*/
-/*}*/
+.lang_switcher {
+    display: inline-block;
+}
 .social_btns_cnt {
     min-height: 44px;
     margin: 0 auto;
@@ -105,8 +99,11 @@ html, body {
 .tx.__black {
     color: #000;
 }
+.tx.__graphite {
+    color: #484848;
+}
 .tx.__grey {
-    color: #464646;
+    color: #7d7d7d;
 }
 .tx.__light {
     font-weight: 100;
@@ -242,19 +239,27 @@ html, body {
 }
 .pbtn {
     display: inline-block;
-    /*border: #979797 solid 1px;*/
     border-radius: 4px;
-    min-width: 128px;
     padding: 12px 7px 12px 7px;
     color: #979797;
     background-color: #fff;
     text-align: center;
     cursor: pointer;
     text-decoration: none;
+    font-size: 16px;
+    min-width: 135px;
 }
 .pbtn:hover {
     text-decoration: none;
     color: #333;
+}
+.pbtn.__blue {
+    background-color: #499cf3;
+    color: #fff;
+}
+.pbtn.__red {
+    background-color: #ff4e4e;
+    color: #fff;
 }
 .pbtn.__green {
     background-color: #1cbf61;
@@ -262,7 +267,9 @@ html, body {
     border-color: #1cbf61;
 }
 .pbtn.__small {
-    padding: 6px 7px 6px 7px;
+    min-width: 110px;
+    padding: 10px;
+    font-size: 14px;
 }
 .pbtn.__long {
     min-width: 225px;
@@ -271,8 +278,8 @@ html, body {
     position: relative;
     width: 100%;
     min-width: 300px;
-    height: 52px;
-    background-color: #343434;
+    height: 56px;
+    background-color: #000;
 }
 .top_proj_name {
     display: inline-block;
@@ -297,15 +304,20 @@ html, body {
 .logo {
     display: inline-block;
     vertical-align: top;
-    background: url(../i/Testix-logo-white-small.png) center no-repeat;
-    width: 106px;
-    height: 26px;
+    background: url(../i/logo-header.png) center no-repeat;
+    width: 114px;
+    height: 28px;
     background-size: contain;
 }
 .logo.__med {
     background-image: url(../i/Testix-logo-bottom.png);
     width: 193px;
     height: 97px;
+}
+.logo.__big {
+    background-image: url(../i/logo_big.png);
+    width: 277px;
+    height: 104px;
 }
 .logo_beta {
     display: inline-block;
@@ -322,14 +334,13 @@ html, body {
     width: 100%;
     padding-top: 8px;
 }
-.top_toolbar.__full {
-    width: 100%;
-}
 .toolbar_left {
     display: inline-block;
     vertical-align: top;
     text-align: left;
-    width: 45%;
+    width: 53%;
+    min-width: 700px;
+    height: 44px;
     padding-top: 4px;
 }
 .toolbar_center {
@@ -343,8 +354,9 @@ html, body {
     display: inline-block;
     vertical-align: top;
     text-align: right;
-    width: 53%;
-    padding-top: 4px;
+    width: 45%;
+    min-width: 300px;
+    padding-top: 2px;
 }
 .toolbar_btns {
     display: inline-block;
@@ -409,25 +421,15 @@ html, body {
     background: url(../i/facebook-login.png) no-repeat;
     cursor: pointer;
 }
-.menu_tabs_wr {
-    text-align: center;
-    background-color: #fff;
-    border-bottom: 1px solid #4c77b8;
-}
-.menu_tabs {
-    margin: 0 auto;
-}
 .menu_tab {
     display: inline-block;
     vertical-align: top;
-    min-width: 150px;
-    min-height: 50px;
-    padding: 14px 25px 10px;
+    padding: 8px 7px 14px;
     margin: 0;
-    margin-left: -4px;
+    margin-left: 18px;
     box-sizing: border-box;
     font-size: 16px;
-    color: #414141;
+    color: #fff;
     cursor: pointer;
     text-decoration: none;
 }
@@ -458,16 +460,10 @@ html, body {
 }
 .main_title {
     position: relative;
-    height: 600px;
-    background: url(../i/index_main.jpg) no-repeat center;
+    height: 375px;
+    background: url(../i/top-img.jpg) no-repeat center;
     background-size: cover;
     text-align: center;
-}
-.main_title_logo {
-    display: inline-block;
-    background: url(../i/Testix-logo-big.png) no-repeat center;
-    width: 348px;
-    height: 146px;
 }
 .main_title_shadow {
     position: absolute;
@@ -485,7 +481,7 @@ html, body {
     height: 100%;
 }
 .main_title_content {
-    padding-top: 120px;
+    padding-top: 40px;
 }
 .main_title_header {
     text-transform: uppercase;
@@ -493,9 +489,9 @@ html, body {
     margin: 0;
 }
 .main_title_header2 {
-    font-size: 40px;
+    font-size: 28px;
     margin: 0;
-    padding: 12px;
+    padding: 20px;
 }
 .main_title_desc {
     margin: 0;
@@ -508,6 +504,73 @@ html, body {
 }
 .main_title_btn_wr + .main_title_btn_wr {
     margin-left: 24px;
+}
+
+.main_format_cards {
+    height: 459px;
+    background-color: #f7f7f7;
+}
+.format_cards_cnt {
+    position: absolute;
+    white-space: nowrap;
+    margin: -60px 0 0 -58px;
+}
+.format_card {
+    display: inline-block;
+    vertical-align: top;
+    background-color: #fff;
+    width: 320px;
+    height: 480px;
+    border-radius: 4px;
+    white-space: normal;
+}
+.format_card + .format_card {
+    margin-left: 24px;
+}
+.format_card_h {
+    margin: 28px auto;
+}
+.format_preview {
+    background: url(../i/preview-test.png) no-repeat center;
+    background-size: 272px 204px;
+    width: 272px;
+    height: 204px;
+    margin: 22px auto;
+}
+.format_preview.__test {
+    background-image: url(../i/preview-test.png);
+}
+.format_preview.__memoriz {
+    background-image: url(../i/preview-memory.png);
+}
+.format_preview.__fbPano {
+    background-image: url(../i/preview-fbpanorama.png);
+}
+.format_card_t {
+    margin-top: 26px;
+    padding: 0 24px;
+    text-align: left;
+}
+.format_card_d {
+    margin-top: 12px;
+    padding: 0 24px;
+    text-align: left;
+}
+.format_card_icon_down {
+    background: url(../i/icon-down-1.png) no-repeat center;
+    background-size: 26px 17px;
+    width: 26px;
+    height: 17px;
+    margin: 17px auto;
+}
+.format_card_icon_down.__1 {
+    background: url(../i/icon-down-1.png) no-repeat center;
+}
+.format_card_icon_down.__2 {
+    background: url(../i/icon-down-2.png) no-repeat center;
+}
+.format_card_icon_down.__3 {
+    background: url(../i/icon-down-3.png) no-repeat center;
 }
 
 .main_what_is_it {
@@ -1046,16 +1109,49 @@ html, body {
     background-image: url(../i/howitworks/howitworks-4.png);
     background-size: 127px 271px;
 }
+
+/* ============= */
+/* Retina styles */
+/* ============= */
 @media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
     .hiw_call_winner {
         background-image: url(../i/howitworks/howitworks-4@2x.png);
     }
     .logo {
-
+        background-image: url(../i/logo-header@2x.png);
+        background-size: 114px 28px;
+    }
+    .logo.__big {
+        background-image: url(../i/logo_big@2x.png);
+        background-size: 277px 104px;
     }
     .logo_beta {
         background-image: url(../i/Beta@2x.png);
         background-size: 29px 13px;
+    }
+    .main_title {
+        background-image: url(../i/top-img@2x.jpg);
+    }
+    .format_preview.__test {
+        background-image: url(../i/preview-test@2x.png);
+    }
+    .format_preview.__memoriz {
+        background-image: url(../i/preview-memory@2x.png);
+    }
+    .format_preview.__fbPano {
+        background-image: url(../i/preview-fbpanorama@2x.png);
+    }
+    .format_card_icon_down.__1 {
+        background-image: url(../i/icon-down-1@2x.png);
+        background-size: 26px 17px;
+    }
+    .format_card_icon_down.__2 {
+        background-image: url(../i/icon-down-2@2x.png);
+        background-size: 26px 17px;
+    }
+    .format_card_icon_down.__3 {
+        background-image: url(../i/icon-down-3@2x.png);
+        background-size: 26px 17px;
     }
 }
 .hiw_selection {
@@ -1118,10 +1214,6 @@ html, body {
     .main_title_btn_wr + .main_title_btn_wr {
         margin-left: 0;
         margin-top: 20px;
-    }
-    .main_title_logo {
-        width: 300px;
-        background-size: contain;
     }
     .main_what_is_it {
         height: auto;
