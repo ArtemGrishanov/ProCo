@@ -1148,7 +1148,7 @@ var Editor = {};
                         alert('Не удалось сохранить проект');
                     }
                 }
-                if (activePublisher.isPublishing() !== true) {
+                if (!activePublisher || activePublisher.isPublishing() !== true) {
                     Modal.hideLoading();
                 }
             }, appId);
