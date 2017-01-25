@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FAQ</title>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <meta name='viewport' content='width=device-width,initial-scale=1,user-scalable=no'>
+    <!--build:css css/info.min.css-->
+    <link href="css/common.css" rel="stylesheet"/>
+    <!--endbuild-->
+</head>
+<body>
+    <div class="scr_wr">
+        <div class="top">
+            <div class="top_toolbar">
+                <div class="toolbar_left">
+                    <a class="logo ml24" href="index.html"></a>
+                    <span class="logo_beta"></span>
+                </div>
+                <div class="toolbar_right">
+                    <div id="id-user_toolbar" class="toolbar_user" style="margin-top: -6px;">
+                        <div style="display:none" class="user_avatar js-profile_picture"></div>
+                        <span style="display:none" class="pbtn __green __small mt4 js-show_login" style="display:none;">Войти</span>
+                        <div style="display:none" class="dropdown_btn js-user_ctx_menu">
+                            <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
+                                <a href="my_templates.html"><div class="ctx_menu_item" onclick="onMyTemplatesClick();">
+                                    Мои проекты
+                                </div></a>
+                                <div class="ctx_menu_item">
+                                    Настройки профиля
+                                </div>
+                                <div class="ctx_menu_item js-logout">
+                                    Выйти
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menu_tabs_wr">
+            <div class="menu_tabs">
+                <a href="storefront.html" class="menu_tab">Галерея шаблонов</a>
+                <a href="my_templates.html" class="menu_tab">Мои тесты</a>
+                <a href="howitworks.html" class="menu_tab">Как это работает</a>
+                <!--<a href="info.html" class="menu_tab">Решения для бизнеса</a>-->
+                <a href="contact.html" class="menu_tab">Контакты</a>
+            </div>
+        </div>
+        <div class="header tx __light">
+            Информационная страница
+        </div>
+    </div>
+    <div id="id-modal_cnt" style="display:none">
+        <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
+    </div>
+
+    <script type="text/javascript" src="lib/jquery.js"></script>
+    <!-- build:js info.min.js -->
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/model/app.js"></script>
+    <!-- endbuild -->
+    <script>
+        $(document).ready(function() {
+            App.start();
+        });
+    </script>
+</body>
+</html>

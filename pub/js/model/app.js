@@ -143,7 +143,12 @@ var App = App || {};
             contacts: 'Contacts',
             faq: 'FAQ'
         }
-    };
+    },
+    /**
+     * Статус мобильного меню: открыт или закрыт
+     * @type {boolean}
+     */
+    mobileMenuOpened = false;
 
     /**
      * Забрать из верстки тексты и сложить в словарь
@@ -250,6 +255,23 @@ var App = App || {};
             $e.addClass('__active');
             setLang($e.attr('data-lang'));
         });
+        $('.js-mob_menu_switcher').click(function(e) {
+            toggleMobileMenu();
+        });
+    }
+
+    function toggleMobileMenu(e) {
+        mobileMenuOpened = !mobileMenuOpened;
+        if (mobileMenuOpened === true) {
+            $('.js-mob_menu_switcher').addClass('__opened');
+            $('#id-mob_menu').show();
+            $('#id-page_content').hide();
+        }
+        else {
+            $('.js-mob_menu_switcher').removeClass('__opened');
+            $('#id-mob_menu').hide();
+            $('#id-page_content').show();
+        }
     }
 
     /**
