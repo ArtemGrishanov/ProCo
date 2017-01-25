@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev'], //dev test prod
+        configurationSetsOnStart: ['dev','offline'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -203,9 +203,15 @@ var config = {
         /**
          * Категория, которая открывается по умолчанию
          */
-        defaultCategory: 'test',
+        defaultCategory: 'all',
+        allCategoryKey: 'all',
         templates: [],
         categories: {
+            all: {
+                enabled: true,
+                // заполняется программно в storefront -> init на основе других категорий
+                entities: []
+            },
             test: {
                 // шаблоны встроены прямо в верстку, НЕ создаются программно
                 enabled: true,
@@ -302,6 +308,9 @@ var config = {
                         //Красотки http://p.testix.me/1045302892173346/e78a9cd599/
                     }
                 ]
+            },
+            fbPanorama: {
+                enabled: false
             },
             timeline: {
                 enabled: false

@@ -104,9 +104,9 @@
                     <h3 class="try_format_h tx __28 __light __graphite">Тесты. Создавать легко</h3>
                     <p class="try_format_d tx __16 __light __grey">Создайте ваш тест за 5 минут. Выберите готовый шаблон и добавьте нужный котент. В вашем распоряжении мощный онлайн редактор и мгновенная публикация. Весь функционал доступен бесплатно.</p>
                     <div class="main_tests_img narrow_width"></div>
-                    <a class="pbtn __red __long mt40">Создать тест бесплатно</a>
+                    <a href="storefront.html?app=test" class="pbtn __red __long mt40">Создать тест бесплатно</a>
                     <br class="narrow_width">
-                    <a class="pbtn __white __long mt20">Посмотреть пример теста</a>
+                    <a class="pbtn __white __long mt20" onclick="storefrontView.showPreview('storefront/test/9000e567da.txt')">Посмотреть пример теста</a>
                 </div>
             </div>
         </div>
@@ -116,9 +116,9 @@
                     <h3 class="try_format_h tx __28 __light __graphite">Мини-игры. Мемори</h3>
                     <p class="try_format_d tx __16 __light __grey">Загрузите изображения в шаблон – и ваша собственная игра готова.<br><br>Игра «Мемори» позволяет проверить знания на соответствие изображений: например, какая марка автомобиля, за какой клуб играет футболист, в какой стране находится памятник архитектуры.</p>
                     <div class="main_memoriz_img narrow_width"></div>
-                    <a class="pbtn __red __long mt40">Создать игру бесплатно</a>
+                    <a href="storefront.html?app=memoriz" class="pbtn __red __long mt40">Создать игру бесплатно</a>
                     <br class="narrow_width">
-                    <a class="pbtn __white __long mt20">Посмотреть пример игры</a>
+                    <a class="pbtn __white __long mt20" onclick="storefrontView.showPreview('storefront/test/9000e567da.txt')">Посмотреть пример игры</a>
                 </div>
             </div>
             <div class="fright wide_width">
@@ -136,7 +136,7 @@
                     <div class="main_fbPanorama_img narrow_width"></div>
                     <a class="pbtn __redwhitedot __long mt40">Скоро на Testix</a>
                     <br class="narrow_width">
-                    <a href="#" target="_blank" class="pbtn __white __long mt20">Пример панорамы</a>
+                    <a href="https://facebook.com/testix.me" target="_blank" class="pbtn __white __long mt20">Пример панорамы</a>
                 </div>
             </div>
         </div>
@@ -157,17 +157,6 @@
             </div>
         </div>
 
-        <div id="id-app_preview" class="scr_dialog" style="display:none">
-            <div class="st_preview_app">
-                <div class="st_preview_top_panel">
-                    <div class="st_preview_header">Понравился шаблон? Создайте свой тест!</div>
-                    <div class="st_icon_arrow_left ml24"></div>
-                    <div class="pbtn __green ml24 js-edit_active">Редактировать</div>
-                </div>
-                <div id="id-app_iframe_cnt" class="st_preview_iframe_cnt"></div>
-                <div class="close_dialog_btn __ext js-close"></div>
-            </div>
-        </div>
         <div id="id-video" class="scr_dialog" style="display:none">
             <div class="st_preview_app_wr">
                 <div class="st_preview_app" style="width:854px">
@@ -178,6 +167,21 @@
         </div>
         <div id="id-modal_cnt" class="scr_dialog __modal" style="display:none;">
             <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
+        </div>
+    </div>
+
+    <!-- сделать модалкой -->
+    <div id="id-app_preview" style="display:none;">
+        <div class="st_preview_app_wr">
+            <div class="st_preview_app">
+                <div class="st_preview_top_panel">
+                    <div class="st_preview_header">Понравился шаблон? Создайте свой проект!</div>
+                    <div class="st_icon_arrow_left ml24"></div>
+                    <div class="pbtn __green st_preview_edit_btn js-edit_active">Редактировать</div>
+                </div>
+                <div id="id-app_iframe_cnt" class="st_preview_iframe_cnt"></div>
+                <div class="close_dialog_btn __ext js-close"></div>
+            </div>
         </div>
     </div>
 
@@ -194,6 +198,7 @@
     <script type="text/javascript" src="js/view/modals/loginModal.js"></script>
     <script type="text/javascript" src="js/view/modals/messageModal.js"></script>
     <script type="text/javascript" src="js/view/modals/modal.js"></script>
+    <script type="text/javascript" src="js/view/storefront.js"></script>
     <!-- endbuild -->
     <script>
         $(document).ready(function() {

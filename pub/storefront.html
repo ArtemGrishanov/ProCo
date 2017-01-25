@@ -21,11 +21,19 @@
                 <div class="toolbar_left">
                     <a class="logo ml24" href="index.html"></a>
                     <span class="logo_beta"></span>
+                    <a href="storefront.html" class="menu_tab __selected pts_string pts_menu_gallery">Галерея шаблонов</a>
+                    <!--<a href="my_templates.html" class="menu_tab pts_string pts_my_projects">Мои тесты</a>-->
+                    <a href="howitworks.html" class="menu_tab pts_string pts_how_it_works">Как это работает</a>
+                    <a href="faq.html" class="menu_tab pts_string pts_faq">FAQ</a>
+                    <a href="contact.html" class="menu_tab pts_string pts_contacts">Контакты</a>
                 </div>
                 <div class="toolbar_right">
-                    <div id="id-user_toolbar" class="toolbar_user" style="margin-top: -6px;">
+                    <div class="lang_switcher mt6">
+                        <span class="tx __18 lang_item __active __light js-lang" data-lang="RU">RU</span><span class="tx __18 lang_item __leftborder __light js-lang" data-lang="EN">EN</span>
+                    </div>
+                    <div id="id-user_toolbar" class="toolbar_user ml12">
                         <div style="display:none" class="user_avatar js-profile_picture"></div>
-                        <span style="display:none" class="pbtn __green __small mt4 js-show_login" style="display:none;">Войти</span>
+                        <span style="display:none" class="pbtn __blue __small mt2 js-show_login" style="display:none;">Войти</span>
                         <div style="display:none" class="dropdown_btn js-user_ctx_menu">
                             <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
                                 <a href="my_templates.html"><div class="ctx_menu_item" onclick="onMyTemplatesClick();">
@@ -43,23 +51,20 @@
                 </div>
             </div>
         </div>
-        <div class="menu_tabs_wr">
-            <div class="menu_tabs">
-                <a href="storefront.html" class="menu_tab __selected">Галерея шаблонов</a>
-                <a href="my_templates.html" class="menu_tab">Мои тесты</a>
-                <a href="howitworks.html" class="menu_tab">Как это работает</a>
-                <!--<a href="info.html" class="menu_tab">Решения для бизнеса</a>-->
-                <a href="contact.html" class="menu_tab">Контакты</a>
-            </div>
-        </div>
         <div class="st_cnt">
             <div class="st_filter">
-                <div class="st_filter_ctg_i __selected js-category" data-category="test">Тесты</div>
+                <div class="st_filter_ctg_i __selected js-category" data-category="all">Все</div>
+                <div class="st_filter_ctg_i js-category" data-category="test">Тесты</div>
                 <div class="st_filter_ctg_i js-category" data-category="memoriz">Мемориз</div>
+                <div class="st_filter_ctg_i js-category" data-category="fbPanorama">Facebook панорамы</div>
                 <div class="st_filter_ctg_i js-category" data-category="timeline">Таймлайн</div>
                 <div class="st_filter_ctg_i js-category" data-category="zoommap">Zoom-карта</div>
             </div>
-            <div class="st_templates_wr js-category_storefront" data-category="test">
+            <div class="st_templates_wr js-category_storefront" data-category="all">
+                <div class="st_items_cnt js-entities_cnt">
+                </div>
+            </div>
+            <div class="st_templates_wr js-category_storefront" data-category="test" style="display:none;">
                 <h1 class="header tx __light">Создайте свой тест легко и быстро</br>с помощью шаблонов</h1>
                 <div class="st_items_cnt js-entities_cnt">
                 </div>

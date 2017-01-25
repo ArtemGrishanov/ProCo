@@ -15,7 +15,7 @@
     <link href="css/editor.css" rel="stylesheet"/>
     <!--endbuild-->
 </head>
-<body ng-app="procoApp">
+<body ng-app="procoApp" class="editor">
     <div id="id-editor_view" class="scr" style="display:none;">
         <div class="top">
             <div class="top_toolbar">
@@ -25,26 +25,30 @@
                     <div class="delimeter"></div>
                     <div class="top_proj_name"><input class="top_proj_input js-proj_name" placeholder="Введите имя проекта"/></div>
                 </div>
-                <div class="toolbar_btns">
-                    <span class="tico">
+                <div class="toolbar_right">
+                    <span class="tico mt2">
                         <i class="tico_img i_eye" style="position:relative;">
                             <div class="file_input_wr">
-                                <input id="id-app_preview_img" class="file_input" type="file" accept="image/jpg"/>
+                            <input id="id-app_preview_img" class="file_input" type="file" accept="image/jpg"/>
                             </div>
                             <img src="i/add-slide-big.png"/>
                         </i>
                     </span>
-                    <div class="delimeter"></div>
-                    <span class="tico js-app_save_template"><i class="tico_img i_eye"><img src="i/save.png"/></i>Сохранить</span>
-                    <div class="delimeter"></div>
-                    <span class="tico js-app_preview"><i class="tico_img"><img src="i/i_eye.png"/></i>Просмотр</span>
-                    <span class="pbtn __green __small ml24 js-app_publish"><i class="tico_img"><img src="i/publish.png"/></i>Опубликовать</span>
-                    <div id="id-user_toolbar" class="toolbar_user">
+                    <div class="delimeter mt6"></div>
+                    <span class="tico js-app_save_template mt2"><i class="tico_img i_eye"><img src="i/save.png"/></i>Сохранить</span>
+                    <div class="delimeter mt6"></div>
+                    <span class="tico js-app_preview mt2">
+                        <i class="tico_img"><img src="i/i_eye.png"/></i>Просмотр
+                    </span>
+                    <span class="pbtn __blue __small ml24 js-app_publish">
+                        <i class="tico_img"><img src="i/publish.png"/></i>Опубликовать
+                    </span>
+                    <div id="id-user_toolbar" class="toolbar_user ml12">
                         <div style="display:none" class="user_avatar js-profile_picture"></div>
-                        <span style="display:none" class="pbtn __green __small ml24 mt2 js-show_login">Войти</span>
+                        <span style="display:none" class="pbtn __blue __small mt2 js-show_login" style="display:none;">Войти</span>
                         <div style="display:none" class="dropdown_btn js-user_ctx_menu">
                             <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
-                                <a href="my_templates.html"><div class="ctx_menu_item">
+                                <a href="my_templates.html"><div class="ctx_menu_item" onclick="onMyTemplatesClick();">
                                     Мои проекты
                                 </div></a>
                                 <div class="ctx_menu_item">
@@ -93,17 +97,13 @@
                 <div class="top_toolbar">
                     <div class="toolbar_left">
                         <a class="logo ml24" href="index.html"></a>
+                        <span class="logo_beta"></span>
                     </div>
-                    <div class="toolbar_center">
-                        <div id="id-to_mob_preview" class="pre_mob"></div>
-                        <div id="id-to_desktop_preview" class="pre_desk"></div>
-                    </div>
-                    <div class="toolbar_btns __45">
-                        <a class="pbtn __small js-back_to_editor">Назад</a>
-                        <span class="pbtn __green __small ml24 js-app_publish"><i class="tico_img"><img src="i/publish.png"/></i>Опубликовать</span>
-                    </div>
-                    <div id="id-user_toolbar" class="toolbar_user">
-                        <a class="pbtn __green js-create_new" style="display:none;">Хочу такой же!</a>
+                    <div class="toolbar_right">
+                        <div id="id-to_mob_preview" class="pre_mob mt2"></div>
+                        <div id="id-to_desktop_preview" class="pre_desk ml12"></div>
+                        <a class="pbtn __small js-back_to_editor ml16">Назад</a>
+                        <span class="pbtn __blue __small ml16 js-app_publish"><i class="tico_img"><img src="i/publish.png"/></i>Опубликовать</span>
                     </div>
                 </div>
             </div>
@@ -180,7 +180,7 @@
                 </div>
                 <div class="select_dialog_button_cnt">
                     <span class="pbtn js-cancel">Отмена</span>
-                    <span class="pbtn __green js-confirm">Добавить</span>
+                    <span class="pbtn __blue js-confirm">Добавить</span>
                 </div>
             </div>
         </div>
@@ -250,7 +250,7 @@
                     <br><br>
                     <div>
                         <input id="id-copy_link_input" class="pd_link_input js-project_link" readonly="readonly" value="http://example.com"/>
-                        <span class="pbtn __green js-copy_link" data-clipboard-target="#id-copy_link_input">Копировать</span>
+                        <span class="pbtn __blue js-copy_link" data-clipboard-target="#id-copy_link_input">Копировать</span>
                         <a href="#" target="_blank" class="pbtn js-view">Посмотреть</a>
                     </div>
                     <!--<div class="pd_annotation_wr">-->
@@ -269,7 +269,7 @@
                         <textarea id="id-copy_embedcode_input" class="pd_embed_area js-embed_code" readonly="readonly"></textarea>
                     </div>
                     <div class="pd_col __w150">
-                        <span class="pbtn __green js-copy_embed_code" data-clipboard-target="#id-copy_embedcode_input">Копировать</span>
+                        <span class="pbtn __blue js-copy_embed_code" data-clipboard-target="#id-copy_embedcode_input">Копировать</span>
                         <div class="pd_annotation_wr __b0">
                             <span class="tx">Не получается?</span>
                             <a href="mailto:info@testix.me" target="_top" class="link">Свяжитесь с нами</a>
