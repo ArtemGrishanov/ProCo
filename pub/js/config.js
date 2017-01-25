@@ -215,6 +215,7 @@ var config = {
             test: {
                 // шаблоны встроены прямо в верстку, НЕ создаются программно
                 enabled: true,
+                typeLabel: 'Тест',
                 entities: [
                     {
                         //  стандартный тест: http://p.testix.me/1045302892173346/7e7fef7bcf
@@ -301,6 +302,7 @@ var config = {
             },
             memoriz: {
                 enabled: false,
+                typeLabel: 'Игра мемори',
                 entities: [
                     {
                         //Фильмы и режиссеры  http://p.testix.me/121947341568004/6842f5cd6d/
@@ -310,12 +312,15 @@ var config = {
                 ]
             },
             fbPanorama: {
+                typeLabel: 'Facebook панорама',
                 enabled: false
             },
             timeline: {
+                typeLabel: 'Таймлайн',
                 enabled: false
             },
             zoommap: {
+                typeLabel: 'Zoom-карта',
                 enabled: false
             }
         }

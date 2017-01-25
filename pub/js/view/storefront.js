@@ -72,9 +72,15 @@ var storefrontView = {};
                         var str = templStr.replace('{{name}}', e.name)
                             .replace('{{img}}', e.img)
                             .replace('{{template}}', e.template);
+                        if (e.typeLabel) {
+                            str = str.replace('{{type}}', e.typeLabel)
+                        }
                         var $e = $(str);
                         $e.find('.js-edit').click(onEditClick);
                         $e.find('.js_app-preview').click(onPreviewClick);
+                        if (!e.typeLabel || activeCategory !== config.storefront.allCategoryKey) {
+                            $e.find('.js-item_type_label').hide();
+                        }
                         $cnt.append($e);
                         if (App.isTouchMobile() === true) {
                             $e.click(onItemClick);
@@ -98,11 +104,14 @@ var storefrontView = {};
      * Показать превью проекта по всплывающем леере
      * @param {string} templateUrl ссылка на шаблон, используется как ключ.
      * На самом деле используется ссылка на опубликованный проект из конфига
+     * @param {string} force - быстрое открытие без предварительного клика
      */
-    function showPreview(templateUrl) {
-        if (App.isTouchMobile() === true && activeMobTemplateUrl !== d) {
-            // для моба должны сначала кликнуть на этом шаблоне и показать опции
-            return;
+    function showPreview(templateUrl, force) {
+        if (force !== true) {
+            if (App.isTouchMobile() === true && activeMobTemplateUrl !== templateUrl) {
+                // для моба должны сначала кликнуть на этом шаблоне и показать опции
+                return;
+            }
         }
         var info = findEntityInfo(templateUrl);
         if (templateUrl && info) {
@@ -200,6 +209,9 @@ var storefrontView = {};
                 var entities = config.storefront.categories[key].entities;
                     if (entities) {
                     for (var i = 0; i < entities.length; i++) {
+                        if (config.storefront.categories[key].typeLabel) {
+                            entities[i].typeLabel = config.storefront.categories[key].typeLabel;
+                        }
                         config.storefront.categories[config.storefront.allCategoryKey].entities.push(entities[i]);
                     }
                 }
