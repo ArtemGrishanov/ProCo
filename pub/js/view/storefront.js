@@ -123,7 +123,7 @@ var storefrontView = {};
                 .replace('{{published}}', info.published);
             $('#id-app_iframe_cnt').empty().append(embedCode);
             $('.scr_wr').addClass('__shadow');
-            $('#id-app_preview').show();
+            $('#wid-app_preview').show();
             if (window.ga) {
                 window.ga('send', 'pageview', '/storefront_app_preview');
             }

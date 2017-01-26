@@ -141,7 +141,16 @@ var App = App || {};
             my_projects: 'My projects',
             how_it_works: 'How it works',
             contacts: 'Contacts',
-            faq: 'FAQ'
+            faq: 'FAQ',
+            tests: 'Quizes',
+            mini_games: 'Mini games',
+            fbPanorama: 'Facebook 360°',
+            design_your_test: 'Design your nice test based on our templates',
+            format_card_test: 'Add your content - and quiz is ready! Set up social networks sharing and statistics.',
+            design_your_minigame: 'Create your own games right in browser',
+            format_card_minigame: 'Just pick the images and you will get a mini game «Memory»!',
+            design_your_pano: 'Surprise your users offering them unique formats',
+            format_card_fbpano: 'Upload photo, add marks and post to your Facebook timeline!'
         }
     },
     /**

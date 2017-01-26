@@ -403,11 +403,6 @@ html, body {
     height: 28px;
     background-size: contain;
 }
-.logo.__med {
-    background-image: url(../i/Testix-logo-bottom.png);
-    width: 193px;
-    height: 97px;
-}
 .logo.__big {
     background-image: url(../i/logo_big.png);
     width: 277px;
@@ -976,7 +971,7 @@ html, body {
     font-size: 28px;
     text-align: center;
     color: #fff;
-    background-color: #01a7e9;
+    background-color: #3175bc;
 }
 .hiw_story_wr {
     width: 100%;
@@ -1100,7 +1095,7 @@ html, body {
     width: 19px;
     height: 19px;
     padding: 9px 11px 12px;
-    background-color: #00a7e9;
+    background-color: #3175bc;
     border-radius: 99px;
     text-align: center;
 }
@@ -1128,12 +1123,12 @@ html, body {
     background-size: 127px 271px;
 }
 .hiw_selection {
-    background-color: #00a7e9;
+    background-color: #3175bc;
 }
 .ct_call_wr {
     width:100%;
     height:100%;
-    background-color: #00a7e9;
+    background-color: #3175bc;
 }
 .ct_call {
     position: relative;
