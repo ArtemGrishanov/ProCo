@@ -65,20 +65,28 @@ var storefrontView = {};
             var info = config.storefront.categories[catId];
             if (info && info.enabled === true && info.entities) {
                 var $cnt = $('.js-category_storefront[data-category="'+catId+'"]').find('.js-entities_cnt').empty();
-                var templStr = $('#id-storefront_entity_template').html();
-                for (var i = 0; i < info.entities.length; i++) {
-                    var e = info.entities[i];
-                    var str = templStr.replace('{{name}}', e.name)
-                        .replace('{{img}}', e.img)
-                        .replace('{{template}}', e.template);
-                    var $e = $(str);
-                    $e.find('.js-edit').click(onEditClick);
-                    $e.find('.js_app-preview').click(onPreviewClick);
-                    $cnt.append($e);
-                    if (App.isTouchMobile() === true) {
-                        $e.click(onItemClick);
+                if ($cnt.length > 0) {
+                    var templStr = $('#id-storefront_entity_template').html();
+                    for (var i = 0; i < info.entities.length; i++) {
+                        var e = info.entities[i];
+                        var str = templStr.replace('{{name}}', e.name)
+                            .replace('{{img}}', e.img)
+                            .replace('{{template}}', e.template);
+                        if (e.typeLabel) {
+                            str = str.replace('{{type}}', e.typeLabel)
+                        }
+                        var $e = $(str);
+                        $e.find('.js-edit').click(onEditClick);
+                        $e.find('.js_app-preview').click(onPreviewClick);
+                        if (!e.typeLabel || activeCategory !== config.storefront.allCategoryKey) {
+                            $e.find('.js-item_type_label').hide();
+                        }
+                        $cnt.append($e);
+                        if (App.isTouchMobile() === true) {
+                            $e.click(onItemClick);
+                        }
+                        items.push($e);
                     }
-                    items.push($e);
                 }
             }
             loadedCategories[activeCategory] = true;
@@ -87,21 +95,27 @@ var storefrontView = {};
         $('.js-category_storefront[data-category="'+activeCategory+'"]').show();
 
         // показ страницы с активной категорией
-        window.ga('send', 'pageview', '/storefront_'+activeCategory);
+        if (window.ga) {
+            window.ga('send', 'pageview', '/storefront_'+activeCategory);
+        }
     }
 
     /**
-     * Запустить превью: встроить опубликованный проект стандартным образом через loader.js
+     * Показать превью проекта по всплывающем леере
+     * @param {string} templateUrl ссылка на шаблон, используется как ключ.
+     * На самом деле используется ссылка на опубликованный проект из конфига
+     * @param {string} force - быстрое открытие без предварительного клика
      */
-    function onPreviewClick(e) {
-        var d = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
-        if (App.isTouchMobile() === true && activeMobTemplateUrl !== d) {
-            // для моба должны сначала кликнуть на этом шаблоне и показать опции
-            return;
+    function showPreview(templateUrl, force) {
+        if (force !== true) {
+            if (App.isTouchMobile() === true && activeMobTemplateUrl !== templateUrl) {
+                // для моба должны сначала кликнуть на этом шаблоне и показать опции
+                return;
+            }
         }
-        var info = findEntityInfo(d);
-        if (d && info) {
-            activeTemplateUrl = d;
+        var info = findEntityInfo(templateUrl);
+        if (templateUrl && info) {
+            activeTemplateUrl = templateUrl;
             //Example: '<div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/870dcd0a6b/p_index.html"><script src="//testix.me/js/loader.js" async></script></div>'
             var embedCode = config.common.embedCodeTemplate;
             embedCode = embedCode.replace('{{width}}', info.width)
@@ -110,14 +124,24 @@ var storefrontView = {};
             $('#id-app_iframe_cnt').empty().append(embedCode);
             $('.scr_wr').addClass('__shadow');
             $('#id-app_preview').show();
-            window.ga('send', 'pageview', '/storefront_app_preview');
+            if (window.ga) {
+                window.ga('send', 'pageview', '/storefront_app_preview');
+            }
 
             if (App.isTouchMobile() === true) {
                 bodyScrollTop = $('body').scrollTop();
-                $('#id-storefront_scr').hide();
+                $('#id-page_content').hide();
                 $('body').scrollTop(0);
             }
         }
+    }
+
+    /**
+     * Запустить превью: встроить опубликованный проект стандартным образом через loader.js
+     */
+    function onPreviewClick(e) {
+        var d = $(e.currentTarget).parent().parent().parent().parent().attr('data-template-url');
+        showPreview(d);
         e.preventDefault();
         e.stopPropagation();
     }
@@ -156,7 +180,7 @@ var storefrontView = {};
         $('.js-close').click(function(e) {
             $('#id-app_preview').hide();
             if (App.isTouchMobile() === true) {
-                $('#id-storefront_scr').show();
+                $('#id-page_content').show();
                 console.log(bodyScrollTop);
                 $('body').scrollTop(bodyScrollTop);
             }
@@ -176,11 +200,31 @@ var storefrontView = {};
             showCategory(catId);
         });
 
+        // init 'all' category
+        config.storefront.categories[config.storefront.allCategoryKey].entities = [];
+        for (var key in config.storefront.categories) {
+            if (config.storefront.categories.hasOwnProperty(key) &&
+                key != config.storefront.allCategoryKey &&
+                config.storefront.categories[key].enabled === true) {
+                var entities = config.storefront.categories[key].entities;
+                    if (entities) {
+                    for (var i = 0; i < entities.length; i++) {
+                        if (config.storefront.categories[key].typeLabel) {
+                            entities[i].typeLabel = config.storefront.categories[key].typeLabel;
+                        }
+                        config.storefront.categories[config.storefront.allCategoryKey].entities.push(entities[i]);
+                    }
+                }
+            }
+        }
+
         showCategory(config.storefront.defaultCategory);
     }
 
     init();
 
     global.init = init;
+    global.showPreview = showPreview;
+    global.showCategory = showCategory;
 
 })(storefrontView);

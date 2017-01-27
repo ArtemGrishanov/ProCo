@@ -115,7 +115,7 @@ var App = App || {};
 
         },
         'EN': {
-            main_desc: 'Create quizes and<br>other special projects online',
+            main_desc: 'Interactive content builder',
             special_what_is_it: 'What special project is?',
             business_solutions: 'Business solutions',
             spec_descr: 'Special projects are quizes, timelines, infografics and other formats. They can easily tell about complex topics, and using game ways frequently.',
@@ -135,14 +135,29 @@ var App = App || {};
             learn_more: 'Want to know more about Testix? Write to us!',
             send_message: 'Send message',
             watch_video: 'Video',
-            create_spec: 'Create project',
+            create_spec: 'Create project for free',
             how_it_helps_to_business: 'Learn how special project<br>can support your business',
             menu_gallery: 'Template gallery',
             my_projects: 'My projects',
             how_it_works: 'How it works',
-            contacts: 'Contacts'
+            contacts: 'Contacts',
+            faq: 'FAQ',
+            tests: 'Quizes',
+            mini_games: 'Mini games',
+            fbPanorama: 'Facebook 360°',
+            design_your_test: 'Design your nice test based on our templates',
+            format_card_test: 'Add your content - and quiz is ready! Set up social networks sharing and statistics.',
+            design_your_minigame: 'Create your own games right in browser',
+            format_card_minigame: 'Just pick the images and you will get a mini game «Memory»!',
+            design_your_pano: 'Surprise your users offering them unique formats',
+            format_card_fbpano: 'Upload photo, add marks and post to your Facebook timeline!'
         }
-    };
+    },
+    /**
+     * Статус мобильного меню: открыт или закрыт
+     * @type {boolean}
+     */
+    mobileMenuOpened = false;
 
     /**
      * Забрать из верстки тексты и сложить в словарь
@@ -249,6 +264,23 @@ var App = App || {};
             $e.addClass('__active');
             setLang($e.attr('data-lang'));
         });
+        $('.js-mob_menu_switcher').click(function(e) {
+            toggleMobileMenu();
+        });
+    }
+
+    function toggleMobileMenu(e) {
+        mobileMenuOpened = !mobileMenuOpened;
+        if (mobileMenuOpened === true) {
+            $('.js-mob_menu_switcher').addClass('__opened');
+            $('#id-mob_menu').show();
+            $('#id-page_content').hide();
+        }
+        else {
+            $('.js-mob_menu_switcher').removeClass('__opened');
+            $('#id-mob_menu').hide();
+            $('#id-page_content').show();
+        }
     }
 
     /**
@@ -571,19 +603,25 @@ var App = App || {};
         // доступен ли редактор для запуска или только по прямой ссылке
         if (config.common.editorIsUnderConstruction === false ||
             (userData !== null && config.common.editorIsUnderConstructionWhitelist.indexOf(userData.id) >= 0)) {
-            var url = 'editor.html?';
-            if (param.appName) {
-                url += 'app='+param.appName;
+            if (isMobile() !== true) {
+                var url = 'editor.html?';
+                if (param.appName) {
+                    url += 'app='+param.appName;
+                }
+                else {
+                    if (param.templateUrl) {
+                        url += config.common.templateUrlParamName+'='+param.templateUrl+'&';
+                    }
+                    if (typeof param.clone === 'boolean') {
+                        url += config.common.cloneParamName+'='+param.clone+'&';
+                    }
+                }
+                window.location.href = url;
             }
             else {
-                if (param.templateUrl) {
-                    url += config.common.templateUrlParamName+'='+param.templateUrl+'&';
-                }
-                if (typeof param.clone === 'boolean') {
-                    url += config.common.cloneParamName+'='+param.clone+'&';
-                }
+                // на мобе не запускаем редактор а показываем отдельный экран
+                window.location.href = 'blockeditor.html';
             }
-            window.location.href = url;
         }
         else {
             Modal.showMessage({text: 'Редактор пока что в разработке, напишите нам.'});

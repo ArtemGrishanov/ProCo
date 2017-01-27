@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Контакты</title>
+    <title>FAQ</title>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
@@ -20,8 +20,8 @@
                     <a href="storefront.html" class="menu_tab pts_string pts_menu_gallery">Галерея шаблонов</a>
                     <!--<a href="my_templates.html" class="menu_tab pts_string pts_my_projects">Мои проекты</a>-->
                     <a href="howitworks.html" class="menu_tab pts_string pts_how_it_works">Как это работает</a>
-                    <a href="faq.html" class="menu_tab pts_string pts_faq">FAQ</a>
-                    <a href="contact.html" class="menu_tab __selected pts_string pts_contacts">Контакты</a>
+                    <a href="faq.html" class="menu_tab __selected pts_string pts_faq">FAQ</a>
+                    <a href="contact.html" class="menu_tab pts_string pts_contacts">Контакты</a>
                 </div>
                 <div class="mob_menu_switcher js-mob_menu_switcher"></div>
                 <div class="toolbar_right">
@@ -45,22 +45,12 @@
                 </div>
             </div>
         </div>
-        <div class="ct_call_wr">
-            <div class="ct_call">
-                <div class="logo __big"></div>
-                <p class="tx __32 __light __white mt32 pts_string pts_learn_more">Есть вопросы или предложения?<br>Напишите нам!</p>
-                <a href="mailto:info@testix.me" target="_top" class="pbtn __long tx __grey mt32 pts_string pts_send_message">Оставить сообщение</a>
-            </div>
+        <div class="header tx __light">
+            Информационная страница
         </div>
-        <div class="footer">
-            <div class="footer_left">
-                <span class="tx __white __16">© Testix 2016</span>
-            </div>
-            <div class="footer_right">
-                <a href="https://facebook.com/testix.me" target="_blank" class="icon_fb"></a>
-                <a href="https://vk.com/testixme" target="_blank" class="icon_vk ml16"></a>
-            </div>
-        </div>
+    </div>
+    <div id="id-modal_cnt" style="display:none">
+        <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
     </div>
 
     <!-- мобильное меню -->
@@ -89,11 +79,6 @@
         </div>
     </div>
 
-    <div id="id-modal_cnt" style="display:none">
-        <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
-    </div>
-
-    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
     <script type="text/javascript" src="lib/jquery.js"></script>
     <!-- build:js info.min.js -->
     <script type="text/javascript" src="js/config.js"></script>

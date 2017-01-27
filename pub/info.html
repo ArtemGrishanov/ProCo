@@ -17,19 +17,25 @@
                 <div class="toolbar_left">
                     <a class="logo ml24" href="index.html"></a>
                     <span class="logo_beta"></span>
+                    <a href="storefront.html" class="menu_tab pts_string pts_menu_gallery">Галерея шаблонов</a>
+                    <!--<a href="my_templates.html" class="menu_tab pts_string pts_my_projects">Мои проекты</a>-->
+                    <a href="howitworks.html" class="menu_tab pts_string pts_how_it_works">Как это работает</a>
+                    <a href="faq.html" class="menu_tab pts_string pts_faq">FAQ</a>
+                    <a href="contact.html" class="menu_tab pts_string pts_contacts">Контакты</a>
                 </div>
+                <div class="mob_menu_switcher js-mob_menu_switcher"></div>
                 <div class="toolbar_right">
-                    <div id="id-user_toolbar" class="toolbar_user" style="margin-top: -6px;">
+                    <div class="lang_switcher mt6">
+                        <span class="tx __18 lang_item __active __light js-lang" data-lang="RU">RU</span><span class="tx __18 lang_item __leftborder __light js-lang" data-lang="EN">EN</span>
+                    </div>
+                    <div id="id-user_toolbar" class="toolbar_user ml12">
                         <div style="display:none" class="user_avatar js-profile_picture"></div>
-                        <span style="display:none" class="pbtn __green __small mt4 js-show_login" style="display:none;">Войти</span>
+                        <span style="display:none" class="pbtn __blue __small mt2 js-show_login">Войти</span>
                         <div style="display:none" class="dropdown_btn js-user_ctx_menu">
                             <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
                                 <a href="my_templates.html"><div class="ctx_menu_item" onclick="onMyTemplatesClick();">
                                     Мои проекты
                                 </div></a>
-                                <div class="ctx_menu_item">
-                                    Настройки профиля
-                                </div>
                                 <div class="ctx_menu_item js-logout">
                                     Выйти
                                 </div>
@@ -39,21 +45,38 @@
                 </div>
             </div>
         </div>
-        <div class="menu_tabs_wr">
-            <div class="menu_tabs">
-                <a href="storefront.html" class="menu_tab">Галерея шаблонов</a>
-                <a href="my_templates.html" class="menu_tab">Мои тесты</a>
-                <a href="howitworks.html" class="menu_tab">Как это работает</a>
-                <!--<a href="info.html" class="menu_tab">Решения для бизнеса</a>-->
-                <a href="contact.html" class="menu_tab">Контакты</a>
-            </div>
-        </div>
         <div class="header tx __light">
             Информационная страница
         </div>
     </div>
     <div id="id-modal_cnt" style="display:none">
         <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
+    </div>
+
+    <!-- мобильное меню -->
+    <div id="id-mob_menu" style="display:none;">
+        <div class="mob_menu_cnt">
+            <div class="top">
+                <div class="top_toolbar">
+                    <div class="toolbar_left">
+                        <a class="logo ml24" href="index.html"></a>
+                        <span class="logo_beta"></span>
+                    </div>
+                    <div class="mob_menu_switcher js-mob_menu_switcher"></div>
+                </div>
+            </div>
+            <div class="mob_menu">
+                <div class="mob_menu_items_cnt">
+                    <a href="storefront.html" class="mob_menu_item pts_string pts_menu_gallery">Галерея шаблонов</a>
+                    <a href="howitworks.html" class="mob_menu_item pts_string pts_how_it_works">Как это работает</a>
+                    <a href="faq.html" class="mob_menu_item pts_string pts_faq">FAQ</a>
+                    <a href="contact.html" class="mob_menu_item pts_string pts_contacts">Контакты</a>
+                    <div class="mt40">
+                        <span class="pbtn __grey js-show_login" style="display:none;width:226px;">Войти</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script type="text/javascript" src="lib/jquery.js"></script>

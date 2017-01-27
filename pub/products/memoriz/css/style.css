@@ -62,6 +62,7 @@ img {
     background-color: #fff;
     background-size: cover;
     background-position: center;
+    overflow: auto; /* vertical scrolling app in mobile touch devices */
 }
 .modal.__active {
     display: block;
@@ -126,6 +127,7 @@ img {
 
 /* hide back of pane during swap */
 .front, .back {
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     position: absolute;
     top: 0;

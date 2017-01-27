@@ -12,146 +12,202 @@
     <!--endbuild-->
 </head>
 <body>
-    <div class="scr_wr">
+    <div id="id-page_content" class="scr_wr">
         <div class="top">
-            <div class="top_toolbar __full">
+            <div class="top_toolbar">
                 <div class="toolbar_left">
                     <a class="logo ml24" href="index.html"></a>
                     <span class="logo_beta"></span>
+                    <a href="storefront.html" class="menu_tab pts_string pts_menu_gallery">Галерея шаблонов</a>
+                    <!--<a href="my_templates.html" class="menu_tab pts_string pts_my_projects">Мои проекты</a>-->
+                    <a href="howitworks.html" class="menu_tab pts_string pts_how_it_works">Как это работает</a>
+                    <a href="faq.html" class="menu_tab pts_string pts_faq">FAQ</a>
+                    <a href="contact.html" class="menu_tab pts_string pts_contacts">Контакты</a>
                 </div>
+                <div class="mob_menu_switcher js-mob_menu_switcher"></div>
                 <div class="toolbar_right">
-                    <span class="tx __18 lang_item __active __light js-lang" data-lang="RU">RU</span><span class="tx __18 lang_item __leftborder __light js-lang" data-lang="EN">EN</span>
+                    <div class="lang_switcher mt6">
+                        <span class="tx __18 lang_item __active __light js-lang" data-lang="RU">RU</span><span class="tx __18 lang_item __leftborder __light js-lang" data-lang="EN">EN</span>
+                    </div>
+                    <div id="id-user_toolbar" class="toolbar_user ml12">
+                        <div style="display:none" class="user_avatar js-profile_picture"></div>
+                        <span style="display:none" class="pbtn __blue __small mt2 js-show_login">Войти</span>
+                        <div style="display:none" class="dropdown_btn js-user_ctx_menu">
+                            <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
+                                <a href="my_templates.html"><div class="ctx_menu_item" onclick="onMyTemplatesClick();">
+                                    Мои проекты
+                                </div></a>
+                                <div class="ctx_menu_item js-logout">
+                                    Выйти
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="menu_tabs_wr">
-            <div class="menu_tabs">
-                <a href="storefront.html" class="menu_tab pts_string pts_menu_gallery">Галерея шаблонов</a>
-                <a href="my_templates.html" class="menu_tab pts_string pts_my_projects">Мои тесты</a>
-                <a href="howitworks.html" class="menu_tab pts_string pts_how_it_works">Как это работает</a>
-                <!--<a href="info.html" class="menu_tab">Решения для бизнеса</a>-->
-                <a href="contact.html" class="menu_tab pts_string pts_contacts">Контакты</a>
             </div>
         </div>
         <div class="main_title">
             <div class="main_title_shadow"></div>
             <div class="main_title_content_wr">
                 <div class="main_title_content">
-                    <div class="main_title_logo"></div>
-                    <h2 class="main_title_header2 tx __white __light pts_string pts_main_desc">Онлайн-конструктор тестов<br>и спецпроектов</h2>
+                    <div class="logo __big"></div>
+                    <h2 class="main_title_header2 tx __white __light pts_string pts_main_desc">Конструктор интерактивного контента</h2>
                     <!--<p class="main_title_desc tx __white __light __24 pts_string pts_how_it_helps_to_business">Узнайте, как спецпроекты<br>могут помочь вашему бизнесу</p>-->
                     <div class="main_title_btns_wr">
                         <div class="main_title_btn_wr">
-                            <span class="pbtn __long js-video pts_string pts_watch_video">Посмотрите видео</span>
+                            <a href="storefront.html">
+                                <span class="pbtn __red __long pts_string pts_create_spec">Создать проект бесплатно</span>
+                            </a>
                         </div>
                         <div class="main_title_btn_wr">
-                            <a href="storefront.html">
-                                <span class="pbtn __green __long pts_string pts_create_spec">Создайте спецпроект</span>
-                            </a>
+                            <span class="pbtn __long js-video pts_string pts_watch_video">Посмотрите видео</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="main_what_is_it">
+        <div class="main_format_cards">
             <div class="content_wr">
-                <div class="whats_it_elem">
-                    <h3 class="whats_it_elem_h tx __black __24 pts_string pts_special_what_is_it">Что такое спецпроекты?</h3>
-                    <p class="whats_it_elem_p tx __light __16 __grey pts_string pts_spec_descr">Спецпроекты – это тесты, таймлайны, инфографика и другие нестандартные форматы. Спецпроекты позволяют рассказать о сложных вещах простым языком и часто в игровой форме.</p>
-                </div>
-                <div class="whats_it_elem">
-                    <h3 class="whats_it_elem_h tx __black __24 pts_string pts_business_solutions">Решения для бизнеса</h3>
-                    <p class="whats_it_elem_p tx __light __16 __grey pts_string pts_buss_descr">Выгодная альтернатива стандартным рекламным форматам. Создавайте эффективные спецпроекты в поддержку вашего бренда, которыми люди будут делиться в социальных сетях.</p>
+                <div class="format_cards_cnt">
+                    <a href="#id-test_tour" class="format_card">
+                        <h3 class="format_card_h tx __light __graphite __28 pts_string pts_tests">Тесты</h3>
+                        <div class="format_preview __test"></div>
+                        <p class="format_card_t tx __black __18 pts_string pts_design_your_test">Сделайте свой красивый тест  из готовых шаблонов</p>
+                        <p class="format_card_d tx __grey __16 pts_string pts_format_card_test">Добавьте ваш контент – и тест готов. Настраивайте постинг в соцсети и добавляйте ссылки на статистику.</p>
+                        <div class="format_card_icon_down __1"></div>
+                    </a>
+                    <a href="#id-memoriz_tour" class="format_card">
+                        <h3 class="format_card_h tx __light __graphite __28 pts_string pts_mini_games">Мини игры</h3>
+                        <div class="format_preview __memoriz"></div>
+                        <p class="format_card_t tx __black __18 pts_string pts_design_your_minigame">Создавайте собственные игры прямо в браузере</p>
+                        <p class="format_card_d tx __grey __16 pts_string pts_format_card_minigame">Просто подберите нужные изображения – и у вас готовая игра «Мемори»!</p>
+                        <div class="format_card_icon_down __2"></div>
+                    </a>
+                    <a href="#id-fbPanorama_tour" class="format_card">
+                        <h3 class="format_card_h tx __light __graphite __28 pts_string pts_fbPanorama">Панорамы</h3>
+                        <div class="format_preview __fbPano"></div>
+                        <p class="format_card_t tx __black __18 design_your_pano pts_string pts_design_your_pano">Удивляйте уникальными форматами</p>
+                        <p class="format_card_d tx __grey __16 pts_string pts_format_card_fbpano">Загрузите фотографию, добавьте подписи и опубликуйте в вашем facebook в виде панорамы 360°!</p>
+                        <div class="format_card_icon_down __3"></div>
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="main_whom __demo">
-            <div class="content_wr">
-                <div class="main_whom_elem __demo">
-                    <div class="main_whom_icon __demo __bloggers"></div>
-                    <p class="main_whom_h tx __bold __24 __white pts_string pts_to_bloggers">Блогерам</p>
-                    <p class="main_whom_p tx __white __18 __light pts_string pts_surprise_them">Удивляйте ваших<br>читателей необычными<br>форматами</p>
-                </div>
-                <div class="main_whom_elem  __demo">
-                    <div class="main_whom_icon __demo __news"></div>
-                    <p class="main_whom_h tx __bold __24 __white pts_string pts_to_media">Интернет-изданиям</p>
-                    <p class="main_whom_p tx __white __18 __light pts_string pts_attract_new_readers">Используйте спецпроекты<br>для привлечения новых<br>читателей</p>
-                </div>
-                <div class="main_whom_elem  __demo">
-                    <div class="main_whom_icon __demo __companies"></div>
-                    <p class="main_whom_h tx __bold __24 __white pts_string pts_to_companies">Компаниям</p>
-                    <p class="main_whom_p tx __white __18 __light pts_string pts_increase_reach">Увеличьте охват аудитории<br>за счет вирусного эффекта<br>спецпроекта</p>
+        <div id="id-test_tour" class="format_tour">
+            <div class="fleft">
+                <div class="main_tests_img wide_width"></div>
+            </div>
+            <div class="fright">
+                <div class="try_format">
+                    <h3 class="try_format_h tx __28 __light __graphite">Тесты. Создавать легко</h3>
+                    <p class="try_format_d tx __16 __grey">Создайте ваш тест за 5 минут. Выберите готовый шаблон и добавьте нужный котент. В вашем распоряжении мощный онлайн редактор и мгновенная публикация. Весь функционал доступен бесплатно.</p>
+                    <div class="main_tests_img narrow_width"></div>
+                    <a href="storefront.html?app=test" class="pbtn __red __long mt40">Создать тест бесплатно</a>
+                    <br class="narrow_width">
+                    <a class="pbtn __white __long mt20" onclick="storefrontView.showPreview('storefront/test/9000e567da.txt', true)">Посмотреть пример теста</a>
                 </div>
             </div>
         </div>
-        <div class="demo_main_your_design">
-            <div class="content_wr">
-                <div class="icon80 __demoedit"></div>
-                <p class="demo_main_your_design_h tx __24 __black pts_string pts_your_design">Спецпроект с вашим дизайном</p>
-                <p class="demo_main_your_design_p tx __18 __grey pts_string pts_choose_template">Выберите подходящий шаблон из библиотеки и настройте его в<br>соответствии с вашими задачами.</p>
-                <div class="demo_main_your_design_scr">
+        <div id="id-memoriz_tour" class="format_tour __grey">
+            <div class="fleft">
+                <div class="try_format">
+                    <h3 class="try_format_h tx __28 __light __graphite">Мини-игры. Мемори</h3>
+                    <p class="try_format_d tx __16 __grey">Загрузите изображения в шаблон – и ваша собственная игра готова.<br><br>Игра «Мемори» позволяет проверить знания на соответствие изображений: например, какая марка автомобиля, за какой клуб играет футболист, в какой стране находится памятник архитектуры.</p>
+                    <div class="main_memoriz_img narrow_width"></div>
+                    <a href="storefront.html?app=memoriz" class="pbtn __red __long mt40">Создать игру бесплатно</a>
+                    <br class="narrow_width">
+                    <a class="pbtn __white __long mt20" onclick="storefrontView.showPreview('storefront/memoriz/06cc56a6dc.txt', true)">Посмотреть пример игры</a>
+                </div>
+            </div>
+            <div class="fright wide_width">
+                <div class="main_memoriz_img"></div>
+            </div>
+        </div>
+        <div id="id-fbPanorama_tour" class="format_tour">
+            <div class="fleft wide_width">
+                <div class="main_fbPanorama_img"></div>
+            </div>
+            <div class="fright">
+                <div class="try_format">
+                    <h3 class="try_format_h tx __28 __light __graphite">Панорамы 360° для Facebook</h3>
+                    <p class="try_format_d tx __16 __grey">Уникальный формат, позволяющий создать из обычной фотографии панораму 360°, подписать на ней любые объекты и опубликовать на Facebook. Создавайте собственные экскурсии по интересным местам – теперь в вашем распоряжении не просто панорамы, а возможность рассказать целую историю!</p>
+                    <div class="main_fbPanorama_img narrow_width"></div>
+                    <a class="pbtn __redwhitedot __long mt40">Скоро на Testix</a>
+                    <br class="narrow_width">
+                    <a href="https://facebook.com/testix.me" target="_blank" class="pbtn __white __long mt20">Пример панорамы</a>
                 </div>
             </div>
         </div>
-        <div class="demo_main_editor">
+        <div class="write_us">
             <div class="content_wr">
-                <div class="icon80 __demoeditor"></div>
-                <p class="demo_main_editor_h tx __24 __black pts_string pts_spec_in_one_touch">Спецпроекты в одно касание</p>
-                <p class="demo_main_editor_p tx __18 __grey pts_string pts_editor_desc">Удобный онлайн-редактор Testix позволяет создать качественный<br>тест без навыков программирования, а интуитивный интерфейс<br>позволит обойтись без дизайнера.</p>
-                <div class="demo_main_editor_scr">
-                </div>
+                <div class="logo __big mt60"></div>
+                <p class="tx __light __28 __white mt32 pts_string pts_learn_more">Хотите узнать больше о возможностях Testix?<br>Напишите нам!</p>
+                <a href="mailto:info@testix.me" target="_top" class="pbtn __long __white mt32 pts_string pts_send_message">Написать сообщение</a>
             </div>
         </div>
-        <div class="demo_main_publish">
-            <div class="content_wr">
-                <div class="icon80 __demopublish"></div>
-                <p class="demo_main_publish_h tx __24 __black pts_string pts_idea_publish">От идеи до публикации – один шаг</p>
-                <p class="demo_main_publish_p tx __18 __grey pts_string pts_create_in_blowser">Создавайте спецпроекты прямо в браузере. Получите готовую<br>ссылку на ваш тест или код для вставки на сайт или в блог.</p>
-                <div class="demo_main_publish_scr">
-                </div>
+        <div class="footer">
+            <div class="footer_left">
+                <span class="tx __white __16">© Testix 2016</span>
+            </div>
+            <div class="footer_right">
+                <a href="https://facebook.com/testix.me" target="_blank" class="icon_fb"></a>
+                <a href="https://vk.com/testixme" target="_blank" class="icon_vk ml16"></a>
             </div>
         </div>
-        <div class="demo_learn_more">
-            <div class="content_wr">
-                <div class="logo __med"></div>
-                <p class="demo_learn_more_p tx __32 __light __white pts_string pts_learn_more">Хотите узнать больше о возможностях Testix?<br>Напишите нам!</p>
-                <a href="mailto:info@testix.me" target="_top">
-                    <span class="pbtn __long"><span class="tx __grey pts_string pts_send_message">Оставить сообщение</span></span>
-                </a>
-            </div>
-        </div>
+    </div>
 
-
-        <div class="main_footer">
-            <span class="tx __light __18">© Testix 2016</span>
-        </div>
-        <div id="id-app_preview" class="scr_dialog" style="display:none">
+    <!-- сделать модалкой -->
+    <div id="id-app_preview" style="display:none;">
+        <div class="st_preview_app_wr">
             <div class="st_preview_app">
                 <div class="st_preview_top_panel">
-                    <div class="st_preview_header">Понравился шаблон? Создайте свой тест!</div>
+                    <div class="st_preview_header">Понравился шаблон? Создайте свой проект!</div>
                     <div class="st_icon_arrow_left ml24"></div>
-                    <div class="pbtn __green ml24 js-edit_active">Редактировать</div>
+                    <div class="pbtn __red st_preview_edit_btn js-edit_active">Редактировать</div>
                 </div>
                 <div id="id-app_iframe_cnt" class="st_preview_iframe_cnt"></div>
                 <div class="close_dialog_btn __ext js-close"></div>
             </div>
         </div>
-        <div id="id-video" class="scr_dialog" style="display:none">
-            <div class="st_preview_app_wr">
-                <div class="st_preview_app" style="width:854px">
-                    <!--<video id="id-videoplayer" controls class="video_wr" width="1000" height="500" poster="">-->
-                        <!--<source src="http://st.mycdn.me/static/pro42/1-0-0/mafia2015_video/common/i/Mafiatrailer_24fps.mp4" type="video/mp4">-->
-                        <!--<source src="http://st.mycdn.me/static/pro42/1-0-0/mafia2015_video/common/i/Mafiatrailer_24fps.ogv" type="video/ogg">-->
-                    <!--</video>-->
-                    <!--<iframe src="https://player.vimeo.com/video/144986013" width="640" height="351" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>-->
-                    <iframe class="tutorial_video" width="854" height="480" src="https://www.youtube.com/embed/im5wxydnJgg" frameborder="0" allowfullscreen></iframe>
-                    <div class="close_dialog_btn __ext js-video_close"></div>
+    </div>
+
+    <!-- мобильное меню -->
+    <div id="id-mob_menu" style="display:none;">
+        <div class="mob_menu_cnt">
+            <div class="top">
+                <div class="top_toolbar">
+                    <div class="toolbar_left">
+                        <a class="logo ml24" href="index.html"></a>
+                        <span class="logo_beta"></span>
+                    </div>
+                    <div class="mob_menu_switcher js-mob_menu_switcher"></div>
+                </div>
+            </div>
+            <div class="mob_menu">
+                <div class="mob_menu_items_cnt">
+                    <a href="storefront.html" class="mob_menu_item pts_string pts_menu_gallery">Галерея шаблонов</a>
+                    <a href="howitworks.html" class="mob_menu_item pts_string pts_how_it_works">Как это работает</a>
+                    <a href="faq.html" class="mob_menu_item pts_string pts_faq">FAQ</a>
+                    <a href="contact.html" class="mob_menu_item pts_string pts_contacts">Контакты</a>
+                    <div class="mt40">
+                        <span class="pbtn __grey js-show_login" style="display:none;width:226px;">Войти</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="id-modal_cnt" class="scr_dialog __modal" style="display:none;">
-            <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
+    </div>
+
+    <div id="id-video" style="display:none;">
+        <div class="st_preview_app_wr" style="position:fixed;">
+            <div class="st_preview_app" style="width:854px">
+                <iframe class="tutorial_video" width="854" height="480" src="https://www.youtube.com/embed/im5wxydnJgg" frameborder="0" allowfullscreen></iframe>
+                <div class="close_dialog_btn __ext js-video_close"></div>
+            </div>
         </div>
+    </div>
+
+    <div id="id-modal_cnt" class="scr_dialog __modal" style="display:none;">
+        <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
     </div>
 
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>
@@ -167,6 +223,7 @@
     <script type="text/javascript" src="js/view/modals/loginModal.js"></script>
     <script type="text/javascript" src="js/view/modals/messageModal.js"></script>
     <script type="text/javascript" src="js/view/modals/modal.js"></script>
+    <script type="text/javascript" src="js/view/storefront.js"></script>
     <!-- endbuild -->
     <script>
         $(document).ready(function() {

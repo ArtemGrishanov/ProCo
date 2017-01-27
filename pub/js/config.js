@@ -203,12 +203,19 @@ var config = {
         /**
          * Категория, которая открывается по умолчанию
          */
-        defaultCategory: 'test',
+        defaultCategory: 'all',
+        allCategoryKey: 'all',
         templates: [],
         categories: {
+            all: {
+                enabled: true,
+                // заполняется программно в storefront -> init на основе других категорий
+                entities: []
+            },
             test: {
                 // шаблоны встроены прямо в верстку, НЕ создаются программно
                 enabled: true,
+                typeLabel: 'Тест',
                 entities: [
                     {
                         //  стандартный тест: http://p.testix.me/1045302892173346/7e7fef7bcf
@@ -216,6 +223,15 @@ var config = {
                         img: 'http://p.testix.me/storefront/test/7e7fef7bcf.jpg',
                         published: 'http://p.testix.me/storefront/test/7e7fef7bcf/p_index.html',
                         template: 'storefront/test/7e7fef7bcf.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        // президенты США тест: http://p.testix.me/1045302892173346/02f9e0d7c7/
+                        name: 'Президенты США',
+                        img: 'http://p.testix.me/storefront/test/02f9e0d7c7.jpg',
+                        published: 'http://p.testix.me/storefront/test/02f9e0d7c7/p_index.html',
+                        template: 'storefront/test/02f9e0d7c7.txt',
                         width: '800px',
                         height: '600px'
                     },
@@ -294,19 +310,53 @@ var config = {
                 ]
             },
             memoriz: {
-                enabled: false,
+                enabled: true,
+                typeLabel: 'Игра мемори',
                 entities: [
                     {
                         //Фильмы и режиссеры  http://p.testix.me/121947341568004/6842f5cd6d/
-                        //Автомобили http://p.testix.me/1045302892173346/06cc56a6dc
-                        //Красотки http://p.testix.me/1045302892173346/e78a9cd599/
+                        name: 'Кино и режиссеры',
+                        img: 'http://p.testix.me/storefront/memoriz/6842f5cd6d.jpg',
+                        published: 'http://p.testix.me/storefront/memoriz/6842f5cd6d/p_index.html',
+                        // in proconstructor/storefront/memoriz
+                        template: 'storefront/memoriz/6842f5cd6d.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        //Автомобили http://p.testix.me/121947341568004/06cc56a6dc/ republished by me
+                        // http://p.testix.me/1045302892173346/06cc56a6dc (Oleg origin)
+                        name: 'Автомобили',
+                        img: 'http://p.testix.me/storefront/memoriz/06cc56a6dc.jpg',
+                        published: 'http://p.testix.me/storefront/memoriz/06cc56a6dc/p_index.html',
+                        // in proconstructor/storefront/memoriz
+                        template: 'storefront/memoriz/06cc56a6dc.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        //Красотки http://p.testix.me/121947341568004/e78a9cd599/ republished by me
+                        // http://p.testix.me/1045302892173346/e78a9cd599/ (Oleg origin)
+                        name: 'Красотки',
+                        img: 'http://p.testix.me/storefront/memoriz/e78a9cd599.jpg',
+                        published: 'http://p.testix.me/storefront/memoriz/e78a9cd599/p_index.html',
+                        // in proconstructor/storefront/memoriz
+                        template: 'storefront/memoriz/e78a9cd599.txt',
+                        width: '800px',
+                        height: '600px'
                     }
                 ]
             },
+            fbPanorama: {
+                typeLabel: 'Facebook панорама',
+                enabled: false
+            },
             timeline: {
+                typeLabel: 'Таймлайн',
                 enabled: false
             },
             zoommap: {
+                typeLabel: 'Zoom-карта',
                 enabled: false
             }
         }
