@@ -3,7 +3,7 @@ html, body {
     font-size: 16px;
     font-weight: 300;
     color: #fff;
-    background-color: #c3c3c3;
+    background-color: #f7f7f7;
     height: 100%;
     padding: 0;
     margin: 0;
@@ -1141,6 +1141,25 @@ html, body {
     background-color: #3175bc;
     height: 100%;
 }
+.paper_wr {
+    width: 100%;
+}
+.paper {
+    border: 1px solid;
+    border-color: #ddd;
+    background-color: #fff;
+    margin: 24px;
+    padding: 36px;
+}
+.paper_block {
+    text-align: left;
+    padding: 20px 50px;
+}
+.paper_link {
+    color: #499cf3;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 /* ============= */
 /* Retina styles */
@@ -1408,4 +1427,11 @@ html, body {
         height: 135px;
         background-size: 64px 135px;
     }
+    .paper {
+        padding: 20px 5px;
+    }
+    .paper_block {
+        padding: 20px 5px;
+    }
 }
+/* Small width screens */
