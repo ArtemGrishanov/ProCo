@@ -218,7 +218,9 @@ var storefrontView = {};
             }
         }
 
-        showCategory(config.storefront.defaultCategory);
+        var appName = getQueryParams(document.location.search)[config.common.appNameParamName];
+        var initialCategory = appName || config.storefront.defaultCategory;
+        showCategory(initialCategory);
     }
 
     init();

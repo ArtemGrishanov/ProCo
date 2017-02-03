@@ -96,7 +96,8 @@ html, body {
 }
 .st_items_cnt {
     margin: 0 auto;
-    text-align: center;
+    text-align: left;
+    width: 912px;
 }
 .st_rows_wr {
     width: 100%;
@@ -356,6 +357,10 @@ html, body {
         height: auto;
         padding-bottom: 60px;
     }
+    .st_items_cnt {
+        width: auto;
+        text-align: center;
+    }
     .st_item_info {
         text-align: left;
     }
@@ -388,14 +393,15 @@ html, body {
         text-align: center;
     }
     .st_item_img {
-        width: 200px;
-        height: 150px;
+        width: 280px;
+        height: 210px;
         margin: 0 auto;
     }
     .st_blank_plus {
         padding-top: 0 !important;
     }
     .st_item {
+        margin: 28px 0;
         padding-right: 0 !important;
     }
     .st_item_op {
