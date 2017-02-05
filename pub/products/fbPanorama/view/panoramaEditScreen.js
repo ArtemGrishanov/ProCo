@@ -56,6 +56,9 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             .css('width','100%')
             .css('min-height','100%'));
         param.screenRoot.append(this.$el);
+        this.model.bind("change:imageProgress", function () {
+            this.render();
+        }, this);
         this.model.bind("change:panoramaImage", function () {
             this.render();
         }, this);
@@ -71,6 +74,7 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             this.$el.html(this.template['default']({
                 backgroundImage: this.model.get('panoramaImgSrc')
             }));
+            this.$el.find('.js-image_progress').hide();
 
             var cntWidth = Math.round(panoConfig.srcWidth * ps);
             var cntHeight = Math.round(panoConfig.srcHeight * ps);
@@ -100,7 +104,8 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             this.$el.html(this.template['default']({
                 backgroundImage: ''
             }));
-            //TODO show progress loader
+            var p = this.model.get('imageProgress');
+            this.$el.find('.js-image_progress').show().text(p + '%');
         }
 
         // установка свойств логотипа

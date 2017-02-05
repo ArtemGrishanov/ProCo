@@ -19,6 +19,7 @@ var FbPanoramaModel = MutApp.Model.extend({
 //        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F6000x1356.jpg',
 //        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F1600x1000.jpg',
         panoramaImage: null,
+        imageProgress: 0,
         previewScale: 1,
         pins: [
             {
@@ -41,15 +42,22 @@ var FbPanoramaModel = MutApp.Model.extend({
     },
 
     start: function() {
+        this.extendImageClass();
         this.setPanoramaImage(this.attributes.panoramaImgSrc);
     },
 
     setPanoramaImage: function(url, callback) {
         this.set({
-            panoramaImage: null
+            panoramaImage: null,
+            imageProgress: 0
         });
         var img = new Image();
         img.crossOrigin = 'anonymous';
+        img.onprogress = (function(e) {
+            this.set({
+                imageProgress: img.completedPercentage
+            });
+        }).bind(this);
         img.onload = (function() {
             // пытаемся создать конфигурацию панорамы на основе размеров картинки. Размеры могут подойти сразу
             var cp = panoConfig.createConfig(img.width, img.height);
@@ -73,7 +81,8 @@ var FbPanoramaModel = MutApp.Model.extend({
             this.set({
                 panoConfig: cp,
                 previewScale: this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT / cp.srcHeight,
-                panoramaImage: img
+                panoramaImage: img,
+                imageProgress: 100
             });
             // приложение получить свой новый актуальный размер в зависимости от загруженной картинки и масштаба
             this.application.width = Math.round(img.width * this.attributes.previewScale);
@@ -83,7 +92,13 @@ var FbPanoramaModel = MutApp.Model.extend({
         img.onerror = function() {
 
         };
-        img.src = url;
+        if (img.load) {
+            // если поддерживается метод загрузки с прогрессом то используем его
+            img.load(url);
+        }
+        else {
+            img.src = url;
+        }
     },
 
     createPanoCanvas: function() {
@@ -94,5 +109,34 @@ var FbPanoramaModel = MutApp.Model.extend({
             height: this.attributes.panoConfig.srcHeight,
             pinScale: 1/this.attributes.previewScale
         });
+    },
+
+    /**
+     * Добавить метод загрузки, который обеспечить показ прогресса загрузки картинки
+     */
+    extendImageClass: function() {
+        if (typeof(Blob) != 'undefined' && typeof(ArrayBuffer) != 'undefined') {
+            Image.prototype.load = function(url){
+                var thisImg = this;
+                var xmlHTTP = new XMLHttpRequest();
+                xmlHTTP.open('GET', url,true);
+                xmlHTTP.responseType = 'arraybuffer';
+                xmlHTTP.onload = function(e) {
+                    var blob = new Blob([this.response]);
+                    thisImg.src = window.URL.createObjectURL(blob);
+                };
+                xmlHTTP.onprogress = function(e) {
+                    thisImg.completedPercentage = parseInt((e.loaded / e.total) * 100);
+                    if (thisImg.onprogress) {
+                        thisImg.onprogress();
+                    }
+                };
+                xmlHTTP.onloadstart = function() {
+                    thisImg.completedPercentage = 0;
+                };
+                xmlHTTP.send();
+            };
+            Image.prototype.completedPercentage = 0;
+        }
     }
 });

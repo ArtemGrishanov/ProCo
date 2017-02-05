@@ -22,3 +22,13 @@
     background-color: #33bbed;
     color: #ffffff;
 }
+.img_progress {
+    display: none;
+    color: black;
+    margin: 0;
+    font-size: 60px;
+    font-family: Arial;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+}
