@@ -414,6 +414,7 @@ var Editor = {};
         $('#id-product_screens_cnt').width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
         // боковые панели вытягиваем также вслед за экранами
         $('.js-setting_panel').height(previewHeight);
+        $('#id-workspace').height(previewHeight);
 
         //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
         // подсветка контрола Slide по которому кликнули

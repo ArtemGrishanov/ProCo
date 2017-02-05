@@ -85,16 +85,19 @@ var previewService = {};
                     var $cloned = $(html).clone().show();
                     $("#id-html_rasterization_iframe").width(width).height(height);
                     $(cnt).width(width).height(height).empty().append($cloned);
-                    html2canvas($cloned, {
-                        onrendered: (function(canvas) {
-                            callback(canvas);
-                            Queue.release(this);
-                        }).bind(this),
-                        background: '#eee',
-                        allowTaint: false,
-                        useCORS: true,
-                        taintTest: false
-                    });
+                    // time fro browser to apply css styles
+                    setTimeout(function() {
+                        html2canvas($cloned, {
+                            onrendered: (function(canvas) {
+                                callback(canvas);
+                                Queue.release(this);
+                            }).bind(this),
+                            background: '#eee',
+                            allowTaint: false,
+                            useCORS: true,
+                            taintTest: false
+                        });
+                    }, 200);
                 }
             }
         };
