@@ -17,6 +17,7 @@ function TextQuickInput(propertyString, directiveName, $parent, productDOMElemen
     };
 
     this.onProductElementInput = function() {
+        Editor.updateSelection();
         this.setValueFromInput();
     };
 
@@ -47,6 +48,7 @@ function TextQuickInput(propertyString, directiveName, $parent, productDOMElemen
                 selection.addRange(range);
 
                 // также надо сделать обновление свойства. Так как в "input" событие не попадем
+                Editor.updateSelection();
                 this.setValueFromInput();
 
                 return false;

@@ -427,6 +427,22 @@ function JPEGEncoder(quality) {
         writeByte(0); // thumbnheight
     }
 
+    function writeAPP1()
+    {
+        writeWord(0xFFE1); // marker APP start
+        var namespace = config.jpegEncoder.APP1DATA.namespace;
+        var xmp = config.jpegEncoder.APP1DATA.string;
+        writeWord(2+namespace.length+xmp.length); // Размер в байтах, равный сумме размеров этого раздела и двух следующих
+        // запись namespace "http://ns.adobe.com/xap/1.0/ "
+        for (var i = 0; i < namespace.length; i++) {
+            writeByte(namespace.charCodeAt(i));
+        }
+        // запись строки XMP, например xmpPano6000x1217
+        for (var i = 0; i < xmp.length; i++) {
+            writeByte(xmp.charCodeAt(i));
+        }
+    }
+
     function writeSOF0(width, height)
     {
         writeWord(0xFFC0); // marker
@@ -586,7 +602,18 @@ function JPEGEncoder(quality) {
 
         // Add JPEG headers
         writeWord(0xFFD8); // SOI
-        writeAPP0();
+        if (config) {
+            if (config.jpegEncoder.writeAPP0 === true) {
+                writeAPP0();
+            }
+            if (config.jpegEncoder.writeAPP1 === true) {
+                writeAPP1()
+            }
+        }
+        else {
+            writeAPP0();
+        }
+
         writeDQT();
         writeSOF0(image.width,image.height);
         writeDHT();

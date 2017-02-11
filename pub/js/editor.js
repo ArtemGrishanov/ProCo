@@ -105,15 +105,26 @@ var Editor = {};
      */
     var appContainerSize = {width: 800, height: 600};
     /**
+     * Режим предпросмотра проекта
+     * @type {string} desktop || mobile
+     */
+    var previewMode = 'desktop';
+    /**
      * Количество сделанный операция по редактированию пользователем
      * При сохранении шаблона синхронизируется с таким же счетччиком engine
      * если этот четчик меньше чем в engine то будет блокировка при закрытии страницы
      * @type {number}
      */
     var operationsCount = 0;
-
-    var selectionBorders = [];
-
+    /**
+     * Html объект, рамка выделения
+     * @type {Array}
+     */
+    var $selectionBorder = null;
+    /**
+     * Выделенный элемент, вокруг которого рисуется рамка выделения $selectionBorder
+     * @type {null}
+     */
     var selectedElem = null;
     /**
      * Функция колбек на запуск редактора
@@ -135,6 +146,12 @@ var Editor = {};
      * @type {boolean}
      */
     var cloneTemplate = false;
+    /**
+     * Активный паблишер который используетсмя в данный момент
+     * Обыно это дефолтный Publisher, но у проектов есть и кастомные
+     * @type {null}
+     */
+    var activePublisher = null;
 
     /**
      * Функция запуска редактора
@@ -179,20 +196,6 @@ var Editor = {};
         });
         resourceManager = new ResourceManager();
         quickControlPanel = new QuickControlPanel();
-        function _initPublisher() {
-            Publisher.init({
-                awsBucket: App.getAWSBucketForPublishedProjects(),
-                callback: showEmbedDialog
-            });
-        }
-        if (App.getAWSBucket() !== null) {
-            _initPublisher();
-        }
-        else {
-            App.on(AWS_INIT_EVENT, function() {
-                _initPublisher();
-            });
-        }
         window.onbeforeunload = confirmExit;
         $('.js-app_preview').click(onPreviewClick);
         $('.js-app_publish').click(onPublishClick);
@@ -292,26 +295,16 @@ var Editor = {};
             });
         }
 
-        var app = Engine.getApp();
-        // выставляем размер приложения, как оно будет видно пользователю при редактировании
-        appContainerSize = {
-            width: app.width,
-            height: app.height
-        };
-
-        //TODO данная установка свойств размерности аналогична loader.js
-        // можно провести унификацию
-        $(appIframe).css('border','0')
-            .css('width','100%')
-            .css('height','100%')
-            .css('maxWidth',appContainerSize.width)
-            .css('maxHeight',appContainerSize.height);
+        updateAppContainerSize();
 
         // нужна ширина для горизонтального выравнивания
-        $('#id-product_cnt').width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width)
-            // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
-            .height(appContainerSize.height+2*config.editor.ui.screen_blocks_border_width);
+//        $('#id-product_cnt')
+//            //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
+//            //.width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width)
+//            // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
+//            .height(appContainerSize.height+2*config.editor.ui.screen_blocks_border_width+config.editor.ui.id_product_cnt_additional_height);
         // в поле для редактирования подтягиваем стили продукта
+        var app = Engine.getApp();
         var $h = $("#id-product_screens_cnt").contents().find('head');
         $h.append(config.products.common.styles);
         $h.append(config.products[app.type].stylesForEmbed);
@@ -376,6 +369,7 @@ var Editor = {};
         activeScreens = ids;
         // надо скрыть все активные подсказки, если таковые есть. На новом экране будут новые подсказки
         hideWorkspaceHints();
+        updateAppContainerSize();
         activeScreenHints = [];
         activeTriggers = [];
         // каждый раз удаляем quick-контролы и создаем их заново. Не слишком эффективно мб но просто и надежно
@@ -410,8 +404,11 @@ var Editor = {};
                 log('Editor.showScreen: appScreen not found '+ids[i]);
             }
         }
+        //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
+        // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
+        $('#id-product_cnt').height(previewHeight + config.editor.ui.id_product_cnt_additional_height);
         // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
-        $('#id-product_screens_cnt').width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
+        $('#id-product_screens_cnt, #id-control_cnt').width(appContainerSize.width + 2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
         // боковые панели вытягиваем также вслед за экранами
         $('.js-setting_panel').height(previewHeight);
         $('#id-workspace').height(previewHeight);
@@ -424,6 +421,31 @@ var Editor = {};
             // любой клик по промо-проекту сбрасывает подсказки
             hideWorkspaceHints();
         });
+    }
+
+    function updateAppContainerSize() {
+        var app = Engine.getApp();
+        // выставляем первоначальный размер приложения, возможно, оно будет меняться
+        appContainerSize = {
+            width: app.width,
+            height: app.height
+        };
+        //TODO данная установка свойств размерности аналогична loader.js
+        // можно провести унификацию
+        if (previewMode === 'mobile') {
+            $(appIframe).css('border','0')
+                .css('width','100%')
+                .css('height','100%')
+                .css('maxWidth',appContainerSize.width)
+                .css('maxHeight',appContainerSize.height);
+        }
+        else if (previewMode === 'desktop') {
+            $(appIframe).css('border','0')
+                .css('width',appContainerSize.width+'px')
+                .css('height',appContainerSize.height+'px')
+                .css('maxWidth',appContainerSize.width)
+                .css('maxHeight',appContainerSize.height);
+        }
     }
 
     function createPreviewScreenBlock(view) {
@@ -676,18 +698,18 @@ var Editor = {};
                 // например по id=tm quiz.0.answer.options - контрол добавлени и удаления
                 for (var j = 0; j < cArr.length; j++) {
                     var c = cArr[j];
-                    // wrapper - это обертка в которой находится контрол на боковой панели
-                    // надо скрыть его целиком, включая label
-                    if (c && c.wrapper) {
-                        c.wrapper.show();
-                        if (c.control._onShow) {
-                            c.control._onShow();
-                        }
-                    }
-
                     // контролы которые должны показаться на всплывающей панели quickControlPanel
                     if (c && c.type === 'quickcontrolpanel') {
-                        quickControlPanelControls.push(c.wrapper);
+                        // событие _onShow будет вызвано позже для этого типа 'quickcontrolpanel'
+                        quickControlPanelControls.push(c);
+                    }
+                    else {
+                        if (c && c.wrapper) {
+                            c.wrapper.show();
+                            if (c.control._onShow) {
+                                c.control._onShow();
+                            }
+                        }
                     }
                 }
             }
@@ -713,6 +735,12 @@ var Editor = {};
         // есть несколько контролов для всплывашки, которые надо показать
         if (quickControlPanelControls.length > 0) {
             quickControlPanel.show(element, quickControlPanelControls);
+            for (var n = 0; n < quickControlPanelControls.length; n++) {
+                var c = quickControlPanelControls[n];
+                if (c.control._onShow) {
+                    c.control._onShow();
+                }
+            }
         }
         else {
             quickControlPanel.hide();
@@ -872,15 +900,17 @@ var Editor = {};
             for (var i = 0; i < appScreenIds.length; i++) {
                 var s = appScreenIds[i];
                 var screen = Engine.getAppScreen(s);
-                if (typeof screen.group !== "string") {
-                    // если группа не указана, экран будет один в своей группе
-                    screen.group = screen.id;
+                if (screen.hideScreen === false) {
+                    if (typeof screen.group !== "string") {
+                        // если группа не указана, экран будет один в своей группе
+                        screen.group = screen.id;
+                    }
+                    if (groups.hasOwnProperty(screen.group) === false) {
+                        // группа новая, создаем
+                        groups[screen.group] = [];
+                    }
+                    groups[screen.group].push(s);
                 }
-                if (groups.hasOwnProperty(screen.group) === false) {
-                    // группа новая, создаем
-                    groups[screen.group] = [];
-                }
-                groups[screen.group].push(s);
             }
 
             // далее начнем создать контролы и вью для групп экранов
@@ -1010,26 +1040,32 @@ var Editor = {};
 
     function onPublishClick() {
         if (App.getUserData() !== null) {
-            if (Publisher.isInited() === true) {
-                Modal.showLoading();
-                // appId - уникальный ид проекта, например appId
-                var app = Engine.getApp();
-                // сначала создать превью-картинки для шаринга, записать ссылки на них в приложение
-                // и уже потом выкатывать приложение
-                createPreviewsForShare(function() {
-                    // нужно дописать свойство "опубликованности" именно в опубликованное приложение
-                    var appStr = addIsPublishedParam(Engine.serializeAppValues());
-                    Publisher.publish({
-                        appId: appId,
-                        width: app.width,
-                        height: app.height,
-                        appStr: appStr,
-                        cssStr: Engine.getCustomStylesString(),
-                        promoIframe: appIframe, //TODO возможно айрейм спрятать в engine тоже
-                        baseProductUrl: config.products[appName].baseProductUrl
-                    });
+            Modal.showLoading();
+            // appId - уникальный ид проекта, например appId
+            var app = Engine.getApp();
+            // сначала создать превью-картинки для шаринга, записать ссылки на них в приложение
+            // и уже потом выкатывать приложение
+            createPreviewsForShare(function() {
+                if (config.products[appName].customPublisherObject) {
+                    activePublisher = window[config.products[appName].customPublisherObject];
+                }
+                else {
+                    activePublisher = Publisher;
+                }
+                // нужно дописать свойство "опубликованности" именно в опубликованное приложение
+                var appStr = addIsPublishedParam(Engine.serializeAppValues());
+                activePublisher.publish({
+                    appId: appId,
+                    width: app.width,
+                    height: app.height,
+                    appStr: appStr,
+                    cssStr: Engine.getCustomStylesString(),
+                    promoIframe: appIframe, //TODO возможно айрейм спрятать в engine тоже
+                    baseProductUrl: config.products[appName].baseProductUrl,
+                    //awsBucket: App.getAWSBucketForPublishedProjects(),
+                    callback: showEmbedDialog
                 });
-            }
+            });
         }
         else {
             Modal.showLogin();
@@ -1113,7 +1149,7 @@ var Editor = {};
                         alert('Не удалось сохранить проект');
                     }
                 }
-                if (Publisher.isPublishing() !== true) {
+                if (!activePublisher || activePublisher.isPublishing() !== true) {
                     Modal.hideLoading();
                 }
             }, appId);
@@ -1195,21 +1231,28 @@ var Editor = {};
 
         if (App.getUserData() !== null) {
 
-            // генерация канвасов заново и аплоад их с получением урла
-            shareImageService.requestImageUrls((function(){
-                // перед публикацией переустановка всех урлов картинок для публикации
-                var app = Engine.getApp();
-                for (var i = 0; i < app._shareEntities.length; i++) {
-                    var url = shareImageService.findImageInfo(app._shareEntities[i].id).imgUrl;
-                    var ps = config.common.shareImagesAppPropertyString.replace('{{number}}',i);
-                    var ap = Engine.getAppProperty(ps);
-                    Engine.setValue(ap, url);
-                }
+            var app = Engine.getApp();
+            if (app._shareEntities && app._shareEntities.length > 0) {
+                // генерация канвасов заново и аплоад их с получением урла
+                shareImageService.requestImageUrls((function(){
+                    // перед публикацией переустановка всех урлов картинок для публикации
+                    var app = Engine.getApp();
+                    for (var i = 0; i < app._shareEntities.length; i++) {
+                        var url = shareImageService.findImageInfo(app._shareEntities[i].id).imgUrl;
+                        var ps = config.common.shareImagesAppPropertyString.replace('{{number}}',i);
+                        var ap = Engine.getAppProperty(ps);
+                        Engine.setValue(ap, url);
+                    }
 
-                // далее может начать работать publisher
+                    // далее может начать работать publisher
+                    previewsReadyCallback('ok');
+
+                }).bind(this));
+            }
+            else {
+                // не из чего делать предпросмотр
                 previewsReadyCallback('ok');
-
-            }).bind(this));
+            }
 
         }
         else {
@@ -1299,15 +1342,15 @@ var Editor = {};
         if (result === 'success') {
 
             showPublishDialog({
-                link: Publisher.getAnonymLink(),
-                embedCode: Publisher.getEmbedCode()
+                link: activePublisher.getAnonymLink(),
+                embedCode: activePublisher.getEmbedCode()
             });
             // надо сохранить статус публикации
             sessionPublishDate = new Date().toString();
             saveTemplate(false);
         }
         else {
-            alert('Publishing Error');
+            Modal.showMessage({text: 'Ошибка: Не удалось опубликовать проект.'});
         }
     }
 
@@ -1371,6 +1414,7 @@ var Editor = {};
     }
 
     function toDesktopPreview() {
+        previewMode = 'desktop';
         $('#id-product_iframe_cnt').removeClass('__mob');
         $(appIframe).css('border','0')
             .css('width',appContainerSize.width+'px')
@@ -1382,6 +1426,7 @@ var Editor = {};
     }
 
     function toMobPreview() {
+        previewMode = 'mobile';
         $('#id-product_iframe_cnt').addClass('__mob');
         $(appIframe).css('border','0')
             .css('width','100%')
@@ -1421,28 +1466,42 @@ var Editor = {};
 //        sc.scrollLeft(sc.scrollLeft()+config.editor.ui.slidesScrollStep);
     }
 
-    function deleteSelections() {
-        selectedElem = null;
-        selectionBorders.forEach(function(e){
-            e.remove();
-        });
-    }
-
     function getActiveScreens() {
         return activeScreens;
     }
 
     function showSelection($elem) {
         selectedElem = $elem;
-        var $seletionBorder = $($('#id-elem_selection_template').html());
+        if ($selectionBorder === null) {
+            $selectionBorder = $($('#id-elem_selection_template').html());
+            $selectionBorder.css('zIndex', config.editor.ui.selectionBorderZIndex);
+            $('#id-control_cnt').append($selectionBorder);
+        }
         var eo = $elem.offset(); // position() не подходит в данном случае
-        $seletionBorder.css('top',eo.top+'px');
-        $seletionBorder.css('left',eo.left+'px');
-        $seletionBorder.css('width',$elem.outerWidth(false)-1+'px'); // false - not including margins
-        $seletionBorder.css('height',$elem.outerHeight(false)-1+'px');
-        $seletionBorder.css('zIndex', config.editor.ui.selectionBorderZIndex);
-        $('#id-control_cnt').append($seletionBorder);
-        selectionBorders.push($seletionBorder);
+        $selectionBorder.css('top',eo.top+'px');
+        $selectionBorder.css('left',eo.left+'px');
+        $selectionBorder.css('width',$elem.outerWidth(false)-1+'px'); // false - not including margins
+        $selectionBorder.css('height',$elem.outerHeight(false)-1+'px');
+        $selectionBorder.show();
+    }
+
+    function updateSelection() {
+        if ($selectionBorder) {
+            var eo = $(selectedElem).offset(); // position() не подходит в данном случае
+            $selectionBorder.css('top',eo.top+'px');
+            $selectionBorder.css('left',eo.left+'px');
+            $selectionBorder.css('width',$(selectedElem).outerWidth(false)-1+'px'); // false - not including margins
+            $selectionBorder.css('height',$(selectedElem).outerHeight(false)-1+'px');
+        }
+    }
+
+    function deleteSelections() {
+        console.log('deleteSelections');
+        selectedElem = null;
+        if ($selectionBorder) {
+            $selectionBorder.hide();
+        }
+        $selectionBorder = null;
     }
 
     function showSelectDialog(params) {
@@ -1536,5 +1595,7 @@ var Editor = {};
     global.findControl = findControl;
     global.findControlInfo = findControlInfo; // need for autotests
     global.getAppId = function() { return appId; };
+    global.updateSelection = updateSelection;
+    global.getQuickControlPanel = function() { return quickControlPanel; }
 
 })(Editor);

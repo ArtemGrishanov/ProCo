@@ -18,11 +18,6 @@ var PanoramaEditScreen = MutApp.Screen.extend({
      * @see MutApp
      */
     name: 'Панорама',
-    /**
-     * Какую по умолчанию показывать высоту картинки на экране превью
-     * Из этого будет рассчитан масштаб previewScale
-     */
-    DEF_PANORAMA_PREVIEW_HEIGHT: 600,
     logoPosition: {top: 200, left: 200},
     showLogo: true,
     /**
@@ -61,41 +56,57 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             .css('width','100%')
             .css('min-height','100%'));
         param.screenRoot.append(this.$el);
+        this.model.bind("change:imageProgress", function () {
+            this.render();
+        }, this);
         this.model.bind("change:panoramaImage", function () {
-            if (this.model.get('panoramaImage') !== null) {
-
-                if (this.previewScale === undefined) {
-                    this.previewScale = this.DEF_PANORAMA_PREVIEW_HEIGHT/this.model.get('panoramaImage').height;
-                }
-
-                this.render();
-                this.model.application.showScreen(this);
-            }
+            this.render();
         }, this);
     },
 
     render: function() {
-        console.log('panoramaEditScreen render() + image');
-        this.$el.html(this.template['default']({
-            backgroundImage: this.model.get('panoramaImgSrc')
-        }));
-        var pImg = this.model.get('panoramaImage');
-        if (pImg) {
-            var w = pImg.width * this.previewScale;
-            var h = pImg.height * this.previewScale;
-            this.$el.find('.js-pano').width(w+'px').height(h+'px');
+
+        var ps = this.model.get('previewScale');
+        var panoConfig = this.model.get('panoConfig');
+        var panoImage = this.model.get('panoramaImage');
+        if (panoConfig) {
+            console.log('panoramaEditScreen.render(): +image');
+            this.$el.html(this.template['default']({
+                backgroundImage: this.model.get('panoramaImgSrc')
+            }));
+            this.$el.find('.js-image_progress').hide();
+
+            var cntWidth = Math.round(panoConfig.srcWidth * ps);
+            var cntHeight = Math.round(panoConfig.srcHeight * ps);
+            var $panoCnt = this.$el.find('.js-pano').width(cntWidth+'px').height(cntHeight+'px');
+
+            // если картинка меньше контейнера, надо ее выровнять по центру внутри него. Так же делается при отрисовке канваса
+            var $panoImg = this.$el.find('.js-pano_image');
+            var panoImgWidth = Math.round(panoImage.width * ps);
+            var panoImgHeight = Math.round(panoImage.height * ps);
+            $panoImg.width(panoImgWidth+'px').height(panoImgHeight+'px');
+            $panoImg.css('top', Math.round((cntHeight-panoImgHeight)/2)+'px').css('left', Math.round((cntWidth-panoImgWidth)/2)+'px');
+
+            // отрисовка пинов
+            var $pinsCnt = this.$el.find('.js-pins_cnt');
+            for (var i = 0; i < this.model.attributes.pins.length; i++) {
+                var p = this.model.attributes.pins[i];
+                p.data.pinIndex = i;
+                var $pel = $(this.template[p.uiTemplate](p.data));
+                var top = Math.round(p.position.top*ps);
+                var left = Math.round(p.position.left*ps);
+                $pel.css('top',top).css('left',left);
+                $pinsCnt.append($pel);
+            }
         }
-        // отрисовка пинов
-        var $pinsCnt = this.$el.find('.js-pins_cnt');
-        for (var i = 0; i < this.model.attributes.pins.length; i++) {
-            var p = this.model.attributes.pins[i];
-            var $pel = $(this.template[p.uiTemplate](p.data));
-            var top = Math.round(p.y*this.previewScale);
-            var left = Math.round(p.x*this.previewScale);
-            $pel.css('top',top).css('left',left);
-            $pinsCnt.append($pel);
+        else {
+            console.log('panoramaEditScreen.render(): no image');
+            this.$el.html(this.template['default']({
+                backgroundImage: ''
+            }));
+            var p = this.model.get('imageProgress');
+            this.$el.find('.js-image_progress').show().text(p + '%');
         }
-        //TODO show progress loader
 
         // установка свойств логотипа
         var $l = this.$el.find('.js-start_logo');
@@ -107,6 +118,7 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             $l.hide();
         }
 
+        this.renderChecksum = Math.random();
         return this;
     }
 });

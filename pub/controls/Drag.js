@@ -7,6 +7,25 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
     this.isDragging = false;
     this.elemPosition = null;
+    this.onMouseDownStopPropagation = params.hasOwnProperty('onMouseDownStopPropagation') ? params.onMouseDownStopPropagation: true;
+
+    // возможность задать масштаб. Действия контрола будут учитывать этот масштаб
+    this.scale = 1;
+    if (params.scale) {
+        if (!isNaN(parseFloat(params.scale)) && isFinite(params.scale)) {
+            this.scale = parseFloat(params.scale);
+        }
+        else if (Engine.parseSelector(params.scale) !== null) {
+            var s = undefined;
+            try {
+                s = Engine.getApp().getPropertiesBySelector(params.scale)[0].value;
+            }
+            catch (err) {}
+            if (s !== undefined) {
+                this.scale = s;
+            }
+        }
+    }
 
     this.onMouseUp = function(e) {
         // this.elemPosition - изначально =null, и определится только в onMouseMove
@@ -14,7 +33,10 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
             // апдейт экранов нужен в том случае, когда показано несколько экранов сразу
             // обновлять экраны не надо, так как обновления происхоит по подписке на свойство для скорости
             var ap1 = Engine.getAppProperty(this.propertyString);
-            Engine.setValue(ap1, this.elemPosition);
+            Engine.setValue(ap1, {
+                top: Math.round(this.elemPosition.top / this.scale),
+                left: Math.round(this.elemPosition.left / this.scale)
+            });
         }
         this.isDragging = false;
     };
@@ -28,7 +50,12 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
             this.$productDomElement.css('top', this.elemPosition.top+'px');
             this.$productDomElement.css('left', this.elemPosition.left+'px');
             var ap1 = Engine.getAppProperty(this.propertyString);
-            Engine.setValue(ap1, this.elemPosition);
+//            Engine.setValue(ap1, {
+//                top: Math.round(this.elemPosition.top / this.scale),
+//                left: Math.round(this.elemPosition.left / this.scale)
+//            });
+            Editor.updateSelection();
+            Editor.getQuickControlPanel().updatePosition(this.$productDomElement);
         }
     };
 
@@ -42,18 +69,22 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
         };
         // обрабатываем только первое нажатие и дальше стоппим обработку событий
         // так как могут два элемента для перетаскивания наложиться друг на друга
-        e.stopPropagation();
-        e.preventDefault();
+        if (this.onMouseDownStopPropagation === true) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
     };
 
     this.onPropertyChanged = function() {
         if (this.elemPosition !== null) {
             //тот кто стал инициатором изменения не должен сам обрабатывать событие
             var p = Engine.getAppProperty(this.propertyString);
+            var l = Math.round(p.propertyValue.left * this.scale);
+            var t = Math.round(p.propertyValue.top * this.scale);
             // проверка что хотя бы одна из координат изменилась, тогда обновить
-            if (this.$productDomElement && (this.elemPosition.left !== p.propertyValue.left || this.elemPosition.top !== p.propertyValue.top)) {
-                this.elemPosition.left = p.propertyValue.left;
-                this.elemPosition.top = p.propertyValue.top;
+            if (this.$productDomElement && (this.elemPosition.left !== l || this.elemPosition.top !== t)) {
+                this.elemPosition.left = l;
+                this.elemPosition.top = t;
                 this.$productDomElement.css('left',this.elemPosition.left+'px');
                 this.$productDomElement.css('top',this.elemPosition.top+'px');
             }

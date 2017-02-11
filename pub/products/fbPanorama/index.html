@@ -16,16 +16,19 @@
     </div>
 
     <script id="id-panorama_edit_template" type="text/template">
-        <div class="modal __active js-back_color js-back_img" data-app-property="id=startScr backgroundImg, id=startScr shadowEnable">
+        <div class="modal __active js-back_color js-back_img">
             <div class="modal_cnt info js-back_shadow">
-                <div class="pano_preview js-pano js-pins_cnt" data-app-property="id=mm panoramaImageSrc" style="background-image:url(<%=backgroundImage%>)"></div>
+                <div class="pano_cnt js-pano js-pins_cnt" data-app-property="id=mm pins(createPin)">
+                    <div class="pano_img js-pano_image" style="background-image:url(<%=backgroundImage%>)"></div>
+                </div>
                 <div class="logo js-logo js-start_logo" data-app-property="id=startScr logoPosition, id=startScr showLogo, id=mm logoUrl"></div>
+                <p class="img_progress js-image_progress">0%</p>
             </div>
         </div>
     </script>
 
     <script id="id-text_pin_template" type="text/template">
-        <div class="pin_wr"><%=text%></div>
+        <div class="pin_wr" data-option-index="<%=pinIndex%>" data-app-property="id=mm pins.<%=pinIndex%>.position, id=mm pins.<%=pinIndex%>.data.text, id=mm pins(deletePin)"><%=text%></div>
     </script>
 
     <!-- build:js index.min.js -->
@@ -34,7 +37,10 @@
     <script type="text/javascript" src="../common/js/backbone.js"></script>
     <script type="text/javascript" src="../common/js/mutapp.js"></script>
     <script type="text/javascript" src="model/m.js"></script>
+    <script type="text/javascript" src="view/canvasScreen.js"></script>
     <script type="text/javascript" src="view/panoramaEditScreen.js"></script>
+    <script type="text/javascript" src="drawing.js"></script>
+    <script type="text/javascript" src="panoconfig.js"></script>
     <script type="text/javascript" src="app.js"></script>
     <script type="text/javascript" src="descriptor.js"></script>
     <!-- endbuild -->
@@ -45,6 +51,9 @@
             var DEFAULT_PARAMS = {};
             app = new FbPanoramaApp({
                 defaults: DEFAULT_PARAMS
+//                ,screensRenderCallbacks: [function(v){
+//                    console.log(v.id + ' rendered');
+//                }]
             });
             app.start();
         });

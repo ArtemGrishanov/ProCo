@@ -86,4 +86,7 @@ var Modal = {};
     global.showPreviewShareImage = function (data) { _show(PreviewShareImageModal, data) };
     global.hidePreviewShareImage = function () { _hide(PreviewShareImageModal) };
 
+    global.showRequestPublishFBPermissions = function (data) { _show(RequestFBPublishPermissionsModal, data) };
+    global.hideRequestPublishFBPermissions = function () { _hide(RequestFBPublishPermissionsModal) };
+
 })(Modal);

@@ -17,6 +17,22 @@ var MutApp = function(param) {
     this.loaderWindow = null;
     this.appConstructor = 'mutapp';
     /**
+     * Колбеки в которые будет приходить информация о перерисовке экранов и прочих изменениях
+     * @type {Array}
+     * @private
+     */
+    this._appChangeCallbacks = [];
+    /**
+     * Предыдущее состояние приложения
+     * @type {{}}
+     * @private
+     */
+    this._previousAppState = {
+        width: undefined,
+        height: undefined,
+        screensRenderChecksum: {}
+    };
+    /**
      * Если isPublished === true, то запущено опубликованные приложение.
      * Например, только в опубликованном приложении надо собирать статистику.
      * @type {boolean}
@@ -117,6 +133,16 @@ var MutApp = function(param) {
                 }
             }
         }
+
+        if (param.appChangeCallbacks) {
+            if (Object.prototype.toString.call(param.appChangeCallbacks) === '[object Array]') {
+                this._appChangeCallbacks = param.appChangeCallbacks;
+            }
+            else {
+                log('MutApp.constructor: appChangeCallbacks must be Array', true);
+            }
+
+        }
     }
 
     // инициализация апи для статистики, если задан идентификатор Google Analytics
@@ -130,7 +156,16 @@ var MutApp = function(param) {
 
     // подписка на postMessage
     window.addEventListener("message", this.receiveMessage.bind(this), false);
+
+    // включаем мониторинг состояния приложение
+    setInterval((function(){
+        this.onAppMonitorTimer();
+    }).bind(this),200);
 };
+
+MutApp.SCREEN_RENDERED = 'mutapp_screen_rendered';
+MutApp.APP_SIZE_CHANGED = 'mutapp_app_size_changed';
+
 /**
  * dom-элемент в котором помещаются все экраны
  * Создается в конструкторе приложения
@@ -168,6 +203,8 @@ var MutApp = function(param) {
 
 /**
  * Связать экран с приложением
+ * Рендер экрана будет вызван сразу при добавлении
+ *
  * @param v
  */
 MutApp.prototype.addScreen = function(v) {
@@ -641,12 +678,42 @@ MutApp.prototype.isSmallWidth = function() {
     return this._isSmallWidth;
 };
 
-//MutApp.prototype.back function() {
-//    if (this._history.length >= 2) {
-//        this._history.pop()
-//        this.showView(this._history[this._history.length-1]);
-//    }
-//};
+/**
+ * Таймер, мониторящий состояние приложения
+ */
+MutApp.prototype.onAppMonitorTimer = function() {
+    if (this._appChangeCallbacks && this._appChangeCallbacks.length > 0) {
+        // проверка изменения размеров приложения
+        if (this._previousAppState.width !== this.width || this._previousAppState.height !== this.height) {
+            var event = {
+                type: MutApp.APP_SIZE_CHANGED,
+                app: this
+            };
+            for (var j = 0; j < this._appChangeCallbacks.length; j++) {
+                this._appChangeCallbacks[j](event);
+            }
+            this._previousAppState.width = this.width;
+            this._previousAppState.height = this.height;
+        }
+
+        // проверка хешей экранов: произошел ли render() какого либо экрана
+        var v = null;
+        for (var i = 0; i < this._screens.length; i++) {
+            v = this._screens[i];
+            // если renderChecksum не меняется (undefined) то колбек не будет вызван
+            if (v.renderChecksum !== this._previousAppState.screensRenderChecksum[v.id]) {
+                var event = {
+                    type: MutApp.SCREEN_RENDERED,
+                    screen: v
+                };
+                for (var j = 0; j < this._appChangeCallbacks.length; j++) {
+                    this._appChangeCallbacks[j](event);
+                }
+                this._previousAppState.screensRenderChecksum[v.id] = v.renderChecksum;
+            }
+        }
+    }
+};
 
 /**
  *
@@ -688,6 +755,17 @@ MutApp.Screen = Backbone.View.extend({
      */
     children: [],
     /**
+     * Возможность обновить контрольную сумму при рендере экрана.
+     * Это будет сигналом для платформы что экран прошел рендер и его надо обновить.
+     *
+     * Кейс:
+     * Приложение рендерит пустой экран, а потом загружает данные для рендера (большая картинка в панорамах). После загрузки рендерит заново.
+     * При повторном рендере контрольнач сумма будет изменена, что даст сигнал для обновдения в движке
+     *
+     * @param {number}
+     */
+    renderChecksum: undefined,
+    /**
      * Значения, которые могут быть установлены в initialize автоматически
      */
     defaultsToSetInInitialize: [
@@ -696,6 +774,7 @@ MutApp.Screen = Backbone.View.extend({
         {key: 'group', value: null},
         {key: 'arrayAppPropertyString', value: null},
         {key: 'name', value: null},
+        {key: 'hideScreen', value: false},
         {key: 'draggable', value: true},
         {key: 'canAdd', value: false},
         {key: 'canClone', value: false},
@@ -724,8 +803,14 @@ MutApp.Screen = Backbone.View.extend({
         }
     },
 
+    /**
+     * Главный метод экрана который должен быть переопределен
+     */
     render: function() {
-        // screen hash
+        // your code
+        // ...
+        // set this.renderChecksum = Math.random();
+        // return this;
     }
 });
 

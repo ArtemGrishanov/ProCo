@@ -36,6 +36,9 @@ img {
     text-align: center;
     padding: 20px;
 }
+.modal.__680 {
+    width: 680px;
+}
 .modal.__smallbox {
     width: 320px;
     height: 140px;
@@ -545,6 +548,21 @@ img {
     text-align: center;
     padding: 40px;
 }
+.fb_pano_icon {
+    margin-left: auto;
+    margin-right: auto;
+    background: url(../i/icon-permission.png) no-repeat center;
+    width: 180px;
+    height: 92px;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .fb_pano_icon {
+        background-image: url(../i/icon-permission.png);
+        background-size: 180px 92px;
+    }
+}
+
+
 .content_wr {
     width: 900px;
     margin: 0 auto;
@@ -858,6 +876,7 @@ img {
     position: relative;
     margin: 0 auto;
     text-align: center;
+    overflow: hidden;
 }
 .proto_wr.__mob {
     background: url(../i/phone_1x.png); /* (308+13*2)x(532+74*2) */

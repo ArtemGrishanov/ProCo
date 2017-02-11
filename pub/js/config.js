@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev'], //dev test prod
+        configurationSetsOnStart: ['dev','offline'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -193,6 +193,23 @@ var config = {
          * для аплоада оно может быть увеличено, так как там большие файлы могут быть
          */
         responseMaxDuration: 6000
+    },
+    jpegEncoder: {
+        /**
+         * Превью и прочие генерируемые канвасы
+         * Также влияет на качество панорам. Там вес критичен
+         * Значение 100 - дает слишком большой вес файла
+         */
+        JPEGEncoderQuality: 70,
+        writeAPP0: true,
+        writeAPP1: false,
+        /**
+         * Данные используемые для записи в раздер APP1 в jpeg
+         */
+        APP1DATA: {
+            namespace: '',
+            string: ''
+        }
     },
     /**
      * Конфигурация витрины
@@ -529,6 +546,12 @@ var config = {
              * Высота по умолчанию, если не задана
              */
             defaultHeight: 600,
+            /**
+             * Кастомный класс паблишера, который будет испльзоваться при публикации
+             * Файл с кодом лежит в products/fbPanorama
+             *
+             */
+            customPublisherObject: 'fbPanoramaPublisher'
         },
         timeline: {
             stylesForEmbed: '<link href="{{config.common.home}}products/timeline/style.css" rel="stylesheet"/>'
@@ -541,6 +564,12 @@ var config = {
         TextQuickInput: {
             defaultDirectiveIndex: -1, // view не используется
             directives: [/*'textquickinput'*/],
+            parentId: 'id-control_cnt',
+            type: 'workspace' // контрол появляется на поле для редактиования, когда показывается экран приложения
+        },
+        ClickAndAddToArray: {
+            defaultDirectiveIndex: -1, // view не используется
+            directives: [],
             parentId: 'id-control_cnt',
             type: 'workspace' // контрол появляется на поле для редактиования, когда показывается экран приложения
         },
@@ -656,11 +685,17 @@ var config = {
              * Толщина обводки в стиле product_cnt.css/.screen_block
              * Надо для расчета ширины контейнера
              */
-            screen_blocks_border_width: 4,
+            screen_blocks_border_width: 0, //было 4px, убрал обводку
             /**
              * Скорость прокрутки превью слайдов
              */
-            slidesScrollSpeed: 20
+            slidesScrollSpeed: 20,
+            /**
+             * Прибавка к высоте для id_product_cnt
+             * Чтобы влазили: screen_blocks_padding (см выше), editor.css->.workspace_screens_iframe:top=20px, высота горизонтального системного скрол бара 20px примерно
+             * который появляется если нужна горизонтальная прокрутка
+             */
+            id_product_cnt_additional_height: 60
         }
     },
     ui: {
@@ -702,6 +737,10 @@ var config = {
         previewShareImageModal: {
             templateUrl: 'templates/previewShareImageModal.html',
             defZIndex: 90
+        },
+        requestFBPublishPermissionsModal: {
+            templateUrl: 'templates/requestFBPublishPermissionsModal.html',
+            defZIndex: 103
         }
     },
     scripts: {

@@ -199,15 +199,6 @@ var Engine = {};
         return result;
     }
 
-//    function setAppPropertiesValues(values) {
-//        todo change
-//        for (var key in values) {
-//            if (values.hasOwnProperty(key)) {
-//                _setAppValue(key, values[key])
-//            }
-//        }
-//    }
-
     /**
      * Устанавливает быстро значения appProperty
      * propertyString:propertyValue
@@ -306,9 +297,10 @@ var Engine = {};
      * Именно эта информация определяющая
      * По селекторам из дескриптора ищутся подходящие свойства в приложении
      *
-     * @param desc
+     * @param {Object} desc
+     * @param {MutApp} app
      */
-    function createAppProperties(desc) {
+    function createAppProperties(desc, app) {
         // в этот объект положим все вычисленные свойства для каждого селектора
         if (calculatedAppDescriptor===null) {
             calculatedAppDescriptor = {};
@@ -359,7 +351,7 @@ var Engine = {};
             // проверяем существуют ли в приложении такие свойства отвечающие propertyString
             // например: tm=id property==quiz.{{number}}.text
             // получаем 4-е свойства со своими значениями: quiz.0.text quiz.1.text quiz.2.text quiz.3.text
-            var pp = getApp().getPropertiesBySelector(s);
+            var pp = app.getPropertiesBySelector(s);
             if (pp && pp.length > 0) {
                 for (var q = 0; q < pp.length; q++) {
                     if (getAppProperty(pp[q].path) === null) {
@@ -536,6 +528,26 @@ var Engine = {};
     }
 
     /**
+     * Обработка события об изменениях в приложении: рендер экрана, изменения размеров приложения и тп
+     *
+     * @param {Object} e
+     */
+    function onAppChanged(e) {
+
+        switch (e.type) {
+            case 'mutapp_app_size_changed': {
+                console.log('Engine:mutapp_app_size_changed = ' + e.app.width+'x'+ e.app.height);
+                break;
+            }
+            case 'mutapp_screen_rendered': {
+                console.log('Engine:mutapp_screen_rendered = ' + e.screen.id);
+                createAppScreens();
+                break;
+            }
+        }
+    }
+
+    /**
      * вставить во view данные
      *
      * @param view
@@ -632,11 +644,13 @@ var Engine = {};
         // подготовим новый массив и сделаем установку свойства
         var key = appProperty.propertyString;
         // проверяем что в промо проекте действительно есть такой массив
-        var selected = Engine.getApp().getPropertiesBySelector(appProperty.propertyString);
-        if (selected.length===1) {
-            if (Array.isArray(selected[0].value)) {
+        //var selected = Engine.getApp().getPropertiesBySelector(appProperty.propertyString);
+        //if (selected.length===1) {
+        //    if (Array.isArray(selected[0].value)) {
+            if (Array.isArray(appProperty.propertyValue)) {
                 // не вставляем значение в существующий, а готовим новый массив, чтобы заменить целиком
-                var newArray = JSON.parse(JSON.stringify(selected[0].value));
+                //var newArray = JSON.parse(JSON.stringify(selected[0].value));
+                var newArray = JSON.parse(JSON.stringify(appProperty.propertyValue));
                 if (Number.isInteger(position) === false || position < 0) {
                     position = newArray.length;
                 }
@@ -647,10 +661,10 @@ var Engine = {};
             else {
                 log('Engine.addArrayElement: you can add elements in array only \''+appProperty.propertyString+'\'');
             }
-        }
-        else {
-            log('Engine.addArrayElement: must be only one result for \''+appProperty.propertyString+'\'');
-        }
+        //}
+        //else {
+        //    log('Engine.addArrayElement: must be only one result for \''+appProperty.propertyString+'\'');
+        //}
     }
 
     /**
@@ -667,11 +681,13 @@ var Engine = {};
         // подготовим новый массив и сделаем установку свойства
         var key = appProperty.propertyString;
         // проверяем что в промо проекте действительно есть такой массив
-        var selected = Engine.getApp().getPropertiesBySelector(appProperty.propertyString);
-        if (selected.length===1) {
-            if (Array.isArray(selected[0].value)) {
+        //var selected = Engine.getApp().getPropertiesBySelector(appProperty.propertyString);
+        //if (selected.length===1) {
+            //if (Array.isArray(selected[0].value)) {
+            if (Array.isArray(appProperty.propertyValue)) {
                 // не вставляем значение в существующий, а готовим новый массив, чтобы заменить целиком
-                var newArray = JSON.parse(JSON.stringify(selected[0].value));
+                //var newArray = JSON.parse(JSON.stringify(selected[0].value));
+                var newArray = JSON.parse(JSON.stringify(appProperty.propertyValue));
                 if (index >= 0 || index < newArray.length) {
                     newArray.splice(index,1);
                     // считается, что устанавливаем новый массив целиком
@@ -681,10 +697,10 @@ var Engine = {};
             else {
                 log('Engine.addArrayElement: you can add elements in array only \''+appProperty.propertyString+'\'');
             }
-        }
-        else {
-            log('Engine.addArrayElement: must be only one result for \''+appProperty.propertyString+'\'');
-        }
+        //}
+        //else {
+        //    log('Engine.addArrayElement: must be only one result for \''+appProperty.propertyString+'\'');
+        //}
     }
 
     /**
@@ -693,9 +709,13 @@ var Engine = {};
      *
      * @public
      * @param {AppProperty} appProperty объект-обертка свойства в промо приложении. Например, 'results[0].title' или 'randomizeQuestions'
-     * @param {*} value
-     * @param {boolean} [attrs.updateScreens] - Надо ли апдейтить экраны после применения свойства.
-     * @param {boolean} [attrs.updateAppProperties] - Надо ли апдейтить список свойств
+     * @param {*} value - новое значение свойства, тип может быть любым
+     * @param {boolean} [attrs.restartApp] - Надо ли перезапускать приложение mutapp. По умолчанию true, в болшинстве случаев надо, так как изменения должны быть видны на экране.
+     * Но иногда изменения незначительны или произведены самим контролом на превью экрана (TextQuickInput меняет текст на превью, Drag перетаскивает элемент)
+     * Если restartApp===true, только тогда имеют смысл updateScreens и updateAppProperties, так как если приложение не перезапускается, то
+     * и экраны и список свойств не обновляется.
+     * @param {boolean} [attrs.updateScreens] - Надо ли апдейтить экраны после применения свойства (если restartApp===true)
+     * @param {boolean} [attrs.updateAppProperties] - Надо ли апдейтить список свойств (если restartApp===true)
      * @param {boolean} [attrs.runTests] - Надо ли искать и запускать тесты
      * Например, при добавлении нового варианта ответа в тесте или вопроса -- конечно, надо.
      * При изменении текста вопроса - нет, не надо.
@@ -703,6 +723,9 @@ var Engine = {};
      */
     function setValue(appProperty, value, attrs) {
         var attributes = attrs || {};
+        if (attributes.hasOwnProperty('restartApp') === false) {
+            attributes.restartApp = appProperty.restartApp;
+        }
         if (attributes.hasOwnProperty('updateScreens') === false) {
             attributes.updateScreens = appProperty.updateScreens;
         }
@@ -718,7 +741,13 @@ var Engine = {};
         log('Changing property \''+pStr+'\'='+stringifiedValue, false, false);
 
         if (appProperty.type === 'app') {
-            var success = setPropertyToMutApp(pStr, value);
+            var success = true;
+            if (attributes.restartApp === true) {
+                success = setPropertyToMutApp(pStr, value);
+            }
+            else {
+                setPropertyToDuplicateMutApp(pStr, value);
+            }
             if (success === true) {
                 operationsCount++;
                 appProperty.propertyValue = value;
@@ -739,12 +768,13 @@ var Engine = {};
                 writeCssRulesTo(productWindow.document.body);
             }
         }
-
+        // использование дубликата приложения для рассчета новых appProperties
+        // когда приложение не надо перезапускать, то свойства бывает все равно надо пересчитать. Для этого используется дубликат.
+        var svApp = (attributes.restartApp === true) ? productWindow.app : productWindow._dapp;
         // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
-        //TODO нужен более умный алгоритм. Пересоздавать только свойства в массиве. Есть ли другие случаи?
         if (attributes.updateAppProperties === true) {
             clearAppProperties();
-            createAppProperties(productWindow.descriptor);
+            createAppProperties(productWindow.descriptor, svApp);
         }
         if (attributes.updateScreens === true) {
             createAppScreens();
@@ -788,7 +818,8 @@ var Engine = {};
             productWindow.app = new productWindow[cfg.constructorName]({
                 width: cfg.defaultWidth,
                 height: cfg.defaultHeight,
-                defaults: defaults
+                defaults: defaults,
+                appChangeCallbacks: [onAppChanged]
             });
             productWindow.app.start();
         }
@@ -824,12 +855,35 @@ var Engine = {};
                 //TODO ширина и высота такие аппПроперти
                 width: cfg.defaultWidth,
                 height: cfg.defaultHeight,
-                defaults: [apps, newApps]
+                defaults: [apps, newApps],
+                appChangeCallbacks: [onAppChanged]
             });
             productWindow.app.start();
         }
         catch(e) {
             log('Engine.setPropertyToMutApp: '+ e.message, true);
+            return false;
+        }
+        return true;
+    }
+
+    function setPropertyToDuplicateMutApp(propertyString, newValue) {
+        try {
+            delete productWindow._dapp;
+            var apps = Engine.getAppPropertiesValues().app;
+            var newApps = {};
+            newApps[propertyString] = JSON.parse(JSON.stringify(newValue));
+            var cfg = config.products[appName];
+            productWindow._dapp = new productWindow[cfg.constructorName]({
+                width: cfg.defaultWidth,
+                height: cfg.defaultHeight,
+                defaults: [apps, newApps]
+                //appChangeCallbacks: [onAppChanged] не нужно
+            });
+            productWindow._dapp.start();
+        }
+        catch(e) {
+            log('Engine.setPropertyToDuplicateMutApp: '+ e.message, true);
             return false;
         }
         return true;
@@ -849,7 +903,8 @@ var Engine = {};
                 //TODO ширина и высота такие аппПроперти
                 width: cfg.defaultWidth,
                 height: cfg.defaultHeight,
-                defaults: [apps]
+                defaults: [apps],
+                appChangeCallbacks: [onAppChanged]
             });
             productWindow.app.start();
         }
@@ -920,7 +975,7 @@ var Engine = {};
             appPropertiesObjectPathes = [];
             testResults = [];
             // рекурсивно создает по всем свойствам app объекты AppProperty
-            createAppProperties(productWindow.descriptor);
+            createAppProperties(productWindow.descriptor, getApp());
             createCssProperties(productWindow.descriptor);
 
             // css можно устанавливать уже после создания appProperties по дескриптору, роли не играет
@@ -1012,13 +1067,14 @@ var Engine = {};
     /**
      * Найти свойство по строке
      *
-     * @param propertyString строка свойства, например "background" или "quiz.2.options.1.points"
+     * @param {string} propertyString строка свойства, например "background" или "quiz.2.options.1.points"
+     * Или селектор. Обычно селектор и propertyString идентичны но иногда нет: id=mm pins(createPins)
      *
      * @return {AppProperty}
      */
-    function getAppProperty(propertyString) {
+    function getAppProperty(propertyStringOrSelector) {
         for (var i = 0; i < appProperties.length; i++) {
-            if (propertyString === appProperties[i].propertyString) {
+            if (propertyStringOrSelector === appProperties[i].propertyString || propertyStringOrSelector === appProperties[i].selector) {
                 return appProperties[i];
             }
         }

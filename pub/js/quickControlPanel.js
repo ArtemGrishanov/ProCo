@@ -16,19 +16,22 @@ QuickControlPanel.prototype.show = function(element, controls) {
     }
     $('#id-control_cnt').append(this._view);
 
-    this._height = this._view.height();
+    this.updatePosition(element)
+    this._view.css('zIndex', config.editor.ui.quickControlPanelZIndex);
+}
 
+QuickControlPanel.prototype.addControl = function(control) {
+    var item = $('<div class="qp_item"></div>').append(control.wrapper);
+    this._cnt.append(item);
+}
+
+QuickControlPanel.prototype.updatePosition = function(element) {
+    this._height = this._view.height();
     // позиционирование сверху по центру над элементом element
     var w = this._view.width();
     var eo = $(element).offset();
     this._view.css('top',eo.top-this._height+'px');
     this._view.css('left',eo.left+($(element).outerWidth(false)-w)/2+'px'); // false - not including margins
-    this._view.css('zIndex', config.editor.ui.quickControlPanelZIndex);
-}
-
-QuickControlPanel.prototype.addControl = function(controlView) {
-    var item = $('<div class="qp_item"></div>').append(controlView);
-    this._cnt.append(item);
 }
 
 QuickControlPanel.prototype.hide = function() {
