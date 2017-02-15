@@ -79,11 +79,12 @@ var fbPanoramaPublisher = {};
             errorInPublish = false;
             facebookPostId = null;
 
-            setupJPEGEncoder(promoIframe.contentWindow.app.model.attributes.panoConfig.xmp);
-            var panoCanvas = promoIframe.contentWindow.app.model.createPanoCanvas();
+            var appModel = promoIframe.contentWindow.app.model;
+            setupJPEGEncoder(appModel.attributes.panoConfig.xmp);
+            var panoCanvas = appModel.createPanoCanvas();
             uploadPanoCanvas(panoCanvas, function(result) {
                 if (result === 'ok') {
-                    checkPermissions(config.common.publishedProjectsHostName + awsImageUrl, null);
+                    checkPermissions(config.common.publishedProjectsHostName + awsImageUrl, (config.products.fbPanorama.addDebugCaption === true) ? appModel.attributes.panoConfig.id: null);
                 }
                 else {
                     errorInPublish = true;

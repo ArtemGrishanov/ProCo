@@ -115,23 +115,28 @@ var storefrontView = {};
         }
         var info = findEntityInfo(templateUrl);
         if (templateUrl && info) {
-            activeTemplateUrl = templateUrl;
-            //Example: '<div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/870dcd0a6b/p_index.html"><script src="//testix.me/js/loader.js" async></script></div>'
-            var embedCode = config.common.embedCodeTemplate;
-            embedCode = embedCode.replace('{{width}}', info.width)
-                .replace('{{height}}', info.height)
-                .replace('{{published}}', info.published);
-            $('#id-app_iframe_cnt').empty().append(embedCode);
-            $('.scr_wr').addClass('__shadow');
-            $('#id-app_preview').show();
-            if (window.ga) {
-                window.ga('send', 'pageview', '/storefront_app_preview');
-            }
+            if (info.published && info.width && info.height) {
+                activeTemplateUrl = templateUrl;
+                //Example: '<div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/870dcd0a6b/p_index.html"><script src="//testix.me/js/loader.js" async></script></div>'
+                var embedCode = config.common.embedCodeTemplate;
+                embedCode = embedCode.replace('{{width}}', info.width)
+                    .replace('{{height}}', info.height)
+                    .replace('{{published}}', info.published);
+                $('#id-app_iframe_cnt').empty().append(embedCode);
+                $('.scr_wr').addClass('__shadow');
+                $('#id-app_preview').show();
+                if (window.ga) {
+                    window.ga('send', 'pageview', '/storefront_app_preview');
+                }
 
-            if (App.isTouchMobile() === true) {
-                bodyScrollTop = $('body').scrollTop();
-                $('#id-page_content').hide();
-                $('body').scrollTop(0);
+                if (App.isTouchMobile() === true) {
+                    bodyScrollTop = $('body').scrollTop();
+                    $('#id-page_content').hide();
+                    $('body').scrollTop(0);
+                }
+            }
+            else if (info.externalLink) {
+                App.openUrl(info.externalLink);
             }
         }
     }

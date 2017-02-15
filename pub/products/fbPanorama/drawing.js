@@ -5,7 +5,7 @@ var panoDrawing = {};
 (function canvas(global) {
     // эти настройки покаж жестко заданы
     // выставлены на примере картинки 6000x3562, но на 1600x1000 уже другие надо
-    var PIN_PADDING = 10, PIN_COLOR = '#33bbed', PIN_FONT_COLOR = '#ffffff', PIN_FONT_HEIGHT = 16, BACK_COLOR = '#aaa', PIN_FONT_FAMILY = 'Times New Roman';
+    var PIN_PADDING = 10, PIN_COLOR = '#33bbed', PIN_FONT_COLOR = '#ffffff', PIN_FONT_HEIGHT = 14, BACK_COLOR = '#aaa', PIN_FONT_FAMILY = 'Arial';
 
     var panoCanvas = null;
     var configPano = null;

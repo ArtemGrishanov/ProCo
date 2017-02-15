@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev','offline'], //dev test prod
+        configurationSetsOnStart: ['dev'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -362,11 +362,24 @@ var config = {
                         width: '800px',
                         height: '600px'
                     }
+                    //Интернет мемы http://p.testix.me/1045302892173346/13e4d14521/
                 ]
             },
             fbPanorama: {
                 typeLabel: 'Facebook панорама',
-                enabled: false
+                enabled: true,
+                entities: [
+                    {
+                        name: 'Римские руины',
+                        img: 'http://p.testix.me/storefront/memoriz/6842f5cd6d.jpg',
+                        published: null,
+                        externalLink: 'https://www.facebook.com/photo.php?fbid=266745550421515&set=a.256225194806884.1073741833.100012582155261&type=3&theater',
+                        // in proconstructor/storefront/memoriz
+                        template: 'storefront/memoriz/6842f5cd6d.txt',
+                        width: '800px',
+                        height: '600px'
+                    }
+                ]
             },
             timeline: {
                 typeLabel: 'Таймлайн',
@@ -551,7 +564,11 @@ var config = {
              * Файл с кодом лежит в products/fbPanorama
              *
              */
-            customPublisherObject: 'fbPanoramaPublisher'
+            customPublisherObject: 'fbPanoramaPublisher',
+            /**
+             * Добавлять ли тестовый заголовок при публикации в ФБ, чтобы понятно было с помощью какой конфигурации создана данная панорама.
+             */
+            addDebugCaption: true
         },
         timeline: {
             stylesForEmbed: '<link href="{{config.common.home}}products/timeline/style.css" rel="stylesheet"/>'

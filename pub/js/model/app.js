@@ -625,6 +625,16 @@ var App = App || {};
     }
 
     /**
+     * Программно открыть линк в новом окне
+     *
+     * @param {string} url
+     */
+    function openUrl(url) {
+        var win = window.open(url, '_blank');
+        win.focus();
+    }
+
+    /**
      * Проверка на мобильное устройство по юзер агенту
      * regexp from http://stackoverflow.com/questions/11381673/detecting-a-mobile-browser
      *
@@ -684,6 +694,7 @@ var App = App || {};
     global.getFriends = getFriends;
     global.requestLogin = requestLogin;
     global.openEditor = openEditor;
+    global.openUrl = openUrl;
     global.relogin = relogin;
     global.isMobile = isMobile;
     global.isTouchMobile = isTouchMobile;

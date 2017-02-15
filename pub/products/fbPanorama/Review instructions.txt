@@ -1,0 +1,18 @@
+Info:
+We have only web-platform (site http://testix.me).
+We don't have english localization yet. I haven't found that rule on facebook review instructions. 
+
+Why we need it.
+Using Testix editor users can design many types of interactive content including Facebook 360 panoramas. 'Publish_actions' permission will allow users to upload panoramas on Facebook.
+
+Instructions: using 'publish_actions' permission.
+1) Go to on site in templates list 'https://testix.me/storefront'.
+2) You can see item 'Facebook панорамы' in left menu. Click it.
+3) You see templates for Facebook 360. Select one, click 'Редактировать' (Edit)
+4) First login our site. Standart login, no extended permissions aren't needed.
+5) You see template image for your project.
+6) Click 'Опубликовать' (Publish) in top right corner.
+7) Next you will see dialog, that explains why we need extended permissions 'publish_actions'. You can continue (Продолжить) or cancel (Отмена)
+8) After that Facebook popup emerges.
+9) Our final popup.
+10) You can see panorama on your timeline.
