@@ -66,7 +66,8 @@ descriptor.rules = {
         updateScreens: false,
         controls: "StringControl",
         controlParams: {
-            viewName: 'textinput'
+            viewName: 'textinput',
+            changeOnTimer: false
         },
         label: 'Url',
         filter: true
@@ -95,7 +96,8 @@ descriptor.rules = {
         updateScreens: true,
         controls: "StringControl",
         controlParams: {
-            viewName: 'textinput'
+            viewName: 'textinput',
+            changeOnTimer: false
         },
         label: 'Размер шрифта',
         cssProperty: 'font-size',
@@ -196,6 +198,7 @@ descriptor.rules = {
         updateScreens: true,
         controls: 'StringControl',
         controlParams: {
+            changeOnTimer: false
         },
         label: 'Скругление углов',
         cssProperty: 'border-radius',
@@ -217,7 +220,8 @@ descriptor.rules = {
         runTests: false,
         controls: "StringControl",
         controlParams: {
-            viewName: "textinput"
+            viewName: "textinput",
+            changeOnTimer: false
         },
         //TODO format cssValue: '{value}px' чтобы было понятно как формировать проперти
         cssProperty: 'border-width',
@@ -230,7 +234,8 @@ descriptor.rules = {
         runTests: false,
         controls: "StringControl",
         controlParams: {
-            viewName: "textinput"
+            viewName: "textinput",
+            changeOnTimer: false
         },
         cssProperty: 'border-width',
         cssValuePattern: '{{number}}px',
@@ -263,7 +268,10 @@ descriptor.rules = {
         updateScreens: true,
         cssProperty: 'padding',
         cssValuePattern: '{{number}}px',
-        filter: true
+        filter: true,
+        controlParams: {
+            changeOnTimer: false
+        }
     },
     paddingTop: {
         label: 'Паддинг сверху',
@@ -271,7 +279,10 @@ descriptor.rules = {
         updateScreens: true,
         cssProperty: 'padding-top',
         cssValuePattern: '{{number}}px',
-        filter: true
+        filter: true,
+        controlParams: {
+            changeOnTimer: false
+        }
     },
     paddingBottom: {
         label: 'Паддинг снизу',
@@ -279,7 +290,10 @@ descriptor.rules = {
         updateScreens: true,
         cssProperty: 'padding-bottom',
         cssValuePattern: '{{number}}px',
-        filter: true
+        filter: true,
+        controlParams: {
+            changeOnTimer: false
+        }
     },
     paddingLeft: {
         label: 'Паддинг слева',
@@ -287,7 +301,10 @@ descriptor.rules = {
         updateScreens: true,
         cssProperty: 'padding-left',
         cssValuePattern: '{{number}}px',
-        filter: true
+        filter: true,
+        controlParams: {
+            changeOnTimer: false
+        }
     },
     marginTop: {
         label: 'Маргин сверху',
@@ -295,7 +312,10 @@ descriptor.rules = {
         updateScreens: true,
         cssProperty: 'margin-top',
         cssValuePattern: '{{number}}px',
-        filter: true
+        filter: true,
+        controlParams: {
+            changeOnTimer: false
+        }
     },
     marginBottom: {
         label: 'Маргин снизу',
@@ -303,7 +323,10 @@ descriptor.rules = {
         updateScreens: true,
         cssProperty: 'margin-bottom',
         cssValuePattern: '{{number}}px',
-        filter: true
+        filter: true,
+        controlParams: {
+            changeOnTimer: false
+        }
     },
     marginLeft: {
         label: 'Маргин слева',
@@ -311,7 +334,10 @@ descriptor.rules = {
         updateScreens: true,
         cssProperty: 'margin-left',
         cssValuePattern: '{{number}}px',
-        filter: true
+        filter: true,
+        controlParams: {
+            changeOnTimer: false
+        }
     },
     imgForShare: {
         editable: true,

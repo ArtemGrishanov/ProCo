@@ -11,13 +11,43 @@ function StringControl(propertyString, directiveName, $parent, productDOMElement
      * @type {null}
      */
     this.$input = null;
+    /**
+     * Признак того, что значение поля будет апдейтится по таймеру. Либо при нажатии enter и потере фокуса
+     * @type {boolean}
+     */
+    this.changeOnTimer = (params.hasOwnProperty('changeOnTimer')) ? !!params.changeOnTimer : true;
 
     this.loadDirective(function(response, status, xhr){
         this.$input = this.$directive.find('[type="text"]');
         var p = Engine.getAppProperty(this.propertyString);
         this.$input.val(p.propertyValue);
+        this.$input.keyup(this.onInputKeyUp.bind(this));
+        this.$input.focusout(this.onInputFocusOut.bind(this));
     });
 
+    /**
+     * Событие при нажатии Enter
+     */
+    this.onInputKeyUp = function(e) {
+        if (this.changeOnTimer !== true) {
+            if (e.keyCode == 13) {
+                this.setValueToEngine();
+            }
+        }
+    };
+
+    /**
+     * Событие при сбросе фокуса с инпута
+     */
+    this.onInputFocusOut = function(e) {
+        if (this.changeOnTimer !== true) {
+            this.setValueToEngine();
+        }
+    };
+
+    /**
+     * Свойство было изменено в движке. Включая и случай изменения этим же контролом.
+     */
     this.onPropertyChanged = function() {
         if (this.$input) {
             var v = this.$input.val() || null;
@@ -28,10 +58,7 @@ function StringControl(propertyString, directiveName, $parent, productDOMElement
         }
     };
 
-    Engine.on('AppPropertyValueChanged', this.propertyString, this.onPropertyChanged.bind(this));
-
-    // в случае колорпикера только используя таймер можно отлавливать изменения поля. События не срабатывают
-    setInterval((function(){
+    this.setValueToEngine = function() {
         if (this.$input) {
             var p = Engine.getAppProperty(this.propertyString);
             var v = this.$input.val() || null;
@@ -39,7 +66,30 @@ function StringControl(propertyString, directiveName, $parent, productDOMElement
                 Engine.setValue(p, v);
             }
         }
-    }).bind(this), 500);
+    };
+
+//    /**
+//     *
+//     * @param ap
+//     * @returns {propertyValue|*|propertyValue}
+//     */
+//    this.getFormattedValue = function(ap) {
+//        var formattedValue = ap.propertyValue;
+//        if (ap.cssValuePattern && ap.cssValuePattern.indexOf('{{number}}')>=0) {
+//            // example: '{{number}}px'
+//            formattedValue = parseInt(formattedValue).toString();
+//        }
+//        return formattedValue;
+//    };
+
+    Engine.on('AppPropertyValueChanged', this.propertyString, this.onPropertyChanged.bind(this));
+
+    if (this.changeOnTimer === true) {
+        // в случае колорпикера только используя таймер можно отлавливать изменения поля. События не срабатывают
+        setInterval((function(){
+            this.setValueToEngine();
+        }).bind(this), 500);
+    }
 }
 
 StringControl.prototype = AbstractControl;
