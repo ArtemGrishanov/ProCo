@@ -14,9 +14,10 @@ var FbPanoramaModel = MutApp.Model.extend({
          * Из этого будет рассчитан масштаб previewScale
          */
         DEF_PANORAMA_PREVIEW_HEIGHT: 600,
-        panoramaImgSrc: 'http://localhost:63342/ProCo/demos/PanoramaDemo/images/6000x1217.jpg',
+//        panoramaImgSrc: 'http://localhost:63342/ProCo/demos/PanoramaDemo/images/4096x433.jpg',
+//        panoramaImgSrc: 'http://localhost:63342/ProCo/demos/PanoramaDemo/images/6000x1217.jpg',
 //        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/6000x3562.jpg',
-//        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F1600x1000.jpg',
+        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F1600x1000.jpg',
         panoramaImage: null,
         imageProgress: 0,
         previewScale: 1,

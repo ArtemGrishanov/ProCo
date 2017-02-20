@@ -24,9 +24,7 @@ var panoConfig = {};
         param.is360 = param.is360 || false;
         param.vfov = param.vfov || undefined;
         errorData = null;
-        var MAX_HFOV = 180; // was 180
-        var MIN_PANO_SRC_WIDTH = 1600;
-        var MIN_PANO_SRC_HEIGHT = 1200;
+        var MAX_HFOV = 359; // was 180
         // based on facebook documention
         var MAX_IMG_WIDTH = 6000;
         var vfovInfo = getVFOVinfo(srcWidth, srcHeight, param.vfov);
