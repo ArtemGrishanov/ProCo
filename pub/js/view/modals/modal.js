@@ -74,7 +74,14 @@ var Modal = {};
     }
 
     // public methods below
-    global.showLogin = function (data) { _show(LoginModal, data) };
+    global.showLogin = function (data) {
+        _show(LoginModal, data);
+
+        // Окно логина может быть показано когда скрипт статистики еще не подгрузился
+        setTimeout(function(){
+            App.stat('Testix.me', 'Show_login');
+        },2000);
+    };
     global.hideLogin = function () { _hide(LoginModal) };
 
     global.showMessage = function (data) { _show(MessageModal, data) };

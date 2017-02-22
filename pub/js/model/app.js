@@ -102,6 +102,16 @@ var App = App || {};
      */
     var isMob = undefined;
     /**
+     * Были ли инициированы внешние сервисы из config.scripts
+     * @type {boolean}
+     */
+    var scriptsWereInited = false;
+    /**
+     * Запрошен логин, пользователь кликнул на кнопку ФБ чтобы войти
+     * @type {boolean}
+     */
+    var fbLoginRequestedInModal = false;
+    /**
      * Язык который стоит в интерфейсе по умолчанию
      * @type {string}
      */
@@ -203,7 +213,11 @@ var App = App || {};
         if (config.common.facebookAuthEnabled === true) {
             initFB();
         }
-        initScripts();
+        else {
+            // если отключена авторизация через фб то пытаемся сразу встроить скрипты
+            // иначе там будет проверка по ИД пользователя: нужно ли подключать статистику или нет
+            initScripts();
+        }
         initUIHandlers();
         initLang('RU');
     }
@@ -211,14 +225,20 @@ var App = App || {};
     /**
      * В зависимости от конфига добавить на страницу доп скрипты типа GA или плагинов для обратной связи
      */
-    function initScripts() {
-        for (var key in config.scripts) {
-            if (config.scripts.hasOwnProperty(key)) {
-                var sc = config.scripts[key];
-                if (sc.enable === true) {
-                    $('body').append(sc.code);
+    function initScripts(userId) {
+        if (scriptsWereInited !== true) {
+            // undefined or null returns '-1'
+            if (config.common.excludeUsersFromStatistic.indexOf(userId)<0) {
+                for (var key in config.scripts) {
+                    if (config.scripts.hasOwnProperty(key)) {
+                        var sc = config.scripts[key];
+                        if (sc.enable === true) {
+                            $('body').append(sc.code);
+                        }
+                    }
                 }
             }
+            scriptsWereInited = true;
         }
     }
 
@@ -416,13 +436,14 @@ var App = App || {};
                 initAWS(accessToken);
             }
         } else {
+            //not_authorized, unknown
+            initScripts();
             userData = null;
             bucket = null;
             bucketForPublishedProjects = null;
             if (typeof callbacks[FB_CONNECTED] === 'function') {
                 callbacks[FB_CONNECTED]('not_authorized, unknown');
             }
-            //not_authorized, unknown
         }
         updateUI();
     }
@@ -446,14 +467,23 @@ var App = App || {};
         if (FB) {
             userData = null;
             FB.api('/me',
-                {fields: "id,about,age_range,picture,bio,birthday,context,email,first_name,gender,hometown,link,location,middle_name,name,timezone,website,work"},
+                {
+                    fields: "id,about,age_range,picture,bio,birthday,context,email,first_name,gender,hometown,link,location,middle_name,name,timezone,website,work"
+                },
                 function(response) {
                     userData = response;
+                    initScripts(userData.id);
                     updateUI();
                     if (typeof callbacks[USER_DATA_RECEIVED] === 'function') {
                         callbacks[USER_DATA_RECEIVED]('ok');
                     }
-                    stat('Testix.me', 'Login', 'Facebook_login', userData.id);
+                    if (fbLoginRequestedInModal === true) {
+                        stat('Testix.me', 'First_Login_Completed', 'Facebook_login');
+                        fbLoginRequestedInModal = false;
+                    }
+                    else {
+                        stat('Testix.me', 'Auto_login', 'Facebook_login');
+                    }
                     //getFriends();
             });
         }
@@ -475,6 +505,8 @@ var App = App || {};
      * Обработчик клика на любую кнопку с классом js-login
      */
     function onFBLoginClick() {
+        fbLoginRequestedInModal = true;
+        stat('Testix.me', 'First_Login_Click', 'Facebook_login');
         requestLogin();
     }
 
@@ -507,10 +539,6 @@ var App = App || {};
             $('.js-profile_picture').show().empty().append('<img src="' + userData.picture.data.url + '"> ');
             $('.js-user_name').text(userData.name);
             $('.js-authorization_status').text('Thanks for logging in, ' + userData.name + '!');
-            //TODO показать/скрыть кнопку Выйти/Войти
-            // ава показать-заменить на кнопку войти
-            //
-            // $('#id-modal_cnt').empty().hide();
         }
         else {
             if (responseStatus === 'connected') {
@@ -667,7 +695,8 @@ var App = App || {};
      * @param {number} [value], например 10 - длительность
      */
     function stat(category, action, label, value) {
-        if (window.ga) {
+        var userId = (App.getUserData()) ? App.getUserData().id: null;
+        if (window.ga && config.common.excludeUsersFromStatistic.indexOf(userId)<0) {
             var statData = {
                 hitType: 'event',
                 eventCategory: category,

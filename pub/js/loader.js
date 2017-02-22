@@ -213,10 +213,20 @@ if (window.textix === undefined) {
          * @param cnt контейнер куда вставить
          */
         function createPoweredLabel(cnt) {
-            var s = '<a href="//testix.me" target="_blank" class="tstx_pwrd"></a>';
+            var s = '<a href="//testix.me" target="_blank" class="tstx_pwrd" onclick="testix.onLabelClick()"></a>';
             var div = document.createElement('div');
             div.innerHTML = s;
             cnt.appendChild(div.firstChild);
+        }
+
+        /**
+         * Клик на иконку сервиса в углу проекта.
+         * Для сбора статистики
+         *
+         * @param e
+         */
+        function onLabelClick(e) {
+            stat('TestixLoader','Label_click');
         }
 
 
@@ -537,7 +547,7 @@ if (window.textix === undefined) {
         global.init = init;
         global.getApps = function() { return testixApps; };
         global.showRecommendation = showRecommendation;
-
+        global.onLabelClick = onLabelClick;
     })(testix);
 }
 // можно запускать несколько раз, например, если появятся новые ембеды

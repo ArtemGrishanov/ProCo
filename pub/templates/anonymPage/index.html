@@ -20,7 +20,7 @@
                     </div>
                     <div class="toolbar_right">
                         <div id="id-user_toolbar" class="toolbar_user">
-                            <a href="//testix.me/storefront.html" target="_blank" class="pbtn __red js-create_new">Создать свой проект</a>
+                            <a href="//testix.me/storefront.html" target="_blank" class="pbtn __red js-create_new" onclick="onCreateProjectClick()">Создать свой проект</a>
                         </div>
                     </div>
                 </div>
@@ -37,6 +37,16 @@
             </div>
         </div>
     </div>
+    <script>
+        function onCreateProjectClick() {
+            var statData = {
+                hitType: 'event',
+                eventCategory: 'Testix.me',
+                eventAction: 'Create_your_project'
+            };
+            window.ga('send', statData);
+        }
+    </script>
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
