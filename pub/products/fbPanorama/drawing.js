@@ -14,6 +14,18 @@ var panoDrawing = {};
     var panoCanvas = null;
     var configPano = null;
 
+
+//    /**
+//     * Определить примерный размер пина
+//     * Применяется при нормализации существующих пинов, когда картинка обновляется, чтобы они не вылезли за край
+//     *
+//     * @param {String} text
+//     * @param {number} scale
+//     */
+//    function getPinSize(text, scale) {
+//
+//    }
+
     /**
      *
      * @param param.canvas

@@ -369,7 +369,7 @@ descriptor.prototypes = {
         data: {
             id: '12345678',
             data: {
-                text: 'Пример метки<br>на панораме'
+                text: 'Введите текст'
             },
             position: {
                 left: 400,

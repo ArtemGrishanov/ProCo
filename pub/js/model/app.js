@@ -450,8 +450,14 @@ var App = App || {};
 
     /**
      * Запросить логин у FB апи
+     *
+     * @param {boolean} fromModal
      */
-    function requestLogin() {
+    function requestLogin(fromModal) {
+        fbLoginRequestedInModal = fromModal;
+        if (fbLoginRequestedInModal === true) {
+            stat('Testix.me', 'First_Login_Click', 'Facebook_login');
+        }
         if (FB) {
             loginTime = new Date().getTime();
             FB.login(function(response) {
@@ -503,11 +509,10 @@ var App = App || {};
 
     /**
      * Обработчик клика на любую кнопку с классом js-login
+     * Но в модальном окне свой обработчик и вызов requestLogin(true)
      */
     function onFBLoginClick() {
-        fbLoginRequestedInModal = true;
-        stat('Testix.me', 'First_Login_Click', 'Facebook_login');
-        requestLogin();
+        requestLogin(true);
     }
 
     /**

@@ -8,11 +8,44 @@ Using Testix editor users can design many types of interactive content including
 Instructions: using 'publish_actions' permission.
 1) Go to on site in templates list 'https://testix.me/storefront'.
 2) You can see item 'Facebook панорамы' in left menu. Click it.
-3) You see templates for Facebook 360. Select one, click 'Редактировать' (Edit)
+3) You see one template for Facebook 360. Select one, click 'Редактировать' (Edit)
 4) First login our site. Standart login, no extended permissions aren't needed.
 5) You see template image for your project.
-6) Click 'Опубликовать' (Publish) in top right corner.
+6) Click 'Опубликовать на Facebook' (Post to Facebook) in top right corner.
 7) Next you will see dialog, that explains why we need extended permissions 'publish_actions'. You can continue (Продолжить) or cancel (Отмена)
 8) After that Facebook popup emerges.
 9) Our final popup.
 10) You can see panorama on your timeline.
+
+
+
+
+Facebook Authorization is used for 
+We won’t share your personal data e.g. e-mail, name with any third party which is not related with Testix.
+
+Our site doesn't use cookies.
+
+We don't display any paid advertisement on the website. Also you don't need to pay for any features on www.testix.me
+
+We use Google Analytics, one of our third-party services, may add a cookie to determine targeted advertisements based on your preferences and your visit to our site and other sites on the internet. You can choose to opt out of Google’s use of cookies by visiting the Google ad and content network privacy policy.
+https://www.google.com/policies/privacy/
+
+Privacy Policy
+
+We use authorization through Facebook in order to establish the authenticity of the user.
+We don't share your personal data e.g. e-mail, name with any third party unrelated to Testix.
+We don't use cookies.
+To create a project on Testix you can upload or input your content: photo and text then save it. Your personal content will not be transferred to a third party and will only be available to you.
+We do not display ads on our site. Also, you do not need to pay for any features on www.testix.me
+We use <a href="https://analytics.google.com/" target="_blank"> Google Analytics </a> and <a href = "https://metrika.yandex.ru" target = "_ blank "> Yandex metric </a> to collect statistics. These services may use their own cookies in their domains for unique users detection, session duration, frequency of requests. From these data, it is impossible to determine the identity of the user. Learn more <a href="https://www.google.com/analytics/learn/privacy.html?hl=ru" target="_blank"> https://www.google.com/analytics/learn/privacy. html? hl = ru </a>, <a href="https://yandex.ru/legal/confidential/" target="_blank"> https://yandex.ru/legal/confidential/ </a>
+If you have suggestions regarding this Privacy Policy please email us <a href="mailto:info@testix.me" target="_top"> info@testix.me </a>
+
+Политика конфиденциальности
+
+Мы используем авторизацию через Facebook с целью установить подлинность пользователя.
+Мы не передаем ваше персональную информацию, такую как e-mail, имя какой-либо третьей стороне, не имеющей отношения к Testix.
+Мы не используем куки-файлы.
+Для создания проекта на Testix вы можете загрузить свой контент: загрузить фото, написать текст и сохранить его. Ваш персональный контент не будет передан третьей стороне и будет доступен только вам.
+Мы не отображаем рекламных объявления на нашем сайте. Также вам не потребуется оплачивать никакие возможности на www.testix.me
+Мы используем <a href="https://analytics.google.com/" target="_blank">Google Analytics</a> и <a href="https://metrika.yandex.ru" target="_blank">Яндекс Метрику</a> для сбора статистики. Эти сервисы могут использовать свои собственные куки-файлы в собственных доменах для определение уникальных пользователей. длительности сеанса, ограничения частоты запросов. По этим данным нельзя определить личность пользователя. Подробнее <a href="https://www.google.com/analytics/learn/privacy.html?hl=ru" target="_blank">https://www.google.com/analytics/learn/privacy.html?hl=ru</a>, <a href="https://yandex.ru/legal/confidential/" target="_blank">https://yandex.ru/legal/confidential/</a>
+Если у вас есть замечения или предложения по данной политике конфиденциальности пожалуйста напишите нам <a href="mailto:info@testix.me" target="_top">info@testix.me</a>

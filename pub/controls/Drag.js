@@ -7,6 +7,7 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
     this.isDragging = false;
     this.elemPosition = null;
+    this.productDOMElementSize = null;
     this.onMouseDownStopPropagation = params.hasOwnProperty('onMouseDownStopPropagation') ? params.onMouseDownStopPropagation: true;
 
     // возможность задать масштаб. Действия контрола будут учитывать этот масштаб
@@ -47,6 +48,9 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
                 top: (e.pageY-this.startMousePosition.top)+this.startPosition.top,
                 left: (e.pageX-this.startMousePosition.left)+this.startPosition.left
             };
+
+            this.normalizeElementPosition();
+
             this.$productDomElement.css('top', this.elemPosition.top+'px');
             this.$productDomElement.css('left', this.elemPosition.left+'px');
             var ap1 = Engine.getAppProperty(this.propertyString);
@@ -60,6 +64,10 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
     };
 
     this.onMouseDown = function(e) {
+        this.productDOMElementSize = {
+            width: this.$productDomElement.outerWidth(false),
+            height: this.$productDomElement.outerHeight(false)
+        };
         this.elemPosition = null;
         this.isDragging = true;
         this.startPosition = $(e.currentTarget).position();
@@ -72,6 +80,20 @@ function Drag(propertyString, directiveName, $parent, productDOMElement, params)
         if (this.onMouseDownStopPropagation === true) {
             e.stopPropagation();
             e.preventDefault();
+        }
+    };
+
+    this.normalizeElementPosition = function() {
+        var cntSize = Editor.getAppContainerSize();
+        if (this.elemPosition.top < 0) {
+            this.elemPosition.top = 0;
+        } else if (this.elemPosition.top + this.productDOMElementSize.height > cntSize.height) {
+            this.elemPosition.top = cntSize.height - this.productDOMElementSize.height;
+        }
+        if (this.elemPosition.left < 0) {
+            this.elemPosition.left = 0;
+        } else if (this.elemPosition.left + this.productDOMElementSize.width > cntSize.width) {
+            this.elemPosition.left = cntSize.width - this.productDOMElementSize.width;
         }
     };
 

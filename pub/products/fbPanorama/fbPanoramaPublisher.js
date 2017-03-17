@@ -70,6 +70,9 @@ var fbPanoramaPublisher = {};
         if (App.getUserData() !== null) {
             isPublishing = true;
             App.stat('Testix.me', 'Publish_started');
+            if (config.products.fbPanorama.enableCustomStatistics === true) {
+                App.stat('fbPanorama', 'Publish_started');
+            }
             callback = params.callback;
             publishedAppId = params.appId;
             appWidth = params.width;
@@ -84,9 +87,15 @@ var fbPanoramaPublisher = {};
             var panoCanvas = appModel.createPanoCanvas();
             uploadPanoCanvas(panoCanvas, function(result) {
                 if (result === 'ok') {
+                    if (config.products.fbPanorama.enableCustomStatistics === true) {
+                        App.stat('fbPanorama', 'Canvas_uploaded');
+                    }
                     checkPermissions(config.common.publishedProjectsHostName + awsImageUrl, (config.products.fbPanorama.addDebugCaption === true) ? appModel.attributes.panoConfig.id: null);
                 }
                 else {
+                    if (config.products.fbPanorama.enableCustomStatistics === true) {
+                        App.stat('fbPanorama', 'Error_canvas_upload');
+                    }
                     errorInPublish = true;
                     isPublishing = false
                     setupJPEGEncoder(null);
@@ -168,7 +177,10 @@ var fbPanoramaPublisher = {};
             {},
             function (response) {
                 if (response && !response.error) {
-                    if (permissionGranted(response.data, ['publish_actions'/*,'user_photos'*/]) === true) {
+                    if (config.products.fbPanorama.enableCustomStatistics === true) {
+                        App.stat('fbPanorama', 'Permissions_checked');
+                    }
+                    if (permissionGranted(response.data, ['publish_actions','user_photos']) === true) {
                         // разрешения уже предоставлены, не надо запрашивать
                         uploadPhotoToFB(url, caption);
                     }
@@ -178,6 +190,9 @@ var fbPanoramaPublisher = {};
                     }
                 }
                 else {
+                    if (config.products.fbPanorama.enableCustomStatistics === true) {
+                        App.stat('fbPanorama', 'Error_check_permissions');
+                    }
                     errorInPublish = true;
                 }
             }
@@ -193,21 +208,33 @@ var fbPanoramaPublisher = {};
         Modal.showRequestPublishFBPermissions({
             callback: function(res) {
                 if (res === 'ok') {
+                    if (config.products.fbPanorama.enableCustomStatistics === true) {
+                        App.stat('fbPanorama', 'Modal_showed_ok');
+                    }
                     FB.login(function(response) {
                         if (response.status === 'connected') {
+                            if (config.products.fbPanorama.enableCustomStatistics === true) {
+                                App.stat('fbPanorama', 'Fb_rerequest_ok');
+                            }
                             uploadPhotoToFB(url, caption);
                         } else {
+                            if (config.products.fbPanorama.enableCustomStatistics === true) {
+                                App.stat('fbPanorama', 'Fb_rerequest_error');
+                            }
                             //status: not_authorized, unknown
                             isPublishing = false
                             setupJPEGEncoder(null);
                             callback('error', null);
                         }
                     }, {
-                        scope:'publish_actions',//,user_photos',
+                        scope:'publish_actions,user_photos',
                         auth_type: 'rerequest'
                     });
                 }
                 else {
+                    if (config.products.fbPanorama.enableCustomStatistics === true) {
+                        App.stat('fbPanorama', 'Modal_showed_error');
+                    }
                     isPublishing = false
                     setupJPEGEncoder(null);
                     callback('error', null);
@@ -237,11 +264,17 @@ var fbPanoramaPublisher = {};
             param,
             function (response) {
                 if (response && !response.error) {
+                    if (config.products.fbPanorama.enableCustomStatistics === true) {
+                        App.stat('fbPanorama', 'Fb_photo_post_ok');
+                    }
                     /* handle the result */
                     //alert('Загружено на Facebook. Иди посмотри.');
                     facebookPostId = response.post_id;
                 }
                 else {
+                    if (config.products.fbPanorama.enableCustomStatistics === true) {
+                        App.stat('fbPanorama', 'Fb_photo_post_error');
+                    }
                     errorInPublish = true;
                 }
 
@@ -254,6 +287,9 @@ var fbPanoramaPublisher = {};
                     log('All resources were uploaded.');
                     callback('success', null);
                     App.stat('Testix.me', 'Publish_completed');
+                    if (config.products.fbPanorama.enableCustomStatistics === true) {
+                        App.stat('fbPanorama', 'Publish_completed');
+                    }
                 }
             }
         );

@@ -21,7 +21,7 @@ LoginModal.prototype.render = function() {
     console.log('Message render');
     this.$ui.find('.js-expl_text').html(this.text);
     this.$ui.find('.js-login').click(function() {
-        App.requestLogin();
+        App.requestLogin(true);
     });
     if (this.canClose === true) {
         this.$ui.find('.js-close').show().click((function() {

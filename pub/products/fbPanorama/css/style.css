@@ -26,10 +26,17 @@
     display: none;
     color: black;
     margin: 0;
-    font-size: 60px;
+    font-size: 14px;
     font-family: Arial;
     top: 50%;
     left: 50%;
     position: absolute;
     transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+}
+.spinner {
+    display: inline-block;
+    background: url(../i/loader.gif);
+    width: 48px;
+    height: 48px;
 }

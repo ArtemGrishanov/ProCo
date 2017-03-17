@@ -256,6 +256,9 @@ var Editor = {};
         var src = config.products[loadedAppName].src;
         if (src) {
             appName = loadedAppName;
+            if (appName === 'fbPanorama') {
+                $('.js-app_publish').text('Опубликовать на Facebook');
+            }
             iframeWindow = null;
             appIframe = document.createElement('iframe');
             appIframe.onload = onProductIframeLoaded;
@@ -290,7 +293,7 @@ var Editor = {};
             trySetDefaultShareLink(cloneTemplate === true);
         }
         else {
-            App.on(USER_DATA_RECEIVED, function(){
+            App.on(USER_DATA_RECEIVED, function() {
                 trySetDefaultShareLink(cloneTemplate === true);
             });
         }

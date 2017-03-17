@@ -31,6 +31,10 @@ var PanoramaEditScreen = MutApp.Screen.extend({
      */
     el: null,
 
+    imageProgressShown: false,
+
+    panoramaContainerSize: null,
+
     template: {
         "default": _.template($('#id-panorama_edit_template').html()),
         "id-text_pin_template": _.template($('#id-text_pin_template').html())
@@ -57,15 +61,57 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             .css('min-height','100%'));
         param.screenRoot.append(this.$el);
         this.model.bind("change:imageProgress", function () {
-            this.render();
+            var panoConfig = this.model.get('panoConfig');
+            if (!panoConfig && this.imageProgressShown === false) {
+                // рендерим экран прогресса только первый раз
+                // изменение каждого процента не рендерим, так как это тяжело обновлять в редакторе
+                this.imageProgressShown = true;
+                this.render();
+            }
         }, this);
         this.model.bind("change:panoramaImage", function () {
+            this.imageProgressShown = false;
             this.render();
         }, this);
     },
 
-    render: function() {
+    /**
+     * Проверка, что пины не выходят за края картинки
+     * Если это случается, то подвинуть пин к краю
+     *
+     * @param $view
+     * @param {number} pinIndex - индекс в массиве pins в модели
+     */
+    normalizePinPosition: function($view, pinIndex) {
+        // в модели хранятся орригинальные координаты в реальном масштабе
+        var p = this.model.attributes.pins[pinIndex];
 
+        var ep = {
+            top: parseint($view.css('top')),
+            left: parseint($view.css('left')),
+            width: $view.outerWidth(false),
+            height: $view.outerHeight(false)
+        };
+        if (this.ep.top < 0) {
+            this.ep.top = 0;
+        } else if (this.ep.top + this.ep.height > this.panoramaContainerSize.height) {
+            this.ep.top = this.panoramaContainerSize.height - this.ep.height;
+        }
+        if (this.ep.left < 0) {
+            this.ep.left = 0;
+        } else if (this.ep.left + this.ep.width > this.panoramaContainerSize.width) {
+            this.ep.left = this.panoramaContainerSize.width - this.ep.width;
+        }
+
+        $view.css('top', ep.top+'px');
+        $view.css('left', ep.left+'px');
+    },
+
+    /**
+     *
+     * @returns {PanoramaEditScreen}
+     */
+    render: function() {
         var ps = this.model.get('previewScale');
         var panoConfig = this.model.get('panoConfig');
         var panoImage = this.model.get('panoramaImage');
@@ -78,6 +124,10 @@ var PanoramaEditScreen = MutApp.Screen.extend({
 
             var cntWidth = Math.round(panoConfig.srcWidth * ps);
             var cntHeight = Math.round(panoConfig.srcHeight * ps);
+            this.panoramaContainerSize = {
+                width: cntWidth,
+                height: cntHeight
+            };
             var $panoCnt = this.$el.find('.js-pano').width(cntWidth+'px').height(cntHeight+'px');
 
             // если картинка меньше контейнера, надо ее выровнять по центру внутри него. Так же делается при отрисовке канваса
@@ -97,6 +147,8 @@ var PanoramaEditScreen = MutApp.Screen.extend({
                 var left = Math.round(p.position.left*ps);
                 $pel.css('top',top).css('left',left);
                 $pinsCnt.append($pel);
+                // нормализовать положение пина, чтобы он не вышел за границы картинки
+                this.normalizePinPosition($pel, i);
             }
         }
         else {
@@ -105,7 +157,7 @@ var PanoramaEditScreen = MutApp.Screen.extend({
                 backgroundImage: ''
             }));
             var p = this.model.get('imageProgress');
-            this.$el.find('.js-image_progress').show().text(p + '%');
+            this.$el.find('.js-image_progress').show();//.text(p + '%');
         }
 
         // установка свойств логотипа

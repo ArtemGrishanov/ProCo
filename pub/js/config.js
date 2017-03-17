@@ -15,7 +15,7 @@ var config = {
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
             config.scripts.ga.enable = false;
-            config.scripts.yaMetrika.enable = false;
+//            config.scripts.yaMetrika.enable = true;
             config.scripts.jivoSite.enable = false;
             return this;
         },
@@ -25,7 +25,7 @@ var config = {
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
             config.scripts.ga.enable = false;
-            config.scripts.yaMetrika.enable = false;
+//            config.scripts.yaMetrika.enable = false;
             config.scripts.jivoSite.enable = false;
             return this;
         },
@@ -35,7 +35,7 @@ var config = {
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
             config.scripts.ga.enable = true;
-            config.scripts.yaMetrika.enable = true;
+//            config.scripts.yaMetrika.enable = true;
             config.scripts.jivoSite.enable = true;
             return this;
         },
@@ -43,7 +43,7 @@ var config = {
             config.common.awsEnabled = false;
             config.common.facebookAuthEnabled = false;
             config.scripts.ga.enable = false;
-            config.scripts.yaMetrika.enable = false;
+//            config.scripts.yaMetrika.enable = false;
             config.scripts.jivoSite.enable = false;
             return this;
         },
@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['prod'], //dev test prod
+        configurationSetsOnStart: ['dev'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -344,6 +344,26 @@ var config = {
                 typeLabel: 'Игра мемори',
                 entities: [
                     {
+                        //Интернет мемы http://p.testix.me/1045302892173346/13e4d14521/
+                        name: 'Интернет-мемы',
+                        img: 'http://p.testix.me/storefront/memoriz/13e4d14521.jpg',
+                        published: 'http://p.testix.me/storefront/memoriz/13e4d14521/p_index.html',
+                        // in proconstructor/storefront/memoriz
+                        template: 'storefront/memoriz/13e4d14521.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        //Футболисты http://p.testix.me/1045302892173346/53b37bf1e9
+                        name: 'Футболисты',
+                        img: 'http://p.testix.me/storefront/memoriz/53b37bf1e9.jpg',
+                        published: 'http://p.testix.me/storefront/memoriz/53b37bf1e9/p_index.html',
+                        // in proconstructor/storefront/memoriz
+                        template: 'storefront/memoriz/53b37bf1e9.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
                         //Фильмы и режиссеры  http://p.testix.me/121947341568004/6842f5cd6d/
                         name: 'Кино и режиссеры',
                         img: 'http://p.testix.me/storefront/memoriz/6842f5cd6d.jpg',
@@ -354,7 +374,7 @@ var config = {
                         height: '600px'
                     },
                     {
-                        //Автомобили http://p.testix.me/121947341568004/06cc56a6dc/ republished by me
+                        //Автомобили http://p.testix.me/121947341568004/06cc56a6dc/ republished by bot
                         // http://p.testix.me/1045302892173346/06cc56a6dc (Oleg origin)
                         name: 'Автомобили',
                         img: 'http://p.testix.me/storefront/memoriz/06cc56a6dc.jpg',
@@ -365,7 +385,7 @@ var config = {
                         height: '600px'
                     },
                     {
-                        //Красотки http://p.testix.me/121947341568004/e78a9cd599/ republished by me
+                        //Красотки http://p.testix.me/121947341568004/e78a9cd599/ republished by bot
                         // http://p.testix.me/1045302892173346/e78a9cd599/ (Oleg origin)
                         name: 'Красотки',
                         img: 'http://p.testix.me/storefront/memoriz/e78a9cd599.jpg',
@@ -375,9 +395,6 @@ var config = {
                         width: '800px',
                         height: '600px'
                     }
-                    //Интернет мемы http://p.testix.me/1045302892173346/13e4d14521/
-
-                    //Футболисты http://p.testix.me/1045302892173346/53b37bf1e9
                 ]
             },
             fbPanorama: {
@@ -386,11 +403,11 @@ var config = {
                 entities: [
                     {
                         name: 'Римские руины',
-                        img: 'http://p.testix.me/storefront/memoriz/6842f5cd6d.jpg',
+                        img: 'http://p.testix.me/storefront/fbPanorama/fa724312dd.jpg',
                         published: null,
                         externalLink: 'https://www.facebook.com/photo.php?fbid=266745550421515&set=a.256225194806884.1073741833.100012582155261&type=3&theater',
                         // in proconstructor/storefront/memoriz
-                        template: 'storefront/memoriz/6842f5cd6d.txt',
+                        template: 'storefront/fbPanorama/fa724312dd.txt',
                         width: '800px',
                         height: '600px'
                     }
@@ -583,7 +600,11 @@ var config = {
             /**
              * Добавлять ли тестовый заголовок при публикации в ФБ, чтобы понятно было с помощью какой конфигурации создана данная панорама.
              */
-            addDebugCaption: true
+            addDebugCaption: false,
+            /**
+             * Включает сбор специальной статистики во время публикации панорам
+             */
+            enableCustomStatistics: true,
         },
         timeline: {
             stylesForEmbed: '<link href="{{config.common.home}}products/timeline/style.css" rel="stylesheet"/>'
@@ -780,10 +801,11 @@ var config = {
             enabled: false,
             code: '<script>(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create", "UA-88595022-1", "auto");ga("send", "pageview");</script>'
         },
-        yaMetrika: {
-            enabled: false,
-            code: '<!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) {(w[c] = w[c] || []).push(function() {try {w.yaCounter37720792 = new Ya.Metrika({id:37720792,clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});} catch(e) { }});var n = d.getElementsByTagName("script")[0],s = d.createElement("script"),f = function () { n.parentNode.insertBefore(s, n); };s.type = "text/javascript";s.async = true;s.src = "https://mc.yandex.ru/metrika/watch.js";if (w.opera == "[object Opera]") {d.addEventListener("DOMContentLoaded", f, false);} else { f(); }})(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="https://mc.yandex.ru/watch/37720792" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->'
-        },
+//        '12.03.2017' - начало эксперимента по статичной вставке кода. Так как веб-визор иногда отказывается работать.
+//        yaMetrika: {
+//            enabled: false,
+//            code: '<!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) {(w[c] = w[c] || []).push(function() {try {w.yaCounter37720792 = new Ya.Metrika({id:37720792,clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});} catch(e) { }});var n = d.getElementsByTagName("script")[0],s = d.createElement("script"),f = function () { n.parentNode.insertBefore(s, n); };s.type = "text/javascript";s.async = true;s.src = "https://mc.yandex.ru/metrika/watch.js";if (w.opera == "[object Opera]") {d.addEventListener("DOMContentLoaded", f, false);} else { f(); }})(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="https://mc.yandex.ru/watch/37720792" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->'
+//        },
         jivoSite: {
             enabled: false,
             code: '<!-- BEGIN JIVOSITE CODE {literal} --><script type=\'text/javascript\'>(function(){ var widget_id = \'45oOHsZGmj\';var d=document;var w=window;function l(){var s = document.createElement(\'script\'); s.type = \'text/javascript\'; s.async = true; s.src = \'//code.jivosite.com/script/widget/\'+widget_id; var ss = document.getElementsByTagName(\'script\')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState==\'complete\'){l();}else{if(w.attachEvent){w.attachEvent(\'onload\',l);}else{w.addEventListener(\'load\',l,false);}}})();</script><!-- {/literal} END JIVOSITE CODE -->'
