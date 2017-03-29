@@ -14,7 +14,7 @@ var config = {
             config.common.facebookAppId = '518819781624579';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
-            config.scripts.ga.enable = false;
+//            config.scripts.ga.enable = false;
 //            config.scripts.yaMetrika.enable = true;
             config.scripts.jivoSite.enable = false;
             return this;
@@ -24,7 +24,7 @@ var config = {
             config.common.facebookAppId = '515132035326687';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
-            config.scripts.ga.enable = false;
+//            config.scripts.ga.enable = false;
 //            config.scripts.yaMetrika.enable = false;
             config.scripts.jivoSite.enable = false;
             return this;
@@ -34,7 +34,7 @@ var config = {
             config.common.facebookAppId = '1734391910154130';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
-            config.scripts.ga.enable = true;
+//            config.scripts.ga.enable = true;
 //            config.scripts.yaMetrika.enable = true;
             config.scripts.jivoSite.enable = true;
             return this;
@@ -42,7 +42,7 @@ var config = {
         offline: function() {
             config.common.awsEnabled = false;
             config.common.facebookAuthEnabled = false;
-            config.scripts.ga.enable = false;
+//            config.scripts.ga.enable = false;
 //            config.scripts.yaMetrika.enable = false;
             config.scripts.jivoSite.enable = false;
             return this;
@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev'], //dev test prod
+        configurationSetsOnStart: ['dev','offline'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -142,6 +142,10 @@ var config = {
          * Параметр передающий ссылку на опубликованное приложение
          */
         publishedProjParamName: 'pp',
+        /**
+         * Имя параметра для передачи значения в хранилище для приложения mutapp
+         */
+        appStorageParamName: 'appStorage',
         /**
          * Теги, которыми будет обрамлены новые параметры перезаписывании
          */
@@ -409,7 +413,8 @@ var config = {
                         // in proconstructor/storefront/memoriz
                         template: 'storefront/fbPanorama/fa724312dd.txt',
                         width: '800px',
-                        height: '600px'
+                        height: '600px',
+                        getParams: 'appStorage=ref:strf'
                     }
                 ]
             },
@@ -797,10 +802,11 @@ var config = {
         }
     },
     scripts: {
-        ga: {
-            enabled: false,
-            code: '<script>(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create", "UA-88595022-1", "auto");ga("send", "pageview");</script>'
-        },
+//        '22.03.2017' - при быстром закрытии страницы такой "умный" способ вставки кода не успевает работать и конверсия не считается.
+//        ga: {
+//            enabled: false,
+//            code: '<script>(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create", "UA-88595022-1", "auto");ga("send", "pageview");</script>'
+//        },
 //        '12.03.2017' - начало эксперимента по статичной вставке кода. Так как веб-визор иногда отказывается работать.
 //        yaMetrika: {
 //            enabled: false,

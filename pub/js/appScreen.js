@@ -15,7 +15,15 @@ var AppScreen = function(mutAppScreen) {
         log('AppScreen: mutAppScreen must be rendered!', true);
     }
     // необходимо склонировать вью для работы в редакторе, чтобы отвязать все ui обработчики в приложении
+    // содержимое канваса не клонируется таким способом. Если в приложении рисуется графика, то на экране в редакторе она будет не видна
     this.view = this._mutAppScreen.$el.clone().show();
+
+    //TODO заточка для панорам. При клонировании экрана не происходит копирование содержимого канваса. Данные надо перерисовывать самому
+    if (this._mutAppScreen.$el.find('.js-pano_image').html()) {
+        var srcCnv = this._mutAppScreen.$el.find('.js-pano_image').find('canvas')[0];
+        var destCnv = this.view.find('.js-pano_image').find('canvas')[0];
+        destCnv.getContext('2d').drawImage(srcCnv, 0, 0);
+    }
 
     this.id = this._mutAppScreen.id;
     /**

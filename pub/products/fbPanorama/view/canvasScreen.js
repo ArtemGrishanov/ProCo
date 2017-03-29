@@ -43,7 +43,7 @@ var CanvasScreen = MutApp.Screen.extend({
         param.screenRoot.append(this.$el);
         this.model.bind("change:panoramaImage", function () {
             this.render();
-            this.model.application.showScreen(this);
+            //this.model.application.showScreen(this);
         }, this);
     },
 

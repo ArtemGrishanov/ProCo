@@ -93,6 +93,60 @@ var MutApp = function(param) {
      * @type {null}
      */
     this.gaId = undefined;
+    /**
+     * Значения которые можно сохранить в Engine
+     * Эти значения передаются при запуске в приложение
+     *
+     * @type {{_values: {}, get: Function, set: Function}}
+     */
+    this.engineStorage = {
+        _values: {},
+        _appChangeCallbacks: {},
+        /**
+         *
+         * @param value
+         */
+        get: function(key) {
+            return this._values[key];
+        },
+        /**
+         * Отсылается событие об изменении свойств в Engine
+         * @param obj
+         */
+        set: function(obj) {
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key) === true) {
+                    this._values[key] = obj[key];
+                }
+            }
+            var event = {
+                type: MutApp.ENGINE_STORAGE_VALUE_CHANGED,
+                changedValues: obj
+            };
+            if (this._appChangeCallbacks && this._appChangeCallbacks.length > 0) {
+                for (var j = 0; j < this._appChangeCallbacks.length; j++) {
+                    this._appChangeCallbacks[j](event);
+                }
+            }
+        },
+        /**
+         * Установить в движок значение проперти
+         * @param propertyString
+         * @param value
+         */
+        setAppProperty: function(propertyString, value) {
+            var event = {
+                type: MutApp.ENGINE_SET_PROPERTY_VALUE,
+                propertyString: propertyString,
+                propertyValue: JSON.parse(JSON.stringify(value))
+            };
+            if (this._appChangeCallbacks && this._appChangeCallbacks.length > 0) {
+                for (var j = 0; j < this._appChangeCallbacks.length; j++) {
+                    this._appChangeCallbacks[j](event);
+                }
+            }
+        }
+    };
 
     // далее установка динамических свойств для приложения
     if (param) {
@@ -143,6 +197,13 @@ var MutApp = function(param) {
             }
 
         }
+
+        if (param.engineStorage) {
+            if (this._appChangeCallbacks) {
+                this.engineStorage._appChangeCallbacks = this._appChangeCallbacks;
+            }
+            this.engineStorage._values = param.engineStorage;
+        }
     }
 
     // инициализация апи для статистики, если задан идентификатор Google Analytics
@@ -165,6 +226,8 @@ var MutApp = function(param) {
 
 MutApp.SCREEN_RENDERED = 'mutapp_screen_rendered';
 MutApp.APP_SIZE_CHANGED = 'mutapp_app_size_changed';
+MutApp.ENGINE_STORAGE_VALUE_CHANGED = 'mutapp_engine_value_changed';
+MutApp.ENGINE_SET_PROPERTY_VALUE = 'mutapp_set_property_value';
 
 /**
  * dom-элемент в котором помещаются все экраны

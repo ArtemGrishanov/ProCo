@@ -279,7 +279,8 @@ var Editor = {};
         iframeWindow = appIframe.contentWindow;
         // запуск движка с передачей информации о шаблоне
         var params = {
-            appName: appName
+            appName: appName,
+            appStorageString: getQueryParams(document.location.search)[config.common.appStorageParamName]
         };
         if (appTemplate) {
             params.values = appTemplate.propertyValues;

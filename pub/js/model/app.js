@@ -627,6 +627,7 @@ var App = App || {};
      * @param param.appName
      * @param param.templateUrl
      * @param param.clone
+     * @param param.getParams - дополнительные get параметры
      */
     function openEditor(param) {
         // доступен ли редактор для запуска или только по прямой ссылке
@@ -635,7 +636,7 @@ var App = App || {};
             if (isMobile() !== true) {
                 var url = 'editor.html?';
                 if (param.appName) {
-                    url += 'app='+param.appName;
+                    url += 'app='+param.appName+'&';
                 }
                 else {
                     if (param.templateUrl) {
@@ -644,6 +645,10 @@ var App = App || {};
                     if (typeof param.clone === 'boolean') {
                         url += config.common.cloneParamName+'='+param.clone+'&';
                     }
+                }
+                if (param.getParams) {
+                    // дополнительные гет параметры от шаблона, например appStorage=ref:strf для панорам
+                    url += param.getParams+'&';
                 }
                 window.location.href = url;
             }

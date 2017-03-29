@@ -100,6 +100,12 @@ var Engine = {};
      * @type {number}
      */
     var operationsCount = 0;
+    /**
+     * Хранилище значени, которые передаются в mutapp приложение при запуске
+     * А mutapp приложение может послать сообщение в engine чтобы изменить эти значения
+     * @type {{}}
+     */
+    var appStorage = {};
 
     /**
      * Сохранить кастомный css стиль для промо проекта.
@@ -544,6 +550,27 @@ var Engine = {};
                 createAppScreens();
                 break;
             }
+            case 'mutapp_engine_value_changed': {
+                var str = '';
+                for (var key in e.changedValues) {
+                    str += key+'='+e.changedValues[key].toString()+';'
+                }
+                console.log('Engine:mutapp_engine_value_changed = ' + str);
+                for (var key in e.changedValues) {
+                    if (e.changedValues.hasOwnProperty(key)===true) {
+                        appStorage[key] = e.changedValues[key];
+                    }
+                }
+                break;
+            }
+            case 'mutapp_set_property_value': {
+                console.log('Engine:mutapp_set_property_value = ' + e.propertyString + ' ' + e.propertyValue);
+                var p = getAppProperty(e.propertyString);
+                if (p) {
+                    p.propertyValue = e.propertyValue;
+                }
+                break;
+            }
         }
     }
 
@@ -819,7 +846,8 @@ var Engine = {};
                 width: cfg.defaultWidth,
                 height: cfg.defaultHeight,
                 defaults: defaults,
-                appChangeCallbacks: [onAppChanged]
+                appChangeCallbacks: [onAppChanged],
+                engineStorage: JSON.parse(JSON.stringify(appStorage))
             });
             productWindow.app.start();
         }
@@ -856,7 +884,8 @@ var Engine = {};
                 width: cfg.defaultWidth,
                 height: cfg.defaultHeight,
                 defaults: [apps, newApps],
-                appChangeCallbacks: [onAppChanged]
+                appChangeCallbacks: [onAppChanged],
+                engineStorage: JSON.parse(JSON.stringify(appStorage))
             });
             productWindow.app.start();
         }
@@ -879,6 +908,7 @@ var Engine = {};
                 height: cfg.defaultHeight,
                 defaults: [apps, newApps]
                 //appChangeCallbacks: [onAppChanged] не нужно
+                //engineStorage: appStorage не нужно
             });
             productWindow._dapp.start();
         }
@@ -904,7 +934,8 @@ var Engine = {};
                 width: cfg.defaultWidth,
                 height: cfg.defaultHeight,
                 defaults: [apps],
-                appChangeCallbacks: [onAppChanged]
+                appChangeCallbacks: [onAppChanged],
+                engineStorage: JSON.parse(JSON.stringify(appStorage))
             });
             productWindow.app.start();
         }
@@ -935,6 +966,8 @@ var Engine = {};
      * @param {object} [params.values] свойства из шаблона например {"t_btn_paddingTop":"20","js-question_progress_fontColor":"#eee",...}
      * это объект ключ значение, чтобы установить его в appProperty
      * @param {object} [params.descriptor] дескриптор из шаблона
+     * @param {string} [params.appStorageString] свойства для передачи в приложение mutapp
+     * Пример: appStorage=deletePins:1,foo:value2
      * @param {string} [params.appName] имя приложения: test, memoriz и так далее; они описаны в config.products[appName]
      */
     function startEngine(prodWindow, params) {
@@ -952,6 +985,19 @@ var Engine = {};
         }
         if (!!appName===false) {
             console.error('appName must be specified');
+        }
+
+        if (params.appStorageString) {
+            try {
+                var vp = params.appStorageString.split(',')
+                for (var key in vp) {
+                    var kv = vp[key].split(':');
+                    appStorage[kv[0]] = kv[1];
+                }
+            }
+            catch (err) {
+                log('Engine.startEngine: error in parsing appStorageString');
+            }
         }
 
 //        if (params && params.values && params.values.app) {

@@ -67,36 +67,40 @@ var panoDrawing = {};
     /**
      * @param {string} param.img картинка
      * @param {Array} param.pins пины (отметки) на панораме
-     * @param {number} param.width
-     * @param {number} param.height
+     * @param {number} param.srcWidth
+     * @param {number} param.srcHeight
      * @param {number} param.pinScale
      */
     function createPanoCanvas(param) {
+        // размер картинки может оказаться больше чем srcWidth srcHeight, так как конфигурация берется из расчета максимальной ширины 6000px
+        var imgScale = param.srcWidth / param.img.width;
+        //
         var panoCanvas = document.createElement('canvas');
-        panoCanvas.width = param.width;
-        panoCanvas.height = param.height;
+        panoCanvas.width = param.srcWidth;
+        panoCanvas.height = param.srcHeight;
         var ctx = panoCanvas.getContext('2d');
         ctx.fillStyle = BACK_COLOR;
         ctx.fillRect(0, 0, panoCanvas.width, panoCanvas.height)
 
-        if (param.img.height !== panoCanvas.height) {
+        if (param.srcHeight !== param.img.height) {
             // нужны дополнительные полоски чтобы выдержать размер и размытие
             var bc = createBlurredCanvas(param.img, panoCanvas.width, panoCanvas.height);
             ctx.drawImage(bc, 0, 0);
 
             // плавный переход от картинки к заблюренному фону
             var imgCanvas = document.createElement('canvas');
-            imgCanvas.width = param.img.width;
-            imgCanvas.height = param.img.height;
+            imgCanvas.width = param.srcWidth;
+            imgCanvas.height = param.srcHeight;
             var imgCtx = imgCanvas.getContext('2d');
 
-            drawGradientMask(imgCtx, 0, 0, param.img.width, param.img.height);
+            drawGradientMask(imgCtx, 0, 0, param.img.width*imgScale, param.img.height*imgScale);
             imgCtx.globalCompositeOperation = 'source-in';
-            imgCtx.drawImage(param.img, 0, 0);
+            imgCtx.drawImage(param.img, 0, 0, param.img.width, param.img.height, 0, 0, param.img.width*imgScale, param.img.height*imgScale);
             imgCtx.globalCompositeOperation = 'source-over';
 
-            var dx = Math.round((panoCanvas.width-param.img.width)/2);
-            var dy = Math.round((panoCanvas.height-param.img.height)/2);
+            // выравнивание по вертикали нужно, чтобы картинка оказалась по середине заблюренного фона
+            var dx = Math.round((panoCanvas.width-param.img.width*imgScale)/2);
+            var dy = Math.round((panoCanvas.height-param.img.height*imgScale)/2);
             ctx.drawImage(imgCanvas, dx, dy);
         }
         else {

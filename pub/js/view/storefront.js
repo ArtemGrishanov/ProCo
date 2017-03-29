@@ -34,14 +34,15 @@ var storefrontView = {};
     var bodyScrollTop = 0;
 
     /**
-     * В текущей открытой категории проектов найти нужный по ссылке на шаблон (она выступает как бы в роли ид)
+     * Найти нужный шаблон по его урлу
+     * В первой попавшейся категории
      *
      * @param {string} templateUrl
      * @returns {*}
      */
-    function findEntityInfo(templateUrl) {
-        if (activeCategory) {
-            var info = config.storefront.categories[activeCategory];
+    function findTemplate(templateUrl) {
+        for (var catName in config.storefront.categories) {
+            var info = config.storefront.categories[catName];
             for (var i = 0; i < info.entities.length; i++) {
                 var e = info.entities[i];
                 if (e.template === templateUrl) {
@@ -113,7 +114,7 @@ var storefrontView = {};
                 return;
             }
         }
-        var info = findEntityInfo(templateUrl);
+        var info = findTemplate(templateUrl);
         if (templateUrl && info) {
             if (info.published && info.width && info.height) {
                 activeTemplateUrl = templateUrl;
@@ -159,9 +160,11 @@ var storefrontView = {};
         }
         if (d) {
             activeTemplateUrl = d;
+            var template = findTemplate(activeTemplateUrl);
             App.openEditor({
                 templateUrl:activeTemplateUrl,
-                clone:true
+                clone:true,
+                getParams: (template.getParams) ? template.getParams : null
             });
         }
         e.preventDefault();

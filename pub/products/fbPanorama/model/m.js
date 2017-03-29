@@ -14,13 +14,16 @@ var FbPanoramaModel = MutApp.Model.extend({
          * Из этого будет рассчитан масштаб previewScale
          */
         DEF_PANORAMA_PREVIEW_HEIGHT: 600,
-//        panoramaImgSrc: 'http://localhost:63342/ProCo/demos/PanoramaDemo/images/4096x433.jpg',
-//        panoramaImgSrc: 'http://localhost:63342/ProCo/demos/PanoramaDemo/images/6000x1217.jpg',
+//        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2FIMG_8565-1.JPG',
 //        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/6000x3562.jpg',
-        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F1600x1000.jpg',
+//        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F1600x1000.jpg',
+//        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F4096x433.jpg',
+//        panoramaImgSrc: 'http://localhost:63342/ProCo/demos/PanoramaDemo/images/6000x1217.jpg',
+        panoramaImgSrc: 'http://localhost:63342/ProCo/temp/bugs/IMG_8565-1.jpg',
         panoramaImage: null,
         imageProgress: 0,
-        previewScale: 1,
+        previewScale: 1,29
+        panoCanvas: null,
         pins: [
             {
                 id: '12345678',
@@ -77,15 +80,41 @@ var FbPanoramaModel = MutApp.Model.extend({
                 }
             }
 
+            // если запуск из витрины
+            // то запоминаем текущую картинку, чтобы при ее смене удалить пины. Шаболнные пины не нужны
+            if (this.application.engineStorage.get('delPins')==1 &&
+                this.application.engineStorage.get('originImg')!==url) {
+                //console.log('>>>>>>>>>>>>>>>>MUTAPP SAYS: УДАЛЯЮ ПИНЫ');
+                // удаление пинов при смене шаблонной картинки первый раз
+                this.set({
+                   pins: []
+                });
+                // надо попросить движок также сбросить это апп проперти
+                this.application.engineStorage.setAppProperty('id=mm pins',[]);
+                this.application.engineStorage.set({
+                    delPins: 0
+                });
+            }
+            else if (this.application.engineStorage.get('ref') == 'strf' &&
+                this.application.engineStorage.get('delPins')==undefined) {
+                //console.log('>>>>>>>>>>>>>>>>MUTAPP SAYS: ВХОД С ВИТРИНЫ ВИЖУ');
+                this.application.engineStorage.set({
+                    originImg: url,
+                    delPins: 1
+                });
+            }
+
             // устанавливаем только когда изображение загружено
             this.set({
+                panoCanvas: this.createPanoCanvas(cp, img, this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT / cp.srcHeight, this.attributes.pins),
                 panoConfig: cp,
                 previewScale: this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT / cp.srcHeight,
                 panoramaImage: img,
                 imageProgress: 100
             });
+
             // приложение получить свой новый актуальный размер в зависимости от загруженной картинки и масштаба
-            this.application.width = Math.round(img.width * this.attributes.previewScale);
+            this.application.width = Math.round(cp.srcWidth * this.attributes.previewScale);
             this.application.height = this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT;
 
         }).bind(this);
@@ -101,13 +130,19 @@ var FbPanoramaModel = MutApp.Model.extend({
         }
     },
 
-    createPanoCanvas: function() {
+    createPanoCanvas: function(config, image, scale, pins) {
+        config = config || this.attributes.panoConfig;
+        image = image || this.attributes.panoramaImage;
+        scale = scale || this.attributes.previewScale;
+        pins = pins || this.attributes.pins;
         return panoDrawing.createPanoCanvas({
-            img: this.attributes.panoramaImage,
-            pins: this.attributes.pins,
-            width: this.attributes.panoConfig.srcWidth,
-            height: this.attributes.panoConfig.srcHeight,
-            pinScale: 1/this.attributes.previewScale
+            img: image,
+            pins: pins,
+            srcWidth: config.srcWidth,
+            srcHeight: config.srcHeight,
+            panoWidth: config.panoWidth,
+            panoHeight: config.panoHeight,
+            pinScale: 1/scale
         });
     },
 

@@ -34,6 +34,7 @@ var panoConfig = {};
         var VFOV_OPTIMAL = vfovInfo.vfov;
 
         if (srcWidth > MAX_IMG_WIDTH) {
+            srcHeight = srcHeight * (MAX_IMG_WIDTH/srcWidth);
             srcWidth = MAX_IMG_WIDTH;
         }
         var result = {
