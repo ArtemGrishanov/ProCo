@@ -447,7 +447,8 @@ var Editor = {};
             $(appIframe).css('border','0')
                 .css('width',appContainerSize.width+'px')
                 .css('height',appContainerSize.height+'px')
-                .css('maxWidth',appContainerSize.width)
+                //.css('maxWidth',appContainerSize.width)
+                .css('maxWidth','100%')
                 .css('maxHeight',appContainerSize.height);
         }
     }
@@ -1541,7 +1542,7 @@ var Editor = {};
                 results1.push(ci);
             }
             else {
-                if (ci.control.directiveName && ci.control.directiveName.indexOf(str) >= 0) {
+                if (ci.control.directiveName && ci.control.directiveName.toLowerCase().indexOf(str.toLowerCase()) >= 0) {
                     // вторая степерь релевантности: имя директивы
                     results2.push(ci);
                 }

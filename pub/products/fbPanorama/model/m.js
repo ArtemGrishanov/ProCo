@@ -22,7 +22,7 @@ var FbPanoramaModel = MutApp.Model.extend({
         panoramaImgSrc: 'http://localhost:63342/ProCo/temp/bugs/IMG_8565-1.jpg',
         panoramaImage: null,
         imageProgress: 0,
-        previewScale: 1,29
+        previewScale: 1,
         panoCanvas: null,
         pins: [
             {
@@ -106,7 +106,7 @@ var FbPanoramaModel = MutApp.Model.extend({
 
             // устанавливаем только когда изображение загружено
             this.set({
-                panoCanvas: this.createPanoCanvas(cp, img, this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT / cp.srcHeight, this.attributes.pins),
+                //panoCanvas: this.createPanoCanvas(cp, img, this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT / cp.srcHeight, this.attributes.pins),
                 panoConfig: cp,
                 previewScale: this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT / cp.srcHeight,
                 panoramaImage: img,

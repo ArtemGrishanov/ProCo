@@ -305,8 +305,9 @@ var Engine = {};
      *
      * @param {Object} desc
      * @param {MutApp} app
+     * @param {string} param.filter - проверить и создать только те свойства в приложении, которые отвечают фильтру
      */
-    function createAppProperties(desc, app) {
+    function createAppProperties(desc, app, param) {
         // в этот объект положим все вычисленные свойства для каждого селектора
         if (calculatedAppDescriptor===null) {
             calculatedAppDescriptor = {};
@@ -773,7 +774,16 @@ var Engine = {};
                 success = setPropertyToMutApp(pStr, value);
             }
             else {
-                setPropertyToDuplicateMutApp(pStr, value);
+                //TODO
+                // свойство restartApp применяется в панорамах для изменения текста и позиции
+                // из приложения-дубликата _dapp пересоздавались свойства createAppProperties()
+                // но всё равно были тормоза при перезапуске приложения в фоне
+                // Но для простых свойств: строка, объект XY скорее всего и не надо этого механизма
+                // setPropertyToDuplicateMutApp(pStr, value);
+
+                //TODO вместо перезапуска пробую устанавливать напрямую.
+                // В app должны содержаться актуальные свойства, так как createAppProperties() читает оттуда значения.
+                productWindow.app.setPropertyByAppString(pStr, value);
             }
             if (success === true) {
                 operationsCount++;
@@ -797,7 +807,7 @@ var Engine = {};
         }
         // использование дубликата приложения для рассчета новых appProperties
         // когда приложение не надо перезапускать, то свойства бывает все равно надо пересчитать. Для этого используется дубликат.
-        var svApp = (attributes.restartApp === true) ? productWindow.app : productWindow._dapp;
+        var svApp = /*(attributes.restartApp === true) ? */productWindow.app/* : productWindow._dapp*/;
         // надо пересоздать свойства, так как с добавлением или удалением элементов массива количество AppProperty меняется
         if (attributes.updateAppProperties === true) {
             clearAppProperties();

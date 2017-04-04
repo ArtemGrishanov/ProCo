@@ -437,6 +437,9 @@ MutApp.prototype.getPropertiesBySelector = function(selector) {
             // Отличаться значения в приложении не должны в таком случае
             for (var i = 0; i < entities.length; i++) {
                 var finded = MutApp.Util.getPropertiesBySelector(entities[i], parsedSelector.valueKey);
+                for (var m = 0; m < finded.length; m++) {
+                    finded[m].entity = entities[i];
+                }
                 if (finded && finded.length > 0) {
                     result = finded;
                     break;
@@ -453,6 +456,32 @@ MutApp.prototype.getPropertiesBySelector = function(selector) {
     }
     return null;
 };
+
+/**
+ * Установить значение в приложение по апп-строке
+ * Например app.setPropertyByAppString('id=mm pins.0.data.text','new value');
+ *
+ * @param appString
+ * @param value
+ */
+MutApp.prototype.setPropertyByAppString = function(appString, value) {
+    var props = this.getPropertiesBySelector(appString);
+    if (props !== null) {
+        for (var i = 0; i < props.length; i++) {
+            var isModel = props[i].entity instanceof MutApp.Model;
+            if (isModel === true) {
+                MutApp.Util.assignByPropertyString(props[i].entity.attributes, props[i].path, value);
+            }
+            else {
+                MutApp.Util.assignByPropertyString(props[i].entity, props[i].path, value);
+            }
+        }
+    }
+    else {
+        log('MutApp.setPropertyByAppString: Invalid selector=\''+appString+'\'', true);
+    }
+};
+
 
 /**
  * Инициализация fb api для шаринга
