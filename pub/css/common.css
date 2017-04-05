@@ -54,6 +54,9 @@ img {
     height: 100%;
     min-width: 320px;
 }
+.top + .scr_wr, .top + .mob_menu {
+    padding-top: 56px; /* 56 - top height */
+}
 .scr {
     position: absolute;
     top: 0;
@@ -336,11 +339,15 @@ img {
     padding-right: 6px;
 }
 .top {
-    position: relative;
+    /*position: relative;*/
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     min-width: 300px;
     height: 56px;
     background-color: #000;
+    z-index: 1;
 }
 .top_proj_name {
     display: inline-block;
