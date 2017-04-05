@@ -70,11 +70,11 @@ var storefrontView = {};
                     var templStr = $('#id-storefront_entity_template').html();
                     for (var i = 0; i < info.entities.length; i++) {
                         var e = info.entities[i];
-                        var str = templStr.replace('{{name}}', e.name)
+                        var str = templStr.replace('{{name}}', (typeof e.name==='string'? e.name: e.name[App.getLang()]))
                             .replace('{{img}}', e.img)
                             .replace('{{template}}', e.template);
                         if (e.typeLabel) {
-                            str = str.replace('{{type}}', e.typeLabel)
+                            str = str.replace('{{type}}', e.typeLabel[App.getLang()])
                         }
                         var $e = $(str);
                         App.localize($e);
@@ -232,7 +232,7 @@ var storefrontView = {};
         showCategory(initialCategory);
     }
 
-    init();
+    //init();
 
     global.init = init;
     global.showPreview = showPreview;

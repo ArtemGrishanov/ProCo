@@ -247,6 +247,14 @@ var App = App || {};
     }
 
     /**
+     * Вернуть идишку установленной локализации
+     * @returns {string}
+     */
+    function getLang() {
+        return language;
+    }
+
+    /**
      * Локализовать в соответствии с текущим language фрагмент html
      *
      * @param {string | HTML} [html] если не указан, то локализуется вся страница
@@ -834,6 +842,7 @@ var App = App || {};
     global.isTouchMobile = isTouchMobile;
     global.stat = stat;
     global.setLang = setLang;
+    global.getLang = getLang;
     global.localize = localize;
 
     // шаблоны. Получить

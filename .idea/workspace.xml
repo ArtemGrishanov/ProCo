@@ -26,7 +26,7 @@
       <file leaf-file-name="config.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pub/js/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="277" column="21" selection-start="10601" selection-end="10601" vertical-scroll-proportion="0.58848315" vertical-offset="3736" max-vertical-offset="12915">
+            <state line="351" column="65" selection-start="15217" selection-end="15217" vertical-scroll-proportion="0.43117976" vertical-offset="4958" max-vertical-offset="12915">
               <folding />
             </state>
           </provider>
@@ -35,7 +35,7 @@
       <file leaf-file-name="storefront.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/storefront.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="202" column="18" selection-start="12471" selection-end="12471" vertical-scroll-proportion="-5.25" vertical-offset="2904" max-vertical-offset="3735">
+            <state line="239" column="34" selection-start="14535" selection-end="14535" vertical-scroll-proportion="-22.416666" vertical-offset="3047" max-vertical-offset="3750">
               <folding />
             </state>
           </provider>
@@ -44,7 +44,7 @@
       <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="167" column="67" selection-start="6034" selection-end="6034" vertical-scroll-proportion="0.0" vertical-offset="2176" max-vertical-offset="12735">
+            <state line="252" column="20" selection-start="8774" selection-end="8781" vertical-scroll-proportion="0.0" vertical-offset="3318" max-vertical-offset="12870">
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -55,7 +55,7 @@
       <file leaf-file-name="storefront.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/view/storefront.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="78" column="40" selection-start="2459" selection-end="2459" vertical-scroll-proportion="0.0" vertical-offset="871" max-vertical-offset="3690">
+            <state line="72" column="118" selection-start="2205" selection-end="2205" vertical-scroll-proportion="-9.16" vertical-offset="851" max-vertical-offset="3690">
               <folding />
             </state>
           </provider>
@@ -73,7 +73,6 @@
       <list>
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/view/panoramaEditScreen.js" />
         <option value="$PROJECT_DIR$/pub/js/editor.js" />
-        <option value="$PROJECT_DIR$/pub/js/config.js" />
         <option value="$PROJECT_DIR$/pub/howitworks.html" />
         <option value="$PROJECT_DIR$/pub/index.html" />
         <option value="$PROJECT_DIR$/pub/blockeditor.html" />
@@ -82,11 +81,12 @@
         <option value="$PROJECT_DIR$/pub/info.html" />
         <option value="$PROJECT_DIR$/pub/my_templates.html" />
         <option value="$PROJECT_DIR$/pub/privacy_policy.html" />
+        <option value="$PROJECT_DIR$/pub/templates/loginModal.html" />
+        <option value="$PROJECT_DIR$/pub/js/view/modals/abstractModal.js" />
+        <option value="$PROJECT_DIR$/pub/js/model/app.js" />
         <option value="$PROJECT_DIR$/pub/storefront.html" />
         <option value="$PROJECT_DIR$/pub/js/view/storefront.js" />
-        <option value="$PROJECT_DIR$/pub/templates/loginModal.html" />
-        <option value="$PROJECT_DIR$/pub/js/model/app.js" />
-        <option value="$PROJECT_DIR$/pub/js/view/modals/abstractModal.js" />
+        <option value="$PROJECT_DIR$/pub/js/config.js" />
       </list>
     </option>
   </component>
@@ -487,15 +487,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="167" column="67" selection-start="6034" selection-end="6034" vertical-scroll-proportion="0.0" vertical-offset="2176" max-vertical-offset="12735">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/view/modals/loadingModal.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="22" column="1" selection-start="579" selection-end="579" vertical-scroll-proportion="0.45517242" vertical-offset="0" max-vertical-offset="725">
@@ -517,23 +508,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/view/storefront.js">
+    <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="78" column="40" selection-start="2459" selection-end="2459" vertical-scroll-proportion="0.0" vertical-offset="871" max-vertical-offset="3690">
-          <folding />
+        <state line="252" column="20" selection-start="8774" selection-end="8781" vertical-scroll-proportion="0.0" vertical-offset="3318" max-vertical-offset="12870">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/storefront.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="202" column="18" selection-start="12471" selection-end="12471" vertical-scroll-proportion="-5.25" vertical-offset="2904" max-vertical-offset="3735">
+        <state line="239" column="34" selection-start="14535" selection-end="14535" vertical-scroll-proportion="-22.416666" vertical-offset="3047" max-vertical-offset="3750">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/view/storefront.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="72" column="118" selection-start="2205" selection-end="2205" vertical-scroll-proportion="-9.16" vertical-offset="851" max-vertical-offset="3690">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/config.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="277" column="21" selection-start="10601" selection-end="10601" vertical-scroll-proportion="0.58848315" vertical-offset="3736" max-vertical-offset="12915">
+        <state line="351" column="65" selection-start="15217" selection-end="15217" vertical-scroll-proportion="0.43117976" vertical-offset="4958" max-vertical-offset="12915">
           <folding />
         </state>
       </provider>

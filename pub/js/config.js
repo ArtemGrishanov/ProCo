@@ -264,11 +264,11 @@ var config = {
             test: {
                 // шаблоны встроены прямо в верстку, НЕ создаются программно
                 enabled: true,
-                typeLabel: 'Тест',
+                typeLabel: {EN:'Quiz',RU:'Тест'},
                 entities: [
                     {
-                        //  стандартный тест: http://p.testix.me/1045302892173346/7e7fef7bcf
-                        name: 'Testix. Дефолтный тест-туториал',
+                        // стандартный тест: http://p.testix.me/1045302892173346/7e7fef7bcf
+                        name: {EN:'Default tutorial quiz',RU:'Testix. Дефолтный тест-туториал'},
                         img: 'http://p.testix.me/storefront/test/7e7fef7bcf.jpg',
                         published: 'http://p.testix.me/storefront/test/7e7fef7bcf/p_index.html',
                         template: 'storefront/test/7e7fef7bcf.txt',
@@ -277,7 +277,7 @@ var config = {
                     },
                     {
                         // президенты США тест: http://p.testix.me/1045302892173346/02f9e0d7c7/
-                        name: 'Президенты США',
+                        name: {EN:'American presidents',RU:'Президенты США'},
                         img: 'http://p.testix.me/storefront/test/02f9e0d7c7.jpg',
                         published: 'http://p.testix.me/storefront/test/02f9e0d7c7/p_index.html',
                         template: 'storefront/test/02f9e0d7c7.txt',
@@ -285,8 +285,8 @@ var config = {
                         height: '600px'
                     },
                     {
-                        //  угадайте книгу по цитате: http://p.testix.me/1045302892173346/e33f556579
-                        name: 'Независимое издание',
+                        // угадайте книгу по цитате: http://p.testix.me/1045302892173346/e33f556579
+                        name: {EN:'Independent Media',RU:'Независимое издание'},
                         img: 'http://p.testix.me/storefront/test/e33f556579.jpg',
                         published: 'http://p.testix.me/storefront/test/e33f556579/p_index.html',
                         template: 'storefront/test/e33f556579.txt',
@@ -294,8 +294,8 @@ var config = {
                         height: '600px'
                     },
                     {
-                        //  любят ли вас деньги: http://p.testix.me/1045302892173346/85c20b7628
-                        name: 'Финансовое издание',
+                        // любят ли вас деньги: http://p.testix.me/1045302892173346/85c20b7628
+                        name: {EN:'Financial Media',RU:'Финансовое издание'},
                         img: 'http://p.testix.me/storefront/test/85c20b7628.jpg',
                         published: 'http://p.testix.me/storefront/test/85c20b7628/p_index.html',
                         template: 'storefront/test/85c20b7628.txt',
@@ -303,8 +303,8 @@ var config = {
                         height: '600px'
                     },
                     {
-                        //  тест по психологии "Ты душа компании или зануда": http://p.testix.me/1045302892173346/1059f38c8b
-                        name: 'Психология и отношения',
+                        // тест по психологии "Ты душа компании или зануда": http://p.testix.me/1045302892173346/1059f38c8b
+                        name: {EN:'Psychology and Relationships',RU:'Психология и отношения'},
                         img: 'http://p.testix.me/storefront/test/1059f38c8b.jpg',
                         published: 'http://p.testix.me/storefront/test/1059f38c8b/p_index.html',
                         template: 'storefront/test/1059f38c8b.txt',
@@ -312,8 +312,8 @@ var config = {
                         height: '600px'
                     },
                     {
-                        //  тест для художников: http://p.testix.me/1045302892173346/9000e567da
-                        name: 'Картины',
+                        // тест для художников: http://p.testix.me/1045302892173346/9000e567da
+                        name: {EN:'Paintings',RU:'Картины'},
                         img: 'http://p.testix.me/storefront/test/9000e567da.jpg',
                         published: 'http://p.testix.me/storefront/test/9000e567da/p_index.html',
                         template: 'storefront/test/9000e567da.txt',
@@ -331,7 +331,7 @@ var config = {
 //                    }
                     {
                         // тест по географии "Пенза или Пиза": http://p.testix.me/1045302892173346/d61333fd5e
-                        name: 'Тест по географии',
+                        name: {EN:'Geography quiz',RU:'Тест по географии'},
                         img: 'http://p.testix.me/storefront/test/d61333fd5e.jpg',
                         published: 'http://p.testix.me/storefront/test/d61333fd5e/p_index.html',
                         template: 'storefront/test/d61333fd5e.txt',
@@ -340,7 +340,7 @@ var config = {
                     },
                     {
                         // тест по русскому языку: http://p.testix.me/1045302892173346/e4d58cd89b
-                        name: 'Тест по русскому языку',
+                        name: {EN:'Test of Russian language',RU:'Тест по русскому языку'},
                         img: 'http://p.testix.me/storefront/test/e4d58cd89b.jpg',
                         published: 'http://p.testix.me/storefront/test/e4d58cd89b/p_index.html',
                         template: 'storefront/test/e4d58cd89b.txt',
@@ -349,7 +349,7 @@ var config = {
                     },
                     {
                         // тест "Какой вы инвестор": http://p.testix.me/1045302892173346/39d1a71943
-                        name: 'Какой вы инвестор?',
+                        name: {EN:'What kind of investor are you?',RU:'Какой вы инвестор?'},
                         img: 'http://p.testix.me/storefront/test/39d1a71943.jpg',
                         published: 'http://p.testix.me/storefront/test/39d1a71943/p_index.html',
                         template: 'storefront/test/39d1a71943.txt',
@@ -360,7 +360,7 @@ var config = {
             },
             memoriz: {
                 enabled: true,
-                typeLabel: 'Игра мемори',
+                typeLabel: {EN:'Memory Game',RU:'Игра мемори'},
                 entities: [
                     {
                         //Интернет мемы http://p.testix.me/1045302892173346/13e4d14521/
@@ -417,7 +417,7 @@ var config = {
                 ]
             },
             fbPanorama: {
-                typeLabel: 'Facebook панорама',
+                typeLabel: {EN:'Facebook panorama',RU:'Facebook панорама'},
                 enabled: true,
                 entities: [
                     {
