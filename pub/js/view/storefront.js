@@ -77,6 +77,7 @@ var storefrontView = {};
                             str = str.replace('{{type}}', e.typeLabel)
                         }
                         var $e = $(str);
+                        App.localize($e);
                         $e.find('.js-edit').click(onEditClick);
                         $e.find('.js_app-preview').click(onPreviewClick);
                         if (!e.typeLabel || activeCategory !== config.storefront.allCategoryKey) {

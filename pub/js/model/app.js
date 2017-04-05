@@ -112,17 +112,19 @@ var App = App || {};
      */
     var fbLoginRequestedInModal = false;
     /**
-     * Язык который стоит в интерфейсе по умолчанию
-     * @type {string}
-     */
-    var defaultLang = 'RU';
-    /**
      *
      * @type {{}}
      */
     var dict = {
         'RU': {
-
+            menu_gallery: 'Галерея шаблонов',
+            how_it_works: 'Как это работает',
+            faq: 'FAQ',
+            contacts: 'Контакты',
+            my_projects: 'Мои проекты',
+            edit_template: 'Редактировать',
+            preview_template: 'Посмотреть',
+            login_explanation: 'Войдите, чтобы получить больше возможностей'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -160,20 +162,56 @@ var App = App || {};
             design_your_minigame: 'Create your own games right in browser',
             format_card_minigame: 'Just pick the images and you will get a mini game «Memory»!',
             design_your_pano: 'Surprise your users offering them unique formats',
-            format_card_fbpano: 'Upload photo, add marks and post to your Facebook timeline!'
+            format_card_fbpano: 'Upload photo, add marks and post to your Facebook timeline!',
+            edit_template: 'Edit',
+            preview_template: 'Preview',
+            login_explanation: 'Please, sign in to get more options'
         }
     },
     /**
      * Статус мобильного меню: открыт или закрыт
      * @type {boolean}
      */
-    mobileMenuOpened = false;
+    mobileMenuOpened = false,
+    /**
+     * Сериализованные данные приложения
+     * Можно сохранить в куках некоторые данные, например выбранную локализацию
+     */
+    appState = null,
+    /**
+     * Текущий установленный язык
+     * @type {string}
+     */
+    language = null;
+
+    /**
+     * Выполнить настройку локализации
+     */
+    function initLang() {
+        // забрать тексты из верстки которые там стоят по умолчанию и сложить их в словарь
+        grabLangFromHTMLAndPutToDict(config.common.langInHTMLfiles);
+
+        // выставляем локализацию
+        // гет-параметр - самый приоритетный фактор. На втором месте - сохраненный в куках выбор пользователя
+        var lang = getQueryParams(document.location.search)[config.common.langParamName];
+        if (!lang || dict.hasOwnProperty(lang) === false) {
+            // пытаемся достать выбор пользоватея по поводу локализации сделанный ранее
+            lang = appState.lang;
+            if (!lang) {
+                // по умолчанию, так как нет никаких признаков выбора локализации
+                lang = config.common.defaultLang;
+            }
+        }
+        setLang(lang);
+    }
 
     /**
      * Забрать из верстки тексты и сложить в словарь
+     * Уже существующие ключи в словаре являются более приоитетными.
+     *
      * @param lang
      */
-    function initLang(lang) {
+    function grabLangFromHTMLAndPutToDict(lang) {
         if (dict.hasOwnProperty(lang)) {
             var elements = $('.pts_string');
             for (var i = 0; i < elements.length; i++) {
@@ -193,17 +231,42 @@ var App = App || {};
         }
     }
 
+    /**
+     * Установить яык интерфейса
+     * @param {string} lang
+     */
     function setLang(lang) {
         if (dict.hasOwnProperty(lang)) {
-            for (var key in dict[lang]) {
-                if (dict[lang].hasOwnProperty(key)) {
-                    $('.pts_'+key).html(dict[lang][key]);
+            language = lang
+            $('.js-lang').removeClass('__active');
+            $('.js-lang[data-lang="'+language+'"]').addClass('__active');
+            localize();
+            // сохранять выбранную локаль в куках для следующего раза
+            serializeAppState();
+        }
+    }
+
+    /**
+     * Локализовать в соответствии с текущим language фрагмент html
+     *
+     * @param {string | HTML} [html] если не указан, то локализуется вся страница
+     */
+    function localize(html) {
+        html = html || $('body');
+        if (typeof html === 'string') {
+            //TODO
+        }
+        else {
+            for (var key in dict[language]) {
+                if (dict[language].hasOwnProperty(key)) {
+                    $(html).find('.pts_'+key).html(dict[language][key]);
                 }
             }
         }
     }
 
     function start() {
+        appState = deseriaizeAppState() || {};
         if (isTouchMobile() === true) {
             document.documentElement.className += " touch";
         }
@@ -219,7 +282,8 @@ var App = App || {};
             initScripts();
         }
         initUIHandlers();
-        initLang('RU');
+
+        initLang();
     }
 
     /**
@@ -280,8 +344,6 @@ var App = App || {};
         });
         $('.js-lang').click(function(e){
             var $e = $(e.currentTarget);
-            $('.js-lang').removeClass('__active');
-            $e.addClass('__active');
             setLang($e.attr('data-lang'));
         });
         $('.js-mob_menu_switcher').click(function(e) {
@@ -722,6 +784,39 @@ var App = App || {};
         }
     };
 
+    /**
+     *
+     * @returns {*}
+     */
+    function deseriaizeAppState() {
+        try {
+            var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)appState\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+            var s = JSON.parse(cookieValue);
+            // document.cookie = "appState=; expires=Thu, 01 Jan 1970 00:00:00 GMT"; // пимер сброса после прочтения
+            return s;
+        }
+        catch(e) {
+            console.log(e.message);
+        }
+        return null;
+    }
+
+    /**
+     *
+     */
+    function serializeAppState() {
+        try {
+            var s = {
+                lang: language
+            };
+            var cookie = 'appState='+JSON.stringify(s)+'; expires=Fri, 31 Dec 2020 23:59:59 GMT';
+            document.cookie = cookie;
+        }
+        catch(e) {
+            console.log(e.message);
+        }
+    }
+
     // public methoods below
     global.start = start;
     // global.getUserAnonimId = getUserAnonimId;
@@ -738,6 +833,8 @@ var App = App || {};
     global.isMobile = isMobile;
     global.isTouchMobile = isTouchMobile;
     global.stat = stat;
+    global.setLang = setLang;
+    global.localize = localize;
 
     // шаблоны. Получить
     global.getUserTemplates = function() { return (userTemplateCollection !== null) ? userTemplateCollection.templates: null; }

@@ -60,6 +60,7 @@ AbstractModal.prototype._loadTemplate = function(callback) {
         var $d = $('<div></div>');
         $d.load(config.common.home+this.templateUrl, (function() {
             this.$ui = $($d.html());
+            App.localize(this.$ui);
             this.render();
             callback();
         }).bind(this));
