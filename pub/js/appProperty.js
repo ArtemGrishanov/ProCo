@@ -60,6 +60,7 @@ AppProperty.validAttributes = {
     cssSelector: null,
     cssValuePattern: null,
     filter: false,
+    showWhileScreenIsActive: null, // фильтрация по экрану. Всегда показывать контрол на правой панели пока виден экран
 
     // селектор dom-элемент к которому применяем свойства. Обычно это cssSelector, но например text-align надо применять к родителю.
     // вот тут и указываем родителя в этом свойства

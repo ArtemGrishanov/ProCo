@@ -90,18 +90,18 @@ function StringControl(propertyString, directiveName, $parent, productDOMElement
             this.setValueToEngine();
         }).bind(this), 500);
     }
+
+    /**
+     * Способ установить значение в контрол извне, с помощью автогенератора
+     * @param value
+     */
+    this.setControlValue = function(value) {
+        if (this.$input && this.$input.val() !== value) {
+            this.$input.val(value);
+        }
+        var p = Engine.getAppProperty(this.propertyString);
+        Engine.setValue(p, value);
+    };
 }
 
 StringControl.prototype = AbstractControl;
-
-/**
- * Способ установить значение в контрол извне, с помощью автогенератора
- * @param value
- */
-StringControl.prototype.setControlValue = function(value) {
-    if (this.$input && this.$input.val() !== value) {
-        this.$input.val(value);
-    }
-    var p = Engine.getAppProperty(this.propertyString);
-    Engine.setValue(p, value);
-};

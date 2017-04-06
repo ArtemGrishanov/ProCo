@@ -187,7 +187,8 @@ var Editor = {};
         }
         $('#id-workspace').click(function(){
             // любой клик по документу сбрасывает фильтр контролов
-            filterControls();
+            filterControls(null, null, getActiveScreens());
+            deleteSelections();
         });
         $('#id-app_preview_img').change(function() {
             // загрузка пользовательского превью для шаблона
@@ -376,7 +377,7 @@ var Editor = {};
         updateAppContainerSize();
         activeScreenHints = [];
         activeTriggers = [];
-        // каждый раз удаляем quick-контролы и создаем их заново. Не слишком эффективно мб но просто и надежно
+        // каждый раз удаляем quick-контролы и создаем их заново. Не слишком эффективно, но просто и надежно
         // то что контролы привязаны к одному экрану определяется только на основании контейнера, в который они помещены
         var $controlCnt = $('#id-control_cnt').empty();
         for (var i = 0; i < uiControlsInfo.length;) {
@@ -420,6 +421,7 @@ var Editor = {};
         //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
         // подсветка контрола Slide по которому кликнули
         setActiveScreen(activeScreens.join(','));
+        filterControls(null, null, getActiveScreens());
 
         $($("#id-product_screens_cnt").contents()).click(function(){
             // любой клик по промо-проекту сбрасывает подсказки
@@ -560,7 +562,7 @@ var Editor = {};
                     var dataAppPropertyString = $(e.currentTarget).attr('data-app-property');
                     log(dataAppPropertyString + ' clicked');
                     showSelection($(e.currentTarget));
-                    filterControls(dataAppPropertyString, e.currentTarget);
+                    filterControls(dataAppPropertyString, e.currentTarget, getActiveScreens());
                     e.preventDefault();
                     e.stopPropagation();
                 });
@@ -683,14 +685,28 @@ var Editor = {};
     //    }
     //}
 
+
+    /**
+     * TODO
+     * РЕФАКТОРИНГ КОНТРОЛОВ
+     *
+     * - Выделение панелей с контролами в самостоятельные MVC сервисы для организации кода
+     * - Более экономные сортировки и операции показа/скрытия и создания. Без дублирования операций
+     * -
+     *
+     */
+
+
+
     /**
      * Отфильтровать и показать только те контролы, appPropertyString которых есть в dataAppPropertyString
      * Это могут быть контролы на боковой панели или во всплывающей панели quickControlPanel
      *
      * @param {string} dataAppPropertyString например 'backgroundColor,showBackgroundImage'
      * @param {domElement} element на который кликнул пользователь
+     * @param {Array} activeScreenIds экраны активные в данный момент. Есть такой тип фильтрации showWhileScreenIsActive
      */
-    function filterControls(dataAppPropertyString, element) {
+    function filterControls(dataAppPropertyString, element, activeScreenIds) {
         var quickControlPanelControls = [];
         if (dataAppPropertyString) {
             $('#id-static_controls_cnt').children().hide();
@@ -732,6 +748,28 @@ var Editor = {};
                         if (c.control._onShow) {
                             c.control._onShow();
                         }
+                    }
+                }
+            }
+        }
+
+        // Фильтрация контролов которые должны быть показаны во время показа экрана
+        for (var i = 0; i < uiControlsInfo.length; i++) {
+            var c = uiControlsInfo[i];
+            if (c.type && c.type === 'controlpanel') {
+                var found = false;
+                for (var n = 0; n < activeScreenIds.length; n++) {
+                    if (activeScreenIds[n].indexOf(c.showWhileScreenIsActive) >= 0) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (c.showWhileScreenIsActive !== undefined && found === true) {
+                    // пока активен экран c.showWhileScreenIsActive надо показывать контрол, такой тип фильтрации по экрану
+                    c.wrapper.show();
+                    $('#id-static_controls_cnt').prepend(c.wrapper); // контроля фильтруемые по экрану должны быть выше, у них более высокий приоритет
+                    if (c.control._onShow) {
+                        c.control._onShow();
                     }
                 }
             }
@@ -790,8 +828,8 @@ var Editor = {};
                                 parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
                             }
                             else {
-                                // выбираем панель по принципу: фильтруется контрол или нет
-                                var parentPanelId = (ap.filter === true) ? '#id-static_controls_cnt': '#id-static-no_filter_controls';
+                                // выбираем панель по принципу: фильтруется контрол или нет (фильтр по клику или по экрану)
+                                var parentPanelId = (ap.filter === true || ap.showWhileScreenIsActive) ? '#id-static_controls_cnt': '#id-static-no_filter_controls';
 
                                 // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на панель настроек
                                 var $cc = $($('#id-static_control_cnt_template').html()).appendTo(parentPanelId);
@@ -814,12 +852,16 @@ var Editor = {};
                                 parent = $cc.find('.js-control_cnt');
                             }
                             var newControl = createControl(ps, c.params.viewName, c.name, c.params, parent);
+                            if (ps === 'id=startScr backgroundImg') {
+                                var stopHere = 0;
+                            }
                             if (newControl) {
                                 uiControlsInfo.push({
                                     propertyString: ps,
                                     control: newControl,
                                     wrapper: $cc, // контейнер, в котором контрол находится на боковой панели контролов
                                     filter: ap.filter, // чтобы потом не искать этот признак во время фильтрации
+                                    showWhileScreenIsActive: ap.showWhileScreenIsActive,
                                     type: config.controls[c.name].type // также для быстрого поиска
                                 });
                             }

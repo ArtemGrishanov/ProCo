@@ -735,6 +735,11 @@ var config = {
              */
             arrayControlDragZIndex: 20,
             /**
+             * z-index топ-бара (где кнопка опубликовать)
+             * программно не ставится, только в css
+             */
+            topZIndex: 25,
+            /**
              * zIndex подсказок
              */
             hintZIndex: 30,

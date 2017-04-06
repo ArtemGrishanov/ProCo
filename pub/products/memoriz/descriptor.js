@@ -60,19 +60,19 @@ descriptor.app = [
         },
         {
             selector: 'id=startScr showLogo',
-            label: 'Лого на стартовой'
+            label: 'Логотип на стартовой'
         },
         {
             selector: 'type=opened showLogo',
-            label: 'Лого в вопросах'
+            label: 'Логотип в вопросах'
         },
         {
             selector: 'id=gamescreen showLogo',
-            label: 'Лого на игровом поле'
+            label: 'Логотип на игровом поле'
         },
         {
             selector: 'type=result showLogo',
-            label: 'Лого в результатах'
+            label: 'Логотип в результатах'
         },
         {
             selector: 'type=result showDownload',
@@ -85,11 +85,11 @@ descriptor.app = [
         },
         {
             selector: 'id=mm fbShareEnabled',
-            label: 'Включить шаринг результата в Facebook'
+            label: 'Поделиться результатом в Facebook'
         },
         {
             selector: 'id=mm vkShareEnabled',
-            label: 'Включить шаринг результата во ВКонтакте'
+            label: 'Поделиться результатом во ВКонтакте'
         },
         {
             selector: 'id=mm showTopColontitle',
@@ -126,6 +126,27 @@ descriptor.app = [
         updateScreens: true,
         rules: 'imgUrl'
     },
+            {
+                selector: 'id=startScr backgroundImg',
+                label: 'Фон стартовой страницы',
+                showWhileScreenIsActive: 'startScr'
+            },
+            {
+                selector: 'id=gamescreen backgroundImg',
+                label: 'Фон игрового экрана',
+                showWhileScreenIsActive: 'gamescreen'
+            },
+            {
+                selector: 'type=opened backgroundImg',
+                label: 'Фон страниц с парами',
+                showWhileScreenIsActive: 'openedScreen'
+            },
+            {
+                selector: 'type=result backgroundImg',
+                label: 'Фон страниц результатов',
+                showWhileScreenIsActive: 'result'
+            },
+
     {
         selector: 'id=mm backCardTexture',
         label: 'Картинка для "рубашки" карточки',
@@ -133,7 +154,7 @@ descriptor.app = [
     {
         selector: 'type=memoriz shareLink',
         rules: 'url',
-        label: 'Шаринг в facebook',
+        label: 'Ссылка для поста в социальных сетях',
         filter: false
     },
     {
@@ -146,15 +167,9 @@ descriptor.app = [
         rules: 'imgUrl'
     },
     {
-        selector: 'type=memoriz shareLink',
-        rules: 'url',
-        label: 'Шаринг в facebook',
-        filter: false
-    },
-    {
         selector: 'id=mm logoLink',
         rules: 'url',
-        label: 'Лого ссылка',
+        label: 'Ссылка при клике на логотип',
         filter: false
     },
     {

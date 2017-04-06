@@ -117,15 +117,6 @@ descriptor.app = [
         rules: 'drag'
     },
     {
-        selector: 'id=tm logoUrl, id=tm quiz.{{number}}.question.img, id=tm quiz.{{number}}.answer.options.{{number}}.img',
-        rules: 'imgUrl'
-    },
-    {
-        selector: 'id=startScr backgroundImg, type=questions backgroundImg, type=result backgroundImg',
-        updateScreens: true,
-        rules: 'imgUrl'
-    },
-    {
         selector: 'type=result showDownload, type=questions showExplanation, id=startScr showLogo, type=questions showLogo, type=result showLogo, id=tm fbShareEnabled, id=tm vkShareEnabled, id=tm showQuestionProgress, id=tm showBullits, id=tm showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions, id=startScr shadowEnable, type=questions shadowEnable, type=result shadowEnable',
         rules: 'trueFalse'
     },
@@ -135,15 +126,15 @@ descriptor.app = [
             },
             {
                 selector: 'id=startScr showLogo',
-                label: 'Лого на стартовой'
+                label: 'Логотип на стартовой'
             },
             {
                 selector: 'type=questions showLogo',
-                label: 'Лого в вопросах'
+                label: 'Логотип в вопросах'
             },
             {
                 selector: 'type=result showLogo',
-                label: 'Лого в результатах'
+                label: 'Логотип в результатах'
             },
             {
                 selector: 'type=result showDownload',
@@ -160,11 +151,11 @@ descriptor.app = [
             },
             {
                 selector: 'id=tm fbShareEnabled',
-                label: 'Включить шаринг результата в Facebook'
+                label: 'Поделиться результатом в Facebook'
             },
             {
                 selector: 'id=tm vkShareEnabled',
-                label: 'Включить шаринг результата во ВКонтакте'
+                label: 'Поделиться результатом во ВКонтакте'
             },
             {
                 selector: 'id=tm showQuestionProgress',
@@ -181,17 +172,48 @@ descriptor.app = [
             {
                 selector: 'id=startScr shadowEnable',
                 label: 'Затемнение фона',
-                filter: true
+                filter: true,
+                showWhileScreenIsActive: 'startScr'
             },
             {
                 selector: 'type=questions shadowEnable',
                 label: 'Затемнение фона',
-                filter: true
+                filter: true,
+                showWhileScreenIsActive: 'questionScreen'
             },
             {
                 selector: 'type=result shadowEnable',
                 label: 'Затемнение фона',
-                filter: true
+                filter: true,
+                showWhileScreenIsActive: 'resultScreen'
+            },
+    {
+        selector: 'id=tm logoUrl, id=tm quiz.{{number}}.question.img, id=tm quiz.{{number}}.answer.options.{{number}}.img',
+        rules: 'imgUrl'
+    },
+    {
+        selector: 'id=startScr backgroundImg, type=questions backgroundImg, type=result backgroundImg',
+        updateScreens: true,
+        rules: 'imgUrl'
+    },
+            {
+                selector: 'id=startScr backgroundImg',
+                label: 'Фон стартовой страницы',
+                showWhileScreenIsActive: 'startScr'
+            },
+            {
+                selector: 'type=questions backgroundImg',
+                label: 'Фон страниц вопросов',
+                showWhileScreenIsActive: 'questionScreen'
+            },
+            {
+                selector: 'type=result backgroundImg',
+                label: 'Фон страниц результатов',
+                showWhileScreenIsActive: 'resultScreen'
+            },
+            {
+                selector: 'id=tm logoUrl',
+                label: 'Картинка логотипа'
             },
     {
         selector: 'id=tm quiz.{{number}}.question.text, id=tm quiz.{{number}}.answer.options.{{number}}.text, id=tm results.{{number}}.title, id=tm results.{{number}}.description, id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText, type=result restartButtonText, type=result downloadButtonText, type=questions topColontitleText',
@@ -215,13 +237,13 @@ descriptor.app = [
     {
         selector: 'type=test shareLink',
         rules: 'url',
-        label: 'Шаринг в facebook',
+        label: 'Ссылка для поста в социальной сети',
         filter: false
     },
     {
         selector: 'id=tm logoLink',
         rules: 'url',
-        label: 'Лого ссылка',
+        label: 'Ссылка при клике на логотип',
         filter: false
     },
     {

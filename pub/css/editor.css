@@ -306,15 +306,18 @@
     left: -3px;
 }
 .control_cnt_wr {
-    padding: 6px 12px 6px 12px;
+    padding: 5px 12px 5px 12px;
     border-bottom: 1px solid #d8d8d8;
+}
+input[type="radio"], input[type="checkbox"] {
+    margin: 3px 0 0;
 }
 .control_cnt {
 }
 .control_label {
     display: inline-block;
     margin: 0;
-    font-size: 14px;
+    font-size: 12px;
     font-family: Roboto-Regular, Arial, san-serif;
     color: #636363;
 }

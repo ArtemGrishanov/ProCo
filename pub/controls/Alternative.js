@@ -47,18 +47,18 @@ function Alternative(propertyString, directiveName, $parent, productDOMElement, 
         // сначала ставим текущее значение свойства как "выбранное"
         $dropDownValue.text(appProperty.propertyValue);
     });
+
+    /**
+     * Способ установить значение в контрол извне, с помощью автогенератора
+     * @param value
+     */
+    this.setControlValue = function(value) {
+        if (this.$directive) {
+            this.$directive.find('.js-value').text(value);
+        }
+        var p = Engine.getAppProperty(this.propertyString);
+        Engine.setValue(p, value);
+    };
 }
 
 Alternative.prototype = AbstractControl;
-
-/**
- * Способ установить значение в контрол извне, с помощью автогенератора
- * @param value
- */
-Alternative.prototype.setControlValue = function(value) {
-    if (this.$directive) {
-        this.$directive.find('.js-value').text(value);
-    }
-    var p = Engine.getAppProperty(this.propertyString);
-    Engine.setValue(p, value);
-};

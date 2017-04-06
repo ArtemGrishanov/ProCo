@@ -19,17 +19,17 @@ function DeleteQuickButton(propertyString, directiveName, $parent, productDOMEle
         log('DeleteQuickButton: product dom element for this control must have \'data-option-index\' attribute', true);
     }
 
+    this._onShow = function() {
+        this.$directive.on('click', this.onDeleteQuickButtonClick.bind(this));
+    };
+
+    this.onDeleteQuickButtonClick = function() {
+        var p = Engine.getAppProperty(this.propertyString);
+        Engine.deleteArrayElement(p, this.optionIndex);
+    };
+
     this.loadDirective(function(response, status, xhr){
         this.$directive.on('click', this.onDeleteQuickButtonClick.bind(this));
     });
 }
 DeleteQuickButton.prototype = AbstractControl;
-
-DeleteQuickButton.prototype.onDeleteQuickButtonClick = function() {
-    var p = Engine.getAppProperty(this.propertyString);
-    Engine.deleteArrayElement(p, this.optionIndex);
-}
-
-DeleteQuickButton.prototype._onShow = function() {
-    this.$directive.on('click', this.onDeleteQuickButtonClick.bind(this));
-}
