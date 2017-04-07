@@ -37,11 +37,15 @@ var FbPanoramaModel = MutApp.Model.extend({
                 },
                 uiTemplate: 'id-text_pin_template'
             }
-        ]
+        ],
+        logoImgSrc: '../../i/logo_big.png',
+        logoImg: null
     },
 
     initialize: function(param) {
         this.super.initialize.call(this, param);
+        this.attributes.logoImg = new Image();
+        this.attributes.logoImg.src = this.attributes.logoImgSrc;
     },
 
     start: function() {
@@ -135,6 +139,7 @@ var FbPanoramaModel = MutApp.Model.extend({
         image = image || this.attributes.panoramaImage;
         scale = scale || this.attributes.previewScale;
         pins = pins || this.attributes.pins;
+        var logoImg = this.attributes.logoImg;
         return panoDrawing.createPanoCanvas({
             img: image,
             pins: pins,
@@ -142,7 +147,8 @@ var FbPanoramaModel = MutApp.Model.extend({
             srcHeight: config.srcHeight,
             panoWidth: config.panoWidth,
             panoHeight: config.panoHeight,
-            pinScale: 1/scale
+            pinScale: 1/scale,
+            logo: logoImg
         });
     },
 

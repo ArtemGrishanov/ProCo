@@ -130,7 +130,8 @@ var App = App || {};
             cat_memory: 'Мемори',
             cat_fb_pano: 'Facebook панорамы',
             cat_timeline: 'Таймлайн',
-            cat_zoommap: 'Zoom-карта'
+            cat_zoommap: 'Zoom-карта',
+            select_template_to_start: 'Начните свой проект с выбора шаблона'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -177,7 +178,8 @@ var App = App || {};
             cat_memory: 'Memory games',
             cat_fb_pano: 'Facebook panoramas',
             cat_timeline: 'Timelines',
-            cat_zoommap: 'Zoom-maps'
+            cat_zoommap: 'Zoom-maps',
+            select_template_to_start: 'Select a template to start your project'
         }
     },
     /**

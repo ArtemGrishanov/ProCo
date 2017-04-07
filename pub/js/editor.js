@@ -448,10 +448,10 @@ var Editor = {};
         else if (previewMode === 'desktop') {
             $(appIframe).css('border','0')
                 .css('width',appContainerSize.width+'px')
-                .css('height',appContainerSize.height+'px')
+                .css('height',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
                 //.css('maxWidth',appContainerSize.width)
                 .css('maxWidth','100%')
-                .css('maxHeight',appContainerSize.height);
+                .css('maxHeight',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
         }
     }
 
@@ -629,6 +629,7 @@ var Editor = {};
             var deleted = false;
             for (var j = 0; j < types.length; j++) {
                 if (uiControlsInfo[i].type === types[j]) {
+                    uiControlsInfo[i].control.destroy();
                     uiControlsInfo.splice(i, 1);
                     deleted = true;
                     break;
@@ -690,8 +691,16 @@ var Editor = {};
      * TODO
      * РЕФАКТОРИНГ КОНТРОЛОВ
      *
+     * - массив uiControlsInfo конфюзит и очень не прозрачный
      * - Выделение панелей с контролами в самостоятельные MVC сервисы для организации кода
      * - Более экономные сортировки и операции показа/скрытия и создания. Без дублирования операций
+     * - Контролы должны быть максимально отделены от редактора по логике и окружению. Чтобы их можно было даже автоматически тестировать
+     * - то что каждый раз контролы пересоздаются и директивы перезагружаются
+     * -
+     *
+     *
+     * РАБОЧЕЕ ПОЛЕ workspace
+     * - тоже отделить от редактора как компонент
      * -
      *
      */
@@ -791,6 +800,7 @@ var Editor = {};
     }
 
     /**
+     * полное пересоздание всех контролов
      * Привязать элементы управления к Engine.getAppProperties
      * Создаются только новые элементы управления, которые необходимы.
      * Может быть добавлен/удален слайд, поэтому надо только для него сделать обновление.
@@ -803,7 +813,7 @@ var Editor = {};
      * @param {array} [startActiveScreens] - стартовые экраны для показа
      */
     function syncUIControlsToAppProperties(startActiveScreens) {
-        //TODO название метода не соответствует тому что здесь: полное пересоздание всех контролов
+        clearControls(['workspace', 'quickcontrolpanel', 'controlpanel']);
         uiControlsInfo = [];
         $('#id-static-no_filter_controls').empty();
         $('#id-static_controls_cnt').empty();
@@ -1465,9 +1475,9 @@ var Editor = {};
         $('#id-product_iframe_cnt').removeClass('__mob');
         $(appIframe).css('border','0')
             .css('width',appContainerSize.width+'px')
-            .css('height',appContainerSize.height+'px')
-            .css('maxWidth',appContainerSize.width)
-            .css('maxHeight',appContainerSize.height);
+            .css('height',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
+            .css('maxWidth',appContainerSize.width+'px')
+            .css('maxHeight',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
         // нужно перезапустить приложение чтобы оно корректно обработало свой новый размер
         Engine.restartApp();
     }

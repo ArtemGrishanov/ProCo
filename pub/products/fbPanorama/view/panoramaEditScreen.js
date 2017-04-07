@@ -75,7 +75,7 @@ var PanoramaEditScreen = MutApp.Screen.extend({
         this.model.bind("change:panoramaImage", function () {
             this.imageProgressShown = false;
             this.render();
-            this.model.application.showScreen(this);
+//            this.model.application.showScreen(this);
         }, this);
     },
 

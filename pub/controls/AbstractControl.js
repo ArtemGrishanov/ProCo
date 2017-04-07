@@ -20,6 +20,7 @@ var AbstractControl = {
      */
     init: function(propertyString, directiveName, parent, productDOMElement, params) {
         this.self = this;
+        this.destroyed = false;
         this.directiveName = directiveName;
         if (parent) {
             this.$parent = $(parent);
@@ -58,19 +59,29 @@ var AbstractControl = {
      * Загружает html вьюхи и добавляет его в родительский элемент
      */
     loadDirective: function(callback) {
-        if (this.directiveName) {
+        if (this.directiveName && this.destroyed !== true) {
             var control = this;
             var t = {
                 run: function () {
+//                    console.log('ABSTRACT_CONTROL: '+control.propertyString+'.'+control.directiveName+' run started');
                     var $d = $('<div></div>').load(config.common.home+'controls/view/'+control.directiveName+'.html', (function(response, status, xhr) {
-                        if (control.$parent) {
-                            control.$directive = $($d.html());
-                            control.$directive.attr('data-app-property',control.propertyString);
-                            control.$parent.append(control.$directive);
-                            callback.call(control);
-                            Queue.release(this);
+                        if (control.destroyed !== true) {
+                            if (control.$parent) {
+                                control.$directive = $($d.html());
+                                control.$directive.attr('data-app-property',control.propertyString);
+                                control.$parent.append(control.$directive);
+                                callback.call(control);
+//                                Queue.release(this);
+                            }
                         }
+                        Queue.release(this);
+//                        var duration = new Date().getTime() - this.startTime;
+//                        console.log('ABSTRACT_CONTROL: '+control.propertyString+'.'+control.directiveName+' DIRECTIVE LOADED. destroyed=='+control.destroyed+' Duration='+duration);
                     }).bind(this));
+                },
+                onFail: function() {
+//                    var duration = new Date().getTime() - this.startTime;
+//                    console.log('ABSTRACT_CONTROL: '+control.propertyString+'.'+control.directiveName+' ON FAIL. destroyed=='+control.destroyed+' Duration='+duration);
                 }
             };
             var cfg = this.getControlConfig();
@@ -102,5 +113,16 @@ var AbstractControl = {
             }
         }
         return null;
+    },
+
+    /**
+     * Уничтожаем контрол
+     * Выставить признак уничтожения, чтобы в возможных оставшихся задачах и обработчиках стал доступен этот признак
+     */
+    destroy: function() {
+        this.destroyed = true;
+        if (this.$directive) {
+            this.$directive.remove();
+        }
     }
 };

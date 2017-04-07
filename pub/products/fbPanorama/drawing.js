@@ -5,7 +5,8 @@ var panoDrawing = {};
 (function canvas(global) {
     // эти настройки покаж жестко заданы
     // выставлены на примере картинки 6000x3562, но на 1600x1000 уже другие надо
-    var PIN_PADDING = 10, PIN_COLOR = '#33bbed', PIN_FONT_COLOR = '#ffffff', PIN_FONT_HEIGHT = 14, BACK_COLOR = '#aaa', PIN_FONT_FAMILY = 'Arial';
+    var PIN_PADDING = 10, PIN_COLOR = '#33bbed', PIN_FONT_COLOR = '#ffffff', PIN_FONT_HEIGHT = 14,
+        BACK_COLOR = '#aaa', PIN_FONT_FAMILY = 'Arial', LOGO_RIGHT = 10, LOGO_BOTTOM = 10;
     /**
      * Зона размытия между картинкой и полосками
      * @type {number}
@@ -70,6 +71,7 @@ var panoDrawing = {};
      * @param {number} param.srcWidth
      * @param {number} param.srcHeight
      * @param {number} param.pinScale
+     * @param {Image} param.logo
      */
     function createPanoCanvas(param) {
         // размер картинки может оказаться больше чем srcWidth srcHeight, так как конфигурация берется из расчета максимальной ширины 6000px
@@ -107,6 +109,16 @@ var panoDrawing = {};
             ctx.drawImage(param.img, 0, 0);
         }
 
+        if (param.logo) {
+            var lw = panoCanvas.width / 16;
+            var lh = lw * param.logo.height/param.logo.width;
+            ctx.drawImage(param.logo,
+                panoCanvas.width - lw - LOGO_RIGHT,
+                panoCanvas.height - lh - LOGO_BOTTOM,
+                lw,
+                lh
+            );
+        }
 
         if (param.pins) {
             var p = null;
@@ -121,6 +133,7 @@ var panoDrawing = {};
                 });
             }
         }
+
         return panoCanvas;
     }
 
