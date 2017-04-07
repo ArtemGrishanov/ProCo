@@ -124,7 +124,13 @@ var App = App || {};
             my_projects: 'Мои проекты',
             edit_template: 'Редактировать',
             preview_template: 'Посмотреть',
-            login_explanation: 'Войдите, чтобы получить больше возможностей'
+            login_explanation: 'Войдите, чтобы получить больше возможностей',
+            cat_all: 'Все',
+            cat_quizes: 'Тесты',
+            cat_memory: 'Мемори',
+            cat_fb_pano: 'Facebook панорамы',
+            cat_timeline: 'Таймлайн',
+            cat_zoommap: 'Zoom-карта'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -165,7 +171,13 @@ var App = App || {};
             format_card_fbpano: 'Upload photo, add marks and post to your Facebook timeline!',
             edit_template: 'Edit',
             preview_template: 'Preview',
-            login_explanation: 'Please, sign in to get more options'
+            login_explanation: 'Please, sign in to get more options',
+            cat_all: 'All',
+            cat_quizes: 'Quizes',
+            cat_memory: 'Memory games',
+            cat_fb_pano: 'Facebook panoramas',
+            cat_timeline: 'Timelines',
+            cat_zoommap: 'Zoom-maps'
         }
     },
     /**

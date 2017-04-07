@@ -206,7 +206,7 @@ var storefrontView = {};
         $('.js-category').click(function(e) {
             $('.js-category').removeClass('__selected');
             var catId = $(e.currentTarget).addClass('__selected').attr('data-category');
-            showCategory(catId);
+            showCategory(catId)
         });
 
         // init 'all' category

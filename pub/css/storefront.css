@@ -70,12 +70,13 @@ html, body {
     text-align: center;
 }
 .st_filter {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 200px;
     height: 100%;
     background-color: #fff;
+    padding-top: 56px; /* height of .top */
 }
 .st_filter_ctg_i {
     padding: 18px 0 18px 25px;
@@ -320,6 +321,7 @@ html, body {
         position: relative;
         width: auto;
         height: auto;
+        padding-top: 0;
     }
     .st_templates_wr {
         padding: 20px;
