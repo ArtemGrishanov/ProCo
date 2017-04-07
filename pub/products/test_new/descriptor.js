@@ -524,10 +524,12 @@ descriptor.rules = {
                 params: {
                     filter: 'ok',
                     onClick: function(param) {
+                        var activeStyle = 'background-color:#1cbf61;';
+                        var style = 'height:24px;border-radius:4px;padding:0px 4px 4px;font-size:14px;';
                         // получаем ид опции
                         var optionId = $(this.$productDomElement).attr('data-id');
                         if (optionId) {
-                            this.setView('<div style="background-color:green;"><img src="controls/i/Panel-set-as-right.png"></div>');
+                            this.setView('<div style="'+activeStyle+style+'"><img style="padding-bottom:2px" src="controls/i/Panel-set-as-right.png">Верный ответ</div>');
                             param.app._models[0].setCorrectAnswer(optionId);
                         }
                         else {
@@ -535,15 +537,17 @@ descriptor.rules = {
                         }
                     },
                     onShow: function(param) {
+                        var activeStyle = 'background-color:#1cbf61;';
+                        var style = 'height:24px;border-radius:4px;padding:0px 4px 4px;font-size:14px;';
                         var optionId = $(this.$productDomElement).attr('data-id');
                         var questionIndex = $(this.$productDomElement).attr('data-question-index');
                         if (optionId && questionIndex) {
                             var correctId = param.app._models[0].getCorrectAnswerId(questionIndex);
                             if (correctId===optionId) {
-                                this.setView('<div style="background-color:green;"><img src="controls/i/Panel-set-as-right.png"></div>');
+                                this.setView('<div style="'+activeStyle+style+'"><img style="padding-bottom:2px" src="controls/i/Panel-set-as-right.png">Верный ответ</div>');
                             }
                             else {
-                                this.setView('<div style="cursor:pointer"><img src="controls/i/Panel-set-as-right.png"></div>');
+                                this.setView('<div style="'+style+'cursor:pointer"><img style="padding-bottom:2px" src="controls/i/Panel-set-as-right.png">Верный ответ</div>');
                             }
                         }
                         else {
