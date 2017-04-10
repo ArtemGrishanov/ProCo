@@ -17,7 +17,7 @@ var StartScreen = MutApp.Screen.extend({
      * Метка которая показывается в редакторе, рядом с превью экрана
      * @see MutApp
      */
-    name: 'Стартовый экран',
+    name: {EN:'Start screen',RU:'Стартовый экран'},
 
     /**
      * @see MutApp

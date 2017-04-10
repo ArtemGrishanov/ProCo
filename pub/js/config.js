@@ -364,7 +364,7 @@ var config = {
                 entities: [
                     {
                         //Интернет мемы http://p.testix.me/1045302892173346/13e4d14521/
-                        name: 'Интернет-мемы',
+                        name: {RU:'Интернет-мемы',EN:'Online memes'},
                         img: 'http://p.testix.me/storefront/memoriz/13e4d14521.jpg',
                         published: 'http://p.testix.me/storefront/memoriz/13e4d14521/p_index.html',
                         // in proconstructor/storefront/memoriz
@@ -374,7 +374,7 @@ var config = {
                     },
                     {
                         //Футболисты http://p.testix.me/1045302892173346/53b37bf1e9
-                        name: 'Футболисты',
+                        name: {RU:'Футболисты',EN:'Soccer players'},
                         img: 'http://p.testix.me/storefront/memoriz/53b37bf1e9.jpg',
                         published: 'http://p.testix.me/storefront/memoriz/53b37bf1e9/p_index.html',
                         // in proconstructor/storefront/memoriz
@@ -384,7 +384,7 @@ var config = {
                     },
                     {
                         //Фильмы и режиссеры  http://p.testix.me/121947341568004/6842f5cd6d/
-                        name: 'Кино и режиссеры',
+                        name: {RU:'Кино и режиссеры',EN:'Movies and directors'},
                         img: 'http://p.testix.me/storefront/memoriz/6842f5cd6d.jpg',
                         published: 'http://p.testix.me/storefront/memoriz/6842f5cd6d/p_index.html',
                         // in proconstructor/storefront/memoriz
@@ -395,7 +395,7 @@ var config = {
                     {
                         //Автомобили http://p.testix.me/121947341568004/06cc56a6dc/ republished by bot
                         // http://p.testix.me/1045302892173346/06cc56a6dc (Oleg origin)
-                        name: 'Автомобили',
+                        name: {RU:'Автомобили',EN:'Cars'},
                         img: 'http://p.testix.me/storefront/memoriz/06cc56a6dc.jpg',
                         published: 'http://p.testix.me/storefront/memoriz/06cc56a6dc/p_index.html',
                         // in proconstructor/storefront/memoriz
@@ -406,7 +406,7 @@ var config = {
                     {
                         //Красотки http://p.testix.me/121947341568004/e78a9cd599/ republished by bot
                         // http://p.testix.me/1045302892173346/e78a9cd599/ (Oleg origin)
-                        name: 'Красотки',
+                        name: {RU:'Красотки',EN:'Beauty'},
                         img: 'http://p.testix.me/storefront/memoriz/e78a9cd599.jpg',
                         published: 'http://p.testix.me/storefront/memoriz/e78a9cd599/p_index.html',
                         // in proconstructor/storefront/memoriz
@@ -421,7 +421,7 @@ var config = {
                 enabled: true,
                 entities: [
                     {
-                        name: 'Римские руины',
+                        name: {RU:'Римские руины',EN:'Roman ruins'},
                         img: 'http://p.testix.me/storefront/fbPanorama/fa724312dd.jpg',
                         published: null,
                         externalLink: 'https://www.facebook.com/photo.php?fbid=266745550421515&set=a.256225194806884.1073741833.100012582155261&type=3&theater',
@@ -434,11 +434,11 @@ var config = {
                 ]
             },
             timeline: {
-                typeLabel: 'Таймлайн',
+                typeLabel: {RU:'Таймлайн',EN:'Timeline'},
                 enabled: false
             },
             zoommap: {
-                typeLabel: 'Zoom-карта',
+                typeLabel: {RU:'Zoom-карта',EN:'Zoom-map'},
                 enabled: false
             }
         }
@@ -655,6 +655,7 @@ var config = {
         AddArrayElementControl: {
             defaultDirectiveIndex: 0,
             directives: ['addquickbutton','addscreenbutton'],
+            localizeDirective: true, // вызвать App.localize для директивы после загрузки
             parentId: 'id-control_cnt',
             type: 'quickcontrolpanel' // контрол появляется на всплывающей панельке рядом с элементом
         },
@@ -673,6 +674,7 @@ var config = {
         },
         ChooseImage: {
             defaultDirectiveIndex: 0,
+            localizeDirective: true,
             directives: ['chooseimage','chooseimagepreview'],
             parentId: 'id-static_controls_cnt',
             type: 'controlpanel'
@@ -743,6 +745,10 @@ var config = {
              * zIndex подсказок
              */
             hintZIndex: 30,
+            /**
+             * Диалог выбора, например выбор типа вопроса теста selectDialog.js
+             */
+            selectDialogZIndex: 35,
             /**
              * z-index панели быстрого редактирования, которая всплывает рядом с элементом и указывает на него
              */

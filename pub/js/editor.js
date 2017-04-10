@@ -208,6 +208,9 @@ var Editor = {};
         $('.js-slide_arr_left').mousedown(toLeftArrSlideClick);
         $('.js-slide_arr_right').mousedown(toRightArrSlideClick);
         setInterval(slidesArrowControlInterval, 30);
+
+        // установка placeholder по особому, так как это атрибут
+        $('.js-proj_name').attr('placeholder', App.getText('enter_project_name'));
     }
 
     /**
@@ -844,14 +847,15 @@ var Editor = {};
                                 // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на панель настроек
                                 var $cc = $($('#id-static_control_cnt_template').html()).appendTo(parentPanelId);
                                 if (ap.label) {
+                                    var textLabel = (typeof ap.label==='string')? ap.label: ap.label[App.getLang()];
                                     if (config.controls[c.name].labelInControl === true) {
                                         // метка находится внутри самого контрола а не вовне как обычно
                                         // UI контрола будет загружен после, поэтому пробрасываем внутрь контрола label
-                                        c.params.__label = ap.label;
+                                        c.params.__label = textLabel;
                                         $cc.find('.js-label').remove();
                                     }
                                     else {
-                                        $cc.find('.js-label').text(ap.label);
+                                        $cc.find('.js-label').text(textLabel);
                                     }
                                 }
                                 if (ap.filter === true) {
@@ -1063,6 +1067,7 @@ var Editor = {};
         var ctrl = null;
         params = params || {};
         params.iFrame = $('#id-product_screens_cnt')[0];
+        params.localizeDirective = config.controls[name].localizeDirective;
 //        try {
             // существует ли такой вью, если нет, берем по умолчанию
             if (viewName) {

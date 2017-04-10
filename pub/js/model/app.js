@@ -127,11 +127,44 @@ var App = App || {};
             login_explanation: 'Войдите, чтобы получить больше возможностей',
             cat_all: 'Все',
             cat_quizes: 'Тесты',
+            cat_quiz_desc: 'Тесты – один из самых распространенных видов игровых механик и выгодная альтернатива стандартным рекламным форматам. Создавайте красивые тесты, которыми люди будут делиться в социальных сетях.',
             cat_memory: 'Мемори',
+            cat_memory_desc: 'Покажите связь предметов или явлений при помощи механики «Мемори». Каждая карточка имеет свою пару. Позвольте вашим читателям найти соответствие.',
             cat_fb_pano: 'Facebook панорамы',
+            cat_pano_desc: 'Создавайте собственные экскурсии по интересным местам. Загружайте свои фотографии, добавляйте комментарии прямо на фото и публикуйте в виде панорамы 360° на Facebook.',
+            cat_pano_header: 'Панорамы 360° для Facebook',
             cat_timeline: 'Таймлайн',
+            timelines: 'Таймлайны',
+            cat_timeline_desc: 'Лучший способ наглядно показать хронологию событий: эволюцию технологий, последовательность политических решений или этапы развития вашей компании.',
             cat_zoommap: 'Zoom-карта',
-            select_template_to_start: 'Начните свой проект с выбора шаблона'
+            zoom_maps: 'Zoom-карты',
+            cat_zoommap_desc: 'Отличная возможность акцентировать внимание на деталях: показать преимущества нового продукта, разобраться в нюансах живописного шедевра или представить новую коллекцию одежды.',
+            select_template_to_start: 'Начните свой проект с выбора шаблона',
+            correct_answer: 'Верный ответ',
+            add_quiz_option: 'Добавить ответ',
+            choose_image: 'Выбрать картинку',
+            save_template: 'Сохранить',
+            preview: 'Просмотр',
+            publish: 'Опубликовать',
+            sign_in: 'Войти',
+            sign_out: 'Выйти',
+            back: 'Назад',
+            enter_project_name: 'Введите имя проекта',
+            choose: 'Выбрать',
+            cancel: 'Отменв',
+            select_dialog_ok: 'Добавить',
+            new_slide: 'Новый слайд',
+            please_wait: 'Пожалуйста, подождите...',
+            ok: 'Ok',
+            block_editor_on_mob: 'Вы находитесь на ознакомительной мобильной версии Testix.me.<br><br>Чтобы использовать конструктор Testix, перейдите на полную версию сайта.',
+            choose_quiz_template: 'Выберите шаблон теста',
+            mini_games_memory: 'Мини игры. Мемори',
+            choose_memory_game: 'Выберите шаблон мемори',
+            choose_fbpano_template: 'Выберите шаблон Facebook-панорамы',
+            request_demo: 'Запросить демо',
+            write_message: 'Написать сообщение',
+            new_formats_request: 'Хотите заранее узнавать о новых механиках?<br>Напишите нам!',
+            like_temp_create: 'Понравился шаблон? Создайте свой проект!'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -151,7 +184,7 @@ var App = App || {};
             editor_desc: 'Convenient online Testix editor allows you to create high-quality quiz without programming skills,<br>and intuitive interface allows a designer to do without.',
             idea_publish: 'One step from idea to publication',
             create_in_blowser: 'Create special projects directly in your browser.<br>Get a link to your test or the code to insert into your website or blog.',
-            learn_more: 'Want to know more about Testix? Write to us!',
+            learn_more: 'Want to know more about Testix? Write us!',
             send_message: 'Send message',
             watch_video: 'Video',
             create_spec: 'Create project for free',
@@ -175,11 +208,44 @@ var App = App || {};
             login_explanation: 'Please, sign in to get more options',
             cat_all: 'All',
             cat_quizes: 'Quizes',
+            cat_quiz_desc: 'Tests - one of the most common types of game mechanics and a excellent alternative to standard advertising formats. Create beautiful tests that people will share in social networks.',
             cat_memory: 'Memory games',
+            cat_memory_desc: 'Show the connection of objects or phenomena with the help of Memory game. Each card has its own pair. Let your readers find a match.',
             cat_fb_pano: 'Facebook panoramas',
+            cat_pano_desc: 'Create your own tours to interesting places. Upload your photos, add comments directly on the photo and publish panorama 360 to Facebook.',
+            cat_pano_header: 'Facebook 360 photos',
             cat_timeline: 'Timelines',
-            cat_zoommap: 'Zoom-maps',
-            select_template_to_start: 'Select a template to start your project'
+            timelines: 'Timelines',
+            cat_timeline_desc: 'The best way to clearly show the chronology of events: the evolution of technology, policy decisions or your company growth.',
+            cat_zoommap: 'Zoom-map',
+            zoom_maps: 'Zoom-maps',
+            cat_zoommap_desc: 'A great opportunity to focus on details: to show the advantages of a new product, to understand the nuances of the picture or present a new collection of clothes.',
+            select_template_to_start: 'Select a template to start your project',
+            correct_answer: 'Correct answer',
+            add_quiz_option: 'Add option',
+            choose_image: 'Choose image',
+            save_template: 'Save',
+            preview: 'Preview',
+            publish: 'Publish',
+            sign_in: 'Sign in',
+            sign_out: 'Sign out',
+            back: 'Back',
+            enter_project_name: 'Input project name',
+            choose: 'Choose',
+            cancel: 'Cancel',
+            select_dialog_ok: 'Ok',
+            new_slide: 'New slide',
+            please_wait: 'Please, wait...',
+            ok: 'Ok',
+            block_editor_on_mob: 'You are on the mobile version of Testix.me.<br><br>Please, use desktop to access the Testix editor.',
+            choose_quiz_template: 'Choose quiz template',
+            mini_games_memory: 'Mini games. Memory',
+            choose_memory_game: 'Choose memory template',
+            choose_fbpano_template: 'Choose panorama template',
+            request_demo: 'Request demo',
+            write_message: 'Write message',
+            new_formats_request: 'Want to know in advance about new mechanics?<br>Contact us!',
+            like_temp_create: 'Like the template? Create your project!'
         }
     },
     /**
@@ -266,6 +332,15 @@ var App = App || {};
      */
     function getLang() {
         return language;
+    }
+
+    /**
+     * Вернуть значение ключа для текущего языка
+     * @param key
+     * @returns {}
+     */
+    function getText(key) {
+        return dict[getLang()][key];
     }
 
     /**
@@ -858,6 +933,7 @@ var App = App || {};
     global.setLang = setLang;
     global.getLang = getLang;
     global.localize = localize;
+    global.getText = getText;
 
     // шаблоны. Получить
     global.getUserTemplates = function() { return (userTemplateCollection !== null) ? userTemplateCollection.templates: null; }

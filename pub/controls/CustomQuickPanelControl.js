@@ -12,6 +12,7 @@ function CustomQuickPanelControl(propertyString, directiveName, $parent, product
     this.loadDirective(function(response, status, xhr){
         if (this._view) {
             this.$directive.empty().append(this._view);
+            App.localize(this.$directive);
         }
     });
 
@@ -35,6 +36,7 @@ function CustomQuickPanelControl(propertyString, directiveName, $parent, product
         this._view = v;
         if (this.$directive) {
             this.$directive.empty().append(this._view);
+            App.localize(this.$directive);
             this.$directive.off('click').on('click', this._onClick.bind(this));
         }
     }

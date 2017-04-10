@@ -126,7 +126,9 @@ SlideGroupControl.prototype.updateScreens = function() {
         }
 
         if (myScreens && myScreens.length > 0) {
-            this.$directive.find('.js-slide_group_name').text(myScreens[0].name);
+            this.$directive.find('.js-slide_group_name').text(
+                (typeof myScreens[0].name === 'string') ? myScreens[0].name: myScreens[0].name[App.getLang()]
+            );
         }
 
         this.collapsed = this.isCollapsedScreens(myScreens);
@@ -421,7 +423,7 @@ SlideGroupControl.prototype.addNewItem = function(position, newItem) {
                     });
                 }
                 Editor.showSelectDialog({
-                    caption: 'Новый слайд',
+                    caption: App.getText('new_slide'),
                     options: selectOptions,
                     callback: (function(selectedOptionId) {
                         if (selectedOptionId) {

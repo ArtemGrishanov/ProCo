@@ -43,7 +43,9 @@ function SelectDialog(params) {
                         this.selectedOptionId = $t.attr('data-id');
                     }).bind(this));
                 }
-                $e.attr('data-id',options[i].id).find('.js-option_label').text(options[i].label);
+                $e.attr('data-id',options[i].id).find('.js-option_label').text(
+                    (typeof options[i].label === 'string') ? options[i].label: options[i].label[App.getLang()]
+                );
                 if (options[i].icon) {
                     $e.find('.js-option_icon').css('backgroundImage','url("'+options[i].icon+'")');
                 }
@@ -65,6 +67,8 @@ function SelectDialog(params) {
     // init section
     var html = $('#id-select_dialog_template').html();
     this.view = $(html);
+    $(this.view).css('zIndex',config.editor.ui.selectDialogZIndex);
+    App.localize(this.view);
     this.loader = this.view.find('.js-loader');
     this.cnt = this.view.find('.js-options_cnt');
     this.view.find('.js-caption').text(params.caption);

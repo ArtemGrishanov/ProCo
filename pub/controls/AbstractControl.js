@@ -27,6 +27,9 @@ var AbstractControl = {
         }
         this.propertyString = propertyString;
         this.params = params;
+        if (typeof this.params.localizeDirective !== 'boolean') {
+            this.params.localizeDirective = false;
+        }
 //        if (this.directiveName) {
 //            // в некоторых контролах нет никакой визуальной части
 //            this.$directive = this.addDirective();
@@ -68,6 +71,9 @@ var AbstractControl = {
                         if (control.destroyed !== true) {
                             if (control.$parent) {
                                 control.$directive = $($d.html());
+                                if (control.params.localizeDirective === true) {
+                                    App.localize(control.$directive);
+                                }
                                 control.$directive.attr('data-app-property',control.propertyString);
                                 control.$parent.append(control.$directive);
                                 callback.call(control);
