@@ -145,7 +145,7 @@ function ResourceManager(params) {
         // инициализация
         var params = {
             showLoader: true,
-            caption: 'Выберите ресурс',
+            caption: App.getText('choose_res'),
             // пока не указываем ресурсы, они будут подгружены позднее
             options: null,
             callback: (function(selectedOptionId) {

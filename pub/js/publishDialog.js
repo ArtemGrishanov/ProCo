@@ -8,6 +8,7 @@
  */
 function PublishDialog(params) {
     this.view = $($('#id-publish_dialog_template').html());
+    App.localize(this.view);
     if (params && params.link) {
         this.view.find('.js-project_link').val(params.link);
         this.view.find('.js-view').attr('href',params.link);
@@ -47,7 +48,7 @@ function PublishDialog(params) {
         var cLink = new Clipboard('.js-copy_link');
         cLink.on('success', function(event) {
             event.clearSelection();
-            $(event.trigger).text('Скопировано');
+            $(event.trigger).text(App.getText('copied'));
         });
         cLink.on('error', function(event) {
 
@@ -55,7 +56,7 @@ function PublishDialog(params) {
         var cEmbedCode = new Clipboard('.js-copy_embed_code');
         cEmbedCode.on('success', function(event) {
             event.clearSelection();
-            $(event.trigger).text('Скопировано');
+            $(event.trigger).text(App.getText('copied'));
         });
         cEmbedCode.on('error', function(event) {
 

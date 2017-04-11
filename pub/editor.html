@@ -271,8 +271,8 @@
                     <br><br>
                     <div>
                         <input id="id-copy_link_input" class="pd_link_input js-project_link" readonly="readonly" value="http://example.com"/>
-                        <span class="pbtn __blue js-copy_link" data-clipboard-target="#id-copy_link_input">Копировать</span>
-                        <a href="#" target="_blank" class="pbtn js-view">Посмотреть</a>
+                        <span class="pbtn __blue js-copy_link pts_string pts_copy" data-clipboard-target="#id-copy_link_input">Копировать</span>
+                        <a href="#" target="_blank" class="pbtn js-view pts_string pts_show_proj">Посмотреть</a>
                     </div>
                     <!--<div class="pd_annotation_wr">-->
                         <!--<p class="pd_ann">Поделитесь вашим тестом в социальный сетях</p>-->
@@ -290,10 +290,10 @@
                         <textarea id="id-copy_embedcode_input" class="pd_embed_area js-embed_code" readonly="readonly"></textarea>
                     </div>
                     <div class="pd_col __w150">
-                        <span class="pbtn __blue js-copy_embed_code" data-clipboard-target="#id-copy_embedcode_input">Копировать</span>
+                        <span class="pbtn __blue js-copy_embed_code pts_string pts_copy" data-clipboard-target="#id-copy_embedcode_input">Копировать</span>
                         <div class="pd_annotation_wr __b0">
-                            <span class="tx">Не получается?</span>
-                            <a href="mailto:info@testix.me" target="_top" class="link">Свяжитесь с нами</a>
+                            <span class="tx pts_string pts_have_problems">Не получается?</span>
+                            <a href="mailto:info@testix.me" target="_top" class="link pts_string pts_contact_us">Свяжитесь с нами</a>
                         </div>
                     </div>
                     <!--<div class="pd_annotation_wr">-->
@@ -376,9 +376,6 @@
     <!-- endbuild -->
     <script>
         $(document).ready(function() {
-            if (App.isMobile() === true) {
-                Modal.showMessage({text:'Редактором удобнее пользоваться в полной версии сайта'});
-            }
             if (config.common.facebookAuthEnabled === true) {
                 App.on(FB_CONNECTED, function(result) {
                     if (result === 'connected') {
@@ -387,7 +384,7 @@
                     }
                     else {
                         // canClose:false - значит что, этот леер нельзя закрыть
-                        Modal.showLogin({text:'Войдите для создания своего проекта',canClose:false});
+                        Modal.showLogin({text:App.getText('editor_mob_expl2'),canClose:false});
                     }
                 });
                 App.start();
@@ -395,6 +392,9 @@
             else {
                 App.start();
                 Editor.start();
+            }
+            if (App.isMobile() === true) {
+                Modal.showMessage({text:App.getText('editor_mob_expl')});
             }
         })
     </script>

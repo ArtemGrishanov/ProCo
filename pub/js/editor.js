@@ -261,7 +261,7 @@ var Editor = {};
         if (src) {
             appName = loadedAppName;
             if (appName === 'fbPanorama') {
-                $('.js-app_publish').text('Опубликовать на Facebook');
+                $('.js-app_publish').text(App.getText('publish_to_fb'));
             }
             iframeWindow = null;
             appIframe = document.createElement('iframe');

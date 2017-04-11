@@ -174,7 +174,16 @@ var App = App || {};
             pano_perm_expl2: 'В появившемся окне Facebook нажмите "Разрешить"',
             proj_published: 'Ваш проект опубликован!',
             proj_link: 'Ссылка на проект',
-            embed_code: 'Код для вставки на сайт или блог'
+            embed_code: 'Код для вставки на сайт или блог',
+            publish_to_fb: 'Опубликовать в Facebook',
+            copy: 'Копировать',
+            show_proj: 'Посмотреть',
+            have_problems: 'Не получается?',
+            contact_us: 'Свяжитесь с нами',
+            editor_mob_expl: 'Редактором удобнее пользоваться в полной версии сайта',
+            editor_mob_expl2: 'Войдите для создания своего проекта',
+            copied: 'Скопировано',
+            choose_res: 'Выберите ресурс'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -265,7 +274,16 @@ var App = App || {};
             pano_perm_expl2: 'Press "Allow" in Facebook window',
             proj_published: 'Your project was published!',
             proj_link: 'Project link',
-            embed_code: 'Embed code for your site'
+            embed_code: 'Embed code for your site',
+            publish_to_fb: 'Publish to Facebook',
+            copy: 'Copy',
+            show_proj: 'View',
+            have_problems: 'Have problems?',
+            contact_us: 'Contact us',
+            editor_mob_expl: 'The editor is more convenient to use in the full version of the site',
+            editor_mob_expl2: 'Sign in to use the editor',
+            copied: 'Copied',
+            choose_res: 'Choose resource'
         }
     },
     /**
