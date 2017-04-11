@@ -164,7 +164,17 @@ var App = App || {};
             request_demo: 'Запросить демо',
             write_message: 'Написать сообщение',
             new_formats_request: 'Хотите заранее узнавать о новых механиках?<br>Напишите нам!',
-            like_temp_create: 'Понравился шаблон? Создайте свой проект!'
+            like_temp_create: 'Понравился шаблон? Создайте свой проект!',
+            sharing_expl: 'Это изображение появится в социальной сети,<br>если пользователь поделится результатом ',
+            return_autoimage: 'Вернуть автокартинку',
+            upload: 'Загрузить',
+            recom_im_size: 'Рекомендуемый размер изображения: ',
+            cont: 'Продолжить',
+            pano_perm_expl: 'Чтобы опубликовать панораму на Facebook,<br>нам потребуются от Вас дополнительные разрешения.',
+            pano_perm_expl2: 'В появившемся окне Facebook нажмите "Разрешить"',
+            proj_published: 'Ваш проект опубликован!',
+            proj_link: 'Ссылка на проект',
+            embed_code: 'Код для вставки на сайт или блог'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -245,7 +255,17 @@ var App = App || {};
             request_demo: 'Request demo',
             write_message: 'Write message',
             new_formats_request: 'Want to know in advance about new mechanics?<br>Contact us!',
-            like_temp_create: 'Like the template? Create your project!'
+            like_temp_create: 'Like the template? Create your project!',
+            sharing_expl: 'This image will be posted in social network,<br>if user shares result ',
+            return_autoimage: 'Return auto image',
+            upload: 'Upload',
+            recom_im_size: 'Recommended image size: ',
+            cont: 'Continue',
+            pano_perm_expl: 'We need extra permissions<br>to publish panorama to Facebook',
+            pano_perm_expl2: 'Press "Allow" in Facebook window',
+            proj_published: 'Your project was published!',
+            proj_link: 'Project link',
+            embed_code: 'Embed code for your site'
         }
     },
     /**
