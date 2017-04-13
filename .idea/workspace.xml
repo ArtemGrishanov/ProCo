@@ -32,10 +32,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="descriptor.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/descriptor.js">
+      <file leaf-file-name="panoramaEditScreen.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/view/panoramaEditScreen.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="433" column="59" selection-start="13682" selection-end="13682" vertical-scroll-proportion="0.0" vertical-offset="6219" max-vertical-offset="7545">
+            <state line="177" column="57" selection-start="6333" selection-end="6333" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3180">
               <folding />
             </state>
           </provider>
@@ -44,7 +44,16 @@
       <file leaf-file-name="drawing.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/drawing.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="72" column="37" selection-start="2644" selection-end="2644" vertical-scroll-proportion="0.60413796" vertical-offset="642" max-vertical-offset="3870">
+            <state line="71" column="33" selection-start="2510" selection-end="2510" vertical-scroll-proportion="0.6642857" vertical-offset="600" max-vertical-offset="4020">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="style.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/css/style.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="30" column="17" selection-start="663" selection-end="663" vertical-scroll-proportion="0.0" vertical-offset="55" max-vertical-offset="1650">
               <folding />
             </state>
           </provider>
@@ -82,13 +91,14 @@
         <option value="$PROJECT_DIR$/pub/controls/Alternative.js" />
         <option value="$PROJECT_DIR$/pub/js/editor.js" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/model/m.js" />
-        <option value="$PROJECT_DIR$/pub/products/fbPanorama/css/style.css" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/descriptor.js" />
+        <option value="$PROJECT_DIR$/pub/products/fbPanorama/css/style.css" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/drawing.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="14" />
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="873" />
@@ -331,7 +341,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <frame x="14" y="23" width="1440" height="873" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -381,13 +391,6 @@
     <entry file="file://$PROJECT_DIR$/pub/controls/AbstractControl.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="21" column="15" selection-start="821" selection-end="823" vertical-scroll-proportion="0.33333334" vertical-offset="86" max-vertical-offset="2100">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/view/panoramaEditScreen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="175" column="40" selection-start="6208" selection-end="6216" vertical-scroll-proportion="-12.32" vertical-offset="2317" max-vertical-offset="3180">
           <folding />
         </state>
       </provider>
@@ -444,13 +447,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="97" column="9" selection-start="2128" selection-end="2128" vertical-scroll-proportion="0.0" vertical-offset="895" max-vertical-offset="1620">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/descriptor.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="433" column="59" selection-start="13682" selection-end="13682" vertical-scroll-proportion="0.0" vertical-offset="6219" max-vertical-offset="7545">
@@ -465,9 +461,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/view/panoramaEditScreen.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="177" column="57" selection-start="6333" selection-end="6333" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3180">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="17" selection-start="663" selection-end="663" vertical-scroll-proportion="0.0" vertical-offset="55" max-vertical-offset="1650">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/drawing.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="72" column="37" selection-start="2644" selection-end="2644" vertical-scroll-proportion="0.60413796" vertical-offset="642" max-vertical-offset="3870">
+        <state line="71" column="33" selection-start="2510" selection-end="2510" vertical-scroll-proportion="0.6642857" vertical-offset="600" max-vertical-offset="4020">
           <folding />
         </state>
       </provider>

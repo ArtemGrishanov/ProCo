@@ -21,12 +21,14 @@ html, body {
     position: absolute;
     top: 0;
     left: 0;
-    padding: 10px;
+    padding: 8px;
     min-width: 100px;
     /*max-width: 200px;*/
     background-color: #33bbed;
     color: #ffffff;
     white-space: nowrap;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
 }
 .img_progress {
     display: none;

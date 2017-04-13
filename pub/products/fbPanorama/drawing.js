@@ -5,8 +5,10 @@ var panoDrawing = {};
 (function canvas(global) {
     // эти настройки покаж жестко заданы
     // выставлены на примере картинки 6000x3562, но на 1600x1000 уже другие надо
-    var PIN_PADDING = 10, PIN_COLOR = '#33bbed', PIN_FONT_COLOR = '#ffffff', PIN_FONT_HEIGHT = 14,
-        BACK_COLOR = '#aaa', PIN_FONT_FAMILY = 'Arial', LOGO_RIGHT = 10, LOGO_BOTTOM = 10;
+    var PIN_PADDING = 8, PIN_COLOR = '#33bbed', PIN_FONT_COLOR = '#ffffff', PIN_FONT_HEIGHT = 12, MIN_PIN_WIDTH = 100,
+        BACK_COLOR = '#aaa', PIN_FONT_FAMILY = 'Arial', LOGO_RIGHT = 10, LOGO_BOTTOM = 10,
+        FONT_SIZE_AR_HEIGHT = 1.2 // отношение размера шрифта к высоте стрелки
+        ;
     /**
      * Зона размытия между картинкой и полосками
      * @type {number}
@@ -38,6 +40,7 @@ var panoDrawing = {};
         var ctx = param.context;
         param.pinScale = param.pinScale || 1;
         var fontSize = Math.round(param.pinScale * PIN_FONT_HEIGHT);
+        var minPinWIdth = Math.round(param.pinScale * MIN_PIN_WIDTH);
         var padding = Math.round(param.pinScale * PIN_PADDING);
         var x = param.left, y = param.top;
         param.text = param.text.replace(/(&nbsp;)*/g,"");
@@ -51,7 +54,13 @@ var panoDrawing = {};
                 maxLineWidth = lw;
             }
         }
-        var pinWidth = maxLineWidth + 2*padding;
+        var pinWidth = 2*padding;
+        if (maxLineWidth < minPinWIdth) {
+            pinWidth += minPinWIdth;
+        }
+        else {
+            pinWidth += maxLineWidth;
+        }
         var pinHeight = lines.length * fontSize + 2*padding;
         var pinCornerLeft = x;//-pinWidth/2;
         var pinCornerTop = y;//-pinHeight/2;
@@ -60,7 +69,8 @@ var panoDrawing = {};
         ctx.fillRect(pinCornerLeft, pinCornerTop, pinWidth, pinHeight)
 
         // стрелочка
-        var arWidth = 20, arHeight = 10;
+        var arHeight = fontSize / FONT_SIZE_AR_HEIGHT;
+        var arWidth = arHeight * 2;
         switch(param.modArrow) {
             case 'ar_bottom': {
                 drawTriangle(ctx, pinCornerLeft+pinWidth/2-arWidth/2, pinCornerTop+pinHeight, arWidth, 0, arWidth/2, arHeight);
