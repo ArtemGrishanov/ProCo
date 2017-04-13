@@ -41,17 +41,20 @@ function Alternative(propertyString, directiveName, $parent, productDOMElement, 
                 $(e.currentTarget).addClass('__selected')
                 $dropDownValue.text(v);
 
-                //TODO test
-                //Engine.setValue(appProperty, v);
-                if (params.onSetValue) {
-                    params.onSetValue.call(this, {
-                        app: Engine.getApp(),
-                        appScreens: this.getActiveScreens(),
-                        engine: Engine,
-                        propertyString: this.propertyString,
-                        editor: Editor,
-                        value: v
-                    });
+                if (params.useCustomFunctionForSetValue === true && params.onSetValue) {
+                    if (params.onSetValue) {
+                        params.onSetValue.call(this, {
+                            app: Engine.getApp(),
+                            appScreens: this.getActiveScreens(),
+                            engine: Engine,
+                            propertyString: this.propertyString,
+                            editor: Editor,
+                            value: v
+                        });
+                    }
+                }
+                else {
+                    Engine.setValue(appProperty, v);
                 }
             }).bind(this));
         }

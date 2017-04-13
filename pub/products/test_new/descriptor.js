@@ -651,11 +651,11 @@ descriptor.prototypes = {
         data: {
             question: {
                 uiTemplate: 'id-question_text_template',
-                text: 'Простой текстовый вопрос'
+                text: 'Simple text question'
             },
             explanation: {
                 uiTemplate: 'id-explanation_text_template',
-                text: 'Объяснение ответа'
+                text: 'Answer feedback here'
             },
             answer: {
                 type: 'radiobutton',
@@ -664,20 +664,20 @@ descriptor.prototypes = {
                     {
                         // атрибуты внутри используются для рендера uiTemplate
                         uiTemplate: 'id-option_text_template',
-                        text: 'Вариант 1'
+                        text: 'Option 1'
                     },
                     {
                         uiTemplate: 'id-option_text_template',
-                        text: 'Вариант 2',
+                        text: 'Option 2',
                         points: 1
                     },
                     {
                         uiTemplate: 'id-option_text_template',
-                        text: 'Вариант 3'
+                        text: 'Option 3'
                     },
                     {
                         uiTemplate: 'id-option_text_template',
-                        text: 'Вариант 4'
+                        text: 'Option 4'
                     }
                 ]
             }
@@ -691,12 +691,12 @@ descriptor.prototypes = {
         data: {
             question: {
                 uiTemplate: 'id-question_text_photo_template',
-                text: 'Текст фото вопроса',
+                text: 'Photo question text',
                 img: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/ocean.jpg'
             },
             explanation: {
                 uiTemplate: 'id-explanation_text_template',
-                text: 'Объяснение ответв'
+                text: 'Answer feedback'
             },
             answer: {
                 type: 'radiobutton',
@@ -704,20 +704,20 @@ descriptor.prototypes = {
                 options: [
                     {
                         uiTemplate: 'id-option_text_template',
-                        text: 'Вариант 1'
+                        text: 'Option 1'
                     },
                     {
                         uiTemplate: 'id-option_text_template',
-                        text: 'Вариант 2'
+                        text: 'Option 2'
                     },
                     {
                         uiTemplate: 'id-option_text_template',
-                        text: 'Вариант 3',
+                        text: 'Option 3',
                         points: 1
                     },
                     {
                         uiTemplate: 'id-option_text_template',
-                        text: 'Вариант 4'
+                        text: 'Option 4'
                     }
                 ]
             }
@@ -731,11 +731,11 @@ descriptor.prototypes = {
         data: {
             question: {
                 uiTemplate: 'id-question_text_template',
-                text: 'Выберите верный ответ?'
+                text: 'Select option'
             },
             explanation: {
                 uiTemplate: 'id-explanation_text_template',
-                text: 'Объяснение ответа'
+                text: 'Answer feedback'
             },
             answer: {
                 type: 'radiobutton',
@@ -756,15 +756,15 @@ descriptor.prototypes = {
     },
 
     proto__option_text: {
-        label: 'Текстовый вариант ответа',
+        label: 'Text option',
         data: {
             uiTemplate: 'id-option_text_template',
-            text: 'Вариант ответа'
+            text: 'Option text'
         }
     },
 
     proto__option_img: {
-        label: 'Ответ картинка',
+        label: 'Photo option',
         data: {
             uiTemplate: 'id-option_img_template',
             img: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/ocean.jpg'
@@ -793,7 +793,7 @@ descriptor.triggers = {
         action: function(params) {
             var selector = '.bullit';
             var result = false;
-            var txt = 'Кликните для установки<br>верного ответа';
+            var txt = 'Click to set<br>right answer';
             for (var j = 0; j < params.appScreens.length; j++) {
                 var as = params.appScreens[j];
                 var elements = $(as.view).find(selector);

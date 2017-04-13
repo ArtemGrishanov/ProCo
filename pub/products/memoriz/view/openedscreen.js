@@ -26,13 +26,13 @@ var OpenedScreen = MutApp.Screen.extend({
      * Метка которая показывается в редакторе, рядом с превью экрана
      * @see MutApp
      */
-    name: 'Пояснения',
+    name: {RU:'Пояснения',EN:'Feedback'},
     /**
      * Ид пары к которой привязан этот экран пояснения
      */
     pairId: null,
 
-    topColontitleText: 'Текст колонтитула',
+    topColontitleText: 'Colontitle text',
     backgroundImg: null,
     shadowEnable: false,
     logoPosition: {top: 200, left: 200},

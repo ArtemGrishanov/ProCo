@@ -52,19 +52,19 @@ var MemorizModel = MutApp.Model.extend({
                 cards: [
                     {
                         uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 1',
+                        text: 'Option 1',
                         img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o1.jpg'
                     },
                     {
                         uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 1',
+                        text: 'Option 1',
                         img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o1.jpg'
                     }
                 ],
                 guessed: false,
                 explanation: {
-                    title: 'Заголовок',
-                    text: 'Пояснение к правильному ответу'
+                    title: 'Feedback header',
+                    text: 'Input feedback text here'
                 }
             },
             {
@@ -72,19 +72,19 @@ var MemorizModel = MutApp.Model.extend({
                 cards: [
                     {
                         uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2',
+                        text: 'Option 2',
                         img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o2.jpg'
                     },
                     {
                         uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2',
+                        text: 'Option 2',
                         img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o2.jpg'
                     }
                 ],
                 guessed: false,
                 explanation: {
-                    title: 'Заголовок',
-                    text: 'Пояснение к правильному ответу'
+                    title: 'Feedback header',
+                    text: 'Input feedback text here'
                 }
             },
             {
@@ -92,19 +92,19 @@ var MemorizModel = MutApp.Model.extend({
                 cards: [
                     {
                         uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2',
+                        text: 'Option 2',
                         img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o3.jpg'
                     },
                     {
                         uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2',
+                        text: 'Option 2',
                         img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o3.jpg'
                     }
                 ],
                 guessed: false,
                 explanation: {
-                    title: 'Заголовок',
-                    text: 'Пояснение к правильному ответу'
+                    title: 'Feedback header',
+                    text: 'Input feedback text here'
                 }
             },
             {
@@ -112,19 +112,19 @@ var MemorizModel = MutApp.Model.extend({
                 cards: [
                     {
                         uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2',
+                        text: 'Option 2',
                         img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o4.jpg'
                     },
                     {
                         uiTemplate: 'id-card_text_template',
-                        text: 'Ответ 2',
+                        text: 'Option 2',
                         img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/o4.jpg'
                     }
                 ],
                 guessed: false,
                 explanation: {
-                    title: 'Заголовок',
-                    text: 'Пояснение к правильному ответу'
+                    title: 'Feedback header',
+                    text: 'Input feedback text here'
                 }
             }
 //            ,{
@@ -222,8 +222,8 @@ var MemorizModel = MutApp.Model.extend({
         RESULTS_COUNT: 1,
         results: [
             {
-                title: 'Заголовок результата',
-                description: 'Описание результата'
+                title: 'Result header',
+                description: 'Result explanation text'
             }
         ],
         /**

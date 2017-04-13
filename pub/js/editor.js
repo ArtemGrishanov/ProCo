@@ -746,6 +746,9 @@ var Editor = {};
                     }
 
                     //TODO test
+                    // refactor
+                    // $productDOMElement не устанавливается для контролов controlpanel при создании
+                    // а он оказался нужен для Alternative
                     if (c.type === 'controlpanel') {
                         c.control.$productDOMElement = $(element);
                     }

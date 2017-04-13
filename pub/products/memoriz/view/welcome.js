@@ -17,13 +17,13 @@ var StartScreen = MutApp.Screen.extend({
      * Метка которая показывается в редакторе, рядом с превью экрана
      * @see MutApp
      */
-    name: 'Стартовый экран',
+    name: {RU:'Стартовый экран',EN:'Start page'},
 
     logoPosition: {top: 200, left: 200},
     showLogo: true,
-    startHeaderText: 'Мемориз',
-    startDescription: 'Проверь свою память',
-    startButtonText: 'Начать',
+    startHeaderText: 'Memory game',
+    startDescription: 'Input description here',
+    startButtonText: 'Start',
     backgroundImg: null,
     shadowEnable: false,
 

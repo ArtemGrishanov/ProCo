@@ -17,7 +17,7 @@ var PanoramaEditScreen = MutApp.Screen.extend({
      * Метка которая показывается в редакторе, рядом с превью экрана
      * @see MutApp
      */
-    name: 'Панорама',
+    name: {RU:'Панорама',EN:'Panorama'},
     logoPosition: {top: 200, left: 200},
     showLogo: true,
     /**

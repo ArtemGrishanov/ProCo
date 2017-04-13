@@ -85,7 +85,7 @@ descriptor.rules = {
             {value:"center",icon:"i/align-center.png"},
             {value:"right",icon:"i/align-right.png"}
         ],
-        label: "Выравнивание",
+        label: {RU:"Выравнивание",EN:'Align'},
         filter: true
     },
     fontSize: {
@@ -95,7 +95,7 @@ descriptor.rules = {
             viewName: 'textinput',
             changeOnTimer: false
         },
-        label: 'Размер шрифта',
+        label: {RU:'Размер шрифта',EN:'Font size'},
         cssProperty: 'font-size',
         cssValuePattern: '{{number}}px',
         filter: true
@@ -109,7 +109,7 @@ descriptor.rules = {
         //TODO standart font names source?
         possibleValues: ["Arial","Times New Roman"],
         cssProperty: 'font-family',
-        label: 'Шрифт',
+        label: {RU:'Шрифт',EN:'Font family'},
         filter: true
     },
     fontColor: {
@@ -118,7 +118,7 @@ descriptor.rules = {
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет шрифта',
+        label: {RU:'Цвет шрифта',EN:'Font color'},
         cssProperty: 'color',
         filter: true
     },
@@ -128,7 +128,7 @@ descriptor.rules = {
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет шрифта при наведении',
+        label: {RU:'Цвет шрифта при наведении',EN:'Hover font color'},
         cssProperty: 'color',
         filter: true
     },
@@ -145,7 +145,7 @@ descriptor.rules = {
         updateScreens: true,
         controlParams: {
         },
-        label: 'Картинка',
+        label: {RU:'Картинка',EN:'Image'},
         filter: true
     },
     backgroundColor: {
@@ -154,7 +154,7 @@ descriptor.rules = {
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет фона',
+        label: {RU:'Цвет фона',EN:'Background color'},
         cssProperty: 'background-color',
         filter: true
     },
@@ -165,7 +165,7 @@ descriptor.rules = {
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет фона при наведении',
+        label: {RU:'Цвет фона при наведении',EN:'Hover background color'},
         cssProperty: 'background-color',
         filter: true
     },
@@ -175,7 +175,7 @@ descriptor.rules = {
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет бордера',
+        label: {RU:'Цвет границы',EN:'Border color'},
         cssProperty: 'border-color',
         filter: true
     },
@@ -185,7 +185,7 @@ descriptor.rules = {
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет бордера при наведении',
+        label: {RU:'Цвет бордера при наведении',EN:'Hover border color'},
         cssProperty: 'border-color',
         filter: true
     },
@@ -196,21 +196,11 @@ descriptor.rules = {
         controlParams: {
             changeOnTimer: false
         },
-        label: 'Скругление углов',
+        label: {RU:'Скругление углов',EN:'Corner radius'},
         cssProperty: 'border-radius',
         cssValuePattern: '{{number}}px',
         filter: true
     },
-    showQuestionProgress: {
-        updateScreens: true,
-        runTests: false,
-        controls: "OnOff",
-        controlParams: {
-            viewName: "OnOffSwitcher"
-        },
-        label: "Показывать номер вопроса"
-    },
-    //TODO не придумал как объединить borderWidth+hoverBorderWidth
     borderWidth: {
         updateScreens: true,
         runTests: false,
@@ -222,7 +212,7 @@ descriptor.rules = {
         //TODO format cssValue: '{value}px' чтобы было понятно как формировать проперти
         cssProperty: 'border-width',
         cssValuePattern: '{{number}}px',
-        label: "Толщина бордера",
+        label: {RU:"Толщина бордера",EN:'Border width'},
         filter: true
     },
     hoverBorderWidth: {
@@ -235,7 +225,7 @@ descriptor.rules = {
         },
         cssProperty: 'border-width',
         cssValuePattern: '{{number}}px',
-        label: "Толщина бордера при наведении",
+        label: {RU:"Толщина бордера при наведении",EN:'Hover border width'},
         filter: true
     },
     topColontitleBottomBorderColor: {
@@ -245,7 +235,7 @@ descriptor.rules = {
         controlParams: {
             viewName: "ColorPicker"
         },
-        label: "Цвет линии",
+        label: {RU:"Цвет линии",EN:'Line color'},
         cssProperty: 'border-bottom-color',
         filter: true
     },
@@ -256,10 +246,10 @@ descriptor.rules = {
         controlParams: {
             viewName: "OnOffSwitcher"
         },
-        label: "Вкл/Откл"
+        label: {RU:"Вкл/Откл",EN:'On/Off'}
     },
     padding: {
-        label: 'Паддинг',
+        label: {RU:'Отступ',EN:'Padding'},
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'padding',
@@ -270,7 +260,7 @@ descriptor.rules = {
         }
     },
     paddingTop: {
-        label: 'Паддинг сверху',
+        label: {RU:'Отступ сверху',EN:'Top padding'},
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'padding-top',
@@ -281,7 +271,7 @@ descriptor.rules = {
         }
     },
     paddingBottom: {
-        label: 'Паддинг снизу',
+        label: {RU:'Отступ снизу',EN:'Bottom padding'},
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'padding-bottom',
@@ -292,7 +282,7 @@ descriptor.rules = {
         }
     },
     paddingLeft: {
-        label: 'Паддинг слева',
+        label: {RU:'Отступ слева',EN:'Left padding'},
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'padding-left',
@@ -303,7 +293,7 @@ descriptor.rules = {
         }
     },
     marginTop: {
-        label: 'Маргин сверху',
+        label: {RU:'Внешний отступ сверху',EN:'Top margin'},
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'margin-top',
@@ -314,7 +304,7 @@ descriptor.rules = {
         }
     },
     marginBottom: {
-        label: 'Маргин снизу',
+        label: {RU:'Внешний отступ снизу',EN:'Bottom margin'},
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'margin-bottom',
@@ -325,7 +315,7 @@ descriptor.rules = {
         }
     },
     marginLeft: {
-        label: 'Маргин слева',
+        label: {RU:'Внешний отступ слева',EN:'Left margin'},
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'margin-left',
@@ -344,7 +334,7 @@ descriptor.rules = {
             usePreviewShareImageModal: true,
             viewName: 'ChooseImagePreview'
         },
-        label: 'Картинка',
+        label: {RU:'Картинка',EN:'Image'},
         filter: true
     },
 //    // с помощью клика по dom-елементу добавляется элемент в массив
@@ -386,7 +376,7 @@ descriptor.rules = {
                                 left: Math.round(param.cursorPosition.left / previewScale),
                                 top: Math.round(param.cursorPosition.top / previewScale)
                             }});
-                            pinWr.append('<div class="pin_wr ar_bottom" data-option-index="'+newIndex+'" data-app-property="id=mm pins.'+newIndex+'.position, id=mm pins.'+newIndex+'.data.text, id=mm pins(deletePin), id=mm pins.'+newIndex+'.modArrow " style="top: '+param.cursorPosition.top+'px; left: '+param.cursorPosition.left+'px; outline: none;" contenteditable="true">Пример метки<br>на панораме</div>')
+                            pinWr.append('<div class="pin_wr ar_bottom" data-option-index="'+newIndex+'" data-app-property="id=mm pins.'+newIndex+'.position, id=mm pins.'+newIndex+'.data.text, id=mm pins(deletePin), id=mm pins.'+newIndex+'.modArrow " style="top: '+param.cursorPosition.top+'px; left: '+param.cursorPosition.left+'px; outline: none;" contenteditable="true">Введите текст</div>')
 
                             //UPD снова не надо
                             // отдельно добавить напрямую в приложение. Так как перезапуска приложения с передачей параметров избегаем
@@ -424,6 +414,7 @@ descriptor.rules = {
         controls: "Alternative",
         controlParams: {
             viewName: "AltButtons",
+            useCustomFunctionForSetValue: true,
             onSetValue: function(params) {
                 var Engine = params.engine;
                 var Editor = params.editor;
@@ -462,12 +453,12 @@ descriptor.rules = {
 descriptor.prototypes = {
     // шаблон простой фото-карточки
     "proto__pin_text": {
-        label: 'Текстовый пин',
+        label: {RU:'Текстовая метка',EN:'Text sticker'},
         img: null, // картинка для мультивыбора в диалоге
         data: {
             id: '12345678',
             data: {
-                text: 'Введите текст'
+                text: 'Input text'
             },
             position: {
                 left: 400,

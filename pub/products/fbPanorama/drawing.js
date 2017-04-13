@@ -6,7 +6,7 @@ var panoDrawing = {};
     // эти настройки покаж жестко заданы
     // выставлены на примере картинки 6000x3562, но на 1600x1000 уже другие надо
     var PIN_PADDING = 8, PIN_COLOR = '#33bbed', PIN_FONT_COLOR = '#ffffff', PIN_FONT_HEIGHT = 12, MIN_PIN_WIDTH = 100,
-        BACK_COLOR = '#aaa', PIN_FONT_FAMILY = 'Arial', LOGO_RIGHT = 10, LOGO_BOTTOM = 10,
+        BACK_COLOR = '#aaa', PIN_FONT_FAMILY = 'Arial', LOGO_RIGHT = 40, LOGO_BOTTOM = 40,
         FONT_SIZE_AR_HEIGHT = 1.2 // отношение размера шрифта к высоте стрелки
         ;
     /**

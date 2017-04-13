@@ -10,9 +10,9 @@ var GameScreen = MutApp.Screen.extend({
      * Метка которая показывается в редакторе, рядом с превью экрана
      * @see MutApp
      */
-    name: 'Игровое поле',
+    name: {RU:'Игровое поле',EN:'Gameboard'},
     group: 'gamescreen',
-    topColontitleText: 'Текст колонтитула',
+    topColontitleText: 'Colontitle text',
     backgroundImg: null,
     logoPosition: {top: 200, left: 200},
     showLogo: true,

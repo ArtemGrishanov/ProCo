@@ -7,13 +7,13 @@ var descriptor = {};
 descriptor.css = [
     {
         selector: '.js-back_color',
-        label: 'Цвет фона',
+        label: {RU:'Цвет фона',EN:'Background color'},
         filter: false,
         rules: 'backgroundColor'
     },
     {
         selector: '.js-card-field',
-        label: 'Отступ до края',
+        label: {RU:'Отступ до края',EN:'Gameboard padding'},
         filter: true,
         rules: 'padding'
     },
@@ -52,68 +52,80 @@ descriptor.app = [
     },
         {
             selector: 'id=mm showBackCardTexture',
-            label: 'Показывать "рубашку" карточки'
+            label: {RU:'Показывать "рубашку" карточки',EN:'Show back card image'}
         },
         {
             selector: 'id=mm showExplanation',
-            label: 'Показывать леер объяснения ответа'
+            label: {RU:'Показывать леер объяснения ответа',EN:'Show feedback'}
         },
         {
             selector: 'id=startScr showLogo',
-            label: 'Логотип на стартовой'
+            label: {RU:'Логотип на стартовой',EN:'Logo on start page'},
+            filter: true,
+            showWhileScreenIsActive: 'startScr'
         },
         {
             selector: 'type=opened showLogo',
-            label: 'Логотип в вопросах'
+            label: {RU:'Логотип на странице пояснения',EN:'Logo on feedback page'},
+            filter: true,
+            showWhileScreenIsActive: 'opened'
         },
         {
             selector: 'id=gamescreen showLogo',
-            label: 'Логотип на игровом поле'
+            label: {RU:'Логотип на игровом поле',EN:'Logo on gameboard'},
+            filter: true,
+            showWhileScreenIsActive: 'gamescreen'
         },
         {
             selector: 'type=result showLogo',
-            label: 'Логотип в результатах'
+            label: {RU:'Логотип в результатах',EN:'Logo on result page'},
+            filter: true,
+            showWhileScreenIsActive: 'result'
         },
         {
             selector: 'type=result showDownload',
-            label: 'Кнопка "Скачать" на экране результата'
+            label: {RU:'Кнопка "Скачать" на экране результата',EN:'"Download" button on result screen'}
         },
         {
             selector: 'id=mm showBackgroundImage',
-            label: 'Показывать фоновую картинку',
+            label: {RU:'Показывать фоновую картинку',EN:'Show background image'},
             rules: 'trueFalse'
         },
         {
             selector: 'id=mm fbShareEnabled',
-            label: 'Поделиться результатом в Facebook'
+            label: {RU:'Поделиться результатом в Facebook',EN:'Enable Facebook sharing'}
         },
         {
             selector: 'id=mm vkShareEnabled',
-            label: 'Поделиться результатом во ВКонтакте'
+            label: {RU:'Поделиться результатом во ВКонтакте',EN:'Enable VK sharing'}
         },
         {
             selector: 'id=mm showTopColontitle',
-            label: 'Верхний колонтитул'
+            label: {RU:'Верхний колонтитул',EN:'Enable top colontitle'}
         },
         {
             selector: 'id=startScr shadowEnable',
-            label: 'Затемнение фона',
-            filter: true
+            label: {RU:'Затемнение фона',EN:'Background shadow'},
+            filter: true,
+            showWhileScreenIsActive: 'startScr'
         },
         {
             selector: 'id=gamescreen shadowEnable',
-            label: 'Затемнение фона',
-            filter: true
+            label: {RU:'Затемнение фона',EN:'Background shadow'},
+            filter: true,
+            showWhileScreenIsActive: 'gamescreen'
         },
         {
             selector: 'type=opened shadowEnable',
-            label: 'Затемнение фона',
-            filter: true
+            label: {RU:'Затемнение фона',EN:'Background shadow'},
+            filter: true,
+            showWhileScreenIsActive: 'opened'
         },
         {
             selector: 'type=result shadowEnable',
-            label: 'Затемнение фона',
-            filter: true
+            label: {RU:'Затемнение фона',EN:'Background shadow'},
+            filter: true,
+            showWhileScreenIsActive: 'result'
         },
 
 
@@ -128,33 +140,37 @@ descriptor.app = [
     },
             {
                 selector: 'id=startScr backgroundImg',
-                label: 'Фон стартовой страницы',
+                label: {RU:'Фон стартовой страницы',EN:'Start page background'},
+                filter: true,
                 showWhileScreenIsActive: 'startScr'
             },
             {
                 selector: 'id=gamescreen backgroundImg',
-                label: 'Фон игрового экрана',
+                label: {RU:'Фон игрового экрана',EN:'Gameboard background'},
+                filter: true,
                 showWhileScreenIsActive: 'gamescreen'
             },
             {
                 selector: 'type=opened backgroundImg',
-                label: 'Фон страниц с парами',
+                label: {RU:'Фон страниц с парами',EN:'Feedback page background'},
+                filter: true,
                 showWhileScreenIsActive: 'openedScreen'
             },
             {
                 selector: 'type=result backgroundImg',
-                label: 'Фон страниц результатов',
+                label: {RU:'Фон страниц результатов',EN:'Result page background'},
+                filter: true,
                 showWhileScreenIsActive: 'result'
             },
 
     {
         selector: 'id=mm backCardTexture',
-        label: 'Картинка для "рубашки" карточки',
+        label: {RU:'Картинка для "рубашки" карточки',EN:'Card\'s back image'}
     },
     {
         selector: 'type=memoriz shareLink',
         rules: 'url',
-        label: 'Ссылка для поста в социальных сетях',
+        label: {RU:'Ссылка для поста в социальных сетях',EN:'Social post link'},
         filter: false
     },
     {
@@ -169,13 +185,13 @@ descriptor.app = [
     {
         selector: 'id=mm logoLink',
         rules: 'url',
-        label: 'Ссылка при клике на логотип',
+        label: {RU:'Ссылка при клике на логотип',EN:'Logo link'},
         filter: false
     },
     {
         selector: 'id=mm downloadLink',
         rules: 'url',
-        label: 'Ссылка по кнопке "Скачать"',
+        label: {RU:'Ссылка по кнопке "Скачать"',EN:'Download link'},
         filter: false
     },
     {
@@ -183,7 +199,7 @@ descriptor.app = [
         selector: 'appConstructor=mutapp _shareEntities.{{number}}.imgUrl',
         rules: 'imgForShare',
         updateScreens: false,
-        label: 'Картинка для публикации в соцсеть',
+        label: {RU:'Картинка для публикации в соцсеть',EN:'Image for sharing'},
         filter: true
     },
     {
@@ -223,7 +239,7 @@ descriptor.rules = {
             {value:"center",icon:"i/align-center.png"},
             {value:"right",icon:"i/align-right.png"}
         ],
-        label: "Выравнивание",
+        label: {RU:"Выравнивание",EN:'Align'},
         filter: true
     },
     fontSize: {
@@ -233,7 +249,7 @@ descriptor.rules = {
             viewName: 'textinput',
             changeOnTimer: false
         },
-        label: 'Размер шрифта',
+        label: {RU:'Размер шрифта',EN:'Font size'},
         cssProperty: 'font-size',
         cssValuePattern: '{{number}}px',
         filter: true
@@ -247,7 +263,7 @@ descriptor.rules = {
         //TODO standart font names source?
         possibleValues: ["Arial","Times New Roman"],
         cssProperty: 'font-family',
-        label: 'Шрифт',
+        label: {RU:'Шрифт',EN:'Font family'},
         filter: true
     },
     fontColor: {
@@ -256,7 +272,7 @@ descriptor.rules = {
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет шрифта',
+        label: {RU:'Цвет шрифта',EN:'Font color'},
         cssProperty: 'color',
         filter: true
     },
@@ -266,7 +282,7 @@ descriptor.rules = {
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет шрифта при наведении',
+        label: {RU:'Цвет шрифта при наведении',EN:'Hover font color'},
         cssProperty: 'color',
         filter: true
     },
@@ -283,7 +299,7 @@ descriptor.rules = {
         updateScreens: true,
         controlParams: {
         },
-        label: 'Картинка',
+        label: {RU:'Картинка',EN:'Image'},
         filter: true
     },
     backgroundColor: {
@@ -292,7 +308,7 @@ descriptor.rules = {
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет фона',
+        label: {RU:'Цвет фона',EN:'Background color'},
         cssProperty: 'background-color',
         filter: true
     },
@@ -303,7 +319,7 @@ descriptor.rules = {
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет фона при наведении',
+        label: {RU:'Цвет фона при наведении',EN:'Hover background color'},
         cssProperty: 'background-color',
         filter: true
     },
@@ -313,7 +329,7 @@ descriptor.rules = {
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет бордера',
+        label: {RU:'Цвет границы',EN:'Border color'},
         cssProperty: 'border-color',
         filter: true
     },
@@ -323,7 +339,7 @@ descriptor.rules = {
         controlParams: {
             viewName: 'ColorPicker'
         },
-        label: 'Цвет бордера при наведении',
+        label: {RU:'Цвет бордера при наведении',EN:'Hover border color'},
         cssProperty: 'border-color',
         filter: true
     },
@@ -334,21 +350,11 @@ descriptor.rules = {
         controlParams: {
             changeOnTimer: false
         },
-        label: 'Скругление углов',
+        label: {RU:'Скругление углов',EN:'Corner radius'},
         cssProperty: 'border-radius',
         cssValuePattern: '{{number}}px',
         filter: true
     },
-    showQuestionProgress: {
-        updateScreens: true,
-        runTests: false,
-        controls: "OnOff",
-        controlParams: {
-            viewName: "OnOffSwitcher"
-        },
-        label: "Показывать номер вопроса"
-    },
-    //TODO не придумал как объединить borderWidth+hoverBorderWidth
     borderWidth: {
         updateScreens: true,
         runTests: false,
@@ -360,7 +366,7 @@ descriptor.rules = {
         //TODO format cssValue: '{value}px' чтобы было понятно как формировать проперти
         cssProperty: 'border-width',
         cssValuePattern: '{{number}}px',
-        label: "Толщина бордера",
+        label: {RU:"Толщина бордера",EN:'Border width'},
         filter: true
     },
     hoverBorderWidth: {
@@ -373,7 +379,7 @@ descriptor.rules = {
         },
         cssProperty: 'border-width',
         cssValuePattern: '{{number}}px',
-        label: "Толщина бордера при наведении",
+        label: {RU:"Толщина бордера при наведении",EN:'Hover border width'},
         filter: true
     },
     topColontitleBottomBorderColor: {
@@ -383,7 +389,7 @@ descriptor.rules = {
         controlParams: {
             viewName: "ColorPicker"
         },
-        label: "Цвет линии",
+        label: {RU:"Цвет линии",EN:'Line color'},
         cssProperty: 'border-bottom-color',
         filter: true
     },
@@ -406,10 +412,10 @@ descriptor.rules = {
         controlParams: {
             viewName: "OnOffSwitcher"
         },
-        label: "Вкл/Откл"
+        label: {RU:"Вкл/Откл",EN:'On/Off'}
     },
     padding: {
-        label: 'Паддинг',
+        label: {RU:'Отступ',EN:'Padding'},
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'padding',
@@ -420,7 +426,7 @@ descriptor.rules = {
         }
     },
     paddingTop: {
-        label: 'Паддинг сверху',
+        label: {RU:'Отступ сверху',EN:'Top padding'},
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'padding-top',
@@ -431,7 +437,7 @@ descriptor.rules = {
         }
     },
     paddingBottom: {
-        label: 'Паддинг снизу',
+        label: {RU:'Отступ снизу',EN:'Bottom padding'},
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'padding-bottom',
@@ -442,7 +448,7 @@ descriptor.rules = {
         }
     },
     paddingLeft: {
-        label: 'Паддинг слева',
+        label: {RU:'Отступ слева',EN:'Left padding'},
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'padding-left',
@@ -453,7 +459,7 @@ descriptor.rules = {
         }
     },
     marginTop: {
-        label: 'Маргин сверху',
+        label: {RU:'Внешний отступ сверху',EN:'Top margin'},
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'margin-top',
@@ -464,7 +470,7 @@ descriptor.rules = {
         }
     },
     marginBottom: {
-        label: 'Маргин снизу',
+        label: {RU:'Внешний отступ снизу',EN:'Bottom margin'},
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'margin-bottom',
@@ -475,7 +481,7 @@ descriptor.rules = {
         }
     },
     marginLeft: {
-        label: 'Маргин слева',
+        label: {RU:'Внешний отступ слева',EN:'Left margin'},
         controls: 'StringControl',
         updateScreens: true,
         cssProperty: 'margin-left',
@@ -494,7 +500,7 @@ descriptor.rules = {
             usePreviewShareImageModal: true,
             viewName: 'ChooseImagePreview'
         },
-        label: 'Картинка',
+        label: {RU:'Картинка',EN:'Image'},
         filter: true
     }
 };
@@ -510,26 +516,26 @@ descriptor.rules = {
 descriptor.prototypes = {
     // шаблон простой фото-карточки
     "proto__сard-photo": {
-        label: 'Фото-пара',
+        label: {RU:'Фото-пара',EN:'Photo pair'},
         img: 'products/test_new/i/editor/Icon-text-vopros.png', // +devPrototypesHostName
         data: {
             //id: null, set programmatically
             cards: [
                 {
                     uiTemplate: 'id-card_text_template',
-                    text: 'Ответ 1',
+                    text: 'Option 1',
                     img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/ocean.jpg'
                 },
                 {
                     uiTemplate: 'id-card_text_template',
-                    text: 'Ответ 1',
+                    text: 'Option 1',
                     img: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/res/ocean.jpg'
                 }
             ],
             guessed: false,
             explanation: {
-                title: 'Заголовок',
-                text: 'Пояснение к правильному ответу'
+                title: 'Header',
+                text: 'Input feedback text here'
             }
         }
     }

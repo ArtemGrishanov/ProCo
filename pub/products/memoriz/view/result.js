@@ -18,7 +18,7 @@ var ResultScreen = MutApp.Screen.extend({
      * Метка которая показывается в редакторе, рядом с превью экрана
      * @see MutApp
      */
-    name: 'Результат',
+    name: {RU:'Результат',EN:'Result'},
     /**
      * Схлопываем результаты в один
      */
@@ -30,11 +30,11 @@ var ResultScreen = MutApp.Screen.extend({
      */
     showLogo: true,
     logoPosition: {top: 100, left: 20},
-    restartButtonText: 'Заново',
+    restartButtonText: 'Restart',
     backgroundImg: null,
     shadowEnable: false,
     showDownload: false,
-    downloadButtonText: 'Скачать',
+    downloadButtonText: 'Download',
     /**
      * Позиция кнопки для шаринга результата в фб
      */
