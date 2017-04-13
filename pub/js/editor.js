@@ -744,6 +744,11 @@ var Editor = {};
                             }
                         }
                     }
+
+                    //TODO test
+                    if (c.type === 'controlpanel') {
+                        c.control.$productDOMElement = $(element);
+                    }
                 }
             }
         }
@@ -1462,10 +1467,6 @@ var Editor = {};
      */
     function onPreviewClick() {
         showPreview();
-    }
-
-    function onMyTemplatesClick() {
-        showMyTemplates();
     }
 
     /**

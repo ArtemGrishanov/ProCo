@@ -172,6 +172,8 @@ var PanoramaEditScreen = MutApp.Screen.extend({
                 var p = this.model.attributes.pins[i];
                 p.data.pinIndex = i;
                 var $pel = $(this.template[p.uiTemplate](p.data));
+                // класс стрелки
+                $pel.addClass(p.modArrow);
                 var top = Math.round(p.position.top*ps);
                 var left = Math.round(p.position.left*ps);
                 $pel.css('top',top).css('left',left);

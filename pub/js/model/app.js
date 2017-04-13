@@ -449,7 +449,7 @@ var App = App || {};
      * .js-show_login
      */
     function initUIHandlers() {
-        $('#id-user_toolbar').off('click').click(function() {
+        $('#id-user_toolbar').off('click').click(function(event) {
             var e = $('#id-user_ctx_menu');
             if (e.css('display') === 'none') {
                 e.show();
@@ -457,7 +457,13 @@ var App = App || {};
             else {
                 e.hide();
             }
+            event.preventDefault();
+            event.stopPropagation();
         });
+        $(document).click(function() {
+            $('#id-user_ctx_menu').hide();
+        });
+        $('.js-to_my_templates').click(onMyTemplates);
         $('.js-logout').click(onLogoutClick);
         $('.js-login').click(onFBLoginClick);
         $('.js-show_login').click(function(){
@@ -722,6 +728,13 @@ var App = App || {};
                 statusChangeCallback(response);
             });
         }
+    }
+
+    /**
+     * Переход в мои шаблоны
+     */
+    function onMyTemplates() {
+        window.location.href = 'my_templates.html';
     }
 
     /**

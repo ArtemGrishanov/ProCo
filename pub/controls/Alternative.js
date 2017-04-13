@@ -34,19 +34,44 @@ function Alternative(propertyString, directiveName, $parent, productDOMElement, 
                     $newElem.addClass('__selected');
                 }
             }
-            $newElem.click(function(e) {
+            $newElem.click((function(e) {
                 //нажатие на клик и смена значения во вью и в движке
                 var v = $(e.currentTarget).attr('data-value');
                 $cnt.find('.js-option').removeClass('__selected');
                 $(e.currentTarget).addClass('__selected')
                 $dropDownValue.text(v);
-                Engine.setValue(appProperty, v);
-            });
+
+                //TODO test
+                //Engine.setValue(appProperty, v);
+                if (params.onSetValue) {
+                    params.onSetValue.call(this, {
+                        app: Engine.getApp(),
+                        appScreens: this.getActiveScreens(),
+                        engine: Engine,
+                        propertyString: this.propertyString,
+                        editor: Editor,
+                        value: v
+                    });
+                }
+            }).bind(this));
         }
 
         // сначала ставим текущее значение свойства как "выбранное"
         $dropDownValue.text(appProperty.propertyValue);
     });
+
+    /**
+     * Получить активные экраны, которые сейчас видны в редакторе
+     * @returns {Array}
+     */
+    this.getActiveScreens = function() {
+        var result = [];
+        var ids = Editor.getActiveScreens();
+        for (var i = 0; i < ids.length; i++) {
+            result.push(Engine.getAppScreen(ids[i]));
+        }
+        return result;
+    };
 
     /**
      * Способ установить значение в контрол извне, с помощью автогенератора

@@ -35,7 +35,9 @@ var FbPanoramaModel = MutApp.Model.extend({
                     left: 500,
                     top: 500
                 },
-                uiTemplate: 'id-text_pin_template'
+                uiTemplate: 'id-text_pin_template',
+                // модификатор стрелки
+                modArrow: 'ar_bottom' // ar_bottom_left ar_bottom_right ar_top ar_top_left ar_bottom_right
             }
         ],
         logoImgSrc: '../../i/logo_big.png',

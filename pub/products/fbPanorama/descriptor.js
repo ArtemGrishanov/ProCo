@@ -38,6 +38,10 @@ descriptor.app = [
         rules: 'text',
         updateAppProperties: false, // важно!
         restartApp: false // важно!
+    },
+    {
+        selector: 'id=mm pins.{{number}}.modArrow',
+        rules: 'pinArrowForm'
     }
 ];
 
@@ -382,7 +386,7 @@ descriptor.rules = {
                                 left: Math.round(param.cursorPosition.left / previewScale),
                                 top: Math.round(param.cursorPosition.top / previewScale)
                             }});
-                            pinWr.append('<div class="pin_wr" data-option-index="'+newIndex+'" data-app-property="id=mm pins.'+newIndex+'.position, id=mm pins.'+newIndex+'.data.text, id=mm pins(deletePin)" style="top: '+param.cursorPosition.top+'px; left: '+param.cursorPosition.left+'px; outline: none;" contenteditable="true">Пример метки<br>на панораме</div>')
+                            pinWr.append('<div class="pin_wr ar_bottom" data-option-index="'+newIndex+'" data-app-property="id=mm pins.'+newIndex+'.position, id=mm pins.'+newIndex+'.data.text, id=mm pins(deletePin), id=mm pins.'+newIndex+'.modArrow " style="top: '+param.cursorPosition.top+'px; left: '+param.cursorPosition.left+'px; outline: none;" contenteditable="true">Пример метки<br>на панораме</div>')
 
                             //UPD снова не надо
                             // отдельно добавить напрямую в приложение. Так как перезапуска приложения с передачей параметров избегаем
@@ -410,24 +414,40 @@ descriptor.rules = {
                         }
                     },
                     onShow: function(param) {
-//                        var optionId = $(this.$productDomElement).attr('data-id');
-//                        var questionIndex = $(this.$productDomElement).attr('data-question-index');
-//                        if (optionId && questionIndex) {
-//                            var correctId = param.app._models[0].getCorrectAnswerId(questionIndex);
-//                            if (correctId===optionId) {
-//                                this.setView('<div style="background-color:green;"><img src="controls/i/Panel-set-as-right.png"></div>');
-//                            }
-//                            else {
-//                                this.setView('<div style="cursor:pointer"><img src="controls/i/Panel-set-as-right.png"></div>');
-//                            }
-//                        }
-//                        else {
-//                            log('Descriptor.setCorrectAnswer: option data-id or data-question-index is not set');
-//                        }
                     }
                 }
             }
         ]
+    },
+    pinArrowForm: {
+        updateScreens: true,
+        controls: "Alternative",
+        controlParams: {
+            viewName: "AltButtons",
+            onSetValue: function(params) {
+                var Engine = params.engine;
+                var Editor = params.editor;
+                var pinIndex = this.$productDOMElement.attr('data-option-index');
+                params.app.model.attributes.pins[pinIndex].modArrow = params.value;
+                var ap = Engine.getAppProperty(params.propertyString);
+                Engine.setValue(ap, params.value);
+                params.app._screens[0].$el.find('.js-pins_cnt').find('.pin_wr[data-option-index='+pinIndex+']').attr('class','pin_wr '+params.value);
+                this.$productDOMElement.attr('class','pin_wr '+params.value);
+            }
+        },
+        possibleValues: [
+            {value:"ar_bottom_left",icon:"i/altern/ar_btm_l.png"},
+            {value:"ar_bottom",icon:"i/altern/ar_btm.png"},
+            {value:"ar_bottom_right",icon:"i/altern/ar_btm_r.png"},
+            {value:"ar_top_left",icon:"i/altern/ar_top_l.png"},
+            {value:"ar_top",icon:"i/altern/ar_top.png"},
+            {value:"ar_top_right",icon:"i/altern/ar_top_r.png"}
+        ],
+        label: {RU:'Форма стикера',EN:'Sticker form'},
+        filter: true,
+        updateAppProperties: false, // важно!
+        restartApp: false, // важно!
+        updateScreens: false
     },
 };
 
@@ -453,7 +473,8 @@ descriptor.prototypes = {
                 left: 400,
                 top: 280
             },
-            uiTemplate: 'id-text_pin_template'
+            uiTemplate: 'id-text_pin_template',
+            modArrow: 'ar_bottom'
         }
     }
 };

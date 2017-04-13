@@ -29,6 +29,8 @@ var panoDrawing = {};
 
     /**
      *
+     * @param param.text
+     * @param param.modArrow [ar_bottom, ar_bottom_left, ar_bottom_right, ar_top, ar_top_left, ar_bottom_right]
      * @param param.canvas
      * @param param.pinScale
      */
@@ -56,6 +58,38 @@ var panoDrawing = {};
         ctx.fillStyle = PIN_COLOR;
         ctx.globalAlpha = 0.8;
         ctx.fillRect(pinCornerLeft, pinCornerTop, pinWidth, pinHeight)
+
+        // стрелочка
+        var arWidth = 20, arHeight = 10;
+        switch(param.modArrow) {
+            case 'ar_bottom': {
+                drawTriangle(ctx, pinCornerLeft+pinWidth/2-arWidth/2, pinCornerTop+pinHeight, arWidth, 0, arWidth/2, arHeight);
+                break;
+            }
+            case 'ar_bottom_left': {
+                drawTriangle(ctx, pinCornerLeft, pinCornerTop+pinHeight, arWidth/2, 0, 0, arHeight);
+                break;
+            }
+            case 'ar_bottom_right': {
+                drawTriangle(ctx, pinCornerLeft+pinWidth, pinCornerTop+pinHeight, 0, arHeight, -arWidth/2, 0);
+                break;
+            }
+            case 'ar_top': {
+                drawTriangle(ctx, pinCornerLeft+pinWidth/2-arWidth/2, pinCornerTop, arWidth, 0, arWidth/2, -arHeight);
+                break;
+            }
+            case 'ar_top_left': {
+                drawTriangle(ctx, pinCornerLeft, pinCornerTop, 0, -arHeight, arWidth/2, 0);
+                break;
+            }
+            case 'ar_top_right': {
+                drawTriangle(ctx, pinCornerLeft+pinWidth, pinCornerTop, 0, -arHeight, -arWidth/2, 0);
+                break;
+            }
+        }
+
+
+        // текст внутри пина
         ctx.globalAlpha = 1;
         ctx.fillStyle = PIN_FONT_COLOR;
         var yy = padding+pinCornerTop;
@@ -63,6 +97,25 @@ var panoDrawing = {};
             ctx.fillText(lines[i], pinCornerLeft+padding, yy);
             yy += fontSize;
         }
+    }
+
+    /**
+     * Отрисовка треугольника; Интерфейс функции выбран для укорачивания записи
+     *
+     * @param ctx
+     * @param startX стартовая точка, глобальные координаты
+     * @param startY стартовая точка, глобальные координаты
+     * @param dx1
+     * @param dy1
+     * @param dx2
+     * @param dy2
+     */
+    function drawTriangle(ctx, startX, startY, dx1, dy1, dx2, dy2) {
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX+dx1, startY+dy1);
+        ctx.lineTo(startX+dx2, startY+dy2);
+        ctx.fill();
     }
 
     /**
@@ -129,7 +182,8 @@ var panoDrawing = {};
                     text: p.data.text,
                     left: p.position.left,
                     top: p.position.top,
-                    pinScale: param.pinScale
+                    pinScale: param.pinScale,
+                    modArrow: p.modArrow
                 });
             }
         }
