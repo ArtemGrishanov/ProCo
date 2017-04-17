@@ -50,7 +50,7 @@ var FbPanoramaModel = MutApp.Model.extend({
          * var ap = Engine.getAppProperty('id=mm photoViewerMode');
          * Engine.setValue(ap, true);
          */
-        photoViewerMode: true,
+        photoViewerMode: false,
         /**
          * Скомпилированная картинка для плеера photo-sphere-viewer
          * Применяется в photoViewerMode=true

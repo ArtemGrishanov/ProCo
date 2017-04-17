@@ -359,6 +359,9 @@ var fbPanoramaPublisher = {};
     }
 
     function getEmbedCode() {
+        if (photoViewerMode === true) {
+            return Publisher.getEmbedCode();
+        }
         return '';
     }
 

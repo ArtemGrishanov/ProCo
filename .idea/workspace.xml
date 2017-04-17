@@ -23,46 +23,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <file leaf-file-name="m.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/model/m.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="11" selection-start="2359" selection-end="2359" vertical-scroll-proportion="0.0" vertical-offset="631" max-vertical-offset="13395">
+            <state line="41" column="13" selection-start="1785" selection-end="1785" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="3150">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mutapp.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
+      <file leaf-file-name="fbPanoramaPublisher.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/fbPanoramaPublisher.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="535" column="33" selection-start="17345" selection-end="17345" vertical-scroll-proportion="0.0" vertical-offset="7724" max-vertical-offset="21405">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/memoriz/app.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="43" selection-start="2068" selection-end="2068" vertical-scroll-proportion="0.0" vertical-offset="505" max-vertical-offset="1410">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="app.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pub/products/test_new/app.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="61" column="43" selection-start="2001" selection-end="2001" vertical-scroll-proportion="0.57931036" vertical-offset="495" max-vertical-offset="1455">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/memoriz/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="41.875" vertical-offset="1005" max-vertical-offset="1950">
+            <state line="364" column="18" selection-start="13370" selection-end="13370" vertical-scroll-proportion="0.4733146" vertical-offset="5123" max-vertical-offset="5880">
               <folding />
             </state>
           </provider>
@@ -78,9 +51,7 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/demos/PanoramaDemo/Photo-Sphere-Viewer/index.html" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/view/panoViewer.js" />
-        <option value="$PROJECT_DIR$/pub/products/fbPanorama/model/m.js" />
         <option value="$PROJECT_DIR$/pub/storefront.html" />
         <option value="$PROJECT_DIR$/pub/css/storefront.css" />
         <option value="$PROJECT_DIR$/pub/controls/CustomQControl.js" />
@@ -94,6 +65,8 @@
         <option value="$PROJECT_DIR$/pub/products/memoriz/app.js" />
         <option value="$PROJECT_DIR$/pub/products/memoriz/model/memoriz.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/app.js" />
+        <option value="$PROJECT_DIR$/pub/products/fbPanorama/model/m.js" />
+        <option value="$PROJECT_DIR$/pub/products/fbPanorama/fbPanoramaPublisher.js" />
       </list>
     </option>
   </component>
@@ -177,28 +150,6 @@
               <option name="myItemId" value="products" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test_new" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="products" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -219,6 +170,54 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="memoriz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="products" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fbPanorama" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="products" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fbPanorama" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -391,27 +390,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/templates/publish_dialog.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="13" selection-start="13" selection-end="13" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="701">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/templates/requestFBPublishPermissionsModal.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="6" selection-start="732" selection-end="732" vertical-scroll-proportion="0.28343022" vertical-offset="0" max-vertical-offset="688">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/storefront.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="22" selection-start="7409" selection-end="7409" vertical-scroll-proportion="0.37936047" vertical-offset="1389" max-vertical-offset="4005">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/blockeditor.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="106" column="14" selection-start="5749" selection-end="5749" vertical-scroll-proportion="-14.291667" vertical-offset="1247" max-vertical-offset="1935">
@@ -509,6 +487,27 @@
     <entry file="file://$PROJECT_DIR$/pub/products/test_new/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="61" column="43" selection-start="2001" selection-end="2001" vertical-scroll-proportion="0.57931036" vertical-offset="495" max-vertical-offset="1455">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/model/m.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="13" selection-start="1785" selection-end="1785" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="3150">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/publisher.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="178" column="0" selection-start="6387" selection-end="6387" vertical-scroll-proportion="0.48033708" vertical-offset="2328" max-vertical-offset="7050">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/fbPanoramaPublisher.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="364" column="18" selection-start="13370" selection-end="13370" vertical-scroll-proportion="0.4733146" vertical-offset="5123" max-vertical-offset="5880">
           <folding />
         </state>
       </provider>
