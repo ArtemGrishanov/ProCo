@@ -10,6 +10,16 @@ descriptor.css = [
 
 descriptor.app = [
     {
+        selector: 'id=mm photoViewerMode',
+        // контролы не нужны
+        // это скрытое свойства для переключение между facebook и универсальной панорамой в плеере
+    },
+    {
+        // Скомпилированная картинка для плеера photo-sphere-viewer
+        // устанавливается в fbPanoramaPublisher
+        selector: 'id=mm panoCompiledImage'
+    },
+    {
         selector: 'id=mm pins(createPin)',
         rules: 'createPin'
     },

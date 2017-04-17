@@ -876,7 +876,7 @@ img {
 .published_proj_back {
     background-color: #5d5d5d;
     width: 100%;
-    padding-top: 20px;
+    padding-top: 56px; /* top fixed height */
 }
 
 .proto_wr {

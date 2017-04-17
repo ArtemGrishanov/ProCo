@@ -69,13 +69,18 @@ var PanoramaEditScreen = MutApp.Screen.extend({
                 // изменение каждого процента не рендерим, так как это тяжело обновлять в редакторе
                 this.imageProgressShown = true;
                 this.render();
-                this.model.application.showScreen(this);
+                if (this.model.get('photoViewerMode') !== true) {
+                    this.model.application.showScreen(this);
+                }
+                else {
+                    this.model.application.hideScreen(this);
+                }
             }
         }, this);
         this.model.bind("change:panoramaImage", function () {
             this.imageProgressShown = false;
             this.render();
-//            this.model.application.showScreen(this);
+            // this.model.application.showScreen(this);
         }, this);
     },
 

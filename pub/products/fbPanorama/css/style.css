@@ -103,3 +103,7 @@ html, body {
     border-right: 0 solid transparent;
     border-bottom: 10px solid #33bbed;
 }
+.photo_viewer_testix_link {
+    background: url(//testix.me/i/icons/testix-fav-32.png) no-repeat center !important;
+    font-family: Arial, sans-serif;
+}

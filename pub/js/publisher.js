@@ -223,7 +223,7 @@ var Publisher = {};
         }
 
         //TODO поиск предполагает что ресурсы находятся рядом с html в baseUrl
-        var scriptExp = /src=(?:\"|\')((?:\w|\/)+\.js)(?:\"|\')/ig;
+        var scriptExp = /src=(?:\"|\')([^\.](?:\w|\/|\.|\-|\_)+\.js)(?:\"|\')/ig;
         var jsMatch = null;
         while ( (jsMatch = scriptExp.exec(codeStr)) !== null) {
             // если этот ресурс не был отдельно записан в config.products.common.publishResources
@@ -235,7 +235,7 @@ var Publisher = {};
                 });
             }
         }
-        var cssExp = /href=(?:\"|')((?:\w|\/)+.css)(?:\"|')/ig;
+        var cssExp = /href=(?:\"|')([^\.](?:\w|\/|\.|\-|\_)+.css)(?:\"|')/ig;
         var cssMatch = null;
         while ( (cssMatch = cssExp.exec(codeStr)) !== null) {
             // если этот ресурс не был отдельно записан в config.products.common.publishResources
@@ -424,7 +424,7 @@ var Publisher = {};
                 data: JSON.parse(JSON.stringify(productResources[i])),
                 run: function() {
                     var u = this.data.destUrl || this.data.url;
-                    log('Upload task run:' + u);
+                    // log('Upload task run:' + u);
                     var objKey = App.getUserData().id+'/'+publishedAppId+'/'+u;
                     var params = {
                         Key: objKey,

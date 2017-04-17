@@ -260,9 +260,6 @@ var Editor = {};
         var src = config.products[loadedAppName].src;
         if (src) {
             appName = loadedAppName;
-            if (appName === 'fbPanorama') {
-                $('.js-app_publish').text(App.getText('publish_to_fb'));
-            }
             iframeWindow = null;
             appIframe = document.createElement('iframe');
             appIframe.onload = onProductIframeLoaded;
@@ -331,6 +328,13 @@ var Editor = {};
             // не грузить контролы в этом режиме. Сразу колбек на старт
             if (typeof startCallback === 'function') {
                 startCallback();
+            }
+        }
+
+        //TODO refactor button name setting
+        if (appName === 'fbPanorama') {
+            if (app.model.attributes.photoViewerMode !== true) {
+                $('.js-app_publish').text(App.getText('publish_to_fb'));
             }
         }
     }
@@ -1123,7 +1127,9 @@ var Editor = {};
                     activePublisher = Publisher;
                 }
                 // нужно дописать свойство "опубликованности" именно в опубликованное приложение
-                var appStr = addIsPublishedParam(Engine.serializeAppValues());
+                var appStr = Engine.serializeAppValues({
+                    addIsPublishedParam:true
+                });
                 activePublisher.publish({
                     appId: appId,
                     width: app.width,
@@ -1140,17 +1146,6 @@ var Editor = {};
         else {
             Modal.showLogin();
         }
-    }
-
-    /**
-     * Добавить параметр, признак публикации
-     *
-     * @param paramStr
-     * @returns {*}
-     */
-    function addIsPublishedParam(paramStr) {
-        var r = /^{"/ig;
-        return paramStr.replace(r, '{"appConstructor=mutapp isPublished":true,"');
     }
 
     /**

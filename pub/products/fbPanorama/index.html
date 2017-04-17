@@ -8,6 +8,7 @@
     <!-- этот файл кладется при публикации из products/common/css/tstx_cmn_products.css -->
     <link href="../common/css/tstx_cmn_products.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/photo-sphere-viewer.min.css" rel="stylesheet">
     <!--endbuild-->
 </head>
 <body>
@@ -30,18 +31,30 @@
         </div>
     </script>
 
+    <script id="id-panorama_viewer_template" type="text/template">
+        <div id="id-photosphere"></div>
+    </script>
+
     <script id="id-text_pin_template" type="text/template">
         <div class="pin_wr" data-option-index="<%=pinIndex%>" data-app-property="id=mm pins.<%=pinIndex%>.position, id=mm pins.<%=pinIndex%>.data.text, id=mm pins(deletePin), id=mm pins.<%=pinIndex%>.modArrow"><%=text%></div>
     </script>
 
     <!-- build:js index.min.js -->
-    <script type="text/javascript" src="../common/js/jquery.js"></script>
-    <script type="text/javascript" src="../common/js/underscore.js"></script>
-    <script type="text/javascript" src="../common/js/backbone.js"></script>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="underscore.js"></script>
+    <script type="text/javascript" src="backbone.js"></script>
     <script type="text/javascript" src="../common/js/mutapp.js"></script>
+
+    <script type="text/javascript" src="three.min.js"></script>
+    <script type="text/javascript" src="D.min.js"></script>
+    <script type="text/javascript" src="uevent.min.js"></script>
+    <script type="text/javascript" src="doT.min.js"></script>
+    <script type="text/javascript" src="photo-sphere-viewer.min.js"></script>
+
     <script type="text/javascript" src="model/m.js"></script>
     <script type="text/javascript" src="view/canvasScreen.js"></script>
     <script type="text/javascript" src="view/panoramaEditScreen.js"></script>
+    <script type="text/javascript" src="view/panoViewer.js"></script>
     <script type="text/javascript" src="drawing.js"></script>
     <script type="text/javascript" src="panoconfig.js"></script>
     <script type="text/javascript" src="app.js"></script>

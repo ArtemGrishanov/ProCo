@@ -24,6 +24,7 @@ var FbPanoramaModel = MutApp.Model.extend({
         imageProgress: 0,
         previewScale: 1,
         panoCanvas: null,
+        panoConfig: null,
         pins: [
             {
                 id: '12345678',
@@ -41,7 +42,24 @@ var FbPanoramaModel = MutApp.Model.extend({
             }
         ],
         logoImgSrc: '../../i/logo_big.png',
-        logoImg: null
+        logoImg: null,
+        /**
+         * Режим просмотра панорамы с помощью проигрывателя http://photo-sphere-viewer.js.org/
+         *
+         * В консоли:
+         * var ap = Engine.getAppProperty('id=mm photoViewerMode');
+         * Engine.setValue(ap, true);
+         */
+        photoViewerMode: true,
+        /**
+         * Скомпилированная картинка для плеера photo-sphere-viewer
+         * Применяется в photoViewerMode=true
+         */
+        panoCompiledImage: null, //'https://s3.eu-central-1.amazonaws.com/p.testix.me/121947341568004/7e69f66993/forFBUpload.jpg',
+        /**
+         * Объект photo-sphere-viewer.js
+         */
+        viewer: null
     },
 
     initialize: function(param) {
@@ -119,6 +137,8 @@ var FbPanoramaModel = MutApp.Model.extend({
                 imageProgress: 100
             });
 
+            // для опубликованного photo-viewer приложения оставить обычный размер 800x600
+            // для предпросмотра facebook панорам нужно показывать картинку в полную ширину,
             // приложение получить свой новый актуальный размер в зависимости от загруженной картинки и масштаба
             this.application.width = Math.round(cp.srcWidth * this.attributes.previewScale);
             this.application.height = this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT;

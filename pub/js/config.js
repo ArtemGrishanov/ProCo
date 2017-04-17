@@ -416,6 +416,23 @@ var config = {
                     }
                 ]
             },
+            panorama: {
+                typeLabel: {EN:'Panoramas',RU:'Панорамы'},
+                enabled: true,
+                entities: [
+                    {
+                        //Сингапур http://p.testix.me/121947341568004/1d1f4f3236/
+                        name: {RU:'Сингапур',EN:'Singapore'},
+                        img: 'http://p.testix.me/storefront/panorama/1d1f4f3236.jpg',
+                        published: 'http://p.testix.me/storefront/panorama/1d1f4f3236/p_index.html',
+                        // in proconstructor/storefront/panorama
+                        template: 'storefront/panorama/1d1f4f3236.txt',
+                        width: '800px',
+                        height: '600px',
+                        getParams: 'appStorage=ref:strf'
+                    }
+                ]
+            },
             fbPanorama: {
                 typeLabel: {EN:'Facebook panorama',RU:'Facebook панорама'},
                 enabled: true,
@@ -425,7 +442,7 @@ var config = {
                         img: 'http://p.testix.me/storefront/fbPanorama/fa724312dd.jpg',
                         published: null,
                         externalLink: 'https://www.facebook.com/photo.php?fbid=266745550421515&set=a.256225194806884.1073741833.100012582155261&type=3&theater',
-                        // in proconstructor/storefront/memoriz
+                        // in proconstructor/storefront/fbPanorama
                         template: 'storefront/fbPanorama/fa724312dd.txt',
                         width: '800px',
                         height: '600px',
@@ -745,6 +762,10 @@ var config = {
              * zIndex подсказок
              */
             hintZIndex: 30,
+            /**
+             * Всплывашка с предпросмотром проекта
+             */
+            appPreviewZIndex: 35,  //.st_preview_app_wr
             /**
              * Диалог выбора, например выбор типа вопроса теста selectDialog.js
              */

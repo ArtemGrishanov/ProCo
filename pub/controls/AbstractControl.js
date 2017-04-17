@@ -9,6 +9,7 @@
  * 3) Возможно, работает с dom элементом из промо-приложения.
  */
 var AbstractControl = {
+
     /**
      *
      * @constructor
@@ -20,6 +21,8 @@ var AbstractControl = {
      */
     init: function(propertyString, directiveName, parent, productDOMElement, params) {
         this.self = this;
+        this.id = getUniqId().substr(22);
+        this.__activeControls[this.id] = 1;
         this.destroyed = false;
         this.directiveName = directiveName;
         if (parent) {
@@ -64,11 +67,12 @@ var AbstractControl = {
     loadDirective: function(callback) {
         if (this.directiveName && this.destroyed !== true) {
             var control = this;
+            var selfId = this.id;
             var t = {
                 run: function () {
 //                    console.log('ABSTRACT_CONTROL: '+control.propertyString+'.'+control.directiveName+' run started');
                     var $d = $('<div></div>').load(config.common.home+'controls/view/'+control.directiveName+'.html', (function(response, status, xhr) {
-                        if (control.destroyed !== true) {
+                        if (control.destroyed !== true && AbstractControl.__activeControls[selfId] === 1) {
                             if (control.$parent) {
                                 control.$directive = $($d.html());
                                 if (control.params.localizeDirective === true) {
@@ -126,9 +130,12 @@ var AbstractControl = {
      * Выставить признак уничтожения, чтобы в возможных оставшихся задачах и обработчиках стал доступен этот признак
      */
     destroy: function() {
+        this.__activeControls[this.id] = 0;
         this.destroyed = true;
         if (this.$directive) {
             this.$directive.remove();
         }
-    }
+    },
+
+    __activeControls: {}
 };

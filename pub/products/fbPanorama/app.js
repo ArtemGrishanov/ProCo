@@ -32,6 +32,12 @@ var FbPanoramaApp = MutApp.extend({
             screenRoot: this.screenRoot
         });
         this.addScreen(this.canvasScr);
+
+        this.panoViewerScr = new PanoViewerScreen({
+            model: mm,
+            screenRoot: this.screenRoot
+        });
+        this.addScreen(this.panoViewerScr);
     },
 
     start: function() {

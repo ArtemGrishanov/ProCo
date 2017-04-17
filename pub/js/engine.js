@@ -1188,10 +1188,19 @@ var Engine = {};
      * Вернуть актуальные свойства приложения в виде строки.
      * Применяется в публикации
      *
+     * @param param.addIsPublishedParam {boolean} добавить в приложение свойство, признак опубликованности
+     *
      * @return {string}
      */
-    function serializeAppValues() {
-        return JSON.stringify(Engine.getAppPropertiesValues().app);
+    function serializeAppValues(param) {
+        param = param || {};
+        param.addIsPublishedParam = param.hasOwnProperty('addIsPublishedParam') ? param.addIsPublishedParam : false;
+        var res = JSON.stringify(Engine.getAppPropertiesValues().app);
+        if (param.addIsPublishedParam === true) {
+            var r = /^{"/ig;
+            res = res.replace(r, '{"appConstructor=mutapp isPublished":true,"');
+        }
+        return res;
     }
 
     /**

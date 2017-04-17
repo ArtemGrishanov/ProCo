@@ -53,6 +53,14 @@ var fbPanoramaPublisher = {};
      * @type {null}
      */
     var facebookPostId = null;
+    /**
+     *
+     * Режим просмотра панорамы с помощью проигрывателя http://photo-sphere-viewer.js.org/
+     * Публикация отличается
+     *
+     * @type {boolean}
+     */
+    var photoViewerMode = false;
 
     /**
      * Сохранить промо проект на сервере
@@ -83,14 +91,43 @@ var fbPanoramaPublisher = {};
             facebookPostId = null;
 
             var appModel = promoIframe.contentWindow.app.model;
+            photoViewerMode = appModel.attributes.photoViewerMode;
             setupJPEGEncoder(appModel.attributes.panoConfig.xmp);
             var panoCanvas = appModel.createPanoCanvas();
             uploadPanoCanvas(panoCanvas, function(result) {
                 if (result === 'ok') {
+                    var uploadedPanoUrl = config.common.publishedProjectsHostName + awsImageUrl;
                     if (config.products.fbPanorama.enableCustomStatistics === true) {
                         App.stat('fbPanorama', 'Canvas_uploaded');
                     }
-                    checkPermissions(config.common.publishedProjectsHostName + awsImageUrl, (config.products.fbPanorama.addDebugCaption === true) ? appModel.attributes.panoConfig.id: null);
+                    if (photoViewerMode !== true) {
+                        // публикация в facebook
+                        checkPermissions(uploadedPanoUrl, (config.products.fbPanorama.addDebugCaption === true) ? appModel.attributes.panoConfig.id: null);
+                    }
+                    else {
+                        // установить зааплоденную картинку в пирложение
+                        var apPanoImg = Engine.getAppProperty('id=mm panoCompiledImage');
+                        Engine.setValue(apPanoImg, uploadedPanoUrl, {
+                            updateAppProperties: false,
+                            updateScreens: false
+                        });
+                        // после установки картинки приложение становится в режим плеера с другой шириной
+                        appWidth = Engine.getApp().width;
+                        appHeight = Engine.getApp().height;
+                        // далее как публикация обычного самостоятельного проекта
+                        Publisher.publish({
+                            appId: publishedAppId,
+                            width: appWidth,
+                            height: appHeight,
+                            appStr: Engine.serializeAppValues({addIsPublishedParam:true}),
+                            cssStr: Engine.getCustomStylesString(),
+                            promoIframe: promoIframe,
+                            baseProductUrl: baseProductUrl,
+                            callback: callback
+                        });
+                        isPublishing = false
+                        setupJPEGEncoder(null);
+                    }
                 }
                 else {
                     if (config.products.fbPanorama.enableCustomStatistics === true) {
@@ -315,6 +352,9 @@ var fbPanoramaPublisher = {};
         if (facebookPostId) {
             return 'https://www.facebook.com/'+facebookPostId
         }
+        if (photoViewerMode === true) {
+            return Publisher.getAnonymLink();
+        }
         return '';
     }
 
@@ -327,7 +367,18 @@ var fbPanoramaPublisher = {};
     global.getAnonymLink = getAnonymLink;
     global.isInited = function() {return isInited;}
     global.isError = function() {return errorInPublish;}
-    global.isPublishing = function() {return isPublishing;}
+    global.isPublishing = function() {
+        if (photoViewerMode === true) {
+            // в режиме photoViewerMode публикация состоит из двух этапов.
+            // Во время первого isPublishing === true
+            // во время второго работает Publisher
+            if (isPublishing === true) {
+                return true;
+            }
+            return Publisher.isPublishing();
+        }
+        return isPublishing;
+    }
     global.deletePermissions = deletePermissions;
 
 })(fbPanoramaPublisher);
