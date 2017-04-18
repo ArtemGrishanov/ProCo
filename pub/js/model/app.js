@@ -216,7 +216,19 @@ var App = App || {};
             hiw8: 'Готово? Публикуйте!',
             hiw9: 'Используйте готовый код для вставки на сайт или в блог. Добавляйте ссылки и кнопки социальных сетей Facebook и Вконтакте.',
             hiw10: 'Следите за результатами',
-            hiw11: 'Получайте дополнительный социальный трафик. Отслеживайте переходы в Google Analytics'
+            hiw11: 'Получайте дополнительный социальный трафик. Отслеживайте переходы в Google Analytics',
+            quizes_create_easely: 'Тесты. Создавать легко',
+            quiz_index1: 'Создайте ваш тест за 5 минут. Выберите готовый шаблон и добавьте нужный котент. В вашем распоряжении мощный онлайн редактор и мгновенная публикация. Весь функционал доступен бесплатно.',
+            create_quiz_free: 'Создать тест бесплатно',
+            quiz_example: 'Посмотреть пример теста',
+            mini_memory_create: 'Мини-игры. Мемори',
+            memory_index1: 'Загрузите изображения в шаблон – и ваша собственная игра готова.<br><br>Игра «Мемори» позволяет проверить знания на соответствие изображений: например, какая марка автомобиля, за какой клуб играет футболист, в какой стране находится памятник архитектуры.',
+            create_memory_free: 'Создать игру бесплатно',
+            memory_example: 'Посмотреть пример игры',
+            fbpano_create: 'Панорамы 360° для Facebook',
+            fbpano_index1: 'Уникальный формат, позволяющий создать из обычной фотографии панораму 360°, подписать на ней любые объекты и опубликовать на Facebook. Создавайте собственные экскурсии по интересным местам – теперь в вашем распоряжении не просто панорамы, а возможность рассказать целую историю!',
+            create_fbpano_free: 'Создать панораму бесплатно',
+            fbpano_example: 'Пример панорамы'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -349,7 +361,19 @@ var App = App || {};
             hiw8: 'Ready? Publish!',
             hiw9: 'Use the ready code to embed project on the site or blog. Add links and buttons to Facebook or Vkontakte.',
             hiw10: 'Inspect the results',
-            hiw11: 'Get additional social traffic. Track conversions in Google Analytics'
+            hiw11: 'Get additional social traffic. Track conversions in Google Analytics',
+            quizes_create_easely: 'Tests. Create easily',
+            quiz_index1: 'Create your quiz in 5 minutes. Select the ready template and add your content. At your disposal is a powerful online editor and instant publishing. All features are available for free.',
+            create_quiz_free: 'Create quiz for free',
+            quiz_example: 'View quiz example',
+            mini_memory_create: 'Mini-games. Memory',
+            memory_index1: 'Upload images to the template - and your own game is ready.<br><br>The game "Memory" allows you to check the knowledge of the correspondence of images: for example, what brand of car, a football player and his club, in which country is an architectural monument.',
+            create_memory_free: 'Create game fro free',
+            memory_example: 'View game example',
+            fbpano_create: 'Photos 360° for Facebook',
+            fbpano_index1: 'A unique format that allows you to create a 360° panorama from a regular photo, sign any objects on it and publish it to Facebook. Create your own tours to interesting places - now you have the opportunity to tell the whole story!',
+            create_fbpano_free: 'Create photo 360° for free',
+            fbpano_example: 'Photo 360° example'
         }
     },
     /**
