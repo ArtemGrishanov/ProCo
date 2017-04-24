@@ -6,7 +6,7 @@
  * TODO: требуется унификация интерфейса для таких контролов
  */
 function CustomQControl(propertyString, directiveName, $parent, productDOMElement, params) {
-    console.log('CustomQControl CustomQControl CustomQControl CustomQControl CustomQControl CustomQControl');
+//    console.log('CustomQControl CustomQControl CustomQControl CustomQControl CustomQControl CustomQControl');
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
     this._view = null;
 
