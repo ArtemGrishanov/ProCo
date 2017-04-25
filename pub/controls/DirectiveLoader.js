@@ -42,8 +42,6 @@ var directiveLoader = {};
         var t = {
             run: function () {
                 var $d = $('<div></div>').load(config.common.home+'controls/view/'+directiveName+'.html', (function(response, status, xhr) {
-//                    control.$directive.attr('data-app-property',control.propertyString);
-//                    control.$parent.append(control.$directive);
                     Queue.release(this);
                     _saveDirective(directiveName, $($d.html()));
 
@@ -100,7 +98,6 @@ var directiveLoader = {};
         if (allDirectiveNames === null) {
             resultCallback = callback;
             allDirectiveNames = _builAllDirectiveNames();
-            console.dir(allDirectiveNames);
             for (var i = 0; i < allDirectiveNames.length; i++) {
                 _createLoadTask(allDirectiveNames[i]);
             }

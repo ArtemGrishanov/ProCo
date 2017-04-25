@@ -125,7 +125,6 @@ var PanoramaEditScreen = MutApp.Screen.extend({
         var panoConfig = this.model.get('panoConfig');
         var panoImage = this.model.get('panoramaImage');
         if (panoConfig) {
-            console.log('panoramaEditScreen.render(): +image');
 
             // содержимое канваса не клонируется когда создается экран в редакторе
             var c = /*this.model.get('panoCanvas');/*/
@@ -188,7 +187,6 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             }
         }
         else {
-            console.log('panoramaEditScreen.render(): no image');
             this.$el.html(this.template['default']({
                 backgroundImage: ''
             }));

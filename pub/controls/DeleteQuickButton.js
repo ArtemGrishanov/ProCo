@@ -28,8 +28,6 @@ function DeleteQuickButton(propertyString, directiveName, $parent, productDOMEle
         Engine.deleteArrayElement(p, this.optionIndex);
     };
 
-    this.loadDirective(function(response, status, xhr){
-        this.$directive.on('click', this.onDeleteQuickButtonClick.bind(this));
-    });
+    this.$directive.on('click', this.onDeleteQuickButtonClick.bind(this));
 }
 DeleteQuickButton.prototype = AbstractControl;

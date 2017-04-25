@@ -122,8 +122,7 @@ function ResourceManager(params) {
             this.dialog.view.css('zIndex', this.zIndex);
         }
         else {
-            this.zIndex = null;
-            this.dialog.view.css('zIndex','auto');
+            this.zIndex = this.dialog.view.css('zIndex');
         }
         $('#id-dialogs_view').empty().append(this.dialog.view).show();
         if (App.getUserData() !== null) {

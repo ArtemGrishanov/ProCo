@@ -665,14 +665,12 @@ var config = {
         },
         Slide: {
             defaultDirectiveIndex: 0,
-            directiveLoadPriority: 10, // специальный приоритет для более быстрой загрузки контрола, высокий для более важных
             directives: ['slide'],
             parentId: null // вставляется в группу контролов Slide
         },
         AddArrayElementControl: {
             defaultDirectiveIndex: 0,
             directives: ['addquickbutton','addscreenbutton'],
-            localizeDirective: true, // вызвать App.localize для директивы после загрузки
             parentId: 'id-control_cnt',
             type: 'quickcontrolpanel' // контрол появляется на всплывающей панельке рядом с элементом
         },
@@ -691,7 +689,6 @@ var config = {
         },
         ChooseImage: {
             defaultDirectiveIndex: 0,
-            localizeDirective: true,
             directives: ['chooseimage','chooseimagepreview'],
             parentId: 'id-static_controls_cnt',
             type: 'controlpanel'

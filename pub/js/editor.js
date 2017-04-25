@@ -364,10 +364,10 @@ var Editor = {};
             if (slideGroupControlIsLoaded===true) {
                 checkScreenGroupsArrowsState();
                 clearInterval(intervalId);
-                // даем еще чуть повиесеть так как там грузятся UI директивы для контролов боковой панели
+                // даем еще чуть повиесеть
                 setTimeout(function() {
                     Modal.hideLoading();
-                }, 1500);
+                }, 1000);
                 if (typeof startCallback === 'function') {
                     startCallback();
                 }
@@ -1085,7 +1085,6 @@ var Editor = {};
         var ctrl = null;
         params = params || {};
         params.iFrame = $('#id-product_screens_cnt')[0];
-        params.localizeDirective = config.controls[name].localizeDirective;
 //        try {
             // существует ли такой вью, если нет, берем по умолчанию
             if (viewName) {
@@ -1563,7 +1562,6 @@ var Editor = {};
     }
 
     function deleteSelections() {
-        console.log('deleteSelections');
         selectedElem = null;
         if ($selectionBorder) {
             $selectionBorder.hide();
@@ -1623,23 +1621,25 @@ var Editor = {};
      * Сделать проверку на показ стрелок прокрутки панели экранов
      */
     function checkScreenGroupsArrowsState() {
-        var sumW = 0;
-        for (var i = 0; i < slideGroupControls.length; i++) {
-            if (slideGroupControls[i].$directive) {
-                sumW += slideGroupControls[i].$directive.width();
+        if (slideGroupControls) {
+            var sumW = 0;
+            for (var i = 0; i < slideGroupControls.length; i++) {
+                if (slideGroupControls[i].$directive) {
+                    sumW += slideGroupControls[i].$directive.width();
+                }
+                else {
+                    // директивы слайдов могут быть еще не загружены
+                    return;
+                }
+            }
+            if ($('#id-slides_cnt').width() < sumW) {
+                $('.js-slide_arr_left').show();
+                $('.js-slide_arr_right').show();
             }
             else {
-                // директивы слайдов могут быть еще не загружены
-                return;
+                $('.js-slide_arr_left').hide();
+                $('.js-slide_arr_right').hide();
             }
-        }
-        if ($('#id-slides_cnt').width() < sumW) {
-            $('.js-slide_arr_left').show();
-            $('.js-slide_arr_right').show();
-        }
-        else {
-            $('.js-slide_arr_left').hide();
-            $('.js-slide_arr_right').hide();
         }
     }
 
