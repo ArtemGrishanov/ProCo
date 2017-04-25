@@ -169,22 +169,6 @@ var Editor = {};
         appId = getUniqId().substr(22);
         appTemplate = null;
         appName = null;
-        // сначала смотрим, есть ли ссылка на шаблон
-        var t = getQueryParams(document.location.search)[config.common.templateUrlParamName] || param[config.common.templateUrlParamName];
-        if (t) {
-            cloneTemplate = getQueryParams(document.location.search)[config.common.cloneParamName] === 'true' || param[config.common.cloneParamName] === 'true';
-            openTemplate(t, cloneTemplate);
-        }
-        else {
-            // если ссылки на шаблон нет, то открываем по имени промо-проекта, если оно есть
-            var n = getQueryParams(document.location.search)[config.common.appNameParamName] || param[config.common.appNameParamName];
-            if (n) {
-                loadAppSrc(n);
-            }
-            else {
-                alert('Выберите шаблон для открытия');
-            }
-        }
         $('#id-workspace').click(function(){
             // любой клик по документу сбрасывает фильтр контролов
             filterControls(null, null, getActiveScreens());
@@ -211,6 +195,26 @@ var Editor = {};
 
         // установка placeholder по особому, так как это атрибут
         $('.js-proj_name').attr('placeholder', App.getText('enter_project_name'));
+
+        // начало загрузки директив для контролов
+        directiveLoader.load(function(){
+            // сначала смотрим, есть ли ссылка на шаблон
+            var t = getQueryParams(document.location.search)[config.common.templateUrlParamName] || param[config.common.templateUrlParamName];
+            if (t) {
+                cloneTemplate = getQueryParams(document.location.search)[config.common.cloneParamName] === 'true' || param[config.common.cloneParamName] === 'true';
+                openTemplate(t, cloneTemplate);
+            }
+            else {
+                // если ссылки на шаблон нет, то открываем по имени промо-проекта, если оно есть
+                var n = getQueryParams(document.location.search)[config.common.appNameParamName] || param[config.common.appNameParamName];
+                if (n) {
+                    loadAppSrc(n);
+                }
+                else {
+                    alert('Выберите шаблон для открытия');
+                }
+            }
+        });
     }
 
     /**
@@ -347,12 +351,14 @@ var Editor = {};
         var intervalId = setInterval(function() {
             // дожидаемся загрузки контролов управления экранами
             // так как они управляют апдейтом экрана
-            var slideGroupControlIsLoaded = true;
-            var controls = Editor.getSlideGroupControls();
-            for (var n = 0; n < controls.length; n++) {
-                if (controls[n].loaded === false) {
-                    slideGroupControlIsLoaded = false;
-                    break;
+            var slideGroupControlIsLoaded = false;
+            if (slideGroupControls) {
+                slideGroupControlIsLoaded = true;
+                for (var n = 0; n < slideGroupControls.length; n++) {
+                    if (slideGroupControls[n].loaded === false) {
+                        slideGroupControlIsLoaded = false;
+                        break;
+                    }
                 }
             }
             if (slideGroupControlIsLoaded===true) {
