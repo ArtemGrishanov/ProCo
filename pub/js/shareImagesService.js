@@ -223,7 +223,7 @@ var shareImageService = {};
                     var url = App.getUserData().id+'/'+Editor.getAppId()+'/'+config.common.shareFileNamePrefix+'_'+_generatedImages[i].entityId+'.jpg';
                     uploadCanvas(App.getAWSBucketForPublishedProjects(), function(result) {
                         if (result === 'ok') {
-                            var fullImageUrl = config.common.publishedProjectsHostName+url;
+                            var fullImageUrl = 'http:'+config.common.publishedProjectsHostName+url;
                             log('createPreviewsForShare: canvas uploaded '+entityId+' '+fullImageUrl);
                             // дописать в хранилище картинок картинку для публикации
                             findImageInfo(entityId).imgUrl = fullImageUrl;

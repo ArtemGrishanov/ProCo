@@ -96,7 +96,7 @@ var fbPanoramaPublisher = {};
             var panoCanvas = appModel.createPanoCanvas();
             uploadPanoCanvas(panoCanvas, function(result) {
                 if (result === 'ok') {
-                    var uploadedPanoUrl = config.common.publishedProjectsHostName + awsImageUrl;
+                    var uploadedPanoUrl = 'http:'+config.common.publishedProjectsHostName + awsImageUrl;
                     if (config.products.fbPanorama.enableCustomStatistics === true) {
                         App.stat('fbPanorama', 'Canvas_uploaded');
                     }

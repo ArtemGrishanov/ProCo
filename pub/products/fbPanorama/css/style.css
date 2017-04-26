@@ -107,3 +107,7 @@ html, body {
     background: url(//testix.me/i/icons/testix-fav-32.png) no-repeat center !important;
     font-family: Arial, sans-serif;
 }
+.photo_viewer_space {
+    width: 32px;
+    height: 32px;
+}

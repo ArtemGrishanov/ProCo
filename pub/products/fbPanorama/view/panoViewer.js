@@ -116,7 +116,19 @@ var PanoViewerScreen = MutApp.Screen.extend({
                         win.focus();
                     }
                 },
-                'fullscreen'
+                'fullscreen',
+                {
+                    id: 'id-1',
+                    title: '',
+                    content: '',
+                    className: 'photo_viewer_space'
+                },
+                {
+                    id: 'id-2',
+                    title: '',
+                    content: '',
+                    className: 'photo_viewer_space'
+                },
             ]
         });
     }

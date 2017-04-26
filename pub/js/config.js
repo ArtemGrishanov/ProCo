@@ -116,7 +116,7 @@ var config = {
         /**
          * Хост для опубликованных проектов
          */
-        publishedProjectsHostName: 'http://p.testix.me/',
+        publishedProjectsHostName: '//p.testix.me/',
         /**
          * Разрешает вывод в консоль console.log
          */
@@ -213,7 +213,7 @@ var config = {
         /**
          * Шаблон для кода встраивания
          */
-        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"><script src="//testix.me/js/loader.js" async></script></div>'
+        embedCodeTemplate: '<div class="testix_project" allowfullscreen data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"><script src="//testix.me/js/loader.js" async></script></div>'
     },
     storage: {
         /**
