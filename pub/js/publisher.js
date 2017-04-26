@@ -162,7 +162,7 @@ var Publisher = {};
      */
     function getAnonymLink(appId) {
         var appId = appId || publishedAppId;
-        return config.common.publishedProjectsHostName+App.getUserData().id+'/'+appId;
+        return 'http:'+config.common.publishedProjectsHostName+App.getUserData().id+'/'+appId;
     }
 
     /**

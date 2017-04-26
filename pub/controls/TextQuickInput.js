@@ -56,6 +56,10 @@ function TextQuickInput(propertyString, directiveName, $parent, productDOMElemen
         }
     };
 
+    this.onPaste = function() {
+        this.onProductElementInput();
+    };
+
     this.onPropertyChanged = function() {
         //TODO тот кто стал инициатором изменения не должен сам обрабатывать событие
         var p = Engine.getAppProperty(this.propertyString);
