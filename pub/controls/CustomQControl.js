@@ -10,14 +10,10 @@ function CustomQControl(propertyString, directiveName, $parent, productDOMElemen
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
     this._view = null;
 
-    this.loadDirective(function(response, status, xhr){
-        this.$directive.off('click').on('click', this._onDirectiveClick.bind(this));
-
 //        идея вью - установка дополнительного вью в контейнер, в директиву. Фигня конечно.
 //        if (this._view) {
 //            this.$directive.empty().append(this._view);
 //        }
-    });
 
     this._onProductDOMElementClick = function(e) {
         if (this.params.onProductDOMElementClick) {
@@ -76,6 +72,7 @@ function CustomQControl(propertyString, directiveName, $parent, productDOMElemen
         return result;
     };
 
+    this.$directive.off('click').on('click', this._onDirectiveClick.bind(this));
     this.$productDomElement.off('click').on('click', this._onProductDOMElementClick.bind(this));
 //    this.setView = function(v) {
 //        this._view = v;

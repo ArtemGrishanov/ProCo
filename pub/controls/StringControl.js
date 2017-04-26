@@ -17,14 +17,6 @@ function StringControl(propertyString, directiveName, $parent, productDOMElement
      */
     this.changeOnTimer = (params.hasOwnProperty('changeOnTimer')) ? !!params.changeOnTimer : true;
 
-    this.loadDirective(function(response, status, xhr){
-        this.$input = this.$directive.find('[type="text"]');
-        var p = Engine.getAppProperty(this.propertyString);
-        this.$input.val(p.propertyValue);
-        this.$input.keyup(this.onInputKeyUp.bind(this));
-        this.$input.focusout(this.onInputFocusOut.bind(this));
-    });
-
     /**
      * Событие при нажатии Enter
      */
@@ -68,6 +60,18 @@ function StringControl(propertyString, directiveName, $parent, productDOMElement
         }
     };
 
+    /**
+     * Способ установить значение в контрол извне, с помощью автогенератора
+     * @param value
+     */
+    this.setControlValue = function(value) {
+        if (this.$input && this.$input.val() !== value) {
+            this.$input.val(value);
+        }
+        var p = Engine.getAppProperty(this.propertyString);
+        Engine.setValue(p, value);
+    };
+
 //    /**
 //     *
 //     * @param ap
@@ -82,6 +86,12 @@ function StringControl(propertyString, directiveName, $parent, productDOMElement
 //        return formattedValue;
 //    };
 
+    this.$input = this.$directive.find('[type="text"]');
+    var p = Engine.getAppProperty(this.propertyString);
+    this.$input.val(p.propertyValue);
+    this.$input.keyup(this.onInputKeyUp.bind(this));
+    this.$input.focusout(this.onInputFocusOut.bind(this));
+
     Engine.on('AppPropertyValueChanged', this.propertyString, this.onPropertyChanged.bind(this));
 
     if (this.changeOnTimer === true) {
@@ -90,18 +100,6 @@ function StringControl(propertyString, directiveName, $parent, productDOMElement
             this.setValueToEngine();
         }).bind(this), 500);
     }
-
-    /**
-     * Способ установить значение в контрол извне, с помощью автогенератора
-     * @param value
-     */
-    this.setControlValue = function(value) {
-        if (this.$input && this.$input.val() !== value) {
-            this.$input.val(value);
-        }
-        var p = Engine.getAppProperty(this.propertyString);
-        Engine.setValue(p, value);
-    };
 }
 
 StringControl.prototype = AbstractControl;

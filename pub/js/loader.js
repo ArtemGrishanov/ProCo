@@ -4,7 +4,11 @@
 if (window.textix === undefined) {
     var testix = {};
     (function(global){
-
+        /**
+         * Локация раположения всех опубликованных проектов
+         * @type {string}
+         */
+        var publishedProjectsHome = '//s3.eu-central-1.amazonaws.com/p.testix.me/';
         /**
          * Приложения, которые хранятся на странице
          * @type {Array}
@@ -145,10 +149,9 @@ if (window.textix === undefined) {
                 e.style.margin = '0 auto';
                 if (e.innerHTML.indexOf('<iframe') < 0) {
                     // еще не инитили надо создать iframe
-                    // TODO показать loader
                     var w = parseInt(e.getAttribute('data-width')) || '800';
                     var h = parseInt(e.getAttribute('data-height')) || '600';
-                    var p = e.getAttribute('data-published');
+                    var p = normalizeDataPublished(e.getAttribute('data-published'));
                     e.style.maxWidth = w+'px';
                     e.style.height = h+'px';
 
@@ -157,7 +160,29 @@ if (window.textix === undefined) {
                     initGA(e);
                 }
             }
+        }
 
+        /**
+         * Проверить значение атрибута "data-published"
+         *
+         * Первоначальная версия формата:
+         * Нормальный урл проекта выглядит так: "http://p.testix.me/121947341568004/27e77fae5b/p_index.html"
+         *
+         * Версия от 26.04.2017:
+         * Можно ожидать такой: "121947341568004/27e77fae5b"
+         * Тогда его надо превратить в: "//s3.eu-central-1.amazonaws.com/p.testix.me/121947341568004/27e77fae5b/p_index.html"
+         *
+         * @param {string} dataPublishedAttr
+         */
+        function normalizeDataPublished(dataPublishedAttr) {
+            if (dataPublishedAttr.indexOf('http') === 0) {
+                // старый формат "http://p.testix.me/..." - оставляем как есть
+                return dataPublishedAttr;
+            }
+            else {
+                // ожидается "121947341568004/27e77fae5b" надо дополнить до полного урла
+                return publishedProjectsHome+dataPublishedAttr+'/p_index.html';
+            }
         }
 
         /**

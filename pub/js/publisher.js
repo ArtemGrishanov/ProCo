@@ -173,7 +173,7 @@ var Publisher = {};
         var embedCode = config.common.embedCodeTemplate;
         embedCode = embedCode.replace('{{width}}', appWidth+'px')
             .replace('{{height}}', appHeight+'px')
-            .replace('{{published}}', getAnonymLink()+'/'+indexPrefix+indexHtml);
+            .replace('{{published}}', App.getUserData().id+'/'+publishedAppId);
         return embedCode;
     }
 

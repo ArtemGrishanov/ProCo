@@ -21,6 +21,30 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
             }
         }
     };
+
+    this.updatePreview = function() {
+        try {
+            if (this.$previewDocumentBody) {
+                var view = (Array.isArray(this.propertyString)) ?
+                    Engine.getAppScreen(this.propertyString[0]).view :
+                    Engine.getAppScreen(this.propertyString).view;
+                if (this.previewScale === undefined) {
+                    this.previewScale = this.$previewIFrame.width() / Editor.getAppContainerSize().width;
+                }
+                var clonedView = $(view).clone()
+                    .css('width',Editor.getAppContainerSize().width+'px')
+                    .css('height',Editor.getAppContainerSize().height+'px')
+                    .css('transform','scale('+this.previewScale+')')
+                    .css('transform-origin','top left');
+                this.$previewDocumentBody.empty().append(clonedView);
+                Engine.writeCssRulesTo(this.$previewDocumentBody);
+            }
+        }
+        catch(e) {
+            log('Can not create preview on screen \''+this.propertyString+'\' Details: ' + e.message, true);
+        }
+    };
+
     /**
      * Событие на загрузку айфрейма, тут мы сможем его подготовить для создания превью слайда
      */
@@ -43,25 +67,7 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
             this.updatePreview();
         }
     };
-    // загрузить UI контрола
-    this.loadDirective(function(response, status, xhr){
-        // подготовка компонента к работе с превью
-        this.$previewIFrame = $(this.$directive.find('.js-preview_iframe'));
-        // проверяем загружен iframe или еще нет
-        var $previewDocument = this.$previewIFrame.contents();
-        if ($previewDocument && $previewDocument.find('head') && $previewDocument.find('body')) {
-            this.onPreviewIFrameLoaded();
-        }
-        else {
-            this.$previewIFrame.load(this.onPreviewIFrameLoaded.bind(this));
-        }
-        this.$directive.mousedown((function() {
-            var p = (Array.isArray(this.propertyString))?this.propertyString.join(','):this.propertyString;
-            if (Editor.getActiveScreens().join(',') !== p) {
-                Editor.showScreen(Array.isArray(propertyString)?propertyString:propertyString.split(','));
-            }
-        }).bind(this));
-    });
+
     /**
      *
      * @param {string} screenId ид экрана который обновился
@@ -94,31 +100,15 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
         Engine.on('ScreenUpdated', null/*arr[i]*/, this.onScreenUpdate.bind(this));
     }
 
-    this.updatePreview = function() {
-        try {
-            if (this.$previewDocumentBody) {
-                var view = (Array.isArray(this.propertyString)) ?
-                        Engine.getAppScreen(this.propertyString[0]).view :
-                        Engine.getAppScreen(this.propertyString).view;
-                if (this.previewScale === undefined) {
-                    this.previewScale = this.$previewIFrame.width() / Editor.getAppContainerSize().width;
-                }
-                var clonedView = $(view).clone()
-                    .css('width',Editor.getAppContainerSize().width+'px')
-                    .css('height',Editor.getAppContainerSize().height+'px')
-                    .css('transform','scale('+this.previewScale+')')
-                    .css('transform-origin','top left');
-                this.$previewDocumentBody.empty().append(clonedView);
-                Engine.writeCssRulesTo(this.$previewDocumentBody);
-            }
+    // подготовка компонента к работе с превью
+    this.$previewIFrame = $(this.$directive.find('.js-preview_iframe'));
+    this.$previewIFrame.load(this.onPreviewIFrameLoaded.bind(this));
+    this.$directive.mousedown((function() {
+        var p = (Array.isArray(this.propertyString))?this.propertyString.join(','):this.propertyString;
+        if (Editor.getActiveScreens().join(',') !== p) {
+            Editor.showScreen(Array.isArray(propertyString)?propertyString:propertyString.split(','));
         }
-        catch(e) {
-            log('Can not create preview on screen \''+this.propertyString+'\' Details: ' + e.message, true);
-        }
-    };
+    }).bind(this));
 
-    //if (config.common.generateSlidePreviews === true) {
-       // this.updatePreview();
-    //}
 }
 Slide.prototype = AbstractControl;

@@ -35,7 +35,7 @@ function SelectDialog(params) {
                 var $e = $(t);
                 // если опция помечана как selectable=false, то не надо ее выделить кликом
                 if (!(options[i].hasOwnProperty('selectable') && options[i].selectable === false)) {
-                    $e.click((function(e){
+                    $e.click((function(e) {
                         $('.js-option').removeClass('__active');
                         // оборачиваем элемент по которому кликнули
                         var $t = $(e.currentTarget);
@@ -67,7 +67,7 @@ function SelectDialog(params) {
     // init section
     var html = $('#id-select_dialog_template').html();
     this.view = $(html);
-    $(this.view).css('zIndex',config.editor.ui.selectDialogZIndex);
+    this.view.css('z-index',config.editor.ui.selectDialogZIndex);
     App.localize(this.view);
     this.loader = this.view.find('.js-loader');
     this.cnt = this.view.find('.js-options_cnt');

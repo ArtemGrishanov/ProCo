@@ -22,7 +22,44 @@
     <favorites_list name="ProCo" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="config.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="219" column="12" selection-start="8508" selection-end="8508" vertical-scroll-proportion="0.4643377" vertical-offset="2966" max-vertical-offset="13350">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/test_new/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="26" column="13" selection-start="1496" selection-end="1496" vertical-scroll-proportion="-6.7959185" vertical-offset="57" max-vertical-offset="2565">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="publisher.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/publisher.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="226" column="27" selection-start="8026" selection-end="8026" vertical-scroll-proportion="0.0" vertical-offset="3061" max-vertical-offset="7050">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ControlRefactor.txt" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ControlRefactor.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="20" column="0" selection-start="1199" selection-end="1199" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -32,21 +69,21 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/templates/anonymPage/index.html" />
-        <option value="$PROJECT_DIR$/pub/contact.html" />
-        <option value="$PROJECT_DIR$/pub/faq.html" />
-        <option value="$PROJECT_DIR$/pub/howitworks.html" />
-        <option value="$PROJECT_DIR$/pub/products/memoriz/app.js" />
-        <option value="$PROJECT_DIR$/pub/products/memoriz/model/memoriz.js" />
-        <option value="$PROJECT_DIR$/pub/products/test_new/app.js" />
-        <option value="$PROJECT_DIR$/pub/index.html" />
-        <option value="$PROJECT_DIR$/pub/js/model/app.js" />
+        <option value="$PROJECT_DIR$/pub/controls/Alternative.js" />
+        <option value="$PROJECT_DIR$/pub/controls/ChooseImage.js" />
         <option value="$PROJECT_DIR$/pub/controls/CustomQControl.js" />
-        <option value="$PROJECT_DIR$/pub/products/fbPanorama/css/style.css" />
-        <option value="$PROJECT_DIR$/pub/products/fbPanorama/view/panoViewer.js" />
-        <option value="$PROJECT_DIR$/pub/products/fbPanorama/model/m.js" />
-        <option value="$PROJECT_DIR$/pub/js/shareImagesService.js" />
-        <option value="$PROJECT_DIR$/pub/products/fbPanorama/fbPanoramaPublisher.js" />
+        <option value="$PROJECT_DIR$/pub/controls/DirectiveLoader.js" />
+        <option value="$PROJECT_DIR$/pub/js/selectDialog.js" />
+        <option value="$PROJECT_DIR$/pub/js/resourceManager.js" />
+        <option value="$PROJECT_DIR$/pub/products/fbPanorama/view/panoramaEditScreen.js" />
+        <option value="$PROJECT_DIR$/pub/controls/AbstractControl.js" />
+        <option value="$PROJECT_DIR$/pub/controls/StringControl.js" />
+        <option value="$PROJECT_DIR$/pub/controls/SlideGroupControl.js" />
+        <option value="$PROJECT_DIR$/pub/js/editor.js" />
+        <option value="$PROJECT_DIR$/ControlRefactor.txt" />
+        <option value="$PROJECT_DIR$/pub/controls/Slide.js" />
+        <option value="$PROJECT_DIR$/pub/js/loader.js" />
+        <option value="$PROJECT_DIR$/pub/js/publisher.js" />
         <option value="$PROJECT_DIR$/pub/js/config.js" />
       </list>
     </option>
@@ -97,38 +134,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -247,15 +252,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21646747" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22022955" sideWeight="0.78353256" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17216642" sideWeight="0.6719788" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20549928" sideWeight="0.4555113" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32802126" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -264,10 +268,31 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40371847" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40371847" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20549928" sideWeight="0.4555113" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32802126" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21305595" sideWeight="0.6719788" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -283,117 +308,109 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/css/photo-sphere-viewer.min.css">
+    <entry file="file://$PROJECT_DIR$/pub/controls/DirectiveLoader.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="712">
+        <state line="27" column="20" selection-start="900" selection-end="900" vertical-scroll-proportion="0.0" vertical-offset="316" max-vertical-offset="1890" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/resourceManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="123" column="14" selection-start="5812" selection-end="5812" vertical-scroll-proportion="0.40902475" vertical-offset="1564" max-vertical-offset="3030" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/AbstractControl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="32" selection-start="1372" selection-end="1372" vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="885">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/view/panoViewer.js">
+    <entry file="file://$PROJECT_DIR$/pub/controls/StringControl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="126" column="29" selection-start="4285" selection-end="4285" vertical-scroll-proportion="1.0510018" vertical-offset="1313" max-vertical-offset="2115">
-          <folding />
-        </state>
+        <state line="72" column="6" selection-start="2134" selection-end="2134" vertical-scroll-proportion="0.0" vertical-offset="745" max-vertical-offset="1650" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/model/m.js">
+    <entry file="file://$PROJECT_DIR$/pub/js/engine.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="11" selection-start="2165" selection-end="2165" vertical-scroll-proportion="0.6010929" vertical-offset="465" max-vertical-offset="3150">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.07530121" vertical-offset="50" max-vertical-offset="19200" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backups/2017.02.03/products/fbPanorama/PanoramaDemo/Photo-Sphere-Viewer/config.js">
+    <entry file="file://$PROJECT_DIR$/pub/controls/SlideGroupControl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="93" column="8" selection-start="3474" selection-end="3474" vertical-scroll-proportion="0.33333334" vertical-offset="1307" max-vertical-offset="9540">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backups/2017.03.23/products/panorama/PanoramaDemo/Photo-Sphere-Viewer/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="93" column="8" selection-start="3475" selection-end="3475" vertical-scroll-proportion="0.33333334" vertical-offset="1307" max-vertical-offset="9540">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backups/2017.03.18/products/panorama/PanoramaDemo/Photo-Sphere-Viewer/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="93" column="8" selection-start="3475" selection-end="3475" vertical-scroll-proportion="0.33333334" vertical-offset="1307" max-vertical-offset="9540">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backups/2017.02.05/products/fbPanorama/PanoramaDemo/Photo-Sphere-Viewer/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="93" column="8" selection-start="3474" selection-end="3474" vertical-scroll-proportion="0.33333334" vertical-offset="1307" max-vertical-offset="9540">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backups/2017.01.27/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="93" column="8" selection-start="3475" selection-end="3475" vertical-scroll-proportion="0.33333334" vertical-offset="1307" max-vertical-offset="9975">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backups/2016.10.09/js/editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1173" column="69" selection-start="49886" selection-end="49886" vertical-scroll-proportion="0.595057" vertical-offset="17282" max-vertical-offset="22500">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="85" column="4" selection-start="1812" selection-end="1812" vertical-scroll-proportion="0.49348232" vertical-offset="1010" max-vertical-offset="1785">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backups/2017.01.17/js/shareImagesService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="225" column="61" selection-start="7326" selection-end="7326" vertical-scroll-proportion="0.22404371" vertical-offset="3252" max-vertical-offset="3960">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/shareImagesService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="225" column="53" selection-start="7318" selection-end="7318" vertical-scroll-proportion="0.33333334" vertical-offset="3146" max-vertical-offset="3960">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/publisher.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="164" column="54" selection-start="5927" selection-end="5952" vertical-scroll-proportion="0.33333334" vertical-offset="2231" max-vertical-offset="7050">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/fbPanoramaPublisher.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="98" column="48" selection-start="3236" selection-end="3236" vertical-scroll-proportion="0.33333334" vertical-offset="1241" max-vertical-offset="5880">
+        <state line="87" column="25" selection-start="2498" selection-end="2498" vertical-scroll-proportion="0.0" vertical-offset="1305" max-vertical-offset="10620">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="7" selection-start="806" selection-end="806" vertical-scroll-proportion="0.5758427" vertical-offset="25" max-vertical-offset="25005">
+        <state line="366" column="42" selection-start="13546" selection-end="13546" vertical-scroll-proportion="0.0" vertical-offset="5261" max-vertical-offset="25095">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/Slide.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="74" column="46" selection-start="3107" selection-end="3107" vertical-scroll-proportion="0.0" vertical-offset="1035" max-vertical-offset="1785">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ControlRefactor.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="0" selection-start="1199" selection-end="1199" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/loader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="180" column="13" selection-start="12644" selection-end="12644" vertical-scroll-proportion="0.0" vertical-offset="2454" max-vertical-offset="8850">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/test_new/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8025">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/test_new/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="13" selection-start="1496" selection-end="1496" vertical-scroll-proportion="-6.7959185" vertical-offset="57" max-vertical-offset="2565">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="725">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="36" selection-start="2087" selection-end="2089" vertical-scroll-proportion="0.33333334" vertical-offset="416" max-vertical-offset="6345">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/publisher.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="226" column="27" selection-start="8026" selection-end="8026" vertical-scroll-proportion="0.0" vertical-offset="3061" max-vertical-offset="7050">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/config.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="224" column="85" selection-start="8767" selection-end="8767" vertical-scroll-proportion="0.54634833" vertical-offset="2971" max-vertical-offset="12615">
-          <folding>
-            <element signature="e#21091#23410#0" expanded="false" />
-          </folding>
+        <state line="219" column="12" selection-start="8508" selection-end="8508" vertical-scroll-proportion="0.4643377" vertical-offset="2966" max-vertical-offset="13350">
+          <folding />
         </state>
       </provider>
     </entry>

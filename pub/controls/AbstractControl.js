@@ -22,107 +22,20 @@ var AbstractControl = {
     init: function(propertyString, directiveName, parent, productDOMElement, params) {
         this.self = this;
         this.id = getUniqId().substr(22);
+        this.propertyString = propertyString;
+        this.params = params;
         this.__activeControls[this.id] = 1;
         this.destroyed = false;
-        this.directiveName = directiveName;
         if (parent) {
             this.$parent = $(parent);
         }
-        this.propertyString = propertyString;
-        this.params = params;
-        if (typeof this.params.localizeDirective !== 'boolean') {
-            this.params.localizeDirective = false;
-        }
-//        if (this.directiveName) {
-//            // в некоторых контролах нет никакой визуальной части
-//            this.$directive = this.addDirective();
-//        }
+        this.directiveName = directiveName;
+        this.$directive = $(directiveLoader.getDirective(this.directiveName));
+        this.$directive.attr('data-app-property', this.propertyString);
+        this.$parent.append(this.$directive);
         if (productDOMElement) {
             this.$productDomElement = $(productDOMElement);
         }
-    },
-
-    /**
-     * Добавить директиву в контейнер this.$parent
-     * Далее она будет загружена автоматически
-     *
-     * @return DOMElement
-     */
-    addDirective: function() {
-        //TODO refactor
-        if (this.$parent &&
-            this.directiveName != 'slidegroupcontrol' &&
-            this.directiveName != 'slide' &&
-            this.directiveName != 'colorpicker' &&
-            this.directiveName != 'textinput') {
-            var $elem = $('<div '+this.directiveName+' data-app-property="'+this.propertyString+'"></div>');
-            this.$parent.append($elem);
-            return $elem;
-        }
-    },
-
-    /**
-     * Загружает html вьюхи и добавляет его в родительский элемент
-     */
-    loadDirective: function(callback) {
-        if (this.directiveName && this.destroyed !== true) {
-            var control = this;
-            var selfId = this.id;
-            var t = {
-                run: function () {
-//                    console.log('ABSTRACT_CONTROL: '+control.propertyString+'.'+control.directiveName+' run started');
-                    var $d = $('<div></div>').load(config.common.home+'controls/view/'+control.directiveName+'.html', (function(response, status, xhr) {
-                        if (control.destroyed !== true && AbstractControl.__activeControls[selfId] === 1) {
-                            if (control.$parent) {
-                                control.$directive = $($d.html());
-                                if (control.params.localizeDirective === true) {
-                                    App.localize(control.$directive);
-                                }
-                                control.$directive.attr('data-app-property',control.propertyString);
-                                control.$parent.append(control.$directive);
-                                callback.call(control);
-//                                Queue.release(this);
-                            }
-                        }
-                        Queue.release(this);
-//                        var duration = new Date().getTime() - this.startTime;
-//                        console.log('ABSTRACT_CONTROL: '+control.propertyString+'.'+control.directiveName+' DIRECTIVE LOADED. destroyed=='+control.destroyed+' Duration='+duration);
-                    }).bind(this));
-                },
-                onFail: function() {
-//                    var duration = new Date().getTime() - this.startTime;
-//                    console.log('ABSTRACT_CONTROL: '+control.propertyString+'.'+control.directiveName+' ON FAIL. destroyed=='+control.destroyed+' Duration='+duration);
-                }
-            };
-            var cfg = this.getControlConfig();
-            if (cfg) {
-                if (cfg.directiveLoadPriority !== undefined) {
-                    // кастомный приоритет для некоторых директив, задается в конфиге
-                    t.priority = cfg.directiveLoadPriority;
-                }
-            }
-            else {
-                log('There is not config for directive: '+this.directiveName, true);
-            }
-            //TODO
-            if (this.directiveName === 'colorpicker') {
-                t.priority = 8;
-            }
-            Queue.push(t);
-        }
-    },
-
-    /**
-     * Получить конфигурацию контрола по его вью
-     * используется this.directiveName в качестве критерия поиска
-     */
-    getControlConfig: function() {
-        for (var controlName in config.controls) {
-            if (config.controls[controlName].directives.indexOf(this.directiveName) >= 0) {
-                return config.controls[controlName];
-            }
-        }
-        return null;
     },
 
     /**

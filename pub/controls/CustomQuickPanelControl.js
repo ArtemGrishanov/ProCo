@@ -9,13 +9,6 @@ function CustomQuickPanelControl(propertyString, directiveName, $parent, product
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
     this._view = null;
 
-    this.loadDirective(function(response, status, xhr){
-        if (this._view) {
-            this.$directive.empty().append(this._view);
-            App.localize(this.$directive);
-        }
-    });
-
     this._onClick = function(e) {
         if (this.params.onClick) {
             this.params.onClick.call(this, {app: Engine.getApp()});

@@ -8,11 +8,6 @@ function ChooseImage(propertyString, directiveName, $parent, productDOMElement, 
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
     this.usePreviewShareImageModal = params.usePreviewShareImageModal || false;
 
-    this.loadDirective(function(response, status, xhr){
-        this.$directive.click(this.onDirectiveClick.bind(this));
-        //this.makePreview();
-    });
-
     this._onShow = function() {
         this.makePreview();
     };
@@ -40,6 +35,8 @@ function ChooseImage(propertyString, directiveName, $parent, productDOMElement, 
             Modal.showLogin();
         }
     };
+
+    this.$directive.click(this.onDirectiveClick.bind(this));
 
     /**
      * Колбек в работе леера previewShareImageModal

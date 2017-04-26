@@ -59,17 +59,14 @@ function SlideGroupControl(propertyString, directiveName, $parent, productDOMEle
     // подписка на событие, которое вызывается после пересборки всех экранов
     Engine.on('AllScreensWereUpdatedBefore', null, this.onAllScreensUpdate.bind(this));
 
-    // загрузка UI контрола
-    this.loadDirective(function(response, status, xhr){
-        // некоторый инит ui который делается один раз
-        this.$directive.find('.js-add').show().click((function(){
-            this.addNewItem();
-        }).bind(this));
-        $(document).mousemove(this.onMouseMove.bind(this));
-        $(document).mouseup(this.onMouseUp.bind(this));
-        this.updateScreens();
-        this.loaded = true;
-    });
+    // некоторый инит ui который делается один раз
+    this.$directive.find('.js-add').show().click((function(){
+        this.addNewItem();
+    }).bind(this));
+    $(document).mousemove(this.onMouseMove.bind(this));
+    $(document).mouseup(this.onMouseUp.bind(this));
+    this.updateScreens();
+    this.loaded = true;
 
     // таймер на проверку новой позиции при перетаскивании
     setInterval(this.checkPos.bind(this),100);
@@ -88,6 +85,7 @@ SlideGroupControl.prototype = AbstractControl;
 SlideGroupControl.prototype.set = function(params) {
     this.groupName = params.groupName || null;
     this.groupLabel = params.groupLabel || null;
+    this.updateScreens();
 };
 
 /**

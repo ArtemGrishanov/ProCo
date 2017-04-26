@@ -213,7 +213,7 @@ var config = {
         /**
          * Шаблон для кода встраивания
          */
-        embedCodeTemplate: '<div class="testix_project" allowfullscreen data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"><script src="//testix.me/js/loader.js" async></script></div>'
+        embedCodeTemplate: '<div class="testix_project" allowfullscreen data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"><script src="//s3.eu-central-1.amazonaws.com/testix.me/js/loader.js" async></script></div>'
     },
     storage: {
         /**
@@ -665,14 +665,12 @@ var config = {
         },
         Slide: {
             defaultDirectiveIndex: 0,
-            directiveLoadPriority: 10, // специальный приоритет для более быстрой загрузки контрола, высокий для более важных
             directives: ['slide'],
             parentId: null // вставляется в группу контролов Slide
         },
         AddArrayElementControl: {
             defaultDirectiveIndex: 0,
             directives: ['addquickbutton','addscreenbutton'],
-            localizeDirective: true, // вызвать App.localize для директивы после загрузки
             parentId: 'id-control_cnt',
             type: 'quickcontrolpanel' // контрол появляется на всплывающей панельке рядом с элементом
         },
@@ -691,7 +689,6 @@ var config = {
         },
         ChooseImage: {
             defaultDirectiveIndex: 0,
-            localizeDirective: true,
             directives: ['chooseimage','chooseimagepreview'],
             parentId: 'id-static_controls_cnt',
             type: 'controlpanel'
@@ -710,7 +707,7 @@ var config = {
         },
         Alternative: {
             defaultDirectiveIndex: 0,
-            directives: ['dropdown','radiobutton','altbuttons'],
+            directives: ['dropdown',/*'radiobutton',*/'altbuttons'],
             parentId: 'id-static_controls_cnt',
             type: 'controlpanel'
         },
