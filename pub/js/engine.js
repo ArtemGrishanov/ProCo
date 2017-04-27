@@ -932,12 +932,19 @@ var Engine = {};
     /**
      * Перезапустить mutapp приложение
      * Например, может быть нужно когда меняется размер приложения
+     *
+     * @param {string} params.mode режим запуска
      * @returns {boolean}
      */
-    function restartApp() {
+    function restartApp(params) {
+        params = params || {};
         try {
             delete productWindow.app;
             var apps = Engine.getAppPropertiesValues().app;
+            if (params.mode) {
+                // один из режимов запуска, например edit || preview
+                apps["appConstructor=mutapp mode"] = params.mode;
+            }
             var cfg = config.products[appName];
             productWindow.app = new productWindow[cfg.constructorName]({
                 //TODO ширина и высота такие аппПроперти
@@ -1198,7 +1205,7 @@ var Engine = {};
         var res = JSON.stringify(Engine.getAppPropertiesValues().app);
         if (param.addIsPublishedParam === true) {
             var r = /^{"/ig;
-            res = res.replace(r, '{"appConstructor=mutapp isPublished":true,"');
+            res = res.replace(r, '{"appConstructor=mutapp mode":"published","');
         }
         return res;
     }

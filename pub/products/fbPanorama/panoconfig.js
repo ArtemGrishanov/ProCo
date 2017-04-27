@@ -84,23 +84,6 @@ var panoConfig = {};
             result.croppedX = Math.round((result.panoWidth-result.croppedWidth)/2);
             result.croppedY = Math.round((result.panoHeight-result.croppedHeight)/2);
         }
-//    else {
-//        // это всегда так, картинку показываем максимально по ширине
-//        result.croppedWidth = srcWidth;
-//        //TODO ???  по ФБ это число меньше. По гугл туториалу это фактическая высота
-//        result.croppedHeight = srcHeight;//2867;//srcHeight;
-//
-//        // высоту берем при условии вертикального угла обзора в 86 градусов
-//        result.panoHeight = Math.round(result.croppedHeight*180/VFOW_OPTIMAL);
-//        // полные размеры панорамы panoWidth:panoHeight всегда в отношении 2:1
-//        result.panoWidth = result.panoHeight*2;
-//
-//        result.croppedX = Math.round((result.panoWidth-result.croppedWidth)/2);
-//        result.croppedY = Math.round((result.panoHeight-result.croppedHeight)/2);
-//
-//        result.srcHFOV = Math.round(result.croppedWidth/result.panoWidth*360);
-//        result.id = srcWidth+'x'+srcHeight+'_'+result.srcHFOV;
-//    }
 
         var xmpTemplate = '<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 5.0-c061 64.140949, 2010/12/07-10:57:01"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:Description xmlns:GPano="http://ns.google.com/photos/1.0/panorama/" rdf:about=""><GPano:CroppedAreaImageHeightPixels>{{croppedHeight}}</GPano:CroppedAreaImageHeightPixels><GPano:CroppedAreaImageWidthPixels>{{croppedWidth}}</GPano:CroppedAreaImageWidthPixels><GPano:CroppedAreaLeftPixels>{{croppedX}}</GPano:CroppedAreaLeftPixels><GPano:CroppedAreaTopPixels>{{croppedY}}</GPano:CroppedAreaTopPixels><GPano:FullPanoHeightPixels>{{panoHeight}}</GPano:FullPanoHeightPixels><GPano:FullPanoWidthPixels>{{panoWidth}}</GPano:FullPanoWidthPixels><GPano:ProjectionType>{{type}}</GPano:ProjectionType></rdf:Description></rdf:RDF></x:xmpmeta>';
         result.xmp = xmpTemplate;
@@ -138,11 +121,6 @@ var panoConfig = {};
         return Math.round((srcWidth/srcHeight)*magic);
     }
 
-// MAGIC_FB_PANORAMA_NUMBER = hfov / (width/height)
-// height = width / (hfov / MAGIC_FB_PANORAMA_NUMBER);
-//var MAGIC_FB_PANORAMA_NUMBER = 106.86;
-//var MAGIC_FB_PANORAMA_NUMBER = 73.02; //360/(6000/1217); //65
-//var MAGIC_FB_PANORAMA_NUMBER = 73.02; //44
     var vfov_info = [
         {
             minRatio: 0,

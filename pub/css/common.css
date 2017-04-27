@@ -54,7 +54,7 @@ img {
     height: 100%;
     min-width: 320px;
 }
-.top + .scr_wr, .top + .mob_menu {
+.top+.scr_wr, .top+.mob_menu, .top+.published_proj_back {
     padding-top: 56px; /* 56 - top height */
 }
 .scr {
@@ -876,7 +876,7 @@ img {
 .published_proj_back {
     background-color: #5d5d5d;
     width: 100%;
-    padding-top: 56px; /* top fixed height */
+    padding-top: 10px;
 }
 
 .proto_wr {

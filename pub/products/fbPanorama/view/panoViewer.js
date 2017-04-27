@@ -79,10 +79,6 @@ var PanoViewerScreen = MutApp.Screen.extend({
     },
 
     createPhotoSphereViewer: function(url, configPano) {
-        if (this.model.get('photoViewerMode') === true && this.model.application.isPublished === true) {
-            this.model.application.width = 800;
-            this.model.application.height = 600;
-        }
         $('#photosphere').empty();
         var halfLongtitude = Math.PI/180*(configPano.srcHFOV/2);
         var halfLatitude = Math.PI/180*(configPano.targetVFOV/2);

@@ -1133,7 +1133,7 @@ var Editor = {};
                 }
                 // нужно дописать свойство "опубликованности" именно в опубликованное приложение
                 var appStr = Engine.serializeAppValues({
-                    addIsPublishedParam:true
+                    addIsPublishedParam: true
                 });
                 activePublisher.publish({
                     appId: appId,
@@ -1388,10 +1388,18 @@ var Editor = {};
     }
 
     function showEditor() {
-        // когда видим редактор, должен быть включен этот режим предпросмотра
-        // так как пользователь работает (редактирует) с десктоп версией приложения
-        // с превью id-product_iframe_cnt берутся экраны для редактирования
-        toDesktopPreview();
+        // когда видим редактор, должен быть включен режим предпросмотра 'desktop', так как пользователь работает (редактирует) с десктоп версией приложения
+        previewMode = 'desktop';
+        $('#id-product_iframe_cnt').removeClass('__mob');
+        $(appIframe).css('border','0')
+            .css('width',appContainerSize.width+'px')
+            .css('height',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
+            .css('maxWidth',appContainerSize.width+'px')
+            .css('maxHeight',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
+        // нужно перезапустить приложение чтобы оно корректно обработало свой новый размер
+        Engine.restartApp({
+            mode: 'edit'
+        });
         $(appIframe).addClass('__hidden');
         $('#id-editor_view').show();
         $('#id-preview_view').hide();
@@ -1401,7 +1409,9 @@ var Editor = {};
         $(appIframe).removeClass('__hidden');
         $('#id-editor_view').hide();
         $('#id-preview_view').show();
-        Engine.restartApp();
+        Engine.restartApp({
+            mode: 'preview'
+        });
     }
 
     /**
@@ -1486,9 +1496,11 @@ var Editor = {};
             .css('width',appContainerSize.width+'px')
             .css('height',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
             .css('maxWidth',appContainerSize.width+'px')
-            .css('maxHeight',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
+            .css('maxHeight',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px'); //так как у панорам например гориз скролл и не умещается по высоте он
         // нужно перезапустить приложение чтобы оно корректно обработало свой новый размер
-        Engine.restartApp();
+        Engine.restartApp({
+            mode: 'preview'
+        });
     }
 
     function toMobPreview() {
@@ -1500,7 +1512,9 @@ var Editor = {};
             .css('maxWidth',appContainerSize.width)
             .css('maxHeight',appContainerSize.height);
         // нужно перезапустить приложение чтобы оно корректно обработало свой новый размер
-        Engine.restartApp();
+        Engine.restartApp({
+            mode: 'preview'
+        });
     }
 
     var $slidesCnt = null;

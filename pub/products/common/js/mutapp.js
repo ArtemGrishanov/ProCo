@@ -33,11 +33,12 @@ var MutApp = function(param) {
         screensRenderChecksum: {}
     };
     /**
-     * Если isPublished === true, то запущено опубликованные приложение.
-     * Например, только в опубликованном приложении надо собирать статистику.
-     * @type {boolean}
+     * Режим запуска приложения
+     * Приложение может быть опубликовано, находиться в режиме редактирования в редакторе или в предпросмотре.
+     * Например, только в mode==='published' приложении надо собирать статистику.
+     * @type {string} 'published' || 'preview' || 'edit' || 'none'
      */
-    this.isPublished = false;
+    this.mode = 'none';
     this.title = null;
     this.description = null;
     this._models = [];
@@ -181,7 +182,7 @@ var MutApp = function(param) {
                             // это простое свойство вида 'key1':'value1'
                             // которое надо установить непосредственно в сам объект MutApp
                             //this[key] = defProps[key];
-                            log('MutApp.constructor: Invalid selector=\''+key+'\'', true);
+                            console.error('MutApp.constructor: Invalid selector=\''+key+'\'', true);
                         }
                     }
                 }
@@ -193,7 +194,7 @@ var MutApp = function(param) {
                 this._appChangeCallbacks = param.appChangeCallbacks;
             }
             else {
-                log('MutApp.constructor: appChangeCallbacks must be Array', true);
+                console.error('MutApp.constructor: appChangeCallbacks must be Array', true);
             }
 
         }
@@ -208,7 +209,7 @@ var MutApp = function(param) {
 
     // инициализация апи для статистики, если задан идентификатор Google Analytics
     // при использовании другого или нескольких провайдеров надо будет рефакторить
-    if (this.gaId && this.isPublished === true) {
+    if (this.gaId && this.mode === 'published') {
         this.initStatistics(this.gaId);
     }
 
@@ -478,7 +479,7 @@ MutApp.prototype.setPropertyByAppString = function(appString, value) {
         }
     }
     else {
-        log('MutApp.setPropertyByAppString: Invalid selector=\''+appString+'\'', true);
+        console.error('MutApp.setPropertyByAppString: Invalid selector=\''+appString+'\'', true);
     }
 };
 
@@ -682,7 +683,7 @@ MutApp.prototype.initStatistics = function(gaId) {
  * @param {number} [value], например 10 - длительность
  */
 MutApp.prototype.stat = function(category, action, label, value) {
-    if (window.ga && this.isPublished === true) {
+    if (window.ga && this.mode === 'published') {
         var statData = {
             hitType: 'event',
             eventCategory: category,

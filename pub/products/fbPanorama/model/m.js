@@ -54,8 +54,12 @@ var FbPanoramaModel = MutApp.Model.extend({
         /**
          * Скомпилированная картинка для плеера photo-sphere-viewer
          * Применяется в photoViewerMode=true
+         *
+         * Примеры
+         * Дача 'https://s3.eu-central-1.amazonaws.com/p.testix.me/121947341568004/7e69f66993/forFBUpload.jpg',
+         * Сингапур 'https://s3.eu-central-1.amazonaws.com/p.testix.me/121947341568004/1d1f4f3236/forFBUpload.jpg'
          */
-        panoCompiledImage: null, //'https://s3.eu-central-1.amazonaws.com/p.testix.me/121947341568004/7e69f66993/forFBUpload.jpg',
+        panoCompiledImage: null,
         /**
          * Объект photo-sphere-viewer.js
          */
@@ -137,11 +141,17 @@ var FbPanoramaModel = MutApp.Model.extend({
                 imageProgress: 100
             });
 
-            // для опубликованного photo-viewer приложения оставить обычный размер 800x600
-            // для предпросмотра facebook панорам нужно показывать картинку в полную ширину,
-            // приложение получить свой новый актуальный размер в зависимости от загруженной картинки и масштаба
-            this.application.width = Math.round(cp.srcWidth * this.attributes.previewScale);
-            this.application.height = this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT;
+
+            if (this.attributes.photoViewerMode === true &&
+                (this.application.mode === 'preview' || this.application.mode === 'publish')) {
+                // для опубликованного photo-viewer приложения оставить обычный размер 800x600
+            }
+            else {
+                // mode === edit || mode === none
+                // для предпросмотра facebook панорам нужно показывать картинку в полную ширину,
+                this.application.width = Math.round(cp.srcWidth * this.attributes.previewScale);
+                this.application.height = this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT;
+            }
 
         }).bind(this);
         img.onerror = function() {

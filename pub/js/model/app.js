@@ -154,7 +154,7 @@ var App = App || {};
             back: 'Назад',
             enter_project_name: 'Введите имя проекта',
             choose: 'Выбрать',
-            cancel: 'Отменв',
+            cancel: 'Отмена',
             select_dialog_ok: 'Добавить',
             new_slide: 'Новый слайд',
             please_wait: 'Пожалуйста, подождите...',
