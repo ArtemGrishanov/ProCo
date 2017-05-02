@@ -159,7 +159,7 @@ var fbPanoramaPublisher = {};
         awsImageUrl = App.getUserData().id+'/'+publishedAppId+'/forFBUpload.jpg';
         console.log('Start uploading to: ' + awsImageUrl);
         // method from s3util
-        uploadCanvas(App.getAWSBucketForPublishedProjects(), callback, awsImageUrl, panoCanvas);
+        s3util.uploadCanvas(App.getAWSBucketForPublishedProjects(), callback, awsImageUrl, panoCanvas);
     }
 
     /**

@@ -294,6 +294,9 @@ var Editor = {};
         }
         Engine.startEngine(iframeWindow, params);
 
+        // установить хуки которые есть в дескрипторе. Может не быть вовсе
+        hookRunner.setHooks(iframeWindow.descriptor.hooks);
+
         // для установки ссылки шаринга требуются данные пользователя, ответ от апи возможно надо подождать
         if (App.getUserData()) {
             trySetDefaultShareLink(cloneTemplate === true);
@@ -1271,7 +1274,7 @@ var Editor = {};
             var url = 'facebook-'+App.getUserData().id+'/app/'+appId+'.jpg';
 
             previewService.createInIframe(previewScreensIframeBody, function(canvas) {
-                uploadCanvas(App.getAWSBucket(), null, url, canvas);
+                s3util.uploadCanvas(App.getAWSBucket(), null, url, canvas);
             }, null, [config.products.common.styles, config.products[app.type].stylesForEmbed], appContainerSize.width, appContainerSize.height);
 
             return url;
@@ -1408,9 +1411,12 @@ var Editor = {};
     function showPreview() {
         $(appIframe).removeClass('__hidden');
         $('#id-editor_view').hide();
-        $('#id-preview_view').show();
-        Engine.restartApp({
-            mode: 'preview'
+
+        hookRunner.on('beforePreview',getEditorEnvironment(),function(e) {
+            Engine.restartApp({
+                mode: 'preview'
+            });
+            $('#id-preview_view').show();
         });
     }
 
@@ -1657,6 +1663,22 @@ var Editor = {};
         }
     }
 
+    /**
+     * Собрать кдючевые объекты среды для передачи в различные обработчики вне контекста редактора.
+     *
+     * @returns {object}
+     */
+    function getEditorEnvironment() {
+        return {
+            Editor: Editor,
+            Engine: Engine,
+            config: config,
+            Modal: Modal,
+            App: App,
+            s3util: s3util
+        }
+    }
+
     // public methods
     global.start = start;
     global.selectElementsOnScreen = selectElementsOnScreen;
@@ -1678,5 +1700,6 @@ var Editor = {};
     global.getAppId = function() { return appId; };
     global.updateSelection = updateSelection;
     global.getQuickControlPanel = function() { return quickControlPanel; }
+    global.getEditorEnvironment = getEditorEnvironment;
 
 })(Editor);

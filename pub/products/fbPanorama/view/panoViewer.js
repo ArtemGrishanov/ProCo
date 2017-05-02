@@ -79,54 +79,56 @@ var PanoViewerScreen = MutApp.Screen.extend({
     },
 
     createPhotoSphereViewer: function(url, configPano) {
-        $('#photosphere').empty();
-        var halfLongtitude = Math.PI/180*(configPano.srcHFOV/2);
-        var halfLatitude = Math.PI/180*(configPano.targetVFOV/2);
-        this.model.attributes.viewer = PhotoSphereViewer({
-            //panorama: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Trafalgar_Square_360_Panorama_Cropped_Sky%2C_London_-_Jun_2009.jpg',
-            // устанавливается готовая и уже загруженная в aws bucket картинка, с нанесенными метками
-            panorama: this.model.get('panoCompiledImage'),
-            container: 'id-photosphere',
-            longitude_range: [-halfLongtitude, halfLongtitude],
-            latitude_range: [-halfLatitude,halfLatitude],
-            size: {width:this.model.application.width,height:this.model.application.height},
-            anim_speed: '2rpm',
-            time_anim: 1000, // старт автоматической анимации
-            pano_data: {
-                full_width: configPano.panoWidth,
-                full_height: configPano.panoHeight,
-                cropped_width: configPano.croppedWidth,
-                cropped_height: configPano.croppedHeight,
-                cropped_x: configPano.croppedX,
-                cropped_y: configPano.croppedY
-            },
-            navbar: [
-                'caption',
-                {
-                    id: 'id-testix_link',
-                    title: 'Create your panorama',
-                    content: '',
-                    className: 'photo_viewer_testix_link',
-                    onClick: function() {
-                        var win = window.open('http://testix.me', '_blank');
-                        win.focus();
-                    }
+        if (this.model.attributes.viewer === null) {
+            $('#photosphere').empty();
+            var halfLongtitude = Math.PI/180*(configPano.srcHFOV/2);
+            var halfLatitude = Math.PI/180*(configPano.targetVFOV/2);
+            this.model.attributes.viewer = PhotoSphereViewer({
+                //panorama: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Trafalgar_Square_360_Panorama_Cropped_Sky%2C_London_-_Jun_2009.jpg',
+                // устанавливается готовая и уже загруженная в aws bucket картинка, с нанесенными метками
+                panorama: this.model.get('panoCompiledImage'),
+                container: 'id-photosphere',
+                longitude_range: [-halfLongtitude, halfLongtitude],
+                latitude_range: [-halfLatitude,halfLatitude],
+                size: {width:this.model.application.width,height:this.model.application.height},
+                anim_speed: '2rpm',
+                time_anim: 1000, // старт автоматической анимации
+                pano_data: {
+                    full_width: configPano.panoWidth,
+                    full_height: configPano.panoHeight,
+                    cropped_width: configPano.croppedWidth,
+                    cropped_height: configPano.croppedHeight,
+                    cropped_x: configPano.croppedX,
+                    cropped_y: configPano.croppedY
                 },
-                'fullscreen',
-                {
-                    id: 'id-1',
-                    title: '',
-                    content: '',
-                    className: 'photo_viewer_space'
-                },
-                {
-                    id: 'id-2',
-                    title: '',
-                    content: '',
-                    className: 'photo_viewer_space'
-                },
-            ]
-        });
+                navbar: [
+                    'caption',
+                    {
+                        id: 'id-testix_link',
+                        title: 'Create your panorama',
+                        content: '',
+                        className: 'photo_viewer_testix_link',
+                        onClick: function() {
+                            var win = window.open('http://testix.me', '_blank');
+                            win.focus();
+                        }
+                    },
+                    'fullscreen',
+                    {
+                        id: 'id-1',
+                        title: '',
+                        content: '',
+                        className: 'photo_viewer_space'
+                    },
+                    {
+                        id: 'id-2',
+                        title: '',
+                        content: '',
+                        className: 'photo_viewer_space'
+                    },
+                ]
+            });
+        }
     }
 
 });

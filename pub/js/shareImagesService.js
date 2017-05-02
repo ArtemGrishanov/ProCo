@@ -221,7 +221,7 @@ var shareImageService = {};
                 (function(entityId, entityIndex){
 
                     var url = App.getUserData().id+'/'+Editor.getAppId()+'/'+config.common.shareFileNamePrefix+'_'+_generatedImages[i].entityId+'.jpg';
-                    uploadCanvas(App.getAWSBucketForPublishedProjects(), function(result) {
+                    s3util.uploadCanvas(App.getAWSBucketForPublishedProjects(), function(result) {
                         if (result === 'ok') {
                             var fullImageUrl = 'http:'+config.common.publishedProjectsHostName+url;
                             log('createPreviewsForShare: canvas uploaded '+entityId+' '+fullImageUrl);

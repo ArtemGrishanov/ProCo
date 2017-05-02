@@ -497,3 +497,46 @@ descriptor.prototypes = {
 descriptor.triggers = {
 
 };
+
+descriptor.hooks = {
+    /**
+     * Вызывается перед показом превью проекта
+     * Для панорамы необходимо создать и заапоадить на сервер новую картинку перед показом
+     *
+     * @param {Object} param.editorEnvironment основные объекты для работы в Editor
+     * @param {function} callback - вызвать когда хук завершился
+     */
+    beforePreview: function(param, callback) {
+        var Modal = param.editorEnvironment.Modal;
+        Modal.showLoading();
+        var App = param.editorEnvironment.App;
+        var config = param.editorEnvironment.config;
+        var Editor = param.editorEnvironment.Editor;
+        var Engine = param.editorEnvironment.Engine;
+        var appIframe = Editor.getAppIframe();
+        var appModel = appIframe.contentWindow.app.model;
+        var photoViewerMode = appModel.attributes.photoViewerMode;
+        var panoCanvas = appModel.createPanoCanvas();
+
+        var awsImageUrl = App.getUserData().id+'/'+Editor.getAppId()+'/forFBUpload.jpg';
+        param.editorEnvironment.s3util.uploadCanvas(App.getAWSBucketForPublishedProjects(), function(result) {
+            if (result === 'ok') {
+                var uploadedPanoUrl = 'http:'+config.common.publishedProjectsHostName + awsImageUrl;
+                if (photoViewerMode === true) {
+                    // установить зааплоденную картинку в пирложение
+                    var apPanoImg = Engine.getAppProperty('id=mm panoCompiledImage');
+                    Engine.setValue(apPanoImg, uploadedPanoUrl, {
+                        updateAppProperties: false,
+                        updateScreens: false
+                    });
+                }
+                callback('ok', null);
+                Modal.hideLoading();
+            }
+            else {
+                callback('error', null);
+                Modal.hideLoading();
+            }
+        }, awsImageUrl, panoCanvas);
+    }
+};

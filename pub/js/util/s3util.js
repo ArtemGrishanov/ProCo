@@ -87,6 +87,60 @@ var s3util = {};
     }
 
     /**
+     * Зааплоадить канвас по урлу
+     * Будет произведена конвертация в jpg
+     *
+     * @param bucket
+     * @param callback (ok || error)
+     * @param url
+     * @param canvas
+     * @param fakeUpload - холостой прогон функции для тестов, чтобы не аплоадить картинки в режиме тестирования
+     */
+    function uploadCanvas(bucket, callback, url, canvas, fakeUpload) {
+        if (fakeUpload !== true) {
+
+            var t = {
+                run: function () {
+                    JPEGEncoder(config.jpegEncoder.JPEGEncoderQuality);
+                    var theImgData = (canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
+                    // Encode the image and get a URI back, set toRaw to true
+                    var rawData = encode(theImgData, config.jpegEncoder.JPEGEncoderQuality, true);
+                    var blob = new Blob([rawData.buffer], {type: 'image/jpeg'});
+                    var params = {
+                        Key: url,
+                        ContentType: 'image/jpeg',
+                        Body: blob,
+                        ACL: 'public-read'
+                    };
+                    bucket.putObject(params, (function (err, data) {
+                        if (err) {
+                            //Not authorized to perform sts:AssumeRoleWithWebIdentity
+                            log('s3cmd.uploadCanvas: ' + err, true);
+                            if (callback) {
+                                callback('error');
+                            }
+                        } else {
+                            log('s3cmd.uploadCanvas: uploaded ' + url);
+                            if (callback) {
+                                callback('ok');
+                            }
+                        }
+                        Queue.release(this);
+
+                    }).bind(this));
+                },
+                onFail: function() {
+                    callback('error');
+                }
+            };
+            Queue.push(t);
+        }
+        else {
+            callback('ok');
+        }
+    }
+
+    /**
      * Вернуть по имени bucket из App
      * @param {string} bucketName
      */
@@ -105,48 +159,6 @@ var s3util = {};
 
     global.requestStorage = requestStorage;
     global.requestPub = requestPub;
+    global.uploadCanvas = uploadCanvas;
 
 })(s3util);
-
-/**
- * Зааплоадить канвас по урлу
- * Будет произведена конвертация в jpg
- *
- * @param bucket
- * @param callback (ok || error)
- * @param url
- * @param canvas
- * @param fakeUpload - холостой прогон функции для тестов, чтобы не аплоадить картинки в режиме тестирования
- */
-function uploadCanvas(bucket, callback, url, canvas, fakeUpload) {
-    if (fakeUpload !== true) {
-        JPEGEncoder(config.jpegEncoder.JPEGEncoderQuality);
-        var theImgData = (canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height));
-        // Encode the image and get a URI back, set toRaw to true
-        var rawData = encode(theImgData, config.jpegEncoder.JPEGEncoderQuality, true);
-        var blob = new Blob([rawData.buffer], {type: 'image/jpeg'});
-        var params = {
-            Key: url,
-            ContentType: 'image/jpeg',
-            Body: blob,
-            ACL: 'public-read'
-        };
-        bucket.putObject(params, (function (err, data) {
-            if (err) {
-                //Not authorized to perform sts:AssumeRoleWithWebIdentity
-                log('ERROR: ' + err, true);
-                if (callback) {
-                    callback('error');
-                }
-            } else {
-                log('Превью промки загружено');
-                if (callback) {
-                    callback('ok');
-                }
-            }
-        }).bind(this));
-    }
-    else {
-        callback('ok');
-    }
-}

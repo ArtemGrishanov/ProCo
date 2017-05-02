@@ -6,8 +6,11 @@ var panoDrawing = {};
     // эти настройки покаж жестко заданы
     // выставлены на примере картинки 6000x3562, но на 1600x1000 уже другие надо
     var PIN_PADDING = 8, PIN_COLOR = '#33bbed', PIN_FONT_COLOR = '#ffffff', PIN_FONT_HEIGHT = 12, MIN_PIN_WIDTH = 100,
-        BACK_COLOR = '#aaa', PIN_FONT_FAMILY = 'Arial', LOGO_RIGHT = 40, LOGO_BOTTOM = 40,
-        FONT_SIZE_AR_HEIGHT = 1.2 // отношение размера шрифта к высоте стрелки
+        BACK_COLOR = '#aaa', PIN_FONT_FAMILY = 'Arial',
+        LOGO_RIGHT = 50,
+        LOGO_BOTTOM = 50,
+        FONT_SIZE_AR_HEIGHT = 1.2, // отношение размера шрифта к высоте стрелки
+        LOGO_HEIGHT_PERCENT_FROM_PANO_HEIGHT = 0.05 // высота лого в процентах от высоты панорамы
         ;
     /**
      * Зона размытия между картинкой и полосками
@@ -173,8 +176,8 @@ var panoDrawing = {};
         }
 
         if (param.logo) {
-            var lw = panoCanvas.width / 16;
-            var lh = lw * param.logo.height/param.logo.width;
+            var lh = panoCanvas.height * LOGO_HEIGHT_PERCENT_FROM_PANO_HEIGHT;
+            var lw = lh / (param.logo.height/param.logo.width);
             ctx.drawImage(param.logo,
                 panoCanvas.width - lw - LOGO_RIGHT,
                 panoCanvas.height - lh - LOGO_BOTTOM,

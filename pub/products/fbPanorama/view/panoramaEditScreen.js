@@ -62,26 +62,29 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             .css('width','100%')
             .css('min-height','100%'));
         param.screenRoot.append(this.$el);
-        this.model.bind("change:imageProgress", function () {
-            var panoConfig = this.model.get('panoConfig');
-            if (!panoConfig && this.imageProgressShown === false) {
-                // рендерим экран прогресса только первый раз
-                // изменение каждого процента не рендерим, так как это тяжело обновлять в редакторе
-                this.imageProgressShown = true;
+
+        if (this.model.application.mode === 'edit' || this.model.application.mode === 'none') {
+            this.model.bind("change:imageProgress", function () {
+                var panoConfig = this.model.get('panoConfig');
+                if (!panoConfig && this.imageProgressShown === false) {
+                    // рендерим экран прогресса только первый раз
+                    // изменение каждого процента не рендерим, так как это тяжело обновлять в редакторе
+                    this.imageProgressShown = true;
+                    this.render();
+                    if (this.model.get('photoViewerMode') !== true) {
+                        this.model.application.showScreen(this);
+                    }
+                    else {
+                        this.model.application.hideScreen(this);
+                    }
+                }
+            }, this);
+            this.model.bind("change:panoramaImage", function () {
+                this.imageProgressShown = false;
                 this.render();
-                if (this.model.get('photoViewerMode') !== true) {
-                    this.model.application.showScreen(this);
-                }
-                else {
-                    this.model.application.hideScreen(this);
-                }
-            }
-        }, this);
-        this.model.bind("change:panoramaImage", function () {
-            this.imageProgressShown = false;
-            this.render();
-            // this.model.application.showScreen(this);
-        }, this);
+                // this.model.application.showScreen(this);
+            }, this);
+        }
     },
 
     /**

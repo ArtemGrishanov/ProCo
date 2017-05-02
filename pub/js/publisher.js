@@ -162,7 +162,7 @@ var Publisher = {};
      */
     function getAnonymLink(appId) {
         var appId = appId || publishedAppId;
-        return 'http:'+config.common.publishedProjectsHostName+App.getUserData().id+'/'+appId;
+        return 'http:'+config.common.publishedProjectsHostName+App.getUserData().id+'/'+appId+'/';
     }
 
     /**
@@ -309,8 +309,6 @@ var Publisher = {};
                         }).bind(this);
                         client.send();
                     },
-                    done: function(e) {
-                    }
                 };
                 if (param.taskType) {
                     t.type = param.taskType;
