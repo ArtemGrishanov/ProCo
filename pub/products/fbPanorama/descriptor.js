@@ -91,9 +91,15 @@ descriptor.rules = {
         },
         cssProperty: 'text-align',
         possibleValues: [
-            {value:"left",icon:"i/align-left.png"},
-            {value:"center",icon:"i/align-center.png"},
-            {value:"right",icon:"i/align-right.png"}
+            {value:"left",icon:{
+                normal:"i/altern/align-left.png", selected:"i/altern/align-left-selected.png"
+            }},
+            {value:"center",icon:{
+                normal:"i/altern/align-center.png", selected:"i/altern/align-center-selected.png"
+            }},
+            {value:"right",icon:{
+                normal:"i/altern/align-right.png", selected:"i/altern/align-right-selected.png"
+            }}
         ],
         label: {RU:"Выравнивание",EN:'Align'},
         filter: true
@@ -437,12 +443,12 @@ descriptor.rules = {
             }
         },
         possibleValues: [
-            {value:"ar_bottom_left",icon:"i/altern/ar_btm_l.png"},
-            {value:"ar_bottom",icon:"i/altern/ar_btm.png"},
-            {value:"ar_bottom_right",icon:"i/altern/ar_btm_r.png"},
-            {value:"ar_top_left",icon:"i/altern/ar_top_l.png"},
-            {value:"ar_top",icon:"i/altern/ar_top.png"},
-            {value:"ar_top_right",icon:"i/altern/ar_top_r.png"}
+            {value:"ar_bottom_left",icon:{normal:"i/altern/sticker_1.png",selected:"i/altern/sticker_1_selected.png"}},
+            {value:"ar_bottom",icon:{normal:"i/altern/sticker_2.png",selected:"i/altern/sticker_2_selected.png"}},
+            {value:"ar_bottom_right",icon:{normal:"i/altern/sticker_3.png",selected:"i/altern/sticker_3_selected.png"}},
+            {value:"ar_top_left",icon:{normal:"i/altern/sticker_4.png",selected:"i/altern/sticker_4_selected.png"}},
+            {value:"ar_top",icon:{normal:"i/altern/sticker_5.png",selected:"i/altern/sticker_5_selected.png"}},
+            {value:"ar_top_right",icon:{normal:"i/altern/sticker_6.png",selected:"i/altern/sticker_6_selected.png"}}
         ],
         label: {RU:'Форма стикера',EN:'Sticker form'},
         filter: true,

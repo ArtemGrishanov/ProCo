@@ -69,8 +69,8 @@ form input {
     cursor: pointer;
 }
 .alt_item.__selected {
-    background-color: #1cbf61;
-    border-color: #16914a;
+    background-color: #499CF3;
+    border-color: #499CF3;
 }
 .qp {
     position: absolute;

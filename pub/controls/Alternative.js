@@ -9,9 +9,12 @@ function Alternative(propertyString, directiveName, $parent, productDOMElement, 
     this.$directive.find('ul').attr('id',controlId);
 
     var appProperty = Engine.getAppProperty(propertyString);
+    this.possibleValues = appProperty.possibleValues;
     var templateHtml = this.$directive.find('.js-option_template').html();
     var $cnt = this.$directive.find('.js-options');
     var $dropDownValue = this.$directive.find('.js-value');
+    // dom-элементы соответствующие возможным значениям, сохраняем для последующей работы с иконками
+    this.possibleValuesElements = [];
 
     for (var i = 0; i < appProperty.possibleValues.length; i++) {
         var pv = appProperty.possibleValues[i];
@@ -27,17 +30,36 @@ function Alternative(propertyString, directiveName, $parent, productDOMElement, 
         }
         else if (typeof pv === 'object') {
             $newElem = $(templateHtml.replace('{{option}}',pv.value).replace('{{value}}',pv.value)).appendTo($cnt);
-            $newElem.css('backgroundImage', 'url('+pv.icon+')');
+            if (typeof pv.icon === 'string') {
+                $newElem.css('backgroundImage', 'url('+pv.icon+')');
+            }
+            else if (typeof pv.icon.normal === 'string') {
+                // когда ест два вида иконок: для обычного и выбранного состояния
+                $newElem.css('backgroundImage', 'url('+pv.icon.normal+')');
+            }
             // устанавливаем начальное значение
             if (pv.value === appProperty.propertyValue) {
                 $newElem.addClass('__selected');
+                if (typeof pv.icon.selected === 'string') {
+                    $newElem.css('backgroundImage', 'url('+pv.icon.selected+')');
+                }
             }
         }
         $newElem.click((function(e) {
             //нажатие на клик и смена значения во вью и в движке
             var v = $(e.currentTarget).attr('data-value');
+            var pv = this.getPossibleValue(v);
+
+            // Сбрасываем выделение со всех иконок
+            this.setNormalIcons();
             $cnt.find('.js-option').removeClass('__selected');
+
+            // Устанавливаем выделение на выбранный элемент
             $(e.currentTarget).addClass('__selected')
+            if (typeof pv.icon.selected === 'string') {
+                // меняем иконку для выбранного состояния, если она задана
+                $(e.currentTarget).css('backgroundImage', 'url('+pv.icon.selected+')');
+            }
             $dropDownValue.text(v);
 
             if (params.useCustomFunctionForSetValue === true && params.onSetValue) {
@@ -56,6 +78,8 @@ function Alternative(propertyString, directiveName, $parent, productDOMElement, 
                 Engine.setValue(appProperty, v);
             }
         }).bind(this));
+
+        this.possibleValuesElements.push($newElem);
     }
 
     // сначала ставим текущее значение свойства как "выбранное"
@@ -84,6 +108,33 @@ function Alternative(propertyString, directiveName, $parent, productDOMElement, 
         }
         var p = Engine.getAppProperty(this.propertyString);
         Engine.setValue(p, value);
+    };
+
+    /**
+     * Найти возможное значение, одно из описанных в дескрипторе для этого контрола
+     *
+     * @param {string} value
+     * @returns {*}
+     */
+    this.getPossibleValue = function(value) {
+        for (var i = 0; i < this.possibleValues.length; i++) {
+            if (this.possibleValues[i].value === value) {
+                return this.possibleValues[i];
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Для всех значений альтернативы сбросить иконки в нормальное состояние
+     */
+    this.setNormalIcons = function() {
+        for (var i = 0; i < this.possibleValues.length; i++) {
+            var pv = this.possibleValues[i];
+            if (typeof pv.icon.normal === 'string') {
+                this.possibleValuesElements[i].css('backgroundImage', 'url('+pv.icon.normal+')');;
+            }
+        }
     };
 }
 

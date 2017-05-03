@@ -235,9 +235,15 @@ descriptor.rules = {
         },
         cssProperty: 'text-align',
         possibleValues: [
-            {value:"left",icon:"i/align-left.png"},
-            {value:"center",icon:"i/align-center.png"},
-            {value:"right",icon:"i/align-right.png"}
+            {value:"left",icon:{
+                normal:"i/altern/align-left.png", selected:"i/altern/align-left-selected.png"
+            }},
+            {value:"center",icon:{
+                normal:"i/altern/align-center.png", selected:"i/altern/align-center-selected.png"
+            }},
+            {value:"right",icon:{
+                normal:"i/altern/align-right.png", selected:"i/altern/align-right-selected.png"
+            }}
         ],
         label: {RU:"Выравнивание",EN:'Align'},
         filter: true

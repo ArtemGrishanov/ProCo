@@ -362,7 +362,7 @@ var App = App || {};
             hiw9: 'Use the ready code to embed project on the site or blog. Add links and buttons to Facebook or Vkontakte.',
             hiw10: 'Inspect the results',
             hiw11: 'Get additional social traffic. Track conversions in Google Analytics',
-            quizes_create_easely: 'Tests. Create easily',
+            quizes_create_easely: 'Quizes. Create easily',
             quiz_index1: 'Create your quiz in 5 minutes. Select the ready template and add your content. At your disposal is a powerful online editor and instant publishing. All features are available for free.',
             create_quiz_free: 'Create quiz for free',
             quiz_example: 'View quiz example',
