@@ -74,9 +74,11 @@ var panoDrawing = {};
         // стрелочка
         var arHeight = fontSize / FONT_SIZE_AR_HEIGHT;
         var arWidth = arHeight * 2;
+        var textAlign = 'left';
         switch(param.modArrow) {
             case 'ar_bottom': {
                 drawTriangle(ctx, pinCornerLeft+pinWidth/2-arWidth/2, pinCornerTop+pinHeight, arWidth, 0, arWidth/2, arHeight);
+                textAlign = 'center';
                 break;
             }
             case 'ar_bottom_left': {
@@ -85,10 +87,12 @@ var panoDrawing = {};
             }
             case 'ar_bottom_right': {
                 drawTriangle(ctx, pinCornerLeft+pinWidth, pinCornerTop+pinHeight, 0, arHeight, -arWidth/2, 0);
+                textAlign = 'right';
                 break;
             }
             case 'ar_top': {
                 drawTriangle(ctx, pinCornerLeft+pinWidth/2-arWidth/2, pinCornerTop, arWidth, 0, arWidth/2, -arHeight);
+                textAlign = 'center';
                 break;
             }
             case 'ar_top_left': {
@@ -97,17 +101,31 @@ var panoDrawing = {};
             }
             case 'ar_top_right': {
                 drawTriangle(ctx, pinCornerLeft+pinWidth, pinCornerTop, 0, -arHeight, -arWidth/2, 0);
+                textAlign = 'right';
                 break;
             }
         }
 
-
         // текст внутри пина
+        var yy = padding+pinCornerTop;
+        var xx = pinCornerLeft+padding;
+        ctx.textAlign = textAlign;
+        // выравнивание текста на канвасе имеет другую логику, недели в css
+        // подробнее: https://www.w3schools.com/tags/canvas_textalign.asp
+        switch(textAlign) {
+            case 'center': {
+                xx = pinCornerLeft+pinWidth/2;
+                break;
+            }
+            case 'right': {
+                xx = pinCornerLeft+pinWidth-padding;
+                break;
+            }
+        }
         ctx.globalAlpha = 1;
         ctx.fillStyle = PIN_FONT_COLOR;
-        var yy = padding+pinCornerTop;
         for (var i = 0; i < lines.length; i++) {
-            ctx.fillText(lines[i], pinCornerLeft+padding, yy);
+            ctx.fillText(lines[i], xx, yy);
             yy += fontSize;
         }
     }

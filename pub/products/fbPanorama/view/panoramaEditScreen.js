@@ -184,6 +184,20 @@ var PanoramaEditScreen = MutApp.Screen.extend({
                 var top = Math.round(p.position.top*ps);
                 var left = Math.round(p.position.left*ps);
                 $pel.css('top',top).css('left',left);
+                var textAlign = 'left';
+                switch(p.modArrow) {
+                    case 'ar_top':
+                    case 'ar_bottom': {
+                        textAlign = 'center';
+                        break;
+                    }
+                    case 'ar_top_right':
+                    case 'ar_bottom_right': {
+                        textAlign = 'right';
+                        break;
+                    }
+                }
+                $pel.css('textAlign',textAlign);
                 $pinsCnt.append($pel);
                 // нормализовать положение пина, чтобы он не вышел за границы картинки
                 this.normalizePinPosition($pel, i);

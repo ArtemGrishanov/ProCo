@@ -392,7 +392,7 @@ descriptor.rules = {
                                 left: Math.round(param.cursorPosition.left / previewScale),
                                 top: Math.round(param.cursorPosition.top / previewScale)
                             }});
-                            pinWr.append('<div class="pin_wr ar_bottom" data-option-index="'+newIndex+'" data-app-property="id=mm pins.'+newIndex+'.position, id=mm pins.'+newIndex+'.data.text, id=mm pins(deletePin), id=mm pins.'+newIndex+'.modArrow " style="top: '+param.cursorPosition.top+'px; left: '+param.cursorPosition.left+'px; outline: none;" contenteditable="true">Введите текст</div>')
+                            pinWr.append('<div class="pin_wr ar_bottom" data-option-index="'+newIndex+'" data-app-property="id=mm pins.'+newIndex+'.position, id=mm pins.'+newIndex+'.data.text, id=mm pins(deletePin), id=mm pins.'+newIndex+'.modArrow " style="textAlign:center;top: '+param.cursorPosition.top+'px; left: '+param.cursorPosition.left+'px; outline: none;" contenteditable="true">Введите текст</div>')
 
                             //UPD снова не надо
                             // отдельно добавить напрямую в приложение. Так как перезапуска приложения с передачей параметров избегаем
@@ -438,8 +438,21 @@ descriptor.rules = {
                 params.app.model.attributes.pins[pinIndex].modArrow = params.value;
                 var ap = Engine.getAppProperty(params.propertyString);
                 Engine.setValue(ap, params.value);
-                params.app._screens[0].$el.find('.js-pins_cnt').find('.pin_wr[data-option-index='+pinIndex+']').attr('class','pin_wr '+params.value);
-                this.$productDOMElement.attr('class','pin_wr '+params.value);
+                var textAlign = 'left';
+                switch(params.value) {
+                    case 'ar_top':
+                    case 'ar_bottom': {
+                        textAlign = 'center';
+                        break;
+                    }
+                    case 'ar_top_right':
+                    case 'ar_bottom_right': {
+                        textAlign = 'right';
+                        break;
+                    }
+                }
+                var $pin = params.app._screens[0].$el.find('.js-pins_cnt').find('.pin_wr[data-option-index='+pinIndex+']').attr('class','pin_wr '+params.value).css('text-align',textAlign);
+                this.$productDOMElement.attr('class','pin_wr '+params.value).css('text-align',textAlign);
             }
         },
         possibleValues: [
