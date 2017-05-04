@@ -268,6 +268,7 @@ if (window.textix === undefined) {
         function createIframe(url, parentNode, width, height, recomWrapper) {
             var panelElems = createRecommendationPanel(parentNode, width);
             var iframe = document.createElement('iframe');
+            iframe.setAttribute('allowFullScreen', '');
             iframe.style.border = 0;
             iframe.style.width = '100%';
             iframe.style.height = '100%';

@@ -213,7 +213,7 @@ var config = {
         /**
          * Шаблон для кода встраивания
          */
-        embedCodeTemplate: '<div class="testix_project" allowfullscreen data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"><script src="//s3.eu-central-1.amazonaws.com/testix.me/js/loader.js" async></script></div>'
+        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"><script src="//s3.eu-central-1.amazonaws.com/testix.me/js/loader.js" async></script></div>'
     },
     storage: {
         /**

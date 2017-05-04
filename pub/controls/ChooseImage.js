@@ -14,7 +14,7 @@ function ChooseImage(propertyString, directiveName, $parent, productDOMElement, 
 
     this.onDirectiveClick = function() {
         if (App.getAWSBucket() !== null) {
-            Editor.deleteSelections();
+            Editor.selectElementOnAppScreen(null);
             Editor.hideWorkspaceHints();
             $('#id-control_cnt').empty();
             // этот контрол выбора картинки может работать в режиме выбора картинки для публикации

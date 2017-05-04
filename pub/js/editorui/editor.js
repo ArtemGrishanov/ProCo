@@ -171,14 +171,14 @@ var Editor = {};
         appName = null;
         $('#id-workspace').click(function(){
             // любой клик по документу сбрасывает фильтр контролов
-            filterControls(null, null, getActiveScreens());
-            deleteSelections();
+            selectElementOnAppScreen(null);
         });
         $('#id-app_preview_img').change(function() {
             // загрузка пользовательского превью для шаблона
             // сразу без превью - аплоад
             uploadUserCustomTemplatePreview();
         });
+        workspace.init();
         resourceManager = new ResourceManager();
         quickControlPanel = new QuickControlPanel();
         window.onbeforeunload = confirmExit;
@@ -196,7 +196,7 @@ var Editor = {};
         // установка placeholder по особому, так как это атрибут
         $('.js-proj_name').attr('placeholder', App.getText('enter_project_name'));
 
-        // начало загрузки директив для контролов
+        // начало загрузки директив для всех контролов
         directiveLoader.load(function(){
             // сначала смотрим, есть ли ссылка на шаблон
             var t = getQueryParams(document.location.search)[config.common.templateUrlParamName] || param[config.common.templateUrlParamName];
@@ -535,10 +535,11 @@ var Editor = {};
 
     /**
      * Перебрать все элементы на активном экране
+     * Нужно для автотестирования в TProduct
      *
      * @param {function} iterator
      */
-    function selectElementsOnScreen(iterator) {
+    function forEachElementOnScreen(iterator) {
         for (var i = 0; i < activeScreens.length; i++) {
             var appScreen = Engine.getAppScreen(activeScreens[i]);
             for (var k = 0; k < appScreen.appPropertyElements.length; k++) {
@@ -570,15 +571,8 @@ var Editor = {};
             // надо избежать создания дублирующихся обработчиков
             var de = appScreen.appPropertyElements[k].domElement;
             if (registeredElements.indexOf(de) < 0) {
-                $(de).click(function(e){
-                    // сейчас для простоты удаляются все выделения перед показом следующего
-                    deleteSelections();
-                    // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
-                    // задача - отфильтровать настройки на правой панели
-                    var dataAppPropertyString = $(e.currentTarget).attr('data-app-property');
-                    log(dataAppPropertyString + ' clicked');
-                    showSelection($(e.currentTarget));
-                    filterControls(dataAppPropertyString, e.currentTarget, getActiveScreens());
+                $(de).click(function(e) {
+                    selectElementOnAppScreen($(e.currentTarget));
                     e.preventDefault();
                     e.stopPropagation();
                 });
@@ -634,6 +628,34 @@ var Editor = {};
                 log('AppProperty \''+propertyString+'\' not exist. But such attribute exists on the screen: \''+scrId+'\'', true);
             }
         }
+    }
+
+    /**
+     * Выделить dom-элемент на экране приложения
+     * Подразумевается, что у него есть атрибут data-app-property
+     *
+     * @param {DOMElement} $elementOnAppScreen
+     */
+    function selectElementOnAppScreen($elementOnAppScreen) {
+        if ($elementOnAppScreen === null) {
+            // снятие рамки выделения
+            workspace.selectElementOnAppScreen(null);
+            filterControls(null, null, getActiveScreens());
+        }
+        else {
+            // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
+            // задача - отфильтровать настройки на правой панели
+            var dataAppPropertyString = $elementOnAppScreen.attr('data-app-property');
+            workspace.selectElementOnAppScreen($elementOnAppScreen);
+            filterControls(dataAppPropertyString, $elementOnAppScreen, getActiveScreens());
+        }
+    }
+
+    /**
+     * Контролы извне могут попросить редактор проапдейтить рамку выделения у текущего элемента
+     */
+    function updateSelection() {
+        workspace.updateSelectionPosition();
     }
 
     /**
@@ -1556,41 +1578,8 @@ var Editor = {};
         return activeScreens;
     }
 
-    function showSelection($elem) {
-        selectedElem = $elem;
-        if ($selectionBorder === null) {
-            $selectionBorder = $($('#id-elem_selection_template').html());
-            $selectionBorder.css('zIndex', config.editor.ui.selectionBorderZIndex);
-            $('#id-control_cnt').append($selectionBorder);
-        }
-        var eo = $elem.offset(); // position() не подходит в данном случае
-        $selectionBorder.css('top',eo.top+'px');
-        $selectionBorder.css('left',eo.left+'px');
-        $selectionBorder.css('width',$elem.outerWidth(false)-1+'px'); // false - not including margins
-        $selectionBorder.css('height',$elem.outerHeight(false)-1+'px');
-        $selectionBorder.show();
-    }
-
-    function updateSelection() {
-        if ($selectionBorder) {
-            var eo = $(selectedElem).offset(); // position() не подходит в данном случае
-            $selectionBorder.css('top',eo.top+'px');
-            $selectionBorder.css('left',eo.left+'px');
-            $selectionBorder.css('width',$(selectedElem).outerWidth(false)-1+'px'); // false - not including margins
-            $selectionBorder.css('height',$(selectedElem).outerHeight(false)-1+'px');
-        }
-    }
-
-    function deleteSelections() {
-        selectedElem = null;
-        if ($selectionBorder) {
-            $selectionBorder.hide();
-        }
-        $selectionBorder = null;
-    }
-
     function showSelectDialog(params) {
-        deleteSelections();
+        selectElementOnAppScreen(null);
         hideWorkspaceHints();
         $('#id-control_cnt').empty();
         var dialog = new SelectDialog(params);
@@ -1598,7 +1587,7 @@ var Editor = {};
     }
 
     function showPublishDialog(params) {
-        deleteSelections();
+        selectElementOnAppScreen(null);
         hideWorkspaceHints();
         $('#id-control_cnt').empty();
         var dialog = new PublishDialog(params);
@@ -1681,7 +1670,7 @@ var Editor = {};
 
     // public methods
     global.start = start;
-    global.selectElementsOnScreen = selectElementsOnScreen;
+    global.forEachElementOnScreen = forEachElementOnScreen;
     global.getAppIframe = getAppIframe;
     global.createControl = createControl;
     global.getActiveScreens = getActiveScreens;
@@ -1690,7 +1679,7 @@ var Editor = {};
     global.getSlideGroupControls = function() { return slideGroupControls; };
     global.createPreviewsForShare = createPreviewsForShare;
     global.testPreviewsForShare = testPreviewsForShare;
-    global.deleteSelections = deleteSelections;
+    global.selectElementOnAppScreen = selectElementOnAppScreen;
     global.hideWorkspaceHints = hideWorkspaceHints;
     global.getResourceManager = function() { return resourceManager; }
     global.showSelectDialog = showSelectDialog;

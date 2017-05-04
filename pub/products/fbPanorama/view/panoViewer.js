@@ -80,7 +80,11 @@ var PanoViewerScreen = MutApp.Screen.extend({
 
     createPhotoSphereViewer: function(url, configPano) {
         if (this.model.attributes.viewer === null) {
+            // высота этого контейнера задана в .photosphere_cnt в стилях, ширина предполагается респонсив
             $('#photosphere').empty();
+            if (this.model.application.isMobile() === true) {
+                $('.js-photosphere_scrollbar').show();
+            }
             var halfLongtitude = Math.PI/180*(configPano.srcHFOV/2);
             var halfLatitude = Math.PI/180*(configPano.targetVFOV/2);
             this.model.attributes.viewer = PhotoSphereViewer({
@@ -90,9 +94,13 @@ var PanoViewerScreen = MutApp.Screen.extend({
                 container: 'id-photosphere',
                 longitude_range: [-halfLongtitude, halfLongtitude],
                 latitude_range: [-halfLatitude,halfLatitude],
-                size: {width:this.model.application.width,height:this.model.application.height},
+                // responsive size
+                //size: {width:this.model.application.width,height:this.model.application.height},
                 anim_speed: '2rpm',
                 time_anim: 1000, // старт автоматической анимации
+                mousewheel: false,
+                //mousemove: false,
+                gyroscope: true,
                 pano_data: {
                     full_width: configPano.panoWidth,
                     full_height: configPano.panoHeight,
@@ -101,32 +109,34 @@ var PanoViewerScreen = MutApp.Screen.extend({
                     cropped_x: configPano.croppedX,
                     cropped_y: configPano.croppedY
                 },
-                navbar: [
-                    'caption',
-                    {
-                        id: 'id-testix_link',
-                        title: 'Create your panorama',
-                        content: '',
-                        className: 'photo_viewer_testix_link',
-                        onClick: function() {
-                            var win = window.open('http://testix.me', '_blank');
-                            win.focus();
-                        }
-                    },
-                    'fullscreen',
-                    {
-                        id: 'id-1',
-                        title: '',
-                        content: '',
-                        className: 'photo_viewer_space'
-                    },
-                    {
-                        id: 'id-2',
-                        title: '',
-                        content: '',
-                        className: 'photo_viewer_space'
-                    },
-                ]
+                navbar: null,
+//                экспериментировал с панелью, но оказалась не нужна
+//                [
+//                    'caption',
+//                    {
+//                        id: 'id-testix_link',
+//                        title: 'Create your panorama',
+//                        content: '',
+//                        className: 'photo_viewer_testix_link',
+//                        onClick: function() {
+//                            var win = window.open('http://testix.me', '_blank');
+//                            win.focus();
+//                        }
+//                    },
+//                    'fullscreen',
+//                    {
+//                        id: 'id-1',
+//                        title: '',
+//                        content: '',
+//                        className: 'photo_viewer_space'
+//                    },
+//                    {
+//                        id: 'id-2',
+//                        title: '',
+//                        content: '',
+//                        className: 'photo_viewer_space'
+//                    },
+//                ]
             });
         }
     }

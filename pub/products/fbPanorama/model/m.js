@@ -59,7 +59,7 @@ var FbPanoramaModel = MutApp.Model.extend({
          * Дача 'https://s3.eu-central-1.amazonaws.com/p.testix.me/121947341568004/7e69f66993/forFBUpload.jpg',
          * Сингапур 'https://s3.eu-central-1.amazonaws.com/p.testix.me/121947341568004/1d1f4f3236/forFBUpload.jpg'
          */
-        panoCompiledImage: null,
+        panoCompiledImage: null, //'https://s3.eu-central-1.amazonaws.com/p.testix.me/121947341568004/1d1f4f3236/forFBUpload.jpg',
         /**
          * Объект photo-sphere-viewer.js
          */
