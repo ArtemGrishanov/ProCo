@@ -22,28 +22,61 @@
     <favorites_list name="ProCo" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="editor.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="432" column="60" selection-start="16907" selection-end="16907" vertical-scroll-proportion="0.630618" vertical-offset="5776" max-vertical-offset="25230">
-              <folding>
-                <element signature="e#6610#7516#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="workspace.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/js/editorui/workspace.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="23" selection-start="1386" selection-end="1386" vertical-scroll-proportion="0.0" vertical-offset="297" max-vertical-offset="1110">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.46984127">
+      <split-first>
+        <leaf>
+          <file leaf-file-name="editor.js" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="65" column="7" selection-start="1893" selection-end="1893" vertical-scroll-proportion="0.48617175" vertical-offset="641" max-vertical-offset="13050">
+                  <folding>
+                    <element signature="e#5063#5969#0" expanded="false" />
+                    <element signature="e#18122#21429#0" expanded="false" />
+                    <element signature="e#21478#22511#0" expanded="false" />
+                    <element signature="e#22744#23456#0" expanded="false" />
+                    <element signature="e#24099#25467#0" expanded="false" />
+                    <element signature="e#26701#27961#0" expanded="false" />
+                    <element signature="e#27989#29001#0" expanded="false" />
+                    <marker date="1493900693000" expanded="true" signature="9426:9489" placeholder="//..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="editor.html" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/pub/editor.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="95" column="43" selection-start="5734" selection-end="5748" vertical-scroll-proportion="-4.5102043" vertical-offset="1204" max-vertical-offset="6165">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ControlRefactor.txt" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/ControlRefactor.txt">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="50" column="7" selection-start="2422" selection-end="2422" vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="840">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="workspace.js" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/pub/js/editorui/workspace.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="635" column="34" selection-start="28801" selection-end="28801" vertical-scroll-proportion="0.46207866" vertical-offset="9196" max-vertical-offset="10665">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -53,18 +86,18 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/products/fbPanorama/descriptor.js" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/index.html" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/view/panoViewer.js" />
         <option value="$PROJECT_DIR$/pub/js/loader.js" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/css/style.css" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/model/m.js" />
-        <option value="$PROJECT_DIR$/pub/js/config.js" />
         <option value="$PROJECT_DIR$/pub/products/test_new/descriptor.js" />
         <option value="$PROJECT_DIR$/pub/editor.html" />
         <option value="$PROJECT_DIR$/pub/storefront.html" />
         <option value="$PROJECT_DIR$/pub/my_templates.html" />
         <option value="$PROJECT_DIR$/pub/index.html" />
+        <option value="$PROJECT_DIR$/pub/js/config.js" />
+        <option value="$PROJECT_DIR$/ControlRefactor.txt" />
         <option value="$PROJECT_DIR$/pub/controls/ChooseImage.js" />
         <option value="$PROJECT_DIR$/pub/controls/ChooseImageQuick.js" />
         <option value="$PROJECT_DIR$/pub/js/editorui/editor.js" />
@@ -307,16 +340,16 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="873" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22177956" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.09296149" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17718795" sideWeight="0.7782205" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.09612626" sideWeight="0.9070385" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20549928" sideWeight="0.4555113" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32802126" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -364,41 +397,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/blockeditor.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="26" selection-start="5692" selection-end="5692" vertical-scroll-proportion="0.43313953" vertical-offset="1247" max-vertical-offset="1935">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/storefront.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="249" column="50" selection-start="16452" selection-end="16452" vertical-scroll-proportion="0.60755813" vertical-offset="3317" max-vertical-offset="4005">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/editor.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="334" column="33" selection-start="17581" selection-end="17581" vertical-scroll-proportion="0.20494185" vertical-offset="4869" max-vertical-offset="6165">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/privacy_policy.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="149" column="42" selection-start="9983" selection-end="9983" vertical-scroll-proportion="0.54215115" vertical-offset="1862" max-vertical-offset="2565">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/my_templates.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="142" column="50" selection-start="7915" selection-end="7915" vertical-scroll-proportion="0.54215115" vertical-offset="1757" max-vertical-offset="2445">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/info.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="105" column="55" selection-start="5769" selection-end="5769" vertical-scroll-proportion="0.62936044" vertical-offset="1142" max-vertical-offset="1830">
@@ -441,20 +439,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/ChooseImageQuick.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="43" selection-start="574" selection-end="574" vertical-scroll-proportion="0.3326316" vertical-offset="22" max-vertical-offset="705">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/ChooseImage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="48" selection-start="603" selection-end="603" vertical-scroll-proportion="0.3326316" vertical-offset="82" max-vertical-offset="1635">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/fbPanorama.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state line="72" column="18" selection-start="2922" selection-end="2922" vertical-scroll-proportion="0.80851066" vertical-offset="700" max-vertical-offset="1170">
@@ -462,18 +446,79 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="69" column="26" selection-start="2836" selection-end="2836" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="11445">
+          <folding>
+            <element signature="e#419#2225#0" expanded="false" />
+            <element signature="e#8476#8843#0" expanded="false" />
+            <element signature="e#8862#9310#0" expanded="false" />
+            <element signature="e#32507#35263#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ControlRefactor.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="7" selection-start="2422" selection-end="2422" vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="840">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/editor.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="95" column="43" selection-start="5734" selection-end="5748" vertical-scroll-proportion="-4.5102043" vertical-offset="1204" max-vertical-offset="6165">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/ChooseImage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="25" selection-start="576" selection-end="676" vertical-scroll-proportion="0.0" vertical-offset="59" max-vertical-offset="1635">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/ChooseImageQuick.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="6" selection-start="962" selection-end="962" vertical-scroll-proportion="0.67706424" vertical-offset="6" max-vertical-offset="705">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/Drag.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="61" column="19" selection-start="2619" selection-end="2619" vertical-scroll-proportion="0.33333334" vertical-offset="740" max-vertical-offset="1950">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/SlideGroupControl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="432" column="76" selection-start="14092" selection-end="14121" vertical-scroll-proportion="0.33225283" vertical-offset="6275" max-vertical-offset="10620">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/editorui/workspace.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="23" selection-start="1386" selection-end="1386" vertical-scroll-proportion="0.0" vertical-offset="297" max-vertical-offset="1110">
+        <state line="635" column="34" selection-start="28801" selection-end="28801" vertical-scroll-proportion="0.46207866" vertical-offset="9196" max-vertical-offset="10665">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="432" column="60" selection-start="16907" selection-end="16907" vertical-scroll-proportion="0.630618" vertical-offset="5776" max-vertical-offset="25230">
+        <state line="65" column="7" selection-start="1893" selection-end="1893" vertical-scroll-proportion="0.48617175" vertical-offset="641" max-vertical-offset="13050">
           <folding>
-            <element signature="e#6610#7516#0" expanded="false" />
+            <element signature="e#5063#5969#0" expanded="false" />
+            <element signature="e#18122#21429#0" expanded="false" />
+            <element signature="e#21478#22511#0" expanded="false" />
+            <element signature="e#22744#23456#0" expanded="false" />
+            <element signature="e#24099#25467#0" expanded="false" />
+            <element signature="e#26701#27961#0" expanded="false" />
+            <element signature="e#27989#29001#0" expanded="false" />
+            <marker date="1493900693000" expanded="true" signature="9426:9489" placeholder="//..." />
           </folding>
         </state>
       </provider>

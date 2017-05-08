@@ -10,9 +10,9 @@ function ChooseImageQuick(propertyString, directiveName, $parent, productDOMElem
 
     this.onProductElementDoubleClick = function() {
         if (App.getAWSBucket() !== null) {
-            Editor.selectElementOnAppScreen();
-            Editor.hideWorkspaceHints();
-            $('#id-control_cnt').empty();
+//            Editor.selectElementOnAppScreen();
+//            Editor.hideWorkspaceHints();
+//            $('#id-control_cnt').empty();
             Editor.getResourceManager().show(this.onImageSelected.bind(this));
         }
         else {

@@ -56,30 +56,7 @@ var Editor = {};
      * Ид экранов которые показаны в данный момент в рабочем поле
      * @type {Array.<string>}
      */
-    var activeScreens = [];
-    /**
-     * Подсказки для текущего экрана продукта
-     * @type {Array}
-     */
-    var activeScreenHints = [];
-    /**
-     * Объект с информации о координатах рабочего поля.
-     * Другими словами: промо-продукта
-     * Нужен для позиционирования рамок selections
-     * @type {left: 0, top: 0}
-     */
-    var workspaceOffset = null;
-    /**
-     * Массив контролов и свойств AppProperty продукта
-     * @type {Array.<object>}
-     */
-    var uiControlsInfo = [
-        // Контрол определяется парой: appProperty+domElement
-        //   - одного appProperty не достаточно, так как для одного и того же appProperty на экранах или даже одном экране могут быть дублирующие элементы
-        // control
-        // appProperty
-        // domElement
-    ];
+    var activeScreenIds = [];
     /**
      * Один контрол для управления экранами промо приложения
      * превью, управления порядком, добавление и удаление
@@ -94,11 +71,6 @@ var Editor = {};
      * @type {Array}
      */
     var activeTriggers = [];
-    /**
-     * Элемент внутри айФрейма куда добавляем экраны промо приложения
-     * @type {null}
-     */
-    var previewScreensIframeBody = null;
     /**
      *
      * @type {{width: number}}
@@ -117,25 +89,10 @@ var Editor = {};
      */
     var operationsCount = 0;
     /**
-     * Html объект, рамка выделения
-     * @type {Array}
-     */
-    var $selectionBorder = null;
-    /**
-     * Выделенный элемент, вокруг которого рисуется рамка выделения $selectionBorder
-     * @type {null}
-     */
-    var selectedElem = null;
-    /**
      * Функция колбек на запуск редактора
      * @type {function}
      */
     var startCallback = null;
-    /**
-     * Панелька с контролами, которая всплывает рядом с элементом и указывает на него
-     * @type {QuickControlPanel}
-     */
-    var quickControlPanel = null;
     /**
      * Таймер для запуска проверки на показ стрелок прокрутки при изменении размеров окна
      * @type {null}
@@ -169,10 +126,6 @@ var Editor = {};
         appId = getUniqId().substr(22);
         appTemplate = null;
         appName = null;
-        $('#id-workspace').click(function(){
-            // любой клик по документу сбрасывает фильтр контролов
-            selectElementOnAppScreen(null);
-        });
         $('#id-app_preview_img').change(function() {
             // загрузка пользовательского превью для шаблона
             // сразу без превью - аплоад
@@ -180,7 +133,6 @@ var Editor = {};
         });
         workspace.init();
         resourceManager = new ResourceManager();
-        quickControlPanel = new QuickControlPanel();
         window.onbeforeunload = confirmExit;
         $('.js-app_preview').click(onPreviewClick);
         $('.js-app_publish').click(onPublishClick);
@@ -307,14 +259,8 @@ var Editor = {};
             });
         }
 
-        updateAppContainerSize();
+        //updateAppContainerSize();
 
-        // нужна ширина для горизонтального выравнивания
-//        $('#id-product_cnt')
-//            //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
-//            //.width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width)
-//            // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
-//            .height(appContainerSize.height+2*config.editor.ui.screen_blocks_border_width+config.editor.ui.id_product_cnt_additional_height);
         // в поле для редактирования подтягиваем стили продукта
         var app = Engine.getApp();
         var $h = $("#id-product_screens_cnt").contents().find('head');
@@ -326,8 +272,9 @@ var Editor = {};
         if (config.common.editorUiEnable === true) {
             showEditor();
             createScreenControls();
-            syncUIControlsToAppProperties();
-            workspaceOffset = $('#id-product_screens_cnt').offset();
+            workspace.syncUIControlsToAppProperties();
+            // стрелки управления прокруткой, нормализация
+            checkScreenGroupsArrowsState();
             // проверить что редактор готов, и вызвать колбек
             checkEditorIsReady();
         }
@@ -384,65 +331,14 @@ var Editor = {};
      *
      * @param {Array.<string>} ids - массив ид экранов
      */
-    function showScreen(ids) {
-        // запоминаем, если потребуется восстановление показа экранов.
-        // Например, произойдет пересборка экранов и надо будет вернуться к показу последних активных
-        activeScreens = ids;
-        // надо скрыть все активные подсказки, если таковые есть. На новом экране будут новые подсказки
-        hideWorkspaceHints();
+    function showScreen(screenIds) {
+        activeScreenIds = screenIds;
         updateAppContainerSize();
-        activeScreenHints = [];
         activeTriggers = [];
-        // каждый раз удаляем quick-контролы и создаем их заново. Не слишком эффективно, но просто и надежно
-        // то что контролы привязаны к одному экрану определяется только на основании контейнера, в который они помещены
-        var $controlCnt = $('#id-control_cnt').empty();
-        for (var i = 0; i < uiControlsInfo.length;) {
-            var c = uiControlsInfo[i].control;
-            if (c.$parent.selector === $controlCnt.selector) {
-                uiControlsInfo.splice(i,1);
-            }
-            else {
-                i++;
-            }
-        }
-
-        $(previewScreensIframeBody).empty();
-        // в превью контейнер дописать кастомные стили, которые получились в результате редактирования css appProperties
-        Engine.writeCssRulesTo(previewScreensIframeBody);
-        var appScreen = null;
-        var previewHeight = 0;
-        for (var i = 0; i < ids.length; i++) {
-            appScreen = Engine.getAppScreen(ids[i]);
-            if (appScreen) {
-                var b = createPreviewScreenBlock(appScreen.view)
-                $(previewScreensIframeBody).append(b);
-                previewHeight += appContainerSize.height;
-                previewHeight += config.editor.ui.screen_blocks_padding+2*config.editor.ui.screen_blocks_border_width; // 20 - паддинг в стиле product_cnt.css/screen_block
-                bindControlsForAppPropertiesOnScreen(appScreen.view, ids[i]);
-                applyTriggers('screen_show');
-            }
-            else {
-                log('Editor.showScreen: appScreen not found '+ids[i]);
-            }
-        }
-        //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
-        // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
-        $('#id-product_cnt').height(previewHeight + config.editor.ui.id_product_cnt_additional_height);
-        // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
-        $('#id-product_screens_cnt, #id-control_cnt').width(appContainerSize.width + 2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
-        // боковые панели вытягиваем также вслед за экранами
-        $('.js-setting_panel').height(previewHeight);
-        $('#id-workspace').height(previewHeight);
-
-        //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
+        workspace.showScreen(screenIds);
+        applyTriggers('screen_show');
         // подсветка контрола Slide по которому кликнули
-        setActiveScreen(activeScreens.join(','));
-        filterControls(null, null, getActiveScreens());
-
-        $($("#id-product_screens_cnt").contents()).click(function(){
-            // любой клик по промо-проекту сбрасывает подсказки
-            hideWorkspaceHints();
-        });
+        setActiveScreen(activeScreenIds.join(','));
     }
 
     function updateAppContainerSize() {
@@ -524,8 +420,8 @@ var Editor = {};
      */
     function getActiveScreens() {
         var result = []
-        for (var i = 0; i < activeScreens.length; i++) {
-            var s = Engine.getAppScreen(activeScreens[i]);
+        for (var i = 0; i < activeScreenIds.length; i++) {
+            var s = Engine.getAppScreen(activeScreenIds[i]);
             if (s) {
                 result.push(s);
             }
@@ -540,114 +436,11 @@ var Editor = {};
      * @param {function} iterator
      */
     function forEachElementOnScreen(iterator) {
-        for (var i = 0; i < activeScreens.length; i++) {
-            var appScreen = Engine.getAppScreen(activeScreens[i]);
+        for (var i = 0; i < activeScreenIds.length; i++) {
+            var appScreen = Engine.getAppScreen(activeScreenIds[i]);
             for (var k = 0; k < appScreen.appPropertyElements.length; k++) {
                 iterator(appScreen.appPropertyElements[k]);
             }
-        }
-    }
-
-    /**
-     * На добавленном view экрана скорее всего есть какие dom-элементы связанные с appProperties
-     * Найдем их и свяжем с контролами редактирования
-     *
-     * @param {HTMLElement} $view
-     * @param {string} scrId
-     *
-     */
-    function bindControlsForAppPropertiesOnScreen($view, scrId) {
-        var appScreen = Engine.getAppScreen(scrId);
-        var registeredElements = [];
-
-        // найти и удалить эти типы контролов
-        // при показе экрана они пересоздаются заново
-        clearControls(['workspace', 'quickcontrolpanel']);
-
-        for (var k = 0; k < appScreen.appPropertyElements.length; k++) {
-            // для всех элементов связанных с appProperty надо создать событие по клику.
-            // в этот момент будет происходить фильтрация контролов на боковой панели
-            // элемент, конечно, может быть привязан к нескольким appProperty, ведь содержит несколько значений в data-app-property
-            // надо избежать создания дублирующихся обработчиков
-            var de = appScreen.appPropertyElements[k].domElement;
-            if (registeredElements.indexOf(de) < 0) {
-                $(de).click(function(e) {
-                    selectElementOnAppScreen($(e.currentTarget));
-                    e.preventDefault();
-                    e.stopPropagation();
-                });
-                registeredElements.push(de);
-            }
-            // контрола пока ещё не существует для настройки, надо создать
-            var propertyString = appScreen.appPropertyElements[k].propertyString;
-            var appProperty = Engine.getAppProperty(propertyString);
-            if (appProperty) {
-                // может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
-                var controlsInfo = appProperty.controls;
-                for (var j = 0; j < controlsInfo.length; j++) {
-                    var cn = controlsInfo[j].name;
-                    // здесь надо создавать только контролы которые находятся на рабочем поле, например textquickinput
-                    // они пересоздаются каждый раз при переключении экрана
-                    // "обычные" контролы создаются иначе
-                    if (config.controls[cn].type === 'workspace' || config.controls[cn].type === 'quickcontrolpanel') {
-
-                        // на домэлемент можно повесить фильтр data-control-filter и в descriptor в параметрах также его указать
-                        if (checkControlFilter(de, controlsInfo[j].params)===true) {
-                            // имя вью для контрола
-                            var viewName = controlsInfo[j].params.viewName;
-                            // простейшая обертка для контрола, пока помещаем туда
-                            var wrapper = (config.controls[cn].type === 'quickcontrolpanel') ? $('<div></div>'): null;
-                            var newControl = createControl(appProperty.propertyString,
-                                viewName,
-                                controlsInfo[j].name,
-                                controlsInfo[j].params,
-                                wrapper,
-                                de);
-                            if (newControl) {
-                                // только если действительно получилось создать ui для настройки
-                                // не все контролы могут быть реализованы или некорректно указаны
-                                uiControlsInfo.push({
-                                    propertyString: propertyString,
-                                    control: newControl,
-                                    domElement: de,
-                                    type: config.controls[cn].type,
-                                    wrapper: wrapper
-                                });
-                            }
-                            else {
-                                log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+propertyString+ '\' on the screen '+scrId, true);
-                            }
-                        }
-
-                    }
-                }
-            }
-            else {
-                // нет свойства appProperty в Engine хотя во вью есть элемент с таким атрибутом data-app-property
-                // это значит ошибку в промо-продукте
-                log('AppProperty \''+propertyString+'\' not exist. But such attribute exists on the screen: \''+scrId+'\'', true);
-            }
-        }
-    }
-
-    /**
-     * Выделить dom-элемент на экране приложения
-     * Подразумевается, что у него есть атрибут data-app-property
-     *
-     * @param {DOMElement} $elementOnAppScreen
-     */
-    function selectElementOnAppScreen($elementOnAppScreen) {
-        if ($elementOnAppScreen === null) {
-            // снятие рамки выделения
-            workspace.selectElementOnAppScreen(null);
-            filterControls(null, null, getActiveScreens());
-        }
-        else {
-            // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
-            // задача - отфильтровать настройки на правой панели
-            var dataAppPropertyString = $elementOnAppScreen.attr('data-app-property');
-            workspace.selectElementOnAppScreen($elementOnAppScreen);
-            filterControls(dataAppPropertyString, $elementOnAppScreen, getActiveScreens());
         }
     }
 
@@ -656,490 +449,6 @@ var Editor = {};
      */
     function updateSelection() {
         workspace.updateSelectionPosition();
-    }
-
-    /**
-     * Удалить контролы по типам
-     * @param {array} types
-     */
-    function clearControls(types) {
-        for (var i = 0; i < uiControlsInfo.length;/*no increment*/) {
-            var deleted = false;
-            for (var j = 0; j < types.length; j++) {
-                if (uiControlsInfo[i].type === types[j]) {
-                    uiControlsInfo[i].control.destroy();
-                    uiControlsInfo.splice(i, 1);
-                    deleted = true;
-                    break;
-                }
-            }
-            if (deleted===false) {
-                i++;
-            }
-        }
-    }
-
-    /**
-     * Проверяет что для этого domElement можно создать контрол с параметрами
-     * Если никаких фильтров не задано, значит можно.
-     * Этот механизм используется при различных опциях ответов, для них нужны разные немного контролы. Хотя и описанные одним правилом в descriptor
-     *
-     * @param domElement
-     * @param controlParam
-     */
-    function checkControlFilter(domElement, controlParam) {
-        var filterAttr = $(domElement).attr('data-control-filter');
-        if (filterAttr) {
-            filterAttr = filterAttr.replace(new RegExp(/\s/, 'g'), '');
-            var filters = filterAttr.split(',')
-            for (var m = 0; m < filters.length; m++) {
-                // ожидаем выражение вида key=value
-                var pairs = filters[m].split('=');
-                if (pairs.length==2) {
-                    if (controlParam[pairs[0]]==pairs[1]) { //0=='0' должно быть равно
-                        return true;
-                    }
-                }
-            }
-            // атрибут задан, но подходящего условия не нашли
-            return false;
-        }
-        // если фильтр не указан вообще значит считаем что контрол подходит
-        return true;
-    }
-    ///**
-    // * Показать подсказки для экрана
-    // * @param appScreen
-    // */
-    //function showAppScreenHints(appScreen) {
-    //    if (appScreen.hints) {
-    //        for (var i = 0; i < appScreen.hints.length; i++) {
-    //            var h = appScreen.hints[i];
-    //            if (h.isShown === false) {
-    //                h.hintElement = showWorkspaceHint(h.domElement, h.text);
-    //                h.isShown = true;
-    //                activeScreenHints.push(h);
-    //            }
-    //        }
-    //    }
-    //}
-
-
-    /**
-     * TODO
-     * РЕФАКТОРИНГ КОНТРОЛОВ
-     *
-     * - массив uiControlsInfo конфюзит и очень не прозрачный
-     * - Выделение панелей с контролами в самостоятельные MVC сервисы для организации кода
-     * - Более экономные сортировки и операции показа/скрытия и создания. Без дублирования операций
-     * - Контролы должны быть максимально отделены от редактора по логике и окружению. Чтобы их можно было даже автоматически тестировать
-     * - то что каждый раз контролы пересоздаются и директивы перезагружаются
-     * -
-     *
-     *
-     * РАБОЧЕЕ ПОЛЕ workspace
-     * - тоже отделить от редактора как компонент
-     * -
-     *
-     */
-
-
-
-    /**
-     * Отфильтровать и показать только те контролы, appPropertyString которых есть в dataAppPropertyString
-     * Это могут быть контролы на боковой панели или во всплывающей панели quickControlPanel
-     *
-     * @param {string} dataAppPropertyString например 'backgroundColor,showBackgroundImage'
-     * @param {domElement} element на который кликнул пользователь
-     * @param {Array} activeScreenIds экраны активные в данный момент. Есть такой тип фильтрации showWhileScreenIsActive
-     */
-    function filterControls(dataAppPropertyString, element, activeScreenIds) {
-        var quickControlPanelControls = [];
-        if (dataAppPropertyString) {
-            $('#id-static_controls_cnt').children().hide();
-            // может быть несколько свойств через запятую: фон кнопки, ее бордер, цвет шрифта кнопки и так далее
-            var keys = dataAppPropertyString.split(',');
-            for (var i = 0; i < keys.length; i++) {
-                var cArr = findControlInfo(keys[i].trim(), element);
-
-                // результатов поиска может быть несколько
-                // например по id=tm quiz.0.answer.options - контрол добавлени и удаления
-                for (var j = 0; j < cArr.length; j++) {
-                    var c = cArr[j];
-                    // контролы которые должны показаться на всплывающей панели quickControlPanel
-                    if (c && c.type === 'quickcontrolpanel') {
-                        // событие _onShow будет вызвано позже для этого типа 'quickcontrolpanel'
-                        quickControlPanelControls.push(c);
-                    }
-                    else {
-                        if (c && c.wrapper) {
-                            c.wrapper.show();
-                            if (c.control._onShow) {
-                                c.control._onShow();
-                            }
-                        }
-                    }
-
-                    //TODO test
-                    // refactor
-                    // $productDOMElement не устанавливается для контролов controlpanel при создании
-                    // а он оказался нужен для Alternative
-                    if (c.type === 'controlpanel') {
-                        c.control.$productDOMElement = $(element);
-                    }
-                }
-            }
-        }
-        else {
-            // сбрасываем фильтр - показываем всё что не имеет filter=true
-            for (var i = 0; i < uiControlsInfo.length; i++) {
-                var c = uiControlsInfo[i];
-                if (c.type && c.type === 'controlpanel') {
-                    if (c.filter === true) {
-                        c.wrapper.hide();
-                    }
-                    else {
-                        c.wrapper.show();
-                        if (c.control._onShow) {
-                            c.control._onShow();
-                        }
-                    }
-                }
-            }
-        }
-
-        // Фильтрация контролов которые должны быть показаны во время показа экрана
-        for (var i = 0; i < uiControlsInfo.length; i++) {
-            var c = uiControlsInfo[i];
-            if (c.type && c.type === 'controlpanel') {
-                var found = false;
-                for (var n = 0; n < activeScreenIds.length; n++) {
-                    if (activeScreenIds[n].indexOf(c.showWhileScreenIsActive) >= 0) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (c.showWhileScreenIsActive !== undefined && found === true) {
-                    // пока активен экран c.showWhileScreenIsActive надо показывать контрол, такой тип фильтрации по экрану
-                    c.wrapper.show();
-                    $('#id-static_controls_cnt').prepend(c.wrapper); // контроля фильтруемые по экрану должны быть выше, у них более высокий приоритет
-                    if (c.control._onShow) {
-                        c.control._onShow();
-                    }
-                }
-            }
-        }
-
-        // есть несколько контролов для всплывашки, которые надо показать
-        if (quickControlPanelControls.length > 0) {
-            quickControlPanel.show(element, quickControlPanelControls);
-            for (var n = 0; n < quickControlPanelControls.length; n++) {
-                var c = quickControlPanelControls[n];
-                if (c.control._onShow) {
-                    c.control._onShow();
-                }
-            }
-        }
-        else {
-            quickControlPanel.hide();
-        }
-    }
-
-    /**
-     * полное пересоздание всех контролов
-     * Привязать элементы управления к Engine.getAppProperties
-     * Создаются только новые элементы управления, которые необходимы.
-     * Может быть добавлен/удален слайд, поэтому надо только для него сделать обновление.
-     *
-     * Это могут быть следующие действия:
-     * 1) Добавление контролов на панель справа.
-     * 2) Обновление контрола слайдов (страниц) (один большой контрол)
-     * 3) Привязка контролов к dom-элементам в продукте, Для быстрого редактирования.
-     *
-     * @param {array} [startActiveScreens] - стартовые экраны для показа
-     */
-    function syncUIControlsToAppProperties(startActiveScreens) {
-        clearControls(['workspace', 'quickcontrolpanel', 'controlpanel']);
-        uiControlsInfo = [];
-        $('#id-static-no_filter_controls').empty();
-        $('#id-static_controls_cnt').empty();
-        $('#id-control_cnt').empty();
-
-        // задача здесь: создать постоянные контролы, которые не будут меняться при переключении экранов
-        var appPropertiesStrings = Engine.getAppPropertiesObjectPathes();
-        for (var i = 0; i < appPropertiesStrings.length; i++) {
-            var ps = appPropertiesStrings[i];
-            var ap = Engine.getAppProperty(ps);
-            if (ap.controls) {
-                // у свойства может быть несколько контролов
-                for (var j = 0; j < ap.controls.length; j++) {
-                    var c = ap.controls[j];
-                    if (config.controls[c.name]) {
-                        if (config.controls[c.name].type === 'controlpanel') {
-                            // контрол помечен как постоянный в дескрипторе, то есть его надо создать сразу и навсегда (пересоздастся только вместе с экранами)
-                            var parent = null;
-                            var sg = c.params.screenGroup;
-                            if (sg) {
-                                // контрол привязан в группе экранов, а значит его родитель другой, так себе решение.
-                                parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
-                            }
-                            else {
-                                // выбираем панель по принципу: фильтруется контрол или нет (фильтр по клику или по экрану)
-                                var parentPanelId = (ap.filter === true || ap.showWhileScreenIsActive) ? '#id-static_controls_cnt': '#id-static-no_filter_controls';
-
-                                // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на панель настроек
-                                var $cc = $($('#id-static_control_cnt_template').html()).appendTo(parentPanelId);
-                                if (ap.label) {
-                                    var textLabel = (typeof ap.label==='string')? ap.label: ap.label[App.getLang()];
-                                    if (config.controls[c.name].labelInControl === true) {
-                                        // метка находится внутри самого контрола а не вовне как обычно
-                                        // UI контрола будет загружен после, поэтому пробрасываем внутрь контрола label
-                                        c.params.__label = textLabel;
-                                        $cc.find('.js-label').remove();
-                                    }
-                                    else {
-                                        $cc.find('.js-label').text(textLabel);
-                                    }
-                                }
-                                if (ap.filter === true) {
-                                    // свойства с этим атрибутом filter=true показываются только при клике на соответствующих элемент в промо-приложении
-                                    // который помечен data-app-property
-                                    $cc.hide();
-                                }
-                                parent = $cc.find('.js-control_cnt');
-                            }
-                            var newControl = createControl(ps, c.params.viewName, c.name, c.params, parent);
-                            if (ps === 'id=startScr backgroundImg') {
-                                var stopHere = 0;
-                            }
-                            if (newControl) {
-                                uiControlsInfo.push({
-                                    propertyString: ps,
-                                    control: newControl,
-                                    wrapper: $cc, // контейнер, в котором контрол находится на боковой панели контролов
-                                    filter: ap.filter, // чтобы потом не искать этот признак во время фильтрации
-                                    showWhileScreenIsActive: ap.showWhileScreenIsActive,
-                                    type: config.controls[c.name].type // также для быстрого поиска
-                                });
-                            }
-                            else {
-                                log('Can not create control for appProperty: \'' + ps, true);
-                            }
-                        }
-                    }
-                    else {
-                        log('Control: \'' + c.name + '\' isn\'t descripted in config.js' , true);
-                    }
-                }
-            }
-        }
-
-        //TODO жесткий хак: данная инициализация не поддерживается на нескольких колорпикерах
-        // надо отследить загружку всех директив колорпикеров и тогда инициализировать их
-        setTimeout(function() {
-            initColorpickers();
-            setTimeout(function() {
-                initColorpickers();
-            }, 10000);
-        }, 6000);
-
-        if (startActiveScreens) {
-            activeScreens = startActiveScreens;
-        }
-        if (activeScreens.length > 0) {
-            // восстановить показ экранов, которые видели ранее
-            showScreen(activeScreens);
-        }
-        else {
-            // первый экран показать по умолчанию
-            //TODO первый старт: надо дождаться загрузки этого айфрема и нормально проинициализировать после
-            setTimeout(function() {
-                previewScreensIframeBody = $("#id-product_screens_cnt").contents().find('body');
-                showScreen([Engine.getAppScreenIds()[0]]);
-            }, 1000);
-        }
-
-        // стрелки управления прокруткой, нормализация
-        checkScreenGroupsArrowsState();
-    }
-
-    function initColorpickers() {
-        // стараемся выполнить после загрузки всех колорпикеров
-        try {
-            $('.colorpicker').colorpicker();
-            $('.colorpicker input').click(function() {
-                $(this).parents('.colorpicker').colorpicker('show');
-            })
-        }
-        catch (e) {
-            // strange thing here
-            //bootstrap-colorpicker.min.js:19 Uncaught TypeError: Cannot read property 'toLowerCase' of undefined
-            log(e,true);
-        }
-    }
-
-    /**
-     * Модель управления экранами:
-     * Сейчас предполагается что группы экранов постоянные, поэтому createScreenControls зовется один раз при старте редактора
-     * Если будут меняться группы, то надо формировать группы в движке и следить за их изменением и делать события с обработкой
-     * TODO А пока здесь один раз создаются все контролы SlideGroupControl один раз и управление слайдами идет внутри них
-     *
-     * Конролы управления экранами специфичные, поэтому существует отдельная функция для их создания
-     * Задача не пересоздавать контролы управления экранами - это дорого
-     *
-     * Нет контрола управления группами, который включал бы управления несколькими SlideGroupControl
-     * По сути это вот эта функция ниже.
-     * А упрвления отдельными Slide спрятана внутрь одного SlideGroupControl
-     */
-    function createScreenControls() {
-        $('#id-slides_cnt').empty();
-        //TODO конечно не надо пересоздавать каждый раз всё при добавл-удал экрана. Но так пока проще
-        var appScreenIds = Engine.getAppScreenIds();
-        // экраны могут быть поделены на группы
-        var groups = {};
-        var sGroups = [];
-        if (appScreenIds.length > 0) {
-            // подготовительная часть: разобъем экраны на группы
-            // groups - просто временный вспомогательный объект
-            for (var i = 0; i < appScreenIds.length; i++) {
-                var s = appScreenIds[i];
-                var screen = Engine.getAppScreen(s);
-                if (screen.hideScreen === false) {
-                    if (typeof screen.group !== "string") {
-                        // если группа не указана, экран будет один в своей группе
-                        screen.group = screen.id;
-                    }
-                    if (groups.hasOwnProperty(screen.group) === false) {
-                        // группа новая, создаем
-                        groups[screen.group] = [];
-                    }
-                    groups[screen.group].push(s);
-                }
-            }
-
-            // далее начнем создать контролы и вью для групп экранов
-            for (var groupName in groups) {
-                var curG = groups[groupName];
-                var firstScrInGroup = Engine.getAppScreen(curG[0]);
-                var sgc = findSlideGroupByGroupName(groupName);
-                if (sgc === null) {
-                    // группой экранов может управлять массив.
-                    // в случае вопросов теста: эта группа привязана к quiz, передается в промо проекте при создании экранов
-                    // для остальных undefined
-                    sgc = createControl(firstScrInGroup.arrayAppPropertyString, 'SlideGroupControl', 'SlideGroupControl', {}, $('#id-slides_cnt'));
-                }
-                else {
-                    // подходящий контрол SlideGroupControl создавался ранее для управления этой группой экранов
-                }
-                // устанавливаем все атрибуты, не один раз при создании, а сколько угодно раз
-                sgc.set({
-                    // идентификатор группы
-                    groupName: groupName,
-                    // имя забираем у первого экрана группы, в группе минимум один экран, а все имена одинаковые конечно
-                    groupLabel: firstScrInGroup.name,
-                    // это массив экранов
-                    //screens: curG,
-                    //allowDragY: true,
-                    showAddButton: true
-                });
-                sGroups.push(sgc);
-            }
-            // если при обновлении какие-то группы пропали в промо приложении, то они не попадут более в slideGroupControls
-            // например для теста будет три группы: стартовый, вопросы, результаты
-            slideGroupControls = sGroups;
-        }
-
-        /**
-         * Найти контрол SlideGroupControl по имени группы экранов
-         * Задача не пересоздавать контролы управления экранами - это дорого
-         * @param groupName
-         * @returns {null}
-         */
-        function findSlideGroupByGroupName(groupName) {
-            if (slideGroupControls !== null && groupName) {
-                for (var i = 0; i < slideGroupControls.length; i++) {
-                    if (slideGroupControls[i].groupName == groupName) {
-                        return slideGroupControls[i];
-                    }
-                }
-            }
-            return null;
-        }
-    }
-
-    /**
-     * Найти информацию об элементе управления
-     * @param {string} propertyString свойство для которого ищем элемент управления
-     * @param [domElement]
-     * @returns {array}
-     */
-    function findControlInfo(propertyString, domElement) {
-        var results = [];
-        for (var j = 0; j < uiControlsInfo.length; j++) {
-            // TODO для контролов типа controlpanel я не сохранял элементы domElement, и в эту функцию передается undefined
-            // поэтому такая заточка
-            if (domElement && uiControlsInfo[j].type!=='controlpanel') {
-                // если важен domElem
-                if (propertyString === uiControlsInfo[j].propertyString && domElement === uiControlsInfo[j].domElement) {
-                    results.push(uiControlsInfo[j]);
-                }
-            }
-            else {
-                // если domElem не важен
-                if (propertyString === uiControlsInfo[j].propertyString) {
-                    results.push(uiControlsInfo[j]);
-                }
-            }
-        }
-        return results;
-    }
-
-    /**
-     * Создать контрол для свойства промо приложения или его экрана
-     * На основе информации appProperty будет выбран ui компонент и создан его экземпляр
-     *
-     * @param {string} propertyString
-     * @param {string} viewName - имя вью, который будет использован для контрола
-     * @param {string} name
-     * @param {object} params
-     * @param [controlParentView] для некоторых контролов место выбирается динамически. Например для групп слайдов
-     * @param {HTMLElement} [productDOMElement] элемент на экране продукта к которому будет привязан контрол
-     * @returns {*}
-     */
-    function createControl(propertyString, viewName, name, params, controlParentView, productDOMElement) {
-        var ctrl = null;
-        params = params || {};
-        params.iFrame = $('#id-product_screens_cnt')[0];
-//        try {
-            // существует ли такой вью, если нет, берем по умолчанию
-            if (viewName) {
-                // в случае с вью регистр важен, в конфиге директивы прописаны малым регистром
-                viewName = viewName.toLowerCase();
-            }
-            if (!viewName || config.controls[name].directives.indexOf(viewName) < 0) {
-                var dirIndex = config.controls[name].defaultDirectiveIndex;
-                if (dirIndex>=0) {
-                    // некоторые контролы могут не иметь визуальной части
-                    viewName = config.controls[name].directives[dirIndex];
-                }
-            }
-            // задается по параметру или по дефолту из конфига
-            var cpv = null;
-            if (controlParentView) {
-                cpv = $(controlParentView);
-            }
-            else {
-                cpv = $('#'+config.controls[name].parentId);
-            }
-            // свойств может быть несколько, передаем массив
-            var propertyStrArg = (propertyString && propertyString.indexOf(',')>=0)?propertyString.split(','):propertyString;
-            ctrl = new window[name](propertyStrArg, viewName, cpv, productDOMElement, params);
-//        }
-//        catch(e) {
-//            log(e, true);
-//        }
-//        log('Creating UI control for appProperty='+propertyString+' ui='+name);
-        return ctrl;
     }
 
     function onPublishClick() {
@@ -1463,32 +772,6 @@ var Editor = {};
     }
 
     /**
-     * Показать подсказку на любой элемент в редакторе
-     * @param elem
-     * @param text
-     */
-    function showWorkspaceHint(elem, text) {
-        var $elem = $(elem);
-        var $hint = $($('#id-hint_template').html());
-        $hint.find('.js-text').html(text);
-        var eo = $elem.offset();
-        // сначала элемент надо добавить в дерево, чтобв рассчитать его размеры
-        $(document.body).append($hint);
-        // выравнивание слева от элемента, учитывая актуальный размер элемента и подсказки
-        $hint.css('top',eo.top+workspaceOffset.top+($elem.outerHeight(false)-$hint.outerHeight(false))/2+'px');
-        $hint.css('left',eo.left+workspaceOffset.left-$hint.outerWidth(false)-config.editor.ui.hintRightMargin+'px');
-        //TODO добавить треугольный указатель
-        activeScreenHints.push($hint);
-        return $hint;
-    }
-
-    function hideWorkspaceHints() {
-        while (activeScreenHints.length>0) {
-            $(activeScreenHints.pop()).remove();
-        }
-    }
-
-    /**
      * Изменение окна браузера
      */
     function onWindowResize() {
@@ -1575,20 +858,18 @@ var Editor = {};
     }
 
     function getActiveScreens() {
-        return activeScreens;
+        return activeScreenIds;
     }
 
     function showSelectDialog(params) {
-        selectElementOnAppScreen(null);
-        hideWorkspaceHints();
+        workspace.selectElementOnAppScreen(null);
         $('#id-control_cnt').empty();
         var dialog = new SelectDialog(params);
         $('#id-dialogs_view').empty().append(dialog.view).show();
     }
 
     function showPublishDialog(params) {
-        selectElementOnAppScreen(null);
-        hideWorkspaceHints();
+        workspace.selectElementOnAppScreen(null);
         $('#id-control_cnt').empty();
         var dialog = new PublishDialog(params);
         $('#id-dialogs_view').empty().append(dialog.view).show();
@@ -1668,27 +949,124 @@ var Editor = {};
         }
     }
 
+    /**
+     * Модель управления экранами:
+     * Сейчас предполагается что группы экранов постоянные, поэтому createScreenControls зовется один раз при старте редактора
+     * Если будут меняться группы, то надо формировать группы в движке и следить за их изменением и делать события с обработкой
+     * TODO А пока здесь один раз создаются все контролы SlideGroupControl один раз и управление слайдами идет внутри них
+     *
+     * Конролы управления экранами специфичные, поэтому существует отдельная функция для их создания
+     * Задача не пересоздавать контролы управления экранами - это дорого
+     *
+     * Нет контрола управления группами, который включал бы управления несколькими SlideGroupControl
+     * По сути это вот эта функция ниже.
+     * А упрвления отдельными Slide спрятана внутрь одного SlideGroupControl
+     */
+    function createScreenControls() {
+        $('#id-slides_cnt').empty();
+        //TODO конечно не надо пересоздавать каждый раз всё при добавл-удал экрана. Но так пока проще
+        var appScreenIds = Engine.getAppScreenIds();
+        // экраны могут быть поделены на группы
+        var groups = {};
+        var sGroups = [];
+        if (appScreenIds.length > 0) {
+            // подготовительная часть: разобъем экраны на группы
+            // groups - просто временный вспомогательный объект
+            for (var i = 0; i < appScreenIds.length; i++) {
+                var s = appScreenIds[i];
+                var screen = Engine.getAppScreen(s);
+                if (screen.hideScreen === false) {
+                    if (typeof screen.group !== "string") {
+                        // если группа не указана, экран будет один в своей группе
+                        screen.group = screen.id;
+                    }
+                    if (groups.hasOwnProperty(screen.group) === false) {
+                        // группа новая, создаем
+                        groups[screen.group] = [];
+                    }
+                    groups[screen.group].push(s);
+                }
+            }
+
+            // далее начнем создать контролы и вью для групп экранов
+            for (var groupName in groups) {
+                var curG = groups[groupName];
+                var firstScrInGroup = Engine.getAppScreen(curG[0]);
+                var sgc = findSlideGroupByGroupName(groupName);
+                if (sgc === null) {
+                    // группой экранов может управлять массив.
+                    // в случае вопросов теста: эта группа привязана к quiz, передается в промо проекте при создании экранов
+                    // для остальных undefined
+                    sgc = workspace.createControl(firstScrInGroup.arrayAppPropertyString, 'SlideGroupControl', 'SlideGroupControl', {}, $('#id-slides_cnt'));
+                }
+                else {
+                    // подходящий контрол SlideGroupControl создавался ранее для управления этой группой экранов
+                }
+                // устанавливаем все атрибуты, не один раз при создании, а сколько угодно раз
+                sgc.set({
+                    // идентификатор группы
+                    groupName: groupName,
+                    // имя забираем у первого экрана группы, в группе минимум один экран, а все имена одинаковые конечно
+                    groupLabel: firstScrInGroup.name,
+                    // это массив экранов
+                    //screens: curG,
+                    //allowDragY: true,
+                    showAddButton: true
+                });
+                sGroups.push(sgc);
+            }
+            // если при обновлении какие-то группы пропали в промо приложении, то они не попадут более в slideGroupControls
+            // например для теста будет три группы: стартовый, вопросы, результаты
+            slideGroupControls = sGroups;
+        }
+
+        /**
+         * Найти контрол SlideGroupControl по имени группы экранов
+         * Задача не пересоздавать контролы управления экранами - это дорого
+         * @param groupName
+         * @returns {null}
+         */
+        function findSlideGroupByGroupName(groupName) {
+            if (slideGroupControls !== null && groupName) {
+                for (var i = 0; i < slideGroupControls.length; i++) {
+                    if (slideGroupControls[i].groupName == groupName) {
+                        return slideGroupControls[i];
+                    }
+                }
+            }
+            return null;
+        }
+    }
+
     // public methods
     global.start = start;
     global.forEachElementOnScreen = forEachElementOnScreen;
     global.getAppIframe = getAppIframe;
-    global.createControl = createControl;
+    //TODO
+    global.createControl = function(p1,p2,p3,p4,p5,p6,p7,p8) {
+        return workspace.createControl(p1,p2,p3,p4,p5,p6,p7,p8);
+    };
     global.getActiveScreens = getActiveScreens;
     global.showScreen = showScreen;
     global.getAppContainerSize = function() { return appContainerSize; };
     global.getSlideGroupControls = function() { return slideGroupControls; };
     global.createPreviewsForShare = createPreviewsForShare;
     global.testPreviewsForShare = testPreviewsForShare;
-    global.selectElementOnAppScreen = selectElementOnAppScreen;
-    global.hideWorkspaceHints = hideWorkspaceHints;
+//    global.selectElementOnAppScreen = selectElementOnAppScreen;
+//    global.hideWorkspaceHints = hideWorkspaceHints;
     global.getResourceManager = function() { return resourceManager; }
     global.showSelectDialog = showSelectDialog;
-    global.syncUIControlsToAppProperties = syncUIControlsToAppProperties;
+    global.syncUIControlsToAppProperties = function () {
+        workspace.syncUIControlsToAppProperties();
+    };
     global.findControl = findControl;
-    global.findControlInfo = findControlInfo; // need for autotests
+//    global.findControlInfo = findControlInfo; // need for autotests
     global.getAppId = function() { return appId; };
     global.updateSelection = updateSelection;
-    global.getQuickControlPanel = function() { return quickControlPanel; }
+    global.getQuickControlPanel = function() {
+        //TODO
+        return workspace.getQuickControlPanel();
+    }
     global.getEditorEnvironment = getEditorEnvironment;
 
 })(Editor);
