@@ -49,13 +49,13 @@
                 </div>
                 <div id="id-user_toolbar" class="toolbar_user ml12">
                     <div style="display:none" class="user_avatar js-profile_picture"></div>
-                    <span style="display:none" class="pbtn __blue __small mt2 js-show_login">Войти</span>
+                    <span style="display:none" class="pbtn __blue __small mt2 js-show_login pts_string pts_sign_in">Войти</span>
                     <div style="display:none" class="dropdown_btn js-user_ctx_menu">
                         <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
-                            <div class="ctx_menu_item js-to_my_templates">
+                            <div class="ctx_menu_item js-to_my_templates pts_string pts_my_projects">
                                 Мои проекты
                             </div>
-                            <div class="ctx_menu_item js-logout">
+                            <div class="ctx_menu_item js-logout pts_string pts_sign_out">
                                 Выйти
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                     <div class="st_item js-create_blank" data-app-name="test">
                         <div class="st_item_img __blank" style="">
                             <div class="st_blank_plus tx __light pt80">+</div>
-                            <div class="st_blank_new_text tx __24 __light">Создать новый тест</div>
+                            <div class="st_blank_new_text tx __24 __light pts_string pts_create_new_quiz">Создать новый тест</div>
                         </div>
                     </div>
                     <!-- add user templates here after loading -->
@@ -103,7 +103,7 @@
                     <a href="faq.html" class="mob_menu_item pts_string pts_faq"></a>
                     <a href="contact.html" class="mob_menu_item pts_string pts_contacts"></a>
                     <div class="mt40">
-                        <span class="pbtn __grey js-show_login" style="display:none;width:226px;">Войти</span>
+                        <span class="pbtn __grey js-show_login pts_string pts_sign_in" style="display:none;width:226px;">Войти</span>
                     </div>
                 </div>
             </div>
@@ -113,16 +113,16 @@
     <script id="id-my_project_elem_template" type="text/template">
         <div class="st_item" data-template-url="{{data_file_url}}">
             <div class="st_item_img js-preview" style="">
-                <div class="st_elem_status tx __18 __light __gray js-status">Загрузка...</div>
+                <div class="st_elem_status tx __18 __light __gray js-status pts_string pts_loading">Загрузка...</div>
                 <div class="st_item_op">
-                    <div class="st_item_op_line"><div class="pbtn js-edit">Редактировать</div></div>
-                    <div class="st_item_op_line"><div class="pbtn js_app-clone">Клонировать</div></div>
+                    <div class="st_item_op_line"><div class="pbtn js-edit pts_string pts_edit_template">Редактировать</div></div>
+                    <div class="st_item_op_line"><div class="pbtn js_app-clone pts_string pts_clone_template">Клонировать</div></div>
                 </div>
                 <div class="st_item_delete js-delete_item"></div>
             </div>
             <div class="st_item_info">
                 <div class="st_item_name __w243 tx js-title"></div>
-                <div class="st_item_publish tx js-publish">не опубликован</div>
+                <div class="st_item_publish tx js-publish pts_string pts_not_published">не опубликован</div>
             </div>
             <div class="st_item_info">
                 <div class="st_item_last_modified js-last_modified"></div>

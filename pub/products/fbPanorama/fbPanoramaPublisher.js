@@ -13,6 +13,11 @@ var fbPanoramaPublisher = {};
      */
     var productResources = [];
     /**
+     * Имя проекта для публикации, например test
+     * @type {string}
+     */
+    var appName = null;
+    /**
      * Уникальный ид проекта, который публикуется.
      * @type {string}
      */
@@ -69,6 +74,7 @@ var fbPanoramaPublisher = {};
      * 3) Заливается фото в Facebook и делается пост
      *
      * @params.appId {string} - уникальный ид проекта, типа c31ab01f0c
+     * @params.appName {string} - тип проекта например test
      * @params.width {number} - ширина проекта, для ембед кода
      * @params.height {number} - высота проекта для ембед кода
      * @params.promoIframe {iFrame} - iframe приложения прототипа, который меняем
@@ -83,6 +89,7 @@ var fbPanoramaPublisher = {};
             }
             callback = params.callback;
             publishedAppId = params.appId;
+            appName = params.appName;
             appWidth = params.width;
             appHeight = params.height;
             promoIframe = params.promoIframe;
@@ -117,6 +124,7 @@ var fbPanoramaPublisher = {};
                         // далее как публикация обычного самостоятельного проекта
                         Publisher.publish({
                             appId: publishedAppId,
+                            appName: appName,
                             width: appWidth,
                             height: appHeight,
                             appStr: Engine.serializeAppValues({addIsPublishedParam:true}),

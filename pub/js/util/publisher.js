@@ -20,6 +20,11 @@ var Publisher = {};
      */
     var productResources = [];
     /**
+     * Имя проекта для публикации, например test
+     * @type {string}
+     */
+    var appName = null;
+    /**
      * Уникальный ид проекта, который публикуется.
      * @type {string}
      */
@@ -74,6 +79,7 @@ var Publisher = {};
      * 4) Загружаются в хранилище в персональный каталог пользователя
      *
      * @params.appId {string} - уникальный ид проекта, типа c31ab01f0c
+     * @params.appName {string} - тип проекта например test
      * @params.width {number} - ширина проекта, для ембед кода
      * @params.height {number} - высота проекта для ембед кода
      * @params.appStr {string} - app свойства промо приложения, который надо перезаписать
@@ -89,6 +95,7 @@ var Publisher = {};
             App.stat('Testix.me', 'Publish_started');
             callback = params.callback;
             publishedAppId = params.appId;
+            appName = params.appName;
             appStr = params.appStr;
             cssStr = params.cssStr;
             appWidth = params.width;
@@ -170,10 +177,12 @@ var Publisher = {};
      * @returns {string}
      */
     function getEmbedCode() {
+        var projectCustomAttr = config.products[appName].customEmbedCodeAttributes;
         var embedCode = config.common.embedCodeTemplate;
         embedCode = embedCode.replace('{{width}}', appWidth+'px')
             .replace('{{height}}', appHeight+'px')
-            .replace('{{published}}', App.getUserData().id+'/'+publishedAppId);
+            .replace('{{published}}', App.getUserData().id+'/'+publishedAppId)
+            .replace('{{custom_attributes}}',' '+projectCustomAttr);
         return embedCode;
     }
 

@@ -40,7 +40,8 @@ var PanoViewerScreen = MutApp.Screen.extend({
     },
 
     events: {
-        "click .js-logo": "onLogoClick"
+        "click .js-logo": "onLogoClick",
+        "click .js-fullscreen": "onFullscreenBtnClick"
     },
 
     onLogoClick: function(e) {
@@ -49,6 +50,12 @@ var PanoViewerScreen = MutApp.Screen.extend({
             var win = window.open(ll, '_blank');
             win.focus();
             this.model.application.stat(this.model.application.type, 'logoclick');
+        }
+    },
+
+    onFullscreenBtnClick: function(e) {
+        if (this.model.attributes.viewer) {
+            this.model.attributes.viewer.toggleFullscreen();
         }
     },
 

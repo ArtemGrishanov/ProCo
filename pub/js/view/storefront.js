@@ -120,10 +120,15 @@ var storefrontView = {};
             if (info.published && info.width && info.height) {
                 activeTemplateUrl = templateUrl;
                 //Example: '<div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/870dcd0a6b/p_index.html"><script src="//testix.me/js/loader.js" async></script></div>'
+                var projectCustomAttr = '';
+                if (info.appName) {
+                    projectCustomAttr = config.products[info.appName].customEmbedCodeAttributes;
+                }
                 var embedCode = config.common.embedCodeTemplate;
                 embedCode = embedCode.replace('{{width}}', info.width)
                     .replace('{{height}}', info.height)
-                    .replace('{{published}}', info.published);
+                    .replace('{{published}}', info.published)
+                    .replace('{{custom_attributes}}',' '+projectCustomAttr);
                 $('#id-app_iframe_cnt').empty().append(embedCode);
                 $('.scr_wr').addClass('__shadow');
                 $('#id-app_preview').show();

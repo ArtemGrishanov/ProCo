@@ -213,7 +213,7 @@ var config = {
         /**
          * Шаблон для кода встраивания
          */
-        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"><script src="//s3.eu-central-1.amazonaws.com/testix.me/js/loader.js" async></script></div>'
+        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"{{custom_attributes}}><script src="//s3.eu-central-1.amazonaws.com/testix.me/js/loader.js" async></script></div>'
     },
     storage: {
         /**
@@ -421,15 +421,16 @@ var config = {
                 enabled: true,
                 entities: [
                     {
-                        //Сингапур http://p.testix.me/121947341568004/1d1f4f3236/
+                        //Сингапур http://p.testix.me/121947341568004/3396d27281/               deprecated: http://p.testix.me/121947341568004/1d1f4f3236/
                         name: {RU:'Сингапур',EN:'Singapore'},
-                        img: 'http://p.testix.me/storefront/panorama/1d1f4f3236.jpg',
-                        published: 'http://p.testix.me/storefront/panorama/1d1f4f3236/p_index.html',
+                        img: 'http://p.testix.me/storefront/panorama/3396d27281.jpg',
+                        published: 'http://p.testix.me/storefront/panorama/3396d27281/p_index.html',
                         // in proconstructor/storefront/panorama
-                        template: 'storefront/panorama/1d1f4f3236.txt',
+                        template: 'storefront/panorama/3396d27281.txt',
                         width: '800px',
                         height: '600px',
-                        getParams: 'appStorage=ref:strf'
+                        getParams: 'appStorage=ref:strf',
+                        appName: 'fbPanorama' // информация о типе приложения важна для ембеда, могут использоваться доп атрибуты, например мелкие иконки для панорам
                     }
                 ]
             },
@@ -446,7 +447,8 @@ var config = {
                         template: 'storefront/fbPanorama/fa724312dd.txt',
                         width: '800px',
                         height: '600px',
-                        getParams: 'appStorage=ref:strf'
+                        getParams: 'appStorage=ref:strf',
+                        appName: 'fbPanorama'
                     }
                 ]
             },
@@ -642,6 +644,10 @@ var config = {
              * Включает сбор специальной статистики во время публикации панорам
              */
             enableCustomStatistics: true,
+            /**
+             * Дополнительные атрибуты для этого типа проекта, которые надо встроить в ембед код. Publisher.getEmbedCode()
+             */
+            customEmbedCodeAttributes: 'data-icon-mod="__small"'
         },
         timeline: {
             stylesForEmbed: '<link href="{{config.common.home}}products/timeline/style.css" rel="stylesheet"/>'

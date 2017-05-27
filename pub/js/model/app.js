@@ -123,6 +123,7 @@ var App = App || {};
             contacts: 'Контакты',
             my_projects: 'Мои проекты',
             edit_template: 'Редактировать',
+            clone_template: 'Клонировать',
             preview_template: 'Посмотреть',
             login_explanation: 'Войдите, чтобы получить больше возможностей',
             cat_all: 'Все',
@@ -228,7 +229,13 @@ var App = App || {};
             fbpano_create: 'Панорамы 360° для Facebook',
             fbpano_index1: 'Уникальный формат, позволяющий создать из обычной фотографии панораму 360°, подписать на ней любые объекты и опубликовать на Facebook. Создавайте собственные экскурсии по интересным местам – теперь в вашем распоряжении не просто панорамы, а возможность рассказать целую историю!',
             create_fbpano_free: 'Создать панораму бесплатно',
-            fbpano_example: 'Пример панорамы'
+            fbpano_example: 'Пример панорамы',
+            create_new_quiz: 'Создать новый тест',
+            loading: 'Загрузка...',
+            not_published: 'не опубликован',
+            published: 'Опубликован',
+            saved: 'Сохранено',
+            error: 'Ошибка'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -268,6 +275,7 @@ var App = App || {};
             design_your_pano: 'Surprise your users offering them unique formats',
             format_card_fbpano: 'Upload photo, add marks and post to your Facebook timeline!',
             edit_template: 'Edit',
+            clone_template: 'Clone',
             preview_template: 'Preview',
             login_explanation: 'Please, sign in to get more options',
             cat_all: 'All',
@@ -373,7 +381,13 @@ var App = App || {};
             fbpano_create: 'Photos 360° for Facebook',
             fbpano_index1: 'A unique format that allows you to create a 360° panorama from a regular photo, sign any objects on it and publish it to Facebook. Create your own tours to interesting places - now you have the opportunity to tell the whole story!',
             create_fbpano_free: 'Create photo 360° for free',
-            fbpano_example: 'Photo 360° example'
+            fbpano_example: 'Photo 360° example',
+            create_new_quiz: 'Create new quiz',
+            loading: 'Loading...',
+            not_published: 'not published',
+            published: 'Published',
+            saved: 'Saved',
+            error: 'Error'
         }
     },
     /**

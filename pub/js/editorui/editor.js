@@ -1162,6 +1162,7 @@ var Editor = {};
                 });
                 activePublisher.publish({
                     appId: appId,
+                    appName: appName,
                     width: app.width,
                     height: app.height,
                     appStr: appStr,

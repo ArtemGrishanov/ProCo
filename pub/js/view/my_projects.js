@@ -81,6 +81,7 @@ var myProjectsView = {};
         var s = $('#id-my_project_elem_template').html();
         s = s.replace('{{data_file_url}}',templateData.url);
         var $e = $(s);
+        App.localize($e);
         $cnt.append($e);
         $e.find('.js-edit').click(onEditClick);
         $e.find('.js_app-clone').click(onCloneClick);
@@ -104,19 +105,19 @@ var myProjectsView = {};
                 $(v).find('.js-status').hide();
             }
             else {
-                $(v).find('.js-status').text('Ошибка');
+                $(v).find('.js-status').text(App.getText('error'));
             }
             if (template.previewUrl) {
                 $(v).find('.js-preview').css('backgroundImage','url('+config.common.awsHostName+'/'+config.common.awsBucketName+'/'+template.previewUrl+')');
             }
-            // for test            template.publishDate = 'Mon Apr 25 2016 12:37:00 GMT+0300 (MSK)';
+            // for test template.publishDate = 'Mon Apr 25 2016 12:37:00 GMT+0300 (MSK)';
             if (template.publishDate) {
                 var d = new Date(template.publishDate);
-                $(v).find('.js-publish').addClass('__published').text('Опубликован ' + d.toLocaleDateString());
+                $(v).find('.js-publish').addClass('__published').text(App.getText('published') + ' ' + d.toLocaleDateString());
             }
             if (template.lastModified) {
                 var d = new Date(template.lastModified);
-                $(v).find('.js-last_modified').text('Сохранено: ' + d.toLocaleString());
+                $(v).find('.js-last_modified').text(App.getText('saved') + ' ' + d.toLocaleString());
             }
         }
     }
