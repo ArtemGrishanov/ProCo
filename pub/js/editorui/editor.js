@@ -647,7 +647,8 @@ var Editor = {};
             // задача - отфильтровать настройки на правой панели
             var dataAppPropertyString = $elementOnAppScreen.attr('data-app-property');
             workspace.selectElementOnAppScreen($elementOnAppScreen);
-            filterControls(dataAppPropertyString, $elementOnAppScreen, getActiveScreens());
+            // [0] - должны передать DOMElement а не jQuery-обертку
+            filterControls(dataAppPropertyString, $elementOnAppScreen[0], getActiveScreens());
         }
     }
 

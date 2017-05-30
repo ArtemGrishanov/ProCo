@@ -131,7 +131,8 @@ var s3util = {};
                 },
                 onFail: function() {
                     callback('error');
-                }
+                },
+                maxWaitTime: config.common.imageUploadToAWSMaxWaitTime
             };
             Queue.push(t);
         }

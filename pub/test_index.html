@@ -20,56 +20,62 @@
             height: 100px;
             background-color: #333;
         }
+
+        .trivia_res_wr {
+            width: 800px; /* set it from js */
+            overflow: hidden;
+        }
+        .trivia_res_item {
+            display: inline-block;
+            vertical-align: top;
+            box-sizing: border-box;
+            width: 74px;
+            height: 19px;
+            line-height: 19px;
+            padding-left: 4px;
+            background-color: #fff;
+            color: #7c7c7c;
+            font-family: Arial;
+            font-size: 12px;
+        }
+        .trivia_res_item.__active {
+            background-color: #4c99f7;
+            color: #fff;
+        }
+        .trivia_res_item.__busy {
+            background-color: #d8d8d8;
+        }
+        .trivia_res_item + .trivia_res_item {
+            border-left: 1px solid;
+            border-color: #7c7c7c;
+            /*margin-left: -4px;* doesn't need: programmatical building /
+        }
     </style>
 </head>
 <body style="background-color: #888">
-<div class="modal_wr">
-    <div class="modal __680">
-        <div class="login_form">
-            <p class="tx __24 __grey">Что опубликовать панораму на Facebook,<br>нам нужны дополнительные разрешения.</p>
-            <p class="tx __16 __grey mt20">В появившемся окне Facebook нажмите "Разрешить"</p>
-            <div class="fb_pano_icon mt20"></div>
-            <div class="mt90">
-                <span class="pbtn js-close">Отмена</span>
-                <span class="pbtn js-ok">Продолжить</span>
-            </div>
+    <div class="trivia_res_wr">
+        <div class="js-item_template" style="display:none">
+            <div class="trivia_res_item" data-id="{{id}}">{{number}}</div>
         </div>
-        <span class="close_dialog_btn __grey js-close"></span>
+        <div class="js-items_cnt">
+
+        </div>
     </div>
-</div>
-    <!--<div class="test">-->
-        <!--тестовое поле-->
-    <!--</div>-->
-    <!--<script>-->
-        <!--var editable = false;-->
-        <!--$('.test').click(function(){-->
-            <!--console.log('test click');-->
-            <!--editable = !editable;-->
-            <!--if (editable) {-->
-                <!--setTimeout(function(){-->
-                    <!--$('.test').attr('contenteditable','true');-->
-                <!--},100);-->
-            <!--}-->
-            <!--else {-->
-                <!--$('.test').attr('contenteditable','false')-->
-            <!--}-->
-        <!--});-->
+    <script type="text/javascript">
+        var scrWidth = 800;
+        var results = [0,1,2,3,4,5,6,7];
+        var itemWidth = 800/results.length;
+
+        var templStr = $('.js-item_template').html();
+        var $cnt = $('.js-items_cnt');
+
+        for (var i = 0; i < results.length; i++) {
+            var num = results[i];
+            var eStr = templStr.replace('{{number}}',num).replace('{{id}}',num);
+            var $e = $(eStr);
+            $e.css('width',itemWidth+'px');
+            $cnt.append($e)
+        }
     </script>
-    <!--<div id="id-vk"></div>-->
-    <!--<div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/870dcd0a6b/p_index.html"><script src="//testix.me/js/loader.js" async></script></div>-->
-    <!--<div class="testix_project" data-width="800px" data-height="600px" data-published="http://p.testix.me/121947341568004/0a9ed88d47/p_index.html"><script src="js/loader.js" async></script></div>-->
-    <!--<script type="text/javascript" src="lib/jquery.js"></script>-->
-    <!--&lt;!&ndash; build:js test_index.min.js &ndash;&gt;-->
-    <!--<script type="text/javascript" src="js/config.js"></script>-->
-    <!--<script type="text/javascript" src="js/model/app.js"></script>-->
-    <!--<script type="text/javascript" src="js/util/utils.js"></script>-->
-    <!--<script type="text/javascript" src="js/engine.js"></script>-->
-    <!--<script type="text/javascript" src="js/appProperty.js"></script>-->
-    <!--<script type="text/javascript" src="js/view/storefront.js"></script>-->
-    <!--<script type="text/javascript" src="js/view/modals/AbstractModal.js"></script>-->
-    <!--<script type="text/javascript" src="js/view/modals/LoadingModal.js"></script>-->
-    <!--<script type="text/javascript" src="js/view/modals/MessageModal.js"></script>-->
-    <!--<script type="text/javascript" src="js/view/modals/Modal.js"></script>-->
-    <!--&lt;!&ndash; endbuild &ndash;&gt;-->
 </body>
 </html>

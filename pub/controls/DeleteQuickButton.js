@@ -20,7 +20,9 @@ function DeleteQuickButton(propertyString, directiveName, $parent, productDOMEle
     }
 
     this._onShow = function() {
-        this.$directive.on('click', this.onDeleteQuickButtonClick.bind(this));
+        //TODO двойной обработчик получается, в панорамах вызывается два раза удаление одной и той же метки. Поэтому удаляются две.
+        // но для теста это надо: заново устанавливать его иначе не работает
+        //this.$directive.on('click', this.onDeleteQuickButtonClick.bind(this));
     };
 
     this.onDeleteQuickButtonClick = function() {
