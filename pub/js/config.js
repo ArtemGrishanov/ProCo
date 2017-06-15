@@ -276,6 +276,7 @@ var config = {
                         name: {EN:'Default tutorial quiz',RU:'Testix. Дефолтный тест-туториал'},
                         img: 'http://p.testix.me/storefront/test/7e7fef7bcf.jpg',
                         published: 'http://p.testix.me/storefront/test/7e7fef7bcf/p_index.html',
+                        // in url is hardcoded in my_templates.html
                         template: 'storefront/test/7e7fef7bcf.txt',
                         width: '800px',
                         height: '600px'
@@ -652,7 +653,11 @@ var config = {
             /**
              * Дополнительные атрибуты для этого типа проекта, которые надо встроить в ембед код. Publisher.getEmbedCode()
              */
-            customEmbedCodeAttributes: 'data-icon-mod="__small"'
+            customEmbedCodeAttributes: 'data-icon-mod="__small"',
+            /**
+             * Скрыть верхнюю панель с экранами
+             */
+            hideScreenControls: true
         },
         timeline: {
             stylesForEmbed: '<link href="{{config.common.home}}products/timeline/style.css" rel="stylesheet"/>'

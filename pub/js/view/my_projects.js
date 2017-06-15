@@ -13,13 +13,11 @@ var myProjectsView = {};
 
     function initUIHandlers() {
         $('.js-create_blank').click(function(e){
-            var appName = $(e.currentTarget).attr('data-app-name');
-            if (appName) {
-                // открытие пустого шаблона
-                // параметр подготовлен для открытия проекта любого типа
-                // window.location.href = 'editor.html?app='+appName;
+            var d = $(e.currentTarget).attr('data-template-url');
+            if (d) {
                 App.openEditor({
-                    appName:appName
+                    templateUrl: d,
+                    clone:true
                 });
             }
         });

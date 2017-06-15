@@ -264,6 +264,10 @@ var Editor = {};
         var src = config.products[loadedAppName].src;
         if (src) {
             appName = loadedAppName;
+            // скрыть контролы экранов для некоторых проектов. Например для панорам они не нужны
+            if (config.products[appName].hideScreenControls === true) {
+                $('#id-screen_controls_cnt').hide();
+            }
             iframeWindow = null;
             appIframe = document.createElement('iframe');
             appIframe.onload = onProductIframeLoaded;
@@ -300,10 +304,18 @@ var Editor = {};
         // для установки ссылки шаринга требуются данные пользователя, ответ от апи возможно надо подождать
         if (App.getUserData()) {
             trySetDefaultShareLink(cloneTemplate === true);
+            // показ кнопки загрузки превью картинки для проекта. Только для админов
+            if (App.getUserData() && config.common.excludeUsersFromStatistic.indexOf(App.getUserData().id) >= 0) {
+                $('#id-app_prevew_img_wr').show();
+            }
         }
         else {
             App.on(USER_DATA_RECEIVED, function() {
                 trySetDefaultShareLink(cloneTemplate === true);
+                // показ кнопки загрузки превью картинки для проекта. Только для админов
+                if (App.getUserData() && config.common.excludeUsersFromStatistic.indexOf(App.getUserData().id) >= 0) {
+                    $('#id-app_prevew_img_wr').show();
+                }
             });
         }
 
