@@ -36,31 +36,28 @@ function ResourceManager(params) {
                     log('ResourceManager: ' + err, true);
                 } else {
                     data.Contents.forEach((function (obj) {
-                        // вырезаем имя файла, чтобы использовать его в качестве id для дальнейшей работы
                         //TODO Файл с точками в имени тоже бывают и они не отображаются
-                        var reg = new RegExp('facebook-'+App.getUserData().id+'\/res\/([^\.]+\.[A-z]+)','g');
-                        var match = reg.exec(obj.Key);
-                        if (match && match[1]) {
-                            var id = match[1];
-                            this.resourcesList = this.resourcesList || [];
-                            var time = new Date(obj.LastModified);
-                            var newItem = {
-                                // key example facebook-902609146442342/app/abc123.txt
-                                key: obj.Key,
-                                id: id,
-                                lastModified: obj.LastModified,
-                                time: time
-                            };
-                            for (var i = 0; i < this.resourcesList.length; i++) {
-                                if (time > this.resourcesList[i].time) {
-                                    this.resourcesList.splice(i,-1,newItem);
-                                    newItem = null;
-                                    break;
-                                }
+                        var id = obj.Key.replace('facebook-'+App.getUserData().id+'\/res\/','');
+                        //var reg = new RegExp('(facebook-'+App.getUserData().id+'\/res\/)([^\.]+\.[A-z]+)','g');
+                        //var match = reg.exec(obj.Key);
+                        this.resourcesList = this.resourcesList || [];
+                        var time = new Date(obj.LastModified);
+                        var newItem = {
+                            // key example facebook-902609146442342/app/abc123.txt
+                            key: obj.Key,
+                            id: id,
+                            lastModified: obj.LastModified,
+                            time: time
+                        };
+                        for (var i = 0; i < this.resourcesList.length; i++) {
+                            if (time > this.resourcesList[i].time) {
+                                this.resourcesList.splice(i,-1,newItem);
+                                newItem = null;
+                                break;
                             }
-                            if (newItem) {
-                                this.resourcesList.push(newItem);
-                            }
+                        }
+                        if (newItem) {
+                            this.resourcesList.push(newItem);
                         }
                     }).bind(this));
                     log('Objects in dir '+prefix+':');

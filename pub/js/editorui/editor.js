@@ -383,6 +383,18 @@ var Editor = {};
                 setTimeout(function() {
                     Modal.hideLoading();
                 }, 1000);
+
+                // специальная возможность для панорам: сразу открыть окно выбора картинки с помощью передами параметра с витрины
+                setTimeout(function() {
+                    try {
+                        var pn = getQueryParams(document.location.search)['pano_open_rm'];
+                        if (pn) {
+                            Editor.findControlInfo('id=mm panoramaImgSrc')[0].control.onDirectiveClick();
+                        }
+                    }
+                    catch(err) { log (err.message, true) }
+                }, 1200);
+
                 if (typeof startCallback === 'function') {
                     startCallback();
                 }

@@ -16,6 +16,15 @@ html, body {
     border-color: #ddd;
     padding: 24px;
 }
+.st_category_start_action {
+    width: 810px;
+    height: 219px;
+    margin: 20px auto 0;
+    background-color: #499cf3;
+    text-align: center;
+    color: #fff;
+    padding: 24px;
+}
 .st_tour_text {
     display: inline-block;
     vertical-align: top;
