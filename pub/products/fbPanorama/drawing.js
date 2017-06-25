@@ -46,7 +46,7 @@ var panoDrawing = {};
         var minPinWIdth = Math.round(param.pinScale * MIN_PIN_WIDTH);
         var padding = Math.round(param.pinScale * PIN_PADDING);
         var x = param.left, y = param.top;
-        param.text = param.text.replace(/(&nbsp;)*/g,"");
+        param.text = param.text.replace(/(&nbsp;)+/g," ");
         var lines = param.text.split('<br>');
         ctx.font = fontSize + "px " + PIN_FONT_FAMILY;
         ctx.textBaseline = 'top';
