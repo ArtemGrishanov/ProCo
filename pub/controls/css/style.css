@@ -130,3 +130,17 @@ form input {
     height: 20px;
     vertical-align: top;
 }
+.contr_btn {
+    display: inline-block;
+    min-width: 130px;
+    padding: 7px 12px;
+    margin-bottom: 0;
+    font-size: 16px;
+    line-height: 20px;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #4c99f7;
+    border-radius: 4px;
+}

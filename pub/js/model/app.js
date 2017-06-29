@@ -148,7 +148,7 @@ var App = App || {};
             select_template_to_start: 'Начните свой проект с выбора шаблона',
             correct_answer: 'Верный ответ',
             add_quiz_option: 'Добавить ответ',
-            choose_image: 'Выбрать картинку',
+            choose_image: 'Загрузить',
             save_template: 'Сохранить',
             preview: 'Просмотр',
             publish: 'Опубликовать',
@@ -238,7 +238,8 @@ var App = App || {};
             not_published: 'не опубликован',
             published: 'Опубликован',
             saved: 'Сохранено',
-            error: 'Ошибка'
+            error: 'Ошибка',
+            unsaved_changes: 'У вас есть несохраненные изменения'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -393,7 +394,8 @@ var App = App || {};
             not_published: 'not published',
             published: 'Published',
             saved: 'Saved',
-            error: 'Error'
+            error: 'Error',
+            unsaved_changes: 'You have unsaved changes'
         }
     },
     /**

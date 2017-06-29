@@ -30,6 +30,7 @@ descriptor.app = [
     {
         selector: 'id=mm panoramaImgSrc',
         rules: 'imgUrl',
+        label: '<div style="margin-top:30px;text-align:center;"><img src="controls/i/icon-picture.png"/><p style="padding-left: 11px;margin-top: 20px;font-size: 14px;text-align: left;line-height: 1.2em;">Загрузить другое изображение</p><p style="padding-left: 11px;text-align: left;line-height: 1.2em;">Рекомендуемый размер - более 1600x1200 px</p></div>',
         filter: false
     },
     {

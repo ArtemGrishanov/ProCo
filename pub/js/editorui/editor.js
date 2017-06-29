@@ -251,7 +251,7 @@ var Editor = {};
      */
     function confirmExit() {
         if (config.common.awsEnabled === true && Engine.getOperationsCount() > operationsCount) {
-            return "У вас есть несохраненные изменения.";
+            return App.getText('unsaved_changes');
         }
     }
 
@@ -451,7 +451,7 @@ var Editor = {};
         }
         //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
         // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
-        $('#id-product_cnt').height(previewHeight + config.editor.ui.id_product_cnt_additional_height);
+        $('#id-product_cnt, #id-product_wr').height(previewHeight + config.editor.ui.id_product_cnt_additional_height);
         // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
         $('#id-product_screens_cnt, #id-control_cnt').width(appContainerSize.width + 2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
         // боковые панели вытягиваем также вслед за экранами
@@ -923,7 +923,7 @@ var Editor = {};
                                         $cc.find('.js-label').remove();
                                     }
                                     else {
-                                        $cc.find('.js-label').text(textLabel);
+                                        $cc.find('.js-label').html(textLabel);
                                     }
                                 }
                                 if (ap.filter === true) {

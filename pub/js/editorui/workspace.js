@@ -8,7 +8,8 @@ var workspace = {};
     var selectionTemplate = null,
         $controlContainer = null,
         $selection = null,
-        $selectedElementOnAppScreen = null;
+        $selectedElementOnAppScreen = null,
+        $productCnt = null;
 
     /**
      * Выделить элемент на экране приложения.
@@ -54,16 +55,45 @@ var workspace = {};
     }
 
     /**
+     * Инициализация средств прокрутки экранов проекта
+     *
+     * Содержимое #id-product_cnt может быть гораздо больше чем 800 по ширине
+     * Например, горизонтальная панорама
+     *
+     */
+    function updateProductCntScroll() {
+        //$('#id-product_screens_cnt').width() - не успавает отрендериться иногда и возвращает неактуальныый размер
+        var productScreenWidth = Engine.getApp().width;
+        var productCntWidth = $productCnt.width();
+
+        if (productCntWidth < productScreenWidth) {
+            $('#id-hor_scroll_left, #id-hor_scroll_right').show();
+            $('#id-hor_scroll_left').click(function(){
+                $productCnt.scrollLeft($productCnt.scrollLeft() - 100);
+            });
+            $('#id-hor_scroll_right').click(function(){
+                $productCnt.scrollLeft($productCnt.scrollLeft() + 100);
+            });
+        }
+        else {
+            $('#id-hor_scroll_left, #id-hor_scroll_right').hide();
+        }
+    }
+
+    /**
      * Инициализация
      */
     function init(params) {
+        $productCnt = $('#id-product_cnt');
         $controlContainer = $('#id-control_cnt');
         selectionTemplate = $('#id-elem_selection_template').html();
+        Engine.on('AppSizeChanged', null, function() {
+            updateProductCntScroll();
+        });
     }
 
     global.init = init;
     global.selectElementOnAppScreen = selectElementOnAppScreen;
     global.updateSelectionPosition = updateSelectionPosition;
-
 
 })(workspace);

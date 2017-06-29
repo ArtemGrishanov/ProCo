@@ -68,7 +68,9 @@ var Engine = {};
         'DOMElementChanged',
         'AllScreensWereUpdatedBefore', // экраны уже созданы, но перед тем как разослать каждому, вызывается эт событие
         'ScreenUpdated', // один скрин обновился, вызывается для каждого скрина отдельно
-        'AllScreensWereUpdatedAfter' // после того как все экраны собраны и сообщения разосланы для всех скринов будет это вызвано
+        'AllScreensWereUpdatedAfter', // после того как все экраны собраны и сообщения разосланы для всех скринов будет это вызвано
+        'AppSizeChanged',
+        'AppScreenRendered'
     ];
     /**
      * Зарегистрированные колбеки на события
@@ -544,11 +546,13 @@ var Engine = {};
         switch (e.type) {
             case 'mutapp_app_size_changed': {
                 console.log('Engine:mutapp_app_size_changed = ' + e.app.width+'x'+ e.app.height);
+                send('AppSizeChanged');
                 break;
             }
             case 'mutapp_screen_rendered': {
                 console.log('Engine:mutapp_screen_rendered = ' + e.screen.id);
                 createAppScreens();
+                send('AppScreenRendered');
                 break;
             }
             case 'mutapp_engine_value_changed': {
@@ -620,6 +624,7 @@ var Engine = {};
 //    }
 
     /**
+     * Подписаться на событие в движке
      *
      * @param {string} event
      * @param {string} propertyString

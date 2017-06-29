@@ -4,6 +4,13 @@
     background-color: #c3c3c3;
     min-height: 1000px;
 }
+.product_wr {
+    /* пришлось ввести еще обертку для реализации стрелок оризонтальной прокрутки */
+    margin: 0 auto;
+    position: relative;
+    width: 800px;
+    height: 680px;
+}
 .product_cnt {
     position: relative;
     margin: 0 auto;
@@ -447,4 +454,29 @@ input[type="radio"], input[type="checkbox"] {
     padding: 10px;
     z-index: 1;
     color: #fff;
+}
+.hor_scroll {
+    position: absolute;
+    width: 48px;
+    height: 68px;
+    margin-top: -33px;
+    background-color: rgba(0,0,0,0.7);
+    background: url(../i/producticon-arrow-left.png) no-repeat center;
+    top: 50%;
+    left: 0;
+    cursor: pointer;
+}
+.hor_scroll.__right {
+    left: initial;
+    right: 0;
+    background-image: url(../i/producticon-arrow-right.png);
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .hor_scroll {
+        background-image: url(../i/producticon-arrow-left@2x.png);
+        background-size: 48px 68px;
+    }
+    .hor_scroll.__right {
+        background-image: url(../i/producticon-arrow-right@2x.png);
+    }
 }
