@@ -37,6 +37,20 @@ var PanoramaEditScreen = MutApp.Screen.extend({
 
     panoramaPreviewImageSize: null,
 
+    /**
+     * мапа для сохранения объектов стилей которые используются для сменв цвета пинов
+     */
+    customPinColorStyles: {},
+    /**
+     * Канвас который показывается фоном на экране редактирования
+     * На нем не отрисованы пины
+     */
+    canvasForEditing: null,
+    /**
+     * Сохраненные пины, чтобы их потом проще удалить
+     */
+    $pins: [],
+
     template: {
         "default": _.template($('#id-panorama_edit_template').html()),
         "id-text_pin_template": _.template($('#id-text_pin_template').html())
@@ -79,10 +93,20 @@ var PanoramaEditScreen = MutApp.Screen.extend({
                     }
                 }
             }, this);
+
             this.model.bind("change:panoramaImage", function () {
+                this.canvasForEditing = null;
                 this.imageProgressShown = false;
                 this.render();
                 // this.model.application.showScreen(this);
+            }, this);
+
+            this.model.bind("change:previewScale", function () {
+                this.canvasForEditing = null;
+            }, this);
+
+            this.model.bind("change:panoConfig", function () {
+                this.canvasForEditing = null;
             }, this);
         }
     },
@@ -120,6 +144,38 @@ var PanoramaEditScreen = MutApp.Screen.extend({
     },
 
     /**
+     * Установка произвольного цвета для after элемента пина .pin_wr
+     */
+    setPinAfterColor: function($pin, pinIndex, mod, backgroundColor, stylesContainer) {
+        stylesContainer = stylesContainer || this.$el;
+        if (this.customPinColorStyles[pinIndex]) {
+            this.customPinColorStyles[pinIndex].remove();
+        }
+        var customMod = 'customAfterClass'+pinIndex;
+        if ($pin.hasClass(customMod) !== true) {
+            $pin.addClass(customMod);
+        }
+        if (backgroundColor) {
+            var cssStr = '';
+            switch(mod) {
+                case 'ar_bottom':
+                case 'ar_bottom_left':
+                case 'ar_bottom_right':
+                    cssStr = 'border-top-color:'+backgroundColor+';';
+                    break;
+                case 'ar_top':
+                case 'ar_top_left':
+                case 'ar_top_right':
+                    cssStr = 'border-bottom-color:'+backgroundColor+';';
+                    break;
+            }
+            // https://stackoverflow.com/questions/5041494/selecting-and-manipulating-css-pseudo-elements-such-as-before-and-after-usin
+            this.customPinColorStyles[pinIndex] = $('<style id="id-pin_custom_style">.pin_wr.'+mod+'.'+customMod+':after{'+cssStr+'}</style>').appendTo(stylesContainer);
+            // document.styleSheets[0].addRule('.pin_wr.'+mod+'.special:after',cssStr);
+        }
+    },
+
+    /**
      *
      * @returns {PanoramaEditScreen}
      */
@@ -129,51 +185,40 @@ var PanoramaEditScreen = MutApp.Screen.extend({
         var panoImage = this.model.get('panoramaImage');
         if (panoConfig) {
 
-            // содержимое канваса не клонируется когда создается экран в редакторе
-            var c = /*this.model.get('panoCanvas');/*/
-                this.model.createPanoCanvas(
-                    panoConfig,
-                    panoImage,
-                    ps,
-                    [] // Важно: без пинов!
-                );
+            if (this.canvasForEditing === null) {
+                // this.model.get('panoCanvas') - не нужен, для редактирования пинов нужен другой канвас без пинов
+                // рисовать заново этот канвас надо при изменении одного из параметров: panoConfig panoImage ps, а иначе не надо перерисовывать - тормоза
+                // чаще пользователь работает только с пинами, а канвас остается прежний
+                /* var c = this.model.get('panoCanvas'); */
+                this.canvasForEditing = this.model.createPanoCanvas(
+                        panoConfig,
+                        panoImage,
+                        ps,
+                        [] // Важно: без пинов. На экране panoramaEditScreen пины - это верстка, для редактирования
+                    );
+                this.$el.html(this.template['default']({
+                    backgroundImage: ''
+                }));
+                var $panoImg = this.$el.find('.js-pano_image');
+                $(this.canvasForEditing).width(this.canvasForEditing.width*ps+'px').height(this.canvasForEditing.height*ps+'px');
+                $panoImg.append(this.canvasForEditing);
 
-            this.$el.html(this.template['default']({
-                backgroundImage: ''
-            }));
-            var $panoImg = this.$el.find('.js-pano_image');
-            $(c).width(c.width*ps+'px').height(c.height*ps+'px');
-            $panoImg.append(c);
-            this.$el.find('.js-image_progress').hide();
-            //-- canvas experiment
+                this.$el.find('.js-image_progress').hide();
 
-//            this.$el.html(this.template['default']({
-//                backgroundImage: this.model.get('panoramaImgSrc')
-//            }));
-//            this.$el.find('.js-image_progress').hide();
+                var panoImgWidth = Math.round(panoConfig.srcWidth * ps);
+                var panoImgHeight = Math.round(panoConfig.srcHeight * ps);
+                this.panoramaPreviewImageSize = {
+                    width: panoImgWidth,
+                    height: panoImgHeight
+                };
+            }
 
-//            var cntWidth = Math.round(panoConfig.srcWidth * ps);
-//            var cntHeight = Math.round(panoConfig.srcHeight * ps);
-//            this.panoramaContainerSize = {
-//                width: cntWidth,
-//                height: cntHeight
-//            };
-//            var $panoCnt = this.$el.find('.js-pano').width(cntWidth+'px').height(cntHeight+'px');
-//
-//            // если картинка меньше контейнера, надо ее выровнять по центру внутри него. Так же делается при отрисовке канваса
-//            var $panoImg = this.$el.find('.js-pano_image');
-            var panoImgWidth = Math.round(panoConfig.srcWidth * ps);
-            var panoImgHeight = Math.round(panoConfig.srcHeight * ps);
-            this.panoramaPreviewImageSize = {
-                width: panoImgWidth,
-                height: panoImgHeight
-            };
-//            $panoImg.width(panoImgWidth+'px').height(panoImgHeight+'px');
-//            $panoImg.css('top', Math.round((cntHeight-panoImgHeight)/2)+'px');
-//            // выравнивать по горизонтали не надо. Если ширина контейнера меньше, будет оверфлоу прокрутка
-//            //.css('left', Math.round((cntWidth-panoImgWidth)/2)+'px');
-//
-//            // отрисовка пинов
+            // удаляем предыдущие пины
+            for (var i = 0; i < this.$pins.length; i++) {
+                this.$pins[i].remove();
+            }
+            this.$pins = [];
+            // отрисовка пинов
             var $pinsCnt = this.$el.find('.js-pins_cnt');
             for (var i = 0; i < this.model.attributes.pins.length; i++) {
                 var p = this.model.attributes.pins[i];
@@ -181,6 +226,15 @@ var PanoramaEditScreen = MutApp.Screen.extend({
                 var $pel = $(this.template[p.uiTemplate](p.data));
                 // класс стрелки
                 $pel.addClass(p.modArrow);
+                // цвет фона
+                if (p.backgroundColor) {
+                    $pel.css('background-color', p.backgroundColor);
+                    this.setPinAfterColor($pel, i, p.modArrow, p.backgroundColor);
+                }
+                // цвет текста
+                if (p.color) {
+                    $pel.css('color', p.color);
+                }
                 var top = Math.round(p.position.top*ps);
                 var left = Math.round(p.position.left*ps);
                 $pel.css('top',top).css('left',left);
@@ -199,6 +253,7 @@ var PanoramaEditScreen = MutApp.Screen.extend({
                 }
                 $pel.css('textAlign',textAlign);
                 $pinsCnt.append($pel);
+                this.$pins.push($pel);
                 // нормализовать положение пина, чтобы он не вышел за границы картинки
                 this.normalizePinPosition($pel, i);
             }

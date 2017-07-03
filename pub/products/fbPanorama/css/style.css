@@ -24,7 +24,7 @@ html, body {
     top: 0;
     left: 0;
     padding: 8px;
-    min-width: 100px;
+    min-width: 50px;
     /*max-width: 200px;*/
     background-color: #33bbed;
     color: #ffffff;

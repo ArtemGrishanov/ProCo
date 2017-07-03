@@ -53,6 +53,13 @@ descriptor.app = [
     {
         selector: 'id=mm pins.{{number}}.modArrow',
         rules: 'pinArrowForm'
+    },
+    {
+        selector: 'id=mm pins.{{number}}.backgroundColor',
+        rules: 'backgroundColor',
+//        updateScreens: false,
+//        restartApp: false,
+        label: {RU:'Цвет стикера',EN:'Background color'}
     }
 ];
 
@@ -382,8 +389,7 @@ descriptor.rules = {
                         var prototypeName = 'proto__pin_text';
                         var Engine = param.engine;
                         var Editor = param.editor;
-                        //var pinWr = param.appScreens[0].view.find('.js-pins_cnt');
-                        var pinWr = param.app._screens[0].$el.find('.js-pins_cnt')
+//                        var pinWr = param.app._screens[0].$el.find('.js-pins_cnt')
                         var newIndex = param.app.model.attributes.pins.length;
                         var previewScale = param.app.model.attributes.previewScale;
                         var ap = Engine.getAppProperty(param.propertyString);
@@ -393,7 +399,7 @@ descriptor.rules = {
                                 left: Math.round(param.cursorPosition.left / previewScale),
                                 top: Math.round(param.cursorPosition.top / previewScale)
                             }});
-                            pinWr.append('<div class="pin_wr ar_bottom" data-option-index="'+newIndex+'" data-app-property="id=mm pins.'+newIndex+'.position, id=mm pins.'+newIndex+'.data.text, id=mm pins(deletePin), id=mm pins.'+newIndex+'.modArrow " style="textAlign:center;top: '+param.cursorPosition.top+'px; left: '+param.cursorPosition.left+'px; outline: none;" contenteditable="true">Введите текст</div>')
+//                            pinWr.append('<div class="pin_wr ar_bottom" data-option-index="'+newIndex+'" data-app-property="id=mm pins.'+newIndex+'.backgroundColor, id=mm pins.'+newIndex+'.position, id=mm pins.'+newIndex+'.data.text, id=mm pins(deletePin), id=mm pins.'+newIndex+'.modArrow " style="textAlign:center;top: '+param.cursorPosition.top+'px; left: '+param.cursorPosition.left+'px; outline: none;" contenteditable="true">Введите текст</div>')
 
                             //UPD снова не надо
                             // отдельно добавить напрямую в приложение. Так как перезапуска приложения с передачей параметров избегаем
@@ -409,13 +415,13 @@ descriptor.rules = {
                             // но в самом скрине не происходит render() так как не хотим перезапускать приложение
                             // а значит клонируется старый экран со старым же положением меток и старым неактуальным текстом
                             // поэтому вот тут руками апдейтим, жесть
-                            var appScrPinWr = Engine.getAppScreen('panoramaEditScr').view.find('.js-pins_cnt');
-                            for (var i = 0; i < param.app.model.attributes.pins.length; i++) {
-                                var p = param.app.model.attributes.pins[i];
-                                var pv = appScrPinWr.find('.pin_wr[data-option-index='+i+']');
-                                pv.css('top', (p.position.top*previewScale)+'px').css('left', (p.position.left*previewScale)+'px');
-                                pv.html(p.data.text);
-                            }
+//                            var appScrPinWr = Engine.getAppScreen('panoramaEditScr').view.find('.js-pins_cnt');
+//                            for (var i = 0; i < param.app.model.attributes.pins.length; i++) {
+//                                var p = param.app.model.attributes.pins[i];
+//                                var pv = appScrPinWr.find('.pin_wr[data-option-index='+i+']');
+//                                pv.css('top', (p.position.top*previewScale)+'px').css('left', (p.position.left*previewScale)+'px');
+//                                pv.html(p.data.text);
+//                            }
 
                             Editor.syncUIControlsToAppProperties();
                         }
@@ -433,27 +439,54 @@ descriptor.rules = {
             viewName: "AltButtons",
             useCustomFunctionForSetValue: true,
             onSetValue: function(params) {
+                // experiment
+
+                console.log('fbPanorama.descriptor: pinArrowForm.onSetValue');
                 var Engine = params.engine;
-                var Editor = params.editor;
+
+                // эмуляция установки одного свойства без перезапуска в engine.setValue
+                //TODO конечно надо использовать propertyString для установки, центрально через mutapp
+                //TODO использовать set в модели чтобы срабатывали обработчики... иногда можно иногда нельзя
                 var pinIndex = this.$productDOMElement.attr('data-option-index');
                 params.app.model.attributes.pins[pinIndex].modArrow = params.value;
+                //TODO должна ли автоматически срабатывать зависимость на render экрана? или по старинке по дескриптору определяем
+                //updateScreens можно прописывать идишки экранов рендера
+                var scr = params.app._screens[0];
+                scr.render();
+                // это будет в движке происходить нормальным образом
                 var ap = Engine.getAppProperty(params.propertyString);
-                Engine.setValue(ap, params.value);
-                var textAlign = 'left';
-                switch(params.value) {
-                    case 'ar_top':
-                    case 'ar_bottom': {
-                        textAlign = 'center';
-                        break;
-                    }
-                    case 'ar_top_right':
-                    case 'ar_bottom_right': {
-                        textAlign = 'right';
-                        break;
-                    }
-                }
-                var $pin = params.app._screens[0].$el.find('.js-pins_cnt').find('.pin_wr[data-option-index='+pinIndex+']').attr('class','pin_wr '+params.value).css('text-align',textAlign);
-                this.$productDOMElement.attr('class','pin_wr '+params.value).css('text-align',textAlign);
+                Engine.setValue(ap, params.value, {
+                    // перерисовали ранее экран руками, теперь обновить AppScreen
+                    updateScreens: true
+                });
+
+
+//                var Engine = params.engine;
+//                var Editor = params.editor;
+//                var pinIndex = this.$productDOMElement.attr('data-option-index');
+//                var pinData = params.app.model.attributes.pins[pinIndex];
+//                pinData.modArrow = params.value;
+//                var ap = Engine.getAppProperty(params.propertyString);
+//                Engine.setValue(ap, params.value);
+//                var textAlign = 'left';
+//                switch(params.value) {
+//                    case 'ar_top':
+//                    case 'ar_bottom': {
+//                        textAlign = 'center';
+//                        break;
+//                    }
+//                    case 'ar_top_right':
+//                    case 'ar_bottom_right': {
+//                        textAlign = 'right';
+//                        break;
+//                    }
+//                }
+//
+//                var $pin = params.app._screens[0].$el.find('.js-pins_cnt').find('.pin_wr[data-option-index='+pinIndex+']').attr('class','pin_wr '+params.value).css('text-align',textAlign);
+//                this.$productDOMElement.attr('class','pin_wr '+params.value).css('text-align',textAlign);
+//
+//                var scr = params.app._screens[0];
+//                scr.setPinAfterColor($pin, pinIndex, params.value, pinData.backgroundColor, params.appScreens[0].view);
             }
         },
         possibleValues: [
@@ -494,6 +527,8 @@ descriptor.prototypes = {
                 left: 400,
                 top: 280
             },
+            backgroundColor: '#33bbed', // цвет фона
+            color: '#fff', // цвет текста
             uiTemplate: 'id-text_pin_template',
             modArrow: 'ar_bottom'
         }

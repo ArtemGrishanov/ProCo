@@ -512,20 +512,22 @@ var Engine = {};
         var ps = Engine.getApp()._screens;
         if (ps) {
             for (var i = 0; i < ps.length; i++) {
-                // мы знаем сss классы для редактирования, так как дескриптор был разобран
-                // можно сразу найти классы и data-app-property на view
-                var appScreen = new AppScreen(ps[i]);
-                for (var j = 0; j < appProperties.length; j++) {
-                    var ap = appProperties[j];
-                    if (ap.type === 'css') {
-                        var findedDomElements = appScreen.findAndAttachCssAppProperty(ap);
+                // не нужно показывать все экраны, только те которые участвуют в редактировании приложения
+                if (ps[i].hideScreen !== true) {
+                    // мы знаем сss классы для редактирования, так как дескриптор был разобран
+                    // можно сразу найти классы и data-app-property на view
+                    var appScreen = new AppScreen(ps[i]);
+                    for (var j = 0; j < appProperties.length; j++) {
+                        var ap = appProperties[j];
+                        if (ap.type === 'css') {
+                            var findedDomElements = appScreen.findAndAttachCssAppProperty(ap);
+                        }
                     }
+                    appScreens.push(appScreen);
+                    // идишники сохраняем отдельно для быстрой отдачи их редактору единым массивом
+                    appScreenIds.push(appScreen.id);
                 }
-                appScreens.push(appScreen);
-                // идишники сохраняем отдельно для быстрой отдачи их редактору единым массивом
-                appScreenIds.push(appScreen.id);
             }
-
             // нужно именно такое разделение событий: до, для каждого экрана, и после
             send('AllScreensWereUpdatedBefore');
             for (var i = 0; i < ps.length; i++) {

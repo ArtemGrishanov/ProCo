@@ -36,10 +36,28 @@ var FbPanoramaModel = MutApp.Model.extend({
                     left: 500,
                     top: 500
                 },
+                backgroundColor: '#33bbed', // цвет фона
+                color: '#fff', // цвет текста
                 uiTemplate: 'id-text_pin_template',
                 // модификатор стрелки
                 modArrow: 'ar_bottom' // ar_bottom_left ar_bottom_right ar_top ar_top_left ar_bottom_right
             }
+//            ,{
+//                id: '12345678',
+//                data: {
+//                    text: 'Пример метки<br>на панораме'
+//                },
+//                position: {
+//                    // center of block
+//                    left: 500,
+//                    top: 200
+//                },
+//                backgroundColor: '#f00', // цвет фона
+//                color: '#000', // цвет текста
+//                uiTemplate: 'id-text_pin_template',
+//                // модификатор стрелки
+//                modArrow: 'ar_bottom' // ar_bottom_left ar_bottom_right ar_top ar_top_left ar_bottom_right
+//            }
         ],
         logoImgSrc: '../../i/logo_big.png',
         logoImg: null,

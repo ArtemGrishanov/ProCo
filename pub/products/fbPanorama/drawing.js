@@ -5,7 +5,7 @@ var panoDrawing = {};
 (function canvas(global) {
     // эти настройки покаж жестко заданы
     // выставлены на примере картинки 6000x3562, но на 1600x1000 уже другие надо
-    var PIN_PADDING = 8, PIN_COLOR = '#33bbed', PIN_FONT_COLOR = '#ffffff', PIN_FONT_HEIGHT = 12, MIN_PIN_WIDTH = 100,
+    var PIN_PADDING = 8, PIN_COLOR = '#33bbed', PIN_FONT_COLOR = '#ffffff', PIN_FONT_HEIGHT = 12, MIN_PIN_WIDTH = 50,
         BACK_COLOR = '#aaa', PIN_FONT_FAMILY = 'Arial',
         LOGO_RIGHT = 50,
         LOGO_BOTTOM = 50,
@@ -38,6 +38,8 @@ var panoDrawing = {};
      * @param param.modArrow [ar_bottom, ar_bottom_left, ar_bottom_right, ar_top, ar_top_left, ar_bottom_right]
      * @param param.canvas
      * @param param.pinScale
+     * @param param.backgroundColor цвет фона стикера
+     * @param param.color цвет текста стикера
      */
     function addPin(param) {
         var ctx = param.context;
@@ -67,7 +69,7 @@ var panoDrawing = {};
         var pinHeight = lines.length * fontSize + 2*padding;
         var pinCornerLeft = x;//-pinWidth/2;
         var pinCornerTop = y;//-pinHeight/2;
-        ctx.fillStyle = PIN_COLOR;
+        ctx.fillStyle = (param.backgroundColor) ? param.backgroundColor : PIN_COLOR;
         ctx.globalAlpha = 0.8;
         ctx.fillRect(pinCornerLeft, pinCornerTop, pinWidth, pinHeight)
 
@@ -123,7 +125,7 @@ var panoDrawing = {};
             }
         }
         ctx.globalAlpha = 1;
-        ctx.fillStyle = PIN_FONT_COLOR;
+        ctx.fillStyle = (param.color) ? param.color : PIN_FONT_COLOR;
         for (var i = 0; i < lines.length; i++) {
             ctx.fillText(lines[i], xx, yy);
             yy += fontSize;
@@ -214,7 +216,9 @@ var panoDrawing = {};
                     left: p.position.left,
                     top: p.position.top,
                     pinScale: param.pinScale,
-                    modArrow: p.modArrow
+                    modArrow: p.modArrow,
+                    backgroundColor: p.backgroundColor,
+                    color: p.color
                 });
             }
         }

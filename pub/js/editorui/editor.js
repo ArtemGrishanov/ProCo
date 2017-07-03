@@ -58,6 +58,18 @@ var Editor = {};
      */
     var activeScreens = [];
     /**
+     * Все зарегистрированные DOM элементы с атрибутами data-app-property,
+     * которые есть на всех activeScreens
+     *
+     * @type {Array}
+     */
+    var registeredElements = [];
+    /**
+     * Строка data-app-property соответствующие элементы которой выделены на activeScreens
+     * @type {string}
+     */
+    var selectedDataAppProperty = null;
+    /**
      * Подсказки для текущего экрана продукта
      * @type {Array}
      */
@@ -412,6 +424,7 @@ var Editor = {};
         // запоминаем, если потребуется восстановление показа экранов.
         // Например, произойдет пересборка экранов и надо будет вернуться к показу последних активных
         activeScreens = ids;
+        registeredElements = [];
         // надо скрыть все активные подсказки, если таковые есть. На новом экране будут новые подсказки
         hideWorkspaceHints();
         updateAppContainerSize();
@@ -461,7 +474,8 @@ var Editor = {};
         //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
         // подсветка контрола Slide по которому кликнули
         setActiveScreen(activeScreens.join(','));
-        filterControls(null, null, getActiveScreens());
+        // восстановление фильтрации элементов, которые были выделены до этого
+        selectElementOnAppScreen({dataAppPropertyString: selectedDataAppProperty});
 
         $($("#id-product_screens_cnt").contents()).click(function(){
             // любой клик по промо-проекту сбрасывает подсказки
@@ -505,7 +519,7 @@ var Editor = {};
     }
 
     /**
-     * Добавить оформление к одному из экранов
+     * Выделить активный экран в контроле с экранами
      *
      * @param
      */
@@ -582,7 +596,6 @@ var Editor = {};
      */
     function bindControlsForAppPropertiesOnScreen($view, scrId) {
         var appScreen = Engine.getAppScreen(scrId);
-        var registeredElements = [];
 
         // найти и удалить эти типы контролов
         // при показе экрана они пересоздаются заново
@@ -596,7 +609,9 @@ var Editor = {};
             var de = appScreen.appPropertyElements[k].domElement;
             if (registeredElements.indexOf(de) < 0) {
                 $(de).click(function(e) {
-                    selectElementOnAppScreen($(e.currentTarget));
+                    selectElementOnAppScreen({
+                        $elementOnAppScreen: $(e.currentTarget)
+                    });
                     e.preventDefault();
                     e.stopPropagation();
                 });
@@ -658,21 +673,42 @@ var Editor = {};
      * Выделить dom-элемент на экране приложения
      * Подразумевается, что у него есть атрибут data-app-property
      *
-     * @param {DOMElement} $elementOnAppScreen
+     * @param {DOMElement} params.$elementOnAppScreen
+     * @param {string} params.dataAppPropertyString
      */
-    function selectElementOnAppScreen($elementOnAppScreen) {
-        if ($elementOnAppScreen === null) {
+    function selectElementOnAppScreen(params) {
+        params = params || {};
+        if (!params.$elementOnAppScreen && !params.dataAppPropertyString) {
             // снятие рамки выделения
             workspace.selectElementOnAppScreen(null);
             filterControls(null, null, getActiveScreens());
+            selectedDataAppProperty = null;
         }
         else {
-            // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
-            // задача - отфильтровать настройки на правой панели
-            var dataAppPropertyString = $elementOnAppScreen.attr('data-app-property');
-            workspace.selectElementOnAppScreen($elementOnAppScreen);
-            // [0] - должны передать DOMElement а не jQuery-обертку
-            filterControls(dataAppPropertyString, $elementOnAppScreen[0], getActiveScreens());
+            if (params.$elementOnAppScreen) {
+                params.dataAppPropertyString = params.$elementOnAppScreen.attr('data-app-property');
+            }
+            else if (typeof params.dataAppPropertyString === 'string') {
+                for (var i = 0; i < registeredElements.length; i++) {
+                    // не важно сколько propertyStrings через запятую содержится внутри атрибута на самом деле
+                    if ($(registeredElements[i]).attr('data-app-property') === params.dataAppPropertyString) {
+                        params.$elementOnAppScreen = $(registeredElements[i]);
+                        break;
+                    }
+                }
+            }
+            // после нормализации значений устанавливаем выделение и применяем фильтрацию контролов
+            if (params.$elementOnAppScreen && params.dataAppPropertyString) {
+                // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
+                // задача: отфильтровать настройки на правой панели
+                workspace.selectElementOnAppScreen(params.$elementOnAppScreen);
+                // [0] - должны передать DOMElement а не jQuery-обертку
+                filterControls(params.dataAppPropertyString, params.$elementOnAppScreen[0], getActiveScreens());
+                selectedDataAppProperty = params.dataAppPropertyString;
+            }
+            else {
+                selectedDataAppProperty = null;
+            }
         }
     }
 
