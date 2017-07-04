@@ -311,6 +311,18 @@ MutApp.prototype.showScreen = function(v, hideOthers) {
     this._updateViewsZOrder();
 };
 /**
+ * Получить экран по его ид
+ * @param {string} id
+ */
+MutApp.prototype.getScreenById = function(id) {
+    for (var i = 0; i < this._screens.length; i++) {
+        if (this._screens[i].id === id) {
+            return this._screens[i];
+        }
+    }
+    return null;
+};
+/**
  * Скрыть определенный экран приложения
  * Instance method
  * @param v

@@ -57,8 +57,9 @@ descriptor.app = [
     {
         selector: 'id=mm pins.{{number}}.backgroundColor',
         rules: 'backgroundColor',
-//        updateScreens: false,
-//        restartApp: false,
+        updateScreens: false,
+        restartApp: false,
+        renderScreens: ['panoramaEditScr'],
         label: {RU:'Цвет стикера',EN:'Background color'}
     }
 ];
@@ -361,83 +362,84 @@ descriptor.rules = {
         label: {RU:'Картинка',EN:'Image'},
         filter: true
     },
-//    // с помощью клика по dom-елементу добавляется элемент в массив
-//    createPin: {
-//        updateScreens: false,
-//        controls: 'ClickAndAddToArray',
-//        canAdd: ["proto__pin_text"],
-//        controlParams: {
-//            scale: 'id=mm previewScale'
-//        },
-//    },
+    // с помощью клика по dom-елементу добавляется элемент в массив
     createPin: {
+        updateScreens: false,
+        restartApp: false,
+        renderScreens: ['panoramaEditScr'],
+        controls: 'ClickAndAddToArray',
         canAdd: ["proto__pin_text"],
-        controls: [
-            {
-                name: "CustomQControl",
-                params: {
-                    /**
-                     *
-                     * @param param.cursorPosition
-                     * @param param.app
-                     * @param param.appScreens
-                     * @param param.engine
-                     * @param param.propertyString
-                     */
-                    onProductDOMElementClick: function(param) {
-                        // добавление пинов чтобы избежать перезагрузки приложения.
-                        var prototypeName = 'proto__pin_text';
-                        var Engine = param.engine;
-                        var Editor = param.editor;
-//                        var pinWr = param.app._screens[0].$el.find('.js-pins_cnt')
-                        var newIndex = param.app.model.attributes.pins.length;
-                        var previewScale = param.app.model.attributes.previewScale;
-                        var ap = Engine.getAppProperty(param.propertyString);
-                        var proto = Engine.getPrototypeForAppProperty(ap, prototypeName);
-                        if (proto) {
-                            var value = proto.getValue({position:{
-                                left: Math.round(param.cursorPosition.left / previewScale),
-                                top: Math.round(param.cursorPosition.top / previewScale)
-                            }});
-//                            pinWr.append('<div class="pin_wr ar_bottom" data-option-index="'+newIndex+'" data-app-property="id=mm pins.'+newIndex+'.backgroundColor, id=mm pins.'+newIndex+'.position, id=mm pins.'+newIndex+'.data.text, id=mm pins(deletePin), id=mm pins.'+newIndex+'.modArrow " style="textAlign:center;top: '+param.cursorPosition.top+'px; left: '+param.cursorPosition.left+'px; outline: none;" contenteditable="true">Введите текст</div>')
-
-                            //UPD снова не надо
-                            // отдельно добавить напрямую в приложение. Так как перезапуска приложения с передачей параметров избегаем
-                            //param.app.model.attributes.pins.push(value);
-
-                            // установка как бы обычным способом, но без перезапуска приложения
-                            Engine.addArrayElement(ap, value, -1, {
-                                restartApp: false,
-                                // надо апдейтить чтобы создались новые контролы для нового элемента
-                                updateScreens: true
-                            });
-
-                            // но в самом скрине не происходит render() так как не хотим перезапускать приложение
-                            // а значит клонируется старый экран со старым же положением меток и старым неактуальным текстом
-                            // поэтому вот тут руками апдейтим, жесть
-//                            var appScrPinWr = Engine.getAppScreen('panoramaEditScr').view.find('.js-pins_cnt');
-//                            for (var i = 0; i < param.app.model.attributes.pins.length; i++) {
-//                                var p = param.app.model.attributes.pins[i];
-//                                var pv = appScrPinWr.find('.pin_wr[data-option-index='+i+']');
-//                                pv.css('top', (p.position.top*previewScale)+'px').css('left', (p.position.left*previewScale)+'px');
-//                                pv.html(p.data.text);
-//                            }
-
-                            Editor.syncUIControlsToAppProperties();
-                        }
-                    },
-                    onShow: function(param) {
-                    }
-                }
-            }
-        ]
+        controlParams: {
+            scale: 'id=mm previewScale'
+        },
     },
+//    createPin: {
+//        canAdd: ["proto__pin_text"],
+//        controls: [
+//            {
+//                name: "CustomQControl",
+//                params: {
+//                    /**
+//                     *
+//                     * @param param.cursorPosition
+//                     * @param param.app
+//                     * @param param.appScreens
+//                     * @param param.engine
+//                     * @param param.propertyString
+//                     */
+//                    onProductDOMElementClick: function(param) {
+//                        // добавление пинов чтобы избежать перезагрузки приложения.
+//                        var prototypeName = 'proto__pin_text';
+//                        var Engine = param.engine;
+//                        var Editor = param.editor;
+////                        var pinWr = param.app._screens[0].$el.find('.js-pins_cnt')
+//                        var newIndex = param.app.model.attributes.pins.length;
+//                        var previewScale = param.app.model.attributes.previewScale;
+//                        var ap = Engine.getAppProperty(param.propertyString);
+//                        var proto = Engine.getPrototypeForAppProperty(ap, prototypeName);
+//                        if (proto) {
+//                            var value = proto.getValue({position:{
+//                                left: Math.round(param.cursorPosition.left / previewScale),
+//                                top: Math.round(param.cursorPosition.top / previewScale)
+//                            }});
+////                            pinWr.append('<div class="pin_wr ar_bottom" data-option-index="'+newIndex+'" data-app-property="id=mm pins.'+newIndex+'.backgroundColor, id=mm pins.'+newIndex+'.position, id=mm pins.'+newIndex+'.data.text, id=mm pins(deletePin), id=mm pins.'+newIndex+'.modArrow " style="textAlign:center;top: '+param.cursorPosition.top+'px; left: '+param.cursorPosition.left+'px; outline: none;" contenteditable="true">Введите текст</div>')
+//
+//                            //UPD снова не надо
+//                            // отдельно добавить напрямую в приложение. Так как перезапуска приложения с передачей параметров избегаем
+//                            //param.app.model.attributes.pins.push(value);
+//
+//                            // установка как бы обычным способом, но без перезапуска приложения
+//                            Engine.addArrayElement(ap, value, -1, {
+//                                restartApp: false,
+//                                // надо апдейтить чтобы создались новые контролы для нового элемента
+//                                updateScreens: true
+//                            });
+//
+//                            // но в самом скрине не происходит render() так как не хотим перезапускать приложение
+//                            // а значит клонируется старый экран со старым же положением меток и старым неактуальным текстом
+//                            // поэтому вот тут руками апдейтим, жесть
+////                            var appScrPinWr = Engine.getAppScreen('panoramaEditScr').view.find('.js-pins_cnt');
+////                            for (var i = 0; i < param.app.model.attributes.pins.length; i++) {
+////                                var p = param.app.model.attributes.pins[i];
+////                                var pv = appScrPinWr.find('.pin_wr[data-option-index='+i+']');
+////                                pv.css('top', (p.position.top*previewScale)+'px').css('left', (p.position.left*previewScale)+'px');
+////                                pv.html(p.data.text);
+////                            }
+//
+//                            Editor.syncUIControlsToAppProperties();
+//                        }
+//                    },
+//                    onShow: function(param) {
+//                    }
+//                }
+//            }
+//        ]
+//    },
     pinArrowForm: {
-        updateScreens: true,
         controls: "Alternative",
         controlParams: {
             viewName: "AltButtons",
-            useCustomFunctionForSetValue: true,
+            useCustomFunctionForSetValue: false, //true,
             onSetValue: function(params) {
                 // experiment
 
@@ -447,8 +449,11 @@ descriptor.rules = {
                 // эмуляция установки одного свойства без перезапуска в engine.setValue
                 //TODO конечно надо использовать propertyString для установки, центрально через mutapp
                 //TODO использовать set в модели чтобы срабатывали обработчики... иногда можно иногда нельзя
-                var pinIndex = this.$productDOMElement.attr('data-option-index');
-                params.app.model.attributes.pins[pinIndex].modArrow = params.value;
+//                var pinIndex = this.$productDOMElement.attr('data-option-index');
+//                params.app.model.attributes.pins[pinIndex].modArrow = params.value;
+
+                params.app.setPropertyByAppString(params.propertyString, params.value);
+
                 //TODO должна ли автоматически срабатывать зависимость на render экрана? или по старинке по дескриптору определяем
                 //updateScreens можно прописывать идишки экранов рендера
                 var scr = params.app._screens[0];
@@ -457,7 +462,7 @@ descriptor.rules = {
                 var ap = Engine.getAppProperty(params.propertyString);
                 Engine.setValue(ap, params.value, {
                     // перерисовали ранее экран руками, теперь обновить AppScreen
-                    updateScreens: true
+                    updateScreens: false
                 });
 
 
@@ -501,7 +506,8 @@ descriptor.rules = {
         filter: true,
         updateAppProperties: false, // важно!
         restartApp: false, // важно!
-        updateScreens: false
+        updateScreens: false,
+        renderScreens: ['panoramaEditScr']
     },
 };
 

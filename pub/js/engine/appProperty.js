@@ -47,6 +47,7 @@ AppProperty.validAttributes = {
     editable: true,
     restartApp: true,
     updateScreens: false,
+    renderScreens: [],
     updateAppProperties: true,
     label: null,
     runTests: true,

@@ -9,7 +9,20 @@ var workspace = {};
         $controlContainer = null,
         $selection = null,
         $selectedElementOnAppScreen = null,
-        $productCnt = null;
+        $productCnt = null,
+        /**
+         * Шаг горизонтальной прокрутки продукта, когда он шире чем workspace
+         *
+         * @type {number}
+         */
+        HOR_SCROLL_STEP = 100,
+        /**
+         * Значит что события onclick привязаны к кнопкам горизонтальной прокрутки
+         * Во избежание повторной привязки
+         *
+         * @type {boolean}
+         */
+        horScrollEventsBinded = false;
 
     /**
      * Выделить элемент на экране приложения.
@@ -68,12 +81,15 @@ var workspace = {};
 
         if (productCntWidth < productScreenWidth) {
             $('#id-hor_scroll_left, #id-hor_scroll_right').show();
-            $('#id-hor_scroll_left').click(function(){
-                $productCnt.scrollLeft($productCnt.scrollLeft() - 100);
-            });
-            $('#id-hor_scroll_right').click(function(){
-                $productCnt.scrollLeft($productCnt.scrollLeft() + 100);
-            });
+            if (horScrollEventsBinded !== true) {
+                $('#id-hor_scroll_left').click(function() {
+                    $productCnt.scrollLeft($productCnt.scrollLeft() - HOR_SCROLL_STEP);
+                });
+                $('#id-hor_scroll_right').click(function() {
+                    $productCnt.scrollLeft($productCnt.scrollLeft() + HOR_SCROLL_STEP);
+                });
+                horScrollEventsBinded = true;
+            }
         }
         else {
             $('#id-hor_scroll_left, #id-hor_scroll_right').hide();

@@ -37,9 +37,10 @@ function ClickAndAddToArray(propertyString, directiveName, $parent, productDOMEl
                 left: Math.round(e.offsetX/this.scale),
                 top: Math.round(e.offsetY/this.scale)
             }}));
-            if (ap.updateScreens === true) {
+            //TODO заточка для панорам. Этот контрол используется только в панорамах
+//            if (ap.updateScreens === true) {
                 Editor.syncUIControlsToAppProperties();
-            }
+//            }
         }
         else {
             log('There is no prototypes for \''+this.propertyString+'\'', true);

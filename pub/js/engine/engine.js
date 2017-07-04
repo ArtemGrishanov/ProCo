@@ -767,6 +767,9 @@ var Engine = {};
         if (attributes.hasOwnProperty('updateAppProperties') === false) {
             attributes.updateAppProperties = appProperty.updateAppProperties;
         }
+        if (attributes.hasOwnProperty('renderScreens') === false) {
+            attributes.renderScreens = appProperty.renderScreens;
+        }
         if (attributes.hasOwnProperty('runTests') === false) {
             attributes.runTests = appProperty.runTests;
         }
@@ -819,6 +822,16 @@ var Engine = {};
         if (attributes.updateAppProperties === true) {
             clearAppProperties();
             createAppProperties(productWindow.descriptor, svApp);
+        }
+        if (attributes.renderScreens.length > 0) {
+            // рендер некоторых экранов, если того требует свойство
+            var scrn = null;
+            for (var i = 0; i < attributes.renderScreens.length; i++) {
+                scrn = svApp.getScreenById(attributes.renderScreens[i]);
+                if (scrn && scrn.render) {
+                    scrn.render();
+                }
+            }
         }
         if (attributes.updateScreens === true) {
             createAppScreens();
