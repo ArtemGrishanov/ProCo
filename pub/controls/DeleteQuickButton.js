@@ -28,6 +28,7 @@ function DeleteQuickButton(propertyString, directiveName, $parent, productDOMEle
     this.onDeleteQuickButtonClick = function() {
         var p = Engine.getAppProperty(this.propertyString);
         Engine.deleteArrayElement(p, this.optionIndex);
+        Editor.syncUIControlsToAppProperties();
     };
 
     this.$directive.on('click', this.onDeleteQuickButtonClick.bind(this));

@@ -21,6 +21,23 @@ QUnit.test("MutApp test: basics", function( assert ) {
     assert.ok(!!app.id === true, 'app id');
 });
 
+/**
+ * Проверить базовые операции с MutAppProperties свойствами.
+ * Особенно с массивами и вложенными свойствами
+ */
+QUnit.test("MutApp test: MutAppProperties basic operations. PersonalityTest was taken for test.", function( assert ) {
+    var app = new PersonalityApp({
+        defaults: null // no defaults
+    });
+    app.start();
+
+    assert.ok(app._mutappProperties.length === 6, '_mutappProperties length');
+
+    var quizProperty = app.getPropertiesBySelector('id=pm quiz')[0].value;
+    assert.ok(quizProperty instanceof MutAppPropertyArray === true);
+    assert.ok(quizProperty.getValue().length === 0);
+});
+
 QUnit.test("MutApp test: Screen", function( assert ) {
     var ScreenClass = MutApp.Screen.extend({
 
@@ -86,7 +103,7 @@ QUnit.test("MutApp test: Models", function( assert ) {
 
         initialize: function(param) {
             // связь модели с приложением swimming test
-            var tm = this.addModel(new TestModel({
+            var tm = this.addModel(new PersonalityModel({
                 application: this,
                 customAttr1: 'customValue1'
             }));
@@ -256,7 +273,7 @@ QUnit.test("MutApp test: multiapp", function( assert ) {
     var SwimmingTest = MutApp.extend({
         screenRoot: $('#id-swimming_test'),
         initialize: function(param) {
-            var tm = this.addModel(new TestModel({
+            var tm = this.addModel(new PersonalityModel({
                 application: this
             }));
             this.addScreen(new StartScreen({

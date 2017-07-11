@@ -54,8 +54,13 @@ function StringControl(propertyString, directiveName, $parent, productDOMElement
         if (this.$input) {
             var p = Engine.getAppProperty(this.propertyString);
             var v = this.$input.val() || null;
-            if (p.propertyValue !== v) {
-                Engine.setValue(p, v);
+            if (p) {
+                if (p.propertyValue !== v) {
+                    Engine.setValue(p, v);
+                }
+            }
+            else {
+                log('StringControl.setValueToEngine: It seems it\'s a zoombir control, appProperty not found for ' + this.propertyString, true);
             }
         }
     };

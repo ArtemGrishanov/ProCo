@@ -4,6 +4,14 @@
  */
 var MutApp = function(param) {
     /**
+     * Все свойства приложения, которые можно поменять извне
+     * Ранее они были в engine.js appProperties
+     *
+     * @type {Array}
+     * @private
+     */
+    this._mutappProperties = [];
+    /**
      * Ширина на которой начинается оптимизация
      * Это не обязательно моб
      * @type {number}
@@ -277,7 +285,22 @@ MutApp.prototype.addScreen = function(v) {
         v.render();
         return v;
     }
-    throw new Error('View must be a MutApp.Screen instance');
+    throw new Error('MutApp.addScreen: View must be a MutApp.Screen instance');
+};
+/**
+ *
+ * @param v
+ * @returns {*}
+ */
+MutApp.prototype.deleteScreen = function(v) {
+    var index = this._screens.indexOf(v);
+    if (index >= 0) {
+        this._screens.splice(index, 1);
+        v.$el.remove();
+    }
+    else {
+        console.error('MutApp.deleteScreen: This view not found');
+    }
 };
 /**
  * Связать модель с приложением
@@ -288,7 +311,7 @@ MutApp.prototype.addModel = function(m) {
         this._models.push(m);
         return m;
     }
-    throw new Error('Model must be a Backbone.Model instance');
+    throw new Error('MutApp.addModel: Model must be a Backbone.Model instance');
 };
 /**
  * Отобразить вью.
@@ -491,10 +514,53 @@ MutApp.prototype.setPropertyByAppString = function(appString, value) {
         }
     }
     else {
-        console.error('MutApp.setPropertyByAppString: Invalid selector=\''+appString+'\'', true);
+        console.error('MutApp.setPropertyByAppString: Invalid selector=\''+appString+'\'');
     }
 };
 
+/**
+ * Теперь только для MutAppProperty
+ * Скоро именно этот метод станет основным для доступа к свойствам приложения их редактора
+ *
+ * @param {string} appString
+ * @param {*} value
+ */
+MutApp.prototype.setPropertyByAppString2 = function(appString, value) {
+    var results = this.getPropertiesBySelector(appString);
+    // свойств может быть несколько если используется подстановка {{number}}
+    var prop = null;
+    for (var i = 0; i < results.length; i++) {
+        prop = results[i].value;
+        // проверяем что найденное значение действительно является MutAppProperty
+        if (prop instanceof MutAppProperty || prop instanceof MutAppPropertyArray) {
+            prop.setValue(value);
+        }
+    }
+};
+
+/**
+ * Привязать существующее свойство к приложению.
+ * Проверить, что такое свойство существует в схеме mutAppPropertySchema по propertyString внутри mutAppProperty
+ *
+ * @param {MutAppProperty} mutAppProperty
+ */
+MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
+    if (this._mutappProperties.indexOf(mutAppProperty) < 0) {
+        // проверить, что такое mutAppProperty свойство существует в схеме.
+        var prInfo = this.mutAppSchema.getPropertyDescription(mutAppProperty.propertyString);
+        if (!prInfo) {
+            throw new Error('MutApp.linkMutAppProperty: mutAppProperty not finded in app by schema=\''+mutAppProperty.propertyString+'\'');
+        }
+        if (mutAppProperty._application !== this) {
+            mutAppProperty._application = this;
+        }
+        this._mutappProperties.push(mutAppProperty);
+    }
+    else {
+        console.error('MutApp.linkMutAppProperty: mutAppProperty is already linked=\''+mutAppProperty.propertyString+'\'');
+        return -1;
+    }
+};
 
 /**
  * Инициализация fb api для шаринга
@@ -905,6 +971,14 @@ MutApp.Screen = Backbone.View.extend({
                     }
                 }
             }
+            // Найти в этом экране свойства MutAppProperty и установить application туда
+            var prop = null;
+            for (var key in this) {
+                prop = this[key];
+                if (prop instanceof MutAppProperty || prop instanceof MutAppPropertyArray) {
+                    this.model.application.linkMutAppProperty(prop);
+                }
+            }
         }
     },
 
@@ -948,6 +1022,15 @@ MutApp.Model = Backbone.Model.extend({
                     }
                 }
             }
+            // Найти в этой модели свойства MutAppProperty и установить эту this модель туда
+            var prop = null;
+            for (var key in this.attributes) {
+                prop = this.attributes[key];
+                if (prop instanceof MutAppProperty || prop instanceof MutAppPropertyArray) {
+                    prop._model = this;
+                    this.application.linkMutAppProperty(prop);
+                }
+            }
         }
     }
 });
@@ -977,7 +1060,30 @@ MutApp.Util = {
         }
     },
 
-
+    /**
+     * Проверить соответствие между собой селектора (id=pm quiz.{{number}}.question.text) и строки propertyString (id=pm quiz.0.question.text)
+     *
+     * @param {string} propertyString - id=pm quiz.0.question.text
+     * @param {string} selector - "id=pm quiz.{{number}}.question.text", "id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText"
+     * @return {boolean}
+     */
+    matchPropertyString: function(propertyString, selector) {
+        var selectorElems = selector.split(',');
+        // selector может быть составным: через запятую перечислены несколько свойств
+        for (var i = 0; i < selectorElems.length; i++) {
+            var selElem = selectorElems[i].trim();
+            if (propertyString === selElem) {
+                return true;
+            }
+            var p = propertyString.replace(/(^|\.|\s)([0-9]+)(\.|\s|$)/g, function(allMatch, group1, group2, group3) {
+                return allMatch.replace(group2,'{{number}}');
+            });
+            if (p === selElem) {
+                return true;
+            }
+        }
+        return false;
+    },
 
     /**
      * Разобрать селектор на составляющие и вернуть объектом
@@ -1031,7 +1137,7 @@ MutApp.Util = {
                 if (MutApp.Util.objectHasProperty(obj, objkey) === true && isNaN(objkey)===false) {
                     // нашли совпадение. Например, это индекс массива
                     // у модели надо брать значение из атрибутов
-                    var o = (isModel===true) ? obj.attributes[objkey]: obj[objkey];
+                    var o = (isModel===true && obj.attributes[objkey]) ? obj.attributes[objkey]: obj[objkey];
                     if (restSelector.length > 0) {
                         // смотрим дальше вглубь пока не закончится селектор
                         result=result.concat(this.getPropertiesBySelector(o, restSelector, path+objkey));
@@ -1049,7 +1155,7 @@ MutApp.Util = {
         if (MutApp.Util.objectHasProperty(obj, parts[0]) === true) {
             // нашли совпадение. Например, это индекс массива
             // у модели надо брать значение из атрибутов
-            var o = (isModel===true) ? obj.attributes[parts[0]]: obj[parts[0]];
+            var o = (isModel===true && obj.attributes[parts[0]]) ? obj.attributes[parts[0]]: obj[parts[0]];
             if (restSelector.length > 0) {
                 // смотрим дальше вглубь пока не закончится селектор
                 result=result.concat(this.getPropertiesBySelector(o, restSelector, path+parts[0]));
@@ -1366,43 +1472,92 @@ var MD5 = (function () {
     };
 }());
 
-//Object.byString = function(o, s) {
-//    s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
-//    s = s.replace(/^\./, '');           // strip a leading dot
-//    var a = s.split('.');
-//    for (var i = 0, n = a.length; i < n; ++i) {
-//        var k = a[i];
-//        if (k in o) {
-//            o = o[k];
-//        } else {
-//            return;
+/**
+ * Схема свойств приложения
+ *
+ * @param schema
+ * @constructor
+ */
+var MutAppSchema = function(schema) {
+    this.initialize(schema);
+};
+/**
+ *
+ * @param schema
+ */
+MutAppSchema.prototype.initialize = function(schema) {
+    this._schema = schema;
+};
+/**
+ * Найти MutAppProperty в приложении mutapp согласно схеме
+ *
+ * Применение:
+ * 1) Для подтверждения того что создаваемое свойство описано в схеме
+ * 2) Найти элемент схемы для нового MutAppProperty и взять оттуда атрибуты: label и так далее
+ *
+ * @param mutAppProperty
+ * @param treeElement
+ * @private
+ */
+//MutAppSchema.prototype.find = function(mutAppProperty, mutapp, treeElement) {
+//    treeElement = treeElement || this._schema;
+//    for (var propStr in treeElement) {
+//
+//        var sel = mutapp.getPropertiesBySelector(propStr);
+//        for (var i = 0; i < sel.length; i++) {
+//            if (mutAppProperty === sel[i].value) {
+//                return true;
+//            }
+//        }
+//
+//        var propDesc = treeElement[propStr];
+//
+//        if (typeof propDesc['children'] === 'object') {
+//            var subres = this.find(mutAppProperty, propDesc['children'], mutapp);
+//            if (subres) {
+//                return subres;
+//            }
 //        }
 //    }
-//    return o;
-//}
-
-var MutAppProperty = function() {
-    // класс обертка?
-
-//    прототипы данных
-//    Изменение стиля одного буллита? Или всех буллитов в приложении? Или: фон для всех экранов приложения, против фона для каждого экрана отдельно?
-//        Если мне нужно создать подвид теста (с др мех ответов), то что?
-//        applyStyles?
-//            Зависимости: при изменении одного свойства приложения, могут измениться другие. Для движка должно быть понятно.
-//        При изменении свойства должно быть понятно автоматически, какие экраны (вью) претерпели рендер
-//    аналог сеттеров-геттеров для нормализации и контроля значения
-
-    // рассылка об изменении свойства своего ?
-    function set() {
-
+//    return null;
+//};
+/**
+ * Найти описание MutAppProperty в схеме
+ *
+ * @param propertyString
+ * @param treeElement
+ * @returns {*}
+ */
+MutAppSchema.prototype.getPropertyDescription = function(propertyString, treeElement) {
+    treeElement = treeElement || this._schema;
+    for (var selector in treeElement) {
+        if (MutApp.Util.matchPropertyString(propertyString, selector) === true) {
+            return treeElement[selector];
+        }
+        if (typeof treeElement[selector]['children'] === 'object') {
+            var subres = this.getPropertyDescription(propertyString, treeElement[selector]['children']);
+            if (subres) {
+                return subres;
+            }
+        }
     }
+    return null;
+};
 
-    function get() {
 
-    }
 
-    // версионирование. Случаи
-    // сохраненный шаблон - это просто ключ=значение
+/**
+ * Функциональная обертка вокруг свойства.
+ * С ее помощью можно редактировать свойства извне
+ *
+ * В виде функции так как необходимо инстанцировать новые объекты
+ *
+ * @constructor
+ */
+var MutAppProperty = function (param) {
+
+    this.initialize(param);
+
     /**
      *
      *
@@ -1432,4 +1587,157 @@ var MutAppProperty = function() {
      * ОК: Добавлю скрытие логотипа: по умолчанию он у всех включен.
      * ОК: Добавлю скрытие бордера кнопки: по умолчанию его видно.
      */
-}
+};
+
+/**
+ * Поддерживаемые события в MutAppProperty
+ * @type {Array}
+ */
+MutAppProperty.EVENT_TYPES = ['change'];
+
+/**
+ * Инициализация базовых параметров свойства
+ */
+MutAppProperty.prototype.initialize = function(param) {
+    this.id = MutApp.Util.getUniqId(8);
+    this.label = param.label || {RU:'MutAppProperty имя', EN:'MutAppProperty label'};
+    this._getValueTimestamp = undefined;
+    this._setValueTimestamp = undefined;
+    this._propertyName = param.propertyName;
+    this._model = param.model;
+    this._value = param.value || null;
+    this._application = param.application || null;
+    this._model = param.model || null;
+    this._bindedEvents = {};
+    if (typeof param.propertyString === 'string') {
+        this.propertyString = param.propertyString;
+    }
+    else {
+        throw new Error('MutAppProperty.constructor: propertyString is not specified for MutAppProperty. Please, specify it in constructor param');
+    }
+    if (this._application) {
+        this._application.linkMutAppProperty(this);
+    }
+};
+
+/**
+ * Установка свойства
+ * Если свойство MutAppProperty объявлено внутри модели, то поддерживается отправка классического события change
+ */
+MutAppProperty.prototype.setValue = function(newValue) {
+    if (this._value !== newValue) {
+        this._value = newValue;
+        this._setValueTimestamp = new Date().getTime();
+        this.trigger('change');
+        if (this._model instanceof MutApp.Model && typeof this._propertyName === 'string') {
+            this._model.trigger('change:'+this._propertyName);
+        }
+    }
+};
+
+/**
+ *
+ */
+MutAppProperty.prototype.getValue = function() {
+    this._getValueTimestamp = new Date().getTime();
+    return this._value;
+};
+
+/**
+ * Привязать событие к свойству
+ * Например, eventType='change' об изменении свойства
+ *
+ * @param {string} eventType
+ * @param {function} callback
+ * @param {*} context
+ */
+MutAppProperty.prototype.bind = function(eventType, callback, context) {
+    if (MutAppProperty.EVENT_TYPES.indexOf(eventType) >= 0) {
+        if (this._bindedEvents.hasOwnProperty(eventType) !== true) {
+            this._bindedEvents[eventType] = [];
+        }
+        if (callback) {
+            this._bindedEvents[eventType].push({
+                callback: callback,
+                context: context
+            });
+        }
+    }
+    else {
+        console.error('MutAppProperty.bind: event \'' + eventType + '\' is not supported');
+    }
+};
+
+/**
+ * Разослать события определенного типа и для определенного свойства
+ * @param {string} eventType
+ * @param {Object} data
+ */
+MutAppProperty.prototype.trigger = function(eventType, data) {
+    if (this._bindedEvents[eventType]) {
+        var ctx = this;
+        for (var i = 0; i < this._bindedEvents[eventType].length; i++) {
+            ctx = this._bindedEvents[eventType][i].context || this;
+            this._bindedEvents[eventType][i].callback.call(ctx, data);
+        }
+    }
+};
+
+/**
+ * Класс-обертка для управления массивом
+ * @constructor
+ */
+var MutAppPropertyArray = function(param) {
+    this.initialize(param);
+    this.prototypes = param.prototypes || [];
+};
+// наследуем от простого базового свойства
+_.extend(MutAppPropertyArray.prototype, MutAppProperty.prototype);
+/**
+ * Добавить новый элемент на позицию. По умолчанию в конец.
+ * @param {*} element
+ * @param [number] position
+ */
+MutAppPropertyArray.prototype.addElement = function(element, position) {
+    var newArray = this._value.slice(0);
+    if (Number.isInteger(position) === false || position < 0) {
+        position = newArray.length;
+    }
+    newArray.splice(position, -1, element);
+    // считается, что устанавливаем новый массив целиком
+    this.setValue(newArray);
+};
+/**
+ * Удалить элемент массива по определеной позиции
+ * @param {number} position
+ */
+MutAppPropertyArray.prototype.deleteElement = function(position) {
+    var newArray = this._value.slice(0);
+    if (Number.isInteger(position) === false || position < 0) {
+        throw new Error('MutAppPropertyArray.deleteElement: position must be specified');
+    }
+    if (position >= newArray.length) {
+        position = newArray.length-1;
+    }
+    newArray.splice(position, 1);
+    // считается, что устанавливаем новый массив целиком
+    this.setValue(newArray);
+};
+/**
+ * Создать новый элемент из прототипа и сразу добавить его в массив
+ *
+ * @param {string} protoFunctionPath, например 'id=pm quizProto1'
+ * @param [number] position
+ */
+MutAppPropertyArray.prototype.addElementByPrototype = function(protoFunctionPath, position) {
+    var results = app.getPropertiesBySelector(protoFunctionPath);
+    if (results && results.length > 0 && _.isFunction(results[0].value)) {
+        // clone to be sure it's new JSON.parse(JSON.stringify())
+        // в качестве контекста передается объект в котором нашли функцию-прототип
+        var newElem = results[0].value.call(results[0].entity);
+        this.addElement(newElem, position);
+    }
+    else {
+        console.error('MutAppPropertyArray.addElementByPrototype: can not find prototype function \''+protoFunctionPath+'\'');
+    }
+};
