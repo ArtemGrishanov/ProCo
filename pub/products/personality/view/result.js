@@ -120,7 +120,8 @@ var ResultScreen = MutApp.Screen.extend({
 
     render: function() {
         var r = this.model.getResultById(this.resultId);
-        r.currentResultIndex = this.model.get('results').indexOf(r);
+        r = MutApp.Util.getObjectForRender(r);
+        r.currentResultIndex = this.model.get('results').getValue().indexOf(r);
         if (this.model.application.isSmallWidth() === true) {
             //description title
             r = JSON.parse(JSON.stringify(r));

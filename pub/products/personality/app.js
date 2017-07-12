@@ -8,6 +8,7 @@ var PersonalityApp = MutApp.extend({
     model: null,
     screenRoot: $('#id-mutapp_screens'),
     questionScreens: [],
+    resultsScreens: [],
     /**
      * Схема свойств MutAppProperty в этом приложении
      */
@@ -19,6 +20,17 @@ var PersonalityApp = MutApp.extend({
             prototypes: ['id=pm quizProto1'],
             children: {
                 "id=pm quiz.{{number}}.question.text": {
+
+                }
+            }
+        },
+        "id=pm results": {
+            prototypes: ['id=pm resultProto1'],
+            children: {
+                "id=pm results.{{number}}.title": {
+
+                },
+                "id=pm results.{{number}}.description": {
 
                 }
             }
@@ -51,6 +63,10 @@ var PersonalityApp = MutApp.extend({
 
         this.model.bind('change:quiz', function() {
             this.updateQuestionScreens();
+        }, this);
+
+        this.model.bind('change:results', function() {
+            this.updateResultsScreens();
         }, this);
 
 //        // для всех вопросов создается по отдельному экрану
@@ -135,7 +151,34 @@ var PersonalityApp = MutApp.extend({
                 screenRoot: this.screenRoot
             });
             this.addScreen(qs);
+            this.hideScreen(qs);
             this.questionScreens.push(qs);
+        }
+    },
+
+    /**
+     * Создать экраны вопросов на основе this.model.get('results')
+     */
+    updateResultsScreens: function() {
+        console.log('Results screen rendered');
+        for (var i = 0; i < this.resultsScreens.length; i++) {
+            this.deleteScreen(this.resultsScreens[i]);
+        }
+        this.resultsScreens = [];
+        var resultsValue = this.model.get('results').getValue();
+        var rs = null;
+        var id = null;
+        for (var i = 0; i < resultsValue.length; i++) {
+            id = 'resultScreen'+i;
+            rs = new ResultScreen({
+                id: id,
+                model: this.model,
+                resultId: resultsValue[i].id,
+                screenRoot: this.screenRoot
+            });
+            this.addScreen(rs);
+            this.hideScreen(rs);
+            this.resultsScreens.push(rs);
         }
     },
 

@@ -1,16 +1,31 @@
 /**
  * Created by artyom.grishanov on 04.07.17.
+ * Personality test
  */
 var PersonalityModel = MutApp.Model.extend({
 
     defaults: {
+        /**
+         * Количество баллов даваемое за ответ с сильной привязкой
+         */
+        STRONG_LINK_POINTS: 1,
+        /**
+         * Количество баллов даваемое за ответ со слабой привязкой
+         */
+        WEAK_LINK_POINTS: 0.3,
+        /**
+         *
+         */
         id: 'pm',
         /**
          * Простое свойство
          */
         state: null,
+        currentQuestionIndex: undefined,
+        currentQuestionId: undefined,
+        randomizeQuestions: false,
         /**
-         * Вопросы теста
+         * Вопросы теста Personality
          */
         quiz: new MutAppPropertyArray({
             label: {},
@@ -18,7 +33,6 @@ var PersonalityModel = MutApp.Model.extend({
             propertyName: 'quiz',
             value: []
         }),
-
         /**
          * Специальное свойство
          * MutAppProperty доступное для редактирования вовне приложения
@@ -28,8 +42,30 @@ var PersonalityModel = MutApp.Model.extend({
             propertyName: 'showBackgroundImage', // дублирование имени
             value: true
         }),
-
-        results: []
+        /**
+         * Personality текущие набранные результаты
+         * Map
+         * 'result1_id': number,
+         * 'result2_id': number
+         * ...
+         *
+         * Для каждого результата собираются баллы, в итоге какой результат больше набрал баллов, тот и выпадает
+         */
+        resultPoints: {},
+        /**
+         * Ссылка на последний выпавший результат Personality
+         * Один из массива results
+         */
+        currentResult: null,
+        /**
+         * Все возможные результаты теста Personality
+         */
+        results: new MutAppPropertyArray({
+            label: {RU:'Результаты теста',EN:'Personality results'},
+            propertyString: 'id=pm results',
+            propertyName: 'results',
+            value: []
+        })
     },
 
     initialize: function(param) {
@@ -37,11 +73,25 @@ var PersonalityModel = MutApp.Model.extend({
         // задача: перед кодом пользователя в initialize сделать привязку application, установить апп проперти
         this.super.initialize.call(this, param);
         this._updateResults();
+
+        this.bind('change:quiz', function() {
+            this.start();
+        });
+        this.bind('change:results', function() {
+            this.start();
+        });
     },
 
+    /**
+     * Перевести приложение в начальное состояние
+     */
     start: function() {
+        console.log('PersonalityModel start');
+        this._clearResult();
         this.set({
-            state: 'welcome'
+            state: 'welcome',
+            currentResult: null,
+            currentQuestionId: null
         });
     },
 
@@ -77,22 +127,172 @@ var PersonalityModel = MutApp.Model.extend({
         }
     },
 
-//    _makeUidForQuiz: function() {
-//        for (var j = 0; j < this.attributes.quiz.length; j++) {
-//            var q = this.attributes.quiz[j];
-//            q.id = MD5.calc(q.question.text + j);
-//            if (this.attributes.quiz[j].answer.options) {
-//                // опций ответа может и не быть
-//                for (var i = 0; i < this.attributes.quiz[j].answer.options.length; i++) {
-//                    var o = q.answer.options[i];
-//                    o.id = MD5.calc(o.text + o.img + j + i).substr(0,6);
-//                }
-//            }
-//        }
-//    },
+    /**
+     * Смена состояния
+     *
+     * @returns
+     */
+    next: function() {
+        if (this.attributes.quiz.getValue().length === 0) {
+            console.error('Personality Model.next: no quiz elements');
+            return;
+        }
+        if (this.attributes.results.getValue().length === 0) {
+            console.error('Personality Model.next: no results');
+            return;
+        }
+        switch (this.attributes.state) {
+            case 'welcome': {
+                this._clearResult();
+                this.set({
+                    currentResult: null
+                });
+                // перемещать вопросы при переходе к тесту
+                if (this.attributes.randomizeQuestions === true) {
+                    this.attributes.quiz = _.shuffle(this.attributes.quiz);
+                }
+                this.set({
+                    currentQuestionIndex: 0,
+                    currentQuestionId: this.attributes.quiz.getValue()[0].id,
+                    state: 'question'
+                });
+                this.application.stat('Test', 'start', 'First question');
+                this.application.stat('Test', 'next', 'question', 1);
+                break;
+            }
+            case 'question': {
+                if (this.attributes.currentQuestionIndex < this.attributes.quiz.getValue().length-1) {
+                    var ni = this.attributes.currentQuestionIndex+1;
+                    this.set({
+                        currentQuestionIndex: ni,
+                        currentQuestionId: this.attributes.quiz.getValue()[ni].id
+                    });
+                    this.application.stat('Test', 'next', 'question', ni+1);
+                }
+                else {
+                    // конец теста, финальный скрин
+                    this.set({
+                        currentResult: this.getPersonalityResultByPoints(this.attributes.resultPoints),
+                        state: 'result',
+                        currentQuestionId: null,
+                        currentQuestionIndex: undefined
+                    });
+                    this.application.stat('Test', 'result', this.attributes.currentResult.title, this.attributes.resultPoints);
+                    // показать рекомендации с небольшой задержкой
+                    var a = this.application;
+                    setTimeout(function() {
+                        a.showRecommendations();
+                    }, 2000);
+                }
+                break;
+            }
+            case 'result': {
+                this.application.hideRecommendations();
+                this._clearResult();
+                this.set({
+                    state: 'welcome',
+                    currentResult: null,
+                    currentQuestionId: null
+                });
+                break;
+            }
+            default: {
+                this.application.hideRecommendations();
+                this._clearResult();
+                this.set({
+                    state: 'welcome',
+                    currentResult: null,
+                    currentQuestionId: null
+                });
+            }
+        }
+        return this.attributes.state;
+    },
 
     _updateResults: function() {
+        //TODO
+    },
 
+    /**
+     * Найти результат с наибольшим числом балло
+     * Если баллов одиноково у нескольких результатов, то будет рандомный выбор среди них
+     *
+     * @param {object} resultPoints
+     * @result {string} идишка выбранного результата
+     */
+    getPersonalityResultByPoints: function(resultPoints) {
+        var maxSum = -1;
+        var resultIds = [];
+        for (var resId in this.attributes.resultPoints) {
+            if (maxSum < this.attributes.resultPoints[resId]) {
+                maxSum = this.attributes.resultPoints[resId];
+                resultIds = [resId];
+            }
+            else if (maxSum == this.attributes.resultPoints[resId]) {
+                resultIds.push(resId);
+            }
+        }
+        return this.getResultById(resultIds[Math.round(Math.random() * (resultIds.length-1))]);
+    },
+
+    /**
+     * Найти результат по ид
+     * Нужно потому, что каждый экран отвечает за свой результат
+     * @param {string} id - уник ид результата
+     */
+    getResultById: function(id) {
+        for (var i = 0; i < this.attributes.results.getValue().length; i++) {
+            var r = this.attributes.results.getValue()[i];
+            if (r.id === id) {
+                return r;
+            }
+        }
+        return null;
+    },
+
+    /**
+     * Сбросить результаты
+     *
+     * @private
+     */
+    _clearResult: function() {
+        var rp = {};
+        for (var i = 0; i < this.attributes.results.getValue().length; i++) {
+            rp[this.attributes.results.getValue()[i].id] = 0;
+        }
+        this.set({
+            resultPoints: rp
+        });
+    },
+
+    /**
+     * Ответить на текущий вопрос
+     *
+     * @param {string} id - идентификатор выбранного ответа
+     * @returns {boolean}
+     */
+    answer: function(id) {
+        if (this.attributes.quiz.getValue()[this.attributes.currentQuestionIndex].answer.options) {
+            this.set({
+                currentOptionId: id
+            });
+            for (var i = 0; i < this.attributes.quiz.getValue()[this.attributes.currentQuestionIndex].answer.options.length; i++) {
+                var o = this.attributes.quiz.getValue()[this.attributes.currentQuestionIndex].answer.options[i];
+                if (o.id === id) {
+                    // забираем из опции все привязки которые там есть, сильные и слабые
+                    for (var n = 0; n < o.weakLink.length; n++) {
+                        var resultId = o.weakLink[n];
+                        this.attributes.resultPoints[resultId] += this.attributes.WEAK_LINK_POINTS;
+                    }
+                    for (var n = 0; n < o.strongLink.length; n++) {
+                        var resultId = o.strongLink[n];
+                        this.attributes.resultPoints[resultId] += this.attributes.STRONG_LINK_POINTS;
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
     },
 
     /**
@@ -110,13 +310,8 @@ var PersonalityModel = MutApp.Model.extend({
                     application: this.application,
                     propertyName: null,
                     propertyString: 'id=pm quiz.'+app.model.attributes.quiz.getValue().length+'.question.text',
-                    value: 'Сколько будет дважды два?'
+                    value: 'Your favourite music?'
                 })
-            },
-            explanation: {
-                // блок, который будет показан после ответа, в отдельном экране поверх вопроса
-                uiTemplate: 'id-explanation_text_template',
-                text: 'Конечно же 4!'
             },
             answer: {
                 // тип механики ответа: выбор только одной опции, и сразу происходит обработка ответа
@@ -126,29 +321,63 @@ var PersonalityModel = MutApp.Model.extend({
                     {
                         // атрибуты внутри используются для рендера uiTemplate
                         uiTemplate: 'id-option_text_template',
-                        text: '1',
-                        type: 'text'
-                    },
-                    {
-                        uiTemplate: 'id-option_text_template',
-                        text: '4',
+                        text: 'Rock',
                         type: 'text',
-                        points: 1
+                        // через запятую идишки результатов, привязки
+                        strongLink: [],
+                        weakLink: []
                     },
                     {
                         uiTemplate: 'id-option_text_template',
-                        text: '3',
-                        type: 'text'
+                        text: 'Techno',
+                        type: 'text',
+                        strongLink: [],
+                        weakLink: []
                     },
                     {
                         uiTemplate: 'id-option_text_template',
-                        text: 'Неизвестно',
-                        type: 'text'
+                        text: 'Pop',
+                        type: 'text',
+                        strongLink: [],
+                        weakLink: []
+                    },
+                    {
+                        uiTemplate: 'id-option_text_template',
+                        text: 'Jazz',
+                        type: 'text',
+                        strongLink: [],
+                        weakLink: []
                     }
                 ]
             }
         };
         app.model._makeUidForQuizElement(result);
+        return result;
+    },
+
+    /**
+     * Функция прототип для генерации нового результата
+     *
+     * @returns {{id: string, title: MutAppProperty}}
+     */
+    resultProto1: function() {
+        var result = {
+            id: MutApp.Util.getUniqId(6),
+            title: new MutAppProperty({
+                model: this,
+                application: this.application,
+                propertyName: null,
+                propertyString: 'id=pm results.'+app.model.attributes.quiz.getValue().length+'.title',
+                value: 'Result title'
+            }),
+            description: new MutAppProperty({
+                model: this,
+                application: this.application,
+                propertyName: null,
+                propertyString: 'id=pm results.'+app.model.attributes.quiz.getValue().length+'.description',
+                value: 'Result description'
+            })
+        };
         return result;
     }
 });

@@ -527,14 +527,22 @@ MutApp.prototype.setPropertyByAppString = function(appString, value) {
  */
 MutApp.prototype.setPropertyByAppString2 = function(appString, value) {
     var results = this.getPropertiesBySelector(appString);
-    // свойств может быть несколько если используется подстановка {{number}}
-    var prop = null;
-    for (var i = 0; i < results.length; i++) {
-        prop = results[i].value;
-        // проверяем что найденное значение действительно является MutAppProperty
-        if (prop instanceof MutAppProperty || prop instanceof MutAppPropertyArray) {
-            prop.setValue(value);
+    if (!results || results.length === 0) {
+        // свойств может быть несколько если используется подстановка {{number}}
+        var prop = null;
+        for (var i = 0; i < results.length; i++) {
+            prop = results[i].value;
+            // проверяем что найденное значение действительно является MutAppProperty
+            if (MutApp.Util.isMutAppProperty(prop) === true) {
+                prop.setValue(value);
+            }
+            else {
+                console.error('MutApp.setPropertyByAppString2: \''+appString+'\' is not a MutAppProperty');
+            }
         }
+    }
+    else {
+        console.error('MutApp.setPropertyByAppString2: properties not found for \''+appString+'\'');
     }
 };
 
@@ -551,6 +559,9 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
         if (!prInfo) {
             throw new Error('MutApp.linkMutAppProperty: mutAppProperty not finded in app by schema=\''+mutAppProperty.propertyString+'\'');
         }
+        if (mutAppProperty instanceof MutAppPropertyArray === true) {
+            mutAppProperty.prototypes = prInfo.prototypes;
+        }
         if (mutAppProperty._application !== this) {
             mutAppProperty._application = this;
         }
@@ -560,6 +571,37 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
         console.error('MutApp.linkMutAppProperty: mutAppProperty is already linked=\''+mutAppProperty.propertyString+'\'');
         return -1;
     }
+};
+/**
+ * Восстановить из строки значения свойств приложения.
+ * Видно, что метод доступен только после создания приложения.
+ *
+ * Условия:
+ * 1) Более конкретные свойства имеют больший приоритет
+ * То есть строка элемента массива приоритетнее, чем сам сериализованный массив
+ * 2) ...
+ *
+ * @param {string} dataStr
+ */
+MutApp.prototype.deserialize = function(dataStr) {
+    var data = JSON.parse(dataStr);
+    for (var key in data) {
+        this.setPropertyByAppString2(key, data[key]);
+    }
+    //TODO надо записать в дефаултс значения
+    // так как накоторые свойства могут быть созданы позднее например
+};
+/**
+ * Сохранить данные приложения в виде строки
+ * @returns {string}
+ */
+MutApp.prototype.serialize = function() {
+    var data = {}, p = null;
+    for (var i = 0; i < this._mutappProperties.length; i++) {
+        p = this._mutappProperties[i];
+        data[p.propertyString] = p.serialize();
+    }
+    return JSON.stringify(data);
 };
 
 /**
@@ -975,7 +1017,7 @@ MutApp.Screen = Backbone.View.extend({
             var prop = null;
             for (var key in this) {
                 prop = this[key];
-                if (prop instanceof MutAppProperty || prop instanceof MutAppPropertyArray) {
+                if (MutApp.Util.isMutAppProperty(prop) === true) {
                     this.model.application.linkMutAppProperty(prop);
                 }
             }
@@ -1026,7 +1068,7 @@ MutApp.Model = Backbone.Model.extend({
             var prop = null;
             for (var key in this.attributes) {
                 prop = this.attributes[key];
-                if (prop instanceof MutAppProperty || prop instanceof MutAppPropertyArray) {
+                if (MutApp.Util.isMutAppProperty(prop) === true) {
                     prop._model = this;
                     this.application.linkMutAppProperty(prop);
                 }
@@ -1300,6 +1342,38 @@ MutApp.Util = {
             return Math.random().toString(36).substr(2); // remove `0.`
         };
         return MD5.calc(rand()+baseStr+rand()).substr(0,length);
+    },
+
+    /**
+     * Подготовить объект для рендера в приложении
+     * Объект на выходе содержит только простые свойства, и результат вызова getValue() от MutAppProperty
+     *
+     * @param {object} srcObject
+     * @return {object}
+     */
+    getObjectForRender: function(srcObject) {
+        var result = {};
+        for (var key in srcObject) {
+            if (srcObject.hasOwnProperty(key) === true) {
+                if (typeof srcObject[key] === 'number' || typeof srcObject[key] === 'string' || typeof srcObject[key] === 'boolean') {
+                    result[key] = srcObject[key];
+                }
+                else if (MutApp.Util.isMutAppProperty(srcObject[key]) === true) {
+                    result[key] = srcObject[key].getValue();
+                }
+            }
+        }
+        return result;
+    },
+
+    /**
+     * Проверить, что объект является MutAppProperty
+     *
+     * @param {*} obj
+     * @return {boolean}
+     */
+    isMutAppProperty: function(obj) {
+        return obj instanceof MutAppProperty || obj instanceof MutAppPropertyArray;
     }
 };
 
@@ -1619,6 +1693,13 @@ MutAppProperty.prototype.initialize = function(param) {
         this._application.linkMutAppProperty(this);
     }
 };
+/**
+ * Сериализовать значение свойства
+ * @returns {string}
+ */
+MutAppProperty.prototype.serialize = function() {
+    return JSON.stringify(_value);
+};
 
 /**
  * Установка свойства
@@ -1730,14 +1811,19 @@ MutAppPropertyArray.prototype.deleteElement = function(position) {
  * @param [number] position
  */
 MutAppPropertyArray.prototype.addElementByPrototype = function(protoFunctionPath, position) {
-    var results = app.getPropertiesBySelector(protoFunctionPath);
-    if (results && results.length > 0 && _.isFunction(results[0].value)) {
-        // clone to be sure it's new JSON.parse(JSON.stringify())
-        // в качестве контекста передается объект в котором нашли функцию-прототип
-        var newElem = results[0].value.call(results[0].entity);
-        this.addElement(newElem, position);
+    if (this.prototypes.indexOf(protoFunctionPath) >= 0) {
+        var results = app.getPropertiesBySelector(protoFunctionPath);
+        if (results && results.length > 0 && _.isFunction(results[0].value)) {
+            // clone to be sure it's new JSON.parse(JSON.stringify())
+            // в качестве контекста передается объект в котором нашли функцию-прототип
+            var newElem = results[0].value.call(results[0].entity);
+            this.addElement(newElem, position);
+        }
+        else {
+            console.error('MutAppPropertyArray.addElementByPrototype: can not find prototype function \''+protoFunctionPath+'\'');
+        }
     }
     else {
-        console.error('MutAppPropertyArray.addElementByPrototype: can not find prototype function \''+protoFunctionPath+'\'');
+        console.error('MutAppPropertyArray.addElementByPrototype: prototype \''+protoFunctionPath+'\' is not specified for this property \''+this.propertyString+'\'');
     }
 };

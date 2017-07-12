@@ -50,15 +50,6 @@ var QuestionScreen = MutApp.Screen.extend({
     backgroundImg: null,
     logoPosition: {top: 200, left: 200},
     showLogo: true,
-    /**
-     * Задержка для показа explanation
-     */
-    explanationPauseDelay: 1100,
-    /**
-     * Показывать ли экран объяснения после ответа на вопрос или сразу переходить к следующему вопросу
-     */
-    showExplanation: true,
-
     shadowEnable: false,
 
     /**
@@ -79,10 +70,7 @@ var QuestionScreen = MutApp.Screen.extend({
         "id-answer_question_grid_3": _.template($('#id-answer_question_grid_3').html()),
 
         "id-option_text_template": _.template($('#id-option_text_template').html()),
-        "id-option_img_template": _.template($('#id-option_img_template').html()),
-//        "id-answer_input_btn_template": _.template($('#id-answer_input_btn_template').html()),
-
-        "id-explanation_text_template": _.template($('#id-explanation_text_template').html())
+        "id-option_img_template": _.template($('#id-option_img_template').html())
     },
 
     events: {
@@ -130,7 +118,7 @@ var QuestionScreen = MutApp.Screen.extend({
         this.$el.html(this.template['default'](q));
 
         q.question.currentQuestionIndex = this.currentQuestionIndex;
-        this.renderQuestion(q.question);
+        this.renderQuestion(MutApp.Util.getObjectForRender(q.question));
 
         this.renderAnswers(q.answer);
 
@@ -154,7 +142,7 @@ var QuestionScreen = MutApp.Screen.extend({
         var $qp = this.$el.find('.js-question_progress');
         if (this.model.get('showQuestionProgress') === true) {
             $qp.show()
-               .text('Вопрос '+(this.currentQuestionIndex+1)+'/'+this.model.get('quiz').length);
+               .text('Вопрос '+(this.currentQuestionIndex+1)+'/'+this.model.get('quiz').getValue().length);
             $qp.css('top',this.model.get('questionProgressPosition').top+'px')
                .css('left',this.model.get('questionProgressPosition').left+'px');
         }
@@ -215,25 +203,8 @@ var QuestionScreen = MutApp.Screen.extend({
                         var $e = $(this.template[o.uiTemplate](o));
                         $e.click((function(e) {
                             var oId = $(e.currentTarget).attr('data-id');
-                            var success = this.model.answer(oId);
-
-                            if (this.showExplanation === true) {
-                                //TODO showExplanation через модель
-                                this.renderExplanation(
-                                    success,
-                                    this.model.get('quiz')[this.model.get('currentQuestionIndex')].explanation
-                                );
-                                // автоматически скрываем explanation блок через пару секунд
-                                // этот вариант приемлем пока нет полноценного экрана с объяснением
-                                //TODO пользователь должен управлять настройкой нужно ли ему такое поведение
-                                setTimeout((function(){
-                                    this.model.next();
-                                }).bind(this), this.explanationPauseDelay);
-                            }
-                            else {
-                                // не показывать объяснение верного-неверного ответа, сразу к следующему вопросу
-                                this.model.next();
-                            }
+                            this.model.answer(oId);
+                            this.model.next();
                         }).bind(this));
                         $ea.append($e); // ea is js-options_cnt
                     }
@@ -246,42 +217,7 @@ var QuestionScreen = MutApp.Screen.extend({
             }
             case 'input': {
                 //TODO
-//                var $e = $(this.template[answerData.uiTemplate](answerData));
-//                $e.find('js-make_answer').click((function(e) {
-//                    //TODO showExplanation через модель если это будет сабвью
-//                    this.renderExplanation();
-//                }).bind(this));
-//                this.$el.find('.js-answers_cnt').append($e);
-//                break;
             }
-        }
-    },
-
-    /**
-     * Показать верен ли был ответ или нет
-     * Также появляется кнопка Далее, чтобы перейти к следующему вопросу
-     *
-     * @param success - верно ли ответил пользователь
-     * @param {object} explanationData
-     */
-    renderExplanation: function(success, explanationData) {
-        //TODO можно это вынести в отдельный сабвью, если хоти его тдельно редактировать и показывать.
-
-        // сейчас показывается блок js-explain с модификатором верно/неверно и кнопкой дальше.
-        // текст пояснения не показывается, так как пока не понятно как его редактировать в редакторе
-
-        // var $e = $(this.template[explanationData.uiTemplate](explanationData));
-        // this.$el.find('.js-explain').append($e).show();
-
-        this.$el.find('.js-explain').show();
-        // обработчик на js-next уже установлен через backbone events
-        if (success === true) {
-//            this.$el.find('.js-explanation_text').text('Верно');
-            this.$el.find('.explain_blk').removeClass('__err');
-        }
-        else {
-//            this.$el.find('.js-explanation_text').text('Неверно');
-            this.$el.find('.explain_blk').addClass('__err');
         }
     }
 });

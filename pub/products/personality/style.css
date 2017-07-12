@@ -1,0 +1,530 @@
+/* ============ */
+/* Старые стили */
+/* ============ */
+
+.wrapper {
+    /* приложение должно растягиваться в рамках контейнера приложения */
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    background-color: #333;
+    /*background-image: url(https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-902609146442342/test1/i/Globe7.jpg);*/
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+.back_start {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.cnt_wr {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #fff;
+    font-family: Arial;
+    text-align:center;
+}
+.photo_wr {
+    display: inline-block;
+    width: 300px;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+}
+.start_txt {
+    margin: 0;
+    padding: 0;
+}
+.start_head {
+    margin: 0;
+    padding: 0;
+}
+.start_desc {
+    margin: 0;
+    padding: 0;
+}
+.btn_wr {
+    width: 100%;
+    text-align: center;
+}
+.t_btn {
+    display: inline-block;
+    padding: 12px;
+    border: 2px solid hsla(154,48%,54%,1);
+    border-radius: 20px;
+    color: hsla(154,48%,54%,1);
+    background-color: #fff;
+    cursor: pointer;
+}
+.t_btn:hover {
+    color: #fff;
+    background-color: hsla(154,48%,54%,1);
+}
+.a_wr {
+    cursor: pointer;
+    margin: 10px 0 10px;
+}
+.a_wr:hover {
+    background-color: rgba(255,255,255,0.55);
+}
+.a_wr:hover .bullit {
+    border-width: 4px;
+}
+.bullit {
+    display: inline-block;
+    border: 2px solid white;
+    border-color: #333;
+    border-radius: 100px;
+    width: 18px;
+    height: 18px;
+    box-sizing: border-box;
+}
+.bullit_active {
+    /* Это класс подсветки верного ответа */
+    /* Решение "так себе */
+    /* important - чтобы перебить стили custom_style если пользователь настроил их */
+    border-color: #0f0 !important;
+    border-width: 5px !important;
+}
+.img_wr {
+    display: inline-block;
+    margin: 7px;
+    cursor: pointer;
+}
+.img_option {
+    background-size: cover;
+    width: 400px;
+    height: 260px;
+}
+.txt {
+    font-size: 16px;
+}
+.explain_modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+.explain_blk {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -70px;
+    width: 140px;
+    height: 140px;
+    border-radius: 4px;
+    background-color: #fff;
+    background: url(https://s3.eu-central-1.amazonaws.com/testix.me/i/products/test_new/icon-layer-right.png) center no-repeat;
+    background-color: #fff;
+}
+.explain_blk.__err {
+    background-image: url(https://s3.eu-central-1.amazonaws.com/testix.me/i/products/test_new/icon-layer-wrong.png);
+}
+.explain_title {
+    padding: 4px;
+}
+
+.logo {
+    position: absolute;
+    width: 100px;
+    height: 60px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    margin: 20px auto;
+}
+.question_progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #444;
+    margin: 20px auto;
+}
+.topColontitle {
+    margin: 0;
+    padding: 4px 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background-color: #eee;
+    color: #ffffcc;
+    border-bottom: 1px solid #000;
+}
+
+/*====================================================================*/
+/*====================================================================*/
+/*====================================================================*/
+
+html,
+body {
+    position: relative;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+img {
+    border: 0 none;
+}
+.wrapper {
+    position: relative;
+    height: 100%;
+    overflow: auto;
+}
+.container {
+    min-width: 960px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 42px 0;
+}
+.content {
+    padding: 16px;
+    background-color: #eee;
+    overflow: hidden;
+}
+
+.title {
+    font-size: 28px;
+    color: #4f4f4f;
+    margin-bottom: 22px;
+}
+.button {
+    display: inline-block;
+    border: 0px solid;
+    border-radius: 4px;
+    background-color: #024889;
+    color: #fff;
+    min-width: 195px;
+    min-height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+.button.__small {
+    padding: 0 16px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+}
+
+.button + .button {
+    margin-left: 12px;
+}
+
+.modal {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #fff;
+    background-size: cover;
+    background-position: center;
+}
+.modal.__active {
+    display: block;
+}
+
+.modal_cnt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    width: 100%;
+    min-height: 100%;
+    border-radius: 4px;
+}
+
+.modal_hld {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    /*width: 480px;*/
+    width: 100%;
+    white-space: normal;
+}
+
+.question_title {
+    font-size: 22px;
+    color: #000;
+    /*font-weight: 700;*/
+    max-width: 480px;
+    margin: 0 auto;
+}
+.question_lst {
+    max-width: 480px;
+    margin: 0 auto;
+}
+.question_lst.__2 {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    max-width: 480px;
+    margin: 20px auto;
+    overflow: hidden;
+}
+.question_i {
+    font-size: 18px;
+    border: 1px #5c5c5c solid;
+    box-sizing: border-box;
+    padding: 14px 12px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    box-shadow: 0 0 0 #044d89 inset;
+    transition: box-shadow 0.3s;
+}
+.question_lst.__2 .question_i {
+    float: left;
+    width: 230px;
+    margin: 0 4px 12px;
+}
+.question_i:hover {
+    box-shadow: 0 0 0 4px #044d89 inset;
+}
+.question_grid {
+    white-space: nowrap;
+    font-size: 0;
+    width: 100%;
+    text-align: center;
+}
+.question_grid-i {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    height: 180px;
+    max-width: 480px;
+}
+.question_grid.__2 .question_grid-i + .question_grid-i {
+    margin-left: 24px;
+}
+.question_grid.__3 .question_grid-i + .question_grid-i {
+    margin-left: 28px;
+}
+.question_grid.__2 .question_grid-i {
+    width: 320px;
+    height: 240px;
+}
+.question_grid.__3 .question_grid-i {
+    width: 240px;
+    height: 240px;
+}
+.question_grid.__2 .question_grid-i:hover:after,
+.question_grid.__3 .question_grid-i:hover:after {
+    box-shadow: 0 0 0 4px #044d89 inset;
+    cursor: pointer;
+}
+.question_img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+@media (max-width:600px)  {
+    /* using body for making this rules more important then 'js-*' rules from engine.js */
+    body .info_title {
+        padding-top: 60px;
+    }
+    body .info_tx {
+        padding-top: 28px;
+        padding-bottom: 16px;
+    }
+    body .question_title {
+        padding-top: 24px;
+        padding-bottom: 26px;
+    }
+    body .question_progress {
+        padding-top: 40px;
+        padding-bottom: 0;
+        margin: 0 auto;
+    }
+    body .js-logo {
+        position: initial;
+        margin-top: 42px;
+    }
+    body .js-question_progress {
+        position: initial;
+    }
+    body .js-mutapp_share_fb {
+        position: relative;
+        margin-top: 16px;
+        top:0 !important; /* изменение контролом drag меняет эти свойства. Подумать как обойтись без important */
+        left:0 !important;
+    }
+    body .js-mutapp_share_vk {
+        position: relative;
+        margin-top: 16px;
+        top:0 !important;
+        left:0 !important;
+    }
+    body .js-btn_wr {
+        padding-top: 16px;
+        margin-top: 0;
+    }
+    body .js-download_btn_wr {
+        padding-top: 16px;
+        margin-top: 0;
+    }
+
+    .modal_cnt {
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+    .modal {
+        overflow: auto;
+        /*box-sizing: border-box;*/
+        /*padding: 0 25px 0 25px;*/
+    }
+    .modal_hld {
+        width: 100%;
+        min-width: 250px;
+    }
+    .question_lst.__2 {
+
+    }
+    .question_lst.__2 .question_i {
+        float: none;
+        width: 100%;
+        margin: 0 4px 12px;
+    }
+
+    .question_grid.__2 .question_grid-i + .question_grid-i {
+        margin-left: 0;
+    }
+    .question_grid.__3 .question_grid-i + .question_grid-i {
+        margin-left: 0;
+    }
+    .question_grid.__2 {
+
+    }
+    .question_grid.__2 .question_grid-i {
+        display: block;
+        text-align: center;
+        width: 100%;
+        margin: 0 0 20px 0;
+    }
+}
+
+@supports (object-fit: cover) {
+    .question_img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+.answer_title {
+    font-size: 24px;
+    /*font-weight: 700;*/
+    margin-bottom: 24px;
+}
+.answer_title:before {
+    content: '';
+    display: block;
+    width: 78px;
+    height: 78px;
+    margin: 0 auto 12px;
+}
+.answer_title.__success:before {
+    background-image: url("../../common/i/status/Check.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .answer_title.__success:before {
+        background-image: url("../../common/i/status/Check@2x.png");
+        background-size: 78px 78px;
+    }
+}
+.answer_title.__fail:before {
+    background-image: url("../../common/i/status/Cross.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .answer_title.__fail:before {
+        background-image: url("../../common/i/status/Cross@2x.png");
+        background-size: 78px 78px;
+    }
+}
+.answer_tx {
+    border-top: 2px solid #979797;
+    border-bottom: 2px solid #979797;
+    padding: 20px 0;
+    margin-bottom: 32px;
+}
+.answer_ac:after {
+    content: '';
+    position: relative;
+    top: -1px;
+    display: inline-block;
+    vertical-align: middle;
+    width: 13px;
+    height: 21px;
+    margin-left: 10px;
+    background-image: url("../i/white_arrow.png");
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .answer_ac:after {
+        background-image: url("../i/white_arrow@2x.png");
+        background-size: 13px 21px;
+    }
+}
+.header {
+    padding: 58px 32px 32px;
+    background-color: #fff;
+    position: relative;
+}
+.header_tx {
+    width: 40%;
+    margin: 0 auto;
+    font-size: 18px;
+    color: #024889;
+    text-align: center;
+}
+.info {
+    white-space: normal;
+}
+.info:before,
+.info:after,
+.info .modal_f:before {
+    display: none;
+}
+.info_title {
+    font-size: 36px;
+}
+.info_tx {
+    font-size: 18px;
+}
+.info_f {
+    font-size: 0;
+}
