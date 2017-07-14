@@ -24,31 +24,14 @@ var StartScreen = MutApp.Screen.extend({
     /**
      *
      */
-    startHeaderText: new MutAppProperty({
-        value: 'Test',
-        propertyString: 'id=startScr startHeaderText',
-        label: {RU: 'Заголовок', EN: 'Header'}
-    }),
-    startDescription: new MutAppProperty({
-        value: 'Check your knowledge',
-        propertyString: 'id=startScr startDescription',
-        label: {RU:'Описание', EN:'Description'}
-    }),
-    startButtonText: new MutAppProperty({
-        value: 'Start',
-        propertyString: 'id=startScr startButtonText',
-        label: {RU:'Текст кнопки', EN:'Start button text'}
-    }),
+    startHeaderText: null,
+    startDescription: null,
+    startButtonText: null,
     /**
      * Как подписаться на изменения значения? Это не модель
      * Раньше был перезапуск приложения и рендер при старте
      */
-    backgroundImg: new MutAppProperty({
-        propertyString: 'id=startScr backgroundImg',
-        value: null, // 'http://cdn0.redkassa.ru/live/sitenew/picture/871de92e-2b5f-4a3f-be16-8e2b6031bd66',
-        propertyName: 'backgroundImg',
-        label: {RU:'Фоновая картинка', EN:'Background image'}
-    }),
+    backgroundImg: null,
 
     shadowEnable: false,
 
@@ -87,14 +70,32 @@ var StartScreen = MutApp.Screen.extend({
             .css('width','100%')
             .css('min-height','100%'));
         param.screenRoot.append(this.$el);
-
+        this.startHeaderText = new MutAppProperty({
+            application: this.model.application,
+            value: 'Test',
+            propertyString: 'id=startScr startHeaderText'
+        });
+        this.startDescription = new MutAppProperty({
+            application: this.model.application,
+            value: 'Check your knowledge',
+            propertyString: 'id=startScr startDescription'
+        });
+        this.startButtonText = new MutAppProperty({
+            application: this.model.application,
+            value: 'Start',
+            propertyString: 'id=startScr startButtonText'
+        });
+        this.backgroundImg = new MutAppProperty({
+            application: this.model.application,
+            propertyString: 'id=startScr backgroundImg',
+            value: null // 'http://cdn0.redkassa.ru/live/sitenew/picture/871de92e-2b5f-4a3f-be16-8e2b6031bd66',
+        });
         this.model.bind("change:state", function () {
             if ('welcome' === this.model.get('state')) {
                 this.render();
                 this.model.application.showScreen(this);
             }
         }, this);
-
         this.model.bind("change:showBackgroundImage", function () {
             this.render();
         }, this);

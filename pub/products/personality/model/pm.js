@@ -27,21 +27,12 @@ var PersonalityModel = MutApp.Model.extend({
         /**
          * Вопросы теста Personality
          */
-        quiz: new MutAppPropertyArray({
-            label: {},
-            propertyString: 'id=pm quiz',
-            propertyName: 'quiz',
-            value: []
-        }),
+        quiz: null,
         /**
          * Специальное свойство
          * MutAppProperty доступное для редактирования вовне приложения
          */
-        showBackgroundImage: new MutAppProperty({
-            propertyString: 'id=pm showBackgroundImage',
-            propertyName: 'showBackgroundImage', // дублирование имени
-            value: true
-        }),
+        showBackgroundImage: null,
         /**
          * Personality текущие набранные результаты
          * Map
@@ -60,12 +51,7 @@ var PersonalityModel = MutApp.Model.extend({
         /**
          * Все возможные результаты теста Personality
          */
-        results: new MutAppPropertyArray({
-            label: {RU:'Результаты теста',EN:'Personality results'},
-            propertyString: 'id=pm results',
-            propertyName: 'results',
-            value: []
-        })
+        results: null
     },
 
     initialize: function(param) {
@@ -79,6 +65,27 @@ var PersonalityModel = MutApp.Model.extend({
         });
         this.bind('change:results', function() {
             this.start();
+        });
+        this.attributes.results = new MutAppPropertyArray({
+            application: this.application,
+            model: this,
+            propertyString: 'id=pm results',
+            propertyName: 'results',
+            value: []
+        });
+        this.attributes.quiz = new MutAppPropertyArray({
+            application: this.application,
+            model: this,
+            propertyString: 'id=pm quiz',
+            propertyName: 'quiz',
+            value: []
+        });
+        this.attributes.showBackgroundImage = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=pm showBackgroundImage',
+            propertyName: 'showBackgroundImage', // дублирование имени
+            value: true
         });
     },
 
@@ -367,14 +374,14 @@ var PersonalityModel = MutApp.Model.extend({
                 model: this,
                 application: this.application,
                 propertyName: null,
-                propertyString: 'id=pm results.'+app.model.attributes.quiz.getValue().length+'.title',
+                propertyString: 'id=pm results.'+this.attributes.quiz.getValue().length+'.title',
                 value: 'Result title'
             }),
             description: new MutAppProperty({
                 model: this,
                 application: this.application,
                 propertyName: null,
-                propertyString: 'id=pm results.'+app.model.attributes.quiz.getValue().length+'.description',
+                propertyString: 'id=pm results.'+this.attributes.quiz.getValue().length+'.description',
                 value: 'Result description'
             })
         };

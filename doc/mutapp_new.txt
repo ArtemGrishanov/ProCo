@@ -21,6 +21,9 @@ h2. Схема структуры MutAppSchema
         "id=pm quiz" - когда, селектор и propertyString идентичны
         "id=pm quiz.{{number}}.question.text" - для массива
         "id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText" - группировка нескольких свойств в одном селекторе
+    Причем один селектор может быть составной и индивидуальный одновременно
+    "id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText": {}
+    "id=startScr startDescription": {}
 
 h2. Тесты
 - Стандартная проверка при создании: что свойство не описано в схеме
@@ -76,3 +79,10 @@ _mutappProperties список всех MutAppProperty свойств прило
 Они попадают в initialize модели и вью.
 Либо, если свойства _mutappProperties создаются runtime, то указывать приложение нужно самостоятельно в конструкторе.
 Параметры: application, model - если свойство принуждежит модели
+
+h2. MutAppModel
+Наследована от Backbone.Model
+Важно: MutAppProperty не надо создавать в defaults. Иначе ссылка будет сохранена в классе (например PersonalityModel), то есть в объекте прототипе.
+И сколько бы вы интансов модели не создавали, свойство будет общее.
+Другими словами: как только появился контекст this модели там и создаем.
+В initialize лучше создавать MutAppProperty

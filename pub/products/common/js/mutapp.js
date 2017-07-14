@@ -559,6 +559,9 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
         if (!prInfo) {
             throw new Error('MutApp.linkMutAppProperty: mutAppProperty not finded in app by schema=\''+mutAppProperty.propertyString+'\'');
         }
+        if (prInfo.label) {
+            mutAppProperty.label = prInfo.label;
+        }
         if (mutAppProperty instanceof MutAppPropertyArray === true) {
             mutAppProperty.prototypes = prInfo.prototypes;
         }
@@ -1050,27 +1053,29 @@ MutApp.Model = Backbone.Model.extend({
         initialize: function(param) {
             // установить необходимые модели свойства по умолчанию
             MutApp.Util.setDefaultProperties(this, param, this.defaultsToSetInInitialize);
-            if (this.application && this.application._parsedDefaults) {
-                var d, o = null;
-                for (var i = 0; i < this.application._parsedDefaults.length; i++) {
-                    d = this.application._parsedDefaults[i];
-                    if (d.conditionValue === this[d.conditionKey]) {
-                        //o = {};
-                        //o[d.valueKey] = d.value;
-                        //this.set(o);
-                        // здесь подойдет установка сразу в attributes модели, так как модели создаются перед вью (всегда?) и не нужны события и прочие опции
-                        // например, d.valueKey='quiz.2.question.text' d.value='Текст вопроса'
-                        MutApp.Util.assignByPropertyString(this.attributes, d.valueKey, d.value); // assignByPropertyString in util/utils.js
+            if (this.application) {
+                if (this.application._parsedDefaults) {
+                    var d, o = null;
+                    for (var i = 0; i < this.application._parsedDefaults.length; i++) {
+                        d = this.application._parsedDefaults[i];
+                        if (d.conditionValue === this[d.conditionKey]) {
+                            //o = {};
+                            //o[d.valueKey] = d.value;
+                            //this.set(o);
+                            // здесь подойдет установка сразу в attributes модели, так как модели создаются перед вью (всегда?) и не нужны события и прочие опции
+                            // например, d.valueKey='quiz.2.question.text' d.value='Текст вопроса'
+                            MutApp.Util.assignByPropertyString(this.attributes, d.valueKey, d.value); // assignByPropertyString in util/utils.js
+                        }
                     }
                 }
-            }
-            // Найти в этой модели свойства MutAppProperty и установить эту this модель туда
-            var prop = null;
-            for (var key in this.attributes) {
-                prop = this.attributes[key];
-                if (MutApp.Util.isMutAppProperty(prop) === true) {
-                    prop._model = this;
-                    this.application.linkMutAppProperty(prop);
+                // Найти в этой модели свойства MutAppProperty и установить эту this модель туда
+                var prop = null;
+                for (var key in this.attributes) {
+                    prop = this.attributes[key];
+                    if (MutApp.Util.isMutAppProperty(prop) === true) {
+                        prop._model = this;
+                        this.application.linkMutAppProperty(prop);
+                    }
                 }
             }
         }
@@ -1374,6 +1379,140 @@ MutApp.Util = {
      */
     isMutAppProperty: function(obj) {
         return obj instanceof MutAppProperty || obj instanceof MutAppPropertyArray;
+    },
+
+    /**
+     * Проверка, является ли значение одним из простых типов данных
+     * @param value
+     * @returns {boolean}
+     */
+    isPrimitive: function(value) {
+        return value === undefined || value === null || typeof value === 'number' || typeof value === 'string' || typeof value === 'boolean';
+    },
+
+    /**
+     *
+     * Based on https://stackoverflow.com/questions/1068834/object-comparison-in-javascript
+     * @returns {boolean}
+     */
+    deepCompare: function() {
+        var i, l, leftChain, rightChain;
+
+        function compare2Objects (x, y) {
+            var p;
+
+            // remember that NaN === NaN returns false
+            // and isNaN(undefined) returns true
+            if (isNaN(x) && isNaN(y) && typeof x === 'number' && typeof y === 'number') {
+                return true;
+            }
+
+            // Compare primitives and functions.
+            // Check if both arguments link to the same object.
+            // Especially useful on the step where we compare prototypes
+            if (x === y) {
+                return true;
+            }
+
+            // Works in case when functions are created in constructor.
+            // Comparing dates is a common scenario. Another built-ins?
+            // We can even handle functions passed across iframes
+            if ((typeof x === 'function' && typeof y === 'function') ||
+                (x instanceof Date && y instanceof Date) ||
+                (x instanceof RegExp && y instanceof RegExp) ||
+                (x instanceof String && y instanceof String) ||
+                (x instanceof Number && y instanceof Number)) {
+                return x.toString() === y.toString();
+            }
+
+            // MutAppProperty comparison
+            if (MutApp.Util.isMutAppProperty(x) === true && MutApp.Util.isMutAppProperty(y) === true) {
+                return x.compare(y);
+            }
+
+            // At last checking prototypes as good as we can
+            if (!(x instanceof Object && y instanceof Object)) {
+                return false;
+            }
+
+            if (x.isPrototypeOf(y) || y.isPrototypeOf(x)) {
+                return false;
+            }
+
+            if (x.constructor !== y.constructor) {
+                return false;
+            }
+
+            if (x.prototype !== y.prototype) {
+                return false;
+            }
+
+            // Check for infinitive linking loops
+            if (leftChain.indexOf(x) > -1 || rightChain.indexOf(y) > -1) {
+                return false;
+            }
+
+            // Quick checking of one object being a subset of another.
+            // todo: cache the structure of arguments[0] for performance
+            for (p in y) {
+                if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) {
+                    return false;
+                }
+                else if (typeof y[p] !== typeof x[p]) {
+                    return false;
+                }
+            }
+
+            for (p in x) {
+                if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) {
+                    return false;
+                }
+                else if (typeof y[p] !== typeof x[p]) {
+                    return false;
+                }
+
+                switch (typeof (x[p])) {
+                    case 'object':
+                    case 'function':
+
+                        leftChain.push(x);
+                        rightChain.push(y);
+
+                        if (!compare2Objects (x[p], y[p])) {
+                            return false;
+                        }
+
+                        leftChain.pop();
+                        rightChain.pop();
+                        break;
+
+                    default:
+                        if (x[p] !== y[p]) {
+                            return false;
+                        }
+                        break;
+                }
+            }
+
+            return true;
+        }
+
+        if (arguments.length < 1) {
+            return true; //Die silently? Don't know how to handle such case, please help...
+            // throw "Need two or more arguments to compare";
+        }
+
+        for (i = 1, l = arguments.length; i < l; i++) {
+
+            leftChain = []; //Todo: this can be cached
+            rightChain = [];
+
+            if (!compare2Objects(arguments[0], arguments[i])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 };
 
@@ -1597,6 +1736,9 @@ MutAppSchema.prototype.initialize = function(schema) {
 //};
 /**
  * Найти описание MutAppProperty в схеме
+ * Причем один селектор может быть составной и индивидуальный одновременно
+ * "id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText": {}
+ * "id=startScr startDescription": {}
  *
  * @param propertyString
  * @param treeElement
@@ -1673,32 +1815,94 @@ MutAppProperty.EVENT_TYPES = ['change'];
  * Инициализация базовых параметров свойства
  */
 MutAppProperty.prototype.initialize = function(param) {
-    this.id = MutApp.Util.getUniqId(8);
+    this.id = param.id || MutApp.Util.getUniqId(8); // param.id может передаваться при десериализации
     this.label = param.label || {RU:'MutAppProperty имя', EN:'MutAppProperty label'};
-    this._getValueTimestamp = undefined;
-    this._setValueTimestamp = undefined;
-    this._propertyName = param.propertyName;
-    this._model = param.model;
-    this._value = param.value || null;
-    this._application = param.application || null;
-    this._model = param.model || null;
-    this._bindedEvents = {};
+    this._getValueTimestamp = param._getValueTimestamp || undefined;
+    this._setValueTimestamp = param._setValueTimestamp || undefined;
+    this._propertyName = param.propertyName || null;
+    if (this._validateDataType(param.value) === true) {
+        this._value = param.value || null;
+    }
+    else {
+        throw new Error('MutAppProperty.constructor: MutAppProperty implements only primitives: Number, Boolean, String, Undefined, Null. For array use MutAppPropertyArray');
+    }
     if (typeof param.propertyString === 'string') {
         this.propertyString = param.propertyString;
     }
     else {
         throw new Error('MutAppProperty.constructor: propertyString is not specified for MutAppProperty. Please, specify it in constructor param');
     }
+    this._model = param.model;
+    this._application = param.application || null;
+    this._model = param.model || null;
+    this._bindedEvents = {};
     if (this._application) {
         this._application.linkMutAppProperty(this);
     }
 };
 /**
- * Сериализовать значение свойства
+ * Сравнение двух объектов свойств
+ *
+ * @param otherMProperty
+ * @returns {boolean}
+ */
+MutAppProperty.prototype.compare = function(otherMProperty) {
+    if (this.id !== otherMProperty.id ||
+        this.propertyString !== otherMProperty.propertyString ||
+        this._propertyName !== otherMProperty._propertyName
+        // после десериализации это могут быть совсем другие инстансы приложения и модели
+        // this._model !== otherMProperty._model ||
+        // this._application !== otherMProperty._application
+        ) {
+        // сравниваются те атрибуты, которые существенны
+        return false;
+    }
+    if (MutApp.Util.deepCompare(this.label, otherMProperty.label) === false) {
+        return false;
+    }
+    if (this._value === otherMProperty._value) {
+        // try this fast scenario at first
+        return true;
+    }
+    return MutApp.Util.deepCompare(this._value, otherMProperty._value);
+};
+/**
+ * Проверяет что тип данных значения подходит для этого MutAppProperty
+ *
+ * @returns {boolean}
+ */
+MutAppProperty.prototype._validateDataType = function(value) {
+    return MutApp.Util.isPrimitive(value);
+};
+/**
+ * Сериализовать MutAppProperty
+ * Сохраняются только элементарные значения
+ *
  * @returns {string}
  */
 MutAppProperty.prototype.serialize = function() {
-    return JSON.stringify(_value);
+    var data = {
+        // special mark for deserialization
+        _mutAppConstructor: 'MutAppProperty',
+        id: this.id,
+        propertyString: this.propertyString,
+        value: this._value, // имя именно публичного параметра "value", который передается в конструктор. Не приватного "_value"
+        _getValueTimestamp: this._getValueTimestamp,
+        _setValueTimestamp: this._setValueTimestamp
+    };
+    //return JSON.stringify(data);
+    return data; // ???
+};
+/**
+ * Десериализовать свойство из json-строки
+ * @param {string} dataString
+ */
+MutAppProperty.prototype.deserialize = function(dataString) {
+    var data = JSON.parse(dataString);
+    // предполагается, что в dataString только валидные значения. Проверки не делаются
+    for (var key in data) {
+        this[key] = data[key];
+    };
 };
 
 /**
@@ -1706,6 +1910,9 @@ MutAppProperty.prototype.serialize = function() {
  * Если свойство MutAppProperty объявлено внутри модели, то поддерживается отправка классического события change
  */
 MutAppProperty.prototype.setValue = function(newValue) {
+    if (this._validateDataType(newValue) !== true) {
+        throw new Error('MutAppProperty.constructor: MutAppProperty implements only primitives: Number, Boolean, String, Undefined, Null. For array use MutAppPropertyArray');
+    }
     if (this._value !== newValue) {
         this._value = newValue;
         this._setValueTimestamp = new Date().getTime();
@@ -1770,10 +1977,18 @@ MutAppProperty.prototype.trigger = function(eventType, data) {
  */
 var MutAppPropertyArray = function(param) {
     this.initialize(param);
-    this.prototypes = param.prototypes || [];
 };
 // наследуем от простого базового свойства
 _.extend(MutAppPropertyArray.prototype, MutAppProperty.prototype);
+/**
+ * Проверить что устанавливаемое значение является массивом
+ * @param value
+ * @returns {boolean}
+ * @private
+ */
+MutAppPropertyArray.prototype._validateDataType = function(value) {
+    return _.isArray(value);
+};
 /**
  * Добавить новый элемент на позицию. По умолчанию в конец.
  * @param {*} element
@@ -1812,7 +2027,7 @@ MutAppPropertyArray.prototype.deleteElement = function(position) {
  */
 MutAppPropertyArray.prototype.addElementByPrototype = function(protoFunctionPath, position) {
     if (this.prototypes.indexOf(protoFunctionPath) >= 0) {
-        var results = app.getPropertiesBySelector(protoFunctionPath);
+        var results = this._application.getPropertiesBySelector(protoFunctionPath);
         if (results && results.length > 0 && _.isFunction(results[0].value)) {
             // clone to be sure it's new JSON.parse(JSON.stringify())
             // в качестве контекста передается объект в котором нашли функцию-прототип
@@ -1825,5 +2040,85 @@ MutAppPropertyArray.prototype.addElementByPrototype = function(protoFunctionPath
     }
     else {
         console.error('MutAppPropertyArray.addElementByPrototype: prototype \''+protoFunctionPath+'\' is not specified for this property \''+this.propertyString+'\'');
+    }
+};
+/**
+ * Сериализовать MutAppPropertyArray
+ * Сохраняются только элементарные значения
+ *
+ * @returns {string}
+ */
+MutAppPropertyArray.prototype.serialize = function() {
+    var data = {
+        // special mark for deserialization
+        _mutAppConstructor: 'MutAppPropertyArray',
+        id: this.id,
+        propertyString: this.propertyString,
+        _value: this._serializeSubProperty(this._value, []),
+        _getValueTimestamp: this._getValueTimestamp,
+        _setValueTimestamp: this._setValueTimestamp
+    };
+    return JSON.stringify(data);
+};
+/**
+ *
+ * @param obj
+ * @param result
+ * @returns {{}}
+ * @private
+ */
+MutAppPropertyArray.prototype._serializeSubProperty = function(obj, result) {
+    result = result || {};
+    for (var key in obj) {
+        if (MutApp.Util.isMutAppProperty(obj[key])===true) {
+            result[key] = obj[key].serialize();
+        }
+        else if (MutApp.Util.isPrimitive(obj[key])) {
+            result[key] = obj[key];
+        }
+        else {
+            result[key] = this._serializeSubProperty(obj[key]);
+        }
+    }
+    return result;
+};
+/**
+ * Десериализовать свойство из json-строки
+ * В MutAppPropertyArray могут быть суб-свойства MutAppProperty
+ *
+ * @param {string} dataString
+ */
+MutAppPropertyArray.prototype.deserialize = function(dataString) {
+    var data = JSON.parse(dataString);
+    // предполагается, что в dataString только валидные значения. Проверки не делаются
+    for (var key in data) {
+        if (key === '_value') {
+            // значение это сложный объект
+            this._deserializeSubProperty(data[key]);
+            this[key] = data[key];
+        }
+        else {
+            this[key] = data[key];
+        }
+    };
+};
+/**
+ * Пройти рекурсивно по структуре объекта и создать все MutAppProperty
+ *
+ * @param data
+ * @private
+ */
+MutAppPropertyArray.prototype._deserializeSubProperty = function(data) {
+    for (var key in data) {
+        if (data[key].hasOwnProperty('_mutAppConstructor') === true) {
+            // создаем новое MutAppProperty прямо в сериализации
+            var param = data[key];
+            param.application = this._application;
+            param.model = this._model;
+            data[key] = new window[data[key]['_mutAppConstructor']](param);
+        }
+        else if (MutApp.Util.isPrimitive(data[key]) === false) {
+            this._deserializeSubProperty(data[key]);
+        }
     }
 };

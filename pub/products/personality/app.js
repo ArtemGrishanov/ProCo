@@ -17,6 +17,7 @@ var PersonalityApp = MutApp.extend({
             label: {RU: 'Показывать фоновую картинку', EN: 'Show background image'}
         },
         "id=pm quiz": {
+            label: {RU:'Вопросы теста',EN:'Personality quiz'},
             prototypes: ['id=pm quizProto1'],
             children: {
                 "id=pm quiz.{{number}}.question.text": {
@@ -25,6 +26,7 @@ var PersonalityApp = MutApp.extend({
             }
         },
         "id=pm results": {
+            label: {RU:'Результаты теста',EN:'Personality results'},
             prototypes: ['id=pm resultProto1'],
             children: {
                 "id=pm results.{{number}}.title": {
@@ -36,12 +38,13 @@ var PersonalityApp = MutApp.extend({
             }
         },
         // селекторы можно группировать
-        "id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText": {
-
-        },
-        "id=startScr backgroundImg": {
-
-        }
+//        "id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText": {
+//
+//        },
+        "id=startScr startHeaderText": { label: {RU: 'Заголовок', EN: 'Header'} },
+        "id=startScr startDescription": { label: {RU:'Описание', EN:'Description'} },
+        "id=startScr startButtonText": { label: {RU:'Текст кнопки', EN:'Start button text'} },
+        "id=startScr backgroundImg": { label: {RU:'Фоновая картинка',EN:'Background image'} }
     }),
     /**
      * Конструктор приложения: создание моделей и экранов

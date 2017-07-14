@@ -21,6 +21,129 @@ QUnit.test("MutApp test: basics", function( assert ) {
     assert.ok(!!app.id === true, 'app id');
 });
 
+QUnit.test("MutApp test: objects comparison", function( assert ) {
+    var app = new PersonalityApp({
+        defaults: null
+    });
+    app.start();
+    var m1 = new MutAppProperty({
+        application: app, // link with app and schema
+        model: app.model, // link with app and schema
+        propertyString: 'id=pm showBackgroundImage',
+        propertyName: 'showBackgroundImage',
+        value: true
+    });
+    var m2 = new MutAppProperty({
+        application: app, // link with app and schema
+        model: app.model, // link with app and schema
+        propertyString: 'id=pm showBackgroundImage',
+        propertyName: 'showBackgroundImage',
+        value: true
+    });
+    var m3 = new MutAppPropertyArray({
+        application: app, // link with app and schema
+        model: app.model, // link with app and schema
+        propertyString: 'id=pm results',
+        propertyName: 'results',
+        value: []
+    });
+    var m4 = new MutAppPropertyArray({
+        application: app, // link with app and schema
+        model: app.model, // link with app and schema
+        propertyString: 'id=pm results',
+        propertyName: 'results',
+        value: []
+    });
+    var o1 = {}, o2 = {};
+    var o3 = {v1:'123', v2:true, v3:2, v4:null, v5:undefined},
+        o4 = {v1:'123', v2:true, v3:2, v4:null, v5:undefined},
+        o5 = {v1:'123', v2:true, v3:2, v4:null, v5:''},
+        o6 = {v1:{ v2:{ v3:[] }, v4:8 }, v5:''},
+        o7 = {v1:{ v2:{ v3:[] }, v4:8 }, v5:''},
+        o8 = {v1: m1, v5:''},
+        o9 = {v1: m2, v5:''},
+        o10 = [o1, '2', o6, [o3]],
+        o11 = [o2, '2', o7, [o4]]
+        ;
+    var f1 = function() {var t=0;console.log(t)},
+        f2 = function() {var t=0;console.log(t)};
+
+    assert.ok(MutApp.Util.deepCompare(o1, o2));
+    assert.ok(MutApp.Util.deepCompare(o3, o4));
+    assert.ok(MutApp.Util.deepCompare(o3, o5)===false);
+    assert.ok(MutApp.Util.deepCompare(o6, o7));
+    assert.ok(MutApp.Util.deepCompare(f1, f2));
+    assert.ok(MutApp.Util.deepCompare(o10, o11));
+
+    assert.ok(MutApp.Util.deepCompare(m1, m2)===false); // different unic ids
+    m1.id = m2.id; // hack
+    assert.ok(MutApp.Util.deepCompare(m1, m2));
+    assert.ok(m1.compare(m2) === true);
+    assert.ok(MutApp.Util.deepCompare(o8, o9));
+
+    m1.setValue('primitive values only');
+    assert.ok(m1.compare(m2) === false);
+    m2.setValue('primitive values only');
+    assert.ok(m1.compare(m2));
+
+    assert.ok(MutApp.Util.deepCompare(m3, m4)===false); // different unic ids
+    m3.id = m4.id; // hack
+    assert.ok(MutApp.Util.deepCompare(m3, m4));
+    assert.ok(m3.compare(m4) === true);
+    m3.addElementByPrototype('id=pm resultProto1');
+    assert.ok(m3.compare(m4) === false);
+    m4.addElementByPrototype('id=pm resultProto1');
+
+    m3._value[0].id= m4._value[0].id;
+    m3._value[0].title.id= m4._value[0].title.id;
+    m3._value[0].description.id= m4._value[0].description.id;
+    assert.ok(m3.compare(m4));
+});
+
+/**
+ * Тест сериализации
+ */
+QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityTest was taken for test.", function( assert ) {
+//    var model1 = new PersonalityModel();
+//    var model2 = new PersonalityModel();
+
+    var app = new PersonalityApp({
+        defaults: null // no defaults
+    });
+    app.start();
+
+    assert.ok(app._mutappProperties.length === 7);
+    assert.ok(app.model.attributes.results.getValue().length === 0);
+    app.model.attributes.results.addElementByPrototype('id=pm resultProto1');
+    checkResult(app, 1);
+    assert.ok(app._mutappProperties.length === 9);
+    var serRes = app.model.attributes.results.serialize();
+    assert.ok(serRes.length > 30);
+    var savedResults1 = app.model.attributes.results; // сохраняем первую версию объекта для последующего сравнения
+
+    var app = new PersonalityApp({
+        defaults: null // no defaults
+    });
+    app.start();
+
+    assert.ok(app._mutappProperties.length === 7);
+    checkResult(app, 0);
+    app.model.attributes.results.deserialize(serRes);
+    checkResult(app, 1);
+    assert.ok(app._mutappProperties.length === 9);
+    assert.ok(app.model.attributes.results.compare(savedResults1));
+
+    function checkResult(app, expectedResultsCount) {
+        assert.ok(app.model.attributes.results.getValue().length === expectedResultsCount);
+        assert.ok(app._mutappProperties.indexOf(app.model.attributes.results) >= 0);
+        var resValue = app.model.attributes.results.getValue();
+        for (var i = 0; i < resValue.length; i++) {
+            assert.ok(app._mutappProperties.indexOf(resValue[i].title) >= 0);
+            assert.ok(app._mutappProperties.indexOf(resValue[i].description) >= 0);
+        }
+    }
+});
+
 /**
  * Проверить базовые операции с MutAppProperties свойствами.
  * Особенно с массивами и вложенными свойствами
@@ -31,7 +154,7 @@ QUnit.test("MutApp test: MutAppProperties basic operations. PersonalityTest was 
     });
     app.start();
 
-    assert.ok(app._mutappProperties.length === 6, '_mutappProperties length');
+
 
     var quizProperty = app.getPropertiesBySelector('id=pm quiz')[0].value;
     assert.ok(quizProperty instanceof MutAppPropertyArray === true);
