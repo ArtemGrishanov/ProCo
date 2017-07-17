@@ -9,6 +9,7 @@ QUnit.test("MutApp test: basics", function( assert ) {
 
     var AppClass = MutApp.extend({
         inited: false,
+        mutAppSchema: new MutAppSchema(),
         initialize: function() {
             this.inited = true;
         }
@@ -21,39 +22,47 @@ QUnit.test("MutApp test: basics", function( assert ) {
     assert.ok(!!app.id === true, 'app id');
 });
 
+QUnit.test("MutApp test: getPropertiesBySelector", function( assert ) {
+    var app = new PersonalityApp({
+        defaults: null
+    });
+    app.start();
+    app.model.attributes.results.addElementByPrototype('id=pm resultProto1');
+    app.model.attributes.results.addElementByPrototype('id=pm resultProto1');
+
+    var quizProperty = app.getPropertiesBySelector('id=pm quiz')[0].value;
+    assert.ok(quizProperty instanceof MutAppPropertyArray === true);
+    assert.ok(quizProperty.getValue().length === 0);
+
+    var resultsProperty = app.getPropertiesBySelector('id=pm results')[0].value;
+    assert.ok(resultsProperty instanceof MutAppPropertyArray === true);
+    assert.ok(resultsProperty.getValue().length === 2); // two prototypes was added before
+
+    assert.ok(app.getPropertiesBySelector('id=pm results.{{number}}.title').length === 2);
+
+    var title0Property = app.getPropertiesBySelector('id=pm results.0.title')[0].value;
+    assert.ok(title0Property instanceof MutAppProperty === true);
+    assert.ok(typeof title0Property.getValue() === 'string');
+
+});
+
 QUnit.test("MutApp test: objects comparison", function( assert ) {
     var app = new PersonalityApp({
         defaults: null
     });
     app.start();
-    var m1 = new MutAppProperty({
-        application: app, // link with app and schema
-        model: app.model, // link with app and schema
-        propertyString: 'id=pm showBackgroundImage',
-        propertyName: 'showBackgroundImage',
-        value: true
+    assert.ok(app.compare(app));
+
+    var app2 = new PersonalityApp({
+        defaults: null
     });
-    var m2 = new MutAppProperty({
-        application: app, // link with app and schema
-        model: app.model, // link with app and schema
-        propertyString: 'id=pm showBackgroundImage',
-        propertyName: 'showBackgroundImage',
-        value: true
-    });
-    var m3 = new MutAppPropertyArray({
-        application: app, // link with app and schema
-        model: app.model, // link with app and schema
-        propertyString: 'id=pm results',
-        propertyName: 'results',
-        value: []
-    });
-    var m4 = new MutAppPropertyArray({
-        application: app, // link with app and schema
-        model: app.model, // link with app and schema
-        propertyString: 'id=pm results',
-        propertyName: 'results',
-        value: []
-    });
+    app2.start();
+
+    var m1 = app.model.attributes.showBackgroundImage;
+    var m2 = app2.model.attributes.showBackgroundImage;
+    var m3 = app.model.attributes.results;
+    var m4 = app2.model.attributes.results;
+
     var o1 = {}, o2 = {};
     var o3 = {v1:'123', v2:true, v3:2, v4:null, v5:undefined},
         o4 = {v1:'123', v2:true, v3:2, v4:null, v5:undefined},
@@ -98,15 +107,16 @@ QUnit.test("MutApp test: objects comparison", function( assert ) {
     m3._value[0].title.id= m4._value[0].title.id;
     m3._value[0].description.id= m4._value[0].description.id;
     assert.ok(m3.compare(m4));
+
+    // сравнение приложения
+    assert.ok(app.compare(app));
+    assert.ok(app2.compare(app) === false);
 });
 
 /**
  * Тест сериализации
  */
 QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityTest was taken for test.", function( assert ) {
-//    var model1 = new PersonalityModel();
-//    var model2 = new PersonalityModel();
-
     var app = new PersonalityApp({
         defaults: null // no defaults
     });
@@ -202,6 +212,7 @@ QUnit.test("MutApp test: Screen", function( assert ) {
 QUnit.test("MutApp test: app size", function( assert ) {
     var AppClass = MutApp.extend({
         screenRoot: $('#id-swimming_test'),
+        mutAppSchema: new MutAppSchema(),
         initialize: function() {
             this.inited = true;
         }
@@ -216,73 +227,23 @@ QUnit.test("MutApp test: app size", function( assert ) {
 });
 
 QUnit.test("MutApp test: Models", function( assert ) {
-    var SwimmingTest = MutApp.extend({
-
-        testName: 'swimmingTest',
-
-        undefinedProperty: undefined,
-
-        screenRoot: $('#id-swimming_test'),
-
-        initialize: function(param) {
-            // связь модели с приложением swimming test
-            var tm = this.addModel(new PersonalityModel({
-                application: this,
-                customAttr1: 'customValue1'
-            }));
-
-            this.addScreen(new StartScreen({
-                model: tm,
-                id: 'welcomeCustomId',
-                screenRoot: this.screenRoot
-            }));
-
-            // для всех вопросов создается по отдельному экрану
-            var quiz = tm.get('quiz');
-            var qs = null;
-            var id = null;
-            for (var i = 0; i < quiz.length; i++) {
-                id = 'questionScreen'+i;
-                qs = new QuestionScreen({
-                    id: id,
-                    type: 'question',
-                    model: tm,
-                    questionId: quiz[i].id,
-                    screenRoot: this.screenRoot
-                });
-                this.addScreen(qs);
-            }
-
-            // для всех результатов по отдельному экрану
-            var results = tm.get('results');
-            var rs = null;
-            for (var i = 0; i < results.length; i++) {
-                id = 'resultScreen'+i;
-                rs = new ResultScreen({
-                    id: id,
-                    model: tm,
-                    resultId: results[i].id,
-                    screenRoot: this.screenRoot
-                });
-                this.addScreen(rs);
-            }
-        }
-    });
-
-    var app = new SwimmingTest({
+    var app = new PersonalityApp({
         defaults: {
-            "testName=swimmingTest appAttr1": 'appData1',
-            "testName=swimmingTest appAttr2": true,
+            "type=personality appAttr1": 'appData1',
+            "type=personality appAttr2": true,
 
             "invalid": 'value',
 
-            "id=tm data1": "12345",
-            "id=tm  data2": "5678",
-            "id=welcomeCustomId data1": "welcomeCustomId",
-            "id=welcomeCustomId data2": false,
-            "type=question typeData": 23
+            "id=pm data1": "12345",
+            "id=pm  data2": "5678",
+            "id=startScr data1": "welcomeCustomId",
+            "id=startScr data2": false,
+            "type=questions typeData": 23
         }
     });
+    app.model.attributes.results.addElementByPrototype('id=pm resultProto1');
+    app.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
+    app.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
 
     assert.ok(app === app._models[0].application, 'application in model');
     assert.ok(app._parsedDefaults.length === 7, 'parsed values');
@@ -296,54 +257,52 @@ QUnit.test("MutApp test: Models", function( assert ) {
     assert.ok(app._screens[0].data1 === 'welcomeCustomId', 'default value has set');
     assert.ok(app._screens[0].data2 === false, 'default value has set');
 
-    assert.ok(app._screens[1].typeData === 23, 'default value has set');
     assert.ok(app._screens[2].typeData === 23, 'default value has set');
 
-    var ent1 = app.getEntities('type', 'question');
-    assert.ok(ent1 && ent1.length === 3, 'getAllEntities');
+    var ent1 = app.getEntities('type', 'questions');
+    assert.ok(ent1 && ent1.length === 2, 'getAllEntities');
 
-    var ent2 = app.getEntities('id', 'tm');
+    var ent2 = app.getEntities('id', 'pm');
     assert.ok(ent2 && ent2.length === 1, 'getAllEntities');
 
-    var ent3 = app.getEntities('testName', 'swimmingTest');
+    var ent3 = app.getEntities('type', 'personality');
     assert.ok(ent3[0] === app && ent3.length === 1, 'getAllEntities');
 
-    var p1 = app.getPropertiesBySelector('id=tm data1');
+    var p1 = app.getPropertiesBySelector('id=pm data1');
     assert.ok(p1 !== null, 'getPropertiesBySelector');
     assert.ok(p1.length === 1, 'getPropertiesBySelector');
 
-    var p2 = app.getPropertiesBySelector('id=tm quiz.{{number}}.question.text');
+    var p2 = app.getPropertiesBySelector('id=pm quiz.{{number}}.question.text');
     assert.ok(p2 !== null, 'getPropertiesBySelector');
-    assert.ok(p2.length === 3, 'getPropertiesBySelector');
+    assert.ok(p2.length === 2, 'getPropertiesBySelector');
     assert.ok(p2[0].path === 'quiz.0.question.text', 'getPropertiesBySelector path');
-    assert.ok(typeof p2[0].value === 'string', 'getPropertiesBySelector value');
+    assert.ok(MutApp.Util.isMutAppProperty(p2[0].value) === true, 'getPropertiesBySelector value');
     assert.ok(p2[1].path === 'quiz.1.question.text', 'getPropertiesBySelector path');
-    assert.ok(typeof p2[1].value === 'string', 'getPropertiesBySelector value');
-    assert.ok(p2[2].path === 'quiz.2.question.text', 'getPropertiesBySelector path');
-    assert.ok(typeof p2[2].value === 'string', 'getPropertiesBySelector value');
+    assert.ok(MutApp.Util.isMutAppProperty(p2[1].value) === true, 'getPropertiesBySelector value');
 
-    var p3 = app.getPropertiesBySelector('type=question showLogo');
+    var p3 = app.getPropertiesBySelector('type=questions showLogo');
     assert.ok(p3 !== null, 'getPropertiesBySelector');
     assert.ok(p3.length === 1, 'getPropertiesBySelector');
     assert.ok(p3[0].path === 'showLogo', 'getPropertiesBySelector');
-    assert.ok(p3[0].value === true, 'getPropertiesBySelector');
+    assert.ok(p3[0].value.getValue() === true, 'getPropertiesBySelector');
 
     // поиск по атрибутам модели
-    var p4 = app.getPropertiesBySelector('customAttr1=customValue1 data1');
+    var p4 = app.getPropertiesBySelector('id=pm state');
     assert.ok(p4 !== null, 'getPropertiesBySelector');
     assert.ok(p4.length === 1, 'getPropertiesBySelector');
+    assert.ok(p4[0].value === 'welcome', 'getPropertiesBySelector');
 
     // undefined значения также должны выбираться
-    var p5 = app.getPropertiesBySelector('testName=swimmingTest undefinedProperty');
+    var p5 = app.getPropertiesBySelector('id=pm currentQuestionIndex');
     assert.ok(p5 !== null, 'getPropertiesBySelector');
     assert.ok(p5.length === 1, 'getPropertiesBySelector');
-    assert.ok(p5[0].path === 'undefinedProperty', 'getPropertiesBySelector');
+    assert.ok(p5[0].path === 'currentQuestionIndex', 'getPropertiesBySelector');
     assert.ok(p5[0].value === undefined, 'getPropertiesBySelector');
 
     // проверка установки сложных свойств, которые конфликтуют друг с другом
-    var app2 = new SwimmingTest({
+    var app2 = new PersonalityApp({
         defaults: {
-            "id=tm objectValue": [
+            "id=pm objectValue": [
                 {
                     url: 'http://example.org/1.jpg',
                     text: 'qwerty'
@@ -353,76 +312,53 @@ QUnit.test("MutApp test: Models", function( assert ) {
                     text: 'asdfg'
                 }
             ],
-            "id=tm objectValue.0.text": "5678",
-            "id=tm objectValue.1.url": 'http://example.org/333.jpg'
+            "id=pm objectValue.0.text": "5678",
+            "id=pm objectValue.1.url": 'http://example.org/333.jpg'
         }
     });
-    assert.ok(app2.getPropertiesBySelector('id=tm objectValue.0.text')[0].value === '5678');
-    assert.ok(app2.getPropertiesBySelector('id=tm objectValue.0.url')[0].value === 'http://example.org/1.jpg');
-    assert.ok(app2.getPropertiesBySelector('id=tm objectValue.1.text')[0].value === 'asdfg');
-    assert.ok(app2.getPropertiesBySelector('id=tm objectValue.1.url')[0].value === 'http://example.org/333.jpg');
+    assert.ok(app2.getPropertiesBySelector('id=pm objectValue.0.text')[0].value === '5678');
+    assert.ok(app2.getPropertiesBySelector('id=pm objectValue.0.url')[0].value === 'http://example.org/1.jpg');
+    assert.ok(app2.getPropertiesBySelector('id=pm objectValue.1.text')[0].value === 'asdfg');
+    assert.ok(app2.getPropertiesBySelector('id=pm objectValue.1.url')[0].value === 'http://example.org/333.jpg');
 
     // альтернативная форма передачи параметра в виде массива
-    var app3 = new SwimmingTest({
+    var app3 = new PersonalityApp({
         defaults: [
             {
-                "id=tm objectValue.0.text": "5678",
-                "id=tm objectValue.1.url": 'http://example.org/333.jpg',
+                "id=pm objectValue.0.text": "5678",
+                "id=pm objectValue.1.url": 'http://example.org/333.jpg',
                 "type=question data1": 'value1'
             },
             {
-                "id=tm objectValue": [
+                "id=pm objectValue": [
                     {
                         url: 'http://example.org/1.jpg',
                         text: 'qwerty'
                     },
                     {
-                        url: 'http://example.org/2.jpg',
-//                        text: 'asdfg'
+                        url: 'http://example.org/2.jpg'
                     }
-                ],
-                "type=question data2": 'value2',
+                ]
             }
         ]
     });
-    assert.ok(app3.getPropertiesBySelector('id=tm objectValue.0.text')[0].value === 'qwerty');
-    assert.ok(app3.getPropertiesBySelector('id=tm objectValue.0.url')[0].value === 'http://example.org/1.jpg');
-    assert.ok(app3.getPropertiesBySelector('id=tm objectValue.1.text') === null);
-    assert.ok(app3.getPropertiesBySelector('id=tm objectValue.1.url')[0].value === 'http://example.org/2.jpg');
-    assert.ok(app3.getPropertiesBySelector('type=question data2')[0].value === 'value2');
+    assert.ok(app3.getPropertiesBySelector('id=pm objectValue.0.text')[0].value === 'qwerty');
+    assert.ok(app3.getPropertiesBySelector('id=pm objectValue.0.url')[0].value === 'http://example.org/1.jpg');
+    assert.ok(app3.getPropertiesBySelector('id=pm objectValue.1.text') === null);
+    assert.ok(app3.getPropertiesBySelector('id=pm objectValue.1.url')[0].value === 'http://example.org/2.jpg');
 });
 
 QUnit.test("MutApp test: multiapp", function( assert ) {
-    var SwimmingTest = MutApp.extend({
-        screenRoot: $('#id-swimming_test'),
-        initialize: function(param) {
-            var tm = this.addModel(new PersonalityModel({
-                application: this
-            }));
-            this.addScreen(new StartScreen({
-                model: tm,
-                screenRoot: this.screenRoot
-            }));
-            this.addScreen(new QuestionScreen({
-                model: tm,
-                questionId: tm.attributes.quiz[0].id,
-                screenRoot: this.screenRoot
-            }));
-            this.addScreen(new ResultScreen({
-                model: tm,
-                resultId: tm.attributes.results[0].id,
-                screenRoot: this.screenRoot
-            }));
-        }
+    var app1 = new PersonalityApp({
     });
+    app1.model.attributes.results.addElementByPrototype('id=pm resultProto1');
 
-    var app1 = new SwimmingTest({
+    var app2 = new PersonalityApp({
     });
+    app2.model.attributes.results.addElementByPrototype('id=pm resultProto1');
+    app2.model.attributes.results.addElementByPrototype('id=pm resultProto1');
 
-    var app2 = new SwimmingTest({
-    });
-
-    assert.ok(app1._screens.length === 3, 'Screens length 1');
+    assert.ok(app1._screens.length === 2, 'Screens length 1');
     assert.ok(app1._models.length === 1, 'Models length 1');
 
     assert.ok(app2._screens.length === 3, 'Screens length 2');
@@ -430,34 +366,7 @@ QUnit.test("MutApp test: multiapp", function( assert ) {
 });
 
 QUnit.test("MutApp test: Sharing", function( assert ) {
-    var SwimmingTest = MutApp.extend({
-        screenRoot: $('#id-swimming_test'),
-        initialize: function(param) {
-            var tm = this.addModel(new TestModel({
-                application: this
-            }));
-            this.addScreen(new StartScreen({
-                model: tm,
-                screenRoot: this.screenRoot
-            }));
-            this.addScreen(new QuestionScreen({
-                model: tm,
-                questionId: tm.attributes.quiz[0].id,
-                screenRoot: this.screenRoot
-            }));
-            this.addScreen(new ResultScreen({
-                model: tm,
-                resultId: tm.attributes.results[0].id,
-                screenRoot: this.screenRoot
-            }));
-
-            // способ указания этих атрибутов уникален для каждого проекта
-            this.title = this.getPropertiesBySelector('id=startScr startHeaderText');
-            this.description = this.getPropertiesBySelector('id=startScr startDescription');
-        }
-    });
-
-    var app = new SwimmingTest({
+    var app = new PersonalityApp({
     });
 
     assert.ok(!!app.title===true, 'title in app');
@@ -473,12 +382,12 @@ QUnit.test("MutApp test: Sharing", function( assert ) {
 
 QUnit.test("MutApp test: clarifyElement", function( assert ) {
     var e = $(
-        '<div class="modal __active js-back_color js-back_img" data-app-property="type=result backgroundImg"><div class="modal_cnt info"><div class="info_title" data-app-property="id=tm results.<%=currentResultIndex%>.title"><b class="b_title"><%=title%></b></div><div class="info_tx" data-app-property="id=tm results.<%=currentResultIndex%>.description"><%=description%></div><div class="info_f"><div class="button __sec js-next js-restart js-test_btn">Пройти тест еще раз</div><!--<div class="button js-details">Подробности</div>--></div><div class="js-mutapp_share_fb fb_share" data-app-property="type=result fbSharePosition"></div><div class="foo_class"><div class="foo_2_class"><div class="info_tx">Useful element</div></div></div></div></div>'
+        '<div class="modal __active js-back_color js-back_img" data-app-property="type=result backgroundImg"><div class="modal_cnt info"><div class="info_title" data-app-property="id=pm results.<%=currentResultIndex%>.title"><b class="b_title"><%=title%></b></div><div class="info_tx" data-app-property="id=pm results.<%=currentResultIndex%>.description"><%=description%></div><div class="info_f"><div class="button __sec js-next js-restart js-test_btn">Пройти тест еще раз</div><!--<div class="button js-details">Подробности</div>--></div><div class="js-mutapp_share_fb fb_share" data-app-property="type=result fbSharePosition"></div><div class="foo_class"><div class="foo_2_class"><div class="info_tx">Useful element</div></div></div></div></div>'
     );
 
     var ce = MutApp.Util.clarifyElement(e, ['modal','modal_cnt','info_title','info_tx', 'b_title']);
 
-    var expectedHtml = '<div class="modal __active js-back_color js-back_img" data-app-property="type=result backgroundImg"><div class="modal_cnt info"><div class="info_title" data-app-property="id=tm results.<%=currentResultIndex%>.title"><b class="b_title">&lt;%=title%&gt;</b></div><div class="info_tx" data-app-property="id=tm results.<%=currentResultIndex%>.description">&lt;%=description%&gt;</div><div class="foo_class"><div class="foo_2_class"><div class="info_tx">Useful element</div></div></div></div></div>';
+    var expectedHtml = '<div class="modal __active js-back_color js-back_img" data-app-property="type=result backgroundImg"><div class="modal_cnt info"><div class="info_title" data-app-property="id=pm results.<%=currentResultIndex%>.title"><b class="b_title">&lt;%=title%&gt;</b></div><div class="info_tx" data-app-property="id=pm results.<%=currentResultIndex%>.description">&lt;%=description%&gt;</div><div class="foo_class"><div class="foo_2_class"><div class="info_tx">Useful element</div></div></div></div></div>';
     assert.ok($('<div></div>').append(ce).html()===expectedHtml, 'clarifyElement: ok');
 });
 

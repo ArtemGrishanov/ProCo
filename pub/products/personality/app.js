@@ -44,7 +44,8 @@ var PersonalityApp = MutApp.extend({
         "id=startScr startHeaderText": { label: {RU: 'Заголовок', EN: 'Header'} },
         "id=startScr startDescription": { label: {RU:'Описание', EN:'Description'} },
         "id=startScr startButtonText": { label: {RU:'Текст кнопки', EN:'Start button text'} },
-        "id=startScr backgroundImg": { label: {RU:'Фоновая картинка',EN:'Background image'} }
+        "id=startScr backgroundImg": { label: {RU:'Фоновая картинка',EN:'Background image'} },
+        "type=questions showLogo": { label: {RU:'Показывать лого',EN:'Show logo'} }
     }),
     /**
      * Конструктор приложения: создание моделей и экранов
@@ -128,8 +129,8 @@ var PersonalityApp = MutApp.extend({
 //        this.setShareEntities(sEntities);
 
         // способ указания этих атрибутов уникален для каждого проекта
-        this.title = this.getPropertiesBySelector('id=startScr startHeaderText');
-        this.description = this.getPropertiesBySelector('id=startScr startDescription');
+        this.title = this.getPropertiesBySelector('id=startScr startHeaderText')[0].value.getValue();
+        this.description = this.getPropertiesBySelector('id=startScr startDescription')[0].value.getValue();
 
     },
 
@@ -167,6 +168,7 @@ var PersonalityApp = MutApp.extend({
         for (var i = 0; i < this.resultsScreens.length; i++) {
             this.deleteScreen(this.resultsScreens[i]);
         }
+        var sEntities = [];
         this.resultsScreens = [];
         var resultsValue = this.model.get('results').getValue();
         var rs = null;
@@ -182,7 +184,29 @@ var PersonalityApp = MutApp.extend({
             this.addScreen(rs);
             this.hideScreen(rs);
             this.resultsScreens.push(rs);
+
+            // выравнивание заголовка и пояснения по вертикали
+            var viewForShare = MutApp.Util.clarifyElement(rs.$el, ['modal','modal_cnt','info_title','info_tx','b_title']);
+            var titleView = viewForShare.find('.info_title').css('padding','0 50px 0 50px').css('margin','0');
+            var th = titleView.outerHeight(false);
+            var descView = viewForShare.find('.info_tx').css('padding','0 50px 0 50px').css('margin','0');
+            var dh = descView.outerHeight(false);
+            var ind = (this.height-dh-th)/4;
+            titleView.css('padding-top',ind+'px');
+            descView.css('padding-top',ind+'px');
+
+            // создать сущности для публикации
+            // в тесте это количество результатов
+            sEntities.push({
+                id: id,
+                title: this.startHeaderText,
+                description: this.startDescription,
+                // удалить элементы, оставить только те которые в whitelist
+                view: viewForShare,
+                imgUrl: null
+            });
         }
+        this.setShareEntities(sEntities);
     },
 
     start: function() {

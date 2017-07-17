@@ -49,7 +49,7 @@ var QuestionScreen = MutApp.Screen.extend({
     topColontitleText: 'Текст колонтитула',
     backgroundImg: null,
     logoPosition: {top: 200, left: 200},
-    showLogo: true,
+    showLogo: null,
     shadowEnable: false,
 
     /**
@@ -99,6 +99,16 @@ var QuestionScreen = MutApp.Screen.extend({
             .css('min-height','100%'));
         param.screenRoot.append(this.$el);
         this.questionId = param.questionId;
+
+        this.showLogo = this.model.application.getProperty('type=questions showLogo');
+        if (!this.showLogo) {
+            this.showLogo = new MutAppProperty({
+                application: this.model.application,
+                model: this.model,
+                propertyString: 'type=questions showLogo',
+                value: true
+            });
+        }
 
         // определяем индекс вопроса, за который отвечает этот экран
         var q = this.model.getQuestionById(this.questionId);
@@ -152,7 +162,7 @@ var QuestionScreen = MutApp.Screen.extend({
 
         // установка свойств логотипа
         var $l = this.$el.find('.js-question_logo');
-        if (this.showLogo === true) {
+        if (this.showLogo.getValue() === true) {
             $l.css('backgroundImage','url('+this.model.get('logoUrl')+')');
             $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
         }

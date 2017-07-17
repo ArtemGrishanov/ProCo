@@ -316,7 +316,7 @@ var PersonalityModel = MutApp.Model.extend({
                     model: this,
                     application: this.application,
                     propertyName: null,
-                    propertyString: 'id=pm quiz.'+app.model.attributes.quiz.getValue().length+'.question.text',
+                    propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.question.text',
                     value: 'Your favourite music?'
                 })
             },
@@ -358,7 +358,7 @@ var PersonalityModel = MutApp.Model.extend({
                 ]
             }
         };
-        app.model._makeUidForQuizElement(result);
+        this._makeUidForQuizElement(result);
         return result;
     },
 
@@ -374,14 +374,14 @@ var PersonalityModel = MutApp.Model.extend({
                 model: this,
                 application: this.application,
                 propertyName: null,
-                propertyString: 'id=pm results.'+this.attributes.quiz.getValue().length+'.title',
+                propertyString: 'id=pm results.'+this.attributes.results.getValue().length+'.title',
                 value: 'Result title'
             }),
             description: new MutAppProperty({
                 model: this,
                 application: this.application,
                 propertyName: null,
-                propertyString: 'id=pm results.'+this.attributes.quiz.getValue().length+'.description',
+                propertyString: 'id=pm results.'+this.attributes.results.getValue().length+'.description',
                 value: 'Result description'
             })
         };

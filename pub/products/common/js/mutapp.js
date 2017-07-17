@@ -157,6 +157,11 @@ var MutApp = function(param) {
         }
     };
 
+    // должна быть объявлена схема
+    if (this.mutAppSchema instanceof MutAppSchema !== true) {
+        throw new Error('MutApp.constructor: mutAppSchema is not defined in mutapp');
+    }
+
     // далее установка динамических свойств для приложения
     if (param) {
         if (this.screenRoot) {
@@ -492,8 +497,35 @@ MutApp.prototype.getPropertiesBySelector = function(selector) {
     }
     return null;
 };
-
 /**
+ * Найти свойство по propertyString в списке _mutAppProperties
+ * @param {string} propertyString
+ */
+MutApp.prototype.getProperty = function(propertyString) {
+    for (var i = 0; i < this._mutappProperties.length; i++) {
+        if (this._mutappProperties[i].propertyString === propertyString) {
+            return this._mutappProperties[i];
+        }
+    }
+    return null;
+};
+/**
+ * Найти MutAppProperty свойства по запросу
+ * @param {*} query
+ * @returns {Array}
+ */
+MutApp.prototype.find = function(query) {
+    var result = [], p = null;
+    for (var i = 0; i < this._mutappProperties.length; i++) {
+        p = this._mutappProperties[i];
+        if (p.propertyString.indexOf(query) >= 0 || p._value == query || (typeof p._value === 'string' && p._value.indexOf(query) >= 0)) {
+            result.push(p);
+        }
+    }
+    return result;
+};
+/**
+ *
  * Установить значение в приложение по апп-строке
  * Например app.setPropertyByAppString('id=mm pins.0.data.text','new value');
  *
@@ -553,7 +585,7 @@ MutApp.prototype.setPropertyByAppString2 = function(appString, value) {
  * @param {MutAppProperty} mutAppProperty
  */
 MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
-    if (this._mutappProperties.indexOf(mutAppProperty) < 0) {
+    if (this._mutappProperties.indexOf(mutAppProperty) < 0 && this.getProperty(mutAppProperty.propertyString) === null) {
         // проверить, что такое mutAppProperty свойство существует в схеме.
         var prInfo = this.mutAppSchema.getPropertyDescription(mutAppProperty.propertyString);
         if (!prInfo) {
@@ -571,8 +603,7 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
         this._mutappProperties.push(mutAppProperty);
     }
     else {
-        console.error('MutApp.linkMutAppProperty: mutAppProperty is already linked=\''+mutAppProperty.propertyString+'\'');
-        return -1;
+        throw new Error('MutApp.linkMutAppProperty: mutAppProperty is already linked=\''+mutAppProperty.propertyString+'\'');
     }
 };
 /**
@@ -605,6 +636,30 @@ MutApp.prototype.serialize = function() {
         data[p.propertyString] = p.serialize();
     }
     return JSON.stringify(data);
+};
+/**
+ * Сравнить два приложения
+ *
+ * @param {MutApp} otherApp
+ * @param param.mutAppProperties - сравнить свойства MutAppProperties
+ */
+MutApp.prototype.compare = function(otherApp, param) {
+    param = param || {};
+    param.mutAppProperties = (typeof param.mutAppProperties === 'boolean') ? param.mutAppProperties: true;
+    for (var i = 0; i < this._mutappProperties.length; i++) {
+        var ps = this._mutappProperties[i].propertyString;
+        var res = otherApp.getPropertiesBySelector(ps);
+        if (res && res.length === 1 && MutApp.Util.isMutAppProperty(res[0].value)) {
+            var compRes = this._mutappProperties[i].compare(res[0].value);
+            if (compRes === false) {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    return true;
 };
 
 /**
@@ -1170,6 +1225,11 @@ MutApp.Util = {
         }
         else {
             path = '';
+        }
+        if (MutApp.Util.isMutAppProperty(obj) === true) {
+            // для MutAppProperty надо искать свойство в его значении
+            // например id=pm results.0.title - индекс 0 надо брать у значения массива, а не обертки MutAppProperty конечно
+            obj = obj._value;
         }
         // у модели свойства надо брать через attributes
         var isModel = obj instanceof MutApp.Model;
