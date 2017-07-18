@@ -158,7 +158,10 @@ var MutApp = function(param) {
     };
 
     // должна быть объявлена схема
-    if (this.mutAppSchema instanceof MutAppSchema !== true) {
+    if (this.mutAppSchema instanceof MutAppSchema === true) {
+        this.createCssMutAppProperties(this.mutAppSchema._schema);
+    }
+    else {
         throw new Error('MutApp.constructor: mutAppSchema is not defined in mutapp');
     }
 
@@ -604,6 +607,21 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
     }
     else {
         throw new Error('MutApp.linkMutAppProperty: mutAppProperty is already linked=\''+mutAppProperty.propertyString+'\'');
+    }
+};
+/**
+ * По схеме создать все css свойства
+ * @param schema
+ */
+MutApp.prototype.createCssMutAppProperties = function(schema) {
+    for (var selector in schema) {
+        if (MutApp.Util.isCssMutAppPropertySelector(selector) === true) {
+            var param = JSON.parse(JSON.stringify(schema[selector]));
+            param.application = this;
+            // в качестве propertyString ставим selector
+            param.propertyString = selector;
+            var cmp = new CssMutAppProperty(param);
+        }
     }
 };
 /**
@@ -1573,6 +1591,16 @@ MutApp.Util = {
         }
 
         return true;
+    },
+
+    /**
+     *
+     * Пример такого селектора ".js-start_header fontSize"
+     * @param str
+     * @returns {boolean}
+     */
+    isCssMutAppPropertySelector: function(str) {
+        return !!str.match(/^\.([A-z0-9]|-|_)+(\s)+([A-z]|\-)+$/i);
     }
 };
 
@@ -1982,7 +2010,6 @@ MutAppProperty.prototype.setValue = function(newValue) {
         }
     }
 };
-
 /**
  *
  */
@@ -1990,7 +2017,6 @@ MutAppProperty.prototype.getValue = function() {
     this._getValueTimestamp = new Date().getTime();
     return this._value;
 };
-
 /**
  * Привязать событие к свойству
  * Например, eventType='change' об изменении свойства
@@ -2030,6 +2056,19 @@ MutAppProperty.prototype.trigger = function(eventType, data) {
         }
     }
 };
+
+
+/**
+ * Класс обертка для управления css свойствами
+ * @param {object} param
+ * @constructor
+ */
+var CssMutAppProperty = function(param) {
+    this.initialize(param);
+};
+// наследуем от простого базового свойства
+_.extend(CssMutAppProperty.prototype, MutAppProperty.prototype);
+
 
 /**
  * Класс-обертка для управления массивом

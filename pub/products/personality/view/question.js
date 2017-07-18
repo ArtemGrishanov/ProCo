@@ -102,6 +102,7 @@ var QuestionScreen = MutApp.Screen.extend({
 
         this.showLogo = this.model.application.getProperty('type=questions showLogo');
         if (!this.showLogo) {
+            // свойство одно на все экраны с вопросами
             this.showLogo = new MutAppProperty({
                 application: this.model.application,
                 model: this.model,

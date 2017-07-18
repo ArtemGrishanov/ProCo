@@ -45,7 +45,39 @@ var PersonalityApp = MutApp.extend({
         "id=startScr startDescription": { label: {RU:'Описание', EN:'Description'} },
         "id=startScr startButtonText": { label: {RU:'Текст кнопки', EN:'Start button text'} },
         "id=startScr backgroundImg": { label: {RU:'Фоновая картинка',EN:'Background image'} },
-        "type=questions showLogo": { label: {RU:'Показывать лого',EN:'Show logo'} }
+        "type=questions showLogo": { label: {RU:'Показывать лого',EN:'Show logo'} },
+        ".js-start_header color": {
+            // css mutAppProperty описываются только схемой
+            label: {RU:'Цвет шрифта',EN:'Font color'},
+            cssProperty: 'color',
+            controls: "StringControl",
+            controlParams: {
+                viewName: 'ColorPicker'
+            }
+        },
+        ".js-start_header fontSize": {
+            // css mutAppProperty описываются только схемой
+            label: {RU:'Размер шрифта',EN:'Font size'},
+            cssProperty: 'fontSize',
+            controls: "StringControl",
+            controlParams: {
+                viewName: 'ColorPicker'
+            }
+        }
+//        ".js-start_header .js-start_description .js-question_text .js-result_title .js-result_description": {
+//            // TODO
+//            // перечислил все классы к которым применять правила
+//            // можно прописать сразу несколько правил, получается отношение "многие ко многим"
+//            // это позволит делать наборы правил
+//            rules: 'fontFamily fontColor fontSize textAlign paddingTop paddingBottom paddingLeft',
+//            controls: "StringControl",
+//            controlParams: {
+//                viewName: 'ColorPicker'
+//            },
+//            label: {RU:'Цвет шрифта',EN:'Font color'},
+//            cssProperty: 'color',
+//            //filter: true
+//        }
     }),
     /**
      * Конструктор приложения: создание моделей и экранов
