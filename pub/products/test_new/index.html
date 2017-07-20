@@ -68,7 +68,7 @@
         </div>
     </script>
     <script id="id-answer_question_lst_2" type="text/template">
-        <div class="question_lst __2 js-options_cnt">
+        <div class="question_lst js-options_cnt">
             <!--Сюда программно добавляются варианта ответов-->
         </div>
     </script>
@@ -119,6 +119,9 @@
             <div class="modal_cnt info js-back_shadow">
                 <div class="info_title js-result_title" data-app-property="id=tm results.<%=currentResultIndex%>.title"><%=title%></div>
                 <div class="info_tx js-result_description" data-app-property="id=tm results.<%=currentResultIndex%>.description"><%=description%></div>
+                <div class="info_f js-download_btn_wr">
+                    <div class="button js-download_btn" data-app-property="type=result downloadButtonText, type=result showDownload">Скачать</div>
+                </div>
                 <div class="js-mutapp_share_fb fb_share" data-app-property="type=result fbSharePosition"></div>
                 <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="type=result fbSharePosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
                     <span class="tstx_share_i"></span>
@@ -130,9 +133,6 @@
                 </div>
                 <div class="info_f js-btn_wr js-restart_btn_wr">
                     <div class="button js-next js-restart js-test_btn" data-app-property="type=result restartButtonText">Пройти тест еще раз</div>
-                </div>
-                <div class="info_f js-download_btn_wr">
-                    <div class="button js-download_btn" data-app-property="type=result downloadButtonText, type=result showDownload">Скачать</div>
                 </div>
                 <div class="logo js-logo js-result_logo" data-app-property="type=result logoPosition, type=result showLogo, id=tm logoUrl"></div>
             </div>

@@ -55,7 +55,7 @@ img {
     min-width: 320px;
 }
 .top+.scr_wr, .top+.mob_menu, .top+.published_proj_back {
-    padding-top: 56px; /* 56 - top height */
+    padding-top: 86px; /* 56 - top height */
 }
 .scr {
     position: absolute;

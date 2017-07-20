@@ -92,7 +92,7 @@ descriptor.css = [
 //    },
     {
         selector: '.js-a_wr',
-        rules: 'borderWidth borderColor backgroundColor borderRadius'
+        rules: 'borderWidth borderColor backgroundColor borderRadius hoverBorderColor'
     },
     {
         selector: '.topColontitle',
