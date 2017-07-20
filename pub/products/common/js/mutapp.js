@@ -625,6 +625,18 @@ MutApp.prototype.createCssMutAppProperties = function(schema) {
     }
 };
 /**
+ * После рендера экрана надо обновить значения css свойств
+ * @param {MutAppScreen} screen
+ */
+MutApp.prototype.updateCssMutAppPropertiesValues = function(screen) {
+    var props = this._mutappProperties;
+    for (var i = 0; i < props.length; i++) {
+        if (props[i] instanceof CssMutAppProperty) {
+            props[i]._value = screen.$el.find(props[i].cssSelector).css(props[i].cssPropertyName);
+        }
+    }
+};
+/**
  * Восстановить из строки значения свойств приложения.
  * Видно, что метод доступен только после создания приложения.
  *
@@ -1596,11 +1608,29 @@ MutApp.Util = {
     /**
      *
      * Пример такого селектора ".js-start_header fontSize"
-     * @param str
+     * @param {string} str
      * @returns {boolean}
      */
     isCssMutAppPropertySelector: function(str) {
-        return !!str.match(/^\.([A-z0-9]|-|_)+(\s)+([A-z]|\-)+$/i);
+        return MutApp.Util.parseCssMutAppPropertySelector(str) !== null;
+    },
+
+    /**
+     * Попробовать распарсить строку как mutapp property css selector
+     *
+     * @param {string} str
+     * @returns {cssSelector: string, cssPropertyName: string}
+     */
+    parseCssMutAppPropertySelector: function(str) {
+        var reg = new RegExp(/^(\.([A-z0-9]|-|_)+)(\s)+(([A-z]|\-)+)$/i);
+        var res = str.match(reg);
+        if (res && res[1] && res[4]) {
+            return {
+                cssSelector: res[1],
+                cssPropertyName: res[4]
+            };
+        }
+        return null;
     }
 };
 
@@ -2065,6 +2095,14 @@ MutAppProperty.prototype.trigger = function(eventType, data) {
  */
 var CssMutAppProperty = function(param) {
     this.initialize(param);
+    var res = MutApp.Util.parseCssMutAppPropertySelector(this.propertyString);
+    if (res && res.cssSelector && res.cssPropertyName) {
+        this.cssSelector = res.cssSelector;
+        this.cssPropertyName = res.cssPropertyName;
+    }
+    else {
+        throw new Error('CssMutAppProperty constructor: invalid selector \'' + this.propertyString + '\'');
+    }
 };
 // наследуем от простого базового свойства
 _.extend(CssMutAppProperty.prototype, MutAppProperty.prototype);

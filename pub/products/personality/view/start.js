@@ -148,6 +148,7 @@ var StartScreen = MutApp.Screen.extend({
             this.$el.find('.js-back_shadow').css('background-color','');
         }
 
+        this.model.application.updateCssMutAppPropertiesValues(this);
         return this;
     }
 });
