@@ -9,7 +9,7 @@ if (window.textix === undefined) {
          * @type {string}
          */
         //var publishedProjectsHome = '//s3.eu-central-1.amazonaws.com/p.testix.me/';
-        var publishedProjectsHome = 'http://p.testix.me/';
+        var publishedProjectsHome = '//p.testix.me/';
         /**
          * Приложения, которые хранятся на странице
          * @type {Array}
@@ -169,7 +169,7 @@ if (window.textix === undefined) {
 
                     createIframe(p, e, w, h);
                     // sperbank july 2017
-                    if (p.indexOf('37a6197612') < 0) {
+                    if (p.indexOf('37a6197612') < 0 && p.indexOf('db2ea526ed') < 0) {
                         createPoweredLabel(e, l);
                     }
                     initGA(e);
