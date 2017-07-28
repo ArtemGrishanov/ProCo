@@ -6,8 +6,6 @@
 function AddArrayElementControl(propertyString, directiveName, $parent, productDOMElement, params) {
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
 
-    this.$directive.click(this.onAddQuickButtonClick.bind(this));
-
     this.onAddQuickButtonClick = function(e) {
         var ap = Engine.getAppProperty(this.propertyString);
         var protoIndex = params.prototypeIndex || 0;
@@ -24,5 +22,7 @@ function AddArrayElementControl(propertyString, directiveName, $parent, productD
             log('There is no prototypes for \''+this.propertyString+'\'', true);
         }
     }
+
+    this.$directive.click(this.onAddQuickButtonClick.bind(this));
 }
 AddArrayElementControl.prototype = AbstractControl;

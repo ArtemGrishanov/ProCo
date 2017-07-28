@@ -646,20 +646,20 @@ SlideGroupControl.prototype.arrangeViews = function() {
         }
     }
 },
-SlideGroupControl.prototype.onAddQuickButtonClick = function(e) {
-    var ap = Engine.getAppProperty(this.propertyString);
-    var pp = Engine.getPrototypesForAppProperty(ap);
-    if (pp && pp.length > 0) {
-        var protoIndex = params.prototypeIndex || 0;
-        Engine.addArrayElement(ap, pp[protoIndex].value);
-        if (ap.updateScreens === true) {
-            Editor.syncUIControlsToAppProperties();
-        }
-    }
-    else {
-        log('There is no prototypes for \''+this.propertyString+'\'', true);
-    }
-},
+//SlideGroupControl.prototype.onAddQuickButtonClick = function(e) {
+//    var ap = Engine.getAppProperty(this.propertyString);
+//    var pp = Engine.getPrototypesForAppProperty(ap);
+//    if (pp && pp.length > 0) {
+//        var protoIndex = params.prototypeIndex || 0;
+//        Engine.addArrayElement(ap, pp[protoIndex].value);
+//        if (ap.updateScreens === true) {
+//            Editor.syncUIControlsToAppProperties();
+//        }
+//    }
+//    else {
+//        log('There is no prototypes for \''+this.propertyString+'\'', true);
+//    }
+//},
 /**
  * Проверить соответствие элементов перед началом перетаскивания и после
  */

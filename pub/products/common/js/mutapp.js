@@ -60,6 +60,13 @@ var MutApp = function(param) {
      */
     this.shareDefaultLink = 'https://testix.me/';
     /**
+     * Например http://p.testix.me/902609146442342/c8f4afe8f7/
+     *
+     * @type {string}
+     * @private
+     */
+    this._anonymPageLink = '';
+    /**
      * Можно установить линк на страницу паблишера
      * Или он будет установлен на конкретный проект (http://testix.me/13435255)
      * @type {string}
@@ -615,10 +622,16 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
                 this.hideRecommendations();
                 FB.ui({
                     method: 'feed',
-                    link: this.shareLink,
-                    name: name,
-                    description: description,
-                    picture: imgUrl
+                    app_id: this.fbAppId,
+                    link: this._anonymPageLink,
+                    redirect_uri: this.shareLink,
+                    display: 'popup'
+
+//                    this param are deprecated now
+//                    link: this.shareLink,
+//                    name: name,
+//                    description: description,
+//                    picture: imgUrl
                 }, (function(response) {
                     console.log(response);
                     this.showRecommendations();

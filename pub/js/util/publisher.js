@@ -71,6 +71,12 @@ var Publisher = {};
      */
     var isPublishing = false;
 
+    var fbAppId = null;
+    var ogTitle = null;
+    var ogDescription = null;
+    var ogUrl = null;
+    var ogImage = null;
+
     /**
      * Сохранить промо проект на сервере
      * 1) Для этого сначала составляется список всех ресурсов проекта: css, js, картинки
@@ -102,6 +108,12 @@ var Publisher = {};
             appHeight = params.height;
             promoIframe = params.promoIframe;
             baseProductUrl = params.baseProductUrl;
+            fbAppId = params.fbAppId;
+            ogTitle = params.ogTitle;
+            ogDescription = params.ogDescription;
+            ogUrl = params.ogUrl;
+            ogImage = params.ogImage;
+
             errorInPublish = false;
             //TODO собираем ресурсы в несколько проходов
             // например, для того чтобы забрать картинку, сначала надо скачать и распарсить файл css
@@ -404,6 +416,14 @@ var Publisher = {};
                 // destUrl анонимной страницы == 'index.html'
                 var indexResource = getResourceByUrl('index.html');
                 indexResource.data = indexResource.data.replace(config.common.anonymPageAnchorToEmbed, getEmbedCode());
+
+                // embed og tags
+                indexResource.data = indexResource.data.replace('<!--fb:app_id-->', '<meta property="fb:app_id" content="'+fbAppId+'" />');
+                indexResource.data = indexResource.data.replace('<!--og:url-->', '<meta property="og:url" content="'+ogUrl+'" />');
+                indexResource.data = indexResource.data.replace('<!--og:title-->', '<meta property="og:title" content="'+ogTitle+'" />');
+                indexResource.data = indexResource.data.replace('<!--og:description-->', '<meta property="og:description" content="'+ogDescription+'" />');
+                indexResource.data = indexResource.data.replace('<!--og:image-->', '<meta property="og:image" content="'+ogImage+'" />');
+
                 Queue.release(this);
             }
         };

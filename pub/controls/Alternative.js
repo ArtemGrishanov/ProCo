@@ -56,7 +56,7 @@ function Alternative(propertyString, directiveName, $parent, productDOMElement, 
 
             // Устанавливаем выделение на выбранный элемент
             $(e.currentTarget).addClass('__selected')
-            if (typeof pv.icon.selected === 'string') {
+            if (pv && pv.icon && typeof pv.icon.selected === 'string') {
                 // меняем иконку для выбранного состояния, если она задана
                 $(e.currentTarget).css('backgroundImage', 'url('+pv.icon.selected+')');
             }
@@ -131,7 +131,7 @@ function Alternative(propertyString, directiveName, $parent, productDOMElement, 
     this.setNormalIcons = function() {
         for (var i = 0; i < this.possibleValues.length; i++) {
             var pv = this.possibleValues[i];
-            if (typeof pv.icon.normal === 'string') {
+            if (pv.icon && typeof pv.icon.normal === 'string') {
                 this.possibleValuesElements[i].css('backgroundImage', 'url('+pv.icon.normal+')');;
             }
         }

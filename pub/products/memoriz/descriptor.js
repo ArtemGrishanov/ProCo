@@ -203,6 +203,14 @@ descriptor.app = [
         filter: true
     },
     {
+        // свойство для настройки урла на анонимку проекта
+        selector: 'appConstructor=mutapp _anonymPageLink',
+        rules: 'url',
+        updateScreens: false,
+        label: {RU:'_anonymPageLink',EN:'_anonymPageLink'},
+        filter: true
+    },
+    {
         // Google Analytics id
         selector: 'appConstructor=mutapp gaId',
         updateScreens: false,

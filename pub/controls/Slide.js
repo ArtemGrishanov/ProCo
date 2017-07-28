@@ -106,7 +106,7 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
     this.$directive.mousedown((function() {
         var p = (Array.isArray(this.propertyString))?this.propertyString.join(','):this.propertyString;
         if (Editor.getActiveScreens().join(',') !== p) {
-            Editor.showScreen(Array.isArray(propertyString)?propertyString:propertyString.split(','));
+            Editor.showScreen(Array.isArray(this.propertyString)?this.propertyString:this.propertyString.split(','));
         }
     }).bind(this));
 

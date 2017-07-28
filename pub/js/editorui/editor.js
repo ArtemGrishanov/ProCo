@@ -1217,6 +1217,11 @@ var Editor = {};
                 else {
                     activePublisher = Publisher;
                 }
+                var anonymUrl = 'https://p.testix.me/'+App.getUserData().id+'/'+appId+'/';
+                var ap = Engine.getAppProperty('appConstructor=mutapp _anonymPageLink');
+                if (ap) {
+                    Engine.setValue(ap, anonymUrl);
+                }
                 // нужно дописать свойство "опубликованности" именно в опубликованное приложение
                 var appStr = Engine.serializeAppValues({
                     addIsPublishedParam: true
@@ -1231,7 +1236,13 @@ var Editor = {};
                     promoIframe: appIframe, //TODO возможно айрейм спрятать в engine тоже
                     baseProductUrl: config.products[appName].baseProductUrl,
                     //awsBucket: App.getAWSBucketForPublishedProjects(),
-                    callback: showEmbedDialog
+                    callback: showEmbedDialog,
+                    fbAppId: app.fbAppId, //
+                    ogTitle: app.title[0].value, // og tag
+                    ogDescription: app.description[0].value, // og tag
+                    ogUrl: anonymUrl, // og url
+                    //TODO refactor
+                    ogImage: (app._shareEntities && (app._shareEntities.length > 0) && app._shareEntities[0].imgUrl) ? app._shareEntities[0].imgUrl: app.shareDefaultImgUrl // og tag
                 });
             });
         }
