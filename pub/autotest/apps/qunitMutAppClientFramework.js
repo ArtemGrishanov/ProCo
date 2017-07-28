@@ -115,33 +115,53 @@ QUnit.test("MutApp test: objects comparison", function( assert ) {
 
 /**
  * Тест сериализации
+ * Нужно проверять сериализцию различных видов свойств: MutAppProperty CssMutAppProperty MutAppPropertyArray
+ *
  */
 QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityTest was taken for test.", function( assert ) {
+    var EXPECTED_MUTAPP_PROPERTIES_COUNT = 9;
+
     var app = new PersonalityApp({
         defaults: null // no defaults
     });
     app.start();
 
-    assert.ok(app._mutappProperties.length === 7);
+    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT);
     assert.ok(app.model.attributes.results.getValue().length === 0);
     app.model.attributes.results.addElementByPrototype('id=pm resultProto1');
     checkResult(app, 1);
-    assert.ok(app._mutappProperties.length === 9);
+    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + 2);
+
+    // запоминаем оригиальные значения и сериализованные строки
+    // MutAppPropertyArray app.model.attributes.results
     var serRes = app.model.attributes.results.serialize();
     assert.ok(serRes.length > 30);
     var savedResults1 = app.model.attributes.results; // сохраняем первую версию объекта для последующего сравнения
+    // MutAppProperty app.model.attributes.showBackgroundImage
+    var serShowBackgroundImage = app.model.attributes.showBackgroundImage.serialize();
 
+    1. автоматический алгоритм проход по всем свойствам и проверка всего как было и как станет после
+    2. Сериализация и восстановление всего приложения: serialize deserialize compare
+
+    assert.ok(serShowBackgroundImage.length > 10);
+    var showBackgroundImage1 = app.model.attributes.showBackgroundImage; // сохраняем первую версию объекта для последующего сравнения
+
+
+    // запустим
     var app = new PersonalityApp({
         defaults: null // no defaults
     });
     app.start();
 
-    assert.ok(app._mutappProperties.length === 7);
+    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT);
     checkResult(app, 0);
     app.model.attributes.results.deserialize(serRes);
     checkResult(app, 1);
-    assert.ok(app._mutappProperties.length === 9);
+    app.model.attributes.showBackgroundImage.deserialize(serShowBackgroundImage);
+
+    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + 2);
     assert.ok(app.model.attributes.results.compare(savedResults1));
+    assert.ok(app.model.attributes.results.compare(showBackgroundImage1));
 
     function checkResult(app, expectedResultsCount) {
         assert.ok(app.model.attributes.results.getValue().length === expectedResultsCount);
