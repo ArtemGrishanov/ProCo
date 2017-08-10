@@ -49,16 +49,14 @@ var PersonalityApp = MutApp.extend({
         ".js-start_header color": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Цвет шрифта',EN:'Font color'},
-            cssProperty: 'color',
             controls: "StringControl",
             controlParams: {
                 viewName: 'ColorPicker'
             }
         },
-        ".js-start_header fontSize": {
+        ".js-start_header font-size": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Размер шрифта',EN:'Font size'},
-            cssProperty: 'fontSize',
             controls: "StringControl",
             controlParams: {
                 viewName: 'ColorPicker'

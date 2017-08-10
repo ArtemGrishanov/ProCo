@@ -33,145 +33,41 @@ QUnit.test("MutApp test: getPropertiesBySelector", function( assert ) {
     var quizProperty = app.getPropertiesBySelector('id=pm quiz')[0].value;
     assert.ok(quizProperty instanceof MutAppPropertyArray === true);
     assert.ok(quizProperty.getValue().length === 0);
+    assert.ok(MutApp.Util.isMutAppProperty(quizProperty) === true);
 
     var resultsProperty = app.getPropertiesBySelector('id=pm results')[0].value;
     assert.ok(resultsProperty instanceof MutAppPropertyArray === true);
     assert.ok(resultsProperty.getValue().length === 2); // two prototypes was added before
+    assert.ok(MutApp.Util.isMutAppProperty(resultsProperty) === true);
 
     assert.ok(app.getPropertiesBySelector('id=pm results.{{number}}.title').length === 2);
 
     var title0Property = app.getPropertiesBySelector('id=pm results.0.title')[0].value;
     assert.ok(title0Property instanceof MutAppProperty === true);
     assert.ok(typeof title0Property.getValue() === 'string');
+    assert.ok(MutApp.Util.isMutAppProperty(title0Property) === true);
 
-});
-
-QUnit.test("MutApp test: objects comparison", function( assert ) {
-    var app = new PersonalityApp({
-        defaults: null
-    });
-    app.start();
-    assert.ok(app.compare(app));
-
-    var app2 = new PersonalityApp({
-        defaults: null
-    });
-    app2.start();
-
-    var m1 = app.model.attributes.showBackgroundImage;
-    var m2 = app2.model.attributes.showBackgroundImage;
-    var m3 = app.model.attributes.results;
-    var m4 = app2.model.attributes.results;
-
-    var o1 = {}, o2 = {};
-    var o3 = {v1:'123', v2:true, v3:2, v4:null, v5:undefined},
-        o4 = {v1:'123', v2:true, v3:2, v4:null, v5:undefined},
-        o5 = {v1:'123', v2:true, v3:2, v4:null, v5:''},
-        o6 = {v1:{ v2:{ v3:[] }, v4:8 }, v5:''},
-        o7 = {v1:{ v2:{ v3:[] }, v4:8 }, v5:''},
-        o8 = {v1: m1, v5:''},
-        o9 = {v1: m2, v5:''},
-        o10 = [o1, '2', o6, [o3]],
-        o11 = [o2, '2', o7, [o4]]
-        ;
-    var f1 = function() {var t=0;console.log(t)},
-        f2 = function() {var t=0;console.log(t)};
-
-    assert.ok(MutApp.Util.deepCompare(o1, o2));
-    assert.ok(MutApp.Util.deepCompare(o3, o4));
-    assert.ok(MutApp.Util.deepCompare(o3, o5)===false);
-    assert.ok(MutApp.Util.deepCompare(o6, o7));
-    assert.ok(MutApp.Util.deepCompare(f1, f2));
-    assert.ok(MutApp.Util.deepCompare(o10, o11));
-
-    assert.ok(MutApp.Util.deepCompare(m1, m2)===false); // different unic ids
-    m1.id = m2.id; // hack
-    assert.ok(MutApp.Util.deepCompare(m1, m2));
-    assert.ok(m1.compare(m2) === true);
-    assert.ok(MutApp.Util.deepCompare(o8, o9));
-
-    m1.setValue('primitive values only');
-    assert.ok(m1.compare(m2) === false);
-    m2.setValue('primitive values only');
-    assert.ok(m1.compare(m2));
-
-    assert.ok(MutApp.Util.deepCompare(m3, m4)===false); // different unic ids
-    m3.id = m4.id; // hack
-    assert.ok(MutApp.Util.deepCompare(m3, m4));
-    assert.ok(m3.compare(m4) === true);
-    m3.addElementByPrototype('id=pm resultProto1');
-    assert.ok(m3.compare(m4) === false);
-    m4.addElementByPrototype('id=pm resultProto1');
-
-    m3._value[0].id= m4._value[0].id;
-    m3._value[0].title.id= m4._value[0].title.id;
-    m3._value[0].description.id= m4._value[0].description.id;
-    assert.ok(m3.compare(m4));
-
-    // сравнение приложения
-    assert.ok(app.compare(app));
-    assert.ok(app2.compare(app) === false);
+    // поддержка css селектора для свойств
+    var cssHeaderColorProperty = app.getPropertiesBySelector('.js-start_header color')[0].value;
+    assert.ok(cssHeaderColorProperty instanceof CssMutAppProperty === true);
+    assert.ok(cssHeaderColorProperty.getValue() === undefined); // not rendered yet
+    assert.ok(cssHeaderColorProperty.cssSelector === '.js-start_header');
+    assert.ok(cssHeaderColorProperty.cssPropertyName === 'color');
+    assert.ok(MutApp.Util.isMutAppProperty(cssHeaderColorProperty) === true);
 });
 
 /**
- * Тест сериализации
- * Нужно проверять сериализцию различных видов свойств: MutAppProperty CssMutAppProperty MutAppPropertyArray
  *
  */
-QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityTest was taken for test.", function( assert ) {
-    var EXPECTED_MUTAPP_PROPERTIES_COUNT = 9;
-
-    var app = new PersonalityApp({
-        defaults: null // no defaults
+QUnit.test("MutApp test: app clone", function( assert ) {
+    var originApp = new PersonalityApp({
+        defaults: null
     });
-    app.start();
+    originApp.start();
 
-    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT);
-    assert.ok(app.model.attributes.results.getValue().length === 0);
-    app.model.attributes.results.addElementByPrototype('id=pm resultProto1');
-    checkResult(app, 1);
-    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + 2);
-
-    // запоминаем оригиальные значения и сериализованные строки
-    // MutAppPropertyArray app.model.attributes.results
-    var serRes = app.model.attributes.results.serialize();
-    assert.ok(serRes.length > 30);
-    var savedResults1 = app.model.attributes.results; // сохраняем первую версию объекта для последующего сравнения
-    // MutAppProperty app.model.attributes.showBackgroundImage
-    var serShowBackgroundImage = app.model.attributes.showBackgroundImage.serialize();
-
-    1. автоматический алгоритм проход по всем свойствам и проверка всего как было и как станет после
-    2. Сериализация и восстановление всего приложения: serialize deserialize compare
-
-    assert.ok(serShowBackgroundImage.length > 10);
-    var showBackgroundImage1 = app.model.attributes.showBackgroundImage; // сохраняем первую версию объекта для последующего сравнения
-
-
-    // запустим
-    var app = new PersonalityApp({
-        defaults: null // no defaults
-    });
-    app.start();
-
-    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT);
-    checkResult(app, 0);
-    app.model.attributes.results.deserialize(serRes);
-    checkResult(app, 1);
-    app.model.attributes.showBackgroundImage.deserialize(serShowBackgroundImage);
-
-    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + 2);
-    assert.ok(app.model.attributes.results.compare(savedResults1));
-    assert.ok(app.model.attributes.results.compare(showBackgroundImage1));
-
-    function checkResult(app, expectedResultsCount) {
-        assert.ok(app.model.attributes.results.getValue().length === expectedResultsCount);
-        assert.ok(app._mutappProperties.indexOf(app.model.attributes.results) >= 0);
-        var resValue = app.model.attributes.results.getValue();
-        for (var i = 0; i < resValue.length; i++) {
-            assert.ok(app._mutappProperties.indexOf(resValue[i].title) >= 0);
-            assert.ok(app._mutappProperties.indexOf(resValue[i].description) >= 0);
-        }
-    }
+    var clonedApp = originApp.clone();
+    //для сравнения нужна отладка, что именно не совпадает
+    assert.ok(originApp.compare(clonedApp) === true);
 });
 
 /**

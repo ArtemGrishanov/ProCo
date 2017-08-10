@@ -12,6 +12,12 @@ var MutApp = function(param) {
      */
     this._mutappProperties = [];
     /**
+     * Информация о последней операции сравнения двух приложений методом MutApp.compare
+     * @type {result: <string>, message: <string>}
+     * @private
+     */
+    this._compareDetails = null;
+    /**
      * Ширина на которой начинается оптимизация
      * Это не обязательно моб
      * @type {number}
@@ -455,20 +461,40 @@ MutApp.prototype._isElement = function(obj) {
 };
 
 /**
- * 0) Проверить корректность входящего селектора '<filterKey>=<filterValue> propertySelector'
+ *
+ * 0) Если селектор соответствует CssMutAppProperty свойтву, то найти свойство по точному соответствию propertyString
+ *
+ * 1) Проверить корректность входящего селектора '<filterKey>=<filterValue> propertySelector'
  * Например, 'id=mainModel quiz.{{number}}.text'
  *
- * 1) Найти в приложении вью или модели, соответствующие условию entity[filterKey]===filterValue
+ * 2) Найти в приложении вью или модели, соответствующие условию entity[filterKey]===filterValue
  * Например, model['id']==='mainModel'
  *
- * 2) далее разобрать propertySelector
+ * 3) далее разобрать propertySelector
  * Например, он может быть такой: quiz.{{number}}.text - это значит что свойств будет несколько
  *
- * @param {string} selector - например, 'id=mainModel quiz.{{number}}.text'
+ * @param {string} selector - например, 'id=mainModel quiz.{{number}}.text' или '.js-start_header color'
  *
  * @return {Array}
  */
 MutApp.prototype.getPropertiesBySelector = function(selector) {
+    // css селектор
+    if (MutApp.Util.isCssMutAppPropertySelector(selector) === true) {
+        // у этого типа селектора предусмотрено только единственное соответствие
+        // то есть требуется сравнение с propertyString
+        var cssPrp = this.getProperty(selector);
+        if (cssPrp) {
+            // обязаны вернуть в виде массива
+            return [{
+                entity: null,
+                path: null,
+                propertyString: selector,
+                value: cssPrp
+            }];
+        }
+        return null;
+    }
+    // regular селектор
     var parsedSelector = MutApp.Util.parseSelector(selector);
     if (parsedSelector) {
         var result = [];
@@ -597,7 +623,7 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
         if (prInfo.label) {
             mutAppProperty.label = prInfo.label;
         }
-        if (mutAppProperty instanceof MutAppPropertyArray === true) {
+        if (MutApp.Util.isMutAppPropertyArray(mutAppProperty) === true) {
             mutAppProperty.prototypes = prInfo.prototypes;
         }
         if (mutAppProperty._application !== this) {
@@ -663,33 +689,51 @@ MutApp.prototype.serialize = function() {
     var data = {}, p = null;
     for (var i = 0; i < this._mutappProperties.length; i++) {
         p = this._mutappProperties[i];
-        data[p.propertyString] = p.serialize();
+        data[p.propertyString] = p._prepareSerializedObject();
     }
     return JSON.stringify(data);
 };
 /**
- * Сравнить два приложения
+ * Сравнить два MutApp приложения.
+ * Это означает, что будут сравнены все свойства MutAppProperty в обоих приложениях.
+ * Если существует одно свойство id=pm attr1 в одном приложении, то должно существовать такое же свойство и в другом приложениии. И MutAppProperty.compare возвращать true
  *
  * @param {MutApp} otherApp
- * @param param.mutAppProperties - сравнить свойства MutAppProperties
+ * //@param param.mutAppProperties - сравнить свойства MutAppProperties
  */
 MutApp.prototype.compare = function(otherApp, param) {
     param = param || {};
-    param.mutAppProperties = (typeof param.mutAppProperties === 'boolean') ? param.mutAppProperties: true;
+    //param.mutAppProperties = (typeof param.mutAppProperties === 'boolean') ? param.mutAppProperties: true;
     for (var i = 0; i < this._mutappProperties.length; i++) {
         var ps = this._mutappProperties[i].propertyString;
         var res = otherApp.getPropertiesBySelector(ps);
         if (res && res.length === 1 && MutApp.Util.isMutAppProperty(res[0].value)) {
             var compRes = this._mutappProperties[i].compare(res[0].value);
             if (compRes === false) {
+                this._compareDetails = {result:'error', message:'MutApp.compare: property \''+ps+'\' does not match the same property in other app.'};
                 return false;
             }
         }
         else {
+            this._compareDetails = {result:'error', message:'MutApp.compare: property \''+ps+'\' does not exist in other app.'};
             return false;
         }
     }
+    this._compareDetails = {result:'success', message:'MutApp.compare: success.'};
     return true;
+};
+
+/**
+ * Создать клон приложения.
+ * Это означает создать новый инстанс приложения и установить те же значения appProperty
+ *
+ * 1) Для версионирования: операции отмены действия Ctrl+Z
+ * 2) Для тестирования сериализации: создание клона, чтобы потом сравнивать его с оригиналом после операций по сериализации
+ *
+ */
+MutApp.prototype.clone = function() {
+    //но так оно не сможет работать?
+    return _.clone(this);
 };
 
 /**
@@ -1468,7 +1512,27 @@ MutApp.Util = {
      * @return {boolean}
      */
     isMutAppProperty: function(obj) {
-        return obj instanceof MutAppProperty || obj instanceof MutAppPropertyArray;
+        return obj instanceof MutAppProperty || obj instanceof MutAppPropertyArray || obj instanceof CssMutAppProperty;
+    },
+
+    /**
+     * Проверить, что объект является MutAppPropertyArray
+     *
+     * @param {*} obj
+     * @return {boolean}
+     */
+    isMutAppPropertyArray: function(obj) {
+        return obj instanceof MutAppPropertyArray;
+    },
+
+    /**
+     * Проверить, что объект является isCssMutAppProperty
+     *
+     * @param {*} obj
+     * @return {boolean}
+     */
+    isCssMutAppProperty: function(obj) {
+        return obj instanceof CssMutAppProperty;
     },
 
     /**
@@ -1631,6 +1695,19 @@ MutApp.Util = {
             };
         }
         return null;
+    },
+
+    /**
+     * Найти все суб MutAppProperty в объекте и вернуть их списком.
+     *
+     * @param {object} obj
+     */
+    findMutAppPropertiesInObject: function(obj) {
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+
+            }
+        }
     }
 };
 
@@ -1996,9 +2073,20 @@ MutAppProperty.prototype._validateDataType = function(value) {
  * Сериализовать MutAppProperty
  * Сохраняются только элементарные значения
  *
+ * Важно, два случая:
+ * 1) Когда просто сериализация MutAppProperty - надо сразу JSON.stringify
+ * 2) Когда MutAppProperty в составе сложного свойства, например внутри MutAppPropetyArray, то не надо JSON.stringify, это сделает позже MutAppPropetyArray.serialize
+ *
  * @returns {string}
  */
 MutAppProperty.prototype.serialize = function() {
+    return JSON.stringify(this._prepareSerializedObject());
+};
+/**
+ * Подготовить свойства для сериализации в виде отдельного объекта
+ * @return {object}
+ */
+MutAppProperty.prototype._prepareSerializedObject = function() {
     var data = {
         // special mark for deserialization
         _mutAppConstructor: 'MutAppProperty',
@@ -2008,8 +2096,7 @@ MutAppProperty.prototype.serialize = function() {
         _getValueTimestamp: this._getValueTimestamp,
         _setValueTimestamp: this._setValueTimestamp
     };
-    //return JSON.stringify(data);
-    return data; // ???
+    return data;
 };
 /**
  * Десериализовать свойство из json-строки
@@ -2191,6 +2278,7 @@ MutAppPropertyArray.prototype.serialize = function() {
         _mutAppConstructor: 'MutAppPropertyArray',
         id: this.id,
         propertyString: this.propertyString,
+        // так как массив сложный тип данных используется рекурсивный проход по всем подсвойствам
         _value: this._serializeSubProperty(this._value, []),
         _getValueTimestamp: this._getValueTimestamp,
         _setValueTimestamp: this._setValueTimestamp
@@ -2208,7 +2296,7 @@ MutAppPropertyArray.prototype._serializeSubProperty = function(obj, result) {
     result = result || {};
     for (var key in obj) {
         if (MutApp.Util.isMutAppProperty(obj[key])===true) {
-            result[key] = obj[key].serialize();
+            result[key] = obj[key]._prepareSerializedObject();
         }
         else if (MutApp.Util.isPrimitive(obj[key])) {
             result[key] = obj[key];
