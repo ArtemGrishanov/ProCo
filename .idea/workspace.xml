@@ -26,7 +26,7 @@
       <file leaf-file-name="qunitMutAppArrays.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitMutAppArrays.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="43" column="47" selection-start="2182" selection-end="2182" vertical-scroll-proportion="0.0" vertical-offset="130" max-vertical-offset="1005">
+            <state line="5" column="14" selection-start="121" selection-end="121" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1005">
               <folding />
             </state>
           </provider>
@@ -35,25 +35,25 @@
       <file leaf-file-name="question.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/products/personality/view/question.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="102" column="83" selection-start="3164" selection-end="3187" vertical-scroll-proportion="0.0" vertical-offset="1976" max-vertical-offset="3570">
+            <state line="106" column="31" selection-start="3356" selection-end="3356" vertical-scroll-proportion="0.0" vertical-offset="1287" max-vertical-offset="3570">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index_mutapp.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/autotest/index_mutapp.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="66" column="4" selection-start="3758" selection-end="3758" vertical-scroll-proportion="-25.833334" vertical-offset="370" max-vertical-offset="1155">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mutapp.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="mutapp.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1700" column="67" selection-start="60757" selection-end="60757" vertical-scroll-proportion="0.72634643" vertical-offset="25001" max-vertical-offset="35310">
+            <state line="1717" column="76" selection-start="61545" selection-end="61545" vertical-scroll-proportion="-11.36" vertical-offset="25471" max-vertical-offset="35790">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="qunitMutAppFindAppProperties.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitMutAppFindAppProperties.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="20" column="38" selection-start="552" selection-end="552" vertical-scroll-proportion="0.41379312" vertical-offset="0" max-vertical-offset="1305">
               <folding />
             </state>
           </provider>
@@ -62,7 +62,7 @@
       <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/products/personality/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="10" selection-start="465" selection-end="465" vertical-scroll-proportion="0.0" vertical-offset="2355" max-vertical-offset="3795">
+            <state line="50" column="20" selection-start="1810" selection-end="1810" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="3840">
               <folding />
             </state>
           </provider>
@@ -78,22 +78,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/controls/StringControl.js" />
         <option value="$PROJECT_DIR$/pub/js/config.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/index.html" />
         <option value="$PROJECT_DIR$/pub/products/personality/model/pm.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/view/start.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/view/result.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/view/question.js" />
-        <option value="$PROJECT_DIR$/pub/products/personality/app.js" />
         <option value="$PROJECT_DIR$/doc/mutapp_new.txt" />
         <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppSerialization.js" />
         <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppClientFramework.js" />
         <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppObjectsCompare.js" />
-        <option value="$PROJECT_DIR$/pub/autotest/index_mutapp.html" />
         <option value="$PROJECT_DIR$/pub/autotest/engine/helpers/valuesGenerator.js" />
         <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppArrays.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/index_mutapp.html" />
+        <option value="$PROJECT_DIR$/pub/products/personality/app.js" />
         <option value="$PROJECT_DIR$/pub/products/common/js/mutapp.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppFindAppProperties.js" />
       </list>
     </option>
   </component>
@@ -351,13 +351,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/descriptor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="5" selection-start="957" selection-end="957" vertical-scroll-proportion="0.0" vertical-offset="199" max-vertical-offset="14235">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/engine/engine.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="594" column="34" selection-start="23711" selection-end="23716" vertical-scroll-proportion="0.33283132" vertical-offset="8689" max-vertical-offset="19605" />
@@ -417,13 +410,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/index_mutapp.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="4" selection-start="3758" selection-end="3758" vertical-scroll-proportion="-25.833334" vertical-offset="370" max-vertical-offset="1155">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/autotest/engine/helpers/valuesGenerator.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="45" column="14" selection-start="1754" selection-end="1754" vertical-scroll-proportion="0.0" vertical-offset="285" max-vertical-offset="2280">
@@ -431,30 +417,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/app.js">
+    <entry file="file://$PROJECT_DIR$/pub/autotest/index_mutapp.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="10" selection-start="465" selection-end="465" vertical-scroll-proportion="0.0" vertical-offset="2355" max-vertical-offset="3795">
+        <state line="68" column="76" selection-start="3992" selection-end="3992" vertical-scroll-proportion="0.828816" vertical-offset="439" max-vertical-offset="1170">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/view/question.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/personality/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="83" selection-start="3164" selection-end="3187" vertical-scroll-proportion="0.0" vertical-offset="1976" max-vertical-offset="3570">
+        <state line="50" column="20" selection-start="1810" selection-end="1810" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="3840">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitMutAppArrays.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="47" selection-start="2182" selection-end="2182" vertical-scroll-proportion="0.0" vertical-offset="130" max-vertical-offset="1005">
+        <state line="5" column="14" selection-start="121" selection-end="121" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1005">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/personality/view/question.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="106" column="31" selection-start="3356" selection-end="3356" vertical-scroll-proportion="0.0" vertical-offset="1287" max-vertical-offset="3570">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1700" column="67" selection-start="60757" selection-end="60757" vertical-scroll-proportion="0.72634643" vertical-offset="25001" max-vertical-offset="35310">
+        <state line="1717" column="76" selection-start="61545" selection-end="61545" vertical-scroll-proportion="-11.36" vertical-offset="25471" max-vertical-offset="35790">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitMutAppFindAppProperties.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="38" selection-start="552" selection-end="552" vertical-scroll-proportion="0.41379312" vertical-offset="0" max-vertical-offset="1305">
           <folding />
         </state>
       </provider>

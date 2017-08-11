@@ -1699,15 +1699,47 @@ MutApp.Util = {
 
     /**
      * Найти все суб MutAppProperty в объекте и вернуть их списком.
+     * Дубликаты исключаются
      *
      * @param {object} obj
+     * @return {Array} result
      */
-    findMutAppPropertiesInObject: function(obj) {
-        for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
-
+    findMutAppPropertiesInObject: function(obj, result) {
+        if (obj instanceof MutApp === true) {
+            if (result === undefined) {
+                // первый цикл рекурсии: сразу сообщаем что не поддерживаем
+                throw new Error('MutApp.Util.findMutAppPropertiesInObject: searching in MutApp is not supported');
+            }
+            // не ищем в приложении во избежании циклических зависимостей: mutAppProp1 -> application -> mutAppProp1 -> application -> ...
+            return;
+        }
+        if (obj instanceof MutApp.Model === true) {
+            if (result === undefined) {
+                // первый цикл рекурсии:  сразу сообщаем что не поддерживаем
+                throw new Error('MutApp.Util.findMutAppPropertiesInObject: searching in MutApp.Model is not supported');
+            }
+            // не ищем в модели во избежании циклических зависимостей: mutAppProp1 -> model -> mutAppProp1 -> model -> ...
+            return;
+        }
+        result = result || [];
+        if (MutApp.Util.isMutAppProperty(obj) === true) {
+            // исключаем дубликаты
+            if (result.indexOf(obj) < 0) {
+                result.push(obj);
+            }
+            // поиск только по value в MutAppProperty, нельзя искать в application, model и прочих свойствах
+            MutApp.Util.findMutAppPropertiesInObject(obj._value, result);
+        }
+        else {
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    if (MutApp.Util.isPrimitive(obj[key]) === false) {
+                        MutApp.Util.findMutAppPropertiesInObject(obj[key], result);
+                    }
+                }
             }
         }
+        return result;
     }
 };
 
