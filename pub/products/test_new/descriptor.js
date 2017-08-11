@@ -108,7 +108,7 @@ descriptor.css = [
 
 descriptor.app = [
     {
-        selector: 'id=startScr logoPosition, type=questions logoPosition, type=result logoPosition, type=result fbSharePosition, type=result vkSharePosition',
+        selector: 'id=startScr logoPosition, type=questions logoPosition, type=result logoPosition, type=result fbSharePosition, type=result vkSharePosition, type=result okSharePosition',
         rules: 'drag'
     },
     {
@@ -117,7 +117,7 @@ descriptor.app = [
         rules: 'drag'
     },
     {
-        selector: 'type=result showDownload, type=questions showExplanation, id=startScr showLogo, type=questions showLogo, type=result showLogo, id=tm fbShareEnabled, id=tm vkShareEnabled, id=tm showQuestionProgress, id=tm showBullits, id=tm showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions, id=startScr shadowEnable, type=questions shadowEnable, type=result shadowEnable',
+        selector: 'type=result showDownload, type=questions showExplanation, id=startScr showLogo, type=questions showLogo, type=result showLogo, id=tm fbShareEnabled, id=tm okShareEnabled, id=tm vkShareEnabled, id=tm showQuestionProgress, id=tm showBullits, id=tm showTopColontitle, id=tm showBackgroundImage, id=tm randomizeQuestions, id=startScr shadowEnable, type=questions shadowEnable, type=result shadowEnable',
         rules: 'trueFalse'
     },
             {
@@ -152,6 +152,10 @@ descriptor.app = [
             {
                 selector: 'id=tm fbShareEnabled',
                 label: {RU:'Поделиться результатом в Facebook',EN:'Facebook sharing'}
+            },
+            {
+                selector: 'id=tm okShareEnabled',
+                label: {RU:'Поделиться результатом в Одноклассниках',EN:'Odnoklassniki sharing'}
             },
             {
                 selector: 'id=tm vkShareEnabled',

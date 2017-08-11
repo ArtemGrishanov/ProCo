@@ -666,6 +666,21 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
             }
             return true;
         }
+        else if (serviceId === 'ok') {
+            if (isFakeShare !== true) {
+                //official guide https://apiok.ru/ext/like
+                var url = 'https://connect.ok.ru/offer?';
+                url += 'url='          + encodeURIComponent(this.shareLink);
+                window.open(url,'','toolbar=0,status=0,width=600,height=630');
+                if (this.loaderWindow) {
+                    this.loaderWindow.postMessage({
+                        method: 'shareDialog',
+                        provider: 'ok'
+                    }, '*');
+                }
+            }
+            return true;
+        }
 
         //TODO other providers
     }

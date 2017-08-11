@@ -49,6 +49,10 @@ var ResultScreen = MutApp.Screen.extend({
      * Позиция кнопки для шаринга результата в ВКонтакте
      */
     vkSharePosition: {top: 270, left: 294},
+    /**
+     * Позиция кнопки для шаринга результата в OK
+     */
+    okSharePosition: {top: 299, left: 294},
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -63,6 +67,7 @@ var ResultScreen = MutApp.Screen.extend({
         "click .js-next": "onNextClick",
         "click .js-mutapp_share_fb": "onFBShareClick",
         "click .js-mutapp_share_vk": "onVKShareClick",
+        "click .js-mutapp_share_ok": "onOKShareClick",
         "click .js-logo": "onLogoClick",
         "click .js-download_btn": "onDownloadClick"
     },
@@ -99,6 +104,12 @@ var ResultScreen = MutApp.Screen.extend({
         // ид экрана выступает также и в роли идентификатора для постинга
         // это определили при создании приложения в app.js
         this.model.application.share(this.id, 'vk');
+    },
+
+    onOKShareClick: function(e) {
+        // ид экрана выступает также и в роли идентификатора для постинга
+        // это определили при создании приложения в app.js
+        this.model.application.share(this.id, 'ok');
     },
 
     initialize: function (param) {
@@ -159,6 +170,12 @@ var ResultScreen = MutApp.Screen.extend({
         else {
             this.$el.find('.js-mutapp_share_vk').hide();
         }
+        if (this.model.get('okShareEnabled')===true) {
+            this.$el.find('.js-mutapp_share_ok').show();
+        }
+        else {
+            this.$el.find('.js-mutapp_share_ok').hide();
+        }
 
         // кнопка шаринга
         $('.js-mutapp_share_fb').
@@ -167,6 +184,9 @@ var ResultScreen = MutApp.Screen.extend({
         $('.js-mutapp_share_vk').
             css('top',this.vkSharePosition.top+'px').
             css('left',this.vkSharePosition.left+'px');
+        $('.js-mutapp_share_ok').
+            css('top',this.okSharePosition.top+'px').
+            css('left',this.okSharePosition.left+'px');
 
         this.$el.find('.js-restart').html(this.restartButtonText);
 

@@ -33,6 +33,7 @@ var TestModel = MutApp.Model.extend({
 
         fbShareEnabled: true,
         vkShareEnabled: true,
+        okShareEnabled: true,
 
         currentQuestionId: null,
         currentQuestionIndex: undefined,
