@@ -18,7 +18,20 @@
     </div>
 
      <!--Проект должен загружаться и тестироваться через iframe в своем контекста-->
-    <script id="id-welcome_template" type="text/template"></script>
+    <div id="id-mutapp_screens">
+    </div>
+    <script id="id-welcome_template" type="text/template">
+        <div class="modal __active js-back_color js-back_img" data-app-property="id=startScr backgroundImg, id=startScr shadowEnable">
+            <div class="modal_cnt info js-back_shadow">
+                <div class="info_title js-start_header" data-app-property="id=startScr startHeaderText"><b>Дзюдо: </b>иппон или вазаари</div>
+                <div class="info_tx js-start_description" data-app-property="id=startScr startDescription">Пройдите тест и узнайте, как хорошо вы разбираетесь в этом виде восточных единоборств</div>
+                <div class="info_f js-btn_wr">
+                    <div class="button js-test_btn js-next js-start_btn" data-app-property="id=startScr startButtonText">Пройти тест</div>
+                </div>
+                <div class="logo js-logo js-start_logo" data-app-property="id=startScr logoPosition, id=startScr showLogo, id=tm logoUrl"></div>
+            </div>
+        </div>
+    </script>
     <script id="id-slide_template" type="text/template"></script>
     <script id="id-question_text_template" type="text/template"></script>
     <script id="id-question_text_photo_template" type="text/template"></script>
@@ -68,6 +81,7 @@
     <script type="text/javascript" src="apps/qunitMutAppObjectsCompare.js"></script>
     <script type="text/javascript" src="apps/qunitMutAppFindAppProperties.js"></script>
     <script type="text/javascript" src="apps/qunitMutAppSerialization.js"></script>
+    <script type="text/javascript" src="apps/qunitMutAppCustomization.js"></script>
     <!-- endbuild -->
 </body>
 </html>

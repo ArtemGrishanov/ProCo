@@ -93,6 +93,11 @@ var MutApp = function(param) {
         //        }
     ];
     /**
+     * Свойство MutAppProperty для установки кастомных css стилей приложения
+     * @type {MutAppProperty}
+     */
+    this.customCssStyles = null;
+    /**
      * Ид для публикации
      *
      * @type {string}
@@ -162,7 +167,6 @@ var MutApp = function(param) {
             }
         }
     };
-
     // должна быть объявлена схема
     if (this.mutAppSchema instanceof MutAppSchema === true) {
         this.createCssMutAppProperties(this.mutAppSchema._schema);
@@ -170,6 +174,17 @@ var MutApp = function(param) {
     else {
         throw new Error('MutApp.constructor: mutAppSchema is not defined in mutapp');
     }
+
+    // инициализация свойства для хранения кастомных стилей
+    this.customCssStyles = new MutAppProperty({
+        application: this,
+        propertyString: 'appConstructor=mutapp customCssStyles'
+    });
+    this.customCssStyles.bind('change',function(){
+        console.log('customCssStyles changed');
+        // запись значения свойства (css строки) в виде стилей
+        MutApp.Util.writeCssTo('id-custom_styles', this.getValue(), this._application.screenRoot);
+    });
 
     // далее установка динамических свойств для приложения
     if (param) {
@@ -1740,6 +1755,22 @@ MutApp.Util = {
             }
         }
         return result;
+    },
+
+    /**
+     * Записать стили css в dom элемент
+     * Будет создан или переписан элемент с ид stylesId <style id="%stylesId%" type="text/css"></style>
+     *
+     * @param {string} stylesId идишка style элемента
+     * @param {string} cssString код, строка
+     * @param {HTMLElement} container dom элемент куда вставлять стили
+     */
+    writeCssTo: function(stylesId, cssString, container) {
+        var $style = $(container).find('#'+stylesId);
+        if ($style.length === 0) {
+            $style = $('<style type="text/css"></style>').attr('id',stylesId).appendTo(container);
+        }
+        $style.html(cssString);
     }
 };
 
@@ -1926,6 +1957,14 @@ var MutAppSchema = function(schema) {
  * @param schema
  */
 MutAppSchema.prototype.initialize = function(schema) {
+    this._parentMutAppSchema = {
+        // схема для свойства где хранятся кастомные стили
+        "appConstructor=mutapp customCssStyles": {
+        }
+    };
+    for (var key in this._parentMutAppSchema) {
+        schema[key] = this._parentMutAppSchema[key];
+    }
     this._schema = schema;
 };
 /**
