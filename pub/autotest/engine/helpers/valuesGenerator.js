@@ -16,45 +16,46 @@ var valueGenerator = {};
         // при добавлении нового элемета массива новые проперти добавятся в список __mutappProperties
         for (var i = 0; i < app._mutappProperties.length; i++) {
             if (MutApp.Util.isMutAppPropertyArray(app._mutappProperties[i]) === true) {
-                var newValue = _getRandomValueForProperty(app._mutappProperties[i]);
-                app._mutappProperties[i].setValue(newValue);
-
-                //no setValue but
-                //addElementByPrototype
+                _randomChangeProperty(app._mutappProperties[i]);
             }
         }
         for (var i = 0; i < app._mutappProperties.length; i++) {
             if (MutApp.Util.isMutAppPropertyArray(app._mutappProperties[i]) !== true) {
-                var newValue = _getRandomValueForProperty(app._mutappProperties[i]);
-                app._mutappProperties[i].setValue(newValue);
+                _randomChangeProperty(app._mutappProperties[i]);
             }
         }
     }
 
     /**
-     * Сгенерировать новое значение для свойства основываясь на типе value
+     * Изменить значение для свойства основываясь на типе value
      * Возможен брос эксепшена, если тип значения не поддерживается
      *
      * @param {MutAppProperty} ap
-     * @returns {*}
      */
-    function _getRandomValueForProperty(ap) {
+    function _randomChangeProperty(ap) {
         if (MutApp.Util.isCssMutAppProperty(ap) === true) {
-            return _getRandomCssValue(ap);
+            ap.setValue(_getRandomCssValue(ap));
         }
-        if (MutApp.Util.isMutAppPropertyArray(ap) === true) {
-            //todo nothing
+        else if (MutApp.Util.isMutAppPropertyArray(ap) === true) {
+            var protoName = ap.prototypes[_randInt(0, ap.prototypes.length-1)];
+            ap.addElementByPrototype(protoName);
+        }
+        else if (ap._value === null) {
+            // с null неизвестно как поступать
+            ap.setValue('rand_string_insteadof_null_' + Math.trunc(Math.random()*10000));
         }
         else if (typeof ap._value === 'string') {
-            return 'rand_string_' + Math.trunc(Math.random()*10000);
+            ap.setValue('rand_string_' + Math.trunc(Math.random()*10000));
         }
         else if (typeof ap._value === 'boolean') {
-            return Math.random() < 0.5;
+            ap.setValue(Math.random() < 0.5);
         }
         else if (typeof ap._value === 'number') {
-            return _randInt(0, 100);
+            ap.setValue(_randInt(0, 100));
         }
-        throw new Error('valuesGenerator._getRandomValueForProperty: unsupported data type \'' + typeof ap._value + '\' in \'' + ap.propertyString + '\'');
+        else {
+            throw new Error('valuesGenerator._randomChangeProperty: unsupported data type \'' + typeof ap._value + '\' in \'' + ap.propertyString + '\'');
+        }
     }
 
     /**

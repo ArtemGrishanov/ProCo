@@ -67,7 +67,8 @@ QUnit.test("MutApp test: app clone", function( assert ) {
 
     var clonedApp = originApp.clone();
     //для сравнения нужна отладка, что именно не совпадает
-    assert.ok(originApp.compare(clonedApp) === true);
+    assert.ok(originApp.compare(clonedApp) === true, originApp.compareDetails.message);
+
 });
 
 /**
@@ -196,10 +197,10 @@ QUnit.test("MutApp test: Models", function( assert ) {
     assert.ok(p2[1].path === 'quiz.1.question.text', 'getPropertiesBySelector path');
     assert.ok(MutApp.Util.isMutAppProperty(p2[1].value) === true, 'getPropertiesBySelector value');
 
-    var p3 = app.getPropertiesBySelector('type=questions showLogo');
+    var p3 = app.getPropertiesBySelector('id=pm showLogoInQuestions');
     assert.ok(p3 !== null, 'getPropertiesBySelector');
     assert.ok(p3.length === 1, 'getPropertiesBySelector');
-    assert.ok(p3[0].path === 'showLogo', 'getPropertiesBySelector');
+    assert.ok(p3[0].path === 'showLogoInQuestions', 'getPropertiesBySelector');
     assert.ok(p3[0].value.getValue() === true, 'getPropertiesBySelector');
 
     // поиск по атрибутам модели

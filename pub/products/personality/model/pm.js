@@ -34,6 +34,10 @@ var PersonalityModel = MutApp.Model.extend({
          */
         showBackgroundImage: null,
         /**
+         * Показывать ли логотип на эйране с вопросами
+         */
+        showLogoInQuestions: null,
+        /**
          * Personality текущие набранные результаты
          * Map
          * 'result1_id': number,
@@ -85,6 +89,13 @@ var PersonalityModel = MutApp.Model.extend({
             model: this,
             propertyString: 'id=pm showBackgroundImage',
             propertyName: 'showBackgroundImage', // дублирование имени
+            value: true
+        });
+        // свойство одно на все экраны с вопросами
+        this.attributes.showLogoInQuestions = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=pm showLogoInQuestions',
             value: true
         });
     },

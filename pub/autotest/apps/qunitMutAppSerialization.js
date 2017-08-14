@@ -111,7 +111,9 @@ QUnit.test("MutApp test: MutApp serialization. PersonalityTest was taken for tes
 
     // внести изменения во все свойства приложения
     valueGenerator.randomChangeApp(originApp);
+
     // сериализовать приложение
+    var str = originApp.serialize();
 
     // создать новое приложение
     var app2 = new PersonalityApp({
@@ -120,7 +122,8 @@ QUnit.test("MutApp test: MutApp serialization. PersonalityTest was taken for tes
     app2.start();
 
     // десериализовать в новом приложении
+    app2.deserialize(str);
 
     // сравнить приложения 1 и 2 compare
-    assert.ok(originApp.compare(app2), originApp._compareDetails.message);
+    assert.ok(originApp.compare(app2), originApp.compareDetails.message);
 });

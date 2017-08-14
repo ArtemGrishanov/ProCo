@@ -7,7 +7,7 @@ QUnit.test("MutApp test: objects comparison", function( assert ) {
         defaults: null
     });
     app.start();
-    assert.ok(app.compare(app), app._compareDetails.message);
+    assert.ok(app.compare(app), app.compareDetails.message);
 
     var app2 = new PersonalityApp({
         defaults: null

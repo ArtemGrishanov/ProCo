@@ -16,7 +16,7 @@ var MutApp = function(param) {
      * @type {result: <string>, message: <string>}
      * @private
      */
-    this._compareDetails = null;
+    this.compareDetails = null;
     /**
      * Ширина на которой начинается оптимизация
      * Это не обязательно моб
@@ -178,7 +178,8 @@ var MutApp = function(param) {
     // инициализация свойства для хранения кастомных стилей
     this.customCssStyles = new MutAppProperty({
         application: this,
-        propertyString: 'appConstructor=mutapp customCssStyles'
+        propertyString: 'appConstructor=mutapp customCssStyles',
+        value: ''
     });
     this.customCssStyles.bind('change',function(){
         console.log('customCssStyles changed');
@@ -603,7 +604,7 @@ MutApp.prototype.setPropertyByAppString = function(appString, value) {
  */
 MutApp.prototype.setPropertyByAppString2 = function(appString, value) {
     var results = this.getPropertiesBySelector(appString);
-    if (!results || results.length === 0) {
+    if (results && results.length > 0) {
         // свойств может быть несколько если используется подстановка {{number}}
         var prop = null;
         for (var i = 0; i < results.length; i++) {
@@ -613,12 +614,12 @@ MutApp.prototype.setPropertyByAppString2 = function(appString, value) {
                 prop.setValue(value);
             }
             else {
-                console.error('MutApp.setPropertyByAppString2: \''+appString+'\' is not a MutAppProperty');
+                throw new Error('MutApp.setPropertyByAppString2: \''+appString+'\' is not a MutAppProperty');
             }
         }
     }
     else {
-        console.error('MutApp.setPropertyByAppString2: properties not found for \''+appString+'\'');
+        throw new Error('MutApp.setPropertyByAppString2: properties not found for \''+appString+'\'');
     }
 };
 
@@ -690,9 +691,15 @@ MutApp.prototype.updateCssMutAppPropertiesValues = function(screen) {
  */
 MutApp.prototype.deserialize = function(dataStr) {
     var data = JSON.parse(dataStr);
+//    for (var key in data) {
+//        this.setPropertyByAppString2(key, data[key]);
+//    }
+
     for (var key in data) {
-        this.setPropertyByAppString2(key, data[key]);
+        var ap = this.getProperty();
+        
     }
+
     //TODO надо записать в дефаултс значения
     // так как накоторые свойства могут быть созданы позднее например
 };
@@ -725,16 +732,16 @@ MutApp.prototype.compare = function(otherApp, param) {
         if (res && res.length === 1 && MutApp.Util.isMutAppProperty(res[0].value)) {
             var compRes = this._mutappProperties[i].compare(res[0].value);
             if (compRes === false) {
-                this._compareDetails = {result:'error', message:'MutApp.compare: property \''+ps+'\' does not match the same property in other app.'};
+                this.compareDetails = {result:'error', message:'MutApp.compare: property \''+ps+'\' does not match the same property in other app.'};
                 return false;
             }
         }
         else {
-            this._compareDetails = {result:'error', message:'MutApp.compare: property \''+ps+'\' does not exist in other app.'};
+            this.compareDetails = {result:'error', message:'MutApp.compare: property \''+ps+'\' does not exist in other app.'};
             return false;
         }
     }
-    this._compareDetails = {result:'success', message:'MutApp.compare: success.'};
+    this.compareDetails = {result:'success', message:'MutApp.compare: success.'};
     return true;
 };
 
@@ -1954,9 +1961,10 @@ var MutAppSchema = function(schema) {
 };
 /**
  *
- * @param schema
+ * @param {object} schema
  */
 MutAppSchema.prototype.initialize = function(schema) {
+    schema = schema || {};
     this._parentMutAppSchema = {
         // схема для свойства где хранятся кастомные стили
         "appConstructor=mutapp customCssStyles": {
@@ -2104,6 +2112,19 @@ MutAppProperty.prototype.initialize = function(param) {
     this._bindedEvents = {};
     if (this._application) {
         this._application.linkMutAppProperty(this);
+    }
+};
+/**
+ * Удалить MutAppProperty
+ * Разработчик при удалении свойства обязан вызвать этот метод
+ */
+MutAppProperty.prototype.destroy = function() {
+    var dsInx = this._application._mutappProperties.indexOf(this);
+    if (dsInx >= 0) {
+        this._application._mutappProperties.splice(dsInx, 1);
+    }
+    else {
+        throw new Error('MutAppProperty.destroy: property \''+this.propertyString+'\' doesnot exist in _mutappProperties array');
     }
 };
 /**
@@ -2310,7 +2331,15 @@ MutAppPropertyArray.prototype.deleteElement = function(position) {
     if (position >= newArray.length) {
         position = newArray.length-1;
     }
-    newArray.splice(position, 1);
+    var deletedArrayElement = newArray.splice(position, 1);
+    // согласно допущениям по документации ссылка на один MutAppProperty может быть объявлена только в одном месте в приложении
+    // исследуем удаляемый элемент масива на то, что внутри могут быть MutAppProperty которые также надо теперь удалить
+    var deletedSubProperties = MutApp.Util.findMutAppPropertiesInObject(deletedArrayElement);
+    if (deletedSubProperties && deletedSubProperties.length > 0) {
+        for (var i = 0; i < deletedSubProperties.length; i++) {
+            deletedSubProperties[i].destroy();
+        }
+    }
     // считается, что устанавливаем новый массив целиком
     this.setValue(newArray);
 };
@@ -2344,17 +2373,24 @@ MutAppPropertyArray.prototype.addElementByPrototype = function(protoFunctionPath
  * @returns {string}
  */
 MutAppPropertyArray.prototype.serialize = function() {
+    return JSON.stringify(this._prepareSerializedObject());
+};
+/**
+ * Подготовить свойства для сериализации в виде отдельного объекта
+ * @return {object}
+ */
+MutAppPropertyArray.prototype._prepareSerializedObject = function() {
     var data = {
         // special mark for deserialization
         _mutAppConstructor: 'MutAppPropertyArray',
         id: this.id,
         propertyString: this.propertyString,
         // так как массив сложный тип данных используется рекурсивный проход по всем подсвойствам
-        _value: this._serializeSubProperty(this._value, []),
+        value: this._serializeSubProperty(this._value, []), // имя именно публичного параметра "value", который передается в конструктор. Не приватного "_value"
         _getValueTimestamp: this._getValueTimestamp,
         _setValueTimestamp: this._setValueTimestamp
     };
-    return JSON.stringify(data);
+    return data;
 };
 /**
  *
