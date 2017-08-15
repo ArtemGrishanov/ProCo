@@ -26,7 +26,7 @@
       <file leaf-file-name="mutapp.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="703" column="5" selection-start="23404" selection-end="23404" vertical-scroll-proportion="0.6171761" vertical-offset="10121" max-vertical-offset="37485">
+            <state line="688" column="26" selection-start="22938" selection-end="22938" vertical-scroll-proportion="0.28966522" vertical-offset="10121" max-vertical-offset="37485">
               <folding>
                 <marker date="1502798631000" expanded="true" signature="89255:89490" placeholder="{...}" />
                 <marker date="1502798631000" expanded="true" signature="89404:89490" placeholder="{...}" />
@@ -569,7 +569,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="703" column="5" selection-start="23404" selection-end="23404" vertical-scroll-proportion="0.6171761" vertical-offset="10121" max-vertical-offset="37485">
+        <state line="688" column="26" selection-start="22938" selection-end="22938" vertical-scroll-proportion="0.28966522" vertical-offset="10121" max-vertical-offset="37485">
           <folding>
             <marker date="1502798631000" expanded="true" signature="89255:89490" placeholder="{...}" />
             <marker date="1502798631000" expanded="true" signature="89404:89490" placeholder="{...}" />
