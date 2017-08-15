@@ -1,49 +1,37 @@
 /**
  * Created by alex on 10.08.17.
  */
+QUnit.test("MutApp test: MutAppProperties array serialization (PersonalityTest)", function( assert ) {
+    var EXPECTED_MUTAPP_PROPERTIES_COUNT = 11;
+
+    var app = new PersonalityApp({
+        defaults: null // no defaults
+    });
+    app.start();
+
+    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT);
+    assert.ok(app.model.attributes.quiz.getValue().length === 0);
+    app.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
+    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + 1);
+
+    var serString = app.model.attributes.quiz.serialize();
+    assert.ok(typeof serString === 'string' && serString.length > 10);
+
+    var app2 = new PersonalityApp({
+        defaults: null // no defaults
+    });
+    app2.start();
+    app2.model.attributes.quiz.deserialize(serString);
+    assert.ok(app2._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + 1);
+    // сравниваем только свойства, не приложения
+    assert.ok(app.model.attributes.quiz.compare(app2.model.attributes.quiz) === true, app.model.attributes.quiz.compareDetails.message);
+});
 /**
  * Тест сериализации отдельных свойств
  * Нужно проверять сериализцию различных видов свойств: MutAppProperty CssMutAppProperty MutAppPropertyArray
- *
- * Как сейчас:
- * 1) Добавить новый результат, проверить что новые свойства появились и в списке mutappproperty
- * 2) Сериализовать свойства результата
- * 3) Создать новое приложение и установить туда свойства результата
- * 4)
- *
- * Как должно быть, всё основывается на compare и clone:
- * 1) Сделать клон приложения app1
- * 2) Сериализовать любое свойство в приложении app1
- *      Сделать клон приложения app1
- * 3.a) Десериализовать в том же приложении app1
- * 3.a) Десериализовать в новом приложении app2
- *
- * Надо ли десериализовывать в ТОМ ЖЕ приложении?
- *  можно, но тогда можно сделать клон, или снепшот. Это как операции отмены
- *
- * 3) app1 app2: MutApp.compare (значение свойств, количество свойств)
- *      MutApp.compare - гарантия соответствия количества свойств и из значений
- *
- *      TODO all
- *      выбирать любое свойство и сериализовывать
- *          TODO0 clone app, auto test about clone method
- *          TODO1 выбирать среди всех
- *          -- TODO2 менять как - пока об изменении не идет речь
- *      ожидаемое количество свойств надо?
- *          TODO какая то встоенная проверка движка?
- *      что свойство находится в списке _mutAppProperty ?
- *          TODO какая то встоенная проверка движка?
- *              что свойство точно используется
- *
- *      TODO editing
- *          - iterate properties
- *          - set new values
- *          - check standart rules
- *
- * @underconstruction
  */
 QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityTest was taken for test.", function( assert ) {
-    var EXPECTED_MUTAPP_PROPERTIES_COUNT = 9;
+    var EXPECTED_MUTAPP_PROPERTIES_COUNT = 11;
 
     var app = new PersonalityApp({
         defaults: null // no defaults
@@ -57,22 +45,15 @@ QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityT
     assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + 2);
 
     // запоминаем оригиальные значения и сериализованные строки
-    // MutAppPropertyArray app.model.attributes.results
     var serRes = app.model.attributes.results.serialize();
     assert.ok(serRes.length > 30);
     var savedResults1 = app.model.attributes.results; // сохраняем первую версию объекта для последующего сравнения
-    // MutAppProperty app.model.attributes.showBackgroundImage
     var serShowBackgroundImage = app.model.attributes.showBackgroundImage.serialize();
-
-    //TODO serialize
-    //1. автоматический алгоритм проход по всем свойствам и проверка всего как было и как станет после
-    //2. Сериализация и восстановление всего приложения: serialize deserialize compare
 
     assert.ok(serShowBackgroundImage.length > 10);
     var showBackgroundImage1 = app.model.attributes.showBackgroundImage; // сохраняем первую версию объекта для последующего сравнения
 
-
-    // запустим
+    // запустим новое приложение
     var app = new PersonalityApp({
         defaults: null // no defaults
     });
@@ -80,11 +61,13 @@ QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityT
 
     assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT);
     checkResult(app, 0);
+    // десериализуем свойства по одному
     app.model.attributes.results.deserialize(serRes);
     checkResult(app, 1);
     app.model.attributes.showBackgroundImage.deserialize(serShowBackgroundImage);
 
     assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + 2);
+    // сравниваем свойства по одному
     assert.ok(app.model.attributes.results.compare(savedResults1));
     assert.ok(app.model.attributes.showBackgroundImage.compare(showBackgroundImage1));
 
@@ -126,4 +109,59 @@ QUnit.test("MutApp test: MutApp serialization. PersonalityTest was taken for tes
 
     // сравнить приложения 1 и 2 compare
     assert.ok(originApp.compare(app2), originApp.compareDetails.message);
+});
+
+/**
+ * Тест сериализации приложения целиком с удалением элементов массива
+ */
+QUnit.test("MutApp test: MutApp serialization with array element delete. (PersonalityTest)", function( assert ) {
+    // создать приложение
+    var originApp = new PersonalityApp({
+        defaults: null // no defaults
+    });
+    originApp.start();
+
+    originApp.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
+    originApp.model.attributes.results.addElementByPrototype('id=pm resultProto1');
+
+    // сериализовать приложение
+    var str = originApp.serialize();
+
+    // создать новое приложение
+    var app2 = new PersonalityApp({
+        defaults: null // no defaults
+    });
+    app2.start();
+
+    // десериализовать в новом приложении
+    app2.deserialize(str);
+    assert.ok(originApp.compare(app2), originApp.compareDetails.message);
+
+    // теперь удалить элементы из массива
+    app2.model.attributes.quiz.deleteElement(0);
+    app2.model.attributes.results.deleteElement(0);
+    assert.ok(originApp.compare(app2) === false, originApp.compareDetails.message);
+    var str2 = app2.serialize();
+
+    // создать новое приложение
+    var app3 = new PersonalityApp({
+        defaults: null // no defaults
+    });
+    app3.start();
+    app3.deserialize(str2);
+    assert.ok(app2.compare(app3), app2.compareDetails.message);
+});
+
+/**
+ * Тест десериализации при старте
+ */
+QUnit.test("MutApp test: MutApp deserialization in start. (PersonalityTest)", function( assert ) {
+    var originApp = new PersonalityApp({
+        defaults: {} // TODO
+    });
+    originApp.start();
+    assert.ok(false, 'Implement desirialization in constructor');
+    // 1. write deserialed values into _parsedDefaults
+    // 2. Delete super.initialize in MutApp.Model ? In any case delete section about parsedDefaults there
+    // 3. MutAppProperty.initialize search values in parseddefaults
 });

@@ -85,8 +85,6 @@ var PersonalityApp = MutApp.extend({
      * @param param
      */
     initialize: function(param) {
-        console.log('PersonalityApp initialize');
-
         var tm = this.addModel(new PersonalityModel({
             application: this
         }));
@@ -171,7 +169,6 @@ var PersonalityApp = MutApp.extend({
      * Создать экраны вопросов на основе this.model.get('quiz')
      */
     updateQuestionScreens: function() {
-        console.log('Question screen rendered');
         for (var i = 0; i < this.questionScreens.length; i++) {
             this.deleteScreen(this.questionScreens[i]);
         }
@@ -197,7 +194,6 @@ var PersonalityApp = MutApp.extend({
      * Создать экраны вопросов на основе this.model.get('results')
      */
     updateResultsScreens: function() {
-        console.log('Results screen rendered');
         for (var i = 0; i < this.resultsScreens.length; i++) {
             this.deleteScreen(this.resultsScreens[i]);
         }

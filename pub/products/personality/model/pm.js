@@ -104,7 +104,6 @@ var PersonalityModel = MutApp.Model.extend({
      * Перевести приложение в начальное состояние
      */
     start: function() {
-        console.log('PersonalityModel start');
         this._clearResult();
         this.set({
             state: 'welcome',

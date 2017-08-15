@@ -679,8 +679,7 @@ MutApp.prototype.updateCssMutAppPropertiesValues = function(screen) {
     }
 };
 /**
- * Восстановить из строки значения свойств приложения.
- * Видно, что метод доступен только после создания приложения.
+ * Восстановить из json-строки значения свойств приложения.
  *
  * Условия:
  * 1) Более конкретные свойства имеют больший приоритет
@@ -691,17 +690,18 @@ MutApp.prototype.updateCssMutAppPropertiesValues = function(screen) {
  */
 MutApp.prototype.deserialize = function(dataStr) {
     var data = JSON.parse(dataStr);
-//    for (var key in data) {
-//        this.setPropertyByAppString2(key, data[key]);
-//    }
-
+    //    for (var key in data) {
+    //        this.setPropertyByAppString2(key, data[key]);
+    //    }
     for (var key in data) {
-        var ap = this.getProperty();
-        
+        var ap = this.getProperty(key);
+        if (ap) {
+            ap.deserialize(data[key]);
+        }
+        else {
+            console.error('MutApp.deserialize: property \'' + key + '\' does not exist in this app.');
+        }
     }
-
-    //TODO надо записать в дефаултс значения
-    // так как накоторые свойства могут быть созданы позднее например
 };
 /**
  * Сохранить данные приложения в виде строки
@@ -725,23 +725,26 @@ MutApp.prototype.serialize = function() {
  */
 MutApp.prototype.compare = function(otherApp, param) {
     param = param || {};
-    //param.mutAppProperties = (typeof param.mutAppProperties === 'boolean') ? param.mutAppProperties: true;
     for (var i = 0; i < this._mutappProperties.length; i++) {
         var ps = this._mutappProperties[i].propertyString;
         var res = otherApp.getPropertiesBySelector(ps);
         if (res && res.length === 1 && MutApp.Util.isMutAppProperty(res[0].value)) {
             var compRes = this._mutappProperties[i].compare(res[0].value);
             if (compRes === false) {
-                this.compareDetails = {result:'error', message:'MutApp.compare: property \''+ps+'\' does not match the same property in other app.'};
+                this.compareDetails = {
+                    result: false,
+                    message:'MutApp.compare: property \''+ps+'\' does not match the same property in other app.' +
+                        ((this._mutappProperties[i].compareDetails) ? ' Details: ' + this._mutappProperties[i].compareDetails.message: '')
+                };
                 return false;
             }
         }
         else {
-            this.compareDetails = {result:'error', message:'MutApp.compare: property \''+ps+'\' does not exist in other app.'};
+            this.compareDetails = {result: false, message:'MutApp.compare: property \''+ps+'\' does not exist in other app.'};
             return false;
         }
     }
-    this.compareDetails = {result:'success', message:'MutApp.compare: success.'};
+    this.compareDetails = {result: true, message:'MutApp.compare: success.'};
     return true;
 };
 
@@ -1572,9 +1575,12 @@ MutApp.Util = {
      * @returns {boolean}
      */
     deepCompare: function() {
+        var details = null;
         var i, l, leftChain, rightChain;
 
-        function compare2Objects (x, y) {
+        function compare2Objects (x, y, param) {
+            param = param || {};
+
             var p;
 
             // remember that NaN === NaN returns false
@@ -1616,6 +1622,7 @@ MutApp.Util = {
             }
 
             if (x.constructor !== y.constructor) {
+                details = {result: false, message: 'MutApp.Util.deepCompare: constructors are different \'' + x.constructor.name + '\' !== \'' + y.constructor.name + '\' in field \''+param.propertyName+'\''};
                 return false;
             }
 
@@ -1641,9 +1648,11 @@ MutApp.Util = {
 
             for (p in x) {
                 if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) {
+                    details = {result: false, message: 'MutApp.Util.deepCompare: property \'' + p + '\' matters'}
                     return false;
                 }
                 else if (typeof y[p] !== typeof x[p]) {
+                    details = {result: false, message: 'MutApp.Util.deepCompare: typeof property \'' + p + '\' are not equal'}
                     return false;
                 }
 
@@ -1654,7 +1663,7 @@ MutApp.Util = {
                         leftChain.push(x);
                         rightChain.push(y);
 
-                        if (!compare2Objects (x[p], y[p])) {
+                        if (!compare2Objects (x[p], y[p], {propertyName: p})) {
                             return false;
                         }
 
@@ -1664,6 +1673,7 @@ MutApp.Util = {
 
                     default:
                         if (x[p] !== y[p]) {
+                            details = {result: false, message: 'MutApp.Util.deepCompare: values of property \'' + p + '\' are not equal'}
                             return false;
                         }
                         break;
@@ -1684,10 +1694,16 @@ MutApp.Util = {
             rightChain = [];
 
             if (!compare2Objects(arguments[0], arguments[i])) {
+                if (!details) {
+                    details = {result: false, message: 'MutApp.Util.deepCompare: no details'};
+                }
+                this.compareDetails = details;
                 return false;
             }
         }
 
+        details = {result: true, message: 'MutApp.Util.deepCompare: success'};
+        this.compareDetails = details;
         return true;
     },
 
@@ -2098,13 +2114,13 @@ MutAppProperty.prototype.initialize = function(param) {
         this._value = param.value || null;
     }
     else {
-        throw new Error('MutAppProperty.constructor: MutAppProperty implements only primitives: Number, Boolean, String, Undefined, Null. For array use MutAppPropertyArray');
+        throw new Error('MutAppProperty.initialize: MutAppProperty implements only primitives: Number, Boolean, String, Undefined, Null. For array use MutAppPropertyArray');
     }
     if (typeof param.propertyString === 'string') {
         this.propertyString = param.propertyString;
     }
     else {
-        throw new Error('MutAppProperty.constructor: propertyString is not specified for MutAppProperty. Please, specify it in constructor param');
+        throw new Error('MutAppProperty.initialize: propertyString is not specified for MutAppProperty. Please, specify it in constructor param');
     }
     this._model = param.model;
     this._application = param.application || null;
@@ -2113,6 +2129,7 @@ MutAppProperty.prototype.initialize = function(param) {
     if (this._application) {
         this._application.linkMutAppProperty(this);
     }
+    this.compareDetails = null;
 };
 /**
  * Удалить MutAppProperty
@@ -2142,16 +2159,33 @@ MutAppProperty.prototype.compare = function(otherMProperty) {
         // this._application !== otherMProperty._application
         ) {
         // сравниваются те атрибуты, которые существенны
+        this.compareDetails = {
+            result: false,
+            message: 'MutAppProperty.compare: base attributes id, propertyString or _propertyName are not equal.'
+        };
         return false;
     }
     if (MutApp.Util.deepCompare(this.label, otherMProperty.label) === false) {
+        this.compareDetails = {
+            result: false,
+            message: 'MutAppProperty.compare: labels are not equal.'
+        };
         return false;
     }
     if (this._value === otherMProperty._value) {
         // try this fast scenario at first
+        this.compareDetails = {
+            result: true,
+            message: 'MutAppProperty.compare: success.'
+        };
         return true;
     }
-    return MutApp.Util.deepCompare(this._value, otherMProperty._value);
+    var result = MutApp.Util.deepCompare(this._value, otherMProperty._value);
+    this.compareDetails = {
+        result: result,
+        message: MutApp.Util.compareDetails ? MutApp.Util.compareDetails.message: ''
+    };
+    return result;
 };
 /**
  * Проверяет что тип данных значения подходит для этого MutAppProperty
@@ -2192,14 +2226,16 @@ MutAppProperty.prototype._prepareSerializedObject = function() {
 };
 /**
  * Десериализовать свойство из json-строки
- * @param {string} dataString
+ * @param {string|object} data
  */
-MutAppProperty.prototype.deserialize = function(dataString) {
-    var data = JSON.parse(dataString);
-    // предполагается, что в dataString только валидные значения. Проверки не делаются
-    for (var key in data) {
-        this[key] = data[key];
-    };
+MutAppProperty.prototype.deserialize = function(data) {
+    if (typeof data === 'string') {
+        data = JSON.parse(data);
+    }
+    this.id = data.id;
+    this._value = data.value;
+    this._getValueTimestamp = data._getValueTimestamp;
+    this._setValueTimestamp = data._setValueTimestamp;
 };
 
 /**
@@ -2303,7 +2339,7 @@ _.extend(MutAppPropertyArray.prototype, MutAppProperty.prototype);
  * @private
  */
 MutAppPropertyArray.prototype._validateDataType = function(value) {
-    return _.isArray(value);
+    return Array.isArray(value);
 };
 /**
  * Добавить новый элемент на позицию. По умолчанию в конец.
@@ -2402,14 +2438,19 @@ MutAppPropertyArray.prototype._prepareSerializedObject = function() {
 MutAppPropertyArray.prototype._serializeSubProperty = function(obj, result) {
     result = result || {};
     for (var key in obj) {
-        if (MutApp.Util.isMutAppProperty(obj[key])===true) {
-            result[key] = obj[key]._prepareSerializedObject();
-        }
-        else if (MutApp.Util.isPrimitive(obj[key])) {
-            result[key] = obj[key];
-        }
-        else {
-            result[key] = this._serializeSubProperty(obj[key]);
+        if (obj.hasOwnProperty(key) === true) {
+            if (MutApp.Util.isMutAppProperty(obj[key])===true) {
+                result[key] = obj[key]._prepareSerializedObject();
+            }
+            else if (MutApp.Util.isPrimitive(obj[key])) {
+                result[key] = obj[key];
+            }
+            else if (Array.isArray(obj[key]) === true) {
+                result[key] = this._serializeSubProperty(obj[key], []);
+            }
+            else {
+                result[key] = this._serializeSubProperty(obj[key]);
+            }
         }
     }
     return result;
@@ -2418,21 +2459,18 @@ MutAppPropertyArray.prototype._serializeSubProperty = function(obj, result) {
  * Десериализовать свойство из json-строки
  * В MutAppPropertyArray могут быть суб-свойства MutAppProperty
  *
- * @param {string} dataString
+ * @param {string|object} data
  */
-MutAppPropertyArray.prototype.deserialize = function(dataString) {
-    var data = JSON.parse(dataString);
-    // предполагается, что в dataString только валидные значения. Проверки не делаются
-    for (var key in data) {
-        if (key === '_value') {
-            // значение это сложный объект
-            this._deserializeSubProperty(data[key]);
-            this[key] = data[key];
-        }
-        else {
-            this[key] = data[key];
-        }
-    };
+MutAppPropertyArray.prototype.deserialize = function(data) {
+    if (typeof data === 'string') {
+        data = JSON.parse(data);
+    }
+    // предполагается, что в data только валидные значения. Проверки не делаются
+    this.id = data.id;
+    this._deserializeSubProperty(data.value); // значение массива это сложный объект, внутри могут быть другие MutAppProperty
+    this._value = data.value;
+    this._getValueTimestamp = data._getValueTimestamp;
+    this._setValueTimestamp = data._setValueTimestamp;
 };
 /**
  * Пройти рекурсивно по структуре объекта и создать все MutAppProperty

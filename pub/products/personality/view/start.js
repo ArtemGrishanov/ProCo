@@ -106,8 +106,6 @@ var StartScreen = MutApp.Screen.extend({
     },
 
     render: function() {
-        console.log('Start Screen render()');
-
         this.$el.html(this.template['default']());
 
         // установка свойств логотипа
