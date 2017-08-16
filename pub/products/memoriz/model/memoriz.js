@@ -215,7 +215,6 @@ var MemorizModel = MutApp.Model.extend({
          * Без данных о парах
          */
         gameCards: [],
-
         /**
          * Описание результатов, которые можно получить
          */
@@ -229,7 +228,15 @@ var MemorizModel = MutApp.Model.extend({
         /**
          * Признак того, что пользователь угадал или нет при последнем вскрытии карт
          */
-        guessed: false
+        guessed: false,
+        /**
+         * Количество карточек в одном ряду, апп проперти
+         */
+        cardsInRow: 5,
+        /**
+         * Выставить горизонтальную ориентацию карточек если isHorizontalCards == true
+         */
+        isHorizontalCards: false
     },
 
     initialize: function(param) {

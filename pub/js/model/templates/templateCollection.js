@@ -75,12 +75,23 @@ TemplateCollection.prototype.loadTemplateList = function(callback) {
                 if (tId) {
                     // создаем пока практически пустой объект-шаблон
                     // позже он будет дописан более подробной информацией из loadTemplatesInfo
-                    thisCollection.templates.push(new Template({
+                    var newItem = new Template({
                         // key example facebook-902609146442342/app/abc123.txt
                         url: obj.Key,
                         id: tId,
                         lastModified: obj.LastModified
-                    }));
+                    })
+                    // сортировка: вставляем по дате
+                    for (var i = 0; i < thisCollection.templates.length; i++) {
+                        if (obj.LastModified > thisCollection.templates[i].lastModified) {
+                            thisCollection.templates.splice(i,-1,newItem);
+                            newItem = null;
+                            break;
+                        }
+                    }
+                    if (newItem) {
+                        thisCollection.templates.push(newItem);
+                    }
                 }
             });
             log('Objects in dir '+prefix+':');

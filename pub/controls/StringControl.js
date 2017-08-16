@@ -54,7 +54,8 @@ function StringControl(propertyString, directiveName, $parent, productDOMElement
         if (this.$input) {
             var p = Engine.getAppProperty(this.propertyString);
             var v = this.$input.val() || null;
-            if (p.propertyValue !== v) {
+            //TODO p === null, значит это контрол-зомби, свойство уже не существует. Нужно уничтожать и контрол с листенерами
+            if (p && p.propertyValue !== v) {
                 Engine.setValue(p, v);
             }
         }

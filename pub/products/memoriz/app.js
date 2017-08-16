@@ -78,6 +78,8 @@ var MemorizApp = MutApp.extend({
         }
 
         this.setShareEntities(sEntities);
+        this.title = 'Testix Memory game';
+        this.description = 'Create your own memory game on Testix.me!';
     },
 
     start: function() {

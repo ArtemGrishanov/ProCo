@@ -38,6 +38,9 @@ var FbPanoramaApp = MutApp.extend({
             screenRoot: this.screenRoot
         });
         this.addScreen(this.panoViewerScr);
+
+        this.title = 'Testix Panorama';
+        this.description = 'Create your own panorama on Testix.me!';
     },
 
     start: function() {

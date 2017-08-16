@@ -99,9 +99,19 @@ var GameScreen = MutApp.Screen.extend({
             else {
                 c.mod = '';
             }
+            if (this.model.get('isHorizontalCards') === true) {
+                c.orientationMod = '__horizontal';
+            }
+            else {
+                c.orientationMod = '';
+            }
             c.pairIndex = '-';
             c.cardIndex = '-';
             $cardField.append(this.template[c.uiTemplate](c));
+            if ((i+1) % this.model.attributes.cardsInRow === 0) {
+                // соблюдаем количество карточек в одном ряду согласно настройке
+                $cardField.append('<br/>');
+            }
         }
 
         if (this.model.get('showBackCardTexture')===true) {

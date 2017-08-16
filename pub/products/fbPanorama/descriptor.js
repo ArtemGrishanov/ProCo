@@ -55,8 +55,10 @@ descriptor.app = [
         rules: 'pinArrowForm'
     },
     {
-        selector: 'id=mm pins.{{number}}.backgroundColor',
+        selector: 'id=mm pinsBackgroundColor',
         rules: 'backgroundColor',
+        filter: true,
+        showWhileScreenIsActive: 'panoramaEditScr',
         updateScreens: false,
         restartApp: false,
         renderScreens: ['panoramaEditScr'],

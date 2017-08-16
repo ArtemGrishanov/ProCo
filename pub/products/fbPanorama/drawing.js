@@ -158,6 +158,7 @@ var panoDrawing = {};
      * @param {number} param.srcHeight
      * @param {number} param.pinScale
      * @param {Image} param.logo
+     * @param {string} param.pinsBackgroundColor
      */
     function createPanoCanvas(param) {
         // размер картинки может оказаться больше чем srcWidth srcHeight, так как конфигурация берется из расчета максимальной ширины 6000px
@@ -217,7 +218,7 @@ var panoDrawing = {};
                     top: p.position.top,
                     pinScale: param.pinScale,
                     modArrow: p.modArrow,
-                    backgroundColor: p.backgroundColor,
+                    backgroundColor: param.pinsBackgroundColor,
                     color: p.color
                 });
             }

@@ -227,10 +227,8 @@ var PanoramaEditScreen = MutApp.Screen.extend({
                 // класс стрелки
                 $pel.addClass(p.modArrow);
                 // цвет фона
-                if (p.backgroundColor) {
-                    $pel.css('background-color', p.backgroundColor);
-                    this.setPinAfterColor($pel, i, p.modArrow, p.backgroundColor);
-                }
+                $pel.css('background-color', this.model.attributes.pinsBackgroundColor);
+                this.setPinAfterColor($pel, i, p.modArrow, this.model.attributes.pinsBackgroundColor);
                 // цвет текста
                 if (p.color) {
                     $pel.css('color', p.color);

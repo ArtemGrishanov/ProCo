@@ -25,6 +25,7 @@ var FbPanoramaModel = MutApp.Model.extend({
         previewScale: 1,
         panoCanvas: null,
         panoConfig: null,
+        pinsBackgroundColor: '#33bbed',
         pins: [
             {
                 id: '12345678',
@@ -36,7 +37,7 @@ var FbPanoramaModel = MutApp.Model.extend({
                     left: 500,
                     top: 500
                 },
-                backgroundColor: '#33bbed', // цвет фона
+                backgroundColor: '#33bbed', //@deprecated цвет фона
                 color: '#fff', // цвет текста
                 uiTemplate: 'id-text_pin_template',
                 // модификатор стрелки
@@ -184,11 +185,12 @@ var FbPanoramaModel = MutApp.Model.extend({
         }
     },
 
-    createPanoCanvas: function(config, image, scale, pins) {
+    createPanoCanvas: function(config, image, scale, pins, pinsBackgroundColor) {
         config = config || this.attributes.panoConfig;
         image = image || this.attributes.panoramaImage;
         scale = scale || this.attributes.previewScale;
         pins = pins || this.attributes.pins;
+        pinsBackgroundColor = pinsBackgroundColor || this.attributes.pinsBackgroundColor;
         var logoImg = this.attributes.logoImg;
         return panoDrawing.createPanoCanvas({
             img: image,
@@ -198,7 +200,8 @@ var FbPanoramaModel = MutApp.Model.extend({
             panoWidth: config.panoWidth,
             panoHeight: config.panoHeight,
             pinScale: 1/scale,
-            logo: logoImg
+            logo: logoImg,
+            pinsBackgroundColor: pinsBackgroundColor
         });
     },
 

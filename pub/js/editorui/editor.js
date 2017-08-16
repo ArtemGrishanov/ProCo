@@ -1238,8 +1238,8 @@ var Editor = {};
                     //awsBucket: App.getAWSBucketForPublishedProjects(),
                     callback: showEmbedDialog,
                     fbAppId: app.fbAppId, //
-                    ogTitle: app.title[0].value, // og tag
-                    ogDescription: app.description[0].value, // og tag
+                    ogTitle: app.title, // og tag
+                    ogDescription: app.description, // og tag
                     ogUrl: anonymUrl, // og url
                     //TODO refactor
                     ogImage: (app._shareEntities && (app._shareEntities.length > 0) && app._shareEntities[0].imgUrl) ? app._shareEntities[0].imgUrl: app.shareDefaultImgUrl // og tag

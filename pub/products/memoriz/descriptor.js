@@ -13,9 +13,9 @@ descriptor.css = [
     },
     {
         selector: '.js-card-field',
-        label: {RU:'Отступ до края',EN:'Gameboard padding'},
+        label: {RU:'Отступ сверху',EN:'Gameboard padding top'},
         filter: true,
-        rules: 'padding'
+        rules: 'paddingTop'
     },
     {
         // перечислил все классы к которым применять правила
@@ -217,6 +217,17 @@ descriptor.app = [
         label: 'Google Analytics Id',
         filter: false,
         rules: 'url'
+    },
+    {
+        selector: 'id=mm cardsInRow',
+        rules: 'cardsInRow'
+    },
+    {
+        selector: 'id=mm isHorizontalCards',
+        rules: 'trueFalse',
+        label: {RU:'Включить горизонтальные карточки',EN:'Horizontal cards orientation'},
+        filter: true,
+        showWhileScreenIsActive: 'gamescreen'
     }
 ];
 
@@ -516,7 +527,18 @@ descriptor.rules = {
         },
         label: {RU:'Картинка',EN:'Image'},
         filter: true
-    }
+    },
+    cardsInRow: {
+        updateScreens: true,
+        controls: "StringControl",
+        controlParams: {
+            viewName: 'textinput',
+            changeOnTimer: false
+        },
+        label: {RU:'Количество карточек в ряду',EN:'Cards in row'},
+        filter: true,
+        showWhileScreenIsActive: 'gamescreen'
+    },
 };
 
 /**

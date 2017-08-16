@@ -117,6 +117,10 @@ img {
     height: 140px;
     border-radius: 10px;
 }
+.flip-container.__horizontal, .front.__horizontal, .back.__horizontal {
+    width: 140px;
+    height: 90px;
+}
 
 /* flip speed goes here */
 .flipper {
@@ -142,6 +146,7 @@ img {
     -webkit-transform: rotateY(0deg);
     transform: rotateY(0deg);
     background: lightgreen;
+    background-size: cover;
 }
 
 /* back, initially hidden pane */
@@ -221,6 +226,13 @@ img {
         height: 116px;
         border-radius: 8px;
     }
+    body .flip-container.__horizontal,
+    body .front.__horizontal,
+    body .back.__horizontal {
+        width: 78px;
+        height: 50px;
+        border-radius: 5px;
+    }
 }
 @media (max-width:310px)  {
     body .flip-container,
@@ -229,5 +241,12 @@ img {
         width: 68px;
         height: 110px;
         border-radius: 8px;
+    }
+    body .flip-container.__horizontal,
+    body .front.__horizontal,
+    body .back.__horizontal {
+        width: 68px;
+        height: 44px;
+        border-radius: 5px;
     }
 }
