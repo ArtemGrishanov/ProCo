@@ -78,8 +78,10 @@ var MemorizApp = MutApp.extend({
         }
 
         this.setShareEntities(sEntities);
-        this.title = 'Testix Memory game';
-        this.description = 'Create your own memory game on Testix.me!';
+
+        // способ указания этих атрибутов уникален для каждого проекта
+        this.title = this.getPropertiesBySelector('id=startScr startHeaderText')[0].value;
+        this.description = this.getPropertiesBySelector('id=startScr startDescription')[0].value;
     },
 
     start: function() {
