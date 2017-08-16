@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test</title>
+    <meta charset="UTF-8">
+    <!-- этот файл кладется при публикации из products/common/css/tstx_cmn_products.css -->
+    <link href="tstx_cmn_products.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <!--build:css style.css-->
+    <link href="style.css" rel="stylesheet">
+    <!--endbuild-->
+
+<style>
+.js-start_header{
+	font-family:Arial, sans-serif;
+	color:#000000;
+	font-size:36px;
+	text-align:center;
+	padding-top:120px;
+	padding-bottom:0px;
+	padding-left:0px;
+}
+.js-start_description{
+	font-family:Arial, sans-serif;
+	color:#000000;
+	font-size:18px;
+	text-align:center;
+	padding-top:28px;
+	padding-bottom:32px;
+	padding-left:0px;
+}
+.js-question_text{
+	font-family:Arial, sans-serif;
+	color:#000000;
+	font-size:22px;
+	text-align:center;
+	padding-top:60px;
+	padding-bottom:26px;
+	padding-left:0px;
+}
+.js-result_title{
+	font-family:Arial, sans-serif;
+	color:#ffffff;
+	font-size:32px;
+	text-align:center;
+	padding-top:120px;
+	padding-bottom:0px;
+	padding-left:0px;
+}
+.js-result_description{
+	font-family:Arial, sans-serif;
+	color:#ffffff;
+	font-size:18px;
+	text-align:center;
+	padding-top:24px;
+	padding-bottom:20px;
+	padding-left:0px;
+}
+.js-option_text{
+	font-family:Arial, sans-serif;
+	color:#000000;
+	font-size:18px;
+}
+.js-a_wr{
+	text-align:center;
+	border-width:2px;
+	border-color:rgb(25, 153, 5);
+	background-color:#ffffff;
+	border-radius:4px;
+}
+.js-question_progress{
+	font-family:Arial, sans-serif;
+	color:rgb(68, 68, 68);
+	font-size:16px;
+}
+.js-test_btn{
+	background-color:#000000;
+	color:#ffffff;
+	font-size:18px;
+	font-family:Arial, sans-serif;
+	border-color:#fcfcfc;
+	border-radius:4px;
+	border-width:2px;
+	padding-top:0px;
+	padding-bottom:0px;
+}
+.js-download_btn{
+	background-color:#20961e;
+	color:#ffffff;
+	font-size:18px;
+	font-family:Arial, sans-serif;
+	border-color:rgb(255, 255, 255);
+	border-radius:4px;
+	border-width:0px;
+	padding-top:0px;
+	padding-bottom:0px;
+}
+.js-btn_wr{
+	text-align:center;
+	margin-top:0px;
+	margin-bottom:0px;
+	padding-left:0px;
+}
+.js-download_btn_wr{
+	text-align:center;
+	margin-top:0px;
+	margin-bottom:20px;
+	padding-left:0px;
+}
+.js-photo_cnt{
+	text-align:center;
+	margin-top:0px;
+	margin-bottom:0px;
+}
+.bullit{
+	border-width:2px;
+	border-color:rgb(51, 51, 51);
+}
+.topColontitle{
+	border-bottom-color:rgb(0, 0, 0);
+	color:rgb(255, 255, 204);
+	font-size:16px;
+	font-family:Arial, sans-serif;
+	text-align:center;
+	background-color:rgb(238, 238, 238);
+	padding-top:4px;
+	padding-bottom:4px;
+}
+.js-back_color{
+	background-color:#ffffff;
+}
+</style>
+</head>
+<body>
+    <div id="id-mutapp_screens">
+    </div>
+    <script id="id-welcome_template" type="text/template">
+        <div class="modal __active js-back_color js-back_img" data-app-property="id=startScr backgroundImg, id=startScr shadowEnable">
+            <div class="modal_cnt info js-back_shadow">
+                <div class="info_title js-start_header" data-app-property="id=startScr startHeaderText"><b>Дзюдо: </b>иппон или вазаари</div>
+                <div class="info_tx js-start_description" data-app-property="id=startScr startDescription">Пройдите тест и узнайте, как хорошо вы разбираетесь в этом виде восточных единоборств</div>
+                <div class="info_f js-btn_wr">
+                    <div class="button js-test_btn js-next js-start_btn" data-app-property="id=startScr startButtonText">Пройти тест</div>
+                </div>
+                <div class="logo js-logo js-start_logo" data-app-property="id=startScr logoPosition, id=startScr showLogo, id=tm logoUrl"></div>
+            </div>
+        </div>
+    </script>
+    <script id="id-slide_template" type="text/template">
+        <div class="modal __active js-back_color js-back_img" data-app-property="type=questions backgroundImg, type=questions shadowEnable">
+            <div class="modal_cnt js-back_shadow">
+                <div data-app-property="type=questions topColontitleText" class="js-topColontitleText topColontitle">Верхний колонтитул</div>
+                <div data-app-property="id=tm questionProgressPosition" class="js-question_progress question_progress"></div>
+                <div class="modal_hld question">
+                    <div class="js-question_cnt">
+                        <!--Сюда программно добавляется шаблон вопроса-->
+                    </div>
+                    <div class="js-answer_cnt js-answers_wr">
+                        <!--Сюда программно добавляются варианта ответов-->
+                    </div>
+                </div>
+                <div class="logo js-logo js-question_logo" data-app-property="type=questions logoPosition, type=questions showLogo, id=tm logoUrl"></div>
+                <div class="js-explain explain_modal" style="display:none;">
+                    <div class="explain_blk">
+                        <!--<div class="explain_title js-explanation_text"></div>-->
+                        <!--<div class="туду js- jsbtn_wr">-->
+                        <!--<span class="button туду js- jstest_btn js-next">Далее</span>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script id="id-question_text_template" type="text/template">
+        <div class="question_title js-question_text" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
+    </script>
+    <script id="id-question_text_photo_template" type="text/template">
+        <div class="question_title js-question_text" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
+        <div class="question_grid">
+            <div class="question_grid-i js-photo_cnt">
+                <img class="question_img js-photo" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.img" src="<%=img%>" />
+            </div>
+        </div>
+    </script>
+
+    <script id="id-answer_question_lst" type="text/template">
+        <div class="question_lst js-options_cnt">
+            <!--Сюда программно добавляются варианта ответов-->
+        </div>
+    </script>
+    <script id="id-answer_question_lst_2" type="text/template">
+        <div class="question_lst js-options_cnt">
+            <!--Сюда программно добавляются варианта ответов-->
+        </div>
+    </script>
+    <script id="id-answer_question_grid_3" type="text/template">
+        <div class="question_grid __3 js-options_cnt">
+            <!--Сюда программно добавляются варианта ответов-->
+        </div>
+    </script>
+    <script id="id-answer_question_grid_2" type="text/template">
+        <div class="question_grid __2 js-options_cnt">
+            <!--Сюда программно добавляются варианта ответов-->
+        </div>
+    </script>
+
+    <script id="id-option_text_template" type="text/template">
+        <div class="question_i js-a_wr" data-question-index="<%=currentQuestionIndex%>" data-id="<%=id%>" data-option-index="<%=currentOptionIndex%>" data-control-filter="filter=ok,prototypeIndex=0" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options, id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>">
+            <div class="bullit"></div>
+            <span class="js-option_text" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.text"><%=text%></span>
+        </div>
+        <!--<div class="a_wr" data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}">-->
+        <!--<div class="a_text">-->
+        <!--<div class="bullit"></div>-->
+        <!--<span data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}.text">{{answer_options_text}}</span>-->
+        <!--</div>-->
+        <!--</div>-->
+    </script>
+    <script id="id-option_img_template" type="text/template">
+        <div class="question_grid-i" data-id="<%=id%>">
+            <img data-id="<%=id%>" data-question-index="<%=currentQuestionIndex%>" data-option-index="<%=currentOptionIndex%>" data-control-filter="filter=ok,prototypeIndex=1" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options, id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>, id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.img" class="question_img" src="<%=img%>" />
+        </div>
+    </script>
+
+    <script id="id-explanation_text_template" type="text/template">
+        <div class="modal __active">
+            <div class="modal_cnt">
+                <div class="modal_hld answer">
+                    <div class="answer_title js-expl_title">Заголовок</div>
+                    <div class="answer_tx"><%=text%></div>
+                    <div class="answer_f">
+                        <div class="answer_ac button js-next">Следующий вопрос</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script id="id-result_template" type="text/template">
+        <div class="modal __active js-back_color js-back_img" data-app-property="type=result backgroundImg, type=result shadowEnable">
+            <div class="modal_cnt info js-back_shadow">
+                <div class="info_title js-result_title" data-app-property="id=tm results.<%=currentResultIndex%>.title"><%=title%></div>
+                <div class="info_tx js-result_description" data-app-property="id=tm results.<%=currentResultIndex%>.description"><%=description%></div>
+                <div class="info_f js-download_btn_wr">
+                    <div class="button js-download_btn" data-app-property="type=result downloadButtonText, type=result showDownload">Скачать</div>
+                </div>
+                <div class="js-mutapp_share_fb fb_share" data-app-property="type=result fbSharePosition"></div>
+                <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="type=result fbSharePosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
+                    <span class="tstx_share_i"></span>
+                    Поделиться
+                </div>
+                <div class="tstx_share_btn __vk js-mutapp_share_vk" data-app-property="type=result vkSharePosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
+                    <span class="tstx_share_i __vk"></span>
+                    Поделиться
+                </div>
+                <div class="tstx_share_btn __ok js-mutapp_share_ok" data-app-property="type=result okSharePosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
+                    <span class="tstx_share_i __ok"></span>
+                    Поделиться
+                </div>
+                <div class="info_f js-btn_wr js-restart_btn_wr">
+                    <div class="button js-next js-restart js-test_btn" data-app-property="type=result restartButtonText">Пройти тест еще раз</div>
+                </div>
+                <div class="logo js-logo js-result_logo" data-app-property="type=result logoPosition, type=result showLogo, id=tm logoUrl"></div>
+            </div>
+        </div>
+    </script>
+    <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
+    <!-- build:js index.min.js -->
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="underscore.js"></script>
+    <script type="text/javascript" src="backbone.js"></script>
+    <script type="text/javascript" src="mutapp.js"></script>
+    <script type="text/javascript" src="model/tm.js"></script>
+    <script type="text/javascript" src="view/welcome.js"></script>
+    <script type="text/javascript" src="view/result.js"></script>
+    <script type="text/javascript" src="view/question.js"></script>
+    <script type="text/javascript" src="descriptor.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <!-- endbuild -->
+    <script>
+        var app = null;
+        var tests = {};
+        $(document).ready(function() {
+            var DEFAULT_PARAMS = {};var DEFAULT_PARAMS = {"appConstructor=mutapp mode":"published","id=startScr logoPosition":{"top":373,"left":298},"type=questions logoPosition":{"top":416,"left":347},"type=result logoPosition":{"top":453,"left":347},"type=result fbSharePosition":{"top":479,"left":291},"type=result vkSharePosition":{"top":479,"left":62},"type=result okSharePosition":{"top":479,"left":520},"id=tm questionProgressPosition":{"top":30,"left":30},"type=result showDownload":true,"type=questions showExplanation":false,"id=startScr showLogo":true,"type=questions showLogo":false,"type=result showLogo":false,"id=tm fbShareEnabled":true,"id=tm okShareEnabled":true,"id=tm vkShareEnabled":true,"id=tm showQuestionProgress":false,"id=tm showBullits":false,"id=tm showTopColontitle":false,"id=tm showBackgroundImage":true,"id=tm randomizeQuestions":false,"id=startScr shadowEnable":false,"type=questions shadowEnable":false,"type=result shadowEnable":false,"id=tm logoUrl":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2FLogo-Sber-flat.jpg","id=tm quiz.0.question.img":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Ffon-01.jpg","id=tm quiz.1.question.img":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Fimg-02.jpg","id=tm quiz.2.question.img":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Fimg-03.jpg","id=tm quiz.3.question.img":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Fimg-05.jpg","id=tm quiz.4.question.img":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Fimg-04.jpg","id=startScr backgroundImg":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Ffon-white.jpg","type=questions backgroundImg":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Ffon-white.jpg","type=result backgroundImg":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Ffon-final.jpg","id=tm quiz.0.question.text":"Вы неожиданно получили премию. <br>Что будете делать?","id=tm quiz.1.question.text":"Деньги кончились, а до зарплаты <br>&nbsp;\n ещё неделя. Как быть?","id=tm quiz.2.question.text":"Копите на машину на вкладе, а тут подвернулась горящая путевка — Испания, \n 5 дней, прямо как вы хотели, но свободных денег нет. Что делать?","id=tm quiz.3.question.text":"На что вы готовы откладывать часть зарплаты?","id=tm quiz.4.question.text":"Какой способ копить вы считаете самым правильным?","id=tm quiz.0.answer.options.0.text":"Как что? Сразу потрачу","id=tm quiz.0.answer.options.1.text":"Оставлю на карте. Потом решу","id=tm quiz.0.answer.options.2.text":"Положу всю премию или часть на банковский вклад","id=tm quiz.1.answer.options.0.text":"Займу у родственников или друзей","id=tm quiz.1.answer.options.1.text":"У меня такого не бывает, всегда есть запас","id=tm quiz.1.answer.options.2.text":"Возьму кредит или сниму деньги с кредитной карты","id=tm quiz.2.answer.options.0.text":"Переживу как-нибудь без путевки","id=tm quiz.2.answer.options.1.text":"Шанс упускать нельзя. Закрою вклад","id=tm quiz.2.answer.options.2.text":"Возьму деньги из накопленных, но потом верну сам себе с процентами","id=tm quiz.3.answer.options.0.text":"Ни на что! Если не хватает на нужную вещь, всегда беру кредит","id=tm quiz.3.answer.options.1.text":"На путешествие в отпуске или новый компьютер","id=tm quiz.3.answer.options.2.text":"На ремонт в квартире или машину","id=tm quiz.4.answer.options.0.text":"На банковских вкладах в надежном банке","id=tm quiz.4.answer.options.1.text":"Наличными в укромном месте, и лучше в валюте","id=tm quiz.4.answer.options.2.text":"Никакой. Копить бессмысленно, надо тратить все, что зарабатываешь","id=tm results.0.title":"Похоже, вы не очень-то любите копить. <br>Но, может быть, стоит попробовать?","id=tm results.1.title":"Похоже, вы не очень-то любите копить. <br>Но, может быть, стоит попробовать?","id=tm results.2.title":"Похоже, вы не против накопить, <br>но не всегда срабатывает самоконтроль ;) Попробуйте с нашим новым вкладом!","id=tm results.3.title":"Похоже, вы не против накопить, <br>но не всегда срабатывает самоконтроль ;) Попробуйте с нашим новым вкладом!","id=tm results.4.title":"Вы не похожи на Скруджа, но явно умеете <br>считать деньги. Накопите больше!","id=tm results.5.title":"Вы не похожи на Скруджа, но явно умеете <br>считать деньги. Накопите больше!","id=tm results.0.description":"Получите повышенный процент по вкладу <br>«Время сохранять» с промокодом <br>&nbsp;NIKOMUNEGOVORI","id=tm results.1.description":"Получите повышенный процент по вкладу <br>«Время сохранять» с промокодом <br>NIKOMUNEGOVORI","id=tm results.2.description":"Получите повышенный процент по вкладу <br>«Время сохранять» с промокодом <br>NIKOMUNEGOVORI","id=tm results.3.description":"Получите повышенный процент по вкладу <br>«Время сохранять» с промокодом <br>NIKOMUNEGOVORI","id=tm results.4.description":"Получите повышенный процент по вкладу <br>«Время сохранять» с промокодом <br>NIKOMUNEGOVORI","id=tm results.5.description":"Получите повышенный процент по вкладу <br>«Время сохранять» с промокодом<br>NIKOMUNEGOVORI","id=startScr startHeaderText":"Умеете ли вы копить деньги?","id=startScr startDescription":"Наш короткий тест поможет вам это понять. Пройдите его и получите промокод на повышенную ставку по вкладу «Время сохранять» в Сбербанк Онлайн","id=startScr startButtonText":"Пройти тест","type=result restartButtonText":"Пройти тест снова","type=result downloadButtonText":"Открыть вклад","type=questions topColontitleText":"Текст колонтитула","id=tm quiz":[{"question":{"uiTemplate":"id-question_text_photo_template","text":"Вы неожиданно получили премию. <br>Что будете делать?","img":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Ffon-01.jpg","currentQuestionIndex":0},"explanation":{"uiTemplate":"id-explanation_text_template","text":"Answer feedback"},"answer":{"type":"radiobutton","uiTemplate":"id-answer_question_lst_2","options":[{"uiTemplate":"id-option_text_template","text":"Как что? Сразу потрачу","id":"870759","currentQuestionIndex":0,"currentOptionIndex":0},{"uiTemplate":"id-option_text_template","text":"Оставлю на карте. Потом решу","id":"9b725d","currentQuestionIndex":0,"currentOptionIndex":1},{"uiTemplate":"id-option_text_template","text":"Положу всю премию или часть на банковский вклад","points":1,"id":"6d3b5a","currentQuestionIndex":0,"currentOptionIndex":2}]},"id":"d7d2015f034ce0763f8b03e3cef44814"},{"question":{"uiTemplate":"id-question_text_photo_template","text":"Деньги кончились, а до зарплаты <br>&nbsp;\n ещё неделя. Как быть?","img":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Fimg-02.jpg","currentQuestionIndex":1},"explanation":{"uiTemplate":"id-explanation_text_template","text":"Answer feedback"},"answer":{"type":"radiobutton","uiTemplate":"id-answer_question_lst_2","options":[{"uiTemplate":"id-option_text_template","text":"Займу у родственников или друзей","id":"13048d","currentQuestionIndex":1,"currentOptionIndex":0,"points":0},{"uiTemplate":"id-option_text_template","text":"У меня такого не бывает, всегда есть запас","id":"8a232f","currentQuestionIndex":1,"currentOptionIndex":1,"points":1},{"uiTemplate":"id-option_text_template","text":"Возьму кредит или сниму деньги с кредитной карты","points":0,"id":"beb4a2","currentQuestionIndex":1,"currentOptionIndex":2}]},"id":"00fa76d191a9e3c084d6e3e861219fce"},{"question":{"uiTemplate":"id-question_text_photo_template","text":"Копите на машину на вкладе, а тут подвернулась горящая путевка — Испания, \n 5 дней, прямо как вы хотели, но свободных денег нет. Что делать?","img":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Fimg-03.jpg","currentQuestionIndex":2},"explanation":{"uiTemplate":"id-explanation_text_template","text":"Answer feedback"},"answer":{"type":"radiobutton","uiTemplate":"id-answer_question_lst_2","options":[{"uiTemplate":"id-option_text_template","text":"Переживу как-нибудь без путевки","id":"c7cc0d","currentQuestionIndex":2,"currentOptionIndex":0,"points":1},{"uiTemplate":"id-option_text_template","text":"Шанс упускать нельзя. Закрою вклад","id":"27bd64","currentQuestionIndex":2,"currentOptionIndex":1,"points":0},{"uiTemplate":"id-option_text_template","text":"Возьму деньги из накопленных, но потом верну сам себе с процентами","points":0,"id":"663f6c","currentQuestionIndex":2,"currentOptionIndex":2}]},"id":"7f32c28fcf0e256e1925fc9d6b5439df"},{"question":{"uiTemplate":"id-question_text_photo_template","text":"На что вы готовы откладывать часть зарплаты?","img":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Fimg-05.jpg","currentQuestionIndex":3},"explanation":{"uiTemplate":"id-explanation_text_template","text":"Answer feedback"},"answer":{"type":"radiobutton","uiTemplate":"id-answer_question_lst_2","options":[{"uiTemplate":"id-option_text_template","text":"Ни на что! Если не хватает на нужную вещь, всегда беру кредит","id":"236b45","currentQuestionIndex":3,"currentOptionIndex":0},{"uiTemplate":"id-option_text_template","text":"На путешествие в отпуске или новый компьютер","id":"58806c","currentQuestionIndex":3,"currentOptionIndex":1},{"uiTemplate":"id-option_text_template","text":"На ремонт в квартире или машину","points":1,"id":"7cc01e","currentQuestionIndex":3,"currentOptionIndex":2}]},"id":"aa18215837e6ec43371d8abfc0ca133b"},{"question":{"uiTemplate":"id-question_text_photo_template","text":"Какой способ копить вы считаете самым правильным?","img":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Fimg-04.jpg","currentQuestionIndex":4},"explanation":{"uiTemplate":"id-explanation_text_template","text":"Answer feedback"},"answer":{"type":"radiobutton","uiTemplate":"id-answer_question_lst_2","options":[{"uiTemplate":"id-option_text_template","text":"На банковских вкладах в надежном банке","id":"41225a","currentQuestionIndex":4,"currentOptionIndex":0,"points":1},{"uiTemplate":"id-option_text_template","text":"Наличными в укромном месте, и лучше в валюте","id":"9822c1","currentQuestionIndex":4,"currentOptionIndex":1,"points":0},{"uiTemplate":"id-option_text_template","text":"Никакой. Копить бессмысленно, надо тратить все, что зарабатываешь","points":0,"id":"ebcd05","currentQuestionIndex":4,"currentOptionIndex":2}]},"id":"ac541cfe9a5423761683a6cba546516d"}],"id=tm quiz.0.answer.options":[{"uiTemplate":"id-option_text_template","text":"Как что? Сразу потрачу","id":"870759","currentQuestionIndex":0,"currentOptionIndex":0},{"uiTemplate":"id-option_text_template","text":"Оставлю на карте. Потом решу","id":"9b725d","currentQuestionIndex":0,"currentOptionIndex":1},{"uiTemplate":"id-option_text_template","text":"Положу всю премию или часть на банковский вклад","points":1,"id":"6d3b5a","currentQuestionIndex":0,"currentOptionIndex":2}],"id=tm quiz.1.answer.options":[{"uiTemplate":"id-option_text_template","text":"Займу у родственников или друзей","id":"13048d","currentQuestionIndex":1,"currentOptionIndex":0,"points":0},{"uiTemplate":"id-option_text_template","text":"У меня такого не бывает, всегда есть запас","id":"8a232f","currentQuestionIndex":1,"currentOptionIndex":1,"points":1},{"uiTemplate":"id-option_text_template","text":"Возьму кредит или сниму деньги с кредитной карты","points":0,"id":"beb4a2","currentQuestionIndex":1,"currentOptionIndex":2}],"id=tm quiz.2.answer.options":[{"uiTemplate":"id-option_text_template","text":"Переживу как-нибудь без путевки","id":"c7cc0d","currentQuestionIndex":2,"currentOptionIndex":0,"points":1},{"uiTemplate":"id-option_text_template","text":"Шанс упускать нельзя. Закрою вклад","id":"27bd64","currentQuestionIndex":2,"currentOptionIndex":1,"points":0},{"uiTemplate":"id-option_text_template","text":"Возьму деньги из накопленных, но потом верну сам себе с процентами","points":0,"id":"663f6c","currentQuestionIndex":2,"currentOptionIndex":2}],"id=tm quiz.3.answer.options":[{"uiTemplate":"id-option_text_template","text":"Ни на что! Если не хватает на нужную вещь, всегда беру кредит","id":"236b45","currentQuestionIndex":3,"currentOptionIndex":0},{"uiTemplate":"id-option_text_template","text":"На путешествие в отпуске или новый компьютер","id":"58806c","currentQuestionIndex":3,"currentOptionIndex":1},{"uiTemplate":"id-option_text_template","text":"На ремонт в квартире или машину","points":1,"id":"7cc01e","currentQuestionIndex":3,"currentOptionIndex":2}],"id=tm quiz.4.answer.options":[{"uiTemplate":"id-option_text_template","text":"На банковских вкладах в надежном банке","id":"41225a","currentQuestionIndex":4,"currentOptionIndex":0,"points":1},{"uiTemplate":"id-option_text_template","text":"Наличными в укромном месте, и лучше в валюте","id":"9822c1","currentQuestionIndex":4,"currentOptionIndex":1,"points":0},{"uiTemplate":"id-option_text_template","text":"Никакой. Копить бессмысленно, надо тратить все, что зарабатываешь","points":0,"id":"ebcd05","currentQuestionIndex":4,"currentOptionIndex":2}],"id=tm quiz.0.answer.options.0":{"uiTemplate":"id-option_text_template","text":"Как что? Сразу потрачу","id":"870759","currentQuestionIndex":0,"currentOptionIndex":0},"id=tm quiz.0.answer.options.1":{"uiTemplate":"id-option_text_template","text":"Оставлю на карте. Потом решу","id":"9b725d","currentQuestionIndex":0,"currentOptionIndex":1},"id=tm quiz.0.answer.options.2":{"uiTemplate":"id-option_text_template","text":"Положу всю премию или часть на банковский вклад","points":1,"id":"6d3b5a","currentQuestionIndex":0,"currentOptionIndex":2},"id=tm quiz.1.answer.options.0":{"uiTemplate":"id-option_text_template","text":"Займу у родственников или друзей","id":"13048d","currentQuestionIndex":1,"currentOptionIndex":0,"points":0},"id=tm quiz.1.answer.options.1":{"uiTemplate":"id-option_text_template","text":"У меня такого не бывает, всегда есть запас","id":"8a232f","currentQuestionIndex":1,"currentOptionIndex":1,"points":1},"id=tm quiz.1.answer.options.2":{"uiTemplate":"id-option_text_template","text":"Возьму кредит или сниму деньги с кредитной карты","points":0,"id":"beb4a2","currentQuestionIndex":1,"currentOptionIndex":2},"id=tm quiz.2.answer.options.0":{"uiTemplate":"id-option_text_template","text":"Переживу как-нибудь без путевки","id":"c7cc0d","currentQuestionIndex":2,"currentOptionIndex":0,"points":1},"id=tm quiz.2.answer.options.1":{"uiTemplate":"id-option_text_template","text":"Шанс упускать нельзя. Закрою вклад","id":"27bd64","currentQuestionIndex":2,"currentOptionIndex":1,"points":0},"id=tm quiz.2.answer.options.2":{"uiTemplate":"id-option_text_template","text":"Возьму деньги из накопленных, но потом верну сам себе с процентами","points":0,"id":"663f6c","currentQuestionIndex":2,"currentOptionIndex":2},"id=tm quiz.3.answer.options.0":{"uiTemplate":"id-option_text_template","text":"Ни на что! Если не хватает на нужную вещь, всегда беру кредит","id":"236b45","currentQuestionIndex":3,"currentOptionIndex":0},"id=tm quiz.3.answer.options.1":{"uiTemplate":"id-option_text_template","text":"На путешествие в отпуске или новый компьютер","id":"58806c","currentQuestionIndex":3,"currentOptionIndex":1},"id=tm quiz.3.answer.options.2":{"uiTemplate":"id-option_text_template","text":"На ремонт в квартире или машину","points":1,"id":"7cc01e","currentQuestionIndex":3,"currentOptionIndex":2},"id=tm quiz.4.answer.options.0":{"uiTemplate":"id-option_text_template","text":"На банковских вкладах в надежном банке","id":"41225a","currentQuestionIndex":4,"currentOptionIndex":0,"points":1},"id=tm quiz.4.answer.options.1":{"uiTemplate":"id-option_text_template","text":"Наличными в укромном месте, и лучше в валюте","id":"9822c1","currentQuestionIndex":4,"currentOptionIndex":1,"points":0},"id=tm quiz.4.answer.options.2":{"uiTemplate":"id-option_text_template","text":"Никакой. Копить бессмысленно, надо тратить все, что зарабатываешь","points":0,"id":"ebcd05","currentQuestionIndex":4,"currentOptionIndex":2},"type=test shareLink":"http://p.testix.me/101076573819765/2dda1a137c/","id=tm logoLink":"https://www.sberbank.ru/ru/person","id=tm downloadLink":"https://online.sberbank.ru","appConstructor=mutapp _shareEntities.0.imgUrl":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Fpost-image-large.png","appConstructor=mutapp _shareEntities.1.imgUrl":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Fpost-image-large.png","appConstructor=mutapp _shareEntities.2.imgUrl":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Fpost-image-large.png","appConstructor=mutapp _shareEntities.3.imgUrl":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Fpost-image-large.png","appConstructor=mutapp _shareEntities.4.imgUrl":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Fpost-image-large.png","appConstructor=mutapp _shareEntities.5.imgUrl":"https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-101076573819765%2Fres%2Fpost-image-large.png","appConstructor=mutapp gaId":"UA-84925568-8"};
+            app = new TestApp({
+                defaults: DEFAULT_PARAMS
+            });
+            app.start();
+        });
+    </script>
+</body>
+</html>
