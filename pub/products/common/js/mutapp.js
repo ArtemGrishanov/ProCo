@@ -114,6 +114,14 @@ var MutApp = function(param) {
      */
     this.gaId = undefined;
     /**
+     * Сохраненные значение для десериализации
+     * Когда создается MutAppProperty, то свойства будут искаться здесь
+     *
+     * @type {{}}
+     * @private
+     */
+    this._parsedDefaults = {};
+    /**
      * Значения которые можно сохранить в Engine
      * Эти значения передаются при запуске в приложение
      *
@@ -196,34 +204,13 @@ var MutApp = function(param) {
                 .css('min-height',this.height+'px')
                 .css('position','relative');
         }
-
-        // значения которые надо установить по умолчанию при запуске приложения
-        // значения могут относиться к Вью или Моделям
         if (param.defaults) {
+            // _defaults может быть массивом, чтобы несколько объектов для сериализации можно было ставить упорядоченно
             this._defaults = Array.isArray(param.defaults) ? param.defaults : [param.defaults];
-            this._parsedDefaults = [];
+            this._parsedDefaults = {};
             for (var i = 0; i < this._defaults.length; i++) {
                 var defProps = this._defaults[i];
-                for (var key in defProps) {
-                    if (defProps.hasOwnProperty(key)) {
-                        var parsed = MutApp.Util.parseSelector(key);
-                        if (parsed !== null) {
-                            parsed.value = defProps[key];
-                            this._parsedDefaults.push(parsed);
-                            if (parsed.conditionValue === this[parsed.conditionKey]) {
-                                // если это свойство предназначено для самого mutapp-приложения (this)
-                                // this[parsed.valueKey] = parsed.value;
-                                MutApp.Util.assignByPropertyString(this, parsed.valueKey, parsed.value);
-                            }
-                        }
-                        else {
-                            // это простое свойство вида 'key1':'value1'
-                            // которое надо установить непосредственно в сам объект MutApp
-                            //this[key] = defProps[key];
-                            console.error('MutApp.constructor: Invalid selector=\''+key+'\'', true);
-                        }
-                    }
-                }
+                this.deserialize(defProps);
             }
         }
 
@@ -234,7 +221,6 @@ var MutApp = function(param) {
             else {
                 console.error('MutApp.constructor: appChangeCallbacks must be Array', true);
             }
-
         }
 
         if (param.engineStorage) {
@@ -577,23 +563,23 @@ MutApp.prototype.find = function(query) {
  * @param appString
  * @param value
  */
-MutApp.prototype.setPropertyByAppString = function(appString, value) {
-    var props = this.getPropertiesBySelector(appString);
-    if (props !== null) {
-        for (var i = 0; i < props.length; i++) {
-            var isModel = props[i].entity instanceof MutApp.Model;
-            if (isModel === true) {
-                MutApp.Util.assignByPropertyString(props[i].entity.attributes, props[i].path, value);
-            }
-            else {
-                MutApp.Util.assignByPropertyString(props[i].entity, props[i].path, value);
-            }
-        }
-    }
-    else {
-        console.error('MutApp.setPropertyByAppString: Invalid selector=\''+appString+'\'');
-    }
-};
+//MutApp.prototype.setPropertyByAppString = function(appString, value) {
+//    var props = this.getPropertiesBySelector(appString);
+//    if (props !== null) {
+//        for (var i = 0; i < props.length; i++) {
+//            var isModel = props[i].entity instanceof MutApp.Model;
+//            if (isModel === true) {
+//                MutApp.Util.assignByPropertyString(props[i].entity.attributes, props[i].path, value);
+//            }
+//            else {
+//                MutApp.Util.assignByPropertyString(props[i].entity, props[i].path, value);
+//            }
+//        }
+//    }
+//    else {
+//        console.error('MutApp.setPropertyByAppString: Invalid selector=\''+appString+'\'');
+//    }
+//};
 
 /**
  * Теперь только для MutAppProperty
@@ -602,26 +588,26 @@ MutApp.prototype.setPropertyByAppString = function(appString, value) {
  * @param {string} appString
  * @param {*} value
  */
-MutApp.prototype.setPropertyByAppString2 = function(appString, value) {
-    var results = this.getPropertiesBySelector(appString);
-    if (results && results.length > 0) {
-        // свойств может быть несколько если используется подстановка {{number}}
-        var prop = null;
-        for (var i = 0; i < results.length; i++) {
-            prop = results[i].value;
-            // проверяем что найденное значение действительно является MutAppProperty
-            if (MutApp.Util.isMutAppProperty(prop) === true) {
-                prop.setValue(value);
-            }
-            else {
-                throw new Error('MutApp.setPropertyByAppString2: \''+appString+'\' is not a MutAppProperty');
-            }
-        }
-    }
-    else {
-        throw new Error('MutApp.setPropertyByAppString2: properties not found for \''+appString+'\'');
-    }
-};
+//MutApp.prototype.setPropertyByAppString2 = function(appString, value) {
+//    var results = this.getPropertiesBySelector(appString);
+//    if (results && results.length > 0) {
+//        // свойств может быть несколько если используется подстановка {{number}}
+//        var prop = null;
+//        for (var i = 0; i < results.length; i++) {
+//            prop = results[i].value;
+//            // проверяем что найденное значение действительно является MutAppProperty
+//            if (MutApp.Util.isMutAppProperty(prop) === true) {
+//                prop.setValue(value);
+//            }
+//            else {
+//                throw new Error('MutApp.setPropertyByAppString2: \''+appString+'\' is not a MutAppProperty');
+//            }
+//        }
+//    }
+//    else {
+//        throw new Error('MutApp.setPropertyByAppString2: properties not found for \''+appString+'\'');
+//    }
+//};
 
 /**
  * Привязать существующее свойство к приложению.
@@ -645,6 +631,12 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
         if (mutAppProperty._application !== this) {
             mutAppProperty._application = this;
         }
+
+        // если в приложении есть сохраненные десериализованные свойства, то приложение должно получить их
+        if (this._parsedDefaults[mutAppProperty.propertyString]) {
+            mutAppProperty.deserialize(this._parsedDefaults[mutAppProperty.propertyString]);
+        }
+
         this._mutappProperties.push(mutAppProperty);
     }
     else {
@@ -679,27 +671,30 @@ MutApp.prototype.updateCssMutAppPropertiesValues = function(screen) {
     }
 };
 /**
- * Восстановить из json-строки значения свойств приложения.
+ * Восстановить из json-строки или объекта значения свойств приложения.
  *
  * Условия:
  * 1) Более конкретные свойства имеют больший приоритет
  * То есть строка элемента массива приоритетнее, чем сам сериализованный массив
  * 2) ...
  *
- * @param {string} dataStr
+ * @param {string|object} data
  */
-MutApp.prototype.deserialize = function(dataStr) {
-    var data = JSON.parse(dataStr);
-    //    for (var key in data) {
-    //        this.setPropertyByAppString2(key, data[key]);
-    //    }
+MutApp.prototype.deserialize = function(data) {
+    if (typeof data === 'string') {
+        data = JSON.parse(data);
+    }
     for (var key in data) {
+        // значения по умолчанию сохраняем для будущих инициализаций MutAppProperty
+        this._parsedDefaults[key] = data[key];
         var ap = this.getProperty(key);
         if (ap) {
+            // если свойство уже создано то десериализуем его
             ap.deserialize(data[key]);
         }
         else {
-            console.error('MutApp.deserialize: property \'' + key + '\' does not exist in this app.');
+            // при старте приложения нет никаких свойтств пока
+            // console.error('MutApp.deserialize: property \'' + key + '\' does not exist in this app.');
         }
     }
 };
@@ -1158,18 +1153,6 @@ MutApp.Screen = Backbone.View.extend({
         initialize: function(param) {
             // установить необходимые экрану свойства по умолчанию
             MutApp.Util.setDefaultProperties(this, param, this.defaultsToSetInInitialize);
-            // screen связываетсяс application через его модель
-            if (this.model && this.model.application) {
-                if (this.model.application._parsedDefaults) {
-                    var d, o = null;
-                    for (var i = 0; i < this.model.application._parsedDefaults.length; i++) {
-                        d = this.model.application._parsedDefaults[i];
-                        if (d.conditionValue === this[d.conditionKey]) {
-                            this[d.valueKey] = d.value;
-                        }
-                    }
-                }
-            }
             // Найти в этом экране свойства MutAppProperty и установить application туда
             var prop = null;
             for (var key in this) {
@@ -1208,20 +1191,6 @@ MutApp.Model = Backbone.Model.extend({
             // установить необходимые модели свойства по умолчанию
             MutApp.Util.setDefaultProperties(this, param, this.defaultsToSetInInitialize);
             if (this.application) {
-                if (this.application._parsedDefaults) {
-                    var d, o = null;
-                    for (var i = 0; i < this.application._parsedDefaults.length; i++) {
-                        d = this.application._parsedDefaults[i];
-                        if (d.conditionValue === this[d.conditionKey]) {
-                            //o = {};
-                            //o[d.valueKey] = d.value;
-                            //this.set(o);
-                            // здесь подойдет установка сразу в attributes модели, так как модели создаются перед вью (всегда?) и не нужны события и прочие опции
-                            // например, d.valueKey='quiz.2.question.text' d.value='Текст вопроса'
-                            MutApp.Util.assignByPropertyString(this.attributes, d.valueKey, d.value); // assignByPropertyString in util/utils.js
-                        }
-                    }
-                }
                 // Найти в этой модели свойства MutAppProperty и установить эту this модель туда
                 var prop = null;
                 for (var key in this.attributes) {
