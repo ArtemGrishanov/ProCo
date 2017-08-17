@@ -197,6 +197,9 @@ var MutApp = function(param) {
 
     // далее установка динамических свойств для приложения
     if (param) {
+        if (param.mode) {
+            this.mode = param.mode;
+        }
         if (this.screenRoot) {
             this.screenRoot.empty();
             this.screenRoot.css('max-width',this.width+'px')
@@ -244,13 +247,15 @@ var MutApp = function(param) {
     window.addEventListener("message", this.receiveMessage.bind(this), false);
 
     // включаем мониторинг состояния приложение
-    setInterval((function(){
-        this.onAppMonitorTimer();
-    }).bind(this),200);
+//    setInterval((function(){
+//        this.onAppMonitorTimer();
+//    }).bind(this),200);
 };
 
-MutApp.SCREEN_RENDERED = 'mutapp_screen_rendered';
-MutApp.APP_SIZE_CHANGED = 'mutapp_app_size_changed';
+MutApp.EVENT_SCREEN_CREATED = 'mutapp_event_screen_created';
+MutApp.EVENT_SCREEN_RENDERED = 'mutapp_event_screen_rendered';
+MutApp.EVENT_SCREEN_DELETED = 'mutapp_EVENT_SCREEN_DELETED';
+MutApp.EVENT_APP_SIZE_CHANGED = 'mutapp_event_app_size_changed';
 MutApp.ENGINE_STORAGE_VALUE_CHANGED = 'mutapp_engine_value_changed';
 MutApp.ENGINE_SET_PROPERTY_VALUE = 'mutapp_set_property_value';
 
@@ -298,7 +303,10 @@ MutApp.ENGINE_SET_PROPERTY_VALUE = 'mutapp_set_property_value';
 MutApp.prototype.addScreen = function(v) {
     if (v instanceof MutApp.Screen === true) {
         this._screens.push(v);
-        v.render();
+        // v.render(); надо ли?
+        this.trigger(MutApp.EVENT_SCREEN_CREATED, {
+            screenId: v.id
+        });
         return v;
     }
     throw new Error('MutApp.addScreen: View must be a MutApp.Screen instance');
@@ -311,6 +319,9 @@ MutApp.prototype.addScreen = function(v) {
 MutApp.prototype.deleteScreen = function(v) {
     var index = this._screens.indexOf(v);
     if (index >= 0) {
+        this.trigger(MutApp.EVENT_SCREEN_DELETED, {
+            screenId: v.id
+        });
         this._screens.splice(index, 1);
         v.$el.remove();
     }
@@ -360,6 +371,17 @@ MutApp.prototype.getScreenById = function(id) {
         }
     }
     return null;
+};
+/**
+ * Получить список ид всех экранов приложения
+ * @return {Array}
+ */
+MutApp.prototype.getScreenIds = function() {
+    var result = [];
+    for (var i = 0; i < this._screens.length; i++) {
+        result.push(this._screens[i].id);
+    }
+    return result;
 };
 /**
  * Скрыть определенный экран приложения
@@ -1044,41 +1066,54 @@ MutApp.prototype.isSmallWidth = function() {
 };
 
 /**
- * Таймер, мониторящий состояние приложения
+ * Инициировать событие в приложении
+ * @param eventType
+ * @param data
  */
-MutApp.prototype.onAppMonitorTimer = function() {
-    if (this._appChangeCallbacks && this._appChangeCallbacks.length > 0) {
-        // проверка изменения размеров приложения
-        if (this._previousAppState.width !== this.width || this._previousAppState.height !== this.height) {
-            var event = {
-                type: MutApp.APP_SIZE_CHANGED,
-                app: this
-            };
-            for (var j = 0; j < this._appChangeCallbacks.length; j++) {
-                this._appChangeCallbacks[j](event);
-            }
-            this._previousAppState.width = this.width;
-            this._previousAppState.height = this.height;
-        }
-
-        // проверка хешей экранов: произошел ли render() какого либо экрана
-        var v = null;
-        for (var i = 0; i < this._screens.length; i++) {
-            v = this._screens[i];
-            // если renderChecksum не меняется (undefined) то колбек не будет вызван
-            if (v.renderChecksum !== this._previousAppState.screensRenderChecksum[v.id]) {
-                var event = {
-                    type: MutApp.SCREEN_RENDERED,
-                    screen: v
-                };
-                for (var j = 0; j < this._appChangeCallbacks.length; j++) {
-                    this._appChangeCallbacks[j](event);
-                }
-                this._previousAppState.screensRenderChecksum[v.id] = v.renderChecksum;
-            }
-        }
+MutApp.prototype.trigger = function(eventType, data) {
+    data = data || {};
+    data.application = this;
+    for (var j = 0; j < this._appChangeCallbacks.length; j++) {
+        this._appChangeCallbacks[j](eventType, data);
     }
 };
+
+/**
+ * Таймер, мониторящий состояние приложения
+ */
+//MutApp.prototype.onAppMonitorTimer = function() {
+//    if (this._appChangeCallbacks && this._appChangeCallbacks.length > 0) {
+//        // проверка изменения размеров приложения
+//        if (this._previousAppState.width !== this.width || this._previousAppState.height !== this.height) {
+//            var event = {
+//                type: MutApp.EVENT_APP_SIZE_CHANGED,
+//                app: this
+//            };
+//            for (var j = 0; j < this._appChangeCallbacks.length; j++) {
+//                this._appChangeCallbacks[j](event);
+//            }
+//            this._previousAppState.width = this.width;
+//            this._previousAppState.height = this.height;
+//        }
+//
+//        // проверка хешей экранов: произошел ли render() какого либо экрана
+//        var v = null;
+//        for (var i = 0; i < this._screens.length; i++) {
+//            v = this._screens[i];
+//            // если renderChecksum не меняется (undefined) то колбек не будет вызван
+//            if (v.renderChecksum !== this._previousAppState.screensRenderChecksum[v.id]) {
+//                var event = {
+//                    type: MutApp.EVENT_SCREEN_RENDERED,
+//                    screen: v
+//                };
+//                for (var j = 0; j < this._appChangeCallbacks.length; j++) {
+//                    this._appChangeCallbacks[j](event);
+//                }
+//                this._previousAppState.screensRenderChecksum[v.id] = v.renderChecksum;
+//            }
+//        }
+//    }
+//};
 
 /**
  *
@@ -1153,6 +1188,9 @@ MutApp.Screen = Backbone.View.extend({
         initialize: function(param) {
             // установить необходимые экрану свойства по умолчанию
             MutApp.Util.setDefaultProperties(this, param, this.defaultsToSetInInitialize);
+            if (!this.id) {
+                throw new Error('MutApp.Screen.initialize: Screen id must be specified.');
+            }
             // Найти в этом экране свойства MutAppProperty и установить application туда
             var prop = null;
             for (var key in this) {
@@ -1161,6 +1199,7 @@ MutApp.Screen = Backbone.View.extend({
                     this.model.application.linkMutAppProperty(prop);
                 }
             }
+            // MutApp.EVENT_SCREEN_CREATED еще рано звать: клиентский initialize еще не закончен, экран не добавлен в список _screens
         }
     },
 
@@ -1170,8 +1209,94 @@ MutApp.Screen = Backbone.View.extend({
     render: function() {
         // your code
         // ...
-        // set this.renderChecksum = Math.random();
+        // this.renderCompleted();
         // return this;
+    },
+
+    /**
+     * После каждого рендера движок должен произвести необходимые операции
+     */
+    renderCompleted: function() {
+        // обновить значения css свойств
+        this.model.application.updateCssMutAppPropertiesValues(this);
+        if (this.model.application.mode === 'edit') {
+            this._findAndAttachAppProperty();
+            this._findAndAttachCssAppProperty();
+        }
+        // вызвать события о рендере экрана
+        this.model.application.trigger(MutApp.EVENT_SCREEN_RENDERED, {
+            screenId: this.id
+        });
+    },
+
+    /**
+     * 1) Найти в экране элементы с атрибутами data-app-property
+     * 2) Записать в MutAppProperty ссылку на этот dom-элемент
+     *
+     * @returns {Number}
+     * @private
+     */
+    _findAndAttachAppProperty: function() {
+        var dataElems = this.$el.find('[data-app-property]');
+        if (dataElems.length > 0) {
+            for (var j = 0; j < dataElems.length; j++) {
+                var atr = $(dataElems[j]).attr('data-app-property');
+                var psArr = atr.split(',');
+                for (var k = 0; k < psArr.length; k++) {
+                    var tspAtr = psArr[k].trim();
+                    var ap = this.model.application.getProperty(tspAtr);
+                    if (ap!==null) {
+                        ap.uiElement = dataElems[j];
+                    }
+                    else {
+                        console.error('MutApp.Screen._findAndAttachAppProperty: app does not has this mutAppProperty \''+tspAtr+'\' (but it was found on screen)');
+                    }
+                }
+            }
+        }
+        return dataElems.length;
+    },
+
+    /**
+     * 1) Для CssMutAppProperty найти по селектору элементы на этом экране
+     * 2) В атрибут data-app-property дописать propertyString
+     * 3) В CssMutAppProperty записать ссылку на этот найденный dom-элемент
+     *
+     * @private
+     */
+    _findAndAttachCssAppProperty: function() {
+        for (var i = 0; i < this.model.application._mutappProperties.length; i++) {
+            var ap = this.model.application._mutappProperties[i];
+            if (MutApp.Util.isCssMutAppProperty(ap) === true) {
+                var elemsOnView = this.$el.find(ap.cssSelector);
+                for (var k = 0; k < elemsOnView.length; k++) {
+                    // добавить проперти в data-app-property атрибут, так как css свойств там возможно нет
+                    this._addDataAttribute(elemsOnView[k], ap.propertyString);
+                    // для экрана подготавливаем domElement связанные с appProperty, чтобы потом не искать их при каждом показе экрана
+                    ap.uiElement = elemsOnView[k];
+                }
+            }
+        }
+    },
+
+    /**
+     * Добавить новое значение в data-app-property избегая дублирования
+     * prop3 -> data-app-property="prop1 prop2" = data-app-property="prop1 prop2 prop3"
+     *
+     * @param {DOMElement} elem html element
+     * @param {string} attribute
+     */
+    _addDataAttribute: function(elem, attribute) {
+        var exAtr = $(elem).attr('data-app-property');
+        if (exAtr) {
+            if (exAtr.indexOf(attribute) < 0) {
+                // избегаем дублирования
+                $(elem).attr('data-app-property', exAtr + ',' + attribute);
+            }
+        }
+        else {
+            $(elem).attr('data-app-property', attribute);
+        }
     }
 });
 
