@@ -357,3 +357,23 @@ QUnit.test("MutApp test: assignByPropertyString", function( assert ) {
     assert.ok(o.root.arr[2]===undefined, 'assignByPropertyString');
     assert.ok(o.root.arr.length===2, 'assignByPropertyString');
 });
+
+QUnit.test("MutApp test: operations count", function( assert ) {
+    var app1 = new PersonalityApp({
+    });
+    app1.start();
+    assert.ok(app1.getOperationsCount() === 0);
+
+    app1.model.attributes.results.addElementByPrototype('id=pm resultProto1');
+    assert.ok(app1.getOperationsCount() === 1);
+
+    var app2 = new PersonalityApp({
+    });
+    app2.model.attributes.results.addElementByPrototype('id=pm resultProto1');
+    var serStr = app2.model.attributes.results.serialize();
+
+    app1.model.attributes.results.deserialize(serStr);
+    // +3 операции
+    // сам массив и два вложенных в него свойства
+    assert.ok(app1.getOperationsCount() === 4);
+});

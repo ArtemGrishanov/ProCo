@@ -37,6 +37,13 @@ var MutApp = function(param) {
      */
     this._appChangeCallbacks = [];
     /**
+     * Каждое изменение MutAppProperty (setValue() или deserialize()) приводитк инкременту этого значения
+     *
+     * @type {number}
+     * @private
+     */
+    this._operationCount = 0;
+    /**
      * Предыдущее состояние приложения
      * @type {{}}
      * @private
@@ -776,6 +783,15 @@ MutApp.prototype.compare = function(otherApp, param) {
 MutApp.prototype.clone = function() {
     //но так оно не сможет работать?
     return _.clone(this);
+};
+
+/**
+ * Вернуть количество операций (MutAppProperty.setValue() & MutAppProperty.deserialize()) с момента запуска приложения
+ *
+ * @returns {number}
+ */
+MutApp.prototype.getOperationsCount = function() {
+    return this._operationCount;
 };
 
 /**
@@ -2330,6 +2346,9 @@ MutAppProperty.prototype.deserialize = function(data) {
     this._value = data.value;
     this._getValueTimestamp = data._getValueTimestamp;
     this._setValueTimestamp = data._setValueTimestamp;
+    if (this._application) {
+        this._application._operationCount++;
+    }
 };
 
 /**
@@ -2341,6 +2360,9 @@ MutAppProperty.prototype.setValue = function(newValue) {
         throw new Error('MutAppProperty.constructor: MutAppProperty implements only primitives: Number, Boolean, String, Undefined, Null. For array use MutAppPropertyArray');
     }
     if (this._value !== newValue) {
+        if (this._application) {
+            this._application._operationCount++;
+        }
         this._value = newValue;
         this._setValueTimestamp = new Date().getTime();
         this.trigger('change');
@@ -2565,6 +2587,9 @@ MutAppPropertyArray.prototype.deserialize = function(data) {
     this._value = data.value;
     this._getValueTimestamp = data._getValueTimestamp;
     this._setValueTimestamp = data._setValueTimestamp;
+    if (this._application) {
+        this._application._operationCount++;
+    }
 };
 /**
  * Пройти рекурсивно по структуре объекта и создать все MutAppProperty
@@ -2579,7 +2604,16 @@ MutAppPropertyArray.prototype._deserializeSubProperty = function(data) {
             var param = data[key];
             param.application = this._application;
             param.model = this._model;
-            data[key] = new window[data[key]['_mutAppConstructor']](param);
+            var ap = this._application.getProperty(param.propertyString);
+            if (ap) {
+                // свойство может уже создано (пример id=pm results.0.title). Например уже есть элемент в массиве, внутри которого id=pm results.0.title
+                // и потом решили десериализовать массив целиком id=pm results
+                ap.deserialize(data[key]);
+            }
+            else {
+                ap = new window[data[key]['_mutAppConstructor']](param);
+            }
+            data[key] = ap;
         }
         else if (MutApp.Util.isPrimitive(data[key]) === false) {
             this._deserializeSubProperty(data[key]);

@@ -6,6 +6,11 @@ var Editor = {};
 
 (function(global) {
     /**
+     * Приложение MutApp которое редактируется в редакторе
+     * @type {null}
+     */
+    var editedApp = null;
+    /**
      * Уникальный ид проекта
      * Также это имя файла, которое будет использовано при сохранении
      * @type {string}
@@ -238,10 +243,10 @@ var Editor = {};
      * @param {boolean} forceChange сменить в любом случае (с витрины или клонирование)
      */
     function trySetDefaultShareLink(forceChange) {
-        var pp = Engine.find('shareLink');
+        var pp = editedApp.find('shareLink');
         if (pp && pp.length > 0) {
             if (forceChange === true || pp[0].propertyValue == config.common.defaultShareLinkToChange) {
-                Engine.setValue(pp[0], Publisher.getAnonymLink(appId));
+                pp[0].setValue(Publisher.getAnonymLink(appId));
             }
         }
         else {
@@ -262,7 +267,7 @@ var Editor = {};
      * @returns {string}
      */
     function confirmExit() {
-        if (config.common.awsEnabled === true && Engine.getOperationsCount() > operationsCount) {
+        if (config.common.awsEnabled === true && editedApp.getOperationsCount() > operationsCount) {
             return App.getText('unsaved_changes');
         }
     }
@@ -284,7 +289,7 @@ var Editor = {};
             appIframe = document.createElement('iframe');
             appIframe.onload = onProductIframeLoaded;
             $(appIframe).addClass('proto_cnt').addClass('__hidden');
-            var host = config.common.home;// || (config.common.awsHostName+config.common.awsBucketName);
+            var host = config.common.home;
             appIframe.src = host+src;
             $('#id-product_iframe_cnt').append(appIframe);
         }
@@ -298,6 +303,7 @@ var Editor = {};
      */
     function onProductIframeLoaded() {
         iframeWindow = appIframe.contentWindow;
+        editedApp = iframeWindow.app;
         // запуск движка с передачей информации о шаблоне
         var params = {
             appName: appName,
@@ -305,13 +311,11 @@ var Editor = {};
         };
         if (appTemplate) {
             params.values = appTemplate.propertyValues;
-            // не переписываем дескриптор, как плнировал изначально, а берем из материнского приложения всегда
-            //descriptor: appTemplate.descriptor
         }
-        Engine.startEngine(iframeWindow, params);
+        //Engine.startEngine(iframeWindow, params);
 
         // установить хуки которые есть в дескрипторе. Может не быть вовсе
-        hookRunner.setHooks(iframeWindow.descriptor.hooks);
+        //hookRunner.setHooks(iframeWindow.descriptor.hooks);
 
         // для установки ссылки шаринга требуются данные пользователя, ответ от апи возможно надо подождать
         if (App.getUserData()) {
@@ -340,10 +344,9 @@ var Editor = {};
 //            // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
 //            .height(appContainerSize.height+2*config.editor.ui.screen_blocks_border_width+config.editor.ui.id_product_cnt_additional_height);
         // в поле для редактирования подтягиваем стили продукта
-        var app = Engine.getApp();
         var $h = $("#id-product_screens_cnt").contents().find('head');
         $h.append(config.products.common.styles);
-        $h.append(config.products[app.type].stylesForEmbed);
+        $h.append(config.products[editedApp.type].stylesForEmbed);
         $h = $(appIframe).contents().find('head');
         $h.append(config.products.common.styles);
 
@@ -421,6 +424,9 @@ var Editor = {};
      * @param {Array.<string>} ids - массив ид экранов
      */
     function showScreen(ids) {
+        if (Array.isArray(ids) === false) {
+            ids = [ids];
+        }
         // запоминаем, если потребуется восстановление показа экранов.
         // Например, произойдет пересборка экранов и надо будет вернуться к показу последних активных
         activeScreens = ids;
@@ -445,11 +451,11 @@ var Editor = {};
 
         $(previewScreensIframeBody).empty();
         // в превью контейнер дописать кастомные стили, которые получились в результате редактирования css appProperties
-        Engine.writeCssRulesTo(previewScreensIframeBody);
+        //Engine.writeCssRulesTo(previewScreensIframeBody);
         var appScreen = null;
         var previewHeight = 0;
         for (var i = 0; i < ids.length; i++) {
-            appScreen = Engine.getAppScreen(ids[i]);
+            appScreen = editedApp.getScreenById(ids[i]);
             if (appScreen) {
                 var b = createPreviewScreenBlock(appScreen.view)
                 $(previewScreensIframeBody).append(b);
@@ -484,11 +490,10 @@ var Editor = {};
     }
 
     function updateAppContainerSize() {
-        var app = Engine.getApp();
         // выставляем первоначальный размер приложения, возможно, оно будет меняться
         appContainerSize = {
-            width: app.width,
-            height: app.height
+            width: editedApp.width,
+            height: editedApp.height
         };
         //TODO данная установка свойств размерности аналогична loader.js
         // можно провести унификацию
@@ -1016,7 +1021,7 @@ var Editor = {};
             //TODO первый старт: надо дождаться загрузки этого айфрема и нормально проинициализировать после
             setTimeout(function() {
                 previewScreensIframeBody = $("#id-product_screens_cnt").contents().find('body');
-                showScreen([Engine.getAppScreenIds()[0]]);
+                showScreen(Editor.getEditedApp().getScreenIds()[0]);
             }, 1000);
         }
 
@@ -1474,6 +1479,21 @@ var Editor = {};
         });
     }
 
+    function restartApp(params) {
+        params = params || {};
+        delete editedApp;
+        params.mode = params.mode || 'none';
+        var cfg = config.products[appName];
+        editedApp = new appIframe.contentWindow[cfg.constructorName]({
+            width: cfg.defaultWidth,
+            height: cfg.defaultHeight,
+            defaults: null
+            //appChangeCallbacks: [onAppChanged],
+            //engineStorage: JSON.parse(JSON.stringify(appStorage))
+        });
+        editedApp.start();
+    }
+
     function showEditor() {
         // когда видим редактор, должен быть включен режим предпросмотра 'desktop', так как пользователь работает (редактирует) с десктоп версией приложения
         previewMode = 'desktop';
@@ -1484,7 +1504,7 @@ var Editor = {};
             .css('maxWidth',appContainerSize.width+'px')
             .css('maxHeight',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
         // нужно перезапустить приложение чтобы оно корректно обработало свой новый размер
-        Engine.restartApp({
+        restartApp({
             mode: 'edit'
         });
         $(appIframe).addClass('__hidden');
@@ -1752,5 +1772,6 @@ var Editor = {};
     global.updateSelection = updateSelection;
     global.getQuickControlPanel = function() { return quickControlPanel; }
     global.getEditorEnvironment = getEditorEnvironment;
+    global.getEditedApp = function() { return editedApp; }
 
 })(Editor);

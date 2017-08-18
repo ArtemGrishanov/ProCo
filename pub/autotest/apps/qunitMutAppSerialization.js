@@ -174,3 +174,29 @@ QUnit.test("MutApp test: MutApp deserialization in start. (PersonalityTest)", fu
     app2.start();
     assert.ok(originApp.compare(app2), originApp.compareDetails.message);
 });
+
+/**
+ * Десериализация поверх существующего свойтсва
+ *
+ * 1) app1.model.attributes.results уже существует включая id=pm results.0.title
+ * 2) десериализуем сразу app1.model.attributes.results.deserialize();
+ *
+ */
+QUnit.test("MutApp test: deserialization of existed property", function( assert ) {
+    var app1 = new PersonalityApp({
+    });
+    app1.start();
+    app1.model.attributes.results.addElementByPrototype('id=pm resultProto1');
+
+    var app2 = new PersonalityApp({
+    });
+    app2.model.attributes.results.addElementByPrototype('id=pm resultProto1');
+    var serStr = app2.model.attributes.results.serialize();
+    app1.model.attributes.results.deserialize(serStr);
+
+    assert.ok(app1.model.attributes.results.compare(app2.model.attributes.results));
+    assert.ok(app1.compare(app2)===false, app1.compareDetails.message);
+
+    app1.deserialize(app2.serialize());
+    assert.ok(app1.compare(app2), app1.compareDetails.message);
+});

@@ -583,6 +583,34 @@ var config = {
                 expectedSerializedAppStringLength: 4000
             }
         },
+        personality: {
+            prototypeId: 'personality_v1.0',
+            /**
+             * Имя функции с помощью которой создается приложение этого типа
+             */
+            constructorName: 'PersonalityApp',
+            /**
+             * Само приложение для загрузки через iframe
+             */
+            src: 'products/personality/index.html',
+            /**
+             * В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae
+             * Нужно для превью в контроле Slide
+             */
+            stylesForEmbed: '<link href="{{config.common.home}}products/personality/style.css" rel="stylesheet"/>',
+            /**
+             * каталог откуда publisher будет брать все ресурсы для публикации проекта
+             */
+            baseProductUrl: 'products/personality/',
+            /**
+             * Ширина по умолчанию, если не задана
+             */
+            defaultWidth: 800,
+            /**
+             * Высота по умолчанию, если не задана
+             */
+            defaultHeight: 600,
+        },
         memoriz: {
             /**
              * Имя функции с помощью которой создается приложение этого типа
