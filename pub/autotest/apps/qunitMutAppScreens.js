@@ -159,4 +159,14 @@ QUnit.test("MutApp test: Screens in edit mode. data-app-property attribute", fun
     assert.ok(ap2.uiElement, 'uiElement connected');
     assert.ok($(ap2.uiElement).attr('data-app-property').indexOf('.js-start_header color') >= 0, 'data-app-property connected');
     assert.ok(ap2.uiElement === startScr.$el.find(ap2.cssSelector)[0]);
+
+    // также после ренденра в режиме edit в экране будет список всех MutAppProperty, которые к нему привязаны
+    // то есть на этом экране есть data-app-property от нескольких MutAppProperty
+    var linkedMutAppProperties = startScr.getLinkedMutAppProperties()
+    assert.ok(linkedMutAppProperties.length > 5, 'there are linked MutAppProperties on the screen');
+    for (var i = 0; i < linkedMutAppProperties.length; i++) {
+        var lp = linkedMutAppProperties[i];
+        assert.ok(lp.uiElement);
+        assert.ok($.contains(startScr.$el[0], lp.uiElement));
+    }
 });

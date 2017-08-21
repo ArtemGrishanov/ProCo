@@ -23,38 +23,40 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/js/config.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="585" column="22" selection-start="26615" selection-end="26615" vertical-scroll-proportion="0.0" vertical-offset="8558" max-vertical-offset="14175">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="mutapp.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2577" column="30" selection-start="92440" selection-end="92440" vertical-scroll-proportion="0.0" vertical-offset="38431" max-vertical-offset="39405">
+            <state line="274" column="0" selection-start="9153" selection-end="9153" vertical-scroll-proportion="0.0" vertical-offset="4471" max-vertical-offset="39900">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="editor.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
+      <file leaf-file-name="pm.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/personality/model/pm.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="442" column="46" selection-start="16722" selection-end="16722" vertical-scroll-proportion="0.4643377" vertical-offset="6311" max-vertical-offset="26730">
+            <state line="164" column="23" selection-start="4691" selection-end="4710" vertical-scroll-proportion="-9.32" vertical-offset="2227" max-vertical-offset="6855">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="engine.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/js/engine/engine.js">
+      <file leaf-file-name="index_personality.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/autotest/index_personality.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="950" column="0" selection-start="39552" selection-end="39552" vertical-scroll-proportion="0.0" vertical-offset="14123" max-vertical-offset="19605">
+            <state line="58" column="50" selection-start="3489" selection-end="3489" vertical-scroll-proportion="-23.041666" vertical-offset="317" max-vertical-offset="1005">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="qunitPersonality.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitPersonality.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="46" column="0" selection-start="1898" selection-end="1898" vertical-scroll-proportion="0.66292137" vertical-offset="218" max-vertical-offset="930">
+              <folding>
+                <marker date="1503306484000" expanded="true" signature="98:1154" placeholder="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -69,22 +71,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppObjectsCompare.js" />
-        <option value="$PROJECT_DIR$/pub/autotest/engine/helpers/valuesGenerator.js" />
-        <option value="$PROJECT_DIR$/pub/products/personality/model/pm.js" />
-        <option value="$PROJECT_DIR$/pub/products/personality/app.js" />
-        <option value="$PROJECT_DIR$/pub/autotest/index_mutapp.html" />
-        <option value="$PROJECT_DIR$/pub/products/personality/style.css" />
-        <option value="$PROJECT_DIR$/pub/products/personality/view/start.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/view/result.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/view/question.js" />
         <option value="$PROJECT_DIR$/pub/js/engine/appScreen.js" />
-        <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppScreens.js" />
         <option value="$PROJECT_DIR$/pub/js/config.js" />
         <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppSerialization.js" />
-        <option value="$PROJECT_DIR$/pub/products/common/js/mutapp.js" />
-        <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppClientFramework.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppScreens.js" />
+        <option value="$PROJECT_DIR$/pub/controls/SlideGroupControl.js" />
+        <option value="$PROJECT_DIR$/pub/controls/Slide.js" />
         <option value="$PROJECT_DIR$/pub/js/editorui/editor.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppClientFramework.js" />
+        <option value="$PROJECT_DIR$/pub/products/personality/view/start.js" />
+        <option value="$PROJECT_DIR$/pub/products/personality/app.js" />
+        <option value="$PROJECT_DIR$/pub/products/common/js/mutapp.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/index_personality.html" />
+        <option value="$PROJECT_DIR$/pub/products/personality/model/pm.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/apps/qunitPersonality.js" />
       </list>
     </option>
   </component>
@@ -169,6 +171,10 @@
               <option name="myItemId" value="products" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test_new" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -188,7 +194,29 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="personality" />
+              <option name="myItemId" value="test_new" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="products" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -283,10 +311,10 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/pub/autotest/apps" />
+      <recent name="$PROJECT_DIR$/pub/autotest" />
       <recent name="$PROJECT_DIR$/pub/products/personality" />
       <recent name="$PROJECT_DIR$/pub/products/personality/view" />
       <recent name="$PROJECT_DIR$/pub/i" />
-      <recent name="$PROJECT_DIR$/pub/controls/i" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -367,7 +395,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="873" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -404,102 +432,9 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/model/m.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="171" column="13" selection-start="7459" selection-end="7459" vertical-scroll-proportion="0.4386207" vertical-offset="2247" max-vertical-offset="3570">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="252" column="1" selection-start="4964" selection-end="4964" vertical-scroll-proportion="0.33285713" vertical-offset="3547" max-vertical-offset="8025">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/view/result.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="191" column="31" selection-start="5879" selection-end="5879" vertical-scroll-proportion="0.8137931" vertical-offset="2275" max-vertical-offset="3000">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/view/question.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="172" column="31" selection-start="5883" selection-end="5883" vertical-scroll-proportion="0.7724138" vertical-offset="2020" max-vertical-offset="3345">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/view/start.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="85" column="29" selection-start="2235" selection-end="2262" vertical-scroll-proportion="0.0" vertical-offset="655" max-vertical-offset="2355">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/engine/appScreen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="36" selection-start="1200" selection-end="1200" vertical-scroll-proportion="0.5586207" vertical-offset="0" max-vertical-offset="2175">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitMutAppScreens.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="138" column="34" selection-start="5239" selection-end="5239" vertical-scroll-proportion="0.0" vertical-offset="1765" max-vertical-offset="2505">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="4" selection-start="1287" selection-end="1287" vertical-scroll-proportion="0.33286518" vertical-offset="198" max-vertical-offset="16380">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitMutAppSerialization.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="173" column="17" selection-start="6524" selection-end="6524" vertical-scroll-proportion="0.34691012" vertical-offset="2348" max-vertical-offset="3105">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="585" column="22" selection-start="26615" selection-end="26615" vertical-scroll-proportion="0.0" vertical-offset="8558" max-vertical-offset="14175">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitMutAppClientFramework.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="350" column="9" selection-start="14957" selection-end="14957" vertical-scroll-proportion="0.36797753" vertical-offset="4988" max-vertical-offset="5760">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/memoriz/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="35" selection-start="178" selection-end="178" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1410">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="4" selection-start="97" selection-end="97" vertical-scroll-proportion="0.12413793" vertical-offset="0" max-vertical-offset="3780">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2577" column="30" selection-start="92440" selection-end="92440" vertical-scroll-proportion="0.0" vertical-offset="38431" max-vertical-offset="39405">
           <folding />
         </state>
       </provider>
@@ -511,10 +446,105 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitMutAppScreens.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="148" column="0" selection-start="5499" selection-end="5499" vertical-scroll-proportion="0.0" vertical-offset="1915" max-vertical-offset="2655">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/SlideGroupControl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="67" column="25" selection-start="1994" selection-end="1994" vertical-scroll-proportion="-13.2" vertical-offset="675" max-vertical-offset="10620">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="442" column="46" selection-start="16722" selection-end="16722" vertical-scroll-proportion="0.4643377" vertical-offset="6311" max-vertical-offset="26730">
+        <state line="473" column="46" selection-start="18370" selection-end="18370" vertical-scroll-proportion="-3.76" vertical-offset="7001" max-vertical-offset="26625">
+          <folding>
+            <marker date="1503257117000" expanded="true" signature="-1:-1" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="585" column="22" selection-start="26615" selection-end="26615" vertical-scroll-proportion="0.0" vertical-offset="8558" max-vertical-offset="14175">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/Slide.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="89" column="13" selection-start="4070" selection-end="4070" vertical-scroll-proportion="0.0" vertical-offset="940" max-vertical-offset="1785">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/test_new/model/tm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="89" selection-start="405" selection-end="476" vertical-scroll-proportion="0.33103448" vertical-offset="0" max-vertical-offset="6660">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/personality/view/start.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="113" column="80" selection-start="3292" selection-end="3292" vertical-scroll-proportion="0.0" vertical-offset="1540" max-vertical-offset="2355">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/personality/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="52" column="44" selection-start="1924" selection-end="1924" vertical-scroll-proportion="0.6413793" vertical-offset="315" max-vertical-offset="3825">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitTest.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="725">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/index_personality.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="58" column="50" selection-start="3489" selection-end="3489" vertical-scroll-proportion="-23.041666" vertical-offset="317" max-vertical-offset="1005">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitMutAppClientFramework.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="158" column="4" selection-start="5806" selection-end="5874" vertical-scroll-proportion="0.33333334" vertical-offset="2141" max-vertical-offset="4980">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="274" column="0" selection-start="9153" selection-end="9153" vertical-scroll-proportion="0.0" vertical-offset="4471" max-vertical-offset="39900">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/personality/model/pm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="164" column="23" selection-start="4691" selection-end="4710" vertical-scroll-proportion="-9.32" vertical-offset="2227" max-vertical-offset="6855">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitPersonality.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="46" column="0" selection-start="1898" selection-end="1898" vertical-scroll-proportion="0.66292137" vertical-offset="218" max-vertical-offset="930">
+          <folding>
+            <marker date="1503306484000" expanded="true" signature="98:1154" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>

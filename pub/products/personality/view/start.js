@@ -111,7 +111,7 @@ var StartScreen = MutApp.Screen.extend({
         // установка свойств логотипа
         var $l = this.$el.find('.js-start_logo');
         if (this.showLogo === true) {
-            $l.css('backgroundImage','url('+this.model.get('logoUrl')+')');
+            $l.css('backgroundImage','url('+this.model.get('logoUrl').getValue()+')');
             $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
         }
         else {

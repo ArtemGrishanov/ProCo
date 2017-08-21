@@ -100,12 +100,12 @@ SlideGroupControl.prototype.onAllScreensUpdate = function() {
  *
  * У этого контрола есть такие данные:
  * 1) Массив Slide (превью одного экрана), он их сам и создает сколько надо и когда надо
- * 2) Engine.getAppScreenIds()
+ * 2) Editor.getEditedApp().getScreenIds()
  * 3) требования к быстродействию:
  *      - перетаскивания, добавления/удаления Slides должны происходить гладко
  */
 SlideGroupControl.prototype.updateScreens = function() {
-    var appScreenIds = Engine.getAppScreenIds();
+    var appScreenIds = Editor.getEditedApp().getScreenIds();
     if (this.$directive && appScreenIds.length > 0) {
         // подготовим для использования компоненты
         for (var i = 0; i < this._slidesInfo.length; i++) {
@@ -116,7 +116,7 @@ SlideGroupControl.prototype.updateScreens = function() {
         var myScreens = [];
         var myScreenIds = [];
         for (var i = 0; i < appScreenIds.length; i++) {
-            var scr = Engine.getAppScreen(appScreenIds[i]);
+            var scr = Editor.getEditedApp().getScreenById(appScreenIds[i]);
             if (scr.group === this.groupName) {
                 myScreens.push(scr);
                 myScreenIds.push(appScreenIds[i]);

@@ -50,7 +50,7 @@ QUnit.test("MutApp test: getPropertiesBySelector", function( assert ) {
     // поддержка css селектора для свойств
     var cssHeaderColorProperty = app.getPropertiesBySelector('.js-start_header color')[0].value;
     assert.ok(cssHeaderColorProperty instanceof CssMutAppProperty === true);
-    assert.ok(cssHeaderColorProperty.getValue() === undefined); // not rendered yet
+    assert.ok(cssHeaderColorProperty.getValue() === 'rgb(0, 0, 0)'); // rendered(), container id-mutapp_screens on the page
     assert.ok(cssHeaderColorProperty.cssSelector === '.js-start_header');
     assert.ok(cssHeaderColorProperty.cssPropertyName === 'color');
     assert.ok(MutApp.Util.isMutAppProperty(cssHeaderColorProperty) === true);
@@ -143,14 +143,11 @@ QUnit.test("MutApp test: app size", function( assert ) {
     assert.ok($('#id-swimming_test').height() === 500, 'height is ok');
 });
 
-QUnit.test("MutApp test: Models", function( assert ) {
+QUnit.test("MutApp test: getEntities, getPropertiesBySelector", function( assert ) {
     var app = new PersonalityApp({
         defaults: {
             "type=personality appAttr1": 'appData1',
-            "type=personality appAttr2": true,
-
-            "invalid": 'value',
-
+            "invalid selector example": 'value',
             "id=pm data1": "12345",
             "id=pm  data2": "5678",
             "id=startScr data1": "welcomeCustomId",
@@ -163,18 +160,7 @@ QUnit.test("MutApp test: Models", function( assert ) {
     app.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
 
     assert.ok(app === app._models[0].application, 'application in model');
-    assert.ok(app._parsedDefaults.length === 7, 'parsed values');
-
-    assert.ok(app.appAttr1 === 'appData1', 'app selector');
-    assert.ok(app.appAttr2 === true, 'app selector');
-
-    assert.ok(app._models[0].attributes.data1 === '12345', 'default value has set');
-    assert.ok(app._models[0].attributes.data2 === '5678', 'default value has set');
-
-    assert.ok(app._screens[0].data1 === 'welcomeCustomId', 'default value has set');
-    assert.ok(app._screens[0].data2 === false, 'default value has set');
-
-    assert.ok(app._screens[2].typeData === 23, 'default value has set');
+    assert.ok(getPropertiesCount(app._parsedDefaults) === 6, 'parsed values');
 
     var ent1 = app.getEntities('type', 'questions');
     assert.ok(ent1 && ent1.length === 2, 'getAllEntities');
@@ -185,7 +171,7 @@ QUnit.test("MutApp test: Models", function( assert ) {
     var ent3 = app.getEntities('type', 'personality');
     assert.ok(ent3[0] === app && ent3.length === 1, 'getAllEntities');
 
-    var p1 = app.getPropertiesBySelector('id=pm data1');
+    var p1 = app.getPropertiesBySelector('id=pm quiz');
     assert.ok(p1 !== null, 'getPropertiesBySelector');
     assert.ok(p1.length === 1, 'getPropertiesBySelector');
 
@@ -216,53 +202,15 @@ QUnit.test("MutApp test: Models", function( assert ) {
     assert.ok(p5[0].path === 'currentQuestionIndex', 'getPropertiesBySelector');
     assert.ok(p5[0].value === undefined, 'getPropertiesBySelector');
 
-    // проверка установки сложных свойств, которые конфликтуют друг с другом
-    var app2 = new PersonalityApp({
-        defaults: {
-            "id=pm objectValue": [
-                {
-                    url: 'http://example.org/1.jpg',
-                    text: 'qwerty'
-                },
-                {
-                    url: 'http://example.org/2.jpg',
-                    text: 'asdfg'
-                }
-            ],
-            "id=pm objectValue.0.text": "5678",
-            "id=pm objectValue.1.url": 'http://example.org/333.jpg'
-        }
-    });
-    assert.ok(app2.getPropertiesBySelector('id=pm objectValue.0.text')[0].value === '5678');
-    assert.ok(app2.getPropertiesBySelector('id=pm objectValue.0.url')[0].value === 'http://example.org/1.jpg');
-    assert.ok(app2.getPropertiesBySelector('id=pm objectValue.1.text')[0].value === 'asdfg');
-    assert.ok(app2.getPropertiesBySelector('id=pm objectValue.1.url')[0].value === 'http://example.org/333.jpg');
-
-    // альтернативная форма передачи параметра в виде массива
-    var app3 = new PersonalityApp({
-        defaults: [
-            {
-                "id=pm objectValue.0.text": "5678",
-                "id=pm objectValue.1.url": 'http://example.org/333.jpg',
-                "type=question data1": 'value1'
-            },
-            {
-                "id=pm objectValue": [
-                    {
-                        url: 'http://example.org/1.jpg',
-                        text: 'qwerty'
-                    },
-                    {
-                        url: 'http://example.org/2.jpg'
-                    }
-                ]
+    function getPropertiesCount(obj) {
+        var result = 0;
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                result++;
             }
-        ]
-    });
-    assert.ok(app3.getPropertiesBySelector('id=pm objectValue.0.text')[0].value === 'qwerty');
-    assert.ok(app3.getPropertiesBySelector('id=pm objectValue.0.url')[0].value === 'http://example.org/1.jpg');
-    assert.ok(app3.getPropertiesBySelector('id=pm objectValue.1.text') === null);
-    assert.ok(app3.getPropertiesBySelector('id=pm objectValue.1.url')[0].value === 'http://example.org/2.jpg');
+        }
+        return result;
+    }
 });
 
 QUnit.test("MutApp test: multiapp", function( assert ) {

@@ -49,6 +49,9 @@ var PersonalityApp = MutApp.extend({
         "id=pm test1": { label: {RU: 'Тест', EN: 'Test1'} },
         "id=pm test2": { label: {RU: 'Тест', EN: 'Test2'} },
         "id=pm test3": { label: {RU: 'Тест', EN: 'Test3'} },
+        "id=pm logoUrl": {
+            label: {RU: 'Логотип', EN: 'Logo'}
+        },
         ".js-start_header color": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Цвет шрифта',EN:'Font color'},

@@ -55,7 +55,11 @@ var PersonalityModel = MutApp.Model.extend({
         /**
          * Все возможные результаты теста Personality
          */
-        results: null
+        results: null,
+        /**
+         * url logo один на все экраны
+         */
+        logoUrl: null
     },
 
     initialize: function(param) {
@@ -98,6 +102,12 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm showLogoInQuestions',
             value: true
         });
+        this.attributes.logoUrl = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=pm logoUrl',
+            value: '//s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg'
+        });
     },
 
     /**
@@ -113,7 +123,7 @@ var PersonalityModel = MutApp.Model.extend({
     },
 
     /**
-     * Найти вопрос ио Id
+     * Найти вопрос по Id
      * @param id
      * @returns {*}
      */
@@ -125,6 +135,48 @@ var PersonalityModel = MutApp.Model.extend({
             }
         }
         return null;
+    },
+
+    /**
+     * Найти опцию по идишнику
+     *
+     * @param {string} id
+     * @returns {*}
+     */
+    getOptionById: function(id) {
+        var quizValue = this.attributes.quiz.getValue();
+        for (var i = 0; i < quizValue.length; i++) {
+            var options = quizValue[i].answer.options;
+            for (var n = 0; n < options.length; n++) {
+                if (id === options[n].id) {
+                    return options[n];
+                }
+            }
+        }
+        return null;
+    },
+
+    /**
+     * Задать сильную связь между опцией и результатом
+     *
+     * @param {string} optionId
+     * @param {string} resultId
+     */
+    setStrongConnection: function(optionId, resultId) {
+        var o = this.getOptionById(optionId);
+        if (!o) {
+            throw new Error('PersonalityModel.setStrongConnection: option \''+optionId+' does not exist');
+        }
+        var r = this.getResultById(resultId);
+        if (!r) {
+            throw new Error('PersonalityModel.setStrongConnection: option \''+optionId+' does not exist');
+        }
+        if (o.strongLink.indexOf(resultId) >= 0) {
+            // уже привязано
+        }
+        else {
+            o.strongLink.push(resultId);
+        }
     },
 
     /**

@@ -197,7 +197,6 @@ var MutApp = function(param) {
         value: ''
     });
     this.customCssStyles.bind('change',function(){
-        console.log('customCssStyles changed');
         // запись значения свойства (css строки) в виде стилей
         MutApp.Util.writeCssTo('id-custom_styles', this.getValue(), this._application.screenRoot);
     });
@@ -715,7 +714,12 @@ MutApp.prototype.deserialize = function(data) {
     }
     for (var key in data) {
         // значения по умолчанию сохраняем для будущих инициализаций MutAppProperty
-        this._parsedDefaults[key] = data[key];
+        if (MutApp.Util.isMutAppPropertySelector(key) || MutApp.Util.isCssMutAppPropertySelector(key)) {
+            this._parsedDefaults[key] = data[key];
+        }
+        else {
+            console.error('MutApp.deserialize: selector \''+key+'\' is invalid');
+        }
         var ap = this.getProperty(key);
         if (ap) {
             // если свойство уже создано то десериализуем его
@@ -1182,6 +1186,13 @@ MutApp.Screen = Backbone.View.extend({
      */
     renderChecksum: undefined,
     /**
+     * Только для режима приложения edit
+     * Это ссылки на MutAppProperty связанные с этим экранов, то есть MutAppProperty для которых data-app-property
+     * есть на экране
+     * Или CssMutAppProperty для которых cssSelector соответствует элементам на экране
+     */
+    _linkedMutAppProperties: [],
+    /**
      * Значения, которые могут быть установлены в initialize автоматически
      */
     defaultsToSetInInitialize: [
@@ -1236,6 +1247,7 @@ MutApp.Screen = Backbone.View.extend({
         // обновить значения css свойств
         this.model.application.updateCssMutAppPropertiesValues(this);
         if (this.model.application.mode === 'edit') {
+            this._linkedMutAppProperties = [];
             this._findAndAttachAppProperty();
             this._findAndAttachCssAppProperty();
         }
@@ -1243,6 +1255,14 @@ MutApp.Screen = Backbone.View.extend({
         this.model.application.trigger(MutApp.EVENT_SCREEN_RENDERED, {
             screenId: this.id
         });
+    },
+
+    /**
+     * Список слинкованных с экраном свойств
+     * @returns {Array}
+     */
+    getLinkedMutAppProperties: function() {
+        return this._linkedMutAppProperties;
     },
 
     /**
@@ -1263,6 +1283,7 @@ MutApp.Screen = Backbone.View.extend({
                     var ap = this.model.application.getProperty(tspAtr);
                     if (ap!==null) {
                         ap.uiElement = dataElems[j];
+                        this._linkedMutAppProperties.push(ap);
                     }
                     else {
                         console.error('MutApp.Screen._findAndAttachAppProperty: app does not has this mutAppProperty \''+tspAtr+'\' (but it was found on screen)');
@@ -1290,6 +1311,7 @@ MutApp.Screen = Backbone.View.extend({
                     this._addDataAttribute(elemsOnView[k], ap.propertyString);
                     // для экрана подготавливаем domElement связанные с appProperty, чтобы потом не искать их при каждом показе экрана
                     ap.uiElement = elemsOnView[k];
+                    this._linkedMutAppProperties.push(ap);
                 }
             }
         }
@@ -1818,6 +1840,15 @@ MutApp.Util = {
     },
 
     /**
+     * Проверить является ли строка корректным селектором вида "id=pm quiz"
+     * @param str
+     * @returns {boolean}
+     */
+    isMutAppPropertySelector: function(str) {
+        return MutApp.Util.parseSelector(str) !== null;
+    },
+
+    /**
      *
      * Пример такого селектора ".js-start_header fontSize"
      * @param {string} str
@@ -2240,6 +2271,8 @@ MutAppProperty.prototype.initialize = function(param) {
         this._application.linkMutAppProperty(this);
     }
     this.compareDetails = null;
+    // dom элемент на экране с которым связано свойства в режиме режактирования приложения
+    this.uiElement = null;
 };
 /**
  * Удалить MutAppProperty

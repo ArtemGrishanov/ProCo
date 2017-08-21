@@ -51,7 +51,7 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
     this.onPreviewIFrameLoaded = function() {
         var $previewDocument = this.$previewIFrame.contents();
         // TODO стили промопроекта как сюда попадут?
-        var productType = Engine.getApp().type;
+        var productType = Editor.getEditedApp().type;
         var productConfig = config.products[productType];
         if (productConfig) {
             var $h = $previewDocument.find('head');

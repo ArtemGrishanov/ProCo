@@ -128,8 +128,8 @@ var Editor = {};
     var previewMode = 'desktop';
     /**
      * Количество сделанный операция по редактированию пользователем
-     * При сохранении шаблона синхронизируется с таким же счетччиком engine
-     * если этот четчик меньше чем в engine то будет блокировка при закрытии страницы
+     * При сохранении шаблона синхронизируется с MutApp.getOperationsCount()
+     * если этот четчик меньше чем в MutApp.getOperationsCount() то будет блокировка при закрытии страницы
      * @type {number}
      */
     var operationsCount = 0;
@@ -457,7 +457,7 @@ var Editor = {};
         for (var i = 0; i < ids.length; i++) {
             appScreen = editedApp.getScreenById(ids[i]);
             if (appScreen) {
-                var b = createPreviewScreenBlock(appScreen.view)
+                var b = createPreviewScreenBlock(appScreen.$el)
                 $(previewScreensIframeBody).append(b);
                 previewHeight += appContainerSize.height;
                 previewHeight += config.editor.ui.screen_blocks_padding+2*config.editor.ui.screen_blocks_border_width; // 20 - паддинг в стиле product_cnt.css/screen_block
@@ -600,18 +600,19 @@ var Editor = {};
      *
      */
     function bindControlsForAppPropertiesOnScreen($view, scrId) {
-        var appScreen = Engine.getAppScreen(scrId);
+        var appScreen = editedApp.getScreenById(scrId);
 
         // найти и удалить эти типы контролов
         // при показе экрана они пересоздаются заново
         clearControls(['workspace', 'quickcontrolpanel']);
 
-        for (var k = 0; k < appScreen.appPropertyElements.length; k++) {
+        for (var k = 0; k < appScreen.getLinkedMutAppProperties().length; k++) {
+            var appProperty = appScreen.getLinkedMutAppProperties()[k];
             // для всех элементов связанных с appProperty надо создать событие по клику.
             // в этот момент будет происходить фильтрация контролов на боковой панели
             // элемент, конечно, может быть привязан к нескольким appProperty, ведь содержит несколько значений в data-app-property
             // надо избежать создания дублирующихся обработчиков
-            var de = appScreen.appPropertyElements[k].domElement;
+            var de = appProperty.uiElement;
             if (registeredElements.indexOf(de) < 0) {
                 $(de).click(function(e) {
                     selectElementOnAppScreen({
@@ -623,53 +624,45 @@ var Editor = {};
                 registeredElements.push(de);
             }
             // контрола пока ещё не существует для настройки, надо создать
-            var propertyString = appScreen.appPropertyElements[k].propertyString;
-            var appProperty = Engine.getAppProperty(propertyString);
-            if (appProperty) {
-                // может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
-                var controlsInfo = appProperty.controls;
-                for (var j = 0; j < controlsInfo.length; j++) {
-                    var cn = controlsInfo[j].name;
-                    // здесь надо создавать только контролы которые находятся на рабочем поле, например textquickinput
-                    // они пересоздаются каждый раз при переключении экрана
-                    // "обычные" контролы создаются иначе
-                    if (config.controls[cn].type === 'workspace' || config.controls[cn].type === 'quickcontrolpanel') {
+            var propertyString = appProperty.propertyString;
+            // может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
+            var controlsInfo = appProperty.controls;
+            for (var j = 0; j < controlsInfo.length; j++) {
+                var cn = controlsInfo[j].name;
+                // здесь надо создавать только контролы которые находятся на рабочем поле, например textquickinput
+                // они пересоздаются каждый раз при переключении экрана
+                // "обычные" контролы создаются иначе
+                if (config.controls[cn].type === 'workspace' || config.controls[cn].type === 'quickcontrolpanel') {
 
-                        // на домэлемент можно повесить фильтр data-control-filter и в descriptor в параметрах также его указать
-                        if (checkControlFilter(de, controlsInfo[j].params)===true) {
-                            // имя вью для контрола
-                            var viewName = controlsInfo[j].params.viewName;
-                            // простейшая обертка для контрола, пока помещаем туда
-                            var wrapper = (config.controls[cn].type === 'quickcontrolpanel') ? $('<div></div>'): null;
-                            var newControl = createControl(appProperty.propertyString,
-                                viewName,
-                                controlsInfo[j].name,
-                                controlsInfo[j].params,
-                                wrapper,
-                                de);
-                            if (newControl) {
-                                // только если действительно получилось создать ui для настройки
-                                // не все контролы могут быть реализованы или некорректно указаны
-                                uiControlsInfo.push({
-                                    propertyString: propertyString,
-                                    control: newControl,
-                                    domElement: de,
-                                    type: config.controls[cn].type,
-                                    wrapper: wrapper
-                                });
-                            }
-                            else {
-                                log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+propertyString+ '\' on the screen '+scrId, true);
-                            }
+                    // на домэлемент можно повесить фильтр data-control-filter и в descriptor в параметрах также его указать
+                    if (checkControlFilter(de, controlsInfo[j].params)===true) {
+                        // имя вью для контрола
+                        var viewName = controlsInfo[j].params.viewName;
+                        // простейшая обертка для контрола, пока помещаем туда
+                        var wrapper = (config.controls[cn].type === 'quickcontrolpanel') ? $('<div></div>'): null;
+                        var newControl = createControl(appProperty.propertyString,
+                            viewName,
+                            controlsInfo[j].name,
+                            controlsInfo[j].params,
+                            wrapper,
+                            de);
+                        if (newControl) {
+                            // только если действительно получилось создать ui для настройки
+                            // не все контролы могут быть реализованы или некорректно указаны
+                            uiControlsInfo.push({
+                                propertyString: appProperty.propertyString,
+                                control: newControl,
+                                domElement: de,
+                                type: config.controls[cn].type,
+                                wrapper: wrapper
+                            });
                         }
-
+                        else {
+                            log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+appProperty.propertyString+ '\' on the screen '+scrId, true);
+                        }
                     }
+
                 }
-            }
-            else {
-                // нет свойства appProperty в Engine хотя во вью есть элемент с таким атрибутом data-app-property
-                // это значит ошибку в промо-продукте
-                log('AppProperty \''+propertyString+'\' not exist. But such attribute exists on the screen: \''+scrId+'\'', true);
             }
         }
     }
@@ -1060,7 +1053,7 @@ var Editor = {};
     function createScreenControls() {
         $('#id-slides_cnt').empty();
         //TODO конечно не надо пересоздавать каждый раз всё при добавл-удал экрана. Но так пока проще
-        var appScreenIds = Engine.getAppScreenIds();
+        var appScreenIds = editedApp.getScreenIds();
         // экраны могут быть поделены на группы
         var groups = {};
         var sGroups = [];
@@ -1069,7 +1062,7 @@ var Editor = {};
             // groups - просто временный вспомогательный объект
             for (var i = 0; i < appScreenIds.length; i++) {
                 var s = appScreenIds[i];
-                var screen = Engine.getAppScreen(s);
+                var screen = editedApp.getScreenById(s);
                 if (screen.hideScreen === false) {
                     if (typeof screen.group !== "string") {
                         // если группа не указана, экран будет один в своей группе
@@ -1086,7 +1079,7 @@ var Editor = {};
             // далее начнем создать контролы и вью для групп экранов
             for (var groupName in groups) {
                 var curG = groups[groupName];
-                var firstScrInGroup = Engine.getAppScreen(curG[0]);
+                var firstScrInGroup = editedApp.getScreenById(curG[0]);
                 var sgc = findSlideGroupByGroupName(groupName);
                 if (sgc === null) {
                     // группой экранов может управлять массив.
