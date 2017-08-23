@@ -66,7 +66,6 @@ var PersonalityModel = MutApp.Model.extend({
         //TODO не очень красиво смотрится этот вызов
         // задача: перед кодом пользователя в initialize сделать привязку application, установить апп проперти
         this.super.initialize.call(this, param);
-        this._updateResults();
 
         this.bind('change:quiz', function() {
             this.start();
@@ -175,7 +174,114 @@ var PersonalityModel = MutApp.Model.extend({
             // уже привязано
         }
         else {
+            // удалить слабую связь если она есть, одновременно сильная и слабая связь не могут существовать
+            this.deleteWeakConnection(optionId, resultId);
             o.strongLink.push(resultId);
+        }
+    },
+
+    /**
+     * Проверить наличие сильной связи между опцией и результатом
+     *
+     * @param {string} optionId
+     * @param {string} resultId
+     * @returns {boolean}
+     */
+    isStrongConnection: function(optionId, resultId) {
+        var o = this.getOptionById(optionId);
+        if (!o) {
+            throw new Error('PersonalityModel.isStrongConnection: option \''+optionId+' does not exist');
+        }
+        var r = this.getResultById(resultId);
+        if (!r) {
+            throw new Error('PersonalityModel.isStrongConnection: option \''+optionId+' does not exist');
+        }
+        return o.strongLink.indexOf(resultId) >= 0;
+    },
+
+    /**
+     * Удалить сильную связь между опцией и резальтатом
+     *
+     * @param {string} optionId
+     * @param {string} resultId
+     */
+    deleteStrongConnection: function(optionId, resultId) {
+        var o = this.getOptionById(optionId);
+        if (!o) {
+            throw new Error('PersonalityModel.deleteStrongConnection: option \''+optionId+' does not exist');
+        }
+        var r = this.getResultById(resultId);
+        if (!r) {
+            throw new Error('PersonalityModel.deleteStrongConnection: option \''+optionId+' does not exist');
+        }
+        var delIndex = o.strongLink.indexOf(resultId);
+        if (delIndex >= 0) {
+            o.strongLink.splice(delIndex, 1);
+        }
+    },
+
+    /**
+     * Задать слабую связь между опцией и результатом
+     *
+     * @param {string} optionId
+     * @param {string} resultId
+     */
+    setWeakConnection: function(optionId, resultId) {
+        var o = this.getOptionById(optionId);
+        if (!o) {
+            throw new Error('PersonalityModel.setWeakConnection: option \''+optionId+' does not exist');
+        }
+        var r = this.getResultById(resultId);
+        if (!r) {
+            throw new Error('PersonalityModel.setWeakConnection: option \''+optionId+' does not exist');
+        }
+        if (o.weakLink.indexOf(resultId) >= 0) {
+            // уже привязано
+        }
+        else {
+            // удалить сильную связь если она есть, одновременно сильная и слабая связь не могут существовать
+            this.deleteStrongConnection(optionId, resultId);
+            o.weakLink.push(resultId);
+        }
+    },
+
+    /**
+     * Проверить наличие слабой связи между опцией и результатом
+     *
+     * @param {string} optionId
+     * @param {string} resultId
+     * @returns {boolean}
+     */
+    isWeakConnection: function(optionId, resultId) {
+        var o = this.getOptionById(optionId);
+        if (!o) {
+            throw new Error('PersonalityModel.isWeakConnection: option \''+optionId+' does not exist');
+        }
+        var r = this.getResultById(resultId);
+        if (!r) {
+            throw new Error('PersonalityModel.isWeakConnection: option \''+optionId+' does not exist');
+        }
+        return o.weakLink.indexOf(resultId) >= 0;
+    },
+
+    /**
+     * Удалить слабую связь между опцией и резальтатом
+     *
+     * @param {string} optionId
+     * @param {string} resultId
+     */
+    deleteWeakConnection: function(optionId, resultId) {
+        var o = this.getOptionById(optionId);
+        if (!o) {
+            throw new Error('PersonalityModel.deleteWeakConnection: option \''+optionId+' does not exist');
+        }
+        var r = this.getResultById(resultId);
+        if (!r) {
+            throw new Error('PersonalityModel.deleteWeakConnection: option \''+optionId+' does not exist');
+        }
+        var delIndex = o.weakLink.indexOf(resultId);
+        if (delIndex >= 0) {
+            o.weakLink.splice(delIndex, 1);
         }
     },
 
@@ -278,12 +384,8 @@ var PersonalityModel = MutApp.Model.extend({
         return this.attributes.state;
     },
 
-    _updateResults: function() {
-        //TODO
-    },
-
     /**
-     * Найти результат с наибольшим числом балло
+     * Найти результат с наибольшим числом баллов
      * Если баллов одиноково у нескольких результатов, то будет рандомный выбор среди них
      *
      * @param {object} resultPoints
