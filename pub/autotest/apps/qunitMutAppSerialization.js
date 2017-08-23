@@ -1,8 +1,9 @@
 /**
  * Created by alex on 10.08.17.
  */
+var EXPECTED_MUTAPP_PROPERTIES_COUNT = 12;
+
 QUnit.test("MutApp test: MutAppProperties array serialization (PersonalityTest)", function( assert ) {
-    var EXPECTED_MUTAPP_PROPERTIES_COUNT = 11;
 
     var app = new PersonalityApp({
         defaults: null // no defaults
@@ -31,7 +32,6 @@ QUnit.test("MutApp test: MutAppProperties array serialization (PersonalityTest)"
  * Нужно проверять сериализцию различных видов свойств: MutAppProperty CssMutAppProperty MutAppPropertyArray
  */
 QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityTest was taken for test.", function( assert ) {
-    var EXPECTED_MUTAPP_PROPERTIES_COUNT = 11;
 
     var app = new PersonalityApp({
         defaults: null // no defaults

@@ -550,5 +550,45 @@ var PersonalityModel = MutApp.Model.extend({
             })
         };
         return result;
+    },
+
+    /**
+     * Посчитать вероятност выпадения каждого результата на основе привязок
+     * Условимся что пользователь отвечает случайным образом
+     *
+     */
+    getResultProbabilities: function() {
+        var res = {};
+        var resultsValue = this.attributes.results.getValue();
+        for (var i = 0; i < resultsValue.length; i++) {
+            res[resultsValue[i].id] = 0;
+        }
+        // сложим сумму привязок к результату по всем опциям
+        var quizValue = this.attributes.quiz.getValue();
+        for (var i = 0; i < quizValue.length; i++) {
+            var options = quizValue[i].answer.options;
+            for (var n = 0; n < options.length; n++) {
+
+                for (var k = 0; k < options[n].strongLink.length; k++) {
+                    res[options[n].strongLink[k]] += this.attributes.STRONG_LINK_POINTS;
+                }
+                for (var k = 0; k < options[n].weakLink.length; k++) {
+                    res[options[n].weakLink[k]] += this.attributes.WEAK_LINK_POINTS;
+                }
+            }
+        }
+
+        // общая сумма баллов на все результаты
+        var sum = 0;
+        for (var i = 0; i < resultsValue.length; i++) {
+            sum += res[resultsValue[i].id];
+        }
+
+        // процентное соотношение баллов результата от всех возможных баллов в тесте
+        for (var i = 0; i < resultsValue.length; i++) {
+            res[resultsValue[i].id] = res[resultsValue[i].id] / sum;
+        }
+
+        return res;
     }
 });

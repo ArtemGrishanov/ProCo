@@ -1039,16 +1039,11 @@ var Editor = {};
 
     /**
      * Модель управления экранами:
-     * Сейчас предполагается что группы экранов постоянные, поэтому createScreenControls зовется один раз при старте редактора
-     * Если будут меняться группы, то надо формировать группы в движке и следить за их изменением и делать события с обработкой
-     * TODO А пока здесь один раз создаются все контролы SlideGroupControl один раз и управление слайдами идет внутри них
+     * Сейчас предполагается что группы экранов постоянные
      *
      * Конролы управления экранами специфичные, поэтому существует отдельная функция для их создания
-     * Задача не пересоздавать контролы управления экранами - это дорого
      *
-     * Нет контрола управления группами, который включал бы управления несколькими SlideGroupControl
-     * По сути это вот эта функция ниже.
-     * А упрвления отдельными Slide спрятана внутрь одного SlideGroupControl
+     * Упрвления отдельными Slide спрятана внутрь одного SlideGroupControl
      */
     function createScreenControls() {
         $('#id-slides_cnt').empty();
@@ -1472,6 +1467,12 @@ var Editor = {};
         });
     }
 
+    /**
+     * Рестартануть приложение
+     * Применяется при переходе из режиме редактирования и режим предпросмотра и обратно
+     *
+     * @param {string} params.mode
+     */
     function restartApp(params) {
         params = params || {};
         delete editedApp;
@@ -1480,11 +1481,41 @@ var Editor = {};
         editedApp = new appIframe.contentWindow[cfg.constructorName]({
             width: cfg.defaultWidth,
             height: cfg.defaultHeight,
-            defaults: null
-            //appChangeCallbacks: [onAppChanged],
-            //engineStorage: JSON.parse(JSON.stringify(appStorage))
+            defaults: null,
+            appChangeCallbacks: [onAppChanged]
+            //engineStorage: JSON.parse(JSON.stringify(appStorage)) todo?
         });
         editedApp.start();
+    }
+
+    /**
+     * Обработчик событий в приложении
+     *
+     * @param event
+     */
+    function onAppChanged(event, data) {
+        var app = data.application;
+        var MutApp = Editor.getAppIframe().contentWindow.MutApp;
+        switch (event) {
+            case MutApp.EVENT_SCREEN_CREATED: {
+                log('Editor.onAppChanged: MutApp.EVENT_SCREEN_CREATED \''+data.screenId+'\'');
+                // передать информацию в slideGroupControls который занимается экранами
+                if (slideGroupControls) slideGroupControls[0].screenUpdate(event, data);
+                break;
+            }
+            case MutApp.EVENT_SCREEN_RENDERED: {
+                log('Editor.onAppChanged: MutApp.EVENT_SCREEN_RENDERED \''+data.screenId+'\'');
+                // передать информацию в slideGroupControls который занимается экранами
+                if (slideGroupControls) slideGroupControls[0].screenUpdate(event, data);
+                break;
+            }
+            case MutApp.EVENT_SCREEN_DELETED: {
+                log('Editor.onAppChanged: MutApp.EVENT_SCREEN_DELETED \''+data.screenId+'\'');
+                // передать информацию в slideGroupControls который занимается экранами
+                if (slideGroupControls) slideGroupControls[0].screenUpdate(event, data);
+                break;
+            }
+        }
     }
 
     function showEditor() {
@@ -1510,7 +1541,7 @@ var Editor = {};
         $('#id-editor_view').hide();
 
         hookRunner.on('beforePreview',getEditorEnvironment(),function(e) {
-            Engine.restartApp({
+            restartApp({
                 mode: 'preview'
             });
             $('#id-preview_view').show();
@@ -1601,7 +1632,7 @@ var Editor = {};
             .css('maxWidth',appContainerSize.width+'px')
             .css('maxHeight',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px'); //так как у панорам например гориз скролл и не умещается по высоте он
         // нужно перезапустить приложение чтобы оно корректно обработало свой новый размер
-        Engine.restartApp({
+        restartApp({
             mode: 'preview'
         });
     }
@@ -1615,7 +1646,7 @@ var Editor = {};
             .css('maxWidth',appContainerSize.width)
             .css('maxHeight',appContainerSize.height);
         // нужно перезапустить приложение чтобы оно корректно обработало свой новый размер
-        Engine.restartApp({
+        restartApp({
             mode: 'preview'
         });
     }

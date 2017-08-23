@@ -56,9 +56,6 @@ function SlideGroupControl(propertyString, directiveName, $parent, productDOMEle
 
     this.init(propertyString, directiveName, $parent, productDOMElement, params);
 
-    // подписка на событие, которое вызывается после пересборки всех экранов
-    Engine.on('AllScreensWereUpdatedBefore', null, this.onAllScreensUpdate.bind(this));
-
     // некоторый инит ui который делается один раз
     this.$directive.find('.js-add').show().click((function(){
         this.addNewItem();
@@ -89,14 +86,15 @@ SlideGroupControl.prototype.set = function(params) {
 };
 
 /**
- * Обработчик на изменение экрана AllScreensWereUpdated
- *
+ * Обработчик на изменение экрана.
+ * Вызывается редактором Editor извне
  */
-SlideGroupControl.prototype.onAllScreensUpdate = function() {
+SlideGroupControl.prototype.screenUpdate = function(event, data) {
+    log('SlideGroupControl.screenUpdate: ' + event);
     this.updateScreens();
 }
 /**
- * Обновить экраны на основе информации из Engine
+ * Обновить экраны на основе информации из MutApp приложения
  *
  * У этого контрола есть такие данные:
  * 1) Массив Slide (превью одного экрана), он их сам и создает сколько надо и когда надо
@@ -273,8 +271,11 @@ SlideGroupControl.prototype.deleteUnusedSlides = function() {
 };
 
 /**
+ * Выбрать свободный или создать контрол Slide (+wrapper, +id и тп)
+ * Контролы Slide помещены в массив this._slidesInfo
+ *
  * @param {string}
- * return
+ * @return {slide, $parent, dataId, used, $wrapper}
  */
 SlideGroupControl.prototype.useSlide = function(slideId) {
     var result = null;
@@ -580,21 +581,6 @@ SlideGroupControl.prototype.onMouseUp = function(e) {
     this.mousePressed = false;
 };
 
-///**
-// * В итоге после перетаскивания надо упорядочить _slidesInfo в соответствии с порядком переставлениных вью this.items
-// */
-//SlideGroupControl.prototype.sortSlideInfo = function() {
-//    var result = [];
-//    for (var i = 0; i < this.items.length; i++) {
-//        var atr = this.items[i].attr('data-id');
-//        var si = this.getSlideInfo(atr);
-//        if (si) {
-//            result.push(si);
-//        }
-//    }
-//    this._slideInfo = result;
-//}
-
 /**
  * Функция проверки новой позиции, можно ли перетаскиваемый элемент поместить в какое-то новое место.
  * Если да, помещает и переупорядочивает view
@@ -626,6 +612,9 @@ SlideGroupControl.prototype.moveInNewPosition = function(id, leftE) {
     }
     return false;
 },
+/**
+ *
+ */
 SlideGroupControl.prototype.getItemIndexById = function(id){
     for (var i = 0; i < this.items.length; i++) {
         if (id === this.items[i].attr('data-id')) {

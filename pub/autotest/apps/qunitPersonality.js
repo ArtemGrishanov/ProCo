@@ -138,7 +138,7 @@ QUnit.test("Personality: game 2", function( assert ) {
     });
     app.start();
 
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 50; i++) {
         initApp(app);
         round(app);
     }
@@ -150,10 +150,14 @@ QUnit.test("Personality: game 2", function( assert ) {
         while (app.model.attributes.quiz.getValue().length > 0) {
             app.model.attributes.quiz.deleteElement(0);
         }
+
+        // максимум 4 результата
         var rc = getRandomArbitrary(1,4);
         for (var i = 0; i < rc; i++) {
             app.model.attributes.results.addElementByPrototype('id=pm resultProto1');
         }
+
+        // максимум 10 вопросов
         assert.ok(rc === app.model.attributes.results.getValue().length);
         var qc = getRandomArbitrary(1,10);
         for (var i = 0; i < qc; i++) {
@@ -177,6 +181,16 @@ QUnit.test("Personality: game 2", function( assert ) {
 
             }
         }
+
+        // распределение результатов посмотрим
+        var resultValue = app.model.attributes.results.getValue();
+        var resultsPercentProbabilities = app.model.getResultProbabilities();
+        var sum = 0;
+        for (var resultId in resultsPercentProbabilities) {
+            assert.ok(app.model.getResultById(resultId));
+            sum += resultsPercentProbabilities[resultId];
+        }
+        assert.ok(0.99 < sum && sum < 1.01); // иногда из-за погрешности бывает 0.9(9) или типа того
     }
 
     function round(app) {

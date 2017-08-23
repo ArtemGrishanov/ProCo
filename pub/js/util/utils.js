@@ -327,3 +327,19 @@ function mergeIfNotNullProperties(from, to) {
         }
     }
 }
+
+/**
+ * Записать стили css в dom элемент
+ * Будет создан или переписан элемент с ид stylesId <style id="%stylesId%" type="text/css"></style>
+ *
+ * @param {string} stylesId идишка style элемента
+ * @param {string} cssString код, строка
+ * @param {HTMLElement} container dom элемент куда вставлять стили
+ */
+function writeCssTo(stylesId, cssString, container) {
+    var $style = $(container).find('#'+stylesId);
+    if ($style.length === 0) {
+        $style = $('<style type="text/css"></style>').attr('id',stylesId).appendTo(container);
+    }
+    $style.html(cssString);
+}

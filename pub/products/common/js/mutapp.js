@@ -699,6 +699,16 @@ MutApp.prototype.updateCssMutAppPropertiesValues = function(screen) {
     }
 };
 /**
+ * Вернуть стили для проекта из всех CssMutAppProperty
+ *
+ * @return {string}
+ */
+MutApp.prototype.getCssMutAppPropertiesStyles = function() {
+    //TODO custom css styles
+    //TODO all CssMutAppProperties styles
+    return '';
+};
+/**
  * Восстановить из json-строки или объекта значения свойств приложения.
  *
  * Условия:

@@ -26,8 +26,8 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
         try {
             if (this.$previewDocumentBody) {
                 var view = (Array.isArray(this.propertyString)) ?
-                    Engine.getAppScreen(this.propertyString[0]).view :
-                    Engine.getAppScreen(this.propertyString).view;
+                    Editor.getEditedApp().getScreenById(this.propertyString[0]).$el :
+                    Editor.getEditedApp().getScreenById(this.propertyString).$el;
                 if (this.previewScale === undefined) {
                     this.previewScale = this.$previewIFrame.width() / Editor.getAppContainerSize().width;
                 }
@@ -37,7 +37,7 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
                     .css('transform','scale('+this.previewScale+')')
                     .css('transform-origin','top left');
                 this.$previewDocumentBody.empty().append(clonedView);
-                Engine.writeCssRulesTo(this.$previewDocumentBody);
+                writeCssTo(config.common.previewCustomStylesId, Editor.getEditedApp().getCssMutAppPropertiesStyles(), this.$previewDocumentBody); // from util.js
             }
         }
         catch(e) {
