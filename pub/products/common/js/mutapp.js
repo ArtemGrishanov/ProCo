@@ -228,7 +228,7 @@ var MutApp = function(param) {
                 this._appChangeCallbacks = param.appChangeCallbacks;
             }
             else {
-                console.error('MutApp.constructor: appChangeCallbacks must be Array', true);
+                this._appChangeCallbacks = [param.appChangeCallbacks];
             }
         }
 
@@ -260,8 +260,11 @@ var MutApp = function(param) {
 
 MutApp.EVENT_SCREEN_CREATED = 'mutapp_event_screen_created';
 MutApp.EVENT_SCREEN_RENDERED = 'mutapp_event_screen_rendered';
-MutApp.EVENT_SCREEN_DELETED = 'mutapp_EVENT_SCREEN_DELETED';
+MutApp.EVENT_SCREEN_DELETED = 'mutapp_event_screen_deleted';
 MutApp.EVENT_APP_SIZE_CHANGED = 'mutapp_event_app_size_changed';
+MutApp.EVENT_PROPERTY_CREATED = 'mutapp_event_property_created';
+MutApp.EVENT_PROPERTY_VALUE_CHANGED = 'mutapp_event_property_value_changed';
+MutApp.EVENT_PROPERTY_DELETED = 'mutapp_event_property_created';
 MutApp.ENGINE_STORAGE_VALUE_CHANGED = 'mutapp_engine_value_changed';
 MutApp.ENGINE_SET_PROPERTY_VALUE = 'mutapp_set_property_value';
 
@@ -666,6 +669,11 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
         }
 
         this._mutappProperties.push(mutAppProperty);
+
+        this.trigger(MutApp.EVENT_PROPERTY_CREATED, {
+            property: mutAppProperty,
+            propertyString: mutAppProperty.propertyString
+        });
     }
     else {
         throw new Error('MutApp.linkMutAppProperty: mutAppProperty is already linked=\''+mutAppProperty.propertyString+'\'');
@@ -1097,8 +1105,8 @@ MutApp.prototype.isSmallWidth = function() {
 
 /**
  * Инициировать событие в приложении
- * @param eventType
- * @param data
+ * @param {string} eventType
+ * @param {object} data
  */
 MutApp.prototype.trigger = function(eventType, data) {
     data = data || {};

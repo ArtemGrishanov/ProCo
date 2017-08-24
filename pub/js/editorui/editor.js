@@ -640,12 +640,14 @@ var Editor = {};
                         var viewName = controlsInfo[j].params.viewName;
                         // простейшая обертка для контрола, пока помещаем туда
                         var wrapper = (config.controls[cn].type === 'quickcontrolpanel') ? $('<div></div>'): null;
-                        var newControl = createControl(appProperty.propertyString,
-                            viewName,
-                            controlsInfo[j].name,
-                            controlsInfo[j].params,
-                            wrapper,
-                            de);
+                        var newControl = createControl({
+                            mutAppProperty: appProperty,
+                            controlName: controlsInfo[j].name,
+                            controlDirectiveName: viewName,
+                            controlAdditionalParam: controlsInfo[j].params,
+                            conrolParentView: wrapper,
+                            productDOMElement: de
+                        });
                         if (newControl) {
                             // только если действительно получилось создать ui для настройки
                             // не все контролы могут быть реализованы или некорректно указаны
@@ -1080,7 +1082,11 @@ var Editor = {};
                     // группой экранов может управлять массив.
                     // в случае вопросов теста: эта группа привязана к quiz, передается в промо проекте при создании экранов
                     // для остальных undefined
-                    sgc = createControl(firstScrInGroup.arrayAppPropertyString, 'SlideGroupControl', 'SlideGroupControl', {}, $('#id-slides_cnt'));
+                    sgc = createControl({
+                        someId: firstScrInGroup.arrayAppPropertyString,
+                        controlName: 'SlideGroupControl',
+                        controlParentView: $('#id-slides_cnt')
+                    });
                 }
                 else {
                     // подходящий контрол SlideGroupControl создавался ранее для управления этой группой экранов
@@ -1146,54 +1152,6 @@ var Editor = {};
             }
         }
         return results;
-    }
-
-    /**
-     * Создать контрол для свойства промо приложения или его экрана
-     * На основе информации appProperty будет выбран ui компонент и создан его экземпляр
-     *
-     * @param {string} propertyString
-     * @param {string} viewName - имя вью, который будет использован для контрола
-     * @param {string} name
-     * @param {object} params
-     * @param [controlParentView] для некоторых контролов место выбирается динамически. Например для групп слайдов
-     * @param {HTMLElement} [productDOMElement] элемент на экране продукта к которому будет привязан контрол
-     * @returns {*}
-     */
-    function createControl(propertyString, viewName, name, params, controlParentView, productDOMElement) {
-        var ctrl = null;
-        params = params || {};
-        params.iFrame = $('#id-product_screens_cnt')[0];
-//        try {
-            // существует ли такой вью, если нет, берем по умолчанию
-            if (viewName) {
-                // в случае с вью регистр важен, в конфиге директивы прописаны малым регистром
-                viewName = viewName.toLowerCase();
-            }
-            if (!viewName || config.controls[name].directives.indexOf(viewName) < 0) {
-                var dirIndex = config.controls[name].defaultDirectiveIndex;
-                if (dirIndex>=0) {
-                    // некоторые контролы могут не иметь визуальной части
-                    viewName = config.controls[name].directives[dirIndex];
-                }
-            }
-            // задается по параметру или по дефолту из конфига
-            var cpv = null;
-            if (controlParentView) {
-                cpv = $(controlParentView);
-            }
-            else {
-                cpv = $('#'+config.controls[name].parentId);
-            }
-            // свойств может быть несколько, передаем массив
-            var propertyStrArg = (propertyString && propertyString.indexOf(',')>=0)?propertyString.split(','):propertyString;
-            ctrl = new window[name](propertyStrArg, viewName, cpv, productDOMElement, params);
-//        }
-//        catch(e) {
-//            log(e, true);
-//        }
-//        log('Creating UI control for appProperty='+propertyString+' ui='+name);
-        return ctrl;
     }
 
     function onPublishClick() {

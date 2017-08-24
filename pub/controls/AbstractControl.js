@@ -40,6 +40,18 @@ var AbstractControl = {
     },
 
     /**
+     * Обработать сообщение из MutApp приложения.
+     * Контрол не подписан напрямую на сообщения из приложения.
+     * Событие пробрасывается через контроллер в редакторе, и далее в ControlManager
+     *
+     * @param {string} event
+     * @param {object} data
+     */
+    handleEvent: function(event, data) {
+
+    },
+
+    /**
      * Фильтрация html, чтобы вставить только текст
      *
      * http://stackoverflow.com/questions/2176861/javascript-get-clipboard-data-on-paste-event-cross-browser

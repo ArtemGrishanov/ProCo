@@ -50,7 +50,6 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
      */
     this.onPreviewIFrameLoaded = function() {
         var $previewDocument = this.$previewIFrame.contents();
-        // TODO стили промопроекта как сюда попадут?
         var productType = Editor.getEditedApp().type;
         var productConfig = config.products[productType];
         if (productConfig) {
@@ -73,14 +72,9 @@ function Slide(propertyString, directiveName, $parent, productDOMElement, params
      * @param {string} screenId ид экрана который обновился
      */
     this.onScreenUpdate = function(screenId) {
-        //перерисовывать только когда экран реально виден пользователю, только активный экран
-        //Editor.getActiveScreens() - текущие показанные экраны
-
         // Схлопнутые экраны.
         // например, this.propertyString = [result1, resul2, result3]
         // приходит из события screenId = result2
-        // TODO но в таком случае как сделать обновление единожды? А не в каждом событии
-//        var p = (Array.isArray(this.propertyString))?this.propertyString.join(','):this.propertyString;
         if ((typeof this.propertyString==='string' && screenId===this.propertyString) ||
             (Array.isArray(this.propertyString) && this.propertyString.indexOf(screenId)>=0)) {
             // это этот экран
