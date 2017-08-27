@@ -1226,6 +1226,8 @@ var Editor = {};
                 var appStr = Engine.serializeAppValues({
                     addIsPublishedParam: true
                 });
+                var appTitle = app.title.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
+                var appDescription = app.description.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
                 activePublisher.publish({
                     appId: appId,
                     appName: appName,
@@ -1238,8 +1240,8 @@ var Editor = {};
                     //awsBucket: App.getAWSBucketForPublishedProjects(),
                     callback: showEmbedDialog,
                     fbAppId: app.fbAppId, //
-                    ogTitle: app.title, // og tag
-                    ogDescription: app.description, // og tag
+                    ogTitle: appTitle, // og tag
+                    ogDescription: appDescription, // og tag
                     ogUrl: anonymUrl, // og url
                     //TODO refactor
                     ogImage: (app._shareEntities && (app._shareEntities.length > 0) && app._shareEntities[0].imgUrl) ? app._shareEntities[0].imgUrl: app.shareDefaultImgUrl // og tag
