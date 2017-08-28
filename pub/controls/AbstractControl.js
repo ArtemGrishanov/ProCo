@@ -15,28 +15,73 @@ var AbstractControl = {
      * @constructor
      * @param {(Array.<string>)|(string)} propertyString одно или несколько свойств, с которыми будет работать контрол
      * @param {string} directiveName - имя вью, имя директивы, которая его загружает
-     * @param {HTMLElement} parent
-     * @param {HTMLElement} productDOMElement элемент на экране промо-продукта к которому привязывается контрол
-     * @param {object} params
+     * @param {string} controlName
+     * @param {HTMLElement} wrapper
+     * @param {HTMLElement} container
+     * @param {HTMLElement} productDomElement элемент на экране промо-продукта к которому привязывается контрол
+     * @param {object} additionalParam
+     * @param {Function} valueChangedCallback - ссылка на функцию куда надо отправлять уведомление об изменении
      */
-    init: function(propertyString, directiveName, parent, productDOMElement, params) {
+    init: function(param) {
         this.self = this;
         this.id = getUniqId().substr(22);
-        this.propertyString = propertyString;
-        this.params = params;
-        this.__activeControls[this.id] = 1;
-        this.destroyed = false;
-        if (parent) {
-            this.$parent = $(parent);
+        if (param.propertyString) {
+            this.propertyString = param.propertyString;
         }
-        this.directiveName = directiveName;
+        else {
+            throw new Error('AbstractControl.init: propertyString does not specified');
+        }
+        if (param.controlName) {
+            this.controlName = param.controlName;
+        }
+        else {
+            throw new Error('AbstractControl.init: controlName does not specified');
+        }
+        this.additionalParam = param.additionalParam;
+        this.destroyed = false;
+        if (param.wrapper) {
+            this.$wrapper = $(param.wrapper);
+        }
+        else {
+            throw new Error('AbstractControl.init: wrapper does not specified');
+        }
+        if (param.container) {
+            this.$container = $(param.container);
+        }
+        if (param.directiveName) {
+            this.directiveName = param.directiveName;
+        }
+        else {
+            throw new Error('AbstractControl.init: directiveName does not specified');
+        }
         this.$directive = $(directiveLoader.getDirective(this.directiveName));
         this.$directive.attr('data-app-property', this.propertyString);
-        this.$parent.append(this.$directive);
-        if (productDOMElement) {
-            this.$productDomElement = $(productDOMElement);
+        this.$wrapper.append(this.$directive);
+        if (param.productDomElement) {
+            this.$productDomElement = $(param.productDomElement);
             this.$productDomElement.on('paste', this.handlePaste.bind(this));
         }
+        else {
+            this.$productDomElement = null;
+        }
+        this.valueChangedCallback = param.valueChangedCallback;
+    },
+
+    /**
+     * Каждый контрол должен уметь возвращать свое значение
+     *
+     * @returns {*}
+     */
+    getValue: function() {
+        //todo
+        return undefined;
+    },
+
+    /**
+     * Каждый контрол должен реализовать установку значения
+     */
+    setValue: function(value) {
+        //todo
     },
 
     /**
@@ -75,16 +120,9 @@ var AbstractControl = {
     },
 
     /**
-     * Уничтожаем контрол
-     * Выставить признак уничтожения, чтобы в возможных оставшихся задачах и обработчиках стал доступен этот признак
+     * Каждый контрол должен реализовать логику уничтожения себя, не забыть про ui-листенеры
      */
-    destroy: function() {
-        this.__activeControls[this.id] = 0;
-        this.destroyed = true;
-        if (this.$directive) {
-            this.$directive.remove();
-        }
-    },
-
-    __activeControls: {}
+    destroy: function(value) {
+        //todo
+    }
 };

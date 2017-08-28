@@ -45,19 +45,27 @@ var PersonalityApp = MutApp.extend({
         "id=startScr startDescription": { label: {RU:'Описание', EN:'Description'} },
         "id=startScr startButtonText": { label: {RU:'Текст кнопки', EN:'Start button text'} },
         "id=startScr backgroundImg": { label: {RU:'Фоновая картинка',EN:'Background image'} },
-        "id=pm showLogoInQuestions": { label: {RU:'Показывать лого',EN:'Show logo'} },
+        "id=pm showLogoInQuestions": {
+            label: {RU:'Показывать лого',EN:'Show logo'},
+            controls: 'OnOff'
+        },
         "id=pm test1": { label: {RU: 'Тест', EN: 'Test1'} },
         "id=pm test2": { label: {RU: 'Тест', EN: 'Test2'} },
         "id=pm test3": { label: {RU: 'Тест', EN: 'Test3'} },
         "id=pm logoUrl": {
-            label: {RU: 'Логотип', EN: 'Logo'}
+            label: {RU: 'Логотип', EN: 'Logo'},
+            controls: 'StringControl'
         },
         ".js-start_header color": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Цвет шрифта',EN:'Font color'},
-            controls: "StringControl",
-            controlParams: {
-                viewName: 'ColorPicker'
+            controls: {
+                name: "StringControl",
+                view: 'ColorPicker',
+                param: {
+                    key1: '123',
+                    key2: 'abc'
+                }
             }
         },
         ".js-start_header font-size": {

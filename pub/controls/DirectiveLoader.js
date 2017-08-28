@@ -85,7 +85,9 @@ var directiveLoader = {};
      */
     function _saveDirective(directiveName, template) {
         var $e = $('<div></div>').append(template);
-        App.localize($e);
+        if (window.App) {
+            window.App.localize($e);
+        }
         directives[directiveName] = $e.html();
     }
 

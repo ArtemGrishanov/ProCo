@@ -599,75 +599,47 @@ var Editor = {};
      * @param {string} scrId
      *
      */
-    function bindControlsForAppPropertiesOnScreen($view, scrId) {
-        var appScreen = editedApp.getScreenById(scrId);
-
-        // найти и удалить эти типы контролов
-        // при показе экрана они пересоздаются заново
-        clearControls(['workspace', 'quickcontrolpanel']);
-
-        for (var k = 0; k < appScreen.getLinkedMutAppProperties().length; k++) {
-            var appProperty = appScreen.getLinkedMutAppProperties()[k];
-            // для всех элементов связанных с appProperty надо создать событие по клику.
-            // в этот момент будет происходить фильтрация контролов на боковой панели
-            // элемент, конечно, может быть привязан к нескольким appProperty, ведь содержит несколько значений в data-app-property
-            // надо избежать создания дублирующихся обработчиков
-            var de = appProperty.uiElement;
-            if (registeredElements.indexOf(de) < 0) {
-                $(de).click(function(e) {
-                    selectElementOnAppScreen({
-                        $elementOnAppScreen: $(e.currentTarget)
-                    });
-                    e.preventDefault();
-                    e.stopPropagation();
-                });
-                registeredElements.push(de);
-            }
-            // контрола пока ещё не существует для настройки, надо создать
-            var propertyString = appProperty.propertyString;
-            // может быть несколько контролов для appProperty (например, кнопка доб ответа и кнопка удал ответа в одном и том же массиве)
-            var controlsInfo = appProperty.controls;
-            for (var j = 0; j < controlsInfo.length; j++) {
-                var cn = controlsInfo[j].name;
-                // здесь надо создавать только контролы которые находятся на рабочем поле, например textquickinput
-                // они пересоздаются каждый раз при переключении экрана
-                // "обычные" контролы создаются иначе
-                if (config.controls[cn].type === 'workspace' || config.controls[cn].type === 'quickcontrolpanel') {
-
-                    // на домэлемент можно повесить фильтр data-control-filter и в descriptor в параметрах также его указать
-                    if (checkControlFilter(de, controlsInfo[j].params)===true) {
-                        // имя вью для контрола
-                        var viewName = controlsInfo[j].params.viewName;
-                        // простейшая обертка для контрола, пока помещаем туда
-                        var wrapper = (config.controls[cn].type === 'quickcontrolpanel') ? $('<div></div>'): null;
-                        var newControl = createControl({
-                            mutAppProperty: appProperty,
-                            controlName: controlsInfo[j].name,
-                            controlDirectiveName: viewName,
-                            controlAdditionalParam: controlsInfo[j].params,
-                            conrolParentView: wrapper,
-                            productDOMElement: de
-                        });
-                        if (newControl) {
-                            // только если действительно получилось создать ui для настройки
-                            // не все контролы могут быть реализованы или некорректно указаны
-                            uiControlsInfo.push({
-                                propertyString: appProperty.propertyString,
-                                control: newControl,
-                                domElement: de,
-                                type: config.controls[cn].type,
-                                wrapper: wrapper
-                            });
-                        }
-                        else {
-                            log('Can not create control \''+controlsInfo[j].name+'\' for appProperty: \''+appProperty.propertyString+ '\' on the screen '+scrId, true);
-                        }
-                    }
-
-                }
-            }
-        }
-    }
+//    function bindControlsForAppPropertiesOnScreen($view, scrId) {
+//        var appScreen = editedApp.getScreenById(scrId);
+//
+//        // найти и удалить эти типы контролов
+//        // при показе экрана они пересоздаются заново
+//        clearControls(['workspace', 'quickcontrolpanel']);
+//
+//        for (var k = 0; k < appScreen.getLinkedMutAppProperties().length; k++) {
+//            var appProperty = appScreen.getLinkedMutAppProperties()[k];
+//            // для всех элементов связанных с appProperty надо создать событие по клику.
+//            // в этот момент будет происходить фильтрация контролов на боковой панели
+//            // элемент, конечно, может быть привязан к нескольким appProperty, ведь содержит несколько значений в data-app-property
+//            // надо избежать создания дублирующихся обработчиков
+//            var de = appProperty.uiElement;
+//            if (registeredElements.indexOf(de) < 0) {
+//                $(de).click(function(e) {
+//                    selectElementOnAppScreen({
+//                        $elementOnAppScreen: $(e.currentTarget)
+//                    });
+//                    e.preventDefault();
+//                    e.stopPropagation();
+//                });
+//                registeredElements.push(de);
+//            }
+//            for (var j = 0; j < controlsInfo.length; j++) {
+//                // здесь надо создавать только контролы которые находятся на рабочем поле, например textquickinput
+//                // они пересоздаются каждый раз при переключении экрана
+//                // "обычные" контролы создаются иначе
+//                if (config.controls[cn].type === 'workspace' || config.controls[cn].type === 'quickcontrolpanel') {
+//                    // имя вью для контрола
+////                        var viewName = controlsInfo[j].params.viewName;
+//                    // простейшая обертка для контрола, пока помещаем туда
+////                        var wrapper = (config.controls[cn].type === 'quickcontrolpanel') ? $('<div></div>'): null;
+//                    var newControl = createControl({
+//                        mutAppProperty: appProperty,
+//                        productDOMElement: de
+//                    });
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Выделить dom-элемент на экране приложения
@@ -740,34 +712,6 @@ var Editor = {};
         }
     }
 
-    /**
-     * Проверяет что для этого domElement можно создать контрол с параметрами
-     * Если никаких фильтров не задано, значит можно.
-     * Этот механизм используется при различных опциях ответов, для них нужны разные немного контролы. Хотя и описанные одним правилом в descriptor
-     *
-     * @param domElement
-     * @param controlParam
-     */
-    function checkControlFilter(domElement, controlParam) {
-        var filterAttr = $(domElement).attr('data-control-filter');
-        if (filterAttr) {
-            filterAttr = filterAttr.replace(new RegExp(/\s/, 'g'), '');
-            var filters = filterAttr.split(',')
-            for (var m = 0; m < filters.length; m++) {
-                // ожидаем выражение вида key=value
-                var pairs = filters[m].split('=');
-                if (pairs.length==2) {
-                    if (controlParam[pairs[0]]==pairs[1]) { //0=='0' должно быть равно
-                        return true;
-                    }
-                }
-            }
-            // атрибут задан, но подходящего условия не нашли
-            return false;
-        }
-        // если фильтр не указан вообще значит считаем что контрол подходит
-        return true;
-    }
     ///**
     // * Показать подсказки для экрана
     // * @param appScreen
@@ -784,27 +728,6 @@ var Editor = {};
     //        }
     //    }
     //}
-
-
-    /**
-     * TODO
-     * РЕФАКТОРИНГ КОНТРОЛОВ
-     *
-     * - массив uiControlsInfo конфюзит и очень не прозрачный
-     * - Выделение панелей с контролами в самостоятельные MVC сервисы для организации кода
-     * - Более экономные сортировки и операции показа/скрытия и создания. Без дублирования операций
-     * - Контролы должны быть максимально отделены от редактора по логике и окружению. Чтобы их можно было даже автоматически тестировать
-     * - то что каждый раз контролы пересоздаются и директивы перезагружаются
-     * -
-     *
-     *
-     * РАБОЧЕЕ ПОЛЕ workspace
-     * - тоже отделить от редактора как компонент
-     * -
-     *
-     */
-
-
 
     /**
      * Отфильтровать и показать только те контролы, appPropertyString которых есть в dataAppPropertyString
@@ -919,110 +842,110 @@ var Editor = {};
      *
      * @param {array} [startActiveScreens] - стартовые экраны для показа
      */
-    function syncUIControlsToAppProperties(startActiveScreens) {
-        clearControls(['workspace', 'quickcontrolpanel', 'controlpanel']);
-        uiControlsInfo = [];
-        $('#id-static-no_filter_controls').empty();
-        $('#id-static_controls_cnt').empty();
-        $('#id-control_cnt').empty();
-
-        // задача здесь: создать постоянные контролы, которые не будут меняться при переключении экранов
-        var appPropertiesStrings = Engine.getAppPropertiesObjectPathes();
-        for (var i = 0; i < appPropertiesStrings.length; i++) {
-            var ps = appPropertiesStrings[i];
-            var ap = Engine.getAppProperty(ps);
-            if (ap.controls) {
-                // у свойства может быть несколько контролов
-                for (var j = 0; j < ap.controls.length; j++) {
-                    var c = ap.controls[j];
-                    if (config.controls[c.name]) {
-                        if (config.controls[c.name].type === 'controlpanel') {
-                            // контрол помечен как постоянный в дескрипторе, то есть его надо создать сразу и навсегда (пересоздастся только вместе с экранами)
-                            var parent = null;
-                            var sg = c.params.screenGroup;
-                            if (sg) {
-                                // контрол привязан в группе экранов, а значит его родитель другой, так себе решение.
-                                parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
-                            }
-                            else {
-                                // выбираем панель по принципу: фильтруется контрол или нет (фильтр по клику или по экрану)
-                                var parentPanelId = (ap.filter === true || ap.showWhileScreenIsActive) ? '#id-static_controls_cnt': '#id-static-no_filter_controls';
-
-                                // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на панель настроек
-                                var $cc = $($('#id-static_control_cnt_template').html()).appendTo(parentPanelId);
-                                if (ap.label) {
-                                    var textLabel = (typeof ap.label==='string')? ap.label: ap.label[App.getLang()];
-                                    if (config.controls[c.name].labelInControl === true) {
-                                        // метка находится внутри самого контрола а не вовне как обычно
-                                        // UI контрола будет загружен после, поэтому пробрасываем внутрь контрола label
-                                        c.params.__label = textLabel;
-                                        $cc.find('.js-label').remove();
-                                    }
-                                    else {
-                                        $cc.find('.js-label').html(textLabel);
-                                    }
-                                }
-                                if (ap.filter === true) {
-                                    // свойства с этим атрибутом filter=true показываются только при клике на соответствующих элемент в промо-приложении
-                                    // который помечен data-app-property
-                                    $cc.hide();
-                                }
-                                parent = $cc.find('.js-control_cnt');
-                            }
-                            var newControl = createControl(ps, c.params.viewName, c.name, c.params, parent);
-                            if (ps === 'id=startScr backgroundImg') {
-                                var stopHere = 0;
-                            }
-                            if (newControl) {
-                                uiControlsInfo.push({
-                                    propertyString: ps,
-                                    control: newControl,
-                                    wrapper: $cc, // контейнер, в котором контрол находится на боковой панели контролов
-                                    filter: ap.filter, // чтобы потом не искать этот признак во время фильтрации
-                                    showWhileScreenIsActive: ap.showWhileScreenIsActive,
-                                    type: config.controls[c.name].type // также для быстрого поиска
-                                });
-                            }
-                            else {
-                                log('Can not create control for appProperty: \'' + ps, true);
-                            }
-                        }
-                    }
-                    else {
-                        log('Control: \'' + c.name + '\' isn\'t descripted in config.js' , true);
-                    }
-                }
-            }
-        }
-
-        //TODO жесткий хак: данная инициализация не поддерживается на нескольких колорпикерах
-        // надо отследить загружку всех директив колорпикеров и тогда инициализировать их
-        setTimeout(function() {
-            initColorpickers();
-            setTimeout(function() {
-                initColorpickers();
-            }, 10000);
-        }, 6000);
-
-        if (startActiveScreens) {
-            activeScreens = startActiveScreens;
-        }
-        if (activeScreens.length > 0) {
-            // восстановить показ экранов, которые видели ранее
-            showScreen(activeScreens);
-        }
-        else {
-            // первый экран показать по умолчанию
-            //TODO первый старт: надо дождаться загрузки этого айфрема и нормально проинициализировать после
-            setTimeout(function() {
-                previewScreensIframeBody = $("#id-product_screens_cnt").contents().find('body');
-                showScreen(Editor.getEditedApp().getScreenIds()[0]);
-            }, 1000);
-        }
-
-        // стрелки управления прокруткой, нормализация
-        checkScreenGroupsArrowsState();
-    }
+//    function syncUIControlsToAppProperties(startActiveScreens) {
+//        clearControls(['workspace', 'quickcontrolpanel', 'controlpanel']);
+//        uiControlsInfo = [];
+//        $('#id-static-no_filter_controls').empty();
+//        $('#id-static_controls_cnt').empty();
+//        $('#id-control_cnt').empty();
+//
+//        // задача здесь: создать постоянные контролы, которые не будут меняться при переключении экранов
+//        var appPropertiesStrings = Engine.getAppPropertiesObjectPathes();
+//        for (var i = 0; i < appPropertiesStrings.length; i++) {
+//            var ps = appPropertiesStrings[i];
+//            var ap = Engine.getAppProperty(ps);
+//            if (ap.controls) {
+//                // у свойства может быть несколько контролов
+//                for (var j = 0; j < ap.controls.length; j++) {
+//                    var c = ap.controls[j];
+//                    if (config.controls[c.name]) {
+//                        if (config.controls[c.name].type === 'controlpanel') {
+//                            // контрол помечен как постоянный в дескрипторе, то есть его надо создать сразу и навсегда (пересоздастся только вместе с экранами)
+//                            var parent = null;
+//                            var sg = c.params.screenGroup;
+//                            if (sg) {
+//                                // контрол привязан в группе экранов, а значит его родитель другой, так себе решение.
+//                                parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
+//                            }
+//                            else {
+//                                // выбираем панель по принципу: фильтруется контрол или нет (фильтр по клику или по экрану)
+//                                var parentPanelId = (ap.filter === true || ap.showWhileScreenIsActive) ? '#id-static_controls_cnt': '#id-static-no_filter_controls';
+//
+//                                // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на панель настроек
+//                                var $cc = $($('#id-static_control_cnt_template').html()).appendTo(parentPanelId);
+//                                if (ap.label) {
+//                                    var textLabel = (typeof ap.label==='string')? ap.label: ap.label[App.getLang()];
+//                                    if (config.controls[c.name].labelInControl === true) {
+//                                        // метка находится внутри самого контрола а не вовне как обычно
+//                                        // UI контрола будет загружен после, поэтому пробрасываем внутрь контрола label
+//                                        c.params.__label = textLabel;
+//                                        $cc.find('.js-label').remove();
+//                                    }
+//                                    else {
+//                                        $cc.find('.js-label').html(textLabel);
+//                                    }
+//                                }
+//                                if (ap.filter === true) {
+//                                    // свойства с этим атрибутом filter=true показываются только при клике на соответствующих элемент в промо-приложении
+//                                    // который помечен data-app-property
+//                                    $cc.hide();
+//                                }
+//                                parent = $cc.find('.js-control_cnt');
+//                            }
+//                            var newControl = createControl(ps, c.params.viewName, c.name, c.params, parent);
+//                            if (ps === 'id=startScr backgroundImg') {
+//                                var stopHere = 0;
+//                            }
+//                            if (newControl) {
+//                                uiControlsInfo.push({
+//                                    propertyString: ps,
+//                                    control: newControl,
+//                                    wrapper: $cc, // контейнер, в котором контрол находится на боковой панели контролов
+//                                    filter: ap.filter, // чтобы потом не искать этот признак во время фильтрации
+//                                    showWhileScreenIsActive: ap.showWhileScreenIsActive,
+//                                    type: config.controls[c.name].type // также для быстрого поиска
+//                                });
+//                            }
+//                            else {
+//                                log('Can not create control for appProperty: \'' + ps, true);
+//                            }
+//                        }
+//                    }
+//                    else {
+//                        log('Control: \'' + c.name + '\' isn\'t descripted in config.js' , true);
+//                    }
+//                }
+//            }
+//        }
+//
+//        //TODO жесткий хак: данная инициализация не поддерживается на нескольких колорпикерах
+//        // надо отследить загружку всех директив колорпикеров и тогда инициализировать их
+//        setTimeout(function() {
+//            initColorpickers();
+//            setTimeout(function() {
+//                initColorpickers();
+//            }, 10000);
+//        }, 6000);
+//
+//        if (startActiveScreens) {
+//            activeScreens = startActiveScreens;
+//        }
+//        if (activeScreens.length > 0) {
+//            // восстановить показ экранов, которые видели ранее
+//            showScreen(activeScreens);
+//        }
+//        else {
+//            // первый экран показать по умолчанию
+//            //TODO первый старт: надо дождаться загрузки этого айфрема и нормально проинициализировать после
+//            setTimeout(function() {
+//                previewScreensIframeBody = $("#id-product_screens_cnt").contents().find('body');
+//                showScreen(Editor.getEditedApp().getScreenIds()[0]);
+//            }, 1000);
+//        }
+//
+//        // стрелки управления прокруткой, нормализация
+//        checkScreenGroupsArrowsState();
+//    }
 
     function initColorpickers() {
         // стараемся выполнить после загрузки всех колорпикеров

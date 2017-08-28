@@ -182,26 +182,8 @@ var MutApp = function(param) {
             }
         }
     };
-    // должна быть объявлена схема
-    if (this.mutAppSchema instanceof MutAppSchema === true) {
-        this.createCssMutAppProperties(this.mutAppSchema._schema);
-    }
-    else {
-        throw new Error('MutApp.constructor: mutAppSchema is not defined in mutapp');
-    }
 
-    // инициализация свойства для хранения кастомных стилей
-    this.customCssStyles = new MutAppProperty({
-        application: this,
-        propertyString: 'appConstructor=mutapp customCssStyles',
-        value: ''
-    });
-    this.customCssStyles.bind('change',function(){
-        // запись значения свойства (css строки) в виде стилей
-        MutApp.Util.writeCssTo('id-custom_styles', this.getValue(), this._application.screenRoot);
-    });
-
-    // далее установка динамических свойств для приложения
+    // обработка параметров
     if (param) {
         if (param.mode) {
             this.mode = param.mode;
@@ -239,6 +221,27 @@ var MutApp = function(param) {
             this.engineStorage._values = param.engineStorage;
         }
     }
+
+    // должна быть объявлена схема
+    // важно: этот код находится после обработки _appChangeCallbacks
+    if (this.mutAppSchema instanceof MutAppSchema === true) {
+        this.createCssMutAppProperties(this.mutAppSchema._schema);
+    }
+    else {
+        throw new Error('MutApp.constructor: mutAppSchema is not defined in mutapp');
+    }
+
+    // инициализация свойства для хранения кастомных стилей
+    // важно: этот код находится после обработки _appChangeCallbacks
+    this.customCssStyles = new MutAppProperty({
+        application: this,
+        propertyString: 'appConstructor=mutapp customCssStyles',
+        value: ''
+    });
+    this.customCssStyles.bind('change',function(){
+        // запись значения свойства (css строки) в виде стилей
+        MutApp.Util.writeCssTo('id-custom_styles', this.getValue(), this._application.screenRoot);
+    });
 
     // инициализация апи для статистики, если задан идентификатор Google Analytics
     // при использовании другого или нескольких провайдеров надо будет рефакторить
@@ -656,6 +659,15 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
         if (prInfo.label) {
             mutAppProperty.label = prInfo.label;
         }
+
+        // переносим из схемы информацию о контролах
+        if (prInfo.controls) {
+            mutAppProperty.controls = Array.isArray(prInfo.controls) ? prInfo.controls: [prInfo.controls];
+        }
+        else {
+            mutAppProperty.controls = [];
+        }
+
         if (MutApp.Util.isMutAppPropertyArray(mutAppProperty) === true) {
             mutAppProperty.prototypes = prInfo.prototypes;
         }
@@ -702,7 +714,7 @@ MutApp.prototype.updateCssMutAppPropertiesValues = function(screen) {
     var props = this._mutappProperties;
     for (var i = 0; i < props.length; i++) {
         if (props[i] instanceof CssMutAppProperty) {
-            props[i]._value = screen.$el.find(props[i].cssSelector).css(props[i].cssPropertyName);
+            props[i].setValue(screen.$el.find(props[i].cssSelector).css(props[i].cssPropertyName));
         }
     }
 };
@@ -1114,6 +1126,38 @@ MutApp.prototype.trigger = function(eventType, data) {
     for (var j = 0; j < this._appChangeCallbacks.length; j++) {
         this._appChangeCallbacks[j](eventType, data);
     }
+};
+
+/**
+ * Определить, сколько на текущий момент должно быть контролов для приложения.
+ * Для каждого свойства, которое сейчас зарегистрировано, может быть 1 и более контролов
+ *
+ * @returns {number}
+ */
+MutApp.prototype.getExpectedControlsCount = function() {
+    var result = 0;
+    for (var i = 0; i < this._mutappProperties.length; i++) {
+        if (this._mutappProperties[i].controls.length > 0) {
+            result += this._mutappProperties[i].controls.length;
+        }
+    }
+    return result;
+};
+
+/**
+ * Определить, сколько на текущий момент должно быть контролов для приложения.
+ * Для каждого свойства, которое сейчас зарегистрировано, может быть 1 и более контролов
+ *
+ * @returns {number}
+ */
+MutApp.prototype.getPropertiesWithControls = function() {
+    var result = [];
+    for (var i = 0; i < this._mutappProperties.length; i++) {
+        if (this._mutappProperties[i].controls.length > 0) {
+            result.push(this._mutappProperties[i]);
+        }
+    }
+    return result;
 };
 
 /**
@@ -2411,14 +2455,19 @@ MutAppProperty.prototype.setValue = function(newValue) {
         throw new Error('MutAppProperty.constructor: MutAppProperty implements only primitives: Number, Boolean, String, Undefined, Null. For array use MutAppPropertyArray');
     }
     if (this._value !== newValue) {
-        if (this._application) {
-            this._application._operationCount++;
-        }
         this._value = newValue;
         this._setValueTimestamp = new Date().getTime();
-        this.trigger('change');
+        //this.trigger('change');
         if (this._model instanceof MutApp.Model && typeof this._propertyName === 'string') {
             this._model.trigger('change:'+this._propertyName);
+        }
+        if (this._application) {
+            this._application._operationCount++;
+            // вызвать события об изменении значения свойства в приложении
+            this._application.trigger(MutApp.EVENT_PROPERTY_VALUE_CHANGED, {
+                property: this,
+                propertyString: this.propertyString
+            });
         }
     }
 };
