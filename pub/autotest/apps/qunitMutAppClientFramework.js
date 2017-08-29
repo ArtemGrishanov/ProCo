@@ -310,10 +310,11 @@ QUnit.test("MutApp test: operations count", function( assert ) {
     var app1 = new PersonalityApp({
     });
     app1.start();
-    assert.ok(app1.getOperationsCount() === 0);
+
+    var initialOperationCount = app1.getOperationsCount();
 
     app1.model.attributes.results.addElementByPrototype('id=pm resultProto1');
-    assert.ok(app1.getOperationsCount() === 1);
+    assert.ok(app1.getOperationsCount() === initialOperationCount+1);
 
     var app2 = new PersonalityApp({
     });
@@ -321,7 +322,7 @@ QUnit.test("MutApp test: operations count", function( assert ) {
     var serStr = app2.model.attributes.results.serialize();
 
     app1.model.attributes.results.deserialize(serStr);
-    // +3 операции
+    // +3 операции (и плюс одна ранее как добавление элемента в result)
     // сам массив и два вложенных в него свойства
-    assert.ok(app1.getOperationsCount() === 4);
+    assert.ok(app1.getOperationsCount() === initialOperationCount+4);
 });

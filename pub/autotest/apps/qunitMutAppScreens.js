@@ -163,7 +163,7 @@ QUnit.test("MutApp test: Screens in edit mode. data-app-property attribute", fun
     // также после ренденра в режиме edit в экране будет список всех MutAppProperty, которые к нему привязаны
     // то есть на этом экране есть data-app-property от нескольких MutAppProperty
     var linkedMutAppProperties = startScr.getLinkedMutAppProperties()
-    assert.ok(linkedMutAppProperties.length > 5, 'there are linked MutAppProperties on the screen');
+    assert.ok(linkedMutAppProperties.length >= 1, 'there are linked MutAppProperties on the screen');
     for (var i = 0; i < linkedMutAppProperties.length; i++) {
         var lp = linkedMutAppProperties[i];
         assert.ok(lp.uiElement);

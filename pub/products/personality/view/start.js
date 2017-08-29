@@ -20,19 +20,12 @@ var StartScreen = MutApp.Screen.extend({
     name: {EN:'Start screen',RU:'Стартовый экран'},
 
     logoPosition: {top: 200, left: 200},
-    showLogo: true,
     /**
      *
      */
     startHeaderText: null,
     startDescription: null,
     startButtonText: null,
-    /**
-     * Как подписаться на изменения значения? Это не модель
-     * Раньше был перезапуск приложения и рендер при старте
-     */
-    backgroundImg: null,
-
     shadowEnable: false,
 
     /**
@@ -85,11 +78,6 @@ var StartScreen = MutApp.Screen.extend({
             value: 'Start',
             propertyString: 'id=startScr startButtonText'
         });
-        this.backgroundImg = new MutAppProperty({
-            application: this.model.application,
-            propertyString: 'id=startScr backgroundImg',
-            value: null // 'http://cdn0.redkassa.ru/live/sitenew/picture/871de92e-2b5f-4a3f-be16-8e2b6031bd66',
-        });
         this.model.bind("change:state", function () {
             if ('welcome' === this.model.get('state')) {
                 this.render();
@@ -99,8 +87,13 @@ var StartScreen = MutApp.Screen.extend({
         this.model.bind("change:showBackgroundImage", function () {
             this.render();
         }, this);
-
-        this.backgroundImg.bind("change", function() {
+        this.model.bind("change:backgroundImg", function () {
+            this.render();
+        }, this);
+        this.model.bind("change:showLogoOnStartScreen", function () {
+            this.render();
+        }, this);
+        this.model.bind("change:startScreenBackgroundImg", function() {
             this.render();
         }, this);
     },
@@ -110,7 +103,7 @@ var StartScreen = MutApp.Screen.extend({
 
         // установка свойств логотипа
         var $l = this.$el.find('.js-start_logo');
-        if (this.showLogo === true) {
+        if (this.model.get('showLogoOnStartScreen').getValue() === true) {
             $l.css('backgroundImage','url('+this.model.get('logoUrl').getValue()+')');
             $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
         }
@@ -119,8 +112,8 @@ var StartScreen = MutApp.Screen.extend({
         }
 
         if (this.model.get('showBackgroundImage').getValue() === true) {
-            if (this.backgroundImg.getValue()) {
-                this.$el.find('.js-back_img').css('backgroundImage','url('+this.backgroundImg.getValue()+')');
+            if (this.model.get('startScreenBackgroundImg').getValue()) {
+                this.$el.find('.js-back_img').css('backgroundImage','url('+this.model.get('startScreenBackgroundImg').getValue()+')');
             }
         }
         else {

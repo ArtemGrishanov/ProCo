@@ -13,11 +13,11 @@ QUnit.test("MutApp test: Customization", function( assert ) {
 
     setTimeout(function() {
         assert.ok(app._screens[0].$el.find('.js-test_btn').css('font-size')==='29px');
-        app.customCssStyles.setValue('.js-test_btn{font-size:29px;important!}.js-btn_wr{background-color:rgb(238, 238, 238)}');
+        app.customCssStyles.setValue('.js-test_btn{font-size:29px;important!}.js-btn_wr{background-color:rgb(238, 238, 0)}');
 
         setTimeout(function() {
             assert.ok(app._screens[0].$el.find('.js-test_btn').css('font-size')==='29px');
-            assert.ok(app._screens[0].$el.find('.js-btn_wr').css('background-color')==='rgb(238, 238, 238)');
+            assert.ok(app._screens[0].$el.find('.js-btn_wr').css('background-color')==='rgb(238, 238, 0)');
             done();
         }, 500);
 

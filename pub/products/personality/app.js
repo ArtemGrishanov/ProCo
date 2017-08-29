@@ -44,9 +44,16 @@ var PersonalityApp = MutApp.extend({
         "id=startScr startHeaderText": { label: {RU: 'Заголовок', EN: 'Header'} },
         "id=startScr startDescription": { label: {RU:'Описание', EN:'Description'} },
         "id=startScr startButtonText": { label: {RU:'Текст кнопки', EN:'Start button text'} },
-        "id=startScr backgroundImg": { label: {RU:'Фоновая картинка',EN:'Background image'} },
+        "id=pm startScreenBackgroundImg": {
+            label: {RU:'Фоновая картинка стартового экрана',EN:'Start screen Background image'},
+            controls: 'StringControl'
+        },
+        "id=pm showLogoOnStartScreen": {
+            label: {RU:'Показывать лого на начальном экране',EN:'Show logo on start screen'},
+            controls: 'OnOff'
+        },
         "id=pm showLogoInQuestions": {
-            label: {RU:'Показывать лого',EN:'Show logo'},
+            label: {RU:'Показывать лого в вопросах',EN:'Show logo on question screens'},
             controls: 'OnOff'
         },
         "id=pm test1": { label: {RU: 'Тест', EN: 'Test1'} },

@@ -33,6 +33,12 @@ var PersonalityModel = MutApp.Model.extend({
          * MutAppProperty доступное для редактирования вовне приложения
          */
         showBackgroundImage: null,
+
+        startScreenBackgroundImg: null,
+        /**
+         * Показывать ли лого на стартовом экране
+         */
+        showLogoOnStartScreen: null,
         /**
          * Показывать ли логотип на эйране с вопросами
          */
@@ -77,21 +83,30 @@ var PersonalityModel = MutApp.Model.extend({
             application: this.application,
             model: this,
             propertyString: 'id=pm results',
-            propertyName: 'results',
             value: []
         });
         this.attributes.quiz = new MutAppPropertyArray({
             application: this.application,
             model: this,
             propertyString: 'id=pm quiz',
-            propertyName: 'quiz',
             value: []
+        });
+        this.attributes.startScreenBackgroundImg = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=pm startScreenBackgroundImg',
+            value: null // 'http://cdn0.redkassa.ru/live/sitenew/picture/871de92e-2b5f-4a3f-be16-8e2b6031bd66',
         });
         this.attributes.showBackgroundImage = new MutAppProperty({
             application: this.application,
             model: this,
             propertyString: 'id=pm showBackgroundImage',
-            propertyName: 'showBackgroundImage', // дублирование имени
+            value: true
+        });
+        this.attributes.showLogoOnStartScreen = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=pm showLogoOnStartScreen',
             value: true
         });
         // свойство одно на все экраны с вопросами
@@ -479,7 +494,6 @@ var PersonalityModel = MutApp.Model.extend({
                 text: new MutAppProperty({
                     model: this,
                     application: this.application,
-                    propertyName: null,
                     propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.question.text',
                     value: 'Your favourite music?'
                 })
@@ -537,14 +551,12 @@ var PersonalityModel = MutApp.Model.extend({
             title: new MutAppProperty({
                 model: this,
                 application: this.application,
-                propertyName: null,
                 propertyString: 'id=pm results.'+this.attributes.results.getValue().length+'.title',
                 value: 'Result title'
             }),
             description: new MutAppProperty({
                 model: this,
                 application: this.application,
-                propertyName: null,
                 propertyString: 'id=pm results.'+this.attributes.results.getValue().length+'.description',
                 value: 'Result description'
             })

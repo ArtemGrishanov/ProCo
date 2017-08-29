@@ -35,7 +35,7 @@ var MutApp = function(param) {
      * @type {Array}
      * @private
      */
-    this._appChangeCallbacks = [];
+    this._appChangeCallbacks = [this._appEventHandler];
     /**
      * Каждое изменение MutAppProperty (setValue() или deserialize()) приводитк инкременту этого значения
      *
@@ -206,11 +206,11 @@ var MutApp = function(param) {
         }
 
         if (param.appChangeCallbacks) {
-            if (Object.prototype.toString.call(param.appChangeCallbacks) === '[object Array]') {
-                this._appChangeCallbacks = param.appChangeCallbacks;
+            if (Array.isArray(param.appChangeCallbacks) === true) {
+                this._appChangeCallbacks = this._appChangeCallbacks.concat(param.appChangeCallbacks);
             }
-            else {
-                this._appChangeCallbacks = [param.appChangeCallbacks];
+            else if (typeof param.appChangeCallbacks === 'function') {
+                this._appChangeCallbacks.push(param.appChangeCallbacks);
             }
         }
 
@@ -238,10 +238,10 @@ var MutApp = function(param) {
         propertyString: 'appConstructor=mutapp customCssStyles',
         value: ''
     });
-    this.customCssStyles.bind('change',function(){
-        // запись значения свойства (css строки) в виде стилей
-        MutApp.Util.writeCssTo('id-custom_styles', this.getValue(), this._application.screenRoot);
-    });
+//    this.customCssStyles.bind('change',function(){
+//        // запись значения свойства (css строки) в виде стилей
+//        MutApp.Util.writeCssTo('id-custom_styles', this.getValue(), this._application.screenRoot);
+//    });
 
     // инициализация апи для статистики, если задан идентификатор Google Analytics
     // при использовании другого или нескольких провайдеров надо будет рефакторить
@@ -272,40 +272,22 @@ MutApp.ENGINE_STORAGE_VALUE_CHANGED = 'mutapp_engine_value_changed';
 MutApp.ENGINE_SET_PROPERTY_VALUE = 'mutapp_set_property_value';
 
 /**
- * dom-элемент в котором помещаются все экраны
- * Создается в конструкторе приложения
- * MutApp.prototype.screenRoot = null;
+ * Обработчик событий в приложении
  *
- * @type {null}
+ * @param {string} event
+ * @param {object} data
  */
-
-/**
- * История показов экранов
- * Создается в конструкторе приложения
- *
- * @type {Array}
- * @private
- * MutApp.prototype._history = [];
- */
-
-/**
- * Все экраны приложения
- * Создается в конструкторе приложения
- *
- * @type {Array}
- * @private
- * MutApp.prototype._screens = [];
- */
-
-/**
- * Модели приложения, которые связываются с представлениями
- * Создается в кнструкторе приложения
- *
- * @type {Object}
- * @private
- * MutApp.prototype._models = [];
- */
-
+MutApp.prototype._appEventHandler = function(event, data) {
+    switch (event) {
+        case MutApp.EVENT_PROPERTY_VALUE_CHANGED: {
+            if (data.propertyString === 'appConstructor=mutapp customCssStyles') {
+                // запись значения свойства (css строки) в виде стилей
+                MutApp.Util.writeCssTo('id-custom_styles', data.property.getValue(), data.application.screenRoot);
+            }
+            break;
+        }
+    }
+};
 /**
  * Связать экран с приложением
  * Рендер экрана будет вызван сразу при добавлении
@@ -2299,12 +2281,6 @@ var MutAppProperty = function (param) {
 };
 
 /**
- * Поддерживаемые события в MutAppProperty
- * @type {Array}
- */
-MutAppProperty.EVENT_TYPES = ['change'];
-
-/**
  * Инициализация базовых параметров свойства
  */
 MutAppProperty.prototype.initialize = function(param) {
@@ -2312,7 +2288,11 @@ MutAppProperty.prototype.initialize = function(param) {
     this.label = param.label || {RU:'MutAppProperty имя', EN:'MutAppProperty label'};
     this._getValueTimestamp = param._getValueTimestamp || undefined;
     this._setValueTimestamp = param._setValueTimestamp || undefined;
-    this._propertyName = param.propertyName || null;
+    // выделим из propertyString имя свойства. Потребуется в дальнейшем для генерации событий об изменении свойства (только для свойств в MutAppModel)
+    var pr = MutApp.Util.parseSelector(param.propertyString);
+    if (pr) {
+        this._propertyName = pr.valueKey;
+    }
     if (this._validateDataType(param.value) === true) {
         this._value = param.value || null;
     }
@@ -2328,7 +2308,6 @@ MutAppProperty.prototype.initialize = function(param) {
     this._model = param.model;
     this._application = param.application || null;
     this._model = param.model || null;
-    this._bindedEvents = {};
     if (this._application) {
         this._application.linkMutAppProperty(this);
     }
@@ -2457,7 +2436,6 @@ MutAppProperty.prototype.setValue = function(newValue) {
     if (this._value !== newValue) {
         this._value = newValue;
         this._setValueTimestamp = new Date().getTime();
-        //this.trigger('change');
         if (this._model instanceof MutApp.Model && typeof this._propertyName === 'string') {
             this._model.trigger('change:'+this._propertyName);
         }
@@ -2486,37 +2464,37 @@ MutAppProperty.prototype.getValue = function() {
  * @param {function} callback
  * @param {*} context
  */
-MutAppProperty.prototype.bind = function(eventType, callback, context) {
-    if (MutAppProperty.EVENT_TYPES.indexOf(eventType) >= 0) {
-        if (this._bindedEvents.hasOwnProperty(eventType) !== true) {
-            this._bindedEvents[eventType] = [];
-        }
-        if (callback) {
-            this._bindedEvents[eventType].push({
-                callback: callback,
-                context: context
-            });
-        }
-    }
-    else {
-        console.error('MutAppProperty.bind: event \'' + eventType + '\' is not supported');
-    }
-};
+//MutAppProperty.prototype.bind = function(eventType, callback, context) {
+//    if (MutAppProperty.EVENT_TYPES.indexOf(eventType) >= 0) {
+//        if (this._bindedEvents.hasOwnProperty(eventType) !== true) {
+//            this._bindedEvents[eventType] = [];
+//        }
+//        if (callback) {
+//            this._bindedEvents[eventType].push({
+//                callback: callback,
+//                context: context
+//            });
+//        }
+//    }
+//    else {
+//        console.error('MutAppProperty.bind: event \'' + eventType + '\' is not supported');
+//    }
+//};
 
 /**
  * Разослать события определенного типа и для определенного свойства
  * @param {string} eventType
  * @param {Object} data
  */
-MutAppProperty.prototype.trigger = function(eventType, data) {
-    if (this._bindedEvents[eventType]) {
-        var ctx = this;
-        for (var i = 0; i < this._bindedEvents[eventType].length; i++) {
-            ctx = this._bindedEvents[eventType][i].context || this;
-            this._bindedEvents[eventType][i].callback.call(ctx, data);
-        }
-    }
-};
+//MutAppProperty.prototype.trigger = function(eventType, data) {
+//    if (this._bindedEvents[eventType]) {
+//        var ctx = this;
+//        for (var i = 0; i < this._bindedEvents[eventType].length; i++) {
+//            ctx = this._bindedEvents[eventType][i].context || this;
+//            this._bindedEvents[eventType][i].callback.call(ctx, data);
+//        }
+//    }
+//};
 
 
 /**

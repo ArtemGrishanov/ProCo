@@ -8,6 +8,11 @@ QUnit.test("Editor.Controls: prerequisites", function( assert ) {
     assert.ok($('#id-static_control_cnt_template').length > 0);
 });
 
+/**
+ * 1) Создать приложение и подписаться на события
+ * 2) Создать в событии EVENT_PROPERTY_CREATED контролы для каждого свойства
+ * 3) Проверить созданные контролы и их свойства
+ */
 QUnit.test("Editor.Controls: 1", function( assert ) {
     var done = assert.async();
     var createdEventsCount = 0;

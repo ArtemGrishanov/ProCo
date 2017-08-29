@@ -1,7 +1,7 @@
 /**
  * Created by alex on 10.08.17.
  */
-var EXPECTED_MUTAPP_PROPERTIES_COUNT = 12;
+var EXPECTED_MUTAPP_PROPERTIES_COUNT = 13;
 
 QUnit.test("MutApp test: MutAppProperties array serialization (PersonalityTest)", function( assert ) {
 
