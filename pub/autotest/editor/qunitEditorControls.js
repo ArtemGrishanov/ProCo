@@ -25,6 +25,7 @@ QUnit.test("Editor.Controls: 1", function( assert ) {
 
         var app1 = new PersonalityApp({
             defaults: null,
+            mode: 'edit',
             appChangeCallbacks: onAppChanged
         });
         window.app1 = app1; // make it global
@@ -44,7 +45,19 @@ QUnit.test("Editor.Controls: 1", function( assert ) {
             assert.ok(c.directiveName, 'controlcheck.directiveName: propertyString=\'' + c.propertyString + '\' directiveName=\'' + c.directiveName + '\'');
             assert.ok(c.$wrapper, 'controlcheck.$wrapper: propertyString=\'' + c.propertyString + '\' directiveName=\'' + c.directiveName + '\'');
             assert.ok(c.$productDomElement === null, 'controlcheck.productDOMElement: propertyString=\'' + c.propertyString + '\' directiveName=\'' + c.directiveName + '\'');
-            assert.ok(c.getValue() === app1.getProperty(c.propertyString).getValue(), 'controlcheck.value: propertyString=\'' + c.propertyString + '\' directiveName=\'' + c.directiveName + '\'');
+
+            var pVal = app1.getProperty(c.propertyString).getValue();
+            if (c.getValue() === '') {
+                // приравнять сравнение пустой строки '' и null/undefined
+                // внутри MutApp строка == null но внутри контрола при установке null, все равно окажется в значении пустая строка ''
+                assert.ok(pVal === '' || pVal === undefined || pVal === null, 'controlcheck.value: propertyString=\'' + c.propertyString + '\' directiveName=\'' + c.directiveName + '\'');
+            }
+            else {
+                assert.ok(c.getValue() === pVal, 'controlcheck.value: propertyString=\'' + c.propertyString + '\' directiveName=\'' + c.directiveName + '\'');
+            }
+//            if (c.getValue() !== app1.getProperty(c.propertyString).getValue()) {
+//                var stopHere = 0;
+//            }
         }
 
         done();

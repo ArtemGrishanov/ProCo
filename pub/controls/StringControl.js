@@ -36,8 +36,9 @@ function StringControl(param) {
      */
     this.checkValue = function() {
         if (this.$input) {
-            if (this.inputValue !== this.$input.val()) {
-                this.inputValue = this.$input.val();
+            var inpv = this.$input.val();
+            if (this.inputValue !== inpv) {
+                this.inputValue = inpv;
                 this.valueChangedCallback(this);
             }
         }
@@ -55,6 +56,9 @@ StringControl.prototype.getValue = function() {
 
 StringControl.prototype.setValue = function(value) {
     if (typeof value === 'string' || value === null || value === undefined) {
+        if (value === undefined || value === null) {
+            value = '';
+        }
         this.inputValue = value;
         this.$input.val(value);
     }

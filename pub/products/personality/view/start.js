@@ -52,7 +52,7 @@ var StartScreen = MutApp.Screen.extend({
         if (ll) {
             var win = window.open(ll, '_blank');
             win.focus();
-            this.model.application.stat('Test', 'logoclick');
+            this.model.application.stat('Personality', 'logoclick');
         }
     },
 
@@ -78,6 +78,11 @@ var StartScreen = MutApp.Screen.extend({
             value: 'Start',
             propertyString: 'id=startScr startButtonText'
         });
+        this.shadowEnable = new MutAppProperty({
+            application: this.model.application,
+            value: false,
+            propertyString: 'id=startScr shadowEnable'
+        });
         this.model.bind("change:state", function () {
             if ('welcome' === this.model.get('state')) {
                 this.render();
@@ -94,6 +99,9 @@ var StartScreen = MutApp.Screen.extend({
             this.render();
         }, this);
         this.model.bind("change:startScreenBackgroundImg", function() {
+            this.render();
+        }, this);
+        this.shadowEnable.bind('change', function() {
             this.render();
         }, this);
     },
@@ -132,7 +140,7 @@ var StartScreen = MutApp.Screen.extend({
         this.$el.find('.js-start_header').html(sht);
         this.$el.find('.js-start_description').html(sd);
 
-        if (this.shadowEnable === true) {
+        if (this.shadowEnable.getValue() === true) {
             this.$el.find('.js-back_shadow').css('background-color','rgba(0,0,0,0.4)');
         }
         else {

@@ -35,7 +35,7 @@ var MutApp = function(param) {
      * @type {Array}
      * @private
      */
-    this._appChangeCallbacks = [this._appEventHandler];
+    this._appChangeCallbacks = [this._appEventHandler.bind(this)];
     /**
      * Каждое изменение MutAppProperty (setValue() или deserialize()) приводитк инкременту этого значения
      *
@@ -43,6 +43,17 @@ var MutApp = function(param) {
      * @private
      */
     this._operationCount = 0;
+    /**
+     * Собранные и упорядоченные css правила со всех CssMutAppProperty свойств
+     * @type {
+            selector: selector,
+            rules: [{
+                property: cssPropertyName,
+                value: value
+            }]
+        }
+     */
+    this._cssRules = [];
     /**
      * Предыдущее состояние приложения
      * @type {{}}
@@ -278,13 +289,32 @@ MutApp.ENGINE_SET_PROPERTY_VALUE = 'mutapp_set_property_value';
  * @param {object} data
  */
 MutApp.prototype._appEventHandler = function(event, data) {
-    switch (event) {
-        case MutApp.EVENT_PROPERTY_VALUE_CHANGED: {
-            if (data.propertyString === 'appConstructor=mutapp customCssStyles') {
-                // запись значения свойства (css строки) в виде стилей
-                MutApp.Util.writeCssTo('id-custom_styles', data.property.getValue(), data.application.screenRoot);
+    if (this.mode === 'edit') {
+        switch (event) {
+            case MutApp.EVENT_PROPERTY_CREATED:
+            case MutApp.EVENT_PROPERTY_VALUE_CHANGED: {
+                if (MutApp.Util.isCssMutAppProperty(data.property) === true) {
+                    if (typeof data.property.getValue() === 'string') {
+                        this._saveCssRule({
+                            cssSelector: data.property.cssSelector,
+                            cssPropertyName: data.property.cssPropertyName,
+                            cssValue: data.property.getValue()
+                        });
+                        MutApp.Util.writeCssTo('id-custom_styles', this._getCssRulesString(), this.screenRoot);
+                    }
+                }
+                if (data.propertyString === 'appConstructor=mutapp customCssStyles') {
+                    if (typeof data.property.getValue() === 'string') {
+                        this._saveCssRule({
+                            cssCodeId: 'appConstructor=mutapp customCssStyles',
+                            cssCode: data.property.getValue()
+                        });
+                        // запись значения свойства (css строки) в виде стилей
+                        MutApp.Util.writeCssTo('id-custom_styles', this._getCssRulesString(), this.screenRoot);
+                    }
+                }
+                break;
             }
-            break;
         }
     }
 };
@@ -1143,6 +1173,111 @@ MutApp.prototype.getPropertiesWithControls = function() {
 };
 
 /**
+ * Сохранить кастомный css стиль для промо проекта.
+ * Потом он будет встроен в body тегом <style>
+ *
+ * Два способа сохранения стилей:
+ * 1) Указать cssSelector cssPropertyName cssValue
+ * 2) Указать cssCode cssCodeId
+ *
+ * @param {string} param.cssSelector - например '.js-btn'
+ * @param {string} param.cssPropertyName - например 'font-size'
+ * @param {string} param.cssValue - например '18px'
+ *
+ * @param {string} [param.cssCodeId] - идентификатор для cssCode
+ * @param {string} [param.cssCode] - опционально можно добавить код
+ */
+MutApp.prototype._saveCssRule = function(param) {
+    param = param || {};
+    if (typeof param.cssCode === 'string' && typeof param.cssCodeId === 'string') {
+        var r = this._getCssRule(param.cssCodeId);
+        if (r) {
+            r.rules = param.cssCode;
+        }
+        else {
+            this._cssRules.push({
+                selector: param.cssCodeId,
+                rules: param.cssCode
+            });
+        }
+    }
+    else if (typeof param.cssSelector === 'string' && typeof param.cssPropertyName === 'string' && typeof param.cssValue === 'string' ) {
+        var r = this._getCssRule(param.cssSelector);
+        if (r) {
+            var propertyFound = false;
+            for (var j = 0; j < r.rules.length; j++) {
+                if (r.rules[j].property === param.cssPropertyName) {
+                    // перезаписываем существующее css проперти
+                    r.rules[j].value = param.cssValue;
+                    propertyFound = true;
+                    break;
+                }
+            }
+            // надо проверить что value определено
+            if (propertyFound === false) {
+                // новое проперти для этого селектора, добавить в массив
+                r.rules.push({
+                    property: param.cssPropertyName,
+                    value: param.cssValue
+                });
+            }
+        }
+        else {
+            // селектор новый, добавить
+            this._cssRules.push({
+                selector: param.cssSelector,
+                rules: [{
+                    property: param.cssPropertyName,
+                    value: param.cssValue
+                }]
+            });
+        }
+    }
+    else {
+        throw new Error('MutApp._saveCssRule: invalid params');
+    }
+};
+
+/**
+ * Вспомогальный метод для _saveCssRule
+ * @param selector
+ * @returns {*}
+ * @private
+ */
+MutApp.prototype._getCssRule = function(selector) {
+    for (var i = 0; i < this._cssRules.length; i++) {
+        var r = this._cssRules[i];
+        if (r.selector === selector) {
+            return r;
+        }
+    }
+    return null;
+};
+
+/**
+ * Собирает все измененные css стили и возвращает их одной строкой
+ * @returns {string}
+ */
+MutApp.prototype._getCssRulesString = function() {
+    var cssStr = '\n';
+    for (var i = 0; i < this._cssRules.length; i++) {
+        var r = this._cssRules[i];
+        if (typeof r.rules === 'string') {
+            // может быть сразу строка стилей, которую напрямую записываем
+            cssStr += r.rules+'\n';
+        }
+        else {
+            cssStr += r.selector+'{\n';
+            for (var j = 0; j < r.rules.length; j++) {
+                cssStr += '\t'+r.rules[j].property+':'+r.rules[j].value+';\n';
+            }
+            cssStr += '}\n';
+        }
+    }
+    return cssStr;
+};
+
+/**
  * Таймер, мониторящий состояние приложения
  */
 //MutApp.prototype.onAppMonitorTimer = function() {
@@ -1288,12 +1423,12 @@ MutApp.Screen = Backbone.View.extend({
      * После каждого рендера движок должен произвести необходимые операции
      */
     renderCompleted: function() {
-        // обновить значения css свойств
-        this.model.application.updateCssMutAppPropertiesValues(this);
         if (this.model.application.mode === 'edit') {
             this._linkedMutAppProperties = [];
             this._findAndAttachAppProperty();
             this._findAndAttachCssAppProperty();
+            // обновить значения css свойств - что-то могло измениться согласно логике render() экрана
+            this.model.application.updateCssMutAppPropertiesValues(this);
         }
         // вызвать события о рендере экрана
         this.model.application.trigger(MutApp.EVENT_SCREEN_RENDERED, {
@@ -2288,13 +2423,14 @@ MutAppProperty.prototype.initialize = function(param) {
     this.label = param.label || {RU:'MutAppProperty имя', EN:'MutAppProperty label'};
     this._getValueTimestamp = param._getValueTimestamp || undefined;
     this._setValueTimestamp = param._setValueTimestamp || undefined;
+    this._bindedEvents = {};
     // выделим из propertyString имя свойства. Потребуется в дальнейшем для генерации событий об изменении свойства (только для свойств в MutAppModel)
     var pr = MutApp.Util.parseSelector(param.propertyString);
     if (pr) {
         this._propertyName = pr.valueKey;
     }
     if (this._validateDataType(param.value) === true) {
-        this._value = param.value || null;
+        this._value = param.value;
     }
     else {
         throw new Error('MutAppProperty.initialize: MutAppProperty implements only primitives: Number, Boolean, String, Undefined, Null. For array use MutAppPropertyArray');
@@ -2436,12 +2572,15 @@ MutAppProperty.prototype.setValue = function(newValue) {
     if (this._value !== newValue) {
         this._value = newValue;
         this._setValueTimestamp = new Date().getTime();
+        // событие об изменении значения от имени свойства
+        this.trigger('change');
+        // событие об изменении значения от имени модели
         if (this._model instanceof MutApp.Model && typeof this._propertyName === 'string') {
             this._model.trigger('change:'+this._propertyName);
         }
         if (this._application) {
             this._application._operationCount++;
-            // вызвать события об изменении значения свойства в приложении
+            // вызвать события об изменении значения свойства в приложении (для тех кто подписан на изменения вовне приложения)
             this._application.trigger(MutApp.EVENT_PROPERTY_VALUE_CHANGED, {
                 property: this,
                 propertyString: this.propertyString
@@ -2450,51 +2589,66 @@ MutAppProperty.prototype.setValue = function(newValue) {
     }
 };
 /**
- *
+ * Получить значение mutAppProperty
+ * Причем делает отметка времени, когда было получено значение последний раз
  */
 MutAppProperty.prototype.getValue = function() {
     this._getValueTimestamp = new Date().getTime();
     return this._value;
 };
+
+/**
+ * События поддерживаемые в MutAppProperty
+ * В MutApp там отдельный богатый набор событий, не путать с ними
+ *
+ * @type {Array}
+ */
+MutAppProperty.EVENT_TYPES = ['change'];
+
 /**
  * Привязать событие к свойству
  * Например, eventType='change' об изменении свойства
+ * Полезно для MutAppProperty внутри экранов, где нет иного механизма подписки.
+ * Ведь у свойств в модели есть стандартный механизм подписки Backbone
+ *
+ * Пример:
+ *  - this.shadowEnable.bind('change', function() {...}, this);
  *
  * @param {string} eventType
  * @param {function} callback
  * @param {*} context
  */
-//MutAppProperty.prototype.bind = function(eventType, callback, context) {
-//    if (MutAppProperty.EVENT_TYPES.indexOf(eventType) >= 0) {
-//        if (this._bindedEvents.hasOwnProperty(eventType) !== true) {
-//            this._bindedEvents[eventType] = [];
-//        }
-//        if (callback) {
-//            this._bindedEvents[eventType].push({
-//                callback: callback,
-//                context: context
-//            });
-//        }
-//    }
-//    else {
-//        console.error('MutAppProperty.bind: event \'' + eventType + '\' is not supported');
-//    }
-//};
+MutAppProperty.prototype.bind = function(eventType, callback, context) {
+    if (MutAppProperty.EVENT_TYPES.indexOf(eventType) >= 0) {
+        if (this._bindedEvents.hasOwnProperty(eventType) !== true) {
+            this._bindedEvents[eventType] = [];
+        }
+        if (callback) {
+            this._bindedEvents[eventType].push({
+                callback: callback,
+                context: context
+            });
+        }
+    }
+    else {
+        throw new Error('MutAppProperty.bind: event \'' + eventType + '\' is not supported');
+    }
+};
 
 /**
  * Разослать события определенного типа и для определенного свойства
  * @param {string} eventType
  * @param {Object} data
  */
-//MutAppProperty.prototype.trigger = function(eventType, data) {
-//    if (this._bindedEvents[eventType]) {
-//        var ctx = this;
-//        for (var i = 0; i < this._bindedEvents[eventType].length; i++) {
-//            ctx = this._bindedEvents[eventType][i].context || this;
-//            this._bindedEvents[eventType][i].callback.call(ctx, data);
-//        }
-//    }
-//};
+MutAppProperty.prototype.trigger = function(eventType, data) {
+    if (this._bindedEvents[eventType]) {
+        var ctx = this;
+        for (var i = 0; i < this._bindedEvents[eventType].length; i++) {
+            ctx = this._bindedEvents[eventType][i].context || this;
+            this._bindedEvents[eventType][i].callback.call(ctx, data);
+        }
+    }
+};
 
 
 /**
@@ -2503,19 +2657,20 @@ MutAppProperty.prototype.getValue = function() {
  * @constructor
  */
 var CssMutAppProperty = function(param) {
-    this.initialize(param);
-    var res = MutApp.Util.parseCssMutAppPropertySelector(this.propertyString);
+    var res = MutApp.Util.parseCssMutAppPropertySelector(param.propertyString);
     if (res && res.cssSelector && res.cssPropertyName) {
         this.cssSelector = res.cssSelector;
         this.cssPropertyName = res.cssPropertyName;
     }
     else {
-        throw new Error('CssMutAppProperty constructor: invalid selector \'' + this.propertyString + '\'');
+        throw new Error('CssMutAppProperty constructor: invalid selector \'' + param.propertyString + '\'');
     }
+    // initialize в конце метода - так как this.cssSelector и this.cssPropertyName уже должны быть установлены
+    // внутри initialize будет linkApp, вызовы событий и уже заполненные свойства cssSelector cssPropertyName нужны в обработчиках
+    this.initialize(param);
 };
 // наследуем от простого базового свойства
 _.extend(CssMutAppProperty.prototype, MutAppProperty.prototype);
-
 
 /**
  * Класс-обертка для управления массивом

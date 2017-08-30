@@ -44,6 +44,10 @@ var PersonalityApp = MutApp.extend({
         "id=startScr startHeaderText": { label: {RU: 'Заголовок', EN: 'Header'} },
         "id=startScr startDescription": { label: {RU:'Описание', EN:'Description'} },
         "id=startScr startButtonText": { label: {RU:'Текст кнопки', EN:'Start button text'} },
+        "id=startScr shadowEnable": {
+            label: {RU:'Включить тень', EN:'Shadow enable'},
+            controls: 'OnOff'
+        },
         "id=pm startScreenBackgroundImg": {
             label: {RU:'Фоновая картинка стартового экрана',EN:'Start screen Background image'},
             controls: 'StringControl'
