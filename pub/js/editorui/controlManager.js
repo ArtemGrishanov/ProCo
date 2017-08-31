@@ -26,15 +26,24 @@ var ControlManager = {};
             var controlName = null; // например Alternative или SlideGroupControl
             var viewName = null; // имя вью, который будет использован для контрола, например onoffswitcher, altbuttons и тп
             var controlAdditionalParam = {};
+            var cfg = null;
             if (typeof param.mutAppProperty.controls[i] === 'string') {
                 // указано только имя контрола
                 controlName = param.mutAppProperty.controls[i];
+                cfg = config.controls[controlName];
             }
             else {
                 // объект - то есть имеет расширенное описание контрола
                 controlName = param.mutAppProperty.controls[i].name;
+                cfg = config.controls[controlName];
+                if (!param.mutAppProperty.controls[i].view && cfg.defaultDirectiveIndex >= 0) {
+                    param.mutAppProperty.controls[i].view = cfg.directives[cfg.defaultDirectiveIndex];
+                }
+                if (!param.mutAppProperty.controls[i].view) {
+                    throw new Error('ControlManager.createControl: view for '+controlName+' does not specified in Schema');
+                }
                 viewName = param.mutAppProperty.controls[i].view.toLowerCase();
-                if (viewName && config.controls[controlName].directives.indexOf(viewName) < 0) {
+                if (viewName && cfg.directives.indexOf(viewName) < 0) {
                     throw new Error('ControlManager.createControl: invalid viewName name \'' + viewName + '\' in property \'' + propertyString + '\'');
                 }
                 controlAdditionalParam = param.mutAppProperty.controls[i].param || {};
@@ -44,10 +53,10 @@ var ControlManager = {};
             }
             if (!viewName) {
                 // try to set default viewName
-                var dirIndex = config.controls[controlName].defaultDirectiveIndex;
-                if (dirIndex>=0) {
+                var dirIndex = cfg.defaultDirectiveIndex;
+                if (dirIndex >= 0) {
                     // некоторые контролы могут не иметь визуальной части
-                    viewName = config.controls[controlName].directives[dirIndex];
+                    viewName = cfg.directives[dirIndex];
                 }
             }
             if (!viewName) {
@@ -55,15 +64,15 @@ var ControlManager = {};
             }
 
             // Container для контролов одного типа, например static_controls_cnt для type=controlpanel
-            var $directiveContainer = $('#'+config.controls[controlName].parentId);
+            var $directiveContainer = $('#'+cfg.parentId);
             // Для некоторых контролов добавляется обертка, например static_control_cnt_template
             var $directiveWrapper = null;
-            if (config.controls[controlName].type === 'controlpanel') {
+            if (cfg.type === 'controlpanel') {
                 $directiveWrapper = $($('#id-static_control_cnt_template').html()).appendTo($directiveContainer);
                 if (param.mutAppProperty.label) {
                     var lang = (window.App) ? window.App.getLang(): 'EN';
                     var textLabel = (typeof param.mutAppProperty.label==='string')? param.mutAppProperty.label: param.mutAppProperty.label[lang];
-                    if (config.controls[controlName].labelInControl === true) {
+                    if (cfg.labelInControl === true) {
                         // метка находится внутри самого контрола а не вовне как обычно, например в On/Off
                         controlAdditionalParam.label = textLabel;
                         $directiveWrapper.find('.js-label').remove();
@@ -73,11 +82,11 @@ var ControlManager = {};
                     }
                 }
             }
-            else if (config.controls[controlName].type === 'workspace' || config.controls[controlName].type === 'quickcontrolpanel') {
+            else if (cfg.type === 'workspace' || cfg.type === 'quickcontrolpanel') {
                 $directiveWrapper = $('<div></div>').appendTo($directiveContainer);
             }
             else {
-                throw new Error('ControlManager.createControl: unknown control type \'' + config.controls[cn].type + '\'');
+                throw new Error('ControlManager.createControl: unknown control type \'' + cfg.type + '\'');
             }
             // на домэлемент можно повесить фильтр data-control-filter и в descriptor в параметрах также его указать
             //if (checkControlFilter(de, _controlsInfo[j].params)===true) {
@@ -85,7 +94,7 @@ var ControlManager = {};
             //}
             // задается по параметру или по дефолту из конфига
             if (!$directiveContainer || $directiveContainer.length === 0) {
-                throw new Error('ControlManager.createControl: control container does not specified \'' + config.controls[controlName].parentId + '\'');
+                throw new Error('ControlManager.createControl: control container does not specified \'' + cfg.parentId + '\'');
             }
             var ctrl = new window[controlName]({
                 propertyString: propertyString,

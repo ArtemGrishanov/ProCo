@@ -79,6 +79,36 @@ var PersonalityApp = MutApp.extend({
                 }
             }
         },
+        ".js-start_header font-size": {
+            // css mutAppProperty описываются только схемой
+            label: {RU:'Размер шрифта',EN:'Font size'},
+            controls: "StringControl"
+        },
+        ".js-start_header padding-top, .js-start_description padding-top": {
+            // css mutAppProperty описываются только схемой
+            label: {RU:'Отступ сверху',EN:'Padding top'},
+            controls: "StringControl"
+        },
+        ".js-start_header text-align, .js-start_description text-align": {
+            label: {RU:'Выравнивание текста',EN:'Text-align'},
+            controls: {
+                name:"Alternative",
+                view: 'altbuttons',
+                param: {
+                    possibleValues: [
+                        {value:"left",icon:{
+                            normal:"i/altern/align-left.png", selected:"i/altern/align-left-selected.png"
+                        }},
+                        {value:"center",icon:{
+                            normal:"i/altern/align-center.png", selected:"i/altern/align-center-selected.png"
+                        }},
+                        {value:"right",icon:{
+                            normal:"i/altern/align-right.png", selected:"i/altern/align-right-selected.png"
+                        }}
+                    ],
+                }
+            }
+        },
         ".js-start_btn background-color": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Цвет фона кнопки',EN:'Button background color'},
@@ -86,28 +116,14 @@ var PersonalityApp = MutApp.extend({
                 name: "StringControl",
                 view: 'ColorPicker'
             }
-        },
-        ".js-start_header font-size": {
-            // css mutAppProperty описываются только схемой
-            label: {RU:'Размер шрифта',EN:'Font size'},
-            controls: "StringControl",
-            controlParams: {
-                viewName: 'ColorPicker'
-            }
         }
+
 //        ".js-start_header .js-start_description .js-question_text .js-result_title .js-result_description": {
 //            // TODO
 //            // перечислил все классы к которым применять правила
 //            // можно прописать сразу несколько правил, получается отношение "многие ко многим"
 //            // это позволит делать наборы правил
 //            rules: 'fontFamily fontColor fontSize textAlign paddingTop paddingBottom paddingLeft',
-//            controls: "StringControl",
-//            controlParams: {
-//                viewName: 'ColorPicker'
-//            },
-//            label: {RU:'Цвет шрифта',EN:'Font color'},
-//            cssProperty: 'color',
-//            //filter: true
 //        }
     }),
     /**

@@ -24,7 +24,8 @@ QUnit.test("MutApp test: basics", function( assert ) {
 
 QUnit.test("MutApp test: getPropertiesBySelector", function( assert ) {
     var app = new PersonalityApp({
-        defaults: null
+        defaults: null,
+        mode: 'edit'
     });
     app.start();
     app.model.attributes.results.addElementByPrototype('id=pm resultProto1');
@@ -50,7 +51,7 @@ QUnit.test("MutApp test: getPropertiesBySelector", function( assert ) {
     // поддержка css селектора для свойств
     var cssHeaderColorProperty = app.getPropertiesBySelector('.js-start_header color')[0].value;
     assert.ok(cssHeaderColorProperty instanceof CssMutAppProperty === true);
-    assert.ok(cssHeaderColorProperty.getValue() === 'rgb(0, 0, 0)'); // rendered(), container id-mutapp_screens on the page
+    assert.ok(cssHeaderColorProperty.getValue() === '#000000'); // rendered(), container id-mutapp_screens on the page
     assert.ok(cssHeaderColorProperty.cssSelector === '.js-start_header');
     assert.ok(cssHeaderColorProperty.cssPropertyName === 'color');
     assert.ok(MutApp.Util.isMutAppProperty(cssHeaderColorProperty) === true);
@@ -134,12 +135,12 @@ QUnit.test("MutApp test: app size", function( assert ) {
             this.inited = true;
         }
     });
-    var app = new AppClass({width:1000,height:500});
+    var app = new AppClass({width:400,height:500});
 
     assert.ok(app.screenRoot.length > 0, 'screenRoot is set');
-    assert.ok(app.width === 1000, 'width is set');
+    assert.ok(app.width === 400, 'width is set (READ IT: If you got an error, may be you use too narrow browser window, less than 400px)');
     assert.ok(app.height === 500, 'height is set');
-    assert.ok($('#id-swimming_test').width() === 1000, 'width is ok');
+    assert.ok($('#id-swimming_test').width() === 400, 'width is ok');
     assert.ok($('#id-swimming_test').height() === 500, 'height is ok');
 });
 

@@ -102,7 +102,7 @@ QUnit.test("Editor.Controls: 1", function( assert ) {
      * @param value
      */
     function onControlValueChanged(propertyString, value) {
-        app1.getProperty(propertyString).setValue(value);
+        window.app1.getProperty(propertyString).setValue(value);
     }
 
 });

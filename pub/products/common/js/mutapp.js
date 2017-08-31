@@ -289,32 +289,32 @@ MutApp.ENGINE_SET_PROPERTY_VALUE = 'mutapp_set_property_value';
  * @param {object} data
  */
 MutApp.prototype._appEventHandler = function(event, data) {
-    if (this.mode === 'edit') {
-        switch (event) {
-            case MutApp.EVENT_PROPERTY_CREATED:
-            case MutApp.EVENT_PROPERTY_VALUE_CHANGED: {
-                if (MutApp.Util.isCssMutAppProperty(data.property) === true) {
-                    if (typeof data.property.getValue() === 'string') {
-                        this._saveCssRule({
-                            cssSelector: data.property.cssSelector,
-                            cssPropertyName: data.property.cssPropertyName,
-                            cssValue: data.property.getValue()
-                        });
-                        MutApp.Util.writeCssTo('id-custom_styles', this._getCssRulesString(), this.screenRoot);
-                    }
-                }
-                if (data.propertyString === 'appConstructor=mutapp customCssStyles') {
-                    if (typeof data.property.getValue() === 'string') {
-                        this._saveCssRule({
-                            cssCodeId: 'appConstructor=mutapp customCssStyles',
-                            cssCode: data.property.getValue()
-                        });
-                        // запись значения свойства (css строки) в виде стилей
-                        MutApp.Util.writeCssTo('id-custom_styles', this._getCssRulesString(), this.screenRoot);
-                    }
-                }
-                break;
+    switch (event) {
+        case MutApp.EVENT_PROPERTY_CREATED:
+        case MutApp.EVENT_PROPERTY_VALUE_CHANGED: {
+            // обработку обновления isCssMutAppProperty надо проводить во всех режимах: 'edit' 'preview' 'published'
+            // например в 'published' режиме при десериализации при старте надо записать стили
+            if (MutApp.Util.isCssMutAppProperty(data.property) === true) {
+                //if (typeof data.property.getValue() === 'string') {
+                    this._saveCssRule({
+                        cssSelector: data.property.cssSelector,
+                        cssPropertyName: data.property.cssPropertyName,
+                        cssValue: data.property.getValue()
+                    });
+                    MutApp.Util.writeCssTo('id-custom_styles', this._getCssRulesString(), this.screenRoot);
+                //}
             }
+            if (data.propertyString === 'appConstructor=mutapp customCssStyles') {
+                //if (typeof data.property.getValue() === 'string') {
+                    this._saveCssRule({
+                        cssCodeId: 'appConstructor=mutapp customCssStyles',
+                        cssCode: data.property.getValue()
+                    });
+                    // запись значения свойства (css строки) в виде стилей
+                    MutApp.Util.writeCssTo('id-custom_styles', this._getCssRulesString(), this.screenRoot);
+                //}
+            }
+            break;
         }
     }
 };
@@ -709,12 +709,17 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
  */
 MutApp.prototype.createCssMutAppProperties = function(schema) {
     for (var selector in schema) {
-        if (MutApp.Util.isCssMutAppPropertySelector(selector) === true) {
-            var param = JSON.parse(JSON.stringify(schema[selector]));
-            param.application = this;
-            // в качестве propertyString ставим selector
-            param.propertyString = selector;
-            var cmp = new CssMutAppProperty(param);
+        // может встретиться множественный селектор: он может через запятую содержать на самом деле несколько селекторов
+        // пример: ".js-start_header padding-top, .js-start_description padding-top"
+        var subSelectors = selector.split(',');
+        for (var i = 0; i < subSelectors.length; i++) {
+            var ss = subSelectors[i].trim();
+            if (MutApp.Util.isCssMutAppPropertySelector(ss) === true) {
+                var param = JSON.parse(JSON.stringify(schema[selector]));
+                param.application = this;
+                param.propertyString = ss;
+                var cmp = new CssMutAppProperty(param);
+            }
         }
     }
 };
@@ -1207,7 +1212,8 @@ MutApp.prototype._saveCssRule = function(param) {
             });
         }
     }
-    else if (typeof param.cssSelector === 'string' && typeof param.cssPropertyName === 'string' && typeof param.cssValue === 'string' ) {
+    else if (typeof param.cssSelector === 'string' && typeof param.cssPropertyName === 'string') {
+        // param.cssValue может быть и null и undefined, это нормально, стиль по умолчанию будет
         var r = this._getCssRule(param.cssSelector);
         if (r) {
             var propertyFound = false;
@@ -1275,7 +1281,9 @@ MutApp.prototype._getCssRulesString = function() {
         else {
             cssStr += r.selector+'{\n';
             for (var j = 0; j < r.rules.length; j++) {
-                cssStr += '\t'+r.rules[j].property+':'+r.rules[j].value+';\n';
+                if (r.rules[j].value !== null && r.rules[j].value !== undefined) {
+                    cssStr += '\t'+r.rules[j].property+':'+r.rules[j].value+';\n';
+                }
             }
             cssStr += '}\n';
         }
@@ -2045,6 +2053,7 @@ MutApp.Util = {
 
     /**
      * Попробовать распарсить строку как mutapp property css selector
+     * Пример строки: ".js-start_header color"
      *
      * @param {string} str
      * @returns {cssSelector: string, cssPropertyName: string}
