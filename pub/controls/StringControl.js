@@ -12,6 +12,7 @@ function StringControl(param) {
      */
     this.$input = null;
     this.inputValue = undefined;
+    this.colorpicker = null;
 
     /**
      * Событие при нажатии Enter
@@ -36,7 +37,7 @@ function StringControl(param) {
      */
     this.checkValue = function() {
         if (this.$input) {
-            var inpv = this.$input.val();
+            var inpv = (this.colorpicker) ? this.colorpicker.toHEXString(): this.$input.val();
             if (this.inputValue !== inpv) {
                 this.inputValue = inpv;
                 this.valueChangedCallback(this);
@@ -44,13 +45,30 @@ function StringControl(param) {
         }
     };
 
-    this.$input = this.$directive.find('[type="text"]');
+    /**
+     * Событие на изменение значения в колорпикере
+     * То есть не обязательно закрывать колорпикер (событие onInputFocusOut) чтобы сменить цвет
+     */
+    this.onColorpickerChange = function() {
+        this.checkValue();
+    };
+
+    this.$input = this.$directive.find('input');
     this.$input.keyup(this.onInputKeyUp.bind(this));
     this.$input.focusout(this.onInputFocusOut.bind(this));
+    if (this.$directive.hasClass('js-colorpicker') === true && window.jscolor) {
+        // подключаем компонент выбора цвета
+        this.colorpicker = new jscolor(this.$input[0]);
+        this.$input.change(this.onColorpickerChange.bind(this));
+    }
 }
 _.extend(StringControl.prototype, AbstractControl);
 
 StringControl.prototype.getValue = function() {
+    if (this.colorpicker) {
+        // если использован колопикер, то правильнее брать цвет из него сразу в нужном формате
+        return this.colorpicker.toHEXString();
+    }
     return this.$input.val();
 };
 
@@ -60,7 +78,12 @@ StringControl.prototype.setValue = function(value) {
             value = '';
         }
         this.inputValue = value;
-        this.$input.val(value);
+        if (this.colorpicker) {
+            this.colorpicker.fromString(value);
+        }
+        else {
+            this.$input.val(value);
+        }
     }
     else {
         throw new Error('StringControl.setValue: unsupported value type');
@@ -68,6 +91,7 @@ StringControl.prototype.setValue = function(value) {
 };
 
 StringControl.prototype.destroy = function() {
+    this.colorpicker = null;
     this.$input.off();
     this.$directive.remove();
 };

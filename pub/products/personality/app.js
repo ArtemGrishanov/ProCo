@@ -79,6 +79,14 @@ var PersonalityApp = MutApp.extend({
                 }
             }
         },
+        ".js-start_btn background-color": {
+            // css mutAppProperty описываются только схемой
+            label: {RU:'Цвет фона кнопки',EN:'Button background color'},
+            controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            }
+        },
         ".js-start_header font-size": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Размер шрифта',EN:'Font size'},

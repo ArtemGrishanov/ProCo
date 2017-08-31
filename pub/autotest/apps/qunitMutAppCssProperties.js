@@ -83,7 +83,9 @@ QUnit.test("MutApp test: Css properties", function( assert ) {
 
 });
 
+// todo нужно больше тестов, ощущение что есть слабые места
 // todo обнуление уже установленных свойств null
+// todo старт не в edit, запись css стилей один раз при старте
 
 QUnit.test("MutApp test: Css properties deserialization", function( assert ) {
     // десериализация, посмотреть что css свойства применились после нее

@@ -726,7 +726,13 @@ MutApp.prototype.updateCssMutAppPropertiesValues = function(screen) {
     var props = this._mutappProperties;
     for (var i = 0; i < props.length; i++) {
         if (props[i] instanceof CssMutAppProperty) {
-            props[i].setValue(screen.$el.find(props[i].cssSelector).css(props[i].cssPropertyName));
+            var cssv = screen.$el.find(props[i].cssSelector).css(props[i].cssPropertyName);
+            if (MutApp.Util.isRgb(cssv) === true) {
+                // если строка подходит под формат rgb то надо конвертировать rgba(126,0,255) -> #7E00FF
+                // так как пользователю в контроле удобнее работать с таким форматом
+                cssv = MutApp.Util.rgb2hex(cssv);
+            }
+            props[i].setValue(cssv);
         }
     }
 };
@@ -2114,6 +2120,29 @@ MutApp.Util = {
             $style = $('<style type="text/css"></style>').attr('id',stylesId).appendTo(container);
         }
         $style.html(cssString);
+    },
+
+    /**
+     * Конвертация rgba(126,0,255,100) -> #7e00ff
+     * @param {string} rgb
+     * @returns {string}
+     */
+    rgb2hex: function(rgb) {
+        rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
+        function hex(x) {
+            return ("0" + parseInt(x).toString(16)).slice(-2);
+        }
+        return "#"+hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    },
+
+    /**
+     * проверить подходит ли строка под формат rgba(126,0,255,100)
+     * @param {string} str
+     * @return {boolean}
+     */
+    isRgb: function(str) {
+        str = str.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
+        return !!str && !!str[1] && !!str[2] && !!str[3];
     }
 };
 
