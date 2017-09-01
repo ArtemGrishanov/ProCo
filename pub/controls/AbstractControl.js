@@ -50,13 +50,14 @@ var AbstractControl = {
         }
         if (param.directiveName) {
             this.directiveName = param.directiveName;
+            this.$directive = $(directiveLoader.getDirective(this.directiveName));
+            this.$directive.attr('data-app-property', this.propertyString);
+            this.$wrapper.append(this.$directive);
         }
         else {
-            throw new Error('AbstractControl.init: directiveName does not specified');
+            //there are may be controls without directive
+            //throw new Error('AbstractControl.init: directiveName does not specified');
         }
-        this.$directive = $(directiveLoader.getDirective(this.directiveName));
-        this.$directive.attr('data-app-property', this.propertyString);
-        this.$wrapper.append(this.$directive);
         if (param.productDomElement) {
             this.$productDomElement = $(param.productDomElement);
             this.$productDomElement.on('paste', this.handlePaste.bind(this));

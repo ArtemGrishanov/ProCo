@@ -57,7 +57,7 @@ function Alternative(param) {
     this.setNormalIcons = function() {
         for (var i = 0; i < this.additionalParam.possibleValues.length; i++) {
             var pv = this.additionalParam.possibleValues[i];
-            if (typeof pv.icon.normal === 'string') {
+            if (pv.icon && typeof pv.icon.normal === 'string') {
                 this.possibleValuesElements[i].css('backgroundImage', 'url('+pv.icon.normal+')');;
             }
         }

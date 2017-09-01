@@ -7,13 +7,16 @@
     <link rel="stylesheet" href="css/qunit-1.20.0.css">
     <link rel="stylesheet" href="../products/personality/style.css">
     <link rel="stylesheet" href="../controls/css/style.css">
+    <!--<link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>-->
     <!--endbuild-->
 </head>
 <body>
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
 
-    <div id="id-product_iframe_cnt" style="display:none;"></div>
+    <div id="id-product_iframe_cnt" style="display:none;">
+        <!--Проект должен загружаться и тестироваться через iframe в своем контекста-->
+    </div>
     <div id="id-product_cnt" style="display:none"></div>
     <div id="id-modal_cnt" style="display:none"></div>
     <div id="id-swimming_test"></div>
@@ -29,31 +32,6 @@
             </div>
         </div>
     </script>
-     <!--Проект должен загружаться и тестироваться через iframe в своем контекста-->
-    <div id="id-mutapp_screens"></div>
-    <script id="id-welcome_template" type="text/template">
-        <div class="modal __active js-back_color js-back_img" data-app-property="id=startScr backgroundImg, id=startScr shadowEnable">
-            <div class="modal_cnt info js-back_shadow">
-                <div class="info_title js-start_header" data-app-property="id=startScr startHeaderText"><b>Дзюдо: </b>иппон или вазаари</div>
-                <div class="info_tx js-start_description" data-app-property="id=startScr startDescription">Пройдите тест и узнайте, как хорошо вы разбираетесь в этом виде восточных единоборств</div>
-                <div class="info_f js-btn_wr">
-                    <div class="button js-test_btn js-next js-start_btn" data-app-property="id=startScr startButtonText">Пройти тест</div>
-                </div>
-                <div class="logo js-logo js-start_logo" data-app-property="id=startScr logoPosition, id=startScr showLogo, id=tm logoUrl"></div>
-            </div>
-        </div>
-    </script>
-    <script id="id-slide_template" type="text/template"></script>
-    <script id="id-question_text_template" type="text/template"></script>
-    <script id="id-question_text_photo_template" type="text/template"></script>
-    <script id="id-option_text_template" type="text/template"></script>
-    <script id="id-option_img_template" type="text/template"></script>
-    <script id="id-answer_question_lst" type="text/template"></script>
-    <script id="id-answer_question_lst_2" type="text/template"></script>
-    <script id="id-answer_question_grid_2" type="text/template"></script>
-    <script id="id-answer_question_grid_3" type="text/template"></script>
-    <script id="id-explanation_text_template" type="text/template"></script>
-    <script id="id-result_template" type="text/template"></script>
 
     <!--<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>-->
     <script type="text/javascript" src="../lib/jquery.js"></script>
@@ -70,6 +48,7 @@
 
     <script type="text/javascript" src="../js/config.js"></script>
     <script type="text/javascript" src="../js/editorui/controlManager.js"></script>
+    <script type="text/javascript" src="../js/editorui/editorLoader.js"></script>
     <script type="text/javascript" src="../js/util/utils.js"></script>
     <script type="text/javascript" src="../js/util/queue.js"></script>
 
@@ -89,14 +68,6 @@
     <script type="text/javascript" src="../controls/CustomQuickPanelControl.js"></script>
     <script type="text/javascript" src="../controls/CustomQControl.js"></script>
     <script src="../lib/jscolor.js"></script>
-
-     <!--Загрузка через iframe-->
-    <script type="text/javascript" src="../products/common/js/mutapp.js"></script>
-    <script type="text/javascript" src="../products/personality/model/pm.js"></script>
-    <script type="text/javascript" src="../products/personality/view/start.js"></script>
-    <script type="text/javascript" src="../products/personality/view/question.js"></script>
-    <script type="text/javascript" src="../products/personality/view/result.js"></script>
-    <script type="text/javascript" src="../products/personality/app.js"></script>
 
     <script type="text/javascript" src="editor/qunitEditorControls.js"></script>
     <!-- endbuild -->

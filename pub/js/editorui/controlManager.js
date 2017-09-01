@@ -59,9 +59,6 @@ var ControlManager = {};
                     viewName = cfg.directives[dirIndex];
                 }
             }
-            if (!viewName) {
-                throw new Error('ControlManager.createControl: view does not specified for property \'' + propertyString + '\'');
-            }
 
             // Container для контролов одного типа, например static_controls_cnt для type=controlpanel
             var $directiveContainer = $('#'+cfg.parentId);
@@ -96,6 +93,7 @@ var ControlManager = {};
             if (!$directiveContainer || $directiveContainer.length === 0) {
                 throw new Error('ControlManager.createControl: control container does not specified \'' + cfg.parentId + '\'');
             }
+            controlAdditionalParam.appIframe = param.appIframe; // some controls need app iframe
             var ctrl = new window[controlName]({
                 propertyString: propertyString,
                 controlName: controlName,

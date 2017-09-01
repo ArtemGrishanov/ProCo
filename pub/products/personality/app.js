@@ -41,7 +41,10 @@ var PersonalityApp = MutApp.extend({
 //        "id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText": {
 //
 //        },
-        "id=startScr startHeaderText": { label: {RU: 'Заголовок', EN: 'Header'} },
+        "id=startScr startHeaderText": {
+            label: {RU: 'Заголовок', EN: 'Header'},
+            controls: "TextQuickInput"
+        },
         "id=startScr startDescription": { label: {RU:'Описание', EN:'Description'} },
         "id=startScr startButtonText": { label: {RU:'Текст кнопки', EN:'Start button text'} },
         "id=startScr shadowEnable": {
@@ -106,6 +109,16 @@ var PersonalityApp = MutApp.extend({
                             normal:"i/altern/align-right.png", selected:"i/altern/align-right-selected.png"
                         }}
                     ],
+                }
+            }
+        },
+        ".js-start_header font-family, .js-start_description font-family": {
+            label: {RU:'Шрифт',EN:'Font family'},
+            controls: {
+                name:"Alternative",
+                view: 'dropdown',
+                param: {
+                    possibleValues: ["Arial","Times New Roman"]
                 }
             }
         },

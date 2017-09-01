@@ -45,14 +45,6 @@ var Editor = {};
      */
     var sessionPreviewUrl = null;
     /**
-     * Создание и сохранение шаблонов. Запуск автотестов.
-     * @type {boolean}
-     */
-    //TODO
-    var devMode = true;
-    var appIframe = null;
-    var iframeWindow = null;
-    /**
      * Диалог с выбором ресурсов (картинки). Можно зааплоадить, запросить список с сервера и выбрать картинку
      * @type {object}
      */
@@ -225,7 +217,11 @@ var Editor = {};
                 // если ссылки на шаблон нет, то открываем по имени промо-проекта, если оно есть
                 var n = getQueryParams(document.location.search)[config.common.appNameParamName] || param[config.common.appNameParamName];
                 if (n) {
-                    loadAppSrc(n);
+                    editorLoader.load({
+                        appName: n,
+                        container: $('#id-product_iframe_cnt'),
+                        onload: onProductIframeLoaded
+                    });
                 }
                 else {
                     alert('Выберите шаблон для открытия');
@@ -259,7 +255,7 @@ var Editor = {};
      * @returns {iframe}
      */
     function getAppIframe() {
-        return appIframe;
+        return editorLoader.getIframe();
     }
 
     /**
@@ -272,47 +268,24 @@ var Editor = {};
         }
     }
 
-    /**
-     * Загрузить код промо проекта
-     * @param loadedAppName - одно из множества доступных имен промопроектов
-     */
-    function loadAppSrc(loadedAppName) {
-        // по имени промо приложения получаем ссылку на его код
-        var src = config.products[loadedAppName].src;
-        if (src) {
-            appName = loadedAppName;
-            // скрыть контролы экранов для некоторых проектов. Например для панорам они не нужны
-            if (config.products[appName].hideScreenControls === true) {
-                $('#id-screen_controls_cnt').hide();
-            }
-            iframeWindow = null;
-            appIframe = document.createElement('iframe');
-            appIframe.onload = onProductIframeLoaded;
-            $(appIframe).addClass('proto_cnt').addClass('__hidden');
-            var host = config.common.home;
-            appIframe.src = host+src;
-            $('#id-product_iframe_cnt').append(appIframe);
-        }
-        else {
-            log('Cannot find src for: \''+loadedAppName+'\'', true);
-        }
-    }
 
     /**
      * iFrame промо проекта был загружен. Получаем из него document и window
      */
     function onProductIframeLoaded() {
-        iframeWindow = appIframe.contentWindow;
-        editedApp = iframeWindow.app;
+        editedApp = editorLoader.getIframe().contentWindow.app;
+        // скрыть контролы экранов для некоторых проектов. Например для панорам они не нужны
+        if (config.products[appName].hideScreenControls === true) {
+            $('#id-screen_controls_cnt').hide();
+        }
         // запуск движка с передачей информации о шаблоне
-        var params = {
-            appName: appName,
-            appStorageString: getQueryParams(document.location.search)[config.common.appStorageParamName]
-        };
+//        var params = {
+//            appName: appName,
+//            appStorageString: getQueryParams(document.location.search)[config.common.appStorageParamName]
+//        };
         if (appTemplate) {
             params.values = appTemplate.propertyValues;
         }
-        //Engine.startEngine(iframeWindow, params);
 
         // установить хуки которые есть в дескрипторе. Может не быть вовсе
         //hookRunner.setHooks(iframeWindow.descriptor.hooks);
@@ -1102,7 +1075,7 @@ var Editor = {};
                     height: app.height,
                     appStr: appStr,
                     cssStr: Engine.getCustomStylesString(),
-                    promoIframe: appIframe, //TODO возможно айрейм спрятать в engine тоже
+                    promoIframe: editorLoader.getIframe(),
                     baseProductUrl: config.products[appName].baseProductUrl,
                     //awsBucket: App.getAWSBucketForPublishedProjects(),
                     callback: showEmbedDialog
@@ -1340,7 +1313,11 @@ var Editor = {};
                 }
                 // после загрузки шаблона надо загрузить код самого промо проекта
                 // там далее в колбеке на загрузку iframe есть запуск движка
-                loadAppSrc(appName);
+                editorLoader.load({
+                    appName:appName,
+                    container: $('#id-product_iframe_cnt'),
+                    onload: onProductIframeLoaded()
+                });
             }
             else {
                 log('Data not valid. Template url: \''+templateUrl+'\'', true);
@@ -1349,8 +1326,7 @@ var Editor = {};
     }
 
     /**
-     * Рестартануть приложение
-     * Применяется при переходе из режиме редактирования и режим предпросмотра и обратно
+
      *
      * @param {string} params.mode
      */
@@ -1359,6 +1335,7 @@ var Editor = {};
         delete editedApp;
         params.mode = params.mode || 'none';
         var cfg = config.products[appName];
+        var appIframe = editorLoader.getIframe();
         editedApp = new appIframe.contentWindow[cfg.constructorName]({
             width: cfg.defaultWidth,
             height: cfg.defaultHeight,
@@ -1403,6 +1380,7 @@ var Editor = {};
         // когда видим редактор, должен быть включен режим предпросмотра 'desktop', так как пользователь работает (редактирует) с десктоп версией приложения
         previewMode = 'desktop';
         $('#id-product_iframe_cnt').removeClass('__mob');
+        var appIframe = editorLoader.getIframe();
         $(appIframe).css('border','0')
             .css('width',appContainerSize.width+'px')
             .css('height',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
@@ -1418,6 +1396,7 @@ var Editor = {};
     }
 
     function showPreview() {
+        var appIframe = editorLoader.getIframe();
         $(appIframe).removeClass('__hidden');
         $('#id-editor_view').hide();
 
@@ -1507,6 +1486,7 @@ var Editor = {};
     function toDesktopPreview() {
         previewMode = 'desktop';
         $('#id-product_iframe_cnt').removeClass('__mob');
+        var appIframe = editorLoader.getIframe();
         $(appIframe).css('border','0')
             .css('width',appContainerSize.width+'px')
             .css('height',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
@@ -1521,6 +1501,7 @@ var Editor = {};
     function toMobPreview() {
         previewMode = 'mobile';
         $('#id-product_iframe_cnt').addClass('__mob');
+        var appIframe = editorLoader.getIframe();
         $(appIframe).css('border','0')
             .css('width','100%')
             .css('height','100%')
