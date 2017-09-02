@@ -23,10 +23,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="mutapp.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="mutapp.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="615" column="75" selection-start="20143" selection-end="20189" vertical-scroll-proportion="-10.36" vertical-offset="8966" max-vertical-offset="21795">
+            <state line="625" column="46" selection-start="20667" selection-end="20682" vertical-scroll-proportion="0.33333334" vertical-offset="9146" max-vertical-offset="21795">
               <folding />
             </state>
           </provider>
@@ -35,7 +35,7 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/templates/anonymPage/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="64" selection-start="1553" selection-end="1553" vertical-scroll-proportion="-18.75" vertical-offset="45" max-vertical-offset="1065">
+            <state line="33" column="64" selection-start="1553" selection-end="1553" vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="1065">
               <folding />
             </state>
           </provider>
@@ -44,7 +44,7 @@
       <file leaf-file-name="common.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/css/common.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="29" selection-start="148" selection-end="148" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="22110">
+            <state line="5" column="29" selection-start="148" selection-end="148" vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="22110">
               <folding />
             </state>
           </provider>
@@ -53,7 +53,7 @@
       <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="59" column="44" selection-start="2404" selection-end="2404" vertical-scroll-proportion="0.0" vertical-offset="691" max-vertical-offset="13755">
+            <state line="59" column="44" selection-start="2404" selection-end="2404" vertical-scroll-proportion="0.0" vertical-offset="885" max-vertical-offset="13755">
               <folding />
             </state>
           </provider>
@@ -68,10 +68,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/products/memoriz/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="50" column="28" selection-start="1303" selection-end="1303" vertical-scroll-proportion="0.37241378" vertical-offset="480" max-vertical-offset="1470">
+            <state line="50" column="28" selection-start="1303" selection-end="1303" vertical-scroll-proportion="0.0" vertical-offset="480" max-vertical-offset="1470">
               <folding />
             </state>
           </provider>
@@ -137,7 +137,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -266,18 +265,19 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="options.lastSelected" value="web-ide.project.structure" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="web-ide.project.structure" />
     <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PublishConfig">
     <servers>
@@ -312,6 +312,14 @@
       <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
       <method />
     </configuration>
+    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
+      <option name="VMOptions" />
+      <option name="arguments" />
+      <option name="filePath" />
+      <option name="scope" value="ALL" />
+      <option name="testName" />
+      <method />
+    </configuration>
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -320,14 +328,6 @@
       <option name="saveOutputToFile" value="false" />
       <option name="showConsoleOnStdErr" value="false" />
       <option name="showConsoleOnStdOut" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
-      <option name="VMOptions" />
-      <option name="arguments" />
-      <option name="filePath" />
-      <option name="scope" value="ALL" />
-      <option name="testName" />
       <method />
     </configuration>
     <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
@@ -385,7 +385,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20659971" sideWeight="0.8552457" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20946915" sideWeight="0.8552457" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20549928" sideWeight="0.4555113" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32802126" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -476,13 +476,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="615" column="75" selection-start="20143" selection-end="20189" vertical-scroll-proportion="-10.36" vertical-offset="8966" max-vertical-offset="21795">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1229" column="99" selection-start="53485" selection-end="53485" vertical-scroll-proportion="0.0" vertical-offset="18121" max-vertical-offset="26610">
@@ -492,7 +485,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/templates/anonymPage/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="64" selection-start="1553" selection-end="1553" vertical-scroll-proportion="-18.75" vertical-offset="45" max-vertical-offset="1065">
+        <state line="33" column="64" selection-start="1553" selection-end="1553" vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="1065">
           <folding />
         </state>
       </provider>
@@ -513,7 +506,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/memoriz/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="28" selection-start="1303" selection-end="1303" vertical-scroll-proportion="0.37241378" vertical-offset="480" max-vertical-offset="1470">
+        <state line="50" column="28" selection-start="1303" selection-end="1303" vertical-scroll-proportion="0.0" vertical-offset="480" max-vertical-offset="1470">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="625" column="46" selection-start="20667" selection-end="20682" vertical-scroll-proportion="0.33333334" vertical-offset="9146" max-vertical-offset="21795">
           <folding />
         </state>
       </provider>
