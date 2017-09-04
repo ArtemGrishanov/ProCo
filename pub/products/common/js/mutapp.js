@@ -1384,7 +1384,7 @@ MutApp.Screen = Backbone.View.extend({
      * есть на экране
      * Или CssMutAppProperty для которых cssSelector соответствует элементам на экране
      */
-    _linkedMutAppProperties: [],
+    _linkedMutAppProperties: null,
     /**
      * Значения, которые могут быть установлены в initialize автоматически
      */

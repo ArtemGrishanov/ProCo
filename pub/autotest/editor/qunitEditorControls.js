@@ -128,3 +128,21 @@ QUnit.test("Editor.Controls: 1", function( assert ) {
     }
 
 });
+
+QUnit.test("Editor.Controls: filtering", function( assert ) {
+    // make one app global for this tests
+
+    controlManager.filter({
+        screen: app1.getScreenById('startScr')
+    });
+
+    // проверить что есть несколько контролов для фильтрации по экране, а не по домэлементу
+    // симитировать клик по элементу и проверить фильтрацию по каждому элементу
+            // причепм должна сохраняться фильтрация и по экрану
+    // ввести статус контрола: виден или нет ? возможно с функций hide/show?
+
+
+    var controls = controlManager.getControls();
+
+    // что productDomElement установлены - это может в screenManager? или все таки в controlManager?
+});

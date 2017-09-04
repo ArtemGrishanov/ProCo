@@ -189,6 +189,42 @@ var ControlManager = {};
         return result;
     }
 
+    /**
+     * Фильтрация контролов одним из способов
+     *
+     * @param {MutApp.Screen} param.screen - оставить только контролы, которые имеют отношение к этому экрану
+     * @param {MutApp.Screen} param.domElement - оставить только контролы, связаные с этим dom элементом
+     */
+    function filter(param) {
+        param = param || {};
+        if (param.screen) {
+            if (param.screen._linkedMutAppProperties) {
+                // для всех свойств прилинкованных к экрану
+                for (var i = 0; i < param.screen._linkedMutAppProperties.length; i++) {
+                    var ap = param.screen._linkedMutAppProperties[i];
+                    // найти контролы соответствующие этому свойству
+                    var apControls = getControls(ap.propertyString);
+                    if (!apControls || !apControls.length === 0) {
+                        console.error('controlManager.filter: there is no controls for \'' + ap.propertyString + '\', but this MutAppProperty is linked to screen \'' + param.screen.id + '\'');
+                    }
+                    // связть контрол и элемент на экране MutApp приложения
+                    for (var j = 0; j < apControls.length; j++) {
+                        apControls[i].setProductDomElement(ap.uiElement);
+                    }
+                }
+                // скрыть неиспользуемые контролы
+
+                // добавить обработчик на каждый ap.uiElement чтобы фильтрован контролы по нему
+
+                // может так: привязка setProductDomElement и фильтрация контролов по экрану это разные операции?
+
+            }
+            else {
+                throw new Error('controlManager.filter: screen \'' + param.screen.id + '\' does not have linkedMutAppProperties');
+            }
+        }
+    }
+
     global.createControl = createControl;
     global.getControlsCount = function() { return _controlsInfo.length; }
     global.find = find;

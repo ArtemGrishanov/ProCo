@@ -86,6 +86,14 @@ var AbstractControl = {
     },
 
     /**
+     * Связать хтмл элемент из приложения с этим контролом
+     * @param {domElement} element
+     */
+    setProductDomElement: function(element) {
+        this.$productDomElement = $(element);
+    },
+
+    /**
      * Обработать сообщение из MutApp приложения.
      * Контрол не подписан напрямую на сообщения из приложения.
      * Событие пробрасывается через контроллер в редакторе, и далее в ControlManager
