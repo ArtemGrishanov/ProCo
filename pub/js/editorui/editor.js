@@ -250,6 +250,25 @@ var Editor = {};
     }
 
     /**
+     * Поднять версию приложения на единицу
+     * @param {boolean} setZero
+     */
+    function bumpAppVersion(setZero) {
+        var pp = Engine.find('_appVersion');
+        if (pp && pp.length > 0) {
+            if (setZero === true) {
+                Engine.setValue(pp[0], 0);
+            }
+            else {
+                Engine.setValue(pp[0], parseInt(pp[0].propertyValue) + 1);
+            }
+        }
+        else {
+            log('Editor.bumpAppVersion: can not find appVersion property', true);
+        }
+    }
+
+    /**
      * Вернуть iframe приложения
      * @returns {iframe}
      */
@@ -316,6 +335,7 @@ var Editor = {};
         // для установки ссылки шаринга требуются данные пользователя, ответ от апи возможно надо подождать
         if (App.getUserData()) {
             trySetDefaultShareLink(cloneTemplate === true);
+            bumpAppVersion(cloneTemplate === true);
             // показ кнопки загрузки превью картинки для проекта. Только для админов
             if (App.getUserData() && config.common.excludeUsersFromStatistic.indexOf(App.getUserData().id) >= 0) {
                 $('#id-app_prevew_img_wr').show();
@@ -324,6 +344,7 @@ var Editor = {};
         else {
             App.on(USER_DATA_RECEIVED, function() {
                 trySetDefaultShareLink(cloneTemplate === true);
+                bumpAppVersion(cloneTemplate === true);
                 // показ кнопки загрузки превью картинки для проекта. Только для админов
                 if (App.getUserData() && config.common.excludeUsersFromStatistic.indexOf(App.getUserData().id) >= 0) {
                     $('#id-app_prevew_img_wr').show();
@@ -1222,12 +1243,14 @@ var Editor = {};
                 if (ap) {
                     Engine.setValue(ap, anonymUrl);
                 }
+                // накрутить версию проекта при новой сборке, поможет сбросу кеша шаринга
+                bumpAppVersion();
                 // нужно дописать свойство "опубликованности" именно в опубликованное приложение
                 var appStr = Engine.serializeAppValues({
                     addIsPublishedParam: true
                 });
-                var appTitle = app.title.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
-                var appDescription = app.description.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
+                var appTitle = clearHtmlSymbols(app.title); // util.js
+                var appDescription = clearHtmlSymbols(app.description);
                 activePublisher.publish({
                     appId: appId,
                     appName: appName,
@@ -1244,6 +1267,8 @@ var Editor = {};
                     ogDescription: appDescription, // og tag
                     ogUrl: anonymUrl, // og url
                     //TODO refactor
+                    shareEntities: app._shareEntities,
+                    shareLink: app.shareLink,
                     ogImage: (app._shareEntities && (app._shareEntities.length > 0) && app._shareEntities[0].imgUrl) ? app._shareEntities[0].imgUrl: app.shareDefaultImgUrl // og tag
                 });
             });

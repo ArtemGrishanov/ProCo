@@ -55,9 +55,9 @@ var TestApp = MutApp.extend({
 
             // выравнивание заголовка и пояснения по вертикали
             var viewForShare = MutApp.Util.clarifyElement(rs.$el, ['modal','modal_cnt','info_title','info_tx','b_title']);
-            var titleView = viewForShare.find('.info_title').css('padding','0 50px 0 50px').css('margin','0');
+            var titleView = viewForShare.find('.info_title').css('padding','0 75px 0 10px').css('margin','0');
             var th = titleView.outerHeight(false);
-            var descView = viewForShare.find('.info_tx').css('padding','0 50px 0 50px').css('margin','0');
+            var descView = viewForShare.find('.info_tx').css('padding','0 10px 0 75px').css('margin','0');
             var dh = descView.outerHeight(false);
             var ind = (this.height-dh-th)/4;
             titleView.css('padding-top',ind+'px');

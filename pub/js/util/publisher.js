@@ -78,6 +78,17 @@ var Publisher = {};
     var ogImage = null;
 
     /**
+     * Информация из приложения для публикации результатов
+     * @type {Array}
+     */
+    var shareEntities = [];
+    /**
+     * Ссылка на которую должно переходить при клике на шаринг в фб
+     * @type {string}
+     */
+    var shareLink = null;
+
+    /**
      * Сохранить промо проект на сервере
      * 1) Для этого сначала составляется список всех ресурсов проекта: css, js, картинки
      * 2) Затем они скачиваются
@@ -93,6 +104,7 @@ var Publisher = {};
      * @params.cssStr {string} - css стили приложения, которые надо добавить в index.html
      * @params.promoIframe {iFrame} - iframe приложения прототипа, который меняем
      * @params.baseProductUrl {string} - базовый каталог спецпроекта для работы с ресурсами, например 'products/test'
+     * @params.shareEntities {Array} - информация из приложения MutApp._shareEntities о результатах для шаринга
      * @params.awsBucket {Object}
      */
     function publish(params) {
@@ -113,6 +125,8 @@ var Publisher = {};
             ogDescription = params.ogDescription;
             ogUrl = params.ogUrl;
             ogImage = params.ogImage;
+            shareEntities = params.shareEntities || [];
+            shareLink = params.shareLink;
 
             errorInPublish = false;
             //TODO собираем ресурсы в несколько проходов
@@ -181,7 +195,8 @@ var Publisher = {};
      */
     function getAnonymLink(appId) {
         var appId = appId || publishedAppId;
-        return 'http:'+config.common.publishedProjectsHostName+App.getUserData().id+'/'+appId+'/';
+        // https надо - так как эту ссылку видит пользователь в окне публикаии, может скопировать ее и использовать руками
+        return 'https:'+config.common.publishedProjectsHostName+App.getUserData().id+'/'+appId+'/';
     }
 
     /**
@@ -241,6 +256,16 @@ var Publisher = {};
                 c.baseUrl = baseProductUrl;
             }
             productResources.push(c);
+        }
+
+        // подготовить share_result.html для шаринга. Для каждого результата одна страница с индивидуальными данными и редиректом на shareUrl
+        for (var i = 0; i < shareEntities.length; i++) {
+            productResources.push({
+                baseUrl: '', // not needed
+                url: 'templates/anonymPage/share_result.html',
+                destUrl: 'share/'+shareEntities[i].id+'.html',
+                type: 'text/html'
+            });
         }
 
         //TODO поиск предполагает что ресурсы находятся рядом с html в baseUrl
@@ -424,6 +449,9 @@ var Publisher = {};
                 indexResource.data = indexResource.data.replace('<!--og:description-->', '<meta property="og:description" content="'+ogDescription+'" />');
                 indexResource.data = indexResource.data.replace('<!--og:image-->', '<meta property="og:image" content="'+ogImage+'" />');
 
+                // todo move somewhere
+                writeShareEntities();
+
                 Queue.release(this);
             }
         };
@@ -437,6 +465,24 @@ var Publisher = {};
             t.maxWaitTime = param.maxWaitTime;
         }
         Queue.push(t);
+    }
+
+    /**
+     * Заполняем html-страницы для шаринга
+     * Страница templates/share_result.html в ней есть разметка необходимая для шаринга в соц сеть
+     * Каждому результату соответствует одна такая страница
+     *
+     *
+     */
+    function writeShareEntities() {
+        for (var i = 0; i < shareEntities.length; i++) {
+            var res = getResourceByUrl('share/'+shareEntities[i].id+'.html');
+            res.data = res.data.replace('{{og:title}}', clearHtmlSymbols(shareEntities[i].title)); // util.js
+            res.data = res.data.replace('{{og:description}}', clearHtmlSymbols(shareEntities[i].description));
+            res.data = res.data.replace('{{og:image}}', shareEntities[i].imgUrl);
+            res.data = res.data.replace('{{og:url}}', getAnonymLink() + 'share/' + shareEntities[i].id+'.html');
+            res.data = res.data.replace('{{share_link}}', shareLink);
+        }
     }
 
     /**

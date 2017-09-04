@@ -269,6 +269,14 @@ descriptor.app = [
         filter: true
     },
     {
+        // версия сборки приложения
+        selector: 'appConstructor=mutapp _appVersion',
+        rules: 'url',
+        updateScreens: false,
+        label: {RU:'_appVersion',EN:'_appVersion'},
+        filter: true
+    },
+    {
         // Google Analytics id
         selector: 'appConstructor=mutapp gaId',
         updateScreens: false,

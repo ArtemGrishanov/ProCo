@@ -327,3 +327,12 @@ function mergeIfNotNullProperties(from, to) {
         }
     }
 }
+
+/**
+ * Удалить некоторые html символы
+ * @param {string} str
+ * @return {string}
+ */
+function clearHtmlSymbols(str) {
+    return str.replace(/<br>/gi,'').replace(/&nbsp;/gi,'');
+}

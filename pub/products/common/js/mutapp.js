@@ -67,6 +67,12 @@ var MutApp = function(param) {
      */
     this._anonymPageLink = '';
     /**
+     * Версия сборки проекта
+     * @type {number}
+     * @private
+     */
+    this._appVersion = 0;
+    /**
      * Можно установить линк на страницу паблишера
      * Или он будет установлен на конкретный проект (http://testix.me/13435255)
      * @type {string}
@@ -613,8 +619,9 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
         if (!!this.shareLink===false) {
             this.shareLink = this.shareDefaultLink;
         }
-        var name = ent.title.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
-        var description = ent.description.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
+//        var name = ent.title.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
+//        var description = ent.description.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
+        var link = this._anonymPageLink + 'share/' + entityId + '.html?v=' + this._appVersion;
         if (serviceId === 'fb') {
             if (isFakeShare !== true) {
                 // рекомендации перекрывают нижнюю часть окна постинга ФБ
@@ -623,10 +630,11 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
                 FB.ui({
                     method: 'feed',
                     app_id: this.fbAppId,
-                    link: this._anonymPageLink,
-                    redirect_uri: this.shareLink,
+                    link: link, //this._anonymPageLink + 'share/' + entityId + '.html?v=' + this._appVersion,
+//                    redirect_uri: this.shareLink, // не надо
                     display: 'popup'
 
+                    //
 //                    this param are deprecated now
 //                    link: this.shareLink,
 //                    name: name,
@@ -650,11 +658,12 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
             if (isFakeShare !== true) {
                 // способ построения ссылки взят из интернета и не рекомендован официально ВК
                 var url = 'http://vkontakte.ru/share.php?';
-                url += 'url='          + encodeURIComponent(this.shareLink);
-                url += '&title='       + encodeURIComponent(name);
-                url += '&description=' + encodeURIComponent(description);
-                url += '&image='       + encodeURIComponent(imgUrl);
-                url += '&noparse=true';
+                url += 'url='+link;
+//                url += 'url='          + encodeURIComponent(this.shareLink);
+//                url += '&title='       + encodeURIComponent(name);
+//                url += '&description=' + encodeURIComponent(description);
+//                url += '&image='       + encodeURIComponent(imgUrl);
+//                url += '&noparse=true';
                 window.open(url,'','toolbar=0,status=0,width=626,height=436');
                 if (this.loaderWindow) {
                     this.loaderWindow.postMessage({
@@ -1151,7 +1160,8 @@ MutApp.Util = {
         var children = $(element).children();
         if (children.length === 0) {
             // конечный элемент, смотрим только на наличие классов
-            if (MutApp.Util.__containClass(element, classesWhiteList) === true) {
+            if (MutApp.Util.__containClass(element, classesWhiteList) === true || $(element).is('br') === true) {
+                // br - надо сохранять для переноса текста
                 return true;
             }
             element.remove();
