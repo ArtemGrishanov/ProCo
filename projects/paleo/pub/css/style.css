@@ -1,0 +1,265 @@
+@font-face {
+    font-family: "Docker";
+    src: url("../f/Docker_Two.ttf");
+}
+@font-face {
+    font-family: "Glober";
+    src: url("../f/Glober_SemiBold_Free.otf");
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #444;
+    color: #fff;
+    font-size: 16px;
+    font-family: Arial;
+}
+p {
+    margin: 0;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+.content {
+    margin: 0 auto;
+    width: 900px;
+    text-align: center;
+}
+.block {
+    position: relative;
+    min-height: 800px;
+}
+.block.__top {
+    background: url(../i/dino-fon-top.jpg) no-repeat center;
+    background-size: cover;
+}
+.block.__brown {
+    background: url(../i/pattern-brown.jpg) repeat;
+}
+.block.__green {
+    background: url(../i/pattern-green.jpg) repeat;
+}
+
+
+.block_h {
+    margin: 0 auto;
+    padding: 50px 0 30px;
+    font-family: Docker, Arial;
+    font-size: 48px;
+}
+.block_h.__top {
+    padding: 274px 0 0;
+}
+
+.paleo_logo {
+    position: absolute;
+    top: 37px;
+    left: 53px;
+}
+.paleo_logo_img {
+    display: inline-block;
+    vertical-align: top;
+    background: url(../i/paleo-logo.png) no-repeat center;
+    width: 74px;
+    height: 61px;
+}
+.paleo_logo_txt {
+    display: inline-block;
+    vertical-align: top;
+    line-height: 30px;
+    font-size: 22px;
+    padding-left: 10px;
+    margin: 0;
+    text-align: left;
+    font-family: Glober;
+}
+.created_label {
+    position: absolute;
+    top: 37px;
+    right: 53px;
+    font-size: 13px;
+    font-weight: 100;
+}
+.created_label a {
+    text-decoration: underline;
+}
+
+.nav {
+
+}
+.nav_item {
+    display: inline-block;
+    vertical-align: top;
+    width: 224px;
+    padding: 36px;
+    text-align: center;
+}
+.nav_item_icon {
+    display: inline-block;
+    width: 192px;
+    height: 192px;
+    background-size: 192px 192px;
+}
+.nav_item_icon.__test {
+    background-image: url(../i/icon-test.png);
+}
+.nav_item_icon.__vtour {
+    background-image: url(../i/icon-panorama.png);
+}
+.nav_item_icon.__game {
+    background-image: url(../i/icon-memory.png);
+}
+.nav_item_btn {
+    display: inline-block;
+    vertical-align: top;
+    width: 198px;
+    background-color: #c03f3f;
+    padding: 13px;
+    font-size: 24px;
+    margin-top: -26px;
+    font-family: Glober;
+}
+.nav_item_btn::hover {
+    background-color: #802f2f;
+}
+.vtour_h {
+    margin: 10px auto 0;
+    font-size: 25px;
+    width: 800px;
+    font-weight: 100;
+    font-family: Glober;
+}
+.vtour_txt {
+    margin: 0 auto;
+    padding: 30px 0;
+    width: 800px;
+    font-size: 16px;
+    font-weight: 100;
+    text-align: left;
+    line-height: 22px;
+}
+.embed_testix {
+    width: 800px;
+    margin: 0 auto;
+    -webkit-box-shadow: 0px 0px 31px 6px rgba(0,0,0,0.26);
+    -moz-box-shadow: 0px 0px 31px 6px rgba(0,0,0,0.26);
+    box-shadow: 0px 0px 31px 6px rgba(0,0,0,0.26);
+}
+
+.footer {
+    background: url(../i/pattern-brown.jpg) repeat;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 100;
+}
+.share_ico {
+    display: inline-block;
+    vertical-align: top;
+    width: 36px;
+    height: 36px;
+    padding: 10px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.share_ico.__vk {
+    background-image: url(../i/social-vk.png);
+}
+.share_ico.__ok {
+    background-image: url(../i/social-ok.png);
+}
+.share_ico.__fb {
+    background-image: url(../i/social-fb.png);
+}
+.footer_desc {
+    line-height: 22px;
+    padding: 26px 0 6px;
+}
+.tstx_logo {
+    display: inline-block;
+    width: 159px;
+    height: 59px;
+    background: url(../i/testix-logo-bottom.png) no-repeat center;
+    padding: 16px;
+}
+.footer_link {
+    padding: 16px;
+}
+.footer_link a {
+    text-decoration: underline;
+}
+
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 1.5dppx) {
+    .block.__top {
+        background-image: url(../i/dino-fon-top@2x.png);
+        /*background-size: 1200px 800px; we need keep cover mode */
+    }
+    .share_ico.__vk {
+        background-image: url(../i/social-vk@2x.png);
+        background-size: 36px 36px;
+    }
+    .share_ico.__ok {
+        background-image: url(../i/social-ok@2x.png);
+        background-size: 36px 36px;
+    }
+    .share_ico.__fb {
+        background-image: url(../i/social-fb@2x.png);
+        background-size: 36px 36px;
+    }
+    .tstx_logo {
+        background-image: url(../i/testix-logo-bottom@2x.png);
+        background-size: 159px 59px;
+    }
+    .nav_item_icon.__test {
+        background-image: url(../i/icon-test@2x.png);
+    }
+    .nav_item_icon.__vtour {
+        background-image: url(../i/icon-panorama@2x.png);
+    }
+    .nav_item_icon.__game {
+        background-image: url(../i/icon-memory.png);
+    }
+}
+
+@media (max-width: 600px) {
+    .content {
+        padding: 0 10px;
+        width: auto;
+        min-width: 320px;
+    }
+    .block {
+        text-align: center;
+    }
+    .block_h {
+        font-size: 38px;
+    }
+    .block_h.__top {
+        padding: 28px 0 0;
+    }
+    .paleo_logo {
+        position: initial;
+        display: inline-block;
+        padding: 8px;
+        margin: 0 auto;
+    }
+    .paleo_logo_txt {
+        font-size: 16px;
+    }
+    .created_label {
+        position: initial;
+        display: inline-block;
+        padding: 8px;
+        margin: 0 auto;
+    }
+    .vtour_h {
+        width: auto;
+    }
+    .vtour_txt {
+        width: auto;
+    }
+    .embed_testix {
+        width: auto;
+    }
+}
