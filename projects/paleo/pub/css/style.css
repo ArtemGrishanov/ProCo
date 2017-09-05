@@ -223,7 +223,7 @@ a {
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 890px) {
     .content {
         padding: 0 10px;
         width: auto;
