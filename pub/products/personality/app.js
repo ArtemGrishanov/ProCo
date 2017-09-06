@@ -13,8 +13,13 @@ var PersonalityApp = MutApp.extend({
      * Схема свойств MutAppProperty в этом приложении
      */
     mutAppSchema: new MutAppSchema({
+        "id=pm randomizeQuestions": {
+            label: {RU: 'Случайный порядок вопросов', EN: 'Randomize questions'},
+            controls: 'OnOff',
+            controlFilter: 'always'
+        },
         "id=pm showBackgroundImage": {
-            label: {RU: 'Показывать фоновую картинку', EN: 'Show background image'}
+            label: {RU: 'Показывать фоновую картинку', EN: 'Show background image'},
         },
         "id=pm quiz": {
             label: {RU:'Вопросы теста',EN:'Personality quiz'},
@@ -39,40 +44,49 @@ var PersonalityApp = MutApp.extend({
         },
         // селекторы можно группировать
 //        "id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText": {
-//
 //        },
         "id=startScr startHeaderText": {
             label: {RU: 'Заголовок', EN: 'Header'},
             controls: "TextQuickInput"
         },
-        "id=startScr startDescription": { label: {RU:'Описание', EN:'Description'} },
-        "id=startScr startButtonText": { label: {RU:'Текст кнопки', EN:'Start button text'} },
+        "id=startScr startDescription": {
+            label: {RU:'Описание', EN:'Description'}
+        },
+        "id=startScr startButtonText": {
+            label: {RU:'Текст кнопки', EN:'Start button text'}
+        },
         "id=startScr shadowEnable": {
             label: {RU:'Включить тень', EN:'Shadow enable'},
-            controls: 'OnOff'
+            controls: 'OnOff',
+            controlFilter: 'screen(id=startScr)' // 'always', 'screen(startScr)', 'onclick', 'hidden'
         },
         "id=pm startScreenBackgroundImg": {
             label: {RU:'Фоновая картинка стартового экрана',EN:'Start screen Background image'},
-            controls: 'StringControl'
+            controls: 'StringControl',
+            controlFilter: 'screen(id=startScr)'
         },
         "id=pm showLogoOnStartScreen": {
             label: {RU:'Показывать лого на начальном экране',EN:'Show logo on start screen'},
-            controls: 'OnOff'
+            controls: 'OnOff',
+            controlFilter: 'screen(id=startScr)'
         },
         "id=pm showLogoInQuestions": {
             label: {RU:'Показывать лого в вопросах',EN:'Show logo on question screens'},
-            controls: 'OnOff'
+            controls: 'OnOff',
+            controlFilter: 'screen(type=questions)'
         },
         "id=pm test1": { label: {RU: 'Тест', EN: 'Test1'} },
         "id=pm test2": { label: {RU: 'Тест', EN: 'Test2'} },
         "id=pm test3": { label: {RU: 'Тест', EN: 'Test3'} },
         "id=pm logoUrl": {
             label: {RU: 'Логотип', EN: 'Logo'},
-            controls: 'StringControl'
+            controls: 'StringControl',
+            controlFilter: 'always'
         },
         ".js-start_header color": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Цвет шрифта',EN:'Font color'},
+            controlFilter: 'onclick',
             controls: {
                 name: "StringControl",
                 view: 'ColorPicker',
@@ -85,15 +99,18 @@ var PersonalityApp = MutApp.extend({
         ".js-start_header font-size": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Размер шрифта',EN:'Font size'},
-            controls: "StringControl"
+            controls: "StringControl",
+            controlFilter: 'onclick'
         },
         ".js-start_header padding-top, .js-start_description padding-top": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Отступ сверху',EN:'Padding top'},
-            controls: "StringControl"
+            controls: "StringControl",
+            controlFilter: 'onclick'
         },
         ".js-start_header text-align, .js-start_description text-align": {
             label: {RU:'Выравнивание текста',EN:'Text-align'},
+            controlFilter: 'onclick',
             controls: {
                 name:"Alternative",
                 view: 'altbuttons',
@@ -114,6 +131,7 @@ var PersonalityApp = MutApp.extend({
         },
         ".js-start_header font-family, .js-start_description font-family": {
             label: {RU:'Шрифт',EN:'Font family'},
+            controlFilter: 'onclick',
             controls: {
                 name:"Alternative",
                 view: 'dropdown',
@@ -125,6 +143,7 @@ var PersonalityApp = MutApp.extend({
         ".js-start_btn background-color": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Цвет фона кнопки',EN:'Button background color'},
+            controlFilter: 'onclick',
             controls: {
                 name: "StringControl",
                 view: 'ColorPicker'

@@ -23,7 +23,10 @@ var PersonalityModel = MutApp.Model.extend({
         state: null,
         currentQuestionIndex: undefined,
         currentQuestionId: undefined,
-        randomizeQuestions: false,
+        /**
+         * случайный порядок вопросов
+         */
+        randomizeQuestions: null,
         /**
          * Вопросы теста Personality
          */
@@ -78,6 +81,12 @@ var PersonalityModel = MutApp.Model.extend({
         });
         this.bind('change:results', function() {
             this.start();
+        });
+        this.attributes.randomizeQuestions = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=pm randomizeQuestions',
+            value: false
         });
         this.attributes.results = new MutAppPropertyArray({
             application: this.application,

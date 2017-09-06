@@ -13,7 +13,7 @@ QUnit.test("Editor.Controls: prerequisites", function( assert ) {
  * 2) Создать в событии EVENT_PROPERTY_CREATED контролы для каждого свойства
  * 3) Проверить созданные контролы и их свойства
  */
-QUnit.test("Editor.Controls: 1", function( assert ) {
+QUnit.test("Editor.Controls: create controls, check values", function( assert ) {
     var done = assert.async();
     var createdEventsCount = 0;
     var changeValueEventsCount = 0;
@@ -78,12 +78,12 @@ QUnit.test("Editor.Controls: 1", function( assert ) {
             case MutApp.EVENT_PROPERTY_VALUE_CHANGED: {
                 changeValueEventsCount++
                 // должен сам контрол обработать это сообщение
-                ControlManager.getControl(data.propertyString).setValue(data.property.getValue());
+                ControlManager.getControls({propertyString:data.propertyString})[0].setValue(data.property.getValue());
                 break;
             }
             case MutApp.EVENT_PROPERTY_DELETED: {
                 // должен сам контрол обработать это сообщение
-                ControlFactory.getControl(data.propertyString).handleEvent(event, data);
+                ControlFactory.getControls(data.propertyString)[0].handleEvent(event, data);
                 // фабрика удалить этот контрол
                 var ctrl = ControlManager.deleteControl();
                 break;
@@ -129,20 +129,94 @@ QUnit.test("Editor.Controls: 1", function( assert ) {
 
 });
 
+/**
+ * pre: устанавливать productDomelement, без этого фильтрация по элементу не будет работать
+ *
+ * 1) часть контролов видна сразу и всегда. Без всякой фильтрации.
+ * 2) показ экрана - фильтрация по экрану
+ * 3) показ экрана - фильтрация по экрану - клик по uiElement - фильтрация по элементу (точнее propertyString)
+ *
+ */
 QUnit.test("Editor.Controls: filtering", function( assert ) {
-    // make one app global for this tests
+    assert.ok(window.app1, 'app exist');
+    var app1 = window.app1;
 
-    controlManager.filter({
-        screen: app1.getScreenById('startScr')
+    // check some controlFilter values in app properties
+    assert.ok(app1.getProperty('id=startScr shadowEnable')._controlFilter === 'screen');
+    var cr = app1.getProperty('id=startScr shadowEnable')._controlFilterScreenCriteria;
+    assert.ok(cr.key === 'id' && cr.value === 'startScr');
+    assert.ok(app1.getProperty('.js-start_btn background-color')._controlFilter === 'onclick');
+    assert.ok(app1.getProperty('id=pm randomizeQuestions')._controlFilter === 'always');
+    // assert.ok(app1.getProperty('id=pm test1').controlFilter === 'hidden');
+
+    // фильтр стоит по умолчанию
+    // проверить несколько контролов 'always'
+    var ctrls = ControlManager.getControls({
+        propertyString: 'id=pm randomizeQuestions'
     });
+    assert.ok(ctrls[0].controlFilter === 'always');
+    for (var i = 0; i < ctrls.length; i++) {
+        assert.ok(ctrls[i].isShown() === true);
+    }
+    var ctrls = ControlManager.getControls({
+        propertyString: 'id=startScr shadowEnable'
+    });
+    assert.ok(ctrls[0].controlFilter === 'screen');
+    assert.ok(ctrls[0].controlFilterScreenCriteria.key === 'id');
+    assert.ok(ctrls[0].controlFilterScreenCriteria.value === 'startScr');
+    for (var i = 0; i < ctrls.length; i++) {
+        assert.ok(ctrls[i].isShown() === false);
+    }
 
-    // проверить что есть несколько контролов для фильтрации по экране, а не по домэлементу
-    // симитировать клик по элементу и проверить фильтрацию по каждому элементу
-            // причепм должна сохраняться фильтрация и по экрану
-    // ввести статус контрола: виден или нет ? возможно с функций hide/show?
+    // применить фильтрацию по экрану
+    ControlManager.filter({
+        screen: app1.getScreenById('startScr'),
+        propertyStrings: null
+    });
+    // проверяем только один контрол для примера, что он виден. Проверка всех контролов это чистое дублирование логики проверки критерия экрана внутри filter
+    var ctrls = ControlManager.getControls({
+        propertyString: 'id=startScr shadowEnable'
+    });
+    for (var i = 0; i < ctrls.length; i++) {
+        assert.ok(ctrls[i].isShown() === true);
+    }
 
+    // симитировать клик по элементу и проверить фильтрацию по каждому элементу, причем должна сохраняться фильтрация и по экрану
+    // эти строки будут получены из workspace, который обработает клик на uiElement и возьмет у него атрибут data-app-property
+    var filterPropStrings = ['.js-start_header padding-top','.js-start_header color','id=startScr startHeaderText'];
+    ControlManager.filter({
+        // на uiElement в продукте есть атрибут data-app-property, в котором несколько propertyString
+        propertyStrings: filterPropStrings,
+        screen: null
+    });
+    var ctrls = ControlManager.getControls();
+    for (var i = 0; i < ctrls.length; i++) {
+        if (filterPropStrings.indexOf(ctrls[i].propertyString) >= 0 || ctrls[i].controlFilter === 'always') {
+            assert.ok(ctrls[i].isShown() === true, 'control \''+ctrls[i].propertyString+'\' must be shown');
+        }
+        else {
+            assert.ok(ctrls[i].isShown() === false, 'control \''+ctrls[i].propertyString+'\' must be hidden');
+        }
+    }
 
-    var controls = controlManager.getControls();
+    // todo одновременно когда экран и клик по элементу
+//    ControlManager.filter({
+//        propertyStrings: filterPropStrings
+//        screen: app1.getScreenById('startScr')
+//    });
 
-    // что productDomElement установлены - это может в screenManager? или все таки в controlManager?
+    // todo что productDomElement установлены - это может в workspace, screenManager или все таки в controlManager?
+
+    // todo при клике на uiElement иногда надо показывать quick_control_panel как workspace узнает о типе контрола
+
+    // скрыть все контролы
+    ControlManager.clearFilter(null);
+    var ctrls = ControlManager.getControls();
+    for (var i = 0; i < ctrls.length; i++) {
+        assert.ok(ctrls[i].controlFilter === 'always' || ctrls[i].isShown() === false, 'all nonalways controls and control must be hidden');
+    }
 });
+
+
+// colorpicker == null везде кроме 0
+// c.getValue() #024889 - это цвет кнопки хотя в .js-start_header color

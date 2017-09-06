@@ -3,8 +3,9 @@
  */
 var ControlManager = {};
 (function(global) {
-    var _controlsInfo = [];
+    var _controls = [];
     var _valueChangedCallback = null;
+    var _filterValue = {};
 
     /**
      * Создать контрол для свойства MutApp приложения или его экрана
@@ -102,10 +103,14 @@ var ControlManager = {};
                 container: $directiveContainer,
                 productDomElement: productDomElement,
                 additionalParam: controlAdditionalParam,
+                controlFilter: param.mutAppProperty._controlFilter,
+                controlFilterScreenCriteria: param.mutAppProperty._controlFilterScreenCriteria,
                 valueChangedCallback: _controlsValueUpdateCallback
             });
-            _controlsInfo.push({
-                control: ctrl
+            _controls.push(ctrl);
+            filter({
+                // применить фильтр для созданного контрола
+                controls: [ctrl]
             });
             ctrl.setValue(param.mutAppProperty.getValue());
             result.push(ctrl);
@@ -122,29 +127,17 @@ var ControlManager = {};
      * @param {AbstractControl} control
      */
     function _controlsValueUpdateCallback(control) {
-        for (var i = 0; i < _controlsInfo.length; i++) {
-            if (_controlsInfo[i].control === control) {
+        // здесь делается проверка, что колбек вызвал действительно активный контрол, который сейчас есть в списке, а не какой-то контрол-зомби
+        for (var i = 0; i < _controls.length; i++) {
+            if (_controls[i] === control) {
+                // убедились что контрол действительно сущестует и активен
                 if (_valueChangedCallback) {
                     _valueChangedCallback(control.propertyString, control.getValue());
                 }
                 return;
             }
         }
-        throw new Error('ControlManager.controlsValueUpdateCallback: this control does not exist propertyString=\''+control.propertyString+'\'');
-    }
-
-    /**
-     * Найти контрол по propertyString свойства
-     *
-     * @param {string} propertyString
-     */
-    function getControl(propertyString) {
-        for (var i = 0; i < _controlsInfo.length; i++) {
-            if (_controlsInfo[i].control.propertyString === propertyString) {
-                return _controlsInfo[i].control;
-            }
-        }
-        return null;
+        throw new Error('ControlManager.controlsValueUpdateCallback: this control does not exist, propertyString=\''+control.propertyString+'\'');
     }
 
     /**
@@ -177,59 +170,75 @@ var ControlManager = {};
     }
 
     /**
-     * Вернуть список всех контролов
+     * Вернуть список всех контролов, либо контролов для указанной propertyString
      *
-     * @returns {Array}
+     * @param {string} param.propertyString - опциональный критерий
+     * @returns {Array} массив контролов
      */
-    function getControls() {
-        var result = [];
-        for (var i = 0; i < _controlsInfo.length; i++) {
-            result.push(_controlsInfo[i].control);
+    function getControls(param) {
+        param = param || {};
+        var result = null;
+        for (var i = 0; i < _controls.length; i++) {
+            if (!param.propertyString || _controls[i].propertyString === param.propertyString) {
+                result = result || [];
+                result.push(_controls[i]);
+            }
         }
         return result;
     }
 
     /**
+     * Очистить фильтр.
+     * Будут показаны только контролы типа 'always' по умолчанию
+     */
+    function clearFilter() {
+        filter({
+            screen: null,
+            propertyStrings: null
+        });
+    }
+
+    /**
      * Фильтрация контролов одним из способов
      *
-     * @param {MutApp.Screen} param.screen - оставить только контролы, которые имеют отношение к этому экрану
-     * @param {MutApp.Screen} param.domElement - оставить только контролы, связаные с этим dom элементом
+     * @param {Array<AbstractControl>} [controls] - опционально, контролы к которым применить фильтрацию
+     * @param {MutApp.Screen} param.screen
+     * @param {Array<string>} param.propertyStrings
      */
     function filter(param) {
         param = param || {};
-        if (param.screen) {
-            if (param.screen._linkedMutAppProperties) {
-                // для всех свойств прилинкованных к экрану
-                for (var i = 0; i < param.screen._linkedMutAppProperties.length; i++) {
-                    var ap = param.screen._linkedMutAppProperties[i];
-                    // найти контролы соответствующие этому свойству
-                    var apControls = getControls(ap.propertyString);
-                    if (!apControls || !apControls.length === 0) {
-                        console.error('controlManager.filter: there is no controls for \'' + ap.propertyString + '\', but this MutAppProperty is linked to screen \'' + param.screen.id + '\'');
-                    }
-                    // связть контрол и элемент на экране MutApp приложения
-                    for (var j = 0; j < apControls.length; j++) {
-                        apControls[i].setProductDomElement(ap.uiElement);
-                    }
-                }
-                // скрыть неиспользуемые контролы
-
-                // добавить обработчик на каждый ap.uiElement чтобы фильтрован контролы по нему
-
-                // может так: привязка setProductDomElement и фильтрация контролов по экрану это разные операции?
-
+        param.controls = param.controls || _controls; // контролы из этого массива будем фильтровать
+        if (param.hasOwnProperty('screen') === true) { // может быть и null
+            _filterValue.screen = param.screen;
+        }
+        if (param.hasOwnProperty('propertyStrings') === true) { // может быть и null
+            _filterValue.propertyStrings = param.propertyStrings;
+        }
+        for (var i = 0; i < param.controls.length; i++) {
+            var c = param.controls[i];
+            if (c.controlFilter === 'always') {
+                c.show();
+                continue;
             }
-            else {
-                throw new Error('controlManager.filter: screen \'' + param.screen.id + '\' does not have linkedMutAppProperties');
+            if (c.controlFilter === 'screen' && c.controlFilterScreenCriteria &&
+                _filterValue.screen && _filterValue.screen[c.controlFilterScreenCriteria.key] === c.controlFilterScreenCriteria.value) {
+                c.show();
+                continue;
             }
+            if (_filterValue.propertyStrings && _filterValue.propertyStrings.indexOf(c.propertyString) >= 0) {
+                c.show();
+                continue;
+            }
+            c.hide();
         }
     }
 
     global.createControl = createControl;
-    global.getControlsCount = function() { return _controlsInfo.length; }
-    global.find = find;
+    global.getControlsCount = function() { return _controls.length; }
+    // global.find = find;
     global.getControls = getControls;
-    global.getControl = getControl;
     global.setChangeValueCallback = function(clb) { _valueChangedCallback = clb; }
+    global.filter = filter;
+    global.clearFilter = clearFilter;
 
 })(ControlManager)

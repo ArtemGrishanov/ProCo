@@ -20,6 +20,8 @@ var AbstractControl = {
      * @param {HTMLElement} container
      * @param {HTMLElement} productDomElement элемент на экране промо-продукта к которому привязывается контрол
      * @param {object} additionalParam
+     * @param {string} controlFilter
+     * @param {string} controlFilterScreenCriteria
      * @param {Function} valueChangedCallback - ссылка на функцию куда надо отправлять уведомление об изменении
      */
     init: function(param) {
@@ -57,6 +59,15 @@ var AbstractControl = {
         else {
             //there are may be controls without directive
             //throw new Error('AbstractControl.init: directiveName does not specified');
+        }
+        if (param.controlFilter) {
+            this.controlFilter = param.controlFilter;
+            if (param.controlFilterScreenCriteria) {
+                this.controlFilterScreenCriteria = param.controlFilterScreenCriteria;
+            }
+        }
+        else {
+            throw new Error('AbstractControl.init: controlFilter does not specified');
         }
         if (param.productDomElement) {
             this.$productDomElement = $(param.productDomElement);
@@ -103,6 +114,29 @@ var AbstractControl = {
      */
     handleEvent: function(event, data) {
 
+    },
+
+    /**
+     * Проверить виден ли контрол
+     * @returns {boolean}
+     */
+    isShown: function() {
+        // допущение: мы оперируем только 'none' & 'block', не учитывая visibility
+        return this.$wrapper.css('display') !== 'none';
+    },
+
+    /**
+     * Показать контрол
+     */
+    show: function() {
+        this.$wrapper.show();
+    },
+
+    /**
+     * Скрыть контрол
+     */
+    hide: function() {
+        this.$wrapper.hide();
     },
 
     /**

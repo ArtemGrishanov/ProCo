@@ -671,9 +671,40 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
         if (prInfo.label) {
             mutAppProperty.label = prInfo.label;
         }
-
+        // свойство показывающее как фильтровать контролы свойства
+        if (prInfo.controlFilter) {
+            if (prInfo.controlFilter.indexOf('screen') === 0) {
+                mutAppProperty._controlFilter = 'screen';
+                // получаем id экрана указанного в скобках
+                var r = new RegExp(/screen\(([A-z0-9_]+)\=([A-z0-9_]+)\)/i);
+                var m = r.exec(prInfo.controlFilter);
+                if (m && m[0] && m[1] && m[2]) {
+                    mutAppProperty._controlFilterScreenCriteria = {
+                        key: m[1],
+                        value: m[2]
+                    };
+                }
+                else {
+                    throw new Error('MutApp.linkMutAppProperty: can not match screen id in \'' + prInfo.controlFilter + '\' for app property \'' + mutAppProperty.propertyString + '\'');
+                }
+            }
+            else if (prInfo.controlFilter === 'always' || prInfo.controlFilter === 'onclick' || prInfo.controlFilter === 'hidden') {
+                mutAppProperty._controlFilter = prInfo.controlFilter;
+                mutAppProperty._controlFilterScreenCriteria = null;
+            }
+            else {
+                throw new Error('MutApp.linkMutAppProperty: invalid controlFilter value for \'' + mutAppProperty.propertyString + '\'');
+            }
+        }
+        else {
+            mutAppProperty._controlFilter = 'hidden';
+            mutAppProperty._controlFilterScreenCriteria = null;
+        }
         // переносим из схемы информацию о контролах
         if (prInfo.controls) {
+            if (prInfo.controls.hasOwnProperty('controlFilter') === true) {
+                throw new Error('MutApp.linlAppProperty: controlFilter must not be declared in control properties! See docs.');
+            }
             mutAppProperty.controls = Array.isArray(prInfo.controls) ? prInfo.controls: [prInfo.controls];
         }
         else {
@@ -2482,6 +2513,8 @@ MutAppProperty.prototype.initialize = function(param) {
     this._model = param.model;
     this._application = param.application || null;
     this._model = param.model || null;
+    this._controlFilter = null;
+    this._controlFilterScreenCriteria = null;
     if (this._application) {
         this._application.linkMutAppProperty(this);
     }
