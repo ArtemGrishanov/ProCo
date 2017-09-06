@@ -141,6 +141,23 @@ QUnit.test("Editor.Controls: filtering", function( assert ) {
     assert.ok(window.app1, 'app exist');
     var app1 = window.app1;
 
+    workspace.init({
+        onSelectElementCallback: onSelectElementCallback
+    });
+    // имитируем показ первого экрана
+    workspace.showScreen({
+        screen: app1.getScreenById('startScr')
+    });
+    function onSelectElementCallback(dataAppPropertyString) {
+        console.log('onSelectElementCallback: ' + dataAppPropertyString);
+        ControlManager.filter({
+            propertyStrings: dataAppPropertyString.split(',')
+        });
+    }
+
+    //screenManager.showScreen('startScr'); // проверить что если слинковано уже то повторно не надо
+
+
     // check some controlFilter values in app properties
     assert.ok(app1.getProperty('id=startScr shadowEnable')._controlFilter === 'screen');
     var cr = app1.getProperty('id=startScr shadowEnable')._controlFilterScreenCriteria;

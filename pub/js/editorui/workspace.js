@@ -1,7 +1,11 @@
 /**
  * Created by artyom.grishanov on 04.05.17.
+ *
+ * 1) При клике на связанные элементы рисовать обводку, кидать колбек, что был произведен клик на связанном элементе
+ * 2) Обрабатывать разный размер приложения и если надо организовать прокрутку.
+ * 3) Панель быстрых контролов quickcontrolpanel
+ * 4) Показывать экран в рабочем поле?
  */
-
 var workspace = {};
 (function(global) {
 
@@ -22,16 +26,30 @@ var workspace = {};
          *
          * @type {boolean}
          */
-        horScrollEventsBinded = false;
+        horScrollEventsBinded = false,
+        /**
+         * Элементы, для которых уже зарегистрированы обработчики
+         * Пример, _registeredElements['startScr'] = [e1,e2...]
+         *
+         * @type {}
+         */
+        _registeredElements = {},
+        /**
+         * Колбек который будет зваться когда пользователь кликает на один из зарегистрированных элементов
+         * @type {DOMElement}
+         * @private
+         */
+        _onSelectElementCallback = null;
 
     /**
      * Выделить элемент на экране приложения.
      * Будет нарисована рамка с маркерами по углам.
      * Поддерживается выделение только одного элемента.
      *
+     * @private
      * @param {DOMElement} $elementOnAppScreen
      */
-    function selectElementOnAppScreen($elementOnAppScreen) {
+    function _selectElementOnAppScreen($elementOnAppScreen) {
         $selectedElementOnAppScreen = $elementOnAppScreen;
         if ($selectedElementOnAppScreen === null) {
             // сброс выделения
@@ -51,6 +69,9 @@ var workspace = {};
             $selection.css('height',$selectedElementOnAppScreen.outerHeight(false)-1+'px');
             $selection.show();
             $controlContainer.append($selection);
+        }
+        if (_onSelectElementCallback) {
+            _onSelectElementCallback($selectedElementOnAppScreen.attr('data-app-property'));
         }
     }
 
@@ -73,10 +94,12 @@ var workspace = {};
      * Содержимое #id-product_cnt может быть гораздо больше чем 800 по ширине
      * Например, горизонтальная панорама
      *
+     * @param {number} param.width
+     * @param {number} param.height
      */
-    function updateProductCntScroll() {
+    function _updateProductCntScroll(param) {
         //$('#id-product_screens_cnt').width() - не успавает отрендериться иногда и возвращает неактуальныый размер
-        var productScreenWidth = Engine.getApp().width;
+        var productScreenWidth = param.width;
         var productCntWidth = $productCnt.width();
 
         if (productCntWidth < productScreenWidth) {
@@ -96,20 +119,116 @@ var workspace = {};
         }
     }
 
+    function createScreen(param) {
+        // do nothing
+    }
+
+    function deleteScreen(param) {
+        _deleteRegisteredElement(param.screen.id);
+    }
+
+    function renderScreen(param) {
+        _deleteRegisteredElement(param.screen.id);
+    }
+
+    function _deleteRegisteredElement(screenId) {
+        if (_registeredElements.hasOwnProperty(screenId)) {
+            var $e = null;
+            for (var i = 0; i < _registeredElements[screenId].length; i++) {
+                $e = _registeredElements[screenId][i];
+                $e.off();
+            }
+            delete _registeredElements[screenId];
+        }
+    }
+
+    /**
+     * Пользователь кликнул на один из элементов на экране, связанных с MutAppProperty
+     *
+     * @param {Event} e
+     * @private
+     */
+    function _onRegisteredElementClick(e) {
+        _selectElementOnAppScreen($(e.currentTarget));
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    /**
+     * Элементы связанные с MutAppProperty на экране, навесить на них обработчики
+     *
+     * @param {MutApp.Screen} param.screen
+     */
+    function showScreen(param) {
+        param = param || {};
+        if (param.screen) {
+            if (_registeredElements.hasOwnProperty(param.screen.id) === false) {
+                // возможно, это первый показ этого экрана после рендера, еще не добавляли обработчики
+                _registeredElements[param.screen.id] = [];
+            }
+            var regElems = _registeredElements[param.screen.id];
+            //привязка элементов на экране приложения и контролов
+            if (param.screen._linkedMutAppProperties) {
+                // для всех свойств прилинкованных к экрану
+                for (var i = 0; i < param.screen._linkedMutAppProperties.length; i++) {
+                    var ap = param.screen._linkedMutAppProperties[i];
+                    var $e = $(ap.uiElement);
+                    if (regElems.indexOf($e) < 0) {
+                        $e.click(_onRegisteredElementClick);
+                        regElems.push($e);
+                    }
+
+                    // todo перенести это в ControlManager
+                    // найти контролы соответствующие этому свойству
+//                    var apControls = ___getControls(ap.propertyString);
+//                    if (!apControls || !apControls.length === 0) {
+//                        console.error('controlManager.filter: there is no controls for \'' + ap.propertyString + '\', but this MutAppProperty is linked to screen \'' + param.screen.id + '\'');
+//                    }
+//                    // связать контрол и элемент на экране MutApp-приложения
+//                    for (var j = 0; j < apControls.length; j++) {
+//                        apControls[i].setProductDomElement(ap.uiElement);
+//                    }
+                }
+            }
+            else {
+                throw new Error('workspace.filter: screen \'' + param.screen.id + '\' does not have linkedMutAppProperties');
+            }
+        }
+        else {
+            throw new Error('workspace.filter: screen does not specified');
+        }
+    }
+
+    /**
+     * Обработать изменение размера приложения
+     *
+     * @param param.width
+     * @param param.height
+     */
+    function setAppSize(param) {
+        _updateProductCntScroll(param);
+    }
+
     /**
      * Инициализация
+     *
+     * @param {function} param.onSelectElementCallback
      */
-    function init(params) {
+    function init(param) {
+        param = param || {};
         $productCnt = $('#id-product_cnt');
         $controlContainer = $('#id-control_cnt');
         selectionTemplate = $('#id-elem_selection_template').html();
-        Engine.on('AppSizeChanged', null, function() {
-            updateProductCntScroll();
+        _onSelectElementCallback = param.onSelectElementCallback;
+        $('#id-workspace').click(function(){
+            // любой клик по документу сбрасывает фильтр контролов
+            _selectElementOnAppScreen(null);
         });
     }
 
     global.init = init;
-    global.selectElementOnAppScreen = selectElementOnAppScreen;
-    global.updateSelectionPosition = updateSelectionPosition;
+    global.showScreen = showScreen;
+    global.setAppSize = setAppSize;
+    //global.updateSelectionPosition = updateSelectionPosition;
 
 })(workspace);
