@@ -13,7 +13,7 @@ QUnit.test("Editor.Controls: prerequisites", function( assert ) {
  * 2) Создать в событии EVENT_PROPERTY_CREATED контролы для каждого свойства
  * 3) Проверить созданные контролы и их свойства
  */
-QUnit.test("Editor.Controls: create controls, check values", function( assert ) {
+QUnit.test("Editor.Controls: create controls, check their values", function( assert ) {
     var done = assert.async();
     var createdEventsCount = 0;
     var changeValueEventsCount = 0;
@@ -137,10 +137,16 @@ QUnit.test("Editor.Controls: create controls, check values", function( assert ) 
  * 3) показ экрана - фильтрация по экрану - клик по uiElement - фильтрация по элементу (точнее propertyString)
  *
  */
-QUnit.test("Editor.Controls: filtering", function( assert ) {
+QUnit.test("Editor.Controls: ControlManager filtering, uiElement linking", function( assert ) {
     assert.ok(window.app1, 'app exist');
     var app1 = window.app1;
 
+    function onSelectElementCallback(dataAppPropertyString) {
+        console.log('onSelectElementCallback: ' + dataAppPropertyString);
+        ControlManager.filter({
+            propertyStrings: dataAppPropertyString.split(',')
+        });
+    }
     workspace.init({
         onSelectElementCallback: onSelectElementCallback
     });
@@ -148,17 +154,22 @@ QUnit.test("Editor.Controls: filtering", function( assert ) {
     workspace.showScreen({
         screen: app1.getScreenById('startScr')
     });
-    function onSelectElementCallback(dataAppPropertyString) {
-        console.log('onSelectElementCallback: ' + dataAppPropertyString);
-        ControlManager.filter({
-            propertyStrings: dataAppPropertyString.split(',')
-        });
-    }
 
-    //screenManager.showScreen('startScr'); // проверить что если слинковано уже то повторно не надо
+
+    // слинковать элементы uiElement и проверить что линковка прошла
+    ControlManager.handleShowScreen({
+        screen: app1.getScreenById('startScr')
+    });
+    var ctrls = ControlManager.getControls({
+        propertyString: 'id=startScr startHeaderText'
+    });
+    assert.ok(ctrls[0].$productDomElement);
 
 
     // check some controlFilter values in app properties
+    assert.ok(app1.getProperty('id=pm showLogoOnStartScreen')._controlFilter === 'screen');
+    var cr = app1.getProperty('id=pm showLogoOnStartScreen')._controlFilterScreenCriteria;
+    assert.ok(cr.key === 'id' && cr.value === 'startScr');
     assert.ok(app1.getProperty('id=startScr shadowEnable')._controlFilter === 'screen');
     var cr = app1.getProperty('id=startScr shadowEnable')._controlFilterScreenCriteria;
     assert.ok(cr.key === 'id' && cr.value === 'startScr');
@@ -190,9 +201,15 @@ QUnit.test("Editor.Controls: filtering", function( assert ) {
         screen: app1.getScreenById('startScr'),
         propertyStrings: null
     });
-    // проверяем только один контрол для примера, что он виден. Проверка всех контролов это чистое дублирование логики проверки критерия экрана внутри filter
+    // проверяем только пару контролов для примера, что видны. Проверка всех контролов это чистое дублирование логики проверки критерия экрана внутри filter
     var ctrls = ControlManager.getControls({
         propertyString: 'id=startScr shadowEnable'
+    });
+    for (var i = 0; i < ctrls.length; i++) {
+        assert.ok(ctrls[i].isShown() === true);
+    }
+    var ctrls = ControlManager.getControls({
+        propertyString: 'id=pm showLogoOnStartScreen'
     });
     for (var i = 0; i < ctrls.length; i++) {
         assert.ok(ctrls[i].isShown() === true);
@@ -233,7 +250,3 @@ QUnit.test("Editor.Controls: filtering", function( assert ) {
         assert.ok(ctrls[i].controlFilter === 'always' || ctrls[i].isShown() === false, 'all nonalways controls and control must be hidden');
     }
 });
-
-
-// colorpicker == null везде кроме 0
-// c.getValue() #024889 - это цвет кнопки хотя в .js-start_header color

@@ -1,5 +1,13 @@
 /**
  * Created by artyom.grishanov on 23.08.17.
+ *
+ * Менеджер контролов:
+ * 1) создание контролов для MutAppProperty и хранение
+ * 2) Оповещение если контрол изменил свое значение
+ * 2) Фильтрация (скрытие и показ контролов по условиям)
+ * 3) Обработка показа разных экранов: поддержание связи между контролами и uiElements на экране приложения
+ *
+ *
  */
 var ControlManager = {};
 (function(global) {
@@ -233,6 +241,42 @@ var ControlManager = {};
         }
     }
 
+    /**
+     * ControlManager обрабатывает показ экрана
+     * 1) Связать контрол и соответствующий uiElement на экране приложения
+     *
+     * @param param.screen
+     */
+    function handleShowScreen(param) {
+        param = param || {};
+        if (param.screen) {
+            if (param.screen._linkedMutAppProperties) {
+                // для всех свойств прилинкованных к экрану
+                for (var i = 0; i < param.screen._linkedMutAppProperties.length; i++) {
+                    var ap = param.screen._linkedMutAppProperties[i];
+                    // найти контролы
+                    var apControls = getControls({
+                        propertyString: ap.propertyString
+                    });
+                    if (!apControls || !apControls.length === 0) {
+                        console.error('controlManager.showScreen: there is no controls for \'' + ap.propertyString + '\', but this MutAppProperty is linked to screen \'' + param.screen.id + '\'');
+                        continue;
+                    }
+                    // связать контрол и элемент на экране MutApp-приложения
+                    for (var j = 0; j < apControls.length; j++) {
+                        apControls[j].setProductDomElement(ap.uiElement);
+                    }
+                }
+            }
+            else {
+                throw new Error('controlManager.showScreen: screen \'' + param.screen.id + '\' does not have linkedMutAppProperties');
+            }
+        }
+        else {
+            throw new Error('controlManager.showScreen: screen does not specified');
+        }
+    }
+
     global.createControl = createControl;
     global.getControlsCount = function() { return _controls.length; }
     // global.find = find;
@@ -240,5 +284,6 @@ var ControlManager = {};
     global.setChangeValueCallback = function(clb) { _valueChangedCallback = clb; }
     global.filter = filter;
     global.clearFilter = clearFilter;
+    global.handleShowScreen = handleShowScreen;
 
 })(ControlManager)

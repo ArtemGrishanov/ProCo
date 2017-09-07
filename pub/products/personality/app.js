@@ -50,10 +50,12 @@ var PersonalityApp = MutApp.extend({
             controls: "TextQuickInput"
         },
         "id=startScr startDescription": {
-            label: {RU:'Описание', EN:'Description'}
+            label: {RU:'Описание', EN:'Description'},
+            controls: "TextQuickInput"
         },
         "id=startScr startButtonText": {
-            label: {RU:'Текст кнопки', EN:'Start button text'}
+            label: {RU:'Текст кнопки', EN:'Start button text'},
+            controls: "TextQuickInput"
         },
         "id=startScr shadowEnable": {
             label: {RU:'Включить тень', EN:'Shadow enable'},

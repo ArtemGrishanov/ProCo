@@ -39,7 +39,15 @@ var workspace = {};
          * @type {DOMElement}
          * @private
          */
-        _onSelectElementCallback = null;
+        _onSelectElementCallback = null,
+        /**
+         * Только для отладки и тестирования
+         * Запретить навешивать обработчики на элементы с такими значениями data-app-property, например 'id=startScr backgroundImg, id=startScr shadowEnable'
+         *
+         * @type {Array}
+         * @private
+         */
+        _ignoreDataAppPropertyAttribute = [];
 
     /**
      * Выделить элемент на экране приложения.
@@ -172,22 +180,15 @@ var workspace = {};
                 // для всех свойств прилинкованных к экрану
                 for (var i = 0; i < param.screen._linkedMutAppProperties.length; i++) {
                     var ap = param.screen._linkedMutAppProperties[i];
-                    var $e = $(ap.uiElement);
-                    if (regElems.indexOf($e) < 0) {
-                        $e.click(_onRegisteredElementClick);
-                        regElems.push($e);
+                    // для отладки нужна была возможность исключать некоторые data-app-property
+                    if (_ignoreDataAppPropertyAttribute.length > 0 && _ignoreDataAppPropertyAttribute.indexOf($(ap.uiElement).attr('data-app-property')) >= 0) {
+                        continue;
                     }
-
-                    // todo перенести это в ControlManager
-                    // найти контролы соответствующие этому свойству
-//                    var apControls = ___getControls(ap.propertyString);
-//                    if (!apControls || !apControls.length === 0) {
-//                        console.error('controlManager.filter: there is no controls for \'' + ap.propertyString + '\', but this MutAppProperty is linked to screen \'' + param.screen.id + '\'');
-//                    }
-//                    // связать контрол и элемент на экране MutApp-приложения
-//                    for (var j = 0; j < apControls.length; j++) {
-//                        apControls[i].setProductDomElement(ap.uiElement);
-//                    }
+                    // проверка что к этому элемент уже привязан клик, так как на одном элементе много свойств может быть завязано
+                    if (regElems.indexOf(ap.uiElement) < 0) {
+                        $(ap.uiElement).click(_onRegisteredElementClick);
+                        regElems.push(ap.uiElement);
+                    }
                 }
             }
             else {
