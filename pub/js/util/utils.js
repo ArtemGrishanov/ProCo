@@ -343,3 +343,12 @@ function writeCssTo(stylesId, cssString, container) {
     }
     $style.html(cssString);
 }
+
+/**
+ * Проверка что n овляется числом
+ * @param {*} n
+ * @returns {boolean}
+ */
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}

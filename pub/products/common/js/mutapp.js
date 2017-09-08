@@ -1926,6 +1926,15 @@ MutApp.Util = {
     },
 
     /**
+     * Проверить что n является числом
+     * @param {*} n
+     * @returns {boolean}
+     */
+    isNumeric: function isNumeric(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    },
+
+    /**
      *
      * Based on https://stackoverflow.com/questions/1068834/object-comparison-in-javascript
      * @returns {boolean}
@@ -2923,4 +2932,25 @@ MutAppPropertyArray.prototype._deserializeSubProperty = function(data) {
             this._deserializeSubProperty(data[key]);
         }
     }
+};
+
+
+/**
+ * Класс-обертка для управления объектом-позицией типа {top:0, left:0}
+ *
+ * @constructor
+ */
+var MutAppPropertyPosition = function(param) {
+    this.initialize(param);
+};
+// наследуем от простого базового свойства
+_.extend(MutAppPropertyPosition.prototype, MutAppProperty.prototype);
+/**
+ * Проверить что устанавливаемое значение имеет подходящий формат
+ * @param value
+ * @returns {boolean}
+ * @private
+ */
+MutAppPropertyPosition.prototype._validateDataType = function(value) {
+    return MutApp.Util.isNumeric(value.top)===true && MutApp.Util.isNumeric(value.left)===true;
 };

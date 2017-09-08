@@ -155,7 +155,6 @@
     top: 0;
     left: 0;
     cursor: pointer;
-    margin: 20px auto;
 }
 .question_progress {
     position: absolute;
@@ -398,6 +397,10 @@ img {
     body .js-download_btn_wr {
         padding-top: 16px;
         margin-top: 0;
+    }
+    body .logo {
+        position: initial;
+        margin: 20px auto;
     }
 
     .modal_cnt {

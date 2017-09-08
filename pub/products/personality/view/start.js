@@ -18,8 +18,10 @@ var StartScreen = MutApp.Screen.extend({
      * @see MutApp
      */
     name: {EN:'Start screen',RU:'Стартовый экран'},
-
-    logoPosition: {top: 200, left: 200},
+    /**
+     *
+     */
+    logoPosition: null,
     /**
      *
      */
@@ -83,6 +85,11 @@ var StartScreen = MutApp.Screen.extend({
             value: false,
             propertyString: 'id=startScr shadowEnable'
         });
+        this.logoPosition = new MutAppPropertyPosition({
+            application: this.model.application,
+            value: {top: 200, left: 200},
+            propertyString: 'id=startScr logoPosition'
+        });
         this.model.bind("change:state", function () {
             if ('welcome' === this.model.get('state')) {
                 this.render();
@@ -113,7 +120,7 @@ var StartScreen = MutApp.Screen.extend({
         var $l = this.$el.find('.js-start_logo');
         if (this.model.get('showLogoOnStartScreen').getValue() === true) {
             $l.css('backgroundImage','url('+this.model.get('logoUrl').getValue()+')');
-            $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
+            $l.css('top',this.logoPosition.getValue().top+'px').css('left',this.logoPosition.getValue().left+'px');
         }
         else {
             $l.hide();

@@ -72,6 +72,16 @@ var PersonalityApp = MutApp.extend({
             controls: 'OnOff',
             controlFilter: 'screen(id=startScr)'
         },
+        "id=startScr logoPosition": {
+            label: {},
+            controls: {
+                name: 'Drag',
+                param: {
+                    // контейнер в котором будет происходить перетаскивание
+                    draggableParentSelector: '.js-logo_cnt'
+                }
+            }
+        },
         "id=pm showLogoInQuestions": {
             label: {RU:'Показывать лого в вопросах',EN:'Show logo on question screens'},
             controls: 'OnOff',
