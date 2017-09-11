@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="css/qunit-1.20.0.css">
     <link rel="stylesheet" href="../products/personality/style.css">
     <link rel="stylesheet" href="../controls/css/style.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/editor.css">
     <!--<link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>-->
     <!--endbuild-->
 </head>
@@ -14,7 +16,16 @@
     <div id="qunit"></div>
     <div id="qunit-fixture"></div>
 
+    <div id="id-slides_cnt">
+        <!-- контролы управления экранами -->
+    </div>
+    <div id="id-slides_cnt_syntetictest">
+        <!-- контролы управления экранами -->
+    </div>
     <div id="id-product_iframe_cnt" style="display:none;">
+        <!--Проект должен загружаться и тестироваться через iframe в своем контекста-->
+    </div>
+    <div id="id-product_iframe_cnt_screens_qunittest" style="display:none;">
         <!--Проект должен загружаться и тестироваться через iframe в своем контекста-->
     </div>
     <div id="id-product_cnt" style="display:none"></div>
@@ -50,6 +61,7 @@
     <script type="text/javascript" src="../js/editorui/controlManager.js"></script>
     <script type="text/javascript" src="../js/editorui/editorLoader.js"></script>
     <script type="text/javascript" src="../js/editorui/workspace.js"></script>
+    <script type="text/javascript" src="../js/editorui/screenManager.js"></script>
     <script type="text/javascript" src="../js/util/utils.js"></script>
     <script type="text/javascript" src="../js/util/queue.js"></script>
 

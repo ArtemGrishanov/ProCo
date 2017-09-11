@@ -35,7 +35,7 @@ var editorLoader = {};
             if (src) {
                 _appIframe = document.createElement('iframe');
                 _appIframe.onload = _onIframeload;
-                $(_appIframe).addClass('proto_cnt').addClass('__hidden');
+                $(_appIframe).addClass('proto_cnt');//.addClass('__hidden'); why __hidden ?
                 _appIframe.src = config.common.home+src;
                 $(param.container).empty().append(_appIframe);
             }

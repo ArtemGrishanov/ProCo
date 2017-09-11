@@ -249,10 +249,6 @@ var MutApp = function(param) {
         propertyString: 'appConstructor=mutapp customCssStyles',
         value: ''
     });
-//    this.customCssStyles.bind('change',function(){
-//        // запись значения свойства (css строки) в виде стилей
-//        MutApp.Util.writeCssTo('id-custom_styles', this.getValue(), this._application.screenRoot);
-//    });
 
     // инициализация апи для статистики, если задан идентификатор Google Analytics
     // при использовании другого или нескольких провайдеров надо будет рефакторить
@@ -301,7 +297,7 @@ MutApp.prototype._appEventHandler = function(event, data) {
                         cssPropertyName: data.property.cssPropertyName,
                         cssValue: data.property.getValue()
                     });
-                    MutApp.Util.writeCssTo('id-custom_styles', this._getCssRulesString(), this.screenRoot);
+                    MutApp.Util.writeCssTo('id-custom_styles', this.getCssRulesString(), this.screenRoot);
                 //}
             }
             if (data.propertyString === 'appConstructor=mutapp customCssStyles') {
@@ -311,7 +307,7 @@ MutApp.prototype._appEventHandler = function(event, data) {
                         cssCode: data.property.getValue()
                     });
                     // запись значения свойства (css строки) в виде стилей
-                    MutApp.Util.writeCssTo('id-custom_styles', this._getCssRulesString(), this.screenRoot);
+                    MutApp.Util.writeCssTo('id-custom_styles', this.getCssRulesString(), this.screenRoot);
                 //}
             }
             break;
@@ -326,11 +322,22 @@ MutApp.prototype._appEventHandler = function(event, data) {
  */
 MutApp.prototype.addScreen = function(v) {
     if (v instanceof MutApp.Screen === true) {
+        if (this.mode === 'edit' && !v.group) {
+            // группа должна быть обязательно установлена в режиме редактирования
+            v.group = v.id;
+        }
         this._screens.push(v);
-        // v.render(); надо ли?
         this.trigger(MutApp.EVENT_SCREEN_CREATED, {
             screenId: v.id
         });
+        if (this.mode === 'edit') {
+            if (!v.group) {
+                v.group = v.id;
+            }
+            // в режиме редактирования экраны следует отрендерить сразу для показа в редакторе
+            // далее в процессе редактирования экраны будут рендериться в зависимости от логики приложения
+            v.render();
+        }
         return v;
     }
     throw new Error('MutApp.addScreen: View must be a MutApp.Screen instance');
@@ -762,25 +769,19 @@ MutApp.prototype.updateCssMutAppPropertiesValues = function(screen) {
     var props = this._mutappProperties;
     for (var i = 0; i < props.length; i++) {
         if (props[i] instanceof CssMutAppProperty) {
-            var cssv = screen.$el.find(props[i].cssSelector).css(props[i].cssPropertyName);
-            if (MutApp.Util.isRgb(cssv) === true) {
-                // если строка подходит под формат rgb то надо конвертировать rgba(126,0,255) -> #7E00FF
-                // так как пользователю в контроле удобнее работать с таким форматом
-                cssv = MutApp.Util.rgb2hex(cssv);
+            var $elms = screen.$el.find(props[i].cssSelector);
+            if ($elms.length > 0) {
+                // если только на этом экране есть такие элементы
+                var cssv = $elms.css(props[i].cssPropertyName);
+                if (MutApp.Util.isRgb(cssv) === true) {
+                    // если строка подходит под формат rgb то надо конвертировать rgba(126,0,255) -> #7E00FF
+                    // так как пользователю в контроле удобнее работать с таким форматом
+                    cssv = MutApp.Util.rgb2hex(cssv);
+                }
+                props[i].setValue(cssv);
             }
-            props[i].setValue(cssv);
         }
     }
-};
-/**
- * Вернуть стили для проекта из всех CssMutAppProperty
- *
- * @return {string}
- */
-MutApp.prototype.getCssMutAppPropertiesStyles = function() {
-    //TODO custom css styles
-    //TODO all CssMutAppProperties styles
-    return '';
 };
 /**
  * Восстановить из json-строки или объекта значения свойств приложения.
@@ -1301,7 +1302,7 @@ MutApp.prototype._getCssRule = function(selector) {
  * Собирает все измененные css стили и возвращает их одной строкой
  * @returns {string}
  */
-MutApp.prototype._getCssRulesString = function() {
+MutApp.prototype.getCssRulesString = function() {
     var cssStr = '\n';
     for (var i = 0; i < this._cssRules.length; i++) {
         var r = this._cssRules[i];

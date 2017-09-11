@@ -8,7 +8,8 @@
  * 4) Удаление
  *
  */
-function SlideGroupControl(propertyString, directiveName, $parent, productDOMElement, params) {
+function SlideGroupControl(param) {
+    this.init(param);
     //TODO надо высчитать вместе с отступами
     this._elemWidth = 120; //120 ширина превью + 16px  was 152
     this._elemRightPadding = 37;
@@ -37,6 +38,12 @@ function SlideGroupControl(propertyString, directiveName, $parent, productDOMEle
      * все slides внутри этого контрола принадлежать одной группе
      */
     this.groupName = null;
+    if (param.additionalParam && param.additionalParam.groupName) {
+        this.groupName = param.additionalParam.groupName;
+    }
+    else {
+        throw new Error('SlideGroupControl: groupName does nor specified in addiionalParam.');
+    }
     /**
      * Надпись на естественном языке рядом с группой экранов
      * @type {null}
@@ -50,21 +57,13 @@ function SlideGroupControl(propertyString, directiveName, $parent, productDOMEle
     this._slidesInfo = [
     ];
 
-    if (params) {
-        this.set(params);
-    }
-
-    this.init(propertyString, directiveName, $parent, productDOMElement, params);
-
     // некоторый инит ui который делается один раз
     this.$directive.find('.js-add').show().click((function(){
         this.addNewItem();
     }).bind(this));
     $(document).mousemove(this.onMouseMove.bind(this));
     $(document).mouseup(this.onMouseUp.bind(this));
-    this.updateScreens();
     this.loaded = true;
-
     // таймер на проверку новой позиции при перетаскивании
     setInterval(this.checkPos.bind(this),100);
 }
@@ -76,23 +75,168 @@ function SlideGroupControl(propertyString, directiveName, $parent, productDOMEle
 SlideGroupControl.prototype = AbstractControl;
 
 /**
- * Групповая установка параметров для контрола
- * @param params
+ * Собрать список экранов MutApp.Screen для этого контрола
+ * Дело в том, что есть список Slide, а экраны хранятся внутри Slide
+ *
+ * @returns {Array<MutApp.Screen>}
  */
-SlideGroupControl.prototype.set = function(params) {
-    this.groupName = params.groupName || null;
-    this.groupLabel = params.groupLabel || null;
-    this.updateScreens();
+SlideGroupControl.prototype.getScreens = function() {
+    var result = [];
+    for (var i = 0; i < this._slidesInfo.length; i++) {
+        if (this._slidesInfo[i].used === true) {
+            result.push(this._slidesInfo[i].slide.additionalParam.screen);
+        }
+    }
+    return result;
+};
+
+/**
+ * Добавить новый экран в этот контрол
+ * @param {MutApp.Screen} param.screen
+ * @param {string} param.cssString
+ */
+SlideGroupControl.prototype.addScreen = function(param) {
+    param = param || {};
+    if (!param.screen) {
+        throw new Error('SlideGroupControl.addScreen: param.screen must be specified');
+    }
+    if (!param.cssString) {
+        throw new Error('SlideGroupControl.addScreen: param.cssString must be specified');
+    }
+
+    var myScreens = [];
+    var myScreenIds = [];
+    if (param.screen.group !== this.groupName) {
+        throw new Error('SlideGroupControl.addScreen: new screen and SlideGroupControl must have the same groups!');
+    }
+
+    // имя для группы установить
+    // в автотестах App === undefined
+    if (window.App === undefined) {
+        this.$directive.find('.js-slide_group_name').text(
+            (typeof param.screen.name === 'string') ? param.screen.name: param.screen.name['EN']
+        );
+    }
+    else {
+        this.$directive.find('.js-slide_group_name').text(
+            (typeof param.screen.name === 'string') ? param.screen.name: param.screen.name[App.getLang()]
+        );
+    }
+
+    var screens = this.getScreens();
+    for (var n = 0; n < screens.length; n++) {
+        if (screens[n].id === param.screen.id) {
+            throw new Error('SlideGroupControl.addScreen: screen with id \''+param.screen.id+'\' already exist in this group \''+this.groupName+'\'');
+        }
+    }
+    // обновить аттрибуты группы, теоритически новый экран может их изменить
+    this.collapsed = this.isCollapsedScreens(screens);
+    this.draggable = this.isDraggableScreens(screens);
+    this.canAdd = this.canAddScreens(screens);
+    this.canDelete = this.canDeleteScreens(screens);
+    this.canClone = this.canCloneScreens(screens);
+
+    if (screens.length > 0 && this.collapsed !== true) {
+        // уже есть по крайне мере один элемент и будет добавление сейчас: модификатор массива
+        this.$directive.addClass('__array');
+    }
+
+    // смотрим сколько слайдов нам надо под экраны
+    var mySlides = [];
+    if (this.collapsed === true) {
+        // один контрол нужен
+        myScreenIds = [myScreenIds.join(',')]; // групповой ид экрана
+    }
+
+    // создать новое view для экрана
+    // внутри создается контрол Slide и складывается в this._slidesInfo
+    var si = this.useSlide({
+        screen: param.screen,
+        cssString: param.cssString
+    });
+
+    // удалить неиспользуемые
+    this.deleteUnusedSlides();
+
+    // привести UI контрола в порядок в соответствии с этими данными
+    this.arrangeItems({
+        collapsed: this.collapsed,
+        draggable: this.draggable,
+        canAdd: this.canAdd,
+        canDelete: this.canDelete,
+        canClone: this.canClone
+    });
+};
+
+/**
+ * Добавить новый экран в этот контрол
+ * @param {MutApp.Screen} param.screen
+ * @param {string} param.cssString
+ */
+SlideGroupControl.prototype.updateScreen = function(param) {
+    param = param || {};
+    if (!param.screen) {
+        throw new Error('SlideGroupControl.updateScreen: param.screen must be specified');
+    }
+    if (!param.cssString) {
+        throw new Error('SlideGroupControl.updateScreen: param.cssString must be specified');
+    }
+    var screenFound = false;
+    for (var i = 0; i < this._slidesInfo.length; i++) {
+        var sl = this._slidesInfo[i].slide;
+        if (sl.additionalParam.screen === param.screen) {
+            sl.updatePreview();
+            screenFound = true;
+            break;
+        }
+    }
+    if (screenFound === false) {
+        throw new Error('SlideGroupControl.updateScreen: screen not found');
+    }
+};
+
+/**
+ * Удалить экран из группы
+ * @param {MutApp.Screen} param.screen
+ */
+SlideGroupControl.prototype.deleteScreen = function(param) {
+    param = param || {};
+    if (!param.screen) {
+        throw new Error('SlideGroupControl.deleteScreen: param.screen must be specified');
+    }
+    var screenFound = false;
+    for (var i = 0; i < this._slidesInfo.length; i++) {
+        var sl = this._slidesInfo[i].slide;
+        if (sl.additionalParam.screen === param.screen) {
+            // просто помечаем слайд как неиспользуемый
+            this._slidesInfo[i].used = false;
+            screenFound = true;
+            // удалить неиспользуемые
+            this.deleteUnusedSlides();
+            // привести UI контрола в порядок в соответствии с этими данными
+            this.arrangeItems({
+                collapsed: this.collapsed,
+                draggable: this.draggable,
+                canAdd: this.canAdd,
+                canDelete: this.canDelete,
+                canClone: this.canClone
+            });
+            break;
+        }
+    }
+    if (screenFound === false) {
+        throw new Error('SlideGroupControl.deleteScreen: screen not found');
+    }
 };
 
 /**
  * Обработчик на изменение экрана.
  * Вызывается редактором Editor извне
  */
-SlideGroupControl.prototype.screenUpdate = function(event, data) {
-    log('SlideGroupControl.screenUpdate: ' + event);
-    this.updateScreens();
-}
+//SlideGroupControl.prototype.screenUpdate = function(event, data) {
+//    log('SlideGroupControl.screenUpdate: ' + event);
+//    this.updateScreens();
+//}
 /**
  * Обновить экраны на основе информации из MutApp приложения
  *
@@ -102,68 +246,68 @@ SlideGroupControl.prototype.screenUpdate = function(event, data) {
  * 3) требования к быстродействию:
  *      - перетаскивания, добавления/удаления Slides должны происходить гладко
  */
-SlideGroupControl.prototype.updateScreens = function() {
-    var appScreenIds = Editor.getEditedApp().getScreenIds();
-    if (this.$directive && appScreenIds.length > 0) {
-        // подготовим для использования компоненты
-        for (var i = 0; i < this._slidesInfo.length; i++) {
-            this._slidesInfo[i].used = false;
-        }
-
-        // отсеяли лишние и оставили только экраны с группой this.groupName
-        var myScreens = [];
-        var myScreenIds = [];
-        for (var i = 0; i < appScreenIds.length; i++) {
-            var scr = Editor.getEditedApp().getScreenById(appScreenIds[i]);
-            if (scr.group === this.groupName) {
-                myScreens.push(scr);
-                myScreenIds.push(appScreenIds[i]);
-            }
-        }
-
-        if (myScreens && myScreens.length > 0) {
-            this.$directive.find('.js-slide_group_name').text(
-                (typeof myScreens[0].name === 'string') ? myScreens[0].name: myScreens[0].name[App.getLang()]
-            );
-        }
-
-        this.collapsed = this.isCollapsedScreens(myScreens);
-        this.draggable = this.isDraggableScreens(myScreens);
-        this.canAdd = this.canAddScreens(myScreens);
-        this.canDelete = this.canDeleteScreens(myScreens);
-        this.canClone = this.canCloneScreens(myScreens);
-
-        if (myScreens && myScreens.length > 1 && this.collapsed !== true) {
-            this.$directive.addClass('__array');
-        }
-
-        // смотрим сколько слайдов нам надо под экраны
-        var mySlides = [];
-        if (this.collapsed === true) {
-            // один контрол нужен
-            myScreenIds = [myScreenIds.join(',')]; // групповой ид экрана
-        }
-        this._items = [];
-        for (var i = 0; i < myScreenIds.length; i++) {
-            var sId = myScreenIds[i];
-            var si = this.useSlide(sId);
-            this._items.push(si.$parent);
-        }
-
-        // удалить неиспоьзуемые
-        this.deleteUnusedSlides();
-
-        // привести UI контрола в порядок в соответствии с этими данными
-        this.arrangeItems({
-            collapsed: this.collapsed,
-            draggable: this.draggable,
-            canAdd: this.canAdd,
-            canDelete: this.canDelete,
-            canClone: this.canClone,
-            items: this._items
-        });
-    }
-};
+//SlideGroupControl.prototype.updateScreens = function() {
+//    var appScreenIds = Editor.getEditedApp().getScreenIds();
+//    if (this.$directive && appScreenIds.length > 0) {
+//        // подготовим для использования компоненты
+//        for (var i = 0; i < this._slidesInfo.length; i++) {
+//            this._slidesInfo[i].used = false;
+//        }
+//
+//        // отсеяли лишние и оставили только экраны с группой this.groupName
+//        var myScreens = [];
+//        var myScreenIds = [];
+//        for (var i = 0; i < appScreenIds.length; i++) {
+//            var scr = Editor.getEditedApp().getScreenById(appScreenIds[i]);
+//            if (scr.group === this.groupName) {
+//                myScreens.push(scr);
+//                myScreenIds.push(appScreenIds[i]);
+//            }
+//        }
+//
+//        if (myScreens && myScreens.length > 0) {
+//            this.$directive.find('.js-slide_group_name').text(
+//                (typeof myScreens[0].name === 'string') ? myScreens[0].name: myScreens[0].name[App.getLang()]
+//            );
+//        }
+//
+//        this.collapsed = this.isCollapsedScreens(myScreens);
+//        this.draggable = this.isDraggableScreens(myScreens);
+//        this.canAdd = this.canAddScreens(myScreens);
+//        this.canDelete = this.canDeleteScreens(myScreens);
+//        this.canClone = this.canCloneScreens(myScreens);
+//
+//        if (myScreens && myScreens.length > 1 && this.collapsed !== true) {
+//            this.$directive.addClass('__array');
+//        }
+//
+//        // смотрим сколько слайдов нам надо под экраны
+//        var mySlides = [];
+//        if (this.collapsed === true) {
+//            // один контрол нужен
+//            myScreenIds = [myScreenIds.join(',')]; // групповой ид экрана
+//        }
+//        this._items = [];
+//        for (var i = 0; i < myScreenIds.length; i++) {
+//            var sId = myScreenIds[i];
+//            var si = this.useSlide(sId);
+//            this._items.push(si.$parent);
+//        }
+//
+//        // удалить неиспоьзуемые
+//        this.deleteUnusedSlides();
+//
+//        // привести UI контрола в порядок в соответствии с этими данными
+//        this.arrangeItems({
+//            collapsed: this.collapsed,
+//            draggable: this.draggable,
+//            canAdd: this.canAdd,
+//            canDelete: this.canDelete,
+//            canClone: this.canClone,
+//            items: this._items
+//        });
+//    }
+//};
 
 /**
  * определение - надо ли сжимать группу или нет
@@ -271,13 +415,24 @@ SlideGroupControl.prototype.deleteUnusedSlides = function() {
 };
 
 /**
- * Выбрать свободный или создать контрол Slide (+wrapper, +id и тп)
+ * Выбрать свободный или создать контрол Slide
  * Контролы Slide помещены в массив this._slidesInfo
  *
- * @param {string}
- * @return {slide, $parent, dataId, used, $wrapper}
+ * @param {MutApp.Screen} param.screen - экран приложения для которого создается слайд
+ * @param {string} param.cssString - все CssMutAppProprty свойства приложения в виде строки
+ *
+ * @return {slide, dataId, used, $wrapper}
  */
-SlideGroupControl.prototype.useSlide = function(slideId) {
+SlideGroupControl.prototype.useSlide = function(param) {
+    param = param || {};
+    if (!param.screen) {
+        throw new Error('SlideGroupControl.useSlide: screen does not specified');
+    }
+    if (!param.cssString) {
+        throw new Error('SlideGroupControl.useSlide: cssString does not specified');
+    }
+
+    var slideId = param.screen.id;
     var result = null;
     for (var i = 0; i < this._slidesInfo.length; i++) {
         var si = this._slidesInfo[i];
@@ -286,7 +441,11 @@ SlideGroupControl.prototype.useSlide = function(slideId) {
             si.used = true;
             // обработка как и в createControl (пример 'resultScr0 resultScr1 resultScr2')
             var propertyStrArg = (slideId && slideId.indexOf(',')>=0)?slideId.split(','):slideId;
-            si.slide.setPropertyString(propertyStrArg);
+            si.slide.setSettings({
+                propertyString: propertyStrArg,
+                cssString: param.cssString,
+                screen: param.screen
+            });
             result = si;
             break;
         }
@@ -294,18 +453,29 @@ SlideGroupControl.prototype.useSlide = function(slideId) {
     if (result === null) {
         var $d = $('<div></div>');
         var itemWrapperTemplate = this.$directive.find('.js-item_wr_template').html();
-        var slide = Editor.createControl(slideId, null, 'Slide', {}, $d, null);
+        var slide = new Slide({
+            propertyString: slideId,
+            controlName: 'Slide',
+            directiveName: 'slide',
+            container: null,
+            wrapper: $d,
+            controlFilter: 'always',
+            additionalParam: {
+                appType: this.additionalParam.appType,
+                screen: param.screen,
+                cssString: param.cssString,
+                onClickCallback: this.additionalParam.onScreenSelect
+            }
+        });
         var dataId = Math.random().toString();
         result = {
             dataId: dataId,
-            $parent: $d,
             slide: slide,
             used: true,
             // обертка для элемента, чтобы его можно было перетаскивать
             $wrapper: $(itemWrapperTemplate).attr('data-id',dataId)
         };
-        // ну вот так тут наверное немного накручено но ничо пока
-        // то есть Slide внутри $parent, а тот внутри $wrapper, который уже к slidegroupcontrol относится
+        // немного накручено: то есть Slide внутри $d, а $d тот внутри $wrapper, который уже к slidegroupcontrol относится
         result.$wrapper.find('.js-item').append($d);
         var $cnt = this.$directive.find('.js-slides_cnt');
         result.$wrapper.appendTo($cnt);
@@ -405,8 +575,8 @@ SlideGroupControl.prototype.arrangeItems = function(params) {
  */
 SlideGroupControl.prototype.addNewItem = function(position, newItem) {
     if (this.canAdd === true) {
-        // если позиция не задана элемент будет добавлен в конец массива
-        var p = (Number.isInteger(position)===true)?position:undefined;
+        // если позиция не задана, элемент будет добавлен в конец массива
+        var p = (isNumeric(position) === true) ? position : undefined;
         var ap = Engine.getAppProperty(this.propertyString);
         var pp = Engine.getPrototypesForAppProperty(ap);
         if (!newItem) {

@@ -78,7 +78,13 @@ QUnit.test("Editor.Controls: create controls, check their values", function( ass
             case MutApp.EVENT_PROPERTY_VALUE_CHANGED: {
                 changeValueEventsCount++
                 // должен сам контрол обработать это сообщение
-                ControlManager.getControls({propertyString:data.propertyString})[0].setValue(data.property.getValue());
+                var ctrls = ControlManager.getControls({propertyString:data.propertyString});
+                if (ctrls && ctrls.length > 0) {
+                    ctrls[0].setValue(data.property.getValue());
+                }
+                else {
+                    console.error('onAppChanged: there is no control for appProperty: \'' + data.propertyString + '\'');
+                }
                 break;
             }
             case MutApp.EVENT_PROPERTY_DELETED: {
@@ -239,8 +245,6 @@ QUnit.test("Editor.Controls: ControlManager filtering, uiElement linking", funct
 //        screen: app1.getScreenById('startScr')
 //    });
 
-    // todo что productDomElement установлены - это может в workspace, screenManager или все таки в controlManager?
-
     // todo при клике на uiElement иногда надо показывать quick_control_panel как workspace узнает о типе контрола
 
     // скрыть все контролы
@@ -249,4 +253,100 @@ QUnit.test("Editor.Controls: ControlManager filtering, uiElement linking", funct
     for (var i = 0; i < ctrls.length; i++) {
         assert.ok(ctrls[i].controlFilter === 'always' || ctrls[i].isShown() === false, 'all nonalways controls and control must be hidden');
     }
+});
+
+
+
+QUnit.test("Editor.Controls: SlideGroupControl", function( assert ) {
+    var done = assert.async();
+
+    directiveLoader.load(function() {
+        assert.ok(directiveLoader.getDirective('colorpicker'));
+
+        editorLoader.load({
+
+            appName: 'personality',
+            container: $('#id-product_iframe_cnt_screens_qunittest'),
+            onload: function() {
+                var appIframe = editorLoader.getIframe();
+                var appWindow = appIframe.contentWindow;
+                window.MutApp = appWindow.MutApp;
+                $('#id-product_iframe_cnt_screens_qunittest').show();
+
+                ScreenManager.init({
+                    onScreenSelect: onScreenSelect,
+                    appType: 'personality'
+                });
+
+                var app2 = editorLoader.startApp({
+                    defaults: null,
+                    mode: 'edit',
+                    appChangeCallbacks: onAppChanged
+                });
+                $(appIframe).width(app2.width).height(app2.height);
+                window.app2 = app2; // make it global for test
+
+                var gn = app2.getScreenById('startScr').group;
+                assert.ok(ScreenManager._test_getSlideGroupControlsCount()===1);
+                assert.ok(ScreenManager._test_getSlideGroupControl(gn).groupName === 'start');
+                assert.ok(ScreenManager._test_getScreens(gn).length === 1);
+
+                app2.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
+
+                var gn = app2.getScreenById('questionScreen0').group;
+                assert.ok(ScreenManager._test_getSlideGroupControlsCount()===2); // +1 slide group
+                assert.ok(ScreenManager._test_getSlideGroupControl(gn).groupName === 'questions');
+                assert.ok(ScreenManager._test_getScreens(gn).length === 1);
+
+                app2.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
+                var gn = app2.getScreenById('questionScreen1').group;
+                assert.ok(ScreenManager._test_getSlideGroupControlsCount()===2);
+                assert.ok(ScreenManager._test_getSlideGroupControl(gn).groupName === 'questions');
+                assert.ok(ScreenManager._test_getScreens(gn).length === 2); // +1 screen
+
+                done();
+
+            } // editorLoader.onload
+        });
+    });
+
+//    app.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
+//    app.model.attributes.results.addElementByPrototype('id=pm resultProto1');
+
+    /**
+     * Обработчик событий о смене экранов
+     *
+     * @param event
+     */
+    function onAppChanged(event, data) {
+        var app = data.application;
+        switch (event) {
+            case MutApp.EVENT_SCREEN_CREATED: {
+                ScreenManager.update({
+                    created: data.application.getScreenById(data.screenId),
+                    cssString: data.application.getCssRulesString()
+                });
+                break;
+            }
+            case MutApp.EVENT_SCREEN_RENDERED: {
+                ScreenManager.update({
+                    rendered: data.application.getScreenById(data.screenId),
+                    cssString: data.application.getCssRulesString()
+                });
+                break;
+            }
+            case MutApp.EVENT_SCREEN_DELETED: {
+                ScreenManager.update({
+                    deleted: data.application.getScreenById(data.screenId)
+                });
+                break;
+            }
+        }
+    }
+
+    function onScreenSelect(screenId) {
+        console.log('qunitTest.onScreenSelect: ' + screenId);
+        app2.showScreen(app2.getScreenById(screenId));
+    }
+
 });
