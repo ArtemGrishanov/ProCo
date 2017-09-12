@@ -2,7 +2,12 @@
  * Created by artyom.grishanov on 01.09.17.
  */
 
-var ScreenManager = {};
+var ScreenManager = {
+    EVENT_SCREEN_SELECT: 'ScreenManager.EVENT_SCREEN_SELECT',
+    EVENT_ADD_SCREEN: 'ScreenManager.EVENT_ADD_SCREEN',
+    EVENT_DELETE_SCREEN: 'ScreenManager.EVENT_DELETE_SCREEN',
+    EVENT_CHANGE_POSITION: 'ScreenManager.EVENT_CHANGE_POSITION',
+};
 (function(global) {
 
     /**
@@ -18,92 +23,11 @@ var ScreenManager = {};
      */
     var _appType = null;
     /**
-     * Колбек, который вызывается из SlideGroupControl при клике на Slide
+     * Колбек, куда ScreenManager будет отсылать события: клик на слайд, добавить новый, удалить слайд с позиции и т.п.
      * @type {function}
      * @private
      */
-    var _onScreenSelect = null;
-
-    /**
-     *
-     * @param param.mutApp
-     * @private
-     */
-//    function _createScreenControls(param) {
-//        param = param || {};
-//        if (!param.mutApp) {
-//            throw new Error('ScreenManager._createScreenControls: param.mutApp does not specified.');
-//        }
-//        $('#id-slides_cnt').empty();
-//        //TODO конечно не надо пересоздавать каждый раз всё при добавл-удал экрана. Но так пока проще
-//        var appScreenIds = param.mutApp.getScreenIds();
-//        // экраны могут быть поделены на группы
-//        var groups = {};
-//        var sGroups = [];
-//        if (appScreenIds.length > 0) {
-//            // подготовительная часть: разобъем экраны на группы
-//            // groups - просто временный вспомогательный объект
-//            for (var i = 0; i < appScreenIds.length; i++) {
-//                var s = appScreenIds[i];
-//                var screen = param.mutApp.getScreenById(s);
-//                if (screen.hideScreen === false) {
-//                    if (typeof screen.group !== "string") {
-//                        // если группа не указана, экран будет один в своей группе
-//                        screen.group = screen.id;
-//                    }
-//                    if (groups.hasOwnProperty(screen.group) === false) {
-//                        // группа новая, создаем
-//                        groups[screen.group] = [];
-//                    }
-//                    groups[screen.group].push(s);
-//                }
-//            }
-//
-//            // далее начнем создать контролы и вью для групп экранов
-//            for (var groupName in groups) {
-//                var curG = groups[groupName];
-//                var firstScrInGroup = param.mutApp.getScreenById(curG[0]);
-//                var sgc = _findSlideGroupByGroupName(groupName);
-//                if (sgc === null) {
-//                    // группой экранов может управлять массив.
-//                    // в случае вопросов теста: эта группа привязана к quiz, передается в промо проекте при создании экранов
-//                    // для остальных undefined
-////                    sgc = createControl({
-////                        someId: firstScrInGroup.arrayAppPropertyString,
-////                        controlName: 'SlideGroupControl',
-////                        controlParentView:
-////                    });
-//                    sgc = new SlideGroupControl({
-//                        propertyString: firstScrInGroup.arrayAppPropertyString || groupName,
-//                        controlName: 'SlideGroupControl',
-//                        directiveName: 'slidegroupcontrol',
-//                        wrapper: $('<div></div>'),
-//                        container: $('#id-slides_cnt'),
-//                        controlFilter: 'always'
-//                    });
-//                    sgc.update();
-//                }
-//                else {
-//                    // подходящий контрол SlideGroupControl создавался ранее для управления этой группой экранов
-//                }
-//                // устанавливаем все атрибуты, не один раз при создании, а сколько угодно раз
-//                sgc.setSettings({
-//                    // идентификатор группы
-//                    groupName: groupName,
-//                    // имя забираем у первого экрана группы, в группе минимум один экран, а все имена одинаковые конечно
-//                    groupLabel: firstScrInGroup.name,
-//                    // это массив экранов
-//                    //screens: curG,
-//                    //allowDragY: true,
-//                    showAddButton: true
-//                });
-//                sGroups.push(sgc);
-//            }
-//            // если при обновлении какие-то группы пропали в приложении, то они не попадут более в slideGroupControls
-//            // например для теста будет три группы: стартовый, вопросы, результаты
-//            slideGroupControls = sGroups;
-//        }
-//    }
+    var _onScreenEvents = null;
 
     /**
      * Создать новую группу SlideGroupControl на основе экрана
@@ -125,7 +49,7 @@ var ScreenManager = {};
             additionalParam: {
                 groupName: screen.group,
                 appType: _appType,
-                onScreenSelect: _onScreenSelect.bind(this)
+                onScreenEvents: _onScreenEvents
             }
         });
         $cnt.append($w);
@@ -176,14 +100,6 @@ var ScreenManager = {};
         }
     }
 
-    // showScreen
-
-    // toDesktopPreview
-
-    // toMobilePreview
-
-    // createScreenControls
-
     /**
      *
      * @param {MutApp.Screen} param.created
@@ -231,7 +147,6 @@ var ScreenManager = {};
                 screen: param.deleted
             });
         }
-
     }
 
     /**
@@ -261,7 +176,7 @@ var ScreenManager = {};
     function init(param) {
         param = param || {};
         _appType = param.appType;
-        _onScreenSelect = param.onScreenSelect;
+        _onScreenEvents = param.onScreenEvents;
         $('#id-slides_cnt').empty();
     }
 

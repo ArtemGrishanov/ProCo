@@ -2816,7 +2816,8 @@ MutAppPropertyArray.prototype.deleteElement = function(position) {
  * @param [number] position
  */
 MutAppPropertyArray.prototype.addElementByPrototype = function(protoFunctionPath, position) {
-    if (this.prototypes.indexOf(protoFunctionPath) >= 0) {
+    var prt = this._getPrototype(protoFunctionPath);
+    if (prt !== null) {
         var results = this._application.getPropertiesBySelector(protoFunctionPath);
         if (results && results.length > 0 && _.isFunction(results[0].value)) {
             // clone to be sure it's new JSON.parse(JSON.stringify())
@@ -2831,6 +2832,19 @@ MutAppPropertyArray.prototype.addElementByPrototype = function(protoFunctionPath
     else {
         console.error('MutAppPropertyArray.addElementByPrototype: prototype \''+protoFunctionPath+'\' is not specified for this property \''+this.propertyString+'\'');
     }
+};
+/**
+ * Найти описание прототипа, если таковой если в свойстве MutAppPropertyArray
+ * @param {string} protoFunctionPath например, 'id=pm quizProto1'
+ * @private
+ */
+MutAppPropertyArray.prototype._getPrototype = function(protoFunctionPath) {
+    for (var i = 0; i < this.prototypes.length; i++) {
+        if (this.prototypes[i].protoFunction === protoFunctionPath) {
+            return this.prototypes[i];
+        }
+    }
+    return null;
 };
 /**
  * Сериализовать MutAppPropertyArray

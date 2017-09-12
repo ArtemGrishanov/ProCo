@@ -23,7 +23,11 @@ var PersonalityApp = MutApp.extend({
         },
         "id=pm quiz": {
             label: {RU:'Вопросы теста',EN:'Personality quiz'},
-            prototypes: ['id=pm quizProto1'],
+            prototypes: [{
+                protoFunction: 'id=pm quizProto1', // функция в приложении, которая вернет новый объект
+                label: {RU:'Текстовый вопрос',EN:'Text question'},
+                img: 'products/test_new/i/editor/Icon-text-vopros.png'
+            }],
             children: {
                 "id=pm quiz.{{number}}.question.text": {
 
@@ -32,7 +36,11 @@ var PersonalityApp = MutApp.extend({
         },
         "id=pm results": {
             label: {RU:'Результаты теста',EN:'Personality results'},
-            prototypes: ['id=pm resultProto1'],
+            prototypes: [{
+                protoFunction:'id=pm resultProto1',
+                label: {RU:'Результат',EN:'Result'},
+                img: null
+            }],
             children: {
                 "id=pm results.{{number}}.title": {
 

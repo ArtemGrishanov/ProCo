@@ -11,8 +11,8 @@ function Slide(param) {
         // необходимо указать тип проекта например: memoriz, personality и тп
         throw new Error('Slide: this.additionalParam.appType must be specified');
     }
-    if (!this.additionalParam.onClickCallback) {
-        throw new Error('Slide: this.additionalParam.onClickCallback must be specified');
+    if (!this.additionalParam.onScreenEvents) {
+        throw new Error('Slide: this.additionalParam.onScreenEvents must be specified');
     }
     param.additionalParam.propertyString = this.propertyString; // нужно для this.setSettings()
     this.setSettings(param.additionalParam);
@@ -29,7 +29,9 @@ _.extend(Slide.prototype, AbstractControl);
 Slide.prototype.onMouseDown = function() {
     // переключение активного экрана в редакторе начинается здесь - пользователь кликает по контролу Slide
     var p = (Array.isArray(this.propertyString)) ? this.propertyString.join(',') : this.propertyString;
-    this.additionalParam.onClickCallback(p);
+    this.additionalParam.onScreenEvents(ScreenManager.EVENT_SCREEN_SELECT, {
+        screenId: p
+    });
 };
 
 /**

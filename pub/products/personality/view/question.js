@@ -17,7 +17,7 @@ var QuestionScreen = MutApp.Screen.extend({
      * Это свойство надо понимать так:
      * Порядок этой вот группы экранов questions зависит от этого массива 'id=tm quiz'
      */
-    arrayAppPropertyString: 'id=tm quiz',
+    arrayAppPropertyString: 'id=pm quiz',
     /**
      * Тег для группировки экранов в редакторе
      * @see MutApp

@@ -7,7 +7,15 @@
  * 3) Клонирование
  * 4) Удаление
  *
+ * Не является похожим на все остальные контолы, потому что не принимает значение setValue/getValue и не меняет его.
+ * Имеет отличный от AbstractControl-контролов интерфейс: addScreen, updateScreen, deleteScreen
+ *
+ * MutAppArrayProperty - это лишь соответствие с массивом экранов _slideInfo.
+ * Задача этого контрола при изменении _slideInfo вызывать колбеки об изменении
+ *
+ * Тогда кто будет менять свойства выше?
  */
+
 function SlideGroupControl(param) {
     this.init(param);
     //TODO надо высчитать вместе с отступами
@@ -26,11 +34,12 @@ function SlideGroupControl(param) {
     this.mousePressed = false;
     this.draggingElement = null;
     this.draggingElementId = null;
+    this.dragElementStartIndex = undefined;
+    this.dragElementNewIndex = undefined;
     this.isDragging = false;
     this.elemPosition = null;
     this.startPosition = null;
     this.startMousePosition = null;
-    this.propertyValueMap = null;
     this.loaded = false;
 
     /**
@@ -43,6 +52,9 @@ function SlideGroupControl(param) {
     }
     else {
         throw new Error('SlideGroupControl: groupName does nor specified in addiionalParam.');
+    }
+    if (!param.additionalParam.onScreenEvents) {
+        throw new Error('SlideGroupControl: onScreenEvents does nor specified in addiionalParam.');
     }
     /**
      * Надпись на естественном языке рядом с группой экранов
@@ -65,7 +77,7 @@ function SlideGroupControl(param) {
     $(document).mouseup(this.onMouseUp.bind(this));
     this.loaded = true;
     // таймер на проверку новой позиции при перетаскивании
-    setInterval(this.checkPos.bind(this),100);
+    this.checkPosInterval = setInterval(this.checkPos.bind(this),100);
 }
 
 /**
@@ -73,6 +85,25 @@ function SlideGroupControl(param) {
  * @type {AbstractControl|*}
  */
 SlideGroupControl.prototype = AbstractControl;
+
+SlideGroupControl.prototype.getValue = function() {
+
+    return null;
+};
+
+SlideGroupControl.prototype.setValue = function(value) {
+    if (Array.isArray(value) === true) {
+
+    }
+    else {
+        throw new Error('SlideGroupControl.setValue: unsupported value type');
+    }
+};
+
+SlideGroupControl.prototype.destroy = function() {
+    clearInterval(this.checkPosInterval);
+    this.$directive.remove();
+};
 
 /**
  * Собрать список экранов MutApp.Screen для этого контрола
@@ -123,20 +154,15 @@ SlideGroupControl.prototype.addScreen = function(param) {
         );
     }
 
-    var screens = this.getScreens();
-    for (var n = 0; n < screens.length; n++) {
-        if (screens[n].id === param.screen.id) {
+    // посмотреть существующие экраны
+    var existedScreens = this.getScreens();
+    for (var n = 0; n < existedScreens.length; n++) {
+        if (existedScreens[n].id === param.screen.id) {
             throw new Error('SlideGroupControl.addScreen: screen with id \''+param.screen.id+'\' already exist in this group \''+this.groupName+'\'');
         }
     }
-    // обновить аттрибуты группы, теоритически новый экран может их изменить
-    this.collapsed = this.isCollapsedScreens(screens);
-    this.draggable = this.isDraggableScreens(screens);
-    this.canAdd = this.canAddScreens(screens);
-    this.canDelete = this.canDeleteScreens(screens);
-    this.canClone = this.canCloneScreens(screens);
 
-    if (screens.length > 0 && this.collapsed !== true) {
+    if (existedScreens.length > 0 && this.collapsed !== true) {
         // уже есть по крайне мере один элемент и будет добавление сейчас: модификатор массива
         this.$directive.addClass('__array');
     }
@@ -157,6 +183,14 @@ SlideGroupControl.prototype.addScreen = function(param) {
 
     // удалить неиспользуемые
     this.deleteUnusedSlides();
+
+    // обновить аттрибуты группы, теоритически новый экран может их изменить
+    var actualScreens = this.getScreens();
+    this.collapsed = this.isCollapsedScreens(actualScreens);
+    this.draggable = this.isDraggableScreens(actualScreens);
+    this.canAdd = this.canAddScreens(actualScreens);
+    this.canDelete = this.canDeleteScreens(actualScreens);
+    this.canClone = this.canCloneScreens(actualScreens);
 
     // привести UI контрола в порядок в соответствии с этими данными
     this.arrangeItems({
@@ -228,86 +262,6 @@ SlideGroupControl.prototype.deleteScreen = function(param) {
         throw new Error('SlideGroupControl.deleteScreen: screen not found');
     }
 };
-
-/**
- * Обработчик на изменение экрана.
- * Вызывается редактором Editor извне
- */
-//SlideGroupControl.prototype.screenUpdate = function(event, data) {
-//    log('SlideGroupControl.screenUpdate: ' + event);
-//    this.updateScreens();
-//}
-/**
- * Обновить экраны на основе информации из MutApp приложения
- *
- * У этого контрола есть такие данные:
- * 1) Массив Slide (превью одного экрана), он их сам и создает сколько надо и когда надо
- * 2) Editor.getEditedApp().getScreenIds()
- * 3) требования к быстродействию:
- *      - перетаскивания, добавления/удаления Slides должны происходить гладко
- */
-//SlideGroupControl.prototype.updateScreens = function() {
-//    var appScreenIds = Editor.getEditedApp().getScreenIds();
-//    if (this.$directive && appScreenIds.length > 0) {
-//        // подготовим для использования компоненты
-//        for (var i = 0; i < this._slidesInfo.length; i++) {
-//            this._slidesInfo[i].used = false;
-//        }
-//
-//        // отсеяли лишние и оставили только экраны с группой this.groupName
-//        var myScreens = [];
-//        var myScreenIds = [];
-//        for (var i = 0; i < appScreenIds.length; i++) {
-//            var scr = Editor.getEditedApp().getScreenById(appScreenIds[i]);
-//            if (scr.group === this.groupName) {
-//                myScreens.push(scr);
-//                myScreenIds.push(appScreenIds[i]);
-//            }
-//        }
-//
-//        if (myScreens && myScreens.length > 0) {
-//            this.$directive.find('.js-slide_group_name').text(
-//                (typeof myScreens[0].name === 'string') ? myScreens[0].name: myScreens[0].name[App.getLang()]
-//            );
-//        }
-//
-//        this.collapsed = this.isCollapsedScreens(myScreens);
-//        this.draggable = this.isDraggableScreens(myScreens);
-//        this.canAdd = this.canAddScreens(myScreens);
-//        this.canDelete = this.canDeleteScreens(myScreens);
-//        this.canClone = this.canCloneScreens(myScreens);
-//
-//        if (myScreens && myScreens.length > 1 && this.collapsed !== true) {
-//            this.$directive.addClass('__array');
-//        }
-//
-//        // смотрим сколько слайдов нам надо под экраны
-//        var mySlides = [];
-//        if (this.collapsed === true) {
-//            // один контрол нужен
-//            myScreenIds = [myScreenIds.join(',')]; // групповой ид экрана
-//        }
-//        this._items = [];
-//        for (var i = 0; i < myScreenIds.length; i++) {
-//            var sId = myScreenIds[i];
-//            var si = this.useSlide(sId);
-//            this._items.push(si.$parent);
-//        }
-//
-//        // удалить неиспоьзуемые
-//        this.deleteUnusedSlides();
-//
-//        // привести UI контрола в порядок в соответствии с этими данными
-//        this.arrangeItems({
-//            collapsed: this.collapsed,
-//            draggable: this.draggable,
-//            canAdd: this.canAdd,
-//            canDelete: this.canDelete,
-//            canClone: this.canClone,
-//            items: this._items
-//        });
-//    }
-//};
 
 /**
  * определение - надо ли сжимать группу или нет
@@ -464,7 +418,7 @@ SlideGroupControl.prototype.useSlide = function(param) {
                 appType: this.additionalParam.appType,
                 screen: param.screen,
                 cssString: param.cssString,
-                onClickCallback: this.additionalParam.onScreenSelect
+                onScreenEvents: this.additionalParam.onScreenEvents
             }
         });
         var dataId = Math.random().toString();
@@ -569,60 +523,21 @@ SlideGroupControl.prototype.arrangeItems = function(params) {
 };
 
 /**
+ * Добавить новый экран в конец или на указанную позицию
+ * Будет вызван колбек вовне. Сам SlideGroupControl не работает с приложением и MutAppProperty
  *
- * @param position
- * @param newItem может быть указан (при клонировании) или не указан
+ * @param {number} position - позиция в которую добавить элемент
+ * @param {} newItem может быть указан (при клонировании) или не указан
  */
 SlideGroupControl.prototype.addNewItem = function(position, newItem) {
     if (this.canAdd === true) {
-        // если позиция не задана, элемент будет добавлен в конец массива
-        var p = (isNumeric(position) === true) ? position : undefined;
-        var ap = Engine.getAppProperty(this.propertyString);
-        var pp = Engine.getPrototypesForAppProperty(ap);
-        if (!newItem) {
-            // нужно выбрать прототип для нового элемента
-            if (pp && pp.length > 0) {
-                //TODO если доступен один прототип то не надо диалога, сразу добавить
-                var selectOptions = [];
-                for (var i = 0; i < pp.length; i++) {
-                    selectOptions.push({
-                        id: pp[i].key,
-                        label: pp[i].label,
-                        icon: pp[i].img
-                    });
-                }
-                Editor.showSelectDialog({
-                    caption: App.getText('new_slide'),
-                    options: selectOptions,
-                    callback: (function(selectedOptionId) {
-                        if (selectedOptionId) {
-                            //TODO refactor
-                            for (var j = 0; j < pp.length; j++) {
-                                if (pp[j].key == selectedOptionId) {
-                                    Engine.addArrayElement(ap, pp[j].getValue(), p);
-                                    if (ap.updateScreens === true) {
-                                        Editor.syncUIControlsToAppProperties([]);
-                                    }
-                                }
-                            }
-                        }
-                    }).bind(this)
-                });
-            }
-            else {
-                log('There is no prototypes for \''+this.propertyString+'\'', true);
-                return;
-            }
+        var eventData = {
+            propertyString: this.propertyString
+        };
+        if (isNumeric(position) === true) {
+            eventData.position = position;
         }
-        if (newItem) {
-            // newItem определили (из прототипа либо склонировали)
-            Engine.addArrayElement(ap, newItem, p);
-            if (ap.updateScreens === true) {
-                //TODO запросить показ нового добавленного экрана, сейчас старый активен
-                //TODO почему этот синк руками нельзя вызвать?
-                Editor.syncUIControlsToAppProperties([]);
-            }
-        }
+        this.additionalParam.onScreenEvents(ScreenManager.EVENT_ADD_SCREEN, eventData);
     }
 };
 /**
@@ -657,22 +572,22 @@ SlideGroupControl.prototype.onCloneItemClick = function(e) {
 };
 SlideGroupControl.prototype.deleteItem = function(position) {
     if (this.canDelete === true) {
-        if (position >= 0) {
-            var ap = Engine.getAppProperty(this.propertyString);
-            Engine.deleteArrayElement(ap, position);
-            if (ap.updateScreens === true) {
-                //TODO запросить показ ближайшего экрана, предыдущего от удаленного
-                Editor.syncUIControlsToAppProperties([]);
-            }
+        var eventData = {
+            propertyString: this.propertyString
+        };
+        if (isNumeric(position) === true) {
+            eventData.position = position;
         }
+        this.additionalParam.onScreenEvents(ScreenManager.EVENT_DELETE_SCREEN, eventData);
     }
 };
 SlideGroupControl.prototype.onMouseDown = function(e) {
     if (this.draggable === true) {
         this.draggingElement = $(e.currentTarget);
         this.draggingElementId = this.draggingElement.attr('data-id');
+        this.dragElementStartIndex = this.getItemIndexById(this.draggingElementId); // индекс в начале перетаскивания
+        this.dragElementNewIndex = undefined;
         this.elemPosition = null;
-        //this.isDragging = true;
         this.startPosition = $(e.currentTarget).position();
         this.startMousePosition = {
             left: e.pageX,
@@ -689,22 +604,6 @@ SlideGroupControl.prototype.onMouseMove = function(e) {
         if (this.originZIndex === undefined) {
             this.originZIndex = this.draggingElement.css('zIndex');
             this.draggingElement.css('zIndex',config.editor.ui.arrayControlDragZIndex);
-        }
-        if (this.propertyValueMap === null) {
-            var ap = Engine.getAppProperty(this.propertyString);
-            if (ap.propertyValue.length !== this.items.length) {
-                log('Property value length and items length are different', true);
-                return;
-            }
-            this.propertyValueMap = [];
-            // запоминаем соответствие порядка между элементами appProperty и вью в этом контроле
-            // проверка будет позднее в конце перетаскивания
-            for (var i = 0; i < ap.propertyValue.length; i++) {
-                this.propertyValueMap.push({
-                    valueElem: ap.propertyValue[i],
-                    item: this.items[i]
-                });
-            }
         }
         this.elemPosition = {
             top: (e.pageY-this.startMousePosition.top)+this.startPosition.top,
@@ -724,12 +623,7 @@ SlideGroupControl.prototype.onMouseUp = function(e) {
     if (this.isDragging === true) {
         this.draggingElement.css('zIndex', this.originZIndex);
         this.originZIndex = undefined;
-        var newPositionIndex = 0;
-        for (var i = 0; i < this.items.length; i++) {
-            if (this.draggingElementId === this.items[i].attr('data-id')) {
-                newPositionIndex=i;
-            }
-        }
+        this.dragElementNewIndex = this.getItemIndexById(this.draggingElementId); // новый индекс после перетаскивания
         this.draggingElement = null;
         this.draggingElementId = null;
         this.isDragging = false;
@@ -740,13 +634,14 @@ SlideGroupControl.prototype.onMouseUp = function(e) {
         // quizScr0 всегда будет первым экраном (так задаются идишки в приложении) не важно как он выглядит,
         //  хотя с точки зрения пользователя вопрос сменился (визуально)
         // поэтому и надо переключать экран на другой, то есть на тот на чью позицию переместили вопрос
-//        activeScreens = [this._slidesInfo[newPositionIndex].slide.propertyString];
-
-        if (this.isOrderWasChanged() === true) {
-            // изменили порядок при перетаскиввании, надо изменить теперь свойство
-            this.setValue();
+        if (isNumeric(this.dragElementStartIndex) === true && this.dragElementStartIndex !== this.dragElementNewIndex) {
+            var eventData = {
+                propertyString: this.propertyString,
+                elementIndex: this.dragElementStartIndex,
+                newElementIndex: this.dragElementNewIndex
+            };
+            this.additionalParam.onScreenEvents(ScreenManager.EVENT_CHANGE_POSITION, eventData);
         }
-        this.propertyValueMap = null;
     }
     this.mousePressed = false;
 };
@@ -761,7 +656,7 @@ SlideGroupControl.prototype.checkPos = function() {
             this.arrangeViews();
         }
     }
-},
+};
 /**
  * Проверить, можно ли поместить элемент в новую позицию
  * Если да, поместить. Изменяется массив this.items. Вьюхи позже
@@ -781,7 +676,7 @@ SlideGroupControl.prototype.moveInNewPosition = function(id, leftE) {
         }
     }
     return false;
-},
+};
 /**
  *
  */
@@ -792,7 +687,7 @@ SlideGroupControl.prototype.getItemIndexById = function(id){
         }
     }
     return -1;
-},
+};
 /**
  * Расположить элементы slide_directive_wr, которые хранятся в массиве this.items
  * по позициям в this.leftPositions
@@ -804,7 +699,7 @@ SlideGroupControl.prototype.arrangeViews = function() {
             this.items[i].css('left',this.leftPositions[i]+'px');
         }
     }
-},
+};
 SlideGroupControl.prototype.onAddQuickButtonClick = function(e) {
     var ap = Engine.getAppProperty(this.propertyString);
     var pp = Engine.getPrototypesForAppProperty(ap);
@@ -818,45 +713,4 @@ SlideGroupControl.prototype.onAddQuickButtonClick = function(e) {
     else {
         log('There is no prototypes for \''+this.propertyString+'\'', true);
     }
-},
-/**
- * Проверить соответствие элементов перед началом перетаскивания и после
- */
-SlideGroupControl.prototype.isOrderWasChanged = function() {
-    if (this.propertyValueMap) {
-        for (var i = 0; i < this.propertyValueMap.length; i++) {
-            if (this.propertyValueMap[i].item !== this.items[i]) {
-                // значит элементы были переставлены местами
-                // надо собрать новый массив и установить новое значение appProperty
-                // TODO нужен lock на appProperty чтобы его не могли изменить другие контролы, тесты и так далее
-                // TODO так как операция редактирования может быть очень длинной и в это время что-то может произойти со значением свойства
-
-                return true;
-            }
-        }
-    }
-    return false;
-},
-/**
- * Сделать новый массив, с новым порядком элементов, и установить его в appProperty
- */
-SlideGroupControl.prototype.setValue = function() {
-    var newValue = [];
-    for (var i = 0; i < this.items.length; i++) {
-        for (var j = 0; j < this.propertyValueMap.length; j++) {
-            if (this.items[i] === this.propertyValueMap[j].item) {
-                newValue[i] = this.propertyValueMap[j].valueElem;
-                break;
-            }
-        }
-    }
-    var ap = Engine.getAppProperty(this.propertyString);
-    setTimeout(function() {
-        // Здесь необходимо делать пересборку экранов, так как надо рендерить заново с учетом порядка
-        // например такие конструкции как quiz.{{currentQuestion}}.text и тому подобное
-        Engine.setValue(ap, newValue, {
-            updateScreens:true
-        });
-        Editor.syncUIControlsToAppProperties();
-    },100);
-}
+};
