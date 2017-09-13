@@ -98,9 +98,9 @@
                             <div id="id-control_cnt" class="quick_controls_cnt">
                                 <!-- Здесь располагаются "быстрые" контролы, которые показываются поверх продукта при клике или наведении куда-то -->
                             </div>
-                            <iframe id="id-product_screens_cnt" class="workspace_screens_iframe" src="product_cnt.html" style="">
-                                <!-- Сюда добавляем программно view различных экранов промо приложения -->
-                            </iframe>
+                            <div id="id-product_iframe_cnt" class="workspace_screens_iframe">
+                                <!-- Сюда загружаем mutapp приложение с помощью editorLoader -->
+                            </div>
                         </div>
                         <div id="id-hor_scroll_left" class="hor_scroll" style="display:none"></div>
                         <div id="id-hor_scroll_right" class="hor_scroll __right" style="display:none"></div>
@@ -133,8 +133,8 @@
         </div>
         <div class="scr_wr">
             <div class="published_proj_back">
-                <div id="id-product_iframe_cnt" class="proto_wr __mob">
-                    <!-- Сюда добавляем программно айфрейм с прототипом для редактирования -->
+                <div id="id-app_preview" class="proto_wr __mob">
+                    <!-- Сюда помещаем программно айфрейм для предпросмотра -->
                 </div>
                 <div class="social_btns_cnt">
                     <!-- TODO -->
@@ -326,10 +326,12 @@
     <script type="text/javascript" src="lib/rasterizeHTML.allinone.js"></script>
     <script type="text/javascript" src="lib/jpeg_encoder.js"></script>
     <script type="text/javascript" src="lib/clipboard.js"></script>
-    <script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="lib/bootstrap/js/ace.min.js"></script>
-    <script type="text/javascript" src="lib/bootstrap/js/ace-elements.min.js"></script>
-    <script type="text/javascript" src="lib/bootstrap/js/bootstrap-colorpicker.min.js"></script>
+    <script type="text/javascript" src="lib/underscore.js"></script>
+    <script type="text/javascript" src="lib/jscolor.js"></script>
+    <!--<script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>-->
+    <!--<script type="text/javascript" src="lib/bootstrap/js/ace.min.js"></script>-->
+    <!--<script type="text/javascript" src="lib/bootstrap/js/ace-elements.min.js"></script>-->
+    <!--<script type="text/javascript" src="lib/bootstrap/js/bootstrap-colorpicker.min.js"></script>-->
     <!-- build:js editor.min.js -->
     <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/model/app.js"></script>
@@ -342,11 +344,6 @@
     <script type="text/javascript" src="js/util/publisher.js"></script>
     <script type="text/javascript" src="products/fbPanorama/fbPanoramaPublisher.js"></script>
     <script type="text/javascript" src="js/util/shareImagesService.js"></script>
-    <script type="text/javascript" src="js/engine/engine.js"></script>
-    <script type="text/javascript" src="js/engine/appProperty.js"></script>
-    <script type="text/javascript" src="js/engine/appScreen.js"></script>
-    <script type="text/javascript" src="js/engine/appTrigger.js"></script>
-    <script type="text/javascript" src="js/engine/appPropertyPrototype.js"></script>
     <script type="text/javascript" src="js/view/selectDialog.js"></script>
     <script type="text/javascript" src="js/view/publishDialog.js"></script>
     <script type="text/javascript" src="controls/DirectiveLoader.js"></script>
@@ -375,6 +372,9 @@
     <script type="text/javascript" src="js/view/modals/previewShareImageModal.js"></script>
     <script type="text/javascript" src="js/view/modals/requestFBPublishPermissions.js"></script>
     <script type="text/javascript" src="js/view/modals/modal.js"></script>
+    <script type="text/javascript" src="js/editorui/editorLoader.js"></script>
+    <script type="text/javascript" src="js/editorui/screenManager.js"></script>
+    <script type="text/javascript" src="js/editorui/controlManager.js"></script>
     <script type="text/javascript" src="js/editorui/workspace.js"></script>
     <script type="text/javascript" src="js/editorui/resourceManager.js"></script>
     <script type="text/javascript" src="js/editorui/quickControlPanel.js"></script>
@@ -404,7 +404,9 @@
             }
         })
     </script>
-    <script>fbq('track', 'editor.html');</script>
-    <!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) {(w[c] = w[c] || []).push(function() {try {w.yaCounter37720792 = new Ya.Metrika({id:37720792,clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});} catch(e) { }});var n = d.getElementsByTagName("script")[0],s = d.createElement("script"),f = function () { n.parentNode.insertBefore(s, n); };s.type = "text/javascript";s.async = true;s.src = "https://mc.yandex.ru/metrika/watch.js";if (w.opera == "[object Opera]") {d.addEventListener("DOMContentLoaded", f, false);} else { f(); }})(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="https://mc.yandex.ru/watch/37720792" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
+    <!--<script>fbq('track', 'editor.html');</script>-->
+    <!-- Yandex.Metrika counter -->
+    <!--<script type="text/javascript">(function (d, w, c) {(w[c] = w[c] || []).push(function() {try {w.yaCounter37720792 = new Ya.Metrika({id:37720792,clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});} catch(e) { }});var n = d.getElementsByTagName("script")[0],s = d.createElement("script"),f = function () { n.parentNode.insertBefore(s, n); };s.type = "text/javascript";s.async = true;s.src = "https://mc.yandex.ru/metrika/watch.js";if (w.opera == "[object Opera]") {d.addEventListener("DOMContentLoaded", f, false);} else { f(); }})(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="https://mc.yandex.ru/watch/37720792" style="position:absolute; left:-9999px;" alt="" /></div></noscript>-->
+    <!-- /Yandex.Metrika counter -->
 </body>
 </html>

@@ -170,3 +170,27 @@ QUnit.test("MutApp test: Screens in edit mode. data-app-property attribute", fun
         assert.ok($.contains(startScr.$el[0], lp.uiElement));
     }
 });
+
+/**
+ * Контроль количества экранов сразу же после десериализации
+ */
+QUnit.test("MutApp test: Screens after deserialization", function( assert ) {
+    var app2 = new PersonalityApp({
+        defaults: null,
+        mode: 'edit'
+    });
+    app2.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
+    app2.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
+
+    var strApp2Serialized = app2.serialize();
+
+    var app3 = new PersonalityApp({
+        defaults: null,
+        mode: 'edit',
+        defaults: strApp2Serialized
+    });
+
+    assert.ok(app3.model.attributes.quiz.getValue().length === 2);
+    assert.ok(app3._screens.length === 3);
+
+});

@@ -256,7 +256,11 @@ QUnit.test("Editor.Controls: ControlManager filtering, uiElement linking", funct
 });
 
 
-
+/**
+ * Продвинутый тест, близкий к реальной работе в редакторе
+ * Поддержка событий от ScreenManager (onScreenEvents function)
+ *
+ */
 QUnit.test("Editor.Controls: SlideGroupControl", function( assert ) {
     var done = assert.async();
 
@@ -310,8 +314,6 @@ QUnit.test("Editor.Controls: SlideGroupControl", function( assert ) {
                 assert.ok(ScreenManager._test_getSlideGroupControlsCount()===2);
                 assert.ok(ScreenManager._test_getSlideGroupControl(gn).groupName === 'questions');
                 assert.ok(ScreenManager._test_getScreens(gn).length === 1); // -1 screen
-
-                //todo serialization/deserialization
 
                 done();
 
@@ -422,6 +424,100 @@ QUnit.test("Editor.Controls: SlideGroupControl", function( assert ) {
                 }
                 var ap = app2.getProperty(data.propertyString);
                 ap.changePosition(data.elementIndex, data.newElementIndex);
+                break;
+            }
+        }
+    }
+
+});
+
+
+/**
+ * Снова тест с контролами экранов.
+ * приложение десериализуется и проверяется как контрол показывает экраны
+ *
+ */
+QUnit.test("Editor.Controls: SlideGroupControl deserialization", function( assert ) {
+    var done = assert.async();
+
+    directiveLoader.load(function() {
+        assert.ok(directiveLoader.getDirective('colorpicker'));
+
+        editorLoader.load({
+
+            appName: 'personality',
+            container: $('#id-product_iframe_cnt_screens_qunittest'),
+            onload: function() {
+                var appIframe = editorLoader.getIframe();
+                var appWindow = appIframe.contentWindow;
+                window.MutApp = appWindow.MutApp;
+                $('#id-product_iframe_cnt_screens_qunittest').show();
+
+                var app2 = editorLoader.startApp({
+                    defaults: null,
+                    mode: 'edit'
+                    // appChangeCallbacks: not needed
+                });
+                $(appIframe).width(app2.width).height(app2.height);
+                window.app2 = app2; // make it global for test
+                app2.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
+                app2.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
+
+                setTimeout(function() {
+                    // serialization/deserialization
+                    var strApp2Serialized = app2.serialize();
+
+                    ScreenManager.init({
+                        onScreenEvents: function() {
+                            // do nothing
+                        },
+                        appType: 'personality'
+                    });
+
+                    var app3 = editorLoader.startApp({
+                        defaults: strApp2Serialized,
+                        mode: 'edit',
+                        appChangeCallbacks: onAppChanged
+                    });
+                    window.app3 = app3; // make it global for test
+                    var gn = app2.getScreenById('questionScreen1').group;
+                    assert.ok(ScreenManager._test_getSlideGroupControlsCount()===2);
+                    assert.ok(ScreenManager._test_getSlideGroupControl(gn).groupName === 'questions');
+                    assert.ok(ScreenManager._test_getScreens(gn).length === 2); // +1 screen
+
+                    done();
+                }, 2000);
+
+            } // editorLoader.onload
+        });
+    });
+
+    /**
+     * Обработчик событий о смене экранов
+     *
+     * @param event
+     */
+    function onAppChanged(event, data) {
+        var app = data.application;
+        switch (event) {
+            case MutApp.EVENT_SCREEN_CREATED: {
+                ScreenManager.update({
+                    created: data.application.getScreenById(data.screenId),
+                    cssString: data.application.getCssRulesString()
+                });
+                break;
+            }
+            case MutApp.EVENT_SCREEN_RENDERED: {
+                ScreenManager.update({
+                    rendered: data.application.getScreenById(data.screenId),
+                    cssString: data.application.getCssRulesString()
+                });
+                break;
+            }
+            case MutApp.EVENT_SCREEN_DELETED: {
+                ScreenManager.update({
+                    deleted: data.application.getScreenById(data.screenId)
+                });
                 break;
             }
         }

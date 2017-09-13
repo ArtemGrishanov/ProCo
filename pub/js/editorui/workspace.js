@@ -57,7 +57,7 @@ var workspace = {};
      * @private
      * @param {DOMElement} $elementOnAppScreen
      */
-    function _selectElementOnAppScreen($elementOnAppScreen) {
+    function selectElementOnAppScreen($elementOnAppScreen) {
         $selectedElementOnAppScreen = $elementOnAppScreen;
         if ($selectedElementOnAppScreen === null) {
             // сброс выделения
@@ -157,7 +157,7 @@ var workspace = {};
      * @private
      */
     function _onRegisteredElementClick(e) {
-        _selectElementOnAppScreen($(e.currentTarget));
+        selectElementOnAppScreen($(e.currentTarget));
         e.preventDefault();
         e.stopPropagation();
     }
@@ -223,13 +223,14 @@ var workspace = {};
         _onSelectElementCallback = param.onSelectElementCallback;
         $('#id-workspace').click(function(){
             // любой клик по документу сбрасывает фильтр контролов
-            _selectElementOnAppScreen(null);
+            selectElementOnAppScreen(null);
         });
     }
 
     global.init = init;
     global.showScreen = showScreen;
     global.setAppSize = setAppSize;
+    global.selectElementOnAppScreen = selectElementOnAppScreen;
     //global.updateSelectionPosition = updateSelectionPosition;
 
 })(workspace);

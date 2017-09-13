@@ -1894,7 +1894,8 @@ MutApp.Util = {
      * @return {boolean}
      */
     isMutAppProperty: function(obj) {
-        return obj instanceof MutAppProperty || obj instanceof MutAppPropertyArray || obj instanceof CssMutAppProperty;
+        return obj instanceof MutAppProperty || obj instanceof MutAppPropertyArray
+            || obj instanceof CssMutAppProperty || obj instanceof MutAppPropertyPosition;
     },
 
     /**
@@ -1905,6 +1906,16 @@ MutApp.Util = {
      */
     isMutAppPropertyArray: function(obj) {
         return obj instanceof MutAppPropertyArray;
+    },
+
+    /**
+     * Проверить, что объект является isMutAppPropertyPosition
+     *
+     * @param {*} obj
+     * @return {boolean}
+     */
+    isMutAppPropertyPosition: function(obj) {
+        return obj instanceof MutAppPropertyPosition;
     },
 
     /**
@@ -2648,7 +2659,7 @@ MutAppProperty.prototype.deserialize = function(data) {
  */
 MutAppProperty.prototype.setValue = function(newValue) {
     if (this._validateDataType(newValue) !== true) {
-        throw new Error('MutAppProperty.constructor: MutAppProperty implements only primitives: Number, Boolean, String, Undefined, Null. For array use MutAppPropertyArray');
+        throw new Error('MutAppProperty.setValue: MutAppProperty invalid data type \'' + (typeof newValue) + '\' in property \'' + this.propertyString + '\'');
     }
     if (this._value !== newValue) {
         this._value = newValue;

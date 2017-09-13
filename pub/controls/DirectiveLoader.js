@@ -97,12 +97,15 @@ var directiveLoader = {};
      * @param {Function} callback - будет вызвана после окончания загрузки
      */
     function load(callback) {
+        resultCallback = callback;
         if (allDirectiveNames === null) {
-            resultCallback = callback;
             allDirectiveNames = _builAllDirectiveNames();
             for (var i = 0; i < allDirectiveNames.length; i++) {
                 _createLoadTask(allDirectiveNames[i]);
             }
+        }
+        else if (resultCallback) {
+            resultCallback();
         }
     }
 

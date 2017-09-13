@@ -33,6 +33,12 @@ var Editor = {};
      */
     var openedTemplateCollection = new TemplateCollection();
     /**
+     * Сериализованные значени mutappproeprty свойств в приложении
+     * Сначала получаются из шаблона
+     * @type {string}
+     */
+    var serializedProperties = null;
+    /**
      * Дата публикации во время сессии
      * Если публикации не было во время сесии - остается null
      * @type {string}
@@ -178,16 +184,15 @@ var Editor = {};
         appId = getUniqId().substr(22);
         appTemplate = null;
         appName = null;
-        $('#id-workspace').click(function(){
-            // любой клик по документу сбрасывает фильтр контролов
-            selectElementOnAppScreen(null);
-        });
         $('#id-app_preview_img').change(function() {
             // загрузка пользовательского превью для шаблона
             // сразу без превью - аплоад
             uploadUserCustomTemplatePreview();
         });
-        workspace.init();
+        workspace.init({
+            onSelectElementCallback: onSelectElementCallback
+        });
+        ControlManager.setChangeValueCallback(onControlValueChanged);
         resourceManager = new ResourceManager();
         quickControlPanel = new QuickControlPanel();
         window.onbeforeunload = confirmExit;
@@ -201,7 +206,6 @@ var Editor = {};
         $('.js-slide_arr_left').mousedown(toLeftArrSlideClick);
         $('.js-slide_arr_right').mousedown(toRightArrSlideClick);
         setInterval(slidesArrowControlInterval, 30);
-
         // установка placeholder по особому, так как это атрибут
         $('.js-proj_name').attr('placeholder', App.getText('enter_project_name'));
 
@@ -217,14 +221,15 @@ var Editor = {};
                 // если ссылки на шаблон нет, то открываем по имени промо-проекта, если оно есть
                 var n = getQueryParams(document.location.search)[config.common.appNameParamName] || param[config.common.appNameParamName];
                 if (n) {
+                    appName = n;
                     editorLoader.load({
                         appName: n,
                         container: $('#id-product_iframe_cnt'),
-                        onload: onProductIframeLoaded
+                        onload: onProductIframeLoaded.bind(this)
                     });
                 }
                 else {
-                    alert('Выберите шаблон для открытия');
+                    Modal.showMessage({text: App.getText('select_template')});
                 }
             }
         });
@@ -273,19 +278,19 @@ var Editor = {};
      * iFrame промо проекта был загружен. Получаем из него document и window
      */
     function onProductIframeLoaded() {
-        editedApp = editorLoader.getIframe().contentWindow.app;
         // скрыть контролы экранов для некоторых проектов. Например для панорам они не нужны
         if (config.products[appName].hideScreenControls === true) {
             $('#id-screen_controls_cnt').hide();
         }
+        ScreenManager.init({
+            onScreenEvents: onScreenEvents,
+            appType: appName
+        });
         // запуск движка с передачей информации о шаблоне
 //        var params = {
 //            appName: appName,
 //            appStorageString: getQueryParams(document.location.search)[config.common.appStorageParamName]
 //        };
-        if (appTemplate) {
-            params.values = appTemplate.propertyValues;
-        }
 
         // установить хуки которые есть в дескрипторе. Может не быть вовсе
         //hookRunner.setHooks(iframeWindow.descriptor.hooks);
@@ -308,8 +313,6 @@ var Editor = {};
             });
         }
 
-        updateAppContainerSize();
-
         // нужна ширина для горизонтального выравнивания
 //        $('#id-product_cnt')
 //            //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
@@ -317,17 +320,17 @@ var Editor = {};
 //            // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
 //            .height(appContainerSize.height+2*config.editor.ui.screen_blocks_border_width+config.editor.ui.id_product_cnt_additional_height);
         // в поле для редактирования подтягиваем стили продукта
-        var $h = $("#id-product_screens_cnt").contents().find('head');
-        $h.append(config.products.common.styles);
-        $h.append(config.products[editedApp.type].stylesForEmbed);
-        $h = $(appIframe).contents().find('head');
-        $h.append(config.products.common.styles);
+
+//        var $h = $("#id-product_screens_cnt").contents().find('head');
+//        $h.append(config.products.common.styles);
+//        $h.append(config.products[editedApp.type].stylesForEmbed);
+//        $h = $(editorLoader.getIframe()).contents().find('head');
+//        $h.append(config.products.common.styles);
 
         if (config.common.editorUiEnable === true) {
             showEditor();
-            createScreenControls();
-            syncUIControlsToAppProperties();
-            workspaceOffset = $('#id-product_screens_cnt').offset();
+            updateAppContainerSize();
+            workspaceOffset = $('#id-product_iframe_cnt').offset();
             // проверить что редактор готов, и вызвать колбек
             checkEditorIsReady();
         }
@@ -351,43 +354,49 @@ var Editor = {};
      * Например, дождаться загрузки критичных контролов управления экранами
      */
     function checkEditorIsReady() {
-        var intervalId = setInterval(function() {
-            // дожидаемся загрузки контролов управления экранами
-            // так как они управляют апдейтом экрана
-            var slideGroupControlIsLoaded = false;
-            if (slideGroupControls) {
-                slideGroupControlIsLoaded = true;
-                for (var n = 0; n < slideGroupControls.length; n++) {
-                    if (slideGroupControls[n].loaded === false) {
-                        slideGroupControlIsLoaded = false;
-                        break;
-                    }
-                }
-            }
-            if (slideGroupControlIsLoaded===true) {
-                checkScreenGroupsArrowsState();
-                clearInterval(intervalId);
-                // даем еще чуть повиесеть
-                setTimeout(function() {
-                    Modal.hideLoading();
-                }, 1000);
+        checkScreenGroupsArrowsState();
+        Modal.hideLoading();
+        if (typeof startCallback === 'function') {
+            startCallback();
+        }
 
-                // специальная возможность для панорам: сразу открыть окно выбора картинки с помощью передами параметра с витрины
-                setTimeout(function() {
-                    try {
-                        var pn = getQueryParams(document.location.search)['pano_open_rm'];
-                        if (pn) {
-                            Editor.findControlInfo('id=mm panoramaImgSrc')[0].control.onDirectiveClick();
-                        }
-                    }
-                    catch(err) { log (err.message, true) }
-                }, 1200);
-
-                if (typeof startCallback === 'function') {
-                    startCallback();
-                }
-            }
-        }, 200);
+//        var intervalId = setInterval(function() {
+//            // дожидаемся загрузки контролов управления экранами
+//            // так как они управляют апдейтом экрана
+//            var slideGroupControlIsLoaded = false;
+//            if (slideGroupControls) {
+//                slideGroupControlIsLoaded = true;
+//                for (var n = 0; n < slideGroupControls.length; n++) {
+//                    if (slideGroupControls[n].loaded === false) {
+//                        slideGroupControlIsLoaded = false;
+//                        break;
+//                    }
+//                }
+//            }
+//            if (slideGroupControlIsLoaded===true) {
+//                checkScreenGroupsArrowsState();
+//                clearInterval(intervalId);
+//                // даем еще чуть повиесеть
+//                setTimeout(function() {
+//                    Modal.hideLoading();
+//                }, 1000);
+//
+//                // специальная возможность для панорам: сразу открыть окно выбора картинки с помощью передами параметра с витрины
+//                setTimeout(function() {
+//                    try {
+//                        var pn = getQueryParams(document.location.search)['pano_open_rm'];
+//                        if (pn) {
+//                            Editor.findControlInfo('id=mm panoramaImgSrc')[0].control.onDirectiveClick();
+//                        }
+//                    }
+//                    catch(err) { log (err.message, true) }
+//                }, 1200);
+//
+//                if (typeof startCallback === 'function') {
+//                    startCallback();
+//                }
+//            }
+//        }, 200);
     }
 
     /**
@@ -445,7 +454,7 @@ var Editor = {};
         // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
         $('#id-product_cnt, #id-product_wr').height(previewHeight + config.editor.ui.id_product_cnt_additional_height);
         // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
-        $('#id-product_screens_cnt, #id-control_cnt').width(appContainerSize.width + 2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
+        $('#id-product_iframe_cnt, #id-control_cnt').width(appContainerSize.width + 2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
         // боковые панели вытягиваем также вслед за экранами
         $('.js-setting_panel').height(previewHeight);
         $('#id-workspace').height(previewHeight);
@@ -454,22 +463,25 @@ var Editor = {};
         // подсветка контрола Slide по которому кликнули
         setActiveScreen(activeScreens.join(','));
         // восстановление фильтрации элементов, которые были выделены до этого
-        selectElementOnAppScreen({dataAppPropertyString: selectedDataAppProperty});
+//        selectElementOnAppScreen({dataAppPropertyString: selectedDataAppProperty});
 
-        $($("#id-product_screens_cnt").contents()).click(function(){
-            // любой клик по промо-проекту сбрасывает подсказки
-            hideWorkspaceHints();
-        });
+//        $($("#id-product_screens_cnt").contents()).click(function(){
+//            // любой клик по промо-проекту сбрасывает подсказки
+//            hideWorkspaceHints();
+//        });
     }
 
+    /**
+     * В зависимости от режиме превью: моб или веб а также истинного размера приложения
+     * выставляется размер iframe в котором загружено приложение
+     */
     function updateAppContainerSize() {
         // выставляем первоначальный размер приложения, возможно, оно будет меняться
         appContainerSize = {
             width: editedApp.width,
             height: editedApp.height
         };
-        //TODO данная установка свойств размерности аналогична loader.js
-        // можно провести унификацию
+        var appIframe = editorLoader.getIframe();
         if (previewMode === 'mobile') {
             $(appIframe).css('border','0')
                 .css('width','100%')
@@ -480,21 +492,21 @@ var Editor = {};
         else if (previewMode === 'desktop') {
             $(appIframe).css('border','0')
                 .css('width',appContainerSize.width+'px')
-                .css('height',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
+                .css('height',appContainerSize.height+'px') //так как у панорам гориз скролл и не умещается по высоте он
                 //.css('maxWidth',appContainerSize.width)
                 .css('maxWidth','100%')
-                .css('maxHeight',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
+                .css('maxHeight',appContainerSize.height+'px') //так как у панорам гориз скролл и не умещается по высоте он
         }
     }
 
-    function createPreviewScreenBlock(view) {
-        var d = $('<div></div>')
-            .css('width',appContainerSize.width)
-            .css('height',appContainerSize.height)
-            .addClass('screen_block'); // product_cnt.css
-        d.append(view);
-        return d;
-    }
+//    function createPreviewScreenBlock(view) {
+//        var d = $('<div></div>')
+//            .css('width',appContainerSize.width)
+//            .css('height',appContainerSize.height)
+//            .addClass('screen_block'); // product_cnt.css
+//        d.append(view);
+//        return d;
+//    }
 
     /**
      * Выделить активный экран в контроле с экранами
@@ -564,105 +576,48 @@ var Editor = {};
         }
     }
 
-    /**
-     * На добавленном view экрана скорее всего есть какие dom-элементы связанные с appProperties
-     * Найдем их и свяжем с контролами редактирования
-     *
-     * @param {HTMLElement} $view
-     * @param {string} scrId
-     *
-     */
-//    function bindControlsForAppPropertiesOnScreen($view, scrId) {
-//        var appScreen = editedApp.getScreenById(scrId);
-//
-//        // найти и удалить эти типы контролов
-//        // при показе экрана они пересоздаются заново
-//        clearControls(['workspace', 'quickcontrolpanel']);
-//
-//        for (var k = 0; k < appScreen.getLinkedMutAppProperties().length; k++) {
-//            var appProperty = appScreen.getLinkedMutAppProperties()[k];
-//            // для всех элементов связанных с appProperty надо создать событие по клику.
-//            // в этот момент будет происходить фильтрация контролов на боковой панели
-//            // элемент, конечно, может быть привязан к нескольким appProperty, ведь содержит несколько значений в data-app-property
-//            // надо избежать создания дублирующихся обработчиков
-//            var de = appProperty.uiElement;
-//            if (registeredElements.indexOf(de) < 0) {
-//                $(de).click(function(e) {
-//                    selectElementOnAppScreen({
-//                        $elementOnAppScreen: $(e.currentTarget)
-//                    });
-//                    e.preventDefault();
-//                    e.stopPropagation();
-//                });
-//                registeredElements.push(de);
+//    /**
+//     * Выделить dom-элемент на экране приложения
+//     * Подразумевается, что у него есть атрибут data-app-property
+//     *
+//     * @param {DOMElement} params.$elementOnAppScreen
+//     * @param {string} params.dataAppPropertyString
+//     */
+//    function selectElementOnAppScreen(params) {
+//        params = params || {};
+//        if (!params.$elementOnAppScreen && !params.dataAppPropertyString) {
+//            // снятие рамки выделения
+//            workspace.selectElementOnAppScreen(null);
+//            filterControls(null, null, getActiveScreens());
+//            selectedDataAppProperty = null;
+//        }
+//        else {
+//            if (params.$elementOnAppScreen) {
+//                params.dataAppPropertyString = params.$elementOnAppScreen.attr('data-app-property');
 //            }
-//            for (var j = 0; j < controlsInfo.length; j++) {
-//                // здесь надо создавать только контролы которые находятся на рабочем поле, например textquickinput
-//                // они пересоздаются каждый раз при переключении экрана
-//                // "обычные" контролы создаются иначе
-//                if (config.controls[cn].type === 'workspace' || config.controls[cn].type === 'quickcontrolpanel') {
-//                    // имя вью для контрола
-////                        var viewName = controlsInfo[j].params.viewName;
-//                    // простейшая обертка для контрола, пока помещаем туда
-////                        var wrapper = (config.controls[cn].type === 'quickcontrolpanel') ? $('<div></div>'): null;
-//                    var newControl = createControl({
-//                        mutAppProperty: appProperty,
-//                        productDOMElement: de
-//                    });
+//            else if (typeof params.dataAppPropertyString === 'string') {
+//                for (var i = 0; i < registeredElements.length; i++) {
+//                    // не важно сколько propertyStrings через запятую содержится внутри атрибута на самом деле
+//                    if ($(registeredElements[i]).attr('data-app-property') === params.dataAppPropertyString) {
+//                        params.$elementOnAppScreen = $(registeredElements[i]);
+//                        break;
+//                    }
 //                }
+//            }
+//            // после нормализации значений устанавливаем выделение и применяем фильтрацию контролов
+//            if (params.$elementOnAppScreen && params.dataAppPropertyString) {
+//                // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
+//                // задача: отфильтровать настройки на правой панели
+//                workspace.selectElementOnAppScreen(params.$elementOnAppScreen);
+//                // [0] - должны передать DOMElement а не jQuery-обертку
+//                filterControls(params.dataAppPropertyString, params.$elementOnAppScreen[0], getActiveScreens());
+//                selectedDataAppProperty = params.dataAppPropertyString;
+//            }
+//            else {
+//                selectedDataAppProperty = null;
 //            }
 //        }
 //    }
-
-    /**
-     * Выделить dom-элемент на экране приложения
-     * Подразумевается, что у него есть атрибут data-app-property
-     *
-     * @param {DOMElement} params.$elementOnAppScreen
-     * @param {string} params.dataAppPropertyString
-     */
-    function selectElementOnAppScreen(params) {
-        params = params || {};
-        if (!params.$elementOnAppScreen && !params.dataAppPropertyString) {
-            // снятие рамки выделения
-            workspace.selectElementOnAppScreen(null);
-            filterControls(null, null, getActiveScreens());
-            selectedDataAppProperty = null;
-        }
-        else {
-            if (params.$elementOnAppScreen) {
-                params.dataAppPropertyString = params.$elementOnAppScreen.attr('data-app-property');
-            }
-            else if (typeof params.dataAppPropertyString === 'string') {
-                for (var i = 0; i < registeredElements.length; i++) {
-                    // не важно сколько propertyStrings через запятую содержится внутри атрибута на самом деле
-                    if ($(registeredElements[i]).attr('data-app-property') === params.dataAppPropertyString) {
-                        params.$elementOnAppScreen = $(registeredElements[i]);
-                        break;
-                    }
-                }
-            }
-            // после нормализации значений устанавливаем выделение и применяем фильтрацию контролов
-            if (params.$elementOnAppScreen && params.dataAppPropertyString) {
-                // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
-                // задача: отфильтровать настройки на правой панели
-                workspace.selectElementOnAppScreen(params.$elementOnAppScreen);
-                // [0] - должны передать DOMElement а не jQuery-обертку
-                filterControls(params.dataAppPropertyString, params.$elementOnAppScreen[0], getActiveScreens());
-                selectedDataAppProperty = params.dataAppPropertyString;
-            }
-            else {
-                selectedDataAppProperty = null;
-            }
-        }
-    }
-
-    /**
-     * Контролы извне могут попросить редактор проапдейтить рамку выделения у текущего элемента
-     */
-    function updateSelection() {
-        workspace.updateSelectionPosition();
-    }
 
     /**
      * Удалить контролы по типам
@@ -799,227 +754,6 @@ var Editor = {};
         }
         else {
             quickControlPanel.hide();
-        }
-    }
-
-    /**
-     * полное пересоздание всех контролов
-     * Привязать элементы управления к Engine.getAppProperties
-     * Создаются только новые элементы управления, которые необходимы.
-     * Может быть добавлен/удален слайд, поэтому надо только для него сделать обновление.
-     *
-     * Это могут быть следующие действия:
-     * 1) Добавление контролов на панель справа.
-     * 2) Обновление контрола слайдов (страниц) (один большой контрол)
-     * 3) Привязка контролов к dom-элементам в продукте, Для быстрого редактирования.
-     *
-     * @param {array} [startActiveScreens] - стартовые экраны для показа
-     */
-//    function syncUIControlsToAppProperties(startActiveScreens) {
-//        clearControls(['workspace', 'quickcontrolpanel', 'controlpanel']);
-//        uiControlsInfo = [];
-//        $('#id-static-no_filter_controls').empty();
-//        $('#id-static_controls_cnt').empty();
-//        $('#id-control_cnt').empty();
-//
-//        // задача здесь: создать постоянные контролы, которые не будут меняться при переключении экранов
-//        var appPropertiesStrings = Engine.getAppPropertiesObjectPathes();
-//        for (var i = 0; i < appPropertiesStrings.length; i++) {
-//            var ps = appPropertiesStrings[i];
-//            var ap = Engine.getAppProperty(ps);
-//            if (ap.controls) {
-//                // у свойства может быть несколько контролов
-//                for (var j = 0; j < ap.controls.length; j++) {
-//                    var c = ap.controls[j];
-//                    if (config.controls[c.name]) {
-//                        if (config.controls[c.name].type === 'controlpanel') {
-//                            // контрол помечен как постоянный в дескрипторе, то есть его надо создать сразу и навсегда (пересоздастся только вместе с экранами)
-//                            var parent = null;
-//                            var sg = c.params.screenGroup;
-//                            if (sg) {
-//                                // контрол привязан в группе экранов, а значит его родитель другой, так себе решение.
-//                                parent = $('[data-screen-group-name=\"'+sg+'\"]').find('.js-slide_group_controls');
-//                            }
-//                            else {
-//                                // выбираем панель по принципу: фильтруется контрол или нет (фильтр по клику или по экрану)
-//                                var parentPanelId = (ap.filter === true || ap.showWhileScreenIsActive) ? '#id-static_controls_cnt': '#id-static-no_filter_controls';
-//
-//                                // каждый контрол предварительно помещаем в отдельную обертку, а потом уже на панель настроек
-//                                var $cc = $($('#id-static_control_cnt_template').html()).appendTo(parentPanelId);
-//                                if (ap.label) {
-//                                    var textLabel = (typeof ap.label==='string')? ap.label: ap.label[App.getLang()];
-//                                    if (config.controls[c.name].labelInControl === true) {
-//                                        // метка находится внутри самого контрола а не вовне как обычно
-//                                        // UI контрола будет загружен после, поэтому пробрасываем внутрь контрола label
-//                                        c.params.__label = textLabel;
-//                                        $cc.find('.js-label').remove();
-//                                    }
-//                                    else {
-//                                        $cc.find('.js-label').html(textLabel);
-//                                    }
-//                                }
-//                                if (ap.filter === true) {
-//                                    // свойства с этим атрибутом filter=true показываются только при клике на соответствующих элемент в промо-приложении
-//                                    // который помечен data-app-property
-//                                    $cc.hide();
-//                                }
-//                                parent = $cc.find('.js-control_cnt');
-//                            }
-//                            var newControl = createControl(ps, c.params.viewName, c.name, c.params, parent);
-//                            if (ps === 'id=startScr backgroundImg') {
-//                                var stopHere = 0;
-//                            }
-//                            if (newControl) {
-//                                uiControlsInfo.push({
-//                                    propertyString: ps,
-//                                    control: newControl,
-//                                    wrapper: $cc, // контейнер, в котором контрол находится на боковой панели контролов
-//                                    filter: ap.filter, // чтобы потом не искать этот признак во время фильтрации
-//                                    showWhileScreenIsActive: ap.showWhileScreenIsActive,
-//                                    type: config.controls[c.name].type // также для быстрого поиска
-//                                });
-//                            }
-//                            else {
-//                                log('Can not create control for appProperty: \'' + ps, true);
-//                            }
-//                        }
-//                    }
-//                    else {
-//                        log('Control: \'' + c.name + '\' isn\'t descripted in config.js' , true);
-//                    }
-//                }
-//            }
-//        }
-//
-//        //TODO жесткий хак: данная инициализация не поддерживается на нескольких колорпикерах
-//        // надо отследить загружку всех директив колорпикеров и тогда инициализировать их
-//        setTimeout(function() {
-//            initColorpickers();
-//            setTimeout(function() {
-//                initColorpickers();
-//            }, 10000);
-//        }, 6000);
-//
-//        if (startActiveScreens) {
-//            activeScreens = startActiveScreens;
-//        }
-//        if (activeScreens.length > 0) {
-//            // восстановить показ экранов, которые видели ранее
-//            showScreen(activeScreens);
-//        }
-//        else {
-//            // первый экран показать по умолчанию
-//            //TODO первый старт: надо дождаться загрузки этого айфрема и нормально проинициализировать после
-//            setTimeout(function() {
-//                previewScreensIframeBody = $("#id-product_screens_cnt").contents().find('body');
-//                showScreen(Editor.getEditedApp().getScreenIds()[0]);
-//            }, 1000);
-//        }
-//
-//        // стрелки управления прокруткой, нормализация
-//        checkScreenGroupsArrowsState();
-//    }
-
-    function initColorpickers() {
-        // стараемся выполнить после загрузки всех колорпикеров
-        try {
-            $('.colorpicker').colorpicker();
-            $('.colorpicker input').click(function() {
-                $(this).parents('.colorpicker').colorpicker('show');
-            })
-        }
-        catch (e) {
-            // strange thing here
-            //bootstrap-colorpicker.min.js:19 Uncaught TypeError: Cannot read property 'toLowerCase' of undefined
-            log(e,true);
-        }
-    }
-
-    /**
-     * Модель управления экранами:
-     * Сейчас предполагается что группы экранов постоянные
-     *
-     * Конролы управления экранами специфичные, поэтому существует отдельная функция для их создания
-     *
-     * Упрвления отдельными Slide спрятана внутрь одного SlideGroupControl
-     */
-    function createScreenControls() {
-        $('#id-slides_cnt').empty();
-        //TODO конечно не надо пересоздавать каждый раз всё при добавл-удал экрана. Но так пока проще
-        var appScreenIds = editedApp.getScreenIds();
-        // экраны могут быть поделены на группы
-        var groups = {};
-        var sGroups = [];
-        if (appScreenIds.length > 0) {
-            // подготовительная часть: разобъем экраны на группы
-            // groups - просто временный вспомогательный объект
-            for (var i = 0; i < appScreenIds.length; i++) {
-                var s = appScreenIds[i];
-                var screen = editedApp.getScreenById(s);
-                if (screen.hideScreen === false) {
-                    if (typeof screen.group !== "string") {
-                        // если группа не указана, экран будет один в своей группе
-                        screen.group = screen.id;
-                    }
-                    if (groups.hasOwnProperty(screen.group) === false) {
-                        // группа новая, создаем
-                        groups[screen.group] = [];
-                    }
-                    groups[screen.group].push(s);
-                }
-            }
-
-            // далее начнем создать контролы и вью для групп экранов
-            for (var groupName in groups) {
-                var curG = groups[groupName];
-                var firstScrInGroup = editedApp.getScreenById(curG[0]);
-                var sgc = findSlideGroupByGroupName(groupName);
-                if (sgc === null) {
-                    // группой экранов может управлять массив.
-                    // в случае вопросов теста: эта группа привязана к quiz, передается в промо проекте при создании экранов
-                    // для остальных undefined
-                    sgc = createControl({
-                        someId: firstScrInGroup.arrayAppPropertyString,
-                        controlName: 'SlideGroupControl',
-                        controlParentView: $('#id-slides_cnt')
-                    });
-                }
-                else {
-                    // подходящий контрол SlideGroupControl создавался ранее для управления этой группой экранов
-                }
-                // устанавливаем все атрибуты, не один раз при создании, а сколько угодно раз
-                sgc.set({
-                    // идентификатор группы
-                    groupName: groupName,
-                    // имя забираем у первого экрана группы, в группе минимум один экран, а все имена одинаковые конечно
-                    groupLabel: firstScrInGroup.name,
-                    // это массив экранов
-                    //screens: curG,
-                    //allowDragY: true,
-                    showAddButton: true
-                });
-                sGroups.push(sgc);
-            }
-            // если при обновлении какие-то группы пропали в промо приложении, то они не попадут более в slideGroupControls
-            // например для теста будет три группы: стартовый, вопросы, результаты
-            slideGroupControls = sGroups;
-        }
-
-        /**
-         * Найти контрол SlideGroupControl по имени группы экранов
-         * Задача не пересоздавать контролы управления экранами - это дорого
-         * @param groupName
-         * @returns {null}
-         */
-        function findSlideGroupByGroupName(groupName) {
-            if (slideGroupControls !== null && groupName) {
-                for (var i = 0; i < slideGroupControls.length; i++) {
-                    if (slideGroupControls[i].groupName == groupName) {
-                        return slideGroupControls[i];
-                    }
-                }
-            }
-            return null;
         }
     }
 
@@ -1309,14 +1043,14 @@ var Editor = {};
                     // appId уже был сгенерирован при старте редактора start
                     // title не указываем, это новый проект-клон
                     appTemplate.title = null;
-                    //appId = getUniqId().substr(22);
                 }
+                serializedProperties = appTemplate.propertyValues;
                 // после загрузки шаблона надо загрузить код самого промо проекта
                 // там далее в колбеке на загрузку iframe есть запуск движка
                 editorLoader.load({
-                    appName:appName,
+                    appName: appName,
                     container: $('#id-product_iframe_cnt'),
-                    onload: onProductIframeLoaded()
+                    onload: onProductIframeLoaded.bind(this)
                 });
             }
             else {
@@ -1326,20 +1060,25 @@ var Editor = {};
     }
 
     /**
-
-     *
-     * @param {string} params.mode
+     * Запустить редактируемое MutApp приложение
+     * @param {string} param.mode - 'edit' || 'preview' и тд
      */
-    function restartApp(params) {
-        params = params || {};
-        delete editedApp;
-        params.mode = params.mode || 'none';
+    function restartApp(param) {
+        param = param || {};
+        if (editedApp) {
+            serializedProperties = editedApp.serialize();
+            delete editedApp;
+        }
+        param.mode = param.mode || 'none';
         var cfg = config.products[appName];
         var appIframe = editorLoader.getIframe();
         editedApp = new appIframe.contentWindow[cfg.constructorName]({
+            mode: param.mode,
             width: cfg.defaultWidth,
             height: cfg.defaultHeight,
-            defaults: null,
+            // при первом запуске из шаблона serializedProperties будет иметь шаблонные значения
+            // далее при последующих перезапусках serializedProperties будет браться из mutapp приложения (function serialize)
+            defaults: serializedProperties,
             appChangeCallbacks: [onAppChanged]
             //engineStorage: JSON.parse(JSON.stringify(appStorage)) todo?
         });
@@ -1349,7 +1088,8 @@ var Editor = {};
     /**
      * Обработчик событий в приложении
      *
-     * @param event
+     * @param {string} event
+     * @param {object} data
      */
     function onAppChanged(event, data) {
         var app = data.application;
@@ -1357,20 +1097,151 @@ var Editor = {};
         switch (event) {
             case MutApp.EVENT_SCREEN_CREATED: {
                 log('Editor.onAppChanged: MutApp.EVENT_SCREEN_CREATED \''+data.screenId+'\'');
-                // передать информацию в slideGroupControls который занимается экранами
-                if (slideGroupControls) slideGroupControls[0].screenUpdate(event, data);
+                ScreenManager.update({
+                    created: data.application.getScreenById(data.screenId),
+                    cssString: data.application.getCssRulesString()
+                });
                 break;
             }
             case MutApp.EVENT_SCREEN_RENDERED: {
                 log('Editor.onAppChanged: MutApp.EVENT_SCREEN_RENDERED \''+data.screenId+'\'');
-                // передать информацию в slideGroupControls который занимается экранами
-                if (slideGroupControls) slideGroupControls[0].screenUpdate(event, data);
+                ScreenManager.update({
+                    rendered: data.application.getScreenById(data.screenId),
+                    cssString: data.application.getCssRulesString()
+                });
                 break;
             }
             case MutApp.EVENT_SCREEN_DELETED: {
                 log('Editor.onAppChanged: MutApp.EVENT_SCREEN_DELETED \''+data.screenId+'\'');
-                // передать информацию в slideGroupControls который занимается экранами
-                if (slideGroupControls) slideGroupControls[0].screenUpdate(event, data);
+                ScreenManager.update({
+                    deleted: data.application.getScreenById(data.screenId)
+                });
+                break;
+            }
+            case MutApp.EVENT_PROPERTY_CREATED: {
+                var ctrl = ControlManager.createControl({
+                    mutAppProperty: data.property,
+                    appIframe: editorLoader.getIframe()
+                });
+                break;
+            }
+            case MutApp.EVENT_PROPERTY_VALUE_CHANGED: {
+                var ctrls = ControlManager.getControls({propertyString:data.propertyString});
+                if (ctrls && ctrls.length > 0) {
+                    ctrls[0].setValue(data.property.getValue());
+                }
+                else {
+                    console.error('onAppChanged: there is no control for appProperty: \'' + data.propertyString + '\'');
+                }
+                break;
+            }
+            case MutApp.EVENT_PROPERTY_DELETED: {
+                var ctrl = ControlManager.deleteControl();
+                break;
+            }
+        }
+    }
+
+    /**
+     * Колбек из worspace о клике по элементу
+     * @param {string} dataAppPropertyString
+     */
+    function onSelectElementCallback(dataAppPropertyString) {
+        console.log('onSelectElementCallback: ' + dataAppPropertyString);
+        ControlManager.filter({
+            propertyStrings: dataAppPropertyString.split(',')
+        });
+    }
+
+    /**
+     * Сообщение об изменении присланное из ControlManager
+     *
+     * @param {string} propertyString
+     * @param {*} value
+     */
+    function onControlValueChanged(propertyString, value) {
+        editedApp.getProperty(propertyString).setValue(value);
+    }
+
+    /**
+     * Колбек об изменении в ScreenManager
+     *
+     * @param {string} event
+     * @param {object} data
+     */
+    function onScreenEvents(event, data) {
+        data = data || {};
+        var arrayProperty = editedApp.getProperty(data.arrayPropertyString);
+        switch (event) {
+            case ScreenManager.EVENT_SCREEN_SELECT: {
+                var scr = editedApp.getScreenById(data.screenId);
+                editedApp.showScreen(scr);
+                workspace.showScreen({
+                    screen: scr
+                });
+                break;
+            }
+            case ScreenManager.EVENT_ADD_SCREEN: {
+                var ap = editedApp.getProperty(data.propertyString);
+                if (isNumeric(data.clonedElementId) === true) {
+                    // добавление путем клонирования.
+                    // был указан элемент который пользователь хочет склонировать
+                    if (data.clonedElementId >= ap.getValue().length) {
+                        throw new Error('onScreenEvents.EVENT_ADD_SCREEN: There is no prototypes for \''+data.propertyString+'\'');
+                    }
+                    throw new Error('onScreenEvents.EVENT_ADD_SCREEN: not realized yet. Autotests for clone adding.');
+                }
+                else {
+                    var pp = ap.prototypes;
+                    if (!pp || pp.length === 0) {
+                        throw new Error('onScreenEvents.EVENT_ADD_SCREEN: There is no prototypes for \''+data.propertyString+'\'');
+                    }
+                    if (pp.length > 1) {
+                        // нужно выбрать прототип для нового элемента, так как возможно несколько вариантов
+                        var selectOptions = [];
+                        for (var i = 0; i < pp.length; i++) {
+                            selectOptions.push({
+                                id: pp[i].key,
+                                label: pp[i].label,
+                                icon: pp[i].img
+                            });
+                        }
+                        // иногда надо дать возможность пользователю выбрать какой именно прототип использовать для нового элемента
+                        Editor.showSelectDialog({
+                            caption: App.getText('new_slide'),
+                            options: selectOptions,
+                            callback: (function(selectedOptionId) {
+                                if (selectedOptionId) {
+                                    for (var j = 0; j < pp.length; j++) {
+                                        if (pp[j].key == selectedOptionId) {
+                                            ap.addElementByPrototype(pp[j].getValue(), data.position);
+                                        }
+                                    }
+                                }
+                            }).bind(this)
+                        });
+                    }
+                    else {
+                        ap.addElementByPrototype(pp[0].protoFunction, data.position);
+                    }
+                }
+                break;
+            }
+            case ScreenManager.EVENT_DELETE_SCREEN: {
+                // удалить элемент с позиции
+                if (isNumeric(data.position) === false) {
+                    throw new Error('onScreenEvents.EVENT_DELETE_SCREEN: position must be specified when deleting');
+                }
+                var ap = editedApp.getProperty(data.propertyString);
+                ap.deleteElement(data.position);
+                break;
+            }
+            case ScreenManager.EVENY_CHANGE_POSITION: {
+                if (isNumeric(data.elementIndex) === false || isNumeric(data.newElementIndex) === false) {
+                    throw new Error('onScreenEvents.EVENY_CHANGE_POSITION: invalid params');
+                }
+                var ap = editedApp.getProperty(data.propertyString);
+                ap.changePosition(data.elementIndex, data.newElementIndex);
                 break;
             }
         }
@@ -1386,20 +1257,15 @@ var Editor = {};
             .css('height',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
             .css('maxWidth',appContainerSize.width+'px')
             .css('maxHeight',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
-        // нужно перезапустить приложение чтобы оно корректно обработало свой новый размер
         restartApp({
             mode: 'edit'
         });
-        $(appIframe).addClass('__hidden');
         $('#id-editor_view').show();
         $('#id-preview_view').hide();
     }
 
     function showPreview() {
-        var appIframe = editorLoader.getIframe();
-        $(appIframe).removeClass('__hidden');
         $('#id-editor_view').hide();
-
         hookRunner.on('beforePreview',getEditorEnvironment(),function(e) {
             restartApp({
                 mode: 'preview'
@@ -1424,7 +1290,7 @@ var Editor = {};
             saveTemplate(false);
         }
         else {
-            Modal.showMessage({text: 'Ошибка: Не удалось опубликовать проект.'});
+            Modal.showMessage({text: App.getText('publish_error')});
         }
     }
 
@@ -1542,12 +1408,8 @@ var Editor = {};
 //        sc.scrollLeft(sc.scrollLeft()+config.editor.ui.slidesScrollStep);
     }
 
-    function getActiveScreens() {
-        return activeScreens;
-    }
-
     function showSelectDialog(params) {
-        selectElementOnAppScreen(null);
+        workspace.selectElementOnAppScreen(null);
         hideWorkspaceHints();
         $('#id-control_cnt').empty();
         var dialog = new SelectDialog(params);
@@ -1555,7 +1417,7 @@ var Editor = {};
     }
 
     function showPublishDialog(params) {
-        selectElementOnAppScreen(null);
+        workspace.selectElementOnAppScreen(null);
         hideWorkspaceHints();
         $('#id-control_cnt').empty();
         var dialog = new PublishDialog(params);
@@ -1640,22 +1502,15 @@ var Editor = {};
     global.start = start;
     global.forEachElementOnScreen = forEachElementOnScreen;
     global.getAppIframe = getAppIframe;
-    global.createControl = createControl;
-    global.getActiveScreens = getActiveScreens;
     global.showScreen = showScreen;
     global.getAppContainerSize = function() { return appContainerSize; };
     global.getSlideGroupControls = function() { return slideGroupControls; };
     global.createPreviewsForShare = createPreviewsForShare;
     global.testPreviewsForShare = testPreviewsForShare;
-    global.selectElementOnAppScreen = selectElementOnAppScreen;
     global.hideWorkspaceHints = hideWorkspaceHints;
     global.getResourceManager = function() { return resourceManager; }
     global.showSelectDialog = showSelectDialog;
-    global.syncUIControlsToAppProperties = syncUIControlsToAppProperties;
-    global.findControl = findControl;
-    global.findControlInfo = findControlInfo; // need for autotests
     global.getAppId = function() { return appId; };
-    global.updateSelection = updateSelection;
     global.getQuickControlPanel = function() { return quickControlPanel; }
     global.getEditorEnvironment = getEditorEnvironment;
     global.getEditedApp = function() { return editedApp; }

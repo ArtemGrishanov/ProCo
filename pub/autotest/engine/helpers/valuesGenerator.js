@@ -40,6 +40,9 @@ var valueGenerator = {};
             var protoName = ap.prototypes[_randInt(0, ap.prototypes.length-1)];
             ap.addElementByPrototype(protoName);
         }
+        else if (MutApp.Util.isMutAppPropertyPosition(ap) === true) {
+            ap.setValue(_getRandomPositionValue(ap));
+        }
         else if (ap._value === null) {
             // с null неизвестно как поступать
             ap.setValue('rand_string_insteadof_null_' + Math.trunc(Math.random()*10000));
@@ -89,6 +92,19 @@ var valueGenerator = {};
             }
         }
         throw new Error('valuesGenerator._getRandomCssValue: unsupported css property \'' + ap.cssPropertyName + '\'');
+    }
+
+    /**
+     * Вернуть рандомную позицию
+     * @param ap
+     * @returns {{width: int, height: int}}
+     * @private
+     */
+    function _getRandomPositionValue(ap) {
+        return {
+            top: _randInt(0, 499),
+            left: _randInt(0, 499)
+        };
     }
 
     /**

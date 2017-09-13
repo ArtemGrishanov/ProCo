@@ -202,6 +202,11 @@ var PersonalityApp = MutApp.extend({
             this.updateResultsScreens();
         }, this);
 
+        // начальное создание экранов.
+        // при десериализации нет событий change
+        this.updateQuestionScreens();
+        this.updateResultsScreens();
+
 //        // для всех вопросов создается по отдельному экрану
 //        var quiz = tm.get('quiz').value;
 //        var qs = null;

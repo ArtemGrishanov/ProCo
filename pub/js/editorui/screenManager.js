@@ -38,7 +38,7 @@ var ScreenManager = {
      */
     function _createScreenGroup(screen) {
         var $cnt = $('#id-slides_cnt');
-        var $w = $('<div></div>');
+        var $w = $('<div style="display:inline-block"></div>');
         var sgc = new SlideGroupControl({
             propertyString: screen.arrayAppPropertyString || screen.id,
             controlName: 'SlideGroupControl',
@@ -175,6 +175,7 @@ var ScreenManager = {
      */
     function init(param) {
         param = param || {};
+        _slideGroupControls = [];
         _appType = param.appType;
         _onScreenEvents = param.onScreenEvents;
         $('#id-slides_cnt').empty();

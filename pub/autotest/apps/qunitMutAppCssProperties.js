@@ -15,7 +15,7 @@ QUnit.test("MutApp test: Css customization", function( assert ) {
     var r = app._getCssRule('appConstructor=mutapp customCssStyles');
     assert.ok(r.selector === 'appConstructor=mutapp customCssStyles');
     assert.ok(r.rules === customCss1);
-    assert.ok(app._getCssRulesString().indexOf(customCss1) >= 0);
+    assert.ok(app.getCssRulesString().indexOf(customCss1) >= 0);
 
     setTimeout(function() {
         assert.ok(app._screens[0].$el.find('.js-test_btn').css('font-size')==='29px');
@@ -50,7 +50,7 @@ QUnit.test("MutApp test: Css properties and deserialization in edit mode", funct
     var r = app._getCssRule('.js-start_header');
     assert.ok(r.selector === '.js-start_header');
     assert.ok(r.rules[0].value === 'rgb(255, 0, 0)');
-    assert.ok(app._getCssRulesString().indexOf('rgb(255, 0, 0)') >= 0);
+    assert.ok(app.getCssRulesString().indexOf('rgb(255, 0, 0)') >= 0);
     assert.ok(app.screenRoot.find('#id-custom_styles').html().indexOf(ap1.getValue()) >= 0 );
 
     var ap2 = app.getProperty('.js-start_header font-size');
@@ -58,7 +58,7 @@ QUnit.test("MutApp test: Css properties and deserialization in edit mode", funct
     var r = app._getCssRule('.js-start_header');
     assert.ok(r.selector === '.js-start_header');
     assert.ok(r.rules[1].value === '66px');
-    assert.ok(app._getCssRulesString().indexOf('66px') >= 0);
+    assert.ok(app.getCssRulesString().indexOf('66px') >= 0);
     assert.ok(app.screenRoot.find('#id-custom_styles').html().indexOf(ap2.getValue()) >= 0 );
 
     var ap3 = app.getProperty('.js-start_header padding-top');
@@ -66,7 +66,7 @@ QUnit.test("MutApp test: Css properties and deserialization in edit mode", funct
     var r = app._getCssRule('.js-start_header');
     assert.ok(r.selector === '.js-start_header');
     assert.ok(r.rules[2].value === '22px');
-    assert.ok(app._getCssRulesString().indexOf('22px') >= 0);
+    assert.ok(app.getCssRulesString().indexOf('22px') >= 0);
     assert.ok(app.screenRoot.find('#id-custom_styles').html().indexOf(ap3.getValue()) >= 0 );
 
     var ap4 = app.getProperty('.js-start_description padding-top');
@@ -74,7 +74,7 @@ QUnit.test("MutApp test: Css properties and deserialization in edit mode", funct
     var r = app._getCssRule('.js-start_description');
     assert.ok(r.selector === '.js-start_description');
     assert.ok(r.rules[0].value === '33px');
-    assert.ok(app._getCssRulesString().indexOf('33px') >= 0);
+    assert.ok(app.getCssRulesString().indexOf('33px') >= 0);
     assert.ok(app.screenRoot.find('#id-custom_styles').html().indexOf(ap4.getValue()) >= 0 );
 
     setTimeout(function() {
@@ -155,7 +155,7 @@ QUnit.test("MutApp test: Css properties 2", function( assert ) {
 
     var ap1 = app.getProperty('.js-start_header color');
     ap1.setValue('rgb(255, 255, 0)');
-    assert.ok(app._getCssRulesString().indexOf('rgb(255, 255, 0)') >= 0);
+    assert.ok(app.getCssRulesString().indexOf('rgb(255, 255, 0)') >= 0);
     var ap4 = app.getProperty('.js-start_description padding-top');
     ap4.setValue('33px');
 
@@ -172,12 +172,12 @@ QUnit.test("MutApp test: Css properties 2", function( assert ) {
         var r = app._getCssRule('.js-start_header');
         assert.ok(r.selector === '.js-start_header');
         assert.ok(r.rules[0].value === null);
-        assert.ok(app._getCssRulesString().indexOf('rgb(255, 255, 0)') < 0);
+        assert.ok(app.getCssRulesString().indexOf('rgb(255, 255, 0)') < 0);
 
         var r = app._getCssRule('.js-start_description');
         assert.ok(r.selector === '.js-start_description');
         assert.ok(r.rules[0].value === null);
-        assert.ok(app._getCssRulesString().indexOf('33px') < 0);
+        assert.ok(app.getCssRulesString().indexOf('33px') < 0);
 
         setTimeout(function() {
             // при обнулении значений ==null, значения css сбросились на стандартные для useragent

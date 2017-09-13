@@ -239,7 +239,9 @@ var App = App || {};
             published: 'Опубликован',
             saved: 'Сохранено',
             error: 'Ошибка',
-            unsaved_changes: 'У вас есть несохраненные изменения'
+            unsaved_changes: 'У вас есть несохраненные изменения',
+            select_template: 'Выберите шаблон для открытия',
+            publish_error: 'Ошибка: Не удалось опубликовать проект.'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -395,7 +397,9 @@ var App = App || {};
             published: 'Published',
             saved: 'Saved',
             error: 'Error',
-            unsaved_changes: 'You have unsaved changes'
+            unsaved_changes: 'You have unsaved changes',
+            select_template: 'You need select a template for editing',
+            publish_error: 'Error: Could not publish project'
         }
     },
     /**
