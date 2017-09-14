@@ -884,11 +884,12 @@ img {
     margin: 0 auto;
     text-align: center;
     overflow: hidden;
+    height: 1000px; /* big height for desktop preview */
 }
 .proto_wr.__mob {
     background: url(../i/phone_1x.png); /* (308+13*2)x(532+74*2) */
     width: 306px;
-    height: 540px;
+    height: 540px; /* height of smartphone viewport */
     padding: 73px 13px 68px;
 }
 .pre_mob {

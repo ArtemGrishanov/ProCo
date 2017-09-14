@@ -26,14 +26,15 @@ QUnit.test("Editor.Controls: create controls, check their values", function( ass
         editorLoader.load({
 
             appName: 'personality',
-            container: $('#id-product_iframe_cnt'),
+            containerId: 'id-product_iframe_cnt',
             onload: function() {
-                var appIframe = editorLoader.getIframe();
+                var appIframe = editorLoader.getIframe('id-product_iframe_cnt');
                 var appWindow = appIframe.contentWindow;
                 window.MutApp = appWindow.MutApp;
                 $('#id-product_iframe_cnt').show();
 
                 var app1 = editorLoader.startApp({
+                    containerId: 'id-product_iframe_cnt',
                     defaults: null,
                     mode: 'edit',
                     appChangeCallbacks: onAppChanged
@@ -62,7 +63,7 @@ QUnit.test("Editor.Controls: create controls, check their values", function( ass
                 createdEventsCount++
                 var ctrl = ControlManager.createControl({
                     mutAppProperty: data.property,
-                    appIframe: editorLoader.getIframe()
+                    appIframe: editorLoader.getIframe('id-product_iframe_cnt')
                 });
                 for (var i = 0; i < ctrl.length; i++) {
                     // убедиться что элементы добавились на страницу
@@ -270,9 +271,9 @@ QUnit.test("Editor.Controls: SlideGroupControl", function( assert ) {
         editorLoader.load({
 
             appName: 'personality',
-            container: $('#id-product_iframe_cnt_screens_qunittest'),
+            containerId: 'id-product_iframe_cnt_screens_qunittest',
             onload: function() {
-                var appIframe = editorLoader.getIframe();
+                var appIframe = editorLoader.getIframe('id-product_iframe_cnt_screens_qunittest');
                 var appWindow = appIframe.contentWindow;
                 window.MutApp = appWindow.MutApp;
                 $('#id-product_iframe_cnt_screens_qunittest').show();
@@ -283,6 +284,7 @@ QUnit.test("Editor.Controls: SlideGroupControl", function( assert ) {
                 });
 
                 var app2 = editorLoader.startApp({
+                    containerId: 'id-product_iframe_cnt_screens_qunittest',
                     defaults: null,
                     mode: 'edit',
                     appChangeCallbacks: onAppChanged
@@ -446,14 +448,15 @@ QUnit.test("Editor.Controls: SlideGroupControl deserialization", function( asser
         editorLoader.load({
 
             appName: 'personality',
-            container: $('#id-product_iframe_cnt_screens_qunittest'),
+            containerId: 'id-product_iframe_cnt_screens_qunittest',
             onload: function() {
-                var appIframe = editorLoader.getIframe();
+                var appIframe = editorLoader.getIframe('id-product_iframe_cnt_screens_qunittest');
                 var appWindow = appIframe.contentWindow;
                 window.MutApp = appWindow.MutApp;
                 $('#id-product_iframe_cnt_screens_qunittest').show();
 
                 var app2 = editorLoader.startApp({
+                    containerId: 'id-product_iframe_cnt_screens_qunittest',
                     defaults: null,
                     mode: 'edit'
                     // appChangeCallbacks: not needed
@@ -475,6 +478,7 @@ QUnit.test("Editor.Controls: SlideGroupControl deserialization", function( asser
                     });
 
                     var app3 = editorLoader.startApp({
+                        containerId: 'id-product_iframe_cnt_screens_qunittest',
                         defaults: strApp2Serialized,
                         mode: 'edit',
                         appChangeCallbacks: onAppChanged

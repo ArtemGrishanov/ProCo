@@ -78,7 +78,7 @@ var workspace = {};
             $selection.show();
             $controlContainer.append($selection);
         }
-        if (_onSelectElementCallback) {
+        if (_onSelectElementCallback && $selectedElementOnAppScreen) {
             _onSelectElementCallback($selectedElementOnAppScreen.attr('data-app-property'));
         }
     }

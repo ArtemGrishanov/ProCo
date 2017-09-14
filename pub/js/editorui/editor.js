@@ -222,16 +222,27 @@ var Editor = {};
                 var n = getQueryParams(document.location.search)[config.common.appNameParamName] || param[config.common.appNameParamName];
                 if (n) {
                     appName = n;
-                    editorLoader.load({
-                        appName: n,
-                        container: $('#id-product_iframe_cnt'),
-                        onload: onProductIframeLoaded.bind(this)
-                    });
+                    loadApps();
                 }
                 else {
                     Modal.showMessage({text: App.getText('select_template')});
                 }
             }
+        });
+    }
+
+    /**
+     * Загрузить пару приложений: для редактирования и предпросмотра
+     */
+    function loadApps() {
+        editorLoader.load({
+            containerId: 'id-product_iframe_cnt',
+            appName: appName,
+            onload: onProductIframeLoaded.bind(this)
+        });
+        editorLoader.load({
+            containerId: 'id-app_preview',
+            appName: appName
         });
     }
 
@@ -253,14 +264,6 @@ var Editor = {};
         else {
             log('setDefaultShareLink: can not find shareLink property', true);
         }
-    }
-
-    /**
-     * Вернуть iframe приложения
-     * @returns {iframe}
-     */
-    function getAppIframe() {
-        return editorLoader.getIframe();
     }
 
     /**
@@ -328,6 +331,7 @@ var Editor = {};
 //        $h.append(config.products.common.styles);
 
         if (config.common.editorUiEnable === true) {
+            restartEditedApp();
             showEditor();
             updateAppContainerSize();
             workspaceOffset = $('#id-product_iframe_cnt').offset();
@@ -481,22 +485,22 @@ var Editor = {};
             width: editedApp.width,
             height: editedApp.height
         };
-        var appIframe = editorLoader.getIframe();
-        if (previewMode === 'mobile') {
-            $(appIframe).css('border','0')
-                .css('width','100%')
-                .css('height','100%')
-                .css('maxWidth',appContainerSize.width)
-                .css('maxHeight',appContainerSize.height);
-        }
-        else if (previewMode === 'desktop') {
-            $(appIframe).css('border','0')
-                .css('width',appContainerSize.width+'px')
-                .css('height',appContainerSize.height+'px') //так как у панорам гориз скролл и не умещается по высоте он
-                //.css('maxWidth',appContainerSize.width)
-                .css('maxWidth','100%')
-                .css('maxHeight',appContainerSize.height+'px') //так как у панорам гориз скролл и не умещается по высоте он
-        }
+//        var appIframe = editorLoader.getIframe('');
+//        if (previewMode === 'mobile') {
+//            $(appIframe).css('border','0')
+//                .css('width','100%')
+//                .css('height','100%')
+//                .css('maxWidth',appContainerSize.width)
+//                .css('maxHeight',appContainerSize.height);
+//        }
+//        else if (previewMode === 'desktop') {
+//            $(appIframe).css('border','0')
+//                .css('width',appContainerSize.width+'px')
+//                .css('height',appContainerSize.height+'px') //так как у панорам гориз скролл и не умещается по высоте он
+//                //.css('maxWidth',appContainerSize.width)
+//                .css('maxWidth','100%')
+//                .css('maxHeight',appContainerSize.height+'px') //так как у панорам гориз скролл и не умещается по высоте он
+//        }
     }
 
 //    function createPreviewScreenBlock(view) {
@@ -576,70 +580,6 @@ var Editor = {};
         }
     }
 
-//    /**
-//     * Выделить dom-элемент на экране приложения
-//     * Подразумевается, что у него есть атрибут data-app-property
-//     *
-//     * @param {DOMElement} params.$elementOnAppScreen
-//     * @param {string} params.dataAppPropertyString
-//     */
-//    function selectElementOnAppScreen(params) {
-//        params = params || {};
-//        if (!params.$elementOnAppScreen && !params.dataAppPropertyString) {
-//            // снятие рамки выделения
-//            workspace.selectElementOnAppScreen(null);
-//            filterControls(null, null, getActiveScreens());
-//            selectedDataAppProperty = null;
-//        }
-//        else {
-//            if (params.$elementOnAppScreen) {
-//                params.dataAppPropertyString = params.$elementOnAppScreen.attr('data-app-property');
-//            }
-//            else if (typeof params.dataAppPropertyString === 'string') {
-//                for (var i = 0; i < registeredElements.length; i++) {
-//                    // не важно сколько propertyStrings через запятую содержится внутри атрибута на самом деле
-//                    if ($(registeredElements[i]).attr('data-app-property') === params.dataAppPropertyString) {
-//                        params.$elementOnAppScreen = $(registeredElements[i]);
-//                        break;
-//                    }
-//                }
-//            }
-//            // после нормализации значений устанавливаем выделение и применяем фильтрацию контролов
-//            if (params.$elementOnAppScreen && params.dataAppPropertyString) {
-//                // кликнули по элементу в промо приложении, который имеет атрибут data-app-property
-//                // задача: отфильтровать настройки на правой панели
-//                workspace.selectElementOnAppScreen(params.$elementOnAppScreen);
-//                // [0] - должны передать DOMElement а не jQuery-обертку
-//                filterControls(params.dataAppPropertyString, params.$elementOnAppScreen[0], getActiveScreens());
-//                selectedDataAppProperty = params.dataAppPropertyString;
-//            }
-//            else {
-//                selectedDataAppProperty = null;
-//            }
-//        }
-//    }
-
-    /**
-     * Удалить контролы по типам
-     * @param {array} types
-     */
-    function clearControls(types) {
-        for (var i = 0; i < uiControlsInfo.length;/*no increment*/) {
-            var deleted = false;
-            for (var j = 0; j < types.length; j++) {
-                if (uiControlsInfo[i].type === types[j]) {
-                    uiControlsInfo[i].control.destroy();
-                    uiControlsInfo.splice(i, 1);
-                    deleted = true;
-                    break;
-                }
-            }
-            if (deleted===false) {
-                i++;
-            }
-        }
-    }
-
     ///**
     // * Показать подсказки для экрана
     // * @param appScreen
@@ -657,132 +597,132 @@ var Editor = {};
     //    }
     //}
 
-    /**
-     * Отфильтровать и показать только те контролы, appPropertyString которых есть в dataAppPropertyString
-     * Это могут быть контролы на боковой панели или во всплывающей панели quickControlPanel
-     *
-     * @param {string} dataAppPropertyString например 'backgroundColor,showBackgroundImage'
-     * @param {domElement} element на который кликнул пользователь
-     * @param {Array} activeScreenIds экраны активные в данный момент. Есть такой тип фильтрации showWhileScreenIsActive
-     */
-    function filterControls(dataAppPropertyString, element, activeScreenIds) {
-        var quickControlPanelControls = [];
-        if (dataAppPropertyString) {
-            $('#id-static_controls_cnt').children().hide();
-            // может быть несколько свойств через запятую: фон кнопки, ее бордер, цвет шрифта кнопки и так далее
-            var keys = dataAppPropertyString.split(',');
-            for (var i = 0; i < keys.length; i++) {
-                var cArr = findControlInfo(keys[i].trim(), element);
+//    /**
+//     * Отфильтровать и показать только те контролы, appPropertyString которых есть в dataAppPropertyString
+//     * Это могут быть контролы на боковой панели или во всплывающей панели quickControlPanel
+//     *
+//     * @param {string} dataAppPropertyString например 'backgroundColor,showBackgroundImage'
+//     * @param {domElement} element на который кликнул пользователь
+//     * @param {Array} activeScreenIds экраны активные в данный момент. Есть такой тип фильтрации showWhileScreenIsActive
+//     */
+//    function filterControls(dataAppPropertyString, element, activeScreenIds) {
+//        var quickControlPanelControls = [];
+//        if (dataAppPropertyString) {
+//            $('#id-static_controls_cnt').children().hide();
+//            // может быть несколько свойств через запятую: фон кнопки, ее бордер, цвет шрифта кнопки и так далее
+//            var keys = dataAppPropertyString.split(',');
+//            for (var i = 0; i < keys.length; i++) {
+//                var cArr = findControlInfo(keys[i].trim(), element);
+//
+//                // результатов поиска может быть несколько
+//                // например по id=tm quiz.0.answer.options - контрол добавлени и удаления
+//                for (var j = 0; j < cArr.length; j++) {
+//                    var c = cArr[j];
+//                    // контролы которые должны показаться на всплывающей панели quickControlPanel
+//                    if (c && c.type === 'quickcontrolpanel') {
+//                        // событие _onShow будет вызвано позже для этого типа 'quickcontrolpanel'
+//                        quickControlPanelControls.push(c);
+//                    }
+//                    else {
+//                        if (c && c.wrapper) {
+//                            c.wrapper.show();
+//                            if (c.control._onShow) {
+//                                c.control._onShow();
+//                            }
+//                        }
+//                    }
+//
+//                    //TODO test
+//                    // refactor
+//                    // $productDOMElement не устанавливается для контролов controlpanel при создании
+//                    // а он оказался нужен для Alternative
+//                    if (c.type === 'controlpanel') {
+//                        c.control.$productDOMElement = $(element);
+//                    }
+//                }
+//            }
+//        }
+//        else {
+//            // сбрасываем фильтр - показываем всё что не имеет filter=true
+//            for (var i = 0; i < uiControlsInfo.length; i++) {
+//                var c = uiControlsInfo[i];
+//                if (c.type && c.type === 'controlpanel') {
+//                    if (c.filter === true) {
+//                        c.wrapper.hide();
+//                    }
+//                    else {
+//                        c.wrapper.show();
+//                        if (c.control._onShow) {
+//                            c.control._onShow();
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        // Фильтрация контролов которые должны быть показаны во время показа экрана
+//        for (var i = 0; i < uiControlsInfo.length; i++) {
+//            var c = uiControlsInfo[i];
+//            if (c.type && c.type === 'controlpanel') {
+//                var found = false;
+//                for (var n = 0; n < activeScreenIds.length; n++) {
+//                    if (activeScreenIds[n].indexOf(c.showWhileScreenIsActive) >= 0) {
+//                        found = true;
+//                        break;
+//                    }
+//                }
+//                if (c.showWhileScreenIsActive !== undefined && found === true) {
+//                    // пока активен экран c.showWhileScreenIsActive надо показывать контрол, такой тип фильтрации по экрану
+//                    c.wrapper.show();
+//                    $('#id-static_controls_cnt').prepend(c.wrapper); // контроля фильтруемые по экрану должны быть выше, у них более высокий приоритет
+//                    if (c.control._onShow) {
+//                        c.control._onShow();
+//                    }
+//                }
+//            }
+//        }
+//
+//        // есть несколько контролов для всплывашки, которые надо показать
+//        if (quickControlPanelControls.length > 0) {
+//            quickControlPanel.show(element, quickControlPanelControls);
+//            for (var n = 0; n < quickControlPanelControls.length; n++) {
+//                var c = quickControlPanelControls[n];
+//                if (c.control._onShow) {
+//                    c.control._onShow();
+//                }
+//            }
+//        }
+//        else {
+//            quickControlPanel.hide();
+//        }
+//    }
 
-                // результатов поиска может быть несколько
-                // например по id=tm quiz.0.answer.options - контрол добавлени и удаления
-                for (var j = 0; j < cArr.length; j++) {
-                    var c = cArr[j];
-                    // контролы которые должны показаться на всплывающей панели quickControlPanel
-                    if (c && c.type === 'quickcontrolpanel') {
-                        // событие _onShow будет вызвано позже для этого типа 'quickcontrolpanel'
-                        quickControlPanelControls.push(c);
-                    }
-                    else {
-                        if (c && c.wrapper) {
-                            c.wrapper.show();
-                            if (c.control._onShow) {
-                                c.control._onShow();
-                            }
-                        }
-                    }
-
-                    //TODO test
-                    // refactor
-                    // $productDOMElement не устанавливается для контролов controlpanel при создании
-                    // а он оказался нужен для Alternative
-                    if (c.type === 'controlpanel') {
-                        c.control.$productDOMElement = $(element);
-                    }
-                }
-            }
-        }
-        else {
-            // сбрасываем фильтр - показываем всё что не имеет filter=true
-            for (var i = 0; i < uiControlsInfo.length; i++) {
-                var c = uiControlsInfo[i];
-                if (c.type && c.type === 'controlpanel') {
-                    if (c.filter === true) {
-                        c.wrapper.hide();
-                    }
-                    else {
-                        c.wrapper.show();
-                        if (c.control._onShow) {
-                            c.control._onShow();
-                        }
-                    }
-                }
-            }
-        }
-
-        // Фильтрация контролов которые должны быть показаны во время показа экрана
-        for (var i = 0; i < uiControlsInfo.length; i++) {
-            var c = uiControlsInfo[i];
-            if (c.type && c.type === 'controlpanel') {
-                var found = false;
-                for (var n = 0; n < activeScreenIds.length; n++) {
-                    if (activeScreenIds[n].indexOf(c.showWhileScreenIsActive) >= 0) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (c.showWhileScreenIsActive !== undefined && found === true) {
-                    // пока активен экран c.showWhileScreenIsActive надо показывать контрол, такой тип фильтрации по экрану
-                    c.wrapper.show();
-                    $('#id-static_controls_cnt').prepend(c.wrapper); // контроля фильтруемые по экрану должны быть выше, у них более высокий приоритет
-                    if (c.control._onShow) {
-                        c.control._onShow();
-                    }
-                }
-            }
-        }
-
-        // есть несколько контролов для всплывашки, которые надо показать
-        if (quickControlPanelControls.length > 0) {
-            quickControlPanel.show(element, quickControlPanelControls);
-            for (var n = 0; n < quickControlPanelControls.length; n++) {
-                var c = quickControlPanelControls[n];
-                if (c.control._onShow) {
-                    c.control._onShow();
-                }
-            }
-        }
-        else {
-            quickControlPanel.hide();
-        }
-    }
-
-    /**
-     * Найти информацию об элементе управления
-     * @param {string} propertyString свойство для которого ищем элемент управления
-     * @param [domElement]
-     * @returns {array}
-     */
-    function findControlInfo(propertyString, domElement) {
-        var results = [];
-        for (var j = 0; j < uiControlsInfo.length; j++) {
-            // TODO для контролов типа controlpanel я не сохранял элементы domElement, и в эту функцию передается undefined
-            // поэтому такая заточка
-            if (domElement && uiControlsInfo[j].type!=='controlpanel') {
-                // если важен domElem
-                if (propertyString === uiControlsInfo[j].propertyString && domElement === uiControlsInfo[j].domElement) {
-                    results.push(uiControlsInfo[j]);
-                }
-            }
-            else {
-                // если domElem не важен
-                if (propertyString === uiControlsInfo[j].propertyString) {
-                    results.push(uiControlsInfo[j]);
-                }
-            }
-        }
-        return results;
-    }
+//    /**
+//     * Найти информацию об элементе управления
+//     * @param {string} propertyString свойство для которого ищем элемент управления
+//     * @param [domElement]
+//     * @returns {array}
+//     */
+//    function findControlInfo(propertyString, domElement) {
+//        var results = [];
+//        for (var j = 0; j < uiControlsInfo.length; j++) {
+//            // TODO для контролов типа controlpanel я не сохранял элементы domElement, и в эту функцию передается undefined
+//            // поэтому такая заточка
+//            if (domElement && uiControlsInfo[j].type!=='controlpanel') {
+//                // если важен domElem
+//                if (propertyString === uiControlsInfo[j].propertyString && domElement === uiControlsInfo[j].domElement) {
+//                    results.push(uiControlsInfo[j]);
+//                }
+//            }
+//            else {
+//                // если domElem не важен
+//                if (propertyString === uiControlsInfo[j].propertyString) {
+//                    results.push(uiControlsInfo[j]);
+//                }
+//            }
+//        }
+//        return results;
+//    }
 
     function onPublishClick() {
         if (App.getUserData() !== null) {
@@ -1046,12 +986,7 @@ var Editor = {};
                 }
                 serializedProperties = appTemplate.propertyValues;
                 // после загрузки шаблона надо загрузить код самого промо проекта
-                // там далее в колбеке на загрузку iframe есть запуск движка
-                editorLoader.load({
-                    appName: appName,
-                    container: $('#id-product_iframe_cnt'),
-                    onload: onProductIframeLoaded.bind(this)
-                });
+                loadApps();
             }
             else {
                 log('Data not valid. Template url: \''+templateUrl+'\'', true);
@@ -1061,28 +996,28 @@ var Editor = {};
 
     /**
      * Запустить редактируемое MutApp приложение
-     * @param {string} param.mode - 'edit' || 'preview' и тд
      */
-    function restartApp(param) {
-        param = param || {};
+    function restartEditedApp() {
         if (editedApp) {
             serializedProperties = editedApp.serialize();
-            delete editedApp;
         }
-        param.mode = param.mode || 'none';
-        var cfg = config.products[appName];
-        var appIframe = editorLoader.getIframe();
-        editedApp = new appIframe.contentWindow[cfg.constructorName]({
-            mode: param.mode,
-            width: cfg.defaultWidth,
-            height: cfg.defaultHeight,
-            // при первом запуске из шаблона serializedProperties будет иметь шаблонные значения
-            // далее при последующих перезапусках serializedProperties будет браться из mutapp приложения (function serialize)
+        editedApp = editorLoader.startApp({
+            containerId: 'id-product_iframe_cnt',
+            mode: 'edit',
             defaults: serializedProperties,
             appChangeCallbacks: [onAppChanged]
-            //engineStorage: JSON.parse(JSON.stringify(appStorage)) todo?
         });
-        editedApp.start();
+    }
+
+    /**
+     * Запустить превью MutApp приложение
+     */
+    function restartPreviewApp() {
+        previewApp = editorLoader.startApp({
+            containerId: 'id-app_preview',
+            mode: 'preview',
+            defaults: editedApp.serialize() // передача значений mutappproperty в от редактируемого приложения
+        });
     }
 
     /**
@@ -1093,7 +1028,7 @@ var Editor = {};
      */
     function onAppChanged(event, data) {
         var app = data.application;
-        var MutApp = Editor.getAppIframe().contentWindow.MutApp;
+        var MutApp = editorLoader.getIframe('id-product_iframe_cnt').contentWindow.MutApp;
         switch (event) {
             case MutApp.EVENT_SCREEN_CREATED: {
                 log('Editor.onAppChanged: MutApp.EVENT_SCREEN_CREATED \''+data.screenId+'\'');
@@ -1121,7 +1056,7 @@ var Editor = {};
             case MutApp.EVENT_PROPERTY_CREATED: {
                 var ctrl = ControlManager.createControl({
                     mutAppProperty: data.property,
-                    appIframe: editorLoader.getIframe()
+                    appIframe: editorLoader.getIframe('id-product_iframe_cnt')
                 });
                 break;
             }
@@ -1248,30 +1183,24 @@ var Editor = {};
     }
 
     function showEditor() {
-        // когда видим редактор, должен быть включен режим предпросмотра 'desktop', так как пользователь работает (редактирует) с десктоп версией приложения
-        previewMode = 'desktop';
-        $('#id-product_iframe_cnt').removeClass('__mob');
-        var appIframe = editorLoader.getIframe();
-        $(appIframe).css('border','0')
-            .css('width',appContainerSize.width+'px')
-            .css('height',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
-            .css('maxWidth',appContainerSize.width+'px')
-            .css('maxHeight',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
-        restartApp({
-            mode: 'edit'
-        });
+//        $('#id-product_iframe_cnt').removeClass('__mob');
+//        var appIframe = editorLoader.getIframe('id-product_iframe_cnt');
+//        $(appIframe).css('border','0')
+//            .css('width',appContainerSize.width+'px')
+//            .css('height',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
+//            .css('maxWidth',appContainerSize.width+'px')
+//            .css('maxHeight',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
         $('#id-editor_view').show();
         $('#id-preview_view').hide();
     }
 
     function showPreview() {
         $('#id-editor_view').hide();
-        hookRunner.on('beforePreview',getEditorEnvironment(),function(e) {
-            restartApp({
-                mode: 'preview'
-            });
-            $('#id-preview_view').show();
-        });
+        //todo need for panoramas (in descriptor)
+//        hookRunner.on('beforePreview',getEditorEnvironment(),function(e) {
+        restartPreviewApp();
+        $('#id-preview_view').show();
+//        });
     }
 
     /**
@@ -1351,32 +1280,28 @@ var Editor = {};
 
     function toDesktopPreview() {
         previewMode = 'desktop';
-        $('#id-product_iframe_cnt').removeClass('__mob');
-        var appIframe = editorLoader.getIframe();
-        $(appIframe).css('border','0')
-            .css('width',appContainerSize.width+'px')
-            .css('height',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
-            .css('maxWidth',appContainerSize.width+'px')
-            .css('maxHeight',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px'); //так как у панорам например гориз скролл и не умещается по высоте он
+        $('#id-app_preview').removeClass('__mob');
+//        var appIframe = editorLoader.getIframe('id-app_preview');
+//        $(appIframe).css('border','0')
+//            .css('width',appContainerSize.width+'px')
+//            .css('height',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px') //так как у панорам например гориз скролл и не умещается по высоте он
+//            .css('maxWidth',appContainerSize.width+'px')
+//            .css('maxHeight',appContainerSize.height+config.editor.ui.screen_blocks_padding+'px'); //так как у панорам например гориз скролл и не умещается по высоте он
         // нужно перезапустить приложение чтобы оно корректно обработало свой новый размер
-        restartApp({
-            mode: 'preview'
-        });
+        restartPreviewApp();
     }
 
     function toMobPreview() {
         previewMode = 'mobile';
-        $('#id-product_iframe_cnt').addClass('__mob');
-        var appIframe = editorLoader.getIframe();
-        $(appIframe).css('border','0')
-            .css('width','100%')
-            .css('height','100%')
-            .css('maxWidth',appContainerSize.width)
-            .css('maxHeight',appContainerSize.height);
+        $('#id-app_preview').addClass('__mob');
+//        var appIframe = editorLoader.getIframe('id-app_preview');
+//        $(appIframe).css('border','0')
+//            .css('width','100%')
+//            .css('height','100%')
+//            .css('maxWidth',appContainerSize.width)
+//            .css('maxHeight',appContainerSize.height);
         // нужно перезапустить приложение чтобы оно корректно обработало свой новый размер
-        restartApp({
-            mode: 'preview'
-        });
+        restartPreviewApp();
     }
 
     var $slidesCnt = null;
@@ -1501,7 +1426,6 @@ var Editor = {};
     // public methods
     global.start = start;
     global.forEachElementOnScreen = forEachElementOnScreen;
-    global.getAppIframe = getAppIframe;
     global.showScreen = showScreen;
     global.getAppContainerSize = function() { return appContainerSize; };
     global.getSlideGroupControls = function() { return slideGroupControls; };
@@ -1514,5 +1438,6 @@ var Editor = {};
     global.getQuickControlPanel = function() { return quickControlPanel; }
     global.getEditorEnvironment = getEditorEnvironment;
     global.getEditedApp = function() { return editedApp; }
+    global.showEditor = showEditor;
 
 })(Editor);

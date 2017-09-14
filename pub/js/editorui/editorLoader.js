@@ -11,49 +11,58 @@ var editorLoader = {};
 
 (function(global) {
 
-    var _clbOnload = null;
-    var _appIframe = null;
-    var _appName = null;
-    var _editedApp = null;
+    /**
+     * Информация о загруженных приложениях
+     * Разделение по ид контейнера
+     * то есть в редакторе можно загрузить несколько приложений в разные контейнеры
+     *
+     * @type {containerId: {clbOnLoad, appIframe, appName, app}}
+     * @private
+     */
+    var _loadedInfo = {};
 
     /**
      * Будет создан iframe и в src указан url на приложение, например %hostName%+'products/test_new/index.html'
      *
+     * @param {string} param.containerId - id (без '#'), куда помещать iframe с приложением*
      * @param {string} param.appName - одно из доступных приложений, например 'memoriz' или 'personality'
-     * @param {domElement} param.container - куда помещать iframe с приложением
      * @param {function} onload
      */
     function load(param) {
         param = param || {};
-        if (param.appName && param.container) {
-            _appName = param.appName;
+        if (param.appName && param.containerId) {
+            _loadedInfo[param.containerId] = {
+                appName: param.appName
+            }
             if (param.onload) {
-                _clbOnload = param.onload;
+                _loadedInfo[param.containerId].clbOnLoad = param.onload;
             }
             // по имени промо приложения получаем ссылку на его код
             var src = config.products[param.appName].src;
             if (src) {
-                _appIframe = document.createElement('iframe');
-                _appIframe.onload = _onIframeload;
-                $(_appIframe).addClass('proto_cnt');//.addClass('__hidden'); why __hidden ?
-                _appIframe.src = config.common.home+src;
-                $(param.container).empty().append(_appIframe);
+                var fr = document.createElement('iframe');
+                fr.onload = _onIframeload;
+                $(fr).addClass('proto_cnt');
+                fr.src = config.common.home+src;
+                $('#'+param.containerId).empty().append(fr);
+                _loadedInfo[param.containerId].appIframe = fr;
             }
             else {
                 throw new Error('editorLoader.load: cannot find src for: \''+param.appName+'\'', true);
             }
         }
         else {
-            throw new Error('editorLoader.load: appName or container does not specified');
+            throw new Error('editorLoader.load: appName or containerId does not specified');
         }
     }
 
     /**
      * Рестартануть приложение
      * Применение:
-     * 1) при переходе из режиме редактирования и режим предпросмотра и обратно
+     * 1) Запуск приложений в редакторе: отдельное приложение редактирования и отдельное предпросмотра
      * 2) В автотестах
      *
+     * @param {string} containerId
      * @param {string} param.mode - 'edit' | 'preview' | 'published'
      * @param {*} param.defaults
      * @param {function} param.onAppChanged
@@ -61,14 +70,17 @@ var editorLoader = {};
      * @return MutApp;
      */
     function startApp(param) {
-        //TODO приложение автоматически запускается при загрузке iframe, в редакторе это двойной запуск
         param = param || {};
-        param.mode = param.mode || 'none';
-        if (_editedApp) {
-            delete _editedApp;
+        if (!param.containerId) {
+            throw new Error('EditorLoader.startApp: containerId does not specified');
         }
-        var cfg = config.products[_appName];
-        _editedApp = new _appIframe.contentWindow[cfg.constructorName]({
+        param.mode = param.mode || 'none';
+        var inf = _loadedInfo[param.containerId];
+        if (inf.app) {
+            delete inf.app;
+        }
+        var cfg = config.products[inf.appName];
+        inf.app = new inf.appIframe.contentWindow[cfg.constructorName]({
             mode: param.mode,
             width: cfg.defaultWidth,
             height: cfg.defaultHeight,
@@ -76,20 +88,32 @@ var editorLoader = {};
             appChangeCallbacks: param.appChangeCallbacks || null
             //engineStorage: JSON.parse(JSON.stringify(appStorage)) todo?
         });
-        _editedApp.start();
-        return _editedApp;
+        inf.app.start();
+        $(inf.appIframe).css('border','0')
+            .css('width','100%')
+            .css('height','100%')
+            .css('max-width', inf.app.width)
+            .css('max-height', inf.app.height);
+        return inf.app;
     }
 
-    function _onIframeload() {
-        _editedApp = _appIframe.contentWindow.app;
-        if (_clbOnload) {
-            _clbOnload();
+    function _onIframeload(e) {
+        var pid = $(e.currentTarget).parent().attr('id');
+        if (_loadedInfo.hasOwnProperty(pid) === true) {
+            var inf = _loadedInfo[pid];
+            inf.app = inf.appIframe.contentWindow.app;
+            if (inf.clbOnLoad) {
+                inf.clbOnLoad();
+            }
+        }
+        else {
+            throw new Error('EditorLoader._onIframeload: container with id \'' + pid + ' does not found');
         }
     }
 
     global.load = load;
     global.startApp = startApp;
-    global.getIframe = function() { return _appIframe; }
-    global.getApp = function() { return _editedApp; }
+    global.getIframe = function(containerId) { return _loadedInfo[containerId].appIframe; }
+    global.getApp = function(containerId) { return _loadedInfo[containerId].app; }
 
 })(editorLoader);
