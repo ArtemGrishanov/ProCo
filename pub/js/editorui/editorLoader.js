@@ -44,11 +44,17 @@ var editorLoader = {};
                 fr.onload = _onIframeload;
                 $(fr).addClass('proto_cnt');
                 fr.src = config.common.home+src;
-                $('#'+param.containerId).empty().append(fr);
+                var $cnt = $('#'+param.containerId);
+                if ($cnt && $cnt.length > 0) {
+                    $cnt.empty().append(fr);
+                }
+                else {
+                    throw new Error('editorLoader.load: container with id: \''+param.containerId+'\' did not found');
+                }
                 _loadedInfo[param.containerId].appIframe = fr;
             }
             else {
-                throw new Error('editorLoader.load: cannot find src for: \''+param.appName+'\'', true);
+                throw new Error('editorLoader.load: cannot find src for: \''+param.appName+'\'');
             }
         }
         else {

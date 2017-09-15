@@ -56,10 +56,10 @@ var Editor = {};
      */
     var resourceManager = null;
     /**
-     * Ид экранов которые показаны в данный момент в рабочем поле
-     * @type {Array.<string>}
+     * Ид экрана который показан в данный момент в рабочем поле
+     * @type {string}
      */
-    var activeScreens = [];
+    var activeScreen = null;
     /**
      * Все зарегистрированные DOM элементы с атрибутами data-app-property,
      * которые есть на всех activeScreens
@@ -333,6 +333,7 @@ var Editor = {};
         if (config.common.editorUiEnable === true) {
             restartEditedApp();
             showEditor();
+            showScreen();
             updateAppContainerSize();
             workspaceOffset = $('#id-product_iframe_cnt').offset();
             // проверить что редактор готов, и вызвать колбек
@@ -403,77 +404,77 @@ var Editor = {};
 //        }, 200);
     }
 
-    /**
-     * Показать экран(ы) промо приложения в редакторе.
-     * На экране нужно элементы с атрибутами data-app-property и проинициализировать контролы
-     *
-     * @param {Array.<string>} ids - массив ид экранов
-     */
-    function showScreen(ids) {
-        if (Array.isArray(ids) === false) {
-            ids = [ids];
-        }
-        // запоминаем, если потребуется восстановление показа экранов.
-        // Например, произойдет пересборка экранов и надо будет вернуться к показу последних активных
-        activeScreens = ids;
-        registeredElements = [];
-        // надо скрыть все активные подсказки, если таковые есть. На новом экране будут новые подсказки
-        hideWorkspaceHints();
-        updateAppContainerSize();
-        activeScreenHints = [];
-        activeTriggers = [];
-        // каждый раз удаляем quick-контролы и создаем их заново. Не слишком эффективно, но просто и надежно
-        // то что контролы привязаны к одному экрану определяется только на основании контейнера, в который они помещены
-        var $controlCnt = $('#id-control_cnt').empty();
-        for (var i = 0; i < uiControlsInfo.length;) {
-            var c = uiControlsInfo[i].control;
-            if (c.$parent.selector === $controlCnt.selector) {
-                uiControlsInfo.splice(i,1);
-            }
-            else {
-                i++;
-            }
-        }
-
-        $(previewScreensIframeBody).empty();
-        // в превью контейнер дописать кастомные стили, которые получились в результате редактирования css appProperties
-        //Engine.writeCssRulesTo(previewScreensIframeBody);
-        var appScreen = null;
-        var previewHeight = 0;
-        for (var i = 0; i < ids.length; i++) {
-            appScreen = editedApp.getScreenById(ids[i]);
-            if (appScreen) {
-                var b = createPreviewScreenBlock(appScreen.$el)
-                $(previewScreensIframeBody).append(b);
-                previewHeight += appContainerSize.height;
-                previewHeight += config.editor.ui.screen_blocks_padding+2*config.editor.ui.screen_blocks_border_width; // 20 - паддинг в стиле product_cnt.css/screen_block
-                bindControlsForAppPropertiesOnScreen(appScreen.view, ids[i]);
-                applyTriggers('screen_show');
-            }
-            else {
-                log('Editor.showScreen: appScreen not found '+ids[i]);
-            }
-        }
-        //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
-        // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
-        $('#id-product_cnt, #id-product_wr').height(previewHeight + config.editor.ui.id_product_cnt_additional_height);
-        // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
-        $('#id-product_iframe_cnt, #id-control_cnt').width(appContainerSize.width + 2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
-        // боковые панели вытягиваем также вслед за экранами
-        $('.js-setting_panel').height(previewHeight);
-        $('#id-workspace').height(previewHeight);
-
-        //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
-        // подсветка контрола Slide по которому кликнули
-        setActiveScreen(activeScreens.join(','));
-        // восстановление фильтрации элементов, которые были выделены до этого
-//        selectElementOnAppScreen({dataAppPropertyString: selectedDataAppProperty});
-
-//        $($("#id-product_screens_cnt").contents()).click(function(){
-//            // любой клик по промо-проекту сбрасывает подсказки
-//            hideWorkspaceHints();
-//        });
-    }
+//    /**
+//     * Показать экран(ы) промо приложения в редакторе.
+//     * На экране нужно элементы с атрибутами data-app-property и проинициализировать контролы
+//     *
+//     * @param {Array.<string>} ids - массив ид экранов
+//     */
+//    function showScreen(ids) {
+//        if (Array.isArray(ids) === false) {
+//            ids = [ids];
+//        }
+//        // запоминаем, если потребуется восстановление показа экранов.
+//        // Например, произойдет пересборка экранов и надо будет вернуться к показу последних активных
+//        activeScreens = ids;
+//        registeredElements = [];
+//        // надо скрыть все активные подсказки, если таковые есть. На новом экране будут новые подсказки
+//        hideWorkspaceHints();
+//        updateAppContainerSize();
+//        activeScreenHints = [];
+//        activeTriggers = [];
+//        // каждый раз удаляем quick-контролы и создаем их заново. Не слишком эффективно, но просто и надежно
+//        // то что контролы привязаны к одному экрану определяется только на основании контейнера, в который они помещены
+//        var $controlCnt = $('#id-control_cnt').empty();
+//        for (var i = 0; i < uiControlsInfo.length;) {
+//            var c = uiControlsInfo[i].control;
+//            if (c.$parent.selector === $controlCnt.selector) {
+//                uiControlsInfo.splice(i,1);
+//            }
+//            else {
+//                i++;
+//            }
+//        }
+//
+//        $(previewScreensIframeBody).empty();
+//        // в превью контейнер дописать кастомные стили, которые получились в результате редактирования css appProperties
+//        //Engine.writeCssRulesTo(previewScreensIframeBody);
+//        var appScreen = null;
+//        var previewHeight = 0;
+//        for (var i = 0; i < ids.length; i++) {
+//            appScreen = editedApp.getScreenById(ids[i]);
+//            if (appScreen) {
+//                var b = createPreviewScreenBlock(appScreen.$el)
+//                $(previewScreensIframeBody).append(b);
+//                previewHeight += appContainerSize.height;
+//                previewHeight += config.editor.ui.screen_blocks_padding+2*config.editor.ui.screen_blocks_border_width; // 20 - паддинг в стиле product_cnt.css/screen_block
+//                bindControlsForAppPropertiesOnScreen(appScreen.view, ids[i]);
+//                applyTriggers('screen_show');
+//            }
+//            else {
+//                log('Editor.showScreen: appScreen not found '+ids[i]);
+//            }
+//        }
+//        //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
+//        // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
+//        $('#id-product_cnt, #id-product_wr').height(previewHeight + config.editor.ui.id_product_cnt_additional_height);
+//        // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
+//        $('#id-product_iframe_cnt, #id-control_cnt').width(appContainerSize.width + 2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
+//        // боковые панели вытягиваем также вслед за экранами
+//        $('.js-setting_panel').height(previewHeight);
+//        $('#id-workspace').height(previewHeight);
+//
+//        //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
+//        // подсветка контрола Slide по которому кликнули
+////        setActiveScreen(activeScreens.join(','));
+//        // восстановление фильтрации элементов, которые были выделены до этого
+////        selectElementOnAppScreen({dataAppPropertyString: selectedDataAppProperty});
+//
+////        $($("#id-product_screens_cnt").contents()).click(function(){
+////            // любой клик по промо-проекту сбрасывает подсказки
+////            hideWorkspaceHints();
+////        });
+//    }
 
     /**
      * В зависимости от режиме превью: моб или веб а также истинного размера приложения
@@ -512,15 +513,15 @@ var Editor = {};
 //        return d;
 //    }
 
-    /**
-     * Выделить активный экран в контроле с экранами
-     *
-     * @param
-     */
-    function setActiveScreen(dataAppProperty) {
-        $('#id-slides_cnt').find('.slide_selection').removeClass('__active');
-        $('#id-slides_cnt').find('[data-app-property=\"'+dataAppProperty+'\"]').find('.slide_selection').addClass('__active');
-    }
+//    /**
+//     * Выделить активный экран в контроле с экранами
+//     *
+//     * @param
+//     */
+//    function setActiveScreen(dataAppProperty) {
+//        $('#id-slides_cnt').find('.slide_selection').removeClass('__active');
+//        $('#id-slides_cnt').find('[data-app-property=\"'+dataAppProperty+'\"]').find('.slide_selection').addClass('__active');
+//    }
 
     /**
      * Запустить триггеры для определенного события
@@ -549,21 +550,21 @@ var Editor = {};
         }
     }
 
-    /**
-     * Вернуть активные экраны. Те которые показаны в текущий момент.
-     *
-     * @returns {Array}
-     */
-    function getActiveScreens() {
-        var result = []
-        for (var i = 0; i < activeScreens.length; i++) {
-            var s = Engine.getAppScreen(activeScreens[i]);
-            if (s) {
-                result.push(s);
-            }
-        }
-        return result;
-    }
+//    /**
+//     * Вернуть активные экраны. Те которые показаны в текущий момент.
+//     *
+//     * @returns {Array}
+//     */
+//    function getActiveScreens() {
+//        var result = []
+//        for (var i = 0; i < activeScreens.length; i++) {
+//            var s = Engine.getAppScreen(activeScreens[i]);
+//            if (s) {
+//                result.push(s);
+//            }
+//        }
+//        return result;
+//    }
 
     /**
      * Перебрать все элементы на активном экране
@@ -1099,6 +1100,36 @@ var Editor = {};
     }
 
     /**
+     * Показать экран приложения в редакторе
+     * Будут применены филтрации контролов
+     *
+     * @param {string} screenId - id экрана в приложении
+     */
+    function showScreen(screenId) {
+        if (!screenId) {
+            // если не указан ид экрана показываем первый по умолчанию
+            screenId = editedApp._screens[0].id;
+        }
+        if (activeScreen !== screenId) {
+            var scr = editedApp.getScreenById(screenId);
+            editedApp.showScreen(scr);
+            workspace.selectElementOnAppScreen(null);
+            workspace.showScreen({
+                screen: scr
+            });
+            ControlManager.handleShowScreen({
+                screen: scr
+            });
+            ControlManager.filter({
+                screen: scr,
+                propertyStrings: null
+            });
+            ScreenManager.showSelectionOnScreen(scr);
+            activeScreen = screenId;
+        }
+    }
+
+    /**
      * Колбек об изменении в ScreenManager
      *
      * @param {string} event
@@ -1109,11 +1140,7 @@ var Editor = {};
         var arrayProperty = editedApp.getProperty(data.arrayPropertyString);
         switch (event) {
             case ScreenManager.EVENT_SCREEN_SELECT: {
-                var scr = editedApp.getScreenById(data.screenId);
-                editedApp.showScreen(scr);
-                workspace.showScreen({
-                    screen: scr
-                });
+                showScreen(data.screenId);
                 break;
             }
             case ScreenManager.EVENT_ADD_SCREEN: {

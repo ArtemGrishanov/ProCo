@@ -30,7 +30,15 @@ var PersonalityApp = MutApp.extend({
             }],
             children: {
                 "id=pm quiz.{{number}}.question.text": {
-
+                    controls: "TextQuickInput"
+                },
+                "id=pm quiz.{{number}}.question.backgroundImage": {
+                    label: {RU:'Фоновая картинка',EN:'Background image'},
+                    controls: 'StringControl',
+                    controlFilter: 'onclick'
+                },
+                "id=pm quiz.{{number}}.answer.options.{{number}}.text": {
+                    controls: "TextQuickInput"
                 }
             }
         },
@@ -43,9 +51,12 @@ var PersonalityApp = MutApp.extend({
             }],
             children: {
                 "id=pm results.{{number}}.title": {
-
+                    controls: "TextQuickInput"
                 },
                 "id=pm results.{{number}}.description": {
+                    controls: "TextQuickInput"
+                },
+                "id=pm results.{{number}}.backgroundImage": {
 
                 }
             }
@@ -69,6 +80,11 @@ var PersonalityApp = MutApp.extend({
             label: {RU:'Включить тень', EN:'Shadow enable'},
             controls: 'OnOff',
             controlFilter: 'screen(id=startScr)' // 'always', 'screen(startScr)', 'onclick', 'hidden'
+        },
+        "type=questions shadowEnable": {
+            label: {RU:'Включить тень', EN:'Shadow enable'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=questions)' // 'always', 'screen(startScr)', 'onclick', 'hidden'
         },
         "id=pm startScreenBackgroundImg": {
             label: {RU:'Фоновая картинка стартового экрана',EN:'Start screen Background image'},

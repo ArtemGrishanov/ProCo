@@ -29,7 +29,7 @@ var ControlManager = {};
             throw new Error('ControlManager.createControl: mutAppProperty does not specified!');
         }
         var propertyString = param.mutAppProperty.propertyString;
-        //todo set dom element later when filtering
+        //dom element is set later when filtering
         var productDomElement = null; // элемент на экране продукта к которому будет привязан контрол
         for (var i = 0; i < param.mutAppProperty.controls.length; i++) {
             var controlName = null; // например Alternative или SlideGroupControl
@@ -70,7 +70,7 @@ var ControlManager = {};
             }
 
             // Container для контролов одного типа, например static_controls_cnt для type=controlpanel
-            var $directiveContainer = $('#'+cfg.parentId);
+            var $directiveContainer = (param.mutAppProperty._controlFilter === 'always') ? $('#id-static-no_filter_controls') : $('#'+cfg.parentId);
             // Для некоторых контролов добавляется обертка, например static_control_cnt_template
             var $directiveWrapper = null;
             if (cfg.type === 'controlpanel') {
@@ -259,7 +259,7 @@ var ControlManager = {};
                         propertyString: ap.propertyString
                     });
                     if (!apControls || !apControls.length === 0) {
-                        console.error('controlManager.showScreen: there is no controls for \'' + ap.propertyString + '\', but this MutAppProperty is linked to screen \'' + param.screen.id + '\'');
+                        console.error('controlManager.handleShowScreen: there is no controls for \'' + ap.propertyString + '\', but this MutAppProperty is linked to screen \'' + param.screen.id + '\'');
                         continue;
                     }
                     // связать контрол и элемент на экране MutApp-приложения
@@ -269,12 +269,44 @@ var ControlManager = {};
                 }
             }
             else {
-                throw new Error('controlManager.showScreen: screen \'' + param.screen.id + '\' does not have linkedMutAppProperties');
+                throw new Error('controlManager.handleShowScreen: screen \'' + param.screen.id + '\' does not have linkedMutAppProperties');
             }
         }
         else {
-            throw new Error('controlManager.showScreen: screen does not specified');
+            throw new Error('controlManager.handleShowScreen: screen does not specified');
         }
+    }
+
+    /**
+     * Найти контрол по строке, поиск будет производиться по нескольким полям.
+     * Надо для отладки, очень удобно
+     *
+     * @param {string} str
+     */
+    function find(str) {
+        var results1 = [];
+        var results2 = [];
+        var results3 = [];
+        for (var i = 0; i < _controls.length; i++) {
+            var ci = _controls[i];
+            if (ci.propertyString.indexOf(str) >= 0) {
+                // самый релевантный поиск по ключу: propertyString
+                results1.push(ci);
+            }
+            else {
+                if (ci.controlName && ci.controlName.indexOf(str) >= 0) {
+                    // менее релевантный поиск - имя контрола
+                    results3.push(ci);
+                }
+                else {
+                    if (ci.directiveName && ci.directiveName.toLowerCase().indexOf(str.toLowerCase()) >= 0) {
+                        // третья степерь релевантности: имя директивы
+                        results2.push(ci);
+                    }
+                }
+            }
+        }
+        return results1.concat(results2).concat(results3);
     }
 
     global.createControl = createControl;
@@ -285,5 +317,6 @@ var ControlManager = {};
     global.filter = filter;
     global.clearFilter = clearFilter;
     global.handleShowScreen = handleShowScreen;
+    global.find = find;
 
 })(ControlManager)

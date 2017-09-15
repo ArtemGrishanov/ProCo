@@ -175,11 +175,6 @@ var QuestionScreen = MutApp.Screen.extend({
     },
 
     renderQuestion: function(questionData) {
-        var q = this.model.getQuestionById(this.questionId);
-        if (this.model.application.isSmallWidth() === true) {
-            q = JSON.parse(JSON.stringify(q));
-            if (q.text) q.text = q.text.replace(/<br>/g,' ');
-        }
         this.$el.find('.js-question_cnt').html(this.template[questionData.uiTemplate](questionData));
     },
 
@@ -191,7 +186,7 @@ var QuestionScreen = MutApp.Screen.extend({
                 var $ea = $(this.template[answerData.uiTemplate](answerData));
                 this.$el.find('.js-answer_cnt').append($ea);
                 for (var i = 0; i < answerData.options.length; i++) {
-                    var o = answerData.options[i];
+                    var o = MutApp.Util.getObjectForRender(answerData.options[i]);
                     if (o.uiTemplate) {
                         o.currentQuestionIndex = this.currentQuestionIndex;
                         o.currentOptionIndex = i;

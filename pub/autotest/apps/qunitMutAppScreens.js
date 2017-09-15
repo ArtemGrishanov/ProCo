@@ -154,7 +154,6 @@ QUnit.test("MutApp test: Screens in edit mode. data-app-property attribute", fun
     assert.ok($(ap1.uiElement).attr('data-app-property').indexOf('id=startScr startButtonText') >= 0, 'data-app-property connected');
     assert.ok(ap1.uiElement === startScr.$el.find('.js-start_btn')[0]);
 
-    //TODO rename uiElement?
     var ap2 = app.getProperty('.js-start_header color');
     assert.ok(ap2.uiElement, 'uiElement connected');
     assert.ok($(ap2.uiElement).attr('data-app-property').indexOf('.js-start_header color') >= 0, 'data-app-property connected');
@@ -169,6 +168,31 @@ QUnit.test("MutApp test: Screens in edit mode. data-app-property attribute", fun
         assert.ok(lp.uiElement);
         assert.ok($.contains(startScr.$el[0], lp.uiElement));
     }
+
+
+    // добавить первый вопрос
+    app.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
+    var scrQuestion0 = app.getScreenById('questionScreen0');
+    var ap3 = app.getProperty('id=pm quiz.0.question.text');
+    assert.ok(ap3.uiElement, 'uiElement connected');
+    assert.ok($(ap3.uiElement).attr('data-app-property').indexOf('id=pm quiz.0.question.text') >= 0, 'data-app-property connected');
+    assert.ok($.contains(scrQuestion0.$el[0], ap3.uiElement));
+
+    // добавить второй вопрос
+    // и снова проверить нулевой экран
+    app.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
+    var scrQuestion0 = app.getScreenById('questionScreen0');
+    var ap3 = app.getProperty('id=pm quiz.0.question.text');
+    assert.ok(ap3.uiElement, 'uiElement connected');
+    assert.ok($(ap3.uiElement).attr('data-app-property').indexOf('id=pm quiz.0.question.text') >= 0, 'data-app-property connected');
+    assert.ok($.contains(scrQuestion0.$el[0], ap3.uiElement));
+
+    var scrQuestion1 = app.getScreenById('questionScreen1');
+    var ap4 = app.getProperty('id=pm quiz.1.question.text');
+    assert.ok(ap4.uiElement, 'uiElement connected');
+    assert.ok($(ap4.uiElement).attr('data-app-property').indexOf('id=pm quiz.1.question.text') >= 0, 'data-app-property connected');
+    assert.ok($.contains(scrQuestion1.$el[0], ap4.uiElement));
+
 });
 
 /**

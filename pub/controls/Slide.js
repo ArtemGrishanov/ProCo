@@ -104,7 +104,7 @@ Slide.prototype.updatePreview = function() {
                         height: 600//clonedView.height()
                     };
                     if (this.previewScale === undefined) {
-                        this.previewScale = this.$previewIFrame.width() / size.width;
+                        this.previewScale = 120 /*todo this.$previewIFrame.width() returns 100 */ / size.width;
                     }
                     clonedView
                         .css('width', size.width+'px')

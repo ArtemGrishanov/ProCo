@@ -27,7 +27,7 @@ var ScreenManager = {
      * @type {function}
      * @private
      */
-    var _onScreenEvents = null;
+    var _onScreenEventsCallback = null;
 
     /**
      * Создать новую группу SlideGroupControl на основе экрана
@@ -49,7 +49,7 @@ var ScreenManager = {
             additionalParam: {
                 groupName: screen.group,
                 appType: _appType,
-                onScreenEvents: _onScreenEvents
+                onScreenEvents: _onScreenEventsLocal
             }
         });
         $cnt.append($w);
@@ -150,6 +150,35 @@ var ScreenManager = {
     }
 
     /**
+     * Показать рамку выделения вокруг активного экрана
+     *
+     * @param {MutApp.Screen} screen
+     */
+    function showSelectionOnScreen(screen) {
+        // рамка выделения активного экрана
+        $('#id-slides_cnt').find('.slide_selection').removeClass('__active');
+        $('#id-slides_cnt').find('[data-app-property=\"'+screen.id+'\"]').find('.slide_selection').addClass('__active');
+    }
+
+    /**
+     * Обработка событий от SlideGroupControl
+     * Некоторые событи обрабатываются здесь, на уровне ScreenManager
+     *
+     * @param {string} event
+     * @param {data} data
+     */
+    function _onScreenEventsLocal(event, data) {
+        switch (event) {
+            case ScreenManager.EVENT_SCREEN_SELECT: {
+                // maybe some operations here
+                break;
+            }
+        }
+        // пробрасываем событие дальше в редактор
+        _onScreenEventsCallback(event, data);
+    }
+
+    /**
      * Для автотестирования.
      */
     function _test_getSlideGroupControl(groupName) {
@@ -177,12 +206,13 @@ var ScreenManager = {
         param = param || {};
         _slideGroupControls = [];
         _appType = param.appType;
-        _onScreenEvents = param.onScreenEvents;
+        _onScreenEventsCallback = param.onScreenEvents;
         $('#id-slides_cnt').empty();
     }
 
     global.init = init;
     global.update = update;
+    global.showSelectionOnScreen = showSelectionOnScreen;
 
     // для автотестирования
     global._test_getSlideGroupControl = _test_getSlideGroupControl;

@@ -33,15 +33,72 @@
             </div>
         </div>
     </script>
-    <script id="id-slide_template" type="text/template"></script>
-    <script id="id-question_text_template" type="text/template"></script>
-    <script id="id-question_text_photo_template" type="text/template"></script>
-    <script id="id-option_text_template" type="text/template"></script>
-    <script id="id-option_img_template" type="text/template"></script>
-    <script id="id-answer_question_lst" type="text/template"></script>
-    <script id="id-answer_question_lst_2" type="text/template"></script>
-    <script id="id-answer_question_grid_2" type="text/template"></script>
-    <script id="id-answer_question_grid_3" type="text/template"></script>
+    <script id="id-slide_template" type="text/template">
+        <div class="modal __active js-back_color js-back_img">
+            <div class="modal_cnt js-back_shadow">
+                <div data-app-property="id=pm questionProgressPosition" class="js-question_progress question_progress"></div>
+                <div class="modal_hld question">
+                    <div class="js-question_cnt">
+                        <!--Сюда программно добавляется шаблон вопроса-->
+                    </div>
+                    <div class="js-answer_cnt js-answers_wr">
+                        <!--Сюда программно добавляются варианта ответов-->
+                    </div>
+                </div>
+                <div class="logo js-logo js-question_logo" data-app-property="type=questions logoPosition, type=questions showLogo"></div>
+            </div>
+        </div>
+    </script>
+    <script id="id-question_text_template" type="text/template">
+        <div class="question_title js-question_text" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
+    </script>
+    <script id="id-question_text_photo_template" type="text/template">
+        <div class="question_title js-question_text" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
+        <div class="question_grid">
+            <div class="question_grid-i js-photo_cnt">
+                <img class="question_img js-photo" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.question.img" src="<%=img%>" />
+            </div>
+        </div>
+    </script>
+
+    <script id="id-answer_question_lst" type="text/template">
+        <div class="question_lst js-options_cnt">
+            <!--Сюда программно добавляются варианта ответов-->
+        </div>
+    </script>
+    <script id="id-answer_question_lst_2" type="text/template">
+        <div class="question_lst __2 js-options_cnt">
+            <!--Сюда программно добавляются варианта ответов-->
+        </div>
+    </script>
+    <script id="id-answer_question_grid_3" type="text/template">
+        <div class="question_grid __3 js-options_cnt">
+            <!--Сюда программно добавляются варианта ответов-->
+        </div>
+    </script>
+    <script id="id-answer_question_grid_2" type="text/template">
+        <div class="question_grid __2 js-options_cnt">
+            <!--Сюда программно добавляются варианта ответов-->
+        </div>
+    </script>
+
+    <script id="id-option_text_template" type="text/template">
+        <div class="question_i js-a_wr" data-question-index="<%=currentQuestionIndex%>" data-id="<%=id%>" data-option-index="<%=currentOptionIndex%>" data-control-filter="filter=ok,prototypeIndex=0" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.answer.options, id=pm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>">
+            <div class="bullit"></div>
+            <span class="js-option_text" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.text"><%=text%></span>
+        </div>
+        <!--<div class="a_wr" data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}">-->
+        <!--<div class="a_text">-->
+        <!--<div class="bullit"></div>-->
+        <!--<span data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}.text">{{answer_options_text}}</span>-->
+        <!--</div>-->
+        <!--</div>-->
+    </script>
+    <script id="id-option_img_template" type="text/template">
+        <div class="question_grid-i" data-id="<%=id%>">
+            <img data-id="<%=id%>" data-question-index="<%=currentQuestionIndex%>" data-option-index="<%=currentOptionIndex%>" data-control-filter="filter=ok,prototypeIndex=1" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.answer.options, id=pm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>, id=pm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.img" class="question_img" src="<%=img%>" />
+        </div>
+    </script>
     <script id="id-explanation_text_template" type="text/template"></script>
     <script id="id-result_template" type="text/template"></script>
 

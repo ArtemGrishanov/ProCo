@@ -316,12 +316,12 @@ var PersonalityModel = MutApp.Model.extend({
      * @private
      */
     _makeUidForQuizElement: function(quizElement) {
-        quizElement.id = MD5.calc(quizElement.question.text + j).substr(0,6);
+        quizElement.id = MutApp.Util.getUniqId(6);
         if (quizElement.answer.options) {
             // опций ответа может и не быть
             for (var i = 0; i < quizElement.answer.options.length; i++) {
                 var o = quizElement.answer.options[i];
-                o.id = MD5.calc(o.text + o.img + j + i).substr(0,6);
+                o.id = MutApp.Util.getUniqId(6);
             }
         }
     },
@@ -505,7 +505,13 @@ var PersonalityModel = MutApp.Model.extend({
                     application: this.application,
                     propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.question.text',
                     value: 'Your favourite music?'
-                })
+                }),
+                backgroundImage: new MutAppProperty({
+                    model: this,
+                    application: this.application,
+                    propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.question.backgroundImage',
+                    value: null
+                }),
             },
             answer: {
                 // тип механики ответа: выбор только одной опции, и сразу происходит обработка ответа
@@ -515,7 +521,13 @@ var PersonalityModel = MutApp.Model.extend({
                     {
                         // атрибуты внутри используются для рендера uiTemplate
                         uiTemplate: 'id-option_text_template',
-                        text: 'Rock',
+                        text: new MutAppProperty({
+                            model: this,
+                            application: this.application,
+                            // id=pm quiz.0.answer.options.0.text
+                            propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.answer.options.0.text',
+                            value: 'Rock'
+                        }),
                         type: 'text',
                         // через запятую идишки результатов, привязки
                         strongLink: [],
@@ -523,21 +535,36 @@ var PersonalityModel = MutApp.Model.extend({
                     },
                     {
                         uiTemplate: 'id-option_text_template',
-                        text: 'Techno',
+                        text: new MutAppProperty({
+                            model: this,
+                            application: this.application,
+                            propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.answer.options.1.text',
+                            value: 'Techno'
+                        }),
                         type: 'text',
                         strongLink: [],
                         weakLink: []
                     },
                     {
                         uiTemplate: 'id-option_text_template',
-                        text: 'Pop',
+                        text: new MutAppProperty({
+                            model: this,
+                            application: this.application,
+                            propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.answer.options.2.text',
+                            value: 'Pop'
+                        }),
                         type: 'text',
                         strongLink: [],
                         weakLink: []
                     },
                     {
                         uiTemplate: 'id-option_text_template',
-                        text: 'Jazz',
+                        text: new MutAppProperty({
+                            model: this,
+                            application: this.application,
+                            propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.answer.options.3.text',
+                            value: 'Jazz'
+                        }),
                         type: 'text',
                         strongLink: [],
                         weakLink: []
@@ -568,7 +595,13 @@ var PersonalityModel = MutApp.Model.extend({
                 application: this.application,
                 propertyString: 'id=pm results.'+this.attributes.results.getValue().length+'.description',
                 value: 'Result description'
-            })
+            }),
+            backgroundImage: new MutAppProperty({
+                model: this,
+                application: this.application,
+                propertyString: 'id=pm results.'+this.attributes.results.getValue().length+'.backgroundImage',
+                value: null
+            }),
         };
         return result;
     },
