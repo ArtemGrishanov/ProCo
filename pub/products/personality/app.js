@@ -88,7 +88,7 @@ var PersonalityApp = MutApp.extend({
         },
         "id=pm startScreenBackgroundImg": {
             label: {RU:'Фоновая картинка стартового экрана',EN:'Start screen Background image'},
-            controls: 'StringControl',
+            controls: 'ChooseImage',
             controlFilter: 'screen(id=startScr)'
         },
         "id=pm showLogoOnStartScreen": {

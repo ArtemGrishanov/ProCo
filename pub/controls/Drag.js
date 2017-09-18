@@ -49,7 +49,7 @@ _.extend(Drag.prototype, AbstractControl);
 
 Drag.prototype.setProductDomElement = function(elem) {
     if (this.$productDomElement) {
-        this.$productDomElement.off();
+        this.$productDomElement.off('mousedown');
         this.$productDomElement = null;
     }
     if (elem) {
@@ -88,7 +88,7 @@ Drag.prototype.setValue = function(value) {
 };
 
 Drag.prototype.destroy = function() {
-    this.$productDomElement.off();
+    this.$productDomElement.off('mousedown');
     this.$draggableParent.off();
     this.$directive.remove();
 };
@@ -144,7 +144,7 @@ Drag.prototype.normalizeElementPosition = function() {
  * @param e
  */
 Drag.prototype.onMouseDown = function(e) {
-    console.log('Drag.onMouseDown');
+    // console.log('Drag.onMouseDown');
     this.productDOMElementSize = {
         width: this.$productDomElement.outerWidth(false),
         height: this.$productDomElement.outerHeight(false)
@@ -173,7 +173,7 @@ Drag.prototype.onMouseDown = function(e) {
  * @param e
  */
 Drag.prototype.onDraggableParentMouseMove = function(e) {
-    console.log('Drag.onMouseMove');
+    // console.log('Drag.onMouseMove');
     if (this.isDragging === true) {
         this.prodElemPositionCached = {
             top: (e.pageY-this.startMousePosition.top)+this.startPosition.top,
@@ -186,6 +186,8 @@ Drag.prototype.onDraggableParentMouseMove = function(e) {
         //todo событие будет об изменении свойства, редактор по типу или имени контролов будет просить workspace апдейтить выделение
         // Editor.updateSelection();
         // Editor.getQuickControlPanel().updatePosition(this.$productDomElement);
+        this.position = this.prodElemPositionCached;
+        this.valueChangedCallback(this);
     }
 };
 
@@ -194,8 +196,8 @@ Drag.prototype.onDraggableParentMouseMove = function(e) {
  * @param e
  */
 Drag.prototype.onDraggableParentMouseUp = function(e) {
-    console.log('Drag.onMouseUp');
-    if (this.isDragging === true && this.elemPosition) {
+    // console.log('Drag.onMouseUp');
+    if (this.isDragging === true && this.prodElemPositionCached) {
         this.position = this.prodElemPositionCached;
         this.valueChangedCallback(this);
     }

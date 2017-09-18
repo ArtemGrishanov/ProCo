@@ -48,7 +48,110 @@
         .trivia_res_item + .trivia_res_item {
             border-left: 1px solid;
             border-color: #7c7c7c;
-            /*margin-left: -4px;* doesn't need: programmatical building /
+            /*margin-left: -4px;* doesn't need: programmatical building */
+        }
+
+
+        .modal.__personality_res_link {
+            padding: 0;
+        }
+        .pers_opt_list_cnt {
+            width: 275px;
+            height: 426px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            float: left;
+            background-color: #eee;
+        }
+        .pers_opt_list {
+            padding: 21px 28px;
+        }
+        .pers_opt_item {
+            position: relative;
+            width: 188px;
+            height: 18px;
+            padding: 14px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            background-color: #fff;
+            border: 2px solid #979797;
+            border-radius: 4px;
+            margin-bottom: 14px;
+            cursor: pointer;
+        }
+        .pers_opt_item::before {
+            display: none;
+            content: '';
+            width: 22px;
+            height: 22px;
+            position: absolute;
+            top: 12px;
+            right: 8px;
+            background-image: url('controls/i/icon-link-result-strong.png');
+        }
+        .pers_opt_item.__linked::before {
+            display: block;
+        }
+        .pers_opt_item.__selected {
+            color: #4c99f7;
+            border-color: #4c99f7;
+        }
+        .pers_res_list_cnt {
+            width: 525px;
+            height: 426px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+        .pers_res_list {
+            padding: 12px 20px;
+        }
+        .pers_res_item {
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
+            width: 196px;
+            height: 131px;
+            margin: 5px;
+            padding: 8px;
+            background-color: #eee;
+            border: 1px solid #979797;
+            overflow: hidden;
+        }
+        .pers_res_item::before {
+            display: none;
+            content: '';
+            width: 22px;
+            height: 22px;
+            position: absolute;
+            top: 12px;
+            right: 8px;
+            background-image: none;
+        }
+        .pers_res_item.__linked_weak::before {
+            display: block;
+            border-color: #4c99f7;
+            background-image: url('controls/i/icon-link-result-weak.png');
+        }
+        .pers_res_item.__linked_strong::before {
+            display: block;
+            border-color: #4c99f7;
+            background-image: url('controls/i/icon-link-result-strong.png');
+        }
+        .pers_res_title {
+            text-align: center;
+            font-size: 16px;
+            color: #464646;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .pers_res_desc {
+            text-align: center;
+            font-size: 14px;
+            color: #6d6d6d;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     </style>
 </head>
@@ -61,6 +164,53 @@
 
         </div>
     </div>
+
+    <div class="modal __personality_res_link">
+        <div>
+            <p>Привязка к результату</p>
+            <p>Отметьте, на какие результаты повлияет каждый ответ</p>
+
+            <div class="pers_opt_list_cnt">
+                <div class="pers_opt_list">
+                    <div class="pers_opt_item">Хард рок</div>
+                    <div class="pers_opt_item">Хард рок</div>
+                    <div class="pers_opt_item __selected">Хард рок</div>
+                    <div class="pers_opt_item">Хард рок</div>
+                    <div class="pers_opt_item __linked">Шансон</div>
+                    <div class="pers_opt_item">Хард рок</div>
+                    <div class="pers_opt_item">Шансон</div>
+                    <div class="pers_opt_item __linked">Шансон</div>
+
+                </div>
+            </div>
+
+            <div class="pers_res_list_cnt">
+                <div class="pers_res_list">
+                    <div class="pers_res_item __linked_weak">
+                        <p class="pers_res_title">Вы из 80-х bfuhryf yegvryg veghvg veghrv eghrv hgervh egv </p>
+                        <p class="pers_res_desc">Ваше детство прошло под BoneyM и Игоря Корнелюка. Вы еще застали rjhgeurhgbhu berjghb jtbghr btjhgb rtjhb rbt jgbrth bjrhtb irjbtiru htiuhrt iuhj oirthrtn ijkrn k</p>
+                    </div>
+                    <div class="pers_res_item __linked_strong">
+                        <p class="pers_res_title">Вы из 80-х</p>
+                        <p class="pers_res_desc">Ваше детство прошло под BoneyM и Игоря Корнелюка. Вы еще застали…</p>
+                    </div>
+                    <div class="pers_res_item">
+                        <p class="pers_res_title">Вы из 80-х</p>
+                        <p class="pers_res_desc">Ваше детство прошло под BoneyM и Игоря Корнелюка. Вы еще застали…</p>
+                    </div>
+                    <div class="pers_res_item">
+                        <p class="pers_res_title">Вы из 80-х</p>
+                        <p class="pers_res_desc">Ваше детство прошло под BoneyM и Игоря Корнелюка. Вы еще застали…</p>
+                    </div>
+                    <div class="pers_res_item">
+                        <p class="pers_res_title">Вы из 80-х</p>
+                        <p class="pers_res_desc">Ваше детство прошло под BoneyM и Игоря Корнелюка. Вы еще застали…</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript">
         var scrWidth = 800;
         var results = [0,1,2,3,4,5,6,7];

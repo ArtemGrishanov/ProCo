@@ -110,9 +110,14 @@ function ResourceManager(params) {
      * Вообще, если сделать все на modal то этого скорее всего будет не нужно
      */
     this.show = function(clb, param) {
+        //todo сбросить все фильтра и рамочки перед показом
+//        ControlManager.filter({propertyStrings: null});
+//        workspace.selectElementOnAppScreen(null);
+//        Editor.hideWorkspaceHints();
+
         this.selectCallback = clb;
         // сейчас инитим каждый раз, так как диалог удаляется из DOM и все обработчики слетают
-        // ничего более умного не делал пока
+        // ничего более умного не сделал пока
         this.initDialog();
         if (param && param.zIndex) {
             this.zIndex = param.zIndex;

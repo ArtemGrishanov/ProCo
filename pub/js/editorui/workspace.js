@@ -86,8 +86,8 @@ var workspace = {};
     /**
      * Обновить положение и размер выделения
      */
-    function updateSelectionPosition() {
-        if ($selection) {
+    function updateSelection() {
+        if ($selection && $selectedElementOnAppScreen) {
             var eo = $selectedElementOnAppScreen.offset(); // position() не подходит в данном случае
             $selection.css('top',eo.top+'px');
             $selection.css('left',eo.left+'px');
@@ -167,14 +167,18 @@ var workspace = {};
      *
      * @param {MutApp.Screen} param.screen
      */
-    function showScreen(param) {
+    function handleShowScreen(param) {
         param = param || {};
         if (param.screen) {
             if (_registeredElements.hasOwnProperty(param.screen.id) === false) {
                 // возможно, это первый показ этого экрана после рендера, еще не добавляли обработчики
                 _registeredElements[param.screen.id] = [];
             }
+
+            //TODO чистить прежние элементы и их обработчики
+
             var regElems = _registeredElements[param.screen.id];
+
             //привязка элементов на экране приложения и контролов
             if (param.screen._linkedMutAppProperties) {
                 // для всех свойств прилинкованных к экрану
@@ -228,9 +232,10 @@ var workspace = {};
     }
 
     global.init = init;
-    global.showScreen = showScreen;
+    global.handleShowScreen = handleShowScreen;
     global.setAppSize = setAppSize;
     global.selectElementOnAppScreen = selectElementOnAppScreen;
-    //global.updateSelectionPosition = updateSelectionPosition;
+    global.updateSelection = updateSelection;
+    global.getSelectedElement = function() { return $selectedElementOnAppScreen; }
 
 })(workspace);

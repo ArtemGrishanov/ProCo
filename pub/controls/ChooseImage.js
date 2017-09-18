@@ -4,37 +4,15 @@
  * Выбор картинки.
  * Кнопка сбоку на панели контролов, которая открывает окно resourceManager
  */
-function ChooseImage(propertyString, directiveName, $parent, productDOMElement, params) {
-    this.init(propertyString, directiveName, $parent, productDOMElement, params);
-    this.usePreviewShareImageModal = params.usePreviewShareImageModal || false;
+function ChooseImage(param) {
+    this.init(param);
+    this.imageUrl = '';
+    this.usePreviewShareImageModal = param.usePreviewShareImageModal || false;
 
-    this._onShow = function() {
-        this.makePreview();
-    };
-
-    this.onDirectiveClick = function() {
-        if (App.getAWSBucket() !== null) {
-            Editor.selectElementOnAppScreen(null);
-            Editor.hideWorkspaceHints();
-            $('#id-control_cnt').empty();
-            // этот контрол выбора картинки может работать в режиме выбора картинки для публикации
-            // в этом случае используется доп леер для предпросмотра картинки
-            if (this.usePreviewShareImageModal === true) {
-                Modal.showPreviewShareImage({
-                    entityId: this.getEntityId(this.propertyString),
-                    image: Engine.getAppProperty(this.propertyString).propertyValue,
-                    callback: this.showPreviewShareImageCallback.bind(this),
-                    resultLabel: ''
-                });
-            }
-            else {
-                Editor.getResourceManager().show(this.onImageSelected.bind(this));
-            }
-        }
-        else {
-            Modal.showLogin();
-        }
-    };
+//    todo makePreview on show
+//    this._onShow = function() {
+//        this.makePreview();
+//    };
 
     this.$directive.click(this.onDirectiveClick.bind(this));
 
@@ -68,8 +46,8 @@ function ChooseImage(propertyString, directiveName, $parent, productDOMElement, 
     }
 
     this.onImageSelected = function(url) {
-        var p = Engine.getAppProperty(this.propertyString);
-        Engine.setValue(p, url);
+        this.imageUrl = url;
+        this.valueChangedCallback(this);
         this.makePreview();
     };
 
@@ -78,27 +56,60 @@ function ChooseImage(propertyString, directiveName, $parent, productDOMElement, 
      * В том случае если используется вью "chooseimagepreview"
      */
     this.makePreview = function() {
-        if (this.directiveName === 'chooseimagepreview' && this.$directive) {
-            var url = Engine.getAppProperty(this.propertyString).propertyValue;
-            if (url) {
-                this.$directive.find('.js-img').css('background-image','url('+url+')');
-            }
-            else {
-                if (this.usePreviewShareImageModal === true) {
-                    var entityId = this.getEntityId(this.propertyString);
-                    var info = shareImageService.findImageInfo(entityId);
-                    if (info.canvas) {
-                        this.$directive.find('.js-img').css('background-image', 'url('+info.canvas.toDataURL()+')');
-                    }
-                    else {
-                        shareImageService.requestCanvases((function() {
-                            info = shareImageService.findImageInfo(entityId);
-                            this.$directive.find('.js-img').css('background-image', 'url('+info.canvas.toDataURL()+')');
-                        }).bind(this));
-                    }
-                }
-            }
-        }
+//        if (this.directiveName === 'chooseimagepreview' && this.$directive) {
+//            var url = Engine.getAppProperty(this.propertyString).propertyValue;
+//            if (url) {
+//                this.$directive.find('.js-img').css('background-image','url('+url+')');
+//            }
+//            else {
+//                if (this.usePreviewShareImageModal === true) {
+//                    var entityId = this.getEntityId(this.propertyString);
+//                    var info = shareImageService.findImageInfo(entityId);
+//                    if (info.canvas) {
+//                        this.$directive.find('.js-img').css('background-image', 'url('+info.canvas.toDataURL()+')');
+//                    }
+//                    else {
+//                        shareImageService.requestCanvases((function() {
+//                            info = shareImageService.findImageInfo(entityId);
+//                            this.$directive.find('.js-img').css('background-image', 'url('+info.canvas.toDataURL()+')');
+//                        }).bind(this));
+//                    }
+//                }
+//            }
+//        }
     }
 }
-ChooseImage.prototype = AbstractControl;
+_.extend(ChooseImage.prototype, AbstractControl);
+
+ChooseImage.prototype.getValue = function() {
+    return this.imageUrl;
+};
+
+ChooseImage.prototype.setValue = function(value) {
+    this.imageUrl = value;
+};
+
+ChooseImage.prototype.destroy = function() {
+    this.$directive.remove();
+};
+
+ChooseImage.prototype.onDirectiveClick = function() {
+    if (App.getAWSBucket() !== null) {
+        // этот контрол выбора картинки может работать в режиме выбора картинки для публикации
+        // в этом случае используется доп леер для предпросмотра картинки
+        if (this.usePreviewShareImageModal === true) {
+            Modal.showPreviewShareImage({
+                entityId: this.getEntityId(this.propertyString),
+                image: Engine.getAppProperty(this.propertyString).propertyValue,
+                callback: this.showPreviewShareImageCallback.bind(this),
+                resultLabel: ''
+            });
+        }
+        else {
+            Editor.getResourceManager().show(this.onImageSelected.bind(this));
+        }
+    }
+    else {
+        Modal.showLogin();
+    }
+};

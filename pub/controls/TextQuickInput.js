@@ -15,7 +15,6 @@ function TextQuickInput(param) {
     this.screenDocument = this.additionalParam.appIframe.contentDocument;
 
     this.onProductElementInput = function() {
-        //Editor.updateSelection();
         this.valueChangedCallback(this);
     };
 }
@@ -24,7 +23,9 @@ _.extend(TextQuickInput.prototype, AbstractControl);
 
 TextQuickInput.prototype.setProductDomElement = function(elem) {
     if (this.$productDomElement) {
-        this.$productDomElement.off();
+        // отписываться только от тех событий, на которые подписался
+        this.$productDomElement.off('input');
+        this.$productDomElement.off('keypress');
         this.$productDomElement = null;
     }
     if (elem) {
@@ -59,7 +60,8 @@ TextQuickInput.prototype.setValue = function(value) {
 
 TextQuickInput.prototype.destroy = function() {
     if (this.$productDomElement) {
-        this.$productDomElement.off();
+        this.$productDomElement.off('input');
+        this.$productDomElement.off('keypress');
     }
     this.$directive.remove();
 };
@@ -90,8 +92,7 @@ TextQuickInput.prototype.onKeyPress = function(e) {
             selection.addRange(range);
 
             // также надо сделать обновление свойства. Так как в "input" событие не попадем
-            //Editor.updateSelection();
-            this.valueChangedCallback();
+            this.valueChangedCallback(this);
 
             return false;
         }
@@ -103,5 +104,5 @@ TextQuickInput.prototype.onPaste = function() {
 };
 
 TextQuickInput.prototype.onProductElementInput = function() {
-    this.valueChangedCallback();
+    this.valueChangedCallback(this);
 };

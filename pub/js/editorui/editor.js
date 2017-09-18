@@ -181,6 +181,7 @@ var Editor = {};
         Modal.showLoading();
         param = param || {};
         startCallback = param.callback;
+        handleInspector();
         appId = getUniqId().substr(22);
         appTemplate = null;
         appName = null;
@@ -298,24 +299,6 @@ var Editor = {};
         // установить хуки которые есть в дескрипторе. Может не быть вовсе
         //hookRunner.setHooks(iframeWindow.descriptor.hooks);
 
-        // для установки ссылки шаринга требуются данные пользователя, ответ от апи возможно надо подождать
-        if (App.getUserData()) {
-            trySetDefaultShareLink(cloneTemplate === true);
-            // показ кнопки загрузки превью картинки для проекта. Только для админов
-            if (App.getUserData() && config.common.excludeUsersFromStatistic.indexOf(App.getUserData().id) >= 0) {
-                $('#id-app_prevew_img_wr').show();
-            }
-        }
-        else {
-            App.on(USER_DATA_RECEIVED, function() {
-                trySetDefaultShareLink(cloneTemplate === true);
-                // показ кнопки загрузки превью картинки для проекта. Только для админов
-                if (App.getUserData() && config.common.excludeUsersFromStatistic.indexOf(App.getUserData().id) >= 0) {
-                    $('#id-app_prevew_img_wr').show();
-                }
-            });
-        }
-
         // нужна ширина для горизонтального выравнивания
 //        $('#id-product_cnt')
 //            //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
@@ -338,6 +321,24 @@ var Editor = {};
             workspaceOffset = $('#id-product_iframe_cnt').offset();
             // проверить что редактор готов, и вызвать колбек
             checkEditorIsReady();
+
+            // для установки ссылки шаринга требуются данные пользователя, ответ от апи возможно надо подождать
+            if (App.getUserData()) {
+                trySetDefaultShareLink(cloneTemplate === true);
+                // показ кнопки загрузки превью картинки для проекта. Только для админов
+                if (App.getUserData() && config.common.excludeUsersFromStatistic.indexOf(App.getUserData().id) >= 0) {
+                    $('#id-app_prevew_img_wr').show();
+                }
+            }
+            else {
+                App.on(USER_DATA_RECEIVED, function() {
+                    trySetDefaultShareLink(cloneTemplate === true);
+                    // показ кнопки загрузки превью картинки для проекта. Только для админов
+                    if (App.getUserData() && config.common.excludeUsersFromStatistic.indexOf(App.getUserData().id) >= 0) {
+                        $('#id-app_prevew_img_wr').show();
+                    }
+                });
+            }
         }
         else {
             // не грузить контролы в этом режиме. Сразу колбек на старт
@@ -957,6 +958,20 @@ var Editor = {};
     }
 
     /**
+     * Включить обработчик для проверки
+     * При клике Ctrl + i будет запускаться проверка
+     */
+    function handleInspector() {
+        $(window).keypress(function(event) {
+            if (event.which == 105) {
+                inspector.isOK();
+                event.preventDefault();
+            }
+            return false;
+        });
+    }
+
+    /**
      * Открыть в редакторе на редактирование проект
      * ид пользователя мы уже знаем в этот момент, пользователь должен быть авторизован
      * По сути это функция "Открыть шаблон" из витрины или "Открыть мой ранее сохраненный проект". В этих случаях проект открывается на основе файла шаблона
@@ -1033,6 +1048,9 @@ var Editor = {};
         switch (event) {
             case MutApp.EVENT_SCREEN_CREATED: {
                 log('Editor.onAppChanged: MutApp.EVENT_SCREEN_CREATED \''+data.screenId+'\'');
+                if (activeScreen === data.screenId) {
+
+                }
                 ScreenManager.update({
                     created: data.application.getScreenById(data.screenId),
                     cssString: data.application.getCssRulesString()
@@ -1041,6 +1059,22 @@ var Editor = {};
             }
             case MutApp.EVENT_SCREEN_RENDERED: {
                 log('Editor.onAppChanged: MutApp.EVENT_SCREEN_RENDERED \''+data.screenId+'\'');
+                if (activeScreen === data.screenId) {
+                    // элементы на экране сменились после рендера для активного экрана, надо апдейтить контролы и workspace
+                    var scr = app.getScreenById(activeScreen);
+                    workspace.handleShowScreen({
+                        screen: scr
+                    });
+                    ControlManager.handleShowScreen({
+                        screen: scr
+                    });
+                    ControlManager.filter({
+                        screen: scr,
+                        propertyStrings: null
+                    });
+                    // todo? workspace.selectElementOnAppScreen( prev selected element );
+                }
+                // апдейтить в любом случае, не только для активного экрана
                 ScreenManager.update({
                     rendered: data.application.getScreenById(data.screenId),
                     cssString: data.application.getCssRulesString()
@@ -1097,6 +1131,7 @@ var Editor = {};
      */
     function onControlValueChanged(propertyString, value) {
         editedApp.getProperty(propertyString).setValue(value);
+        workspace.updateSelection();
     }
 
     /**
@@ -1114,7 +1149,7 @@ var Editor = {};
             var scr = editedApp.getScreenById(screenId);
             editedApp.showScreen(scr);
             workspace.selectElementOnAppScreen(null);
-            workspace.showScreen({
+            workspace.handleShowScreen({
                 screen: scr
             });
             ControlManager.handleShowScreen({
@@ -1466,5 +1501,6 @@ var Editor = {};
     global.getEditorEnvironment = getEditorEnvironment;
     global.getEditedApp = function() { return editedApp; }
     global.showEditor = showEditor;
+    global.getActiveScreen = function() { return activeScreen; }
 
 })(Editor);

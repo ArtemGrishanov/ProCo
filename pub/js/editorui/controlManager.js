@@ -318,5 +318,6 @@ var ControlManager = {};
     global.clearFilter = clearFilter;
     global.handleShowScreen = handleShowScreen;
     global.find = find;
+    global.getFilter = function() { return _filterValue; }
 
 })(ControlManager)
