@@ -1084,8 +1084,17 @@ var Editor = {};
             case MutApp.EVENT_SCREEN_DELETED: {
                 log('Editor.onAppChanged: MutApp.EVENT_SCREEN_DELETED \''+data.screenId+'\'');
                 ScreenManager.update({
-                    deleted: data.application.getScreenById(data.screenId)
+                    deleted: data.screen
                 });
+                if (activeScreen === data.screenId) {
+                    // если экран activeScreen был удален, то вмето него надо показать другой, "ближайший" по индексу
+                    var newActiveScreenIndex = data.screenIndex;
+                    if (newActiveScreenIndex >= app._screens.length) {
+                        //data.screenIndex - это индекс удаленного экрана
+                        newActiveScreenIndex = app._screens.length - 1;
+                    }
+                    showScreen(app._screens[newActiveScreenIndex].id);
+                }
                 break;
             }
             case MutApp.EVENT_PROPERTY_CREATED: {
@@ -1106,7 +1115,9 @@ var Editor = {};
                 break;
             }
             case MutApp.EVENT_PROPERTY_DELETED: {
-                var ctrl = ControlManager.deleteControl();
+                var ctrls = ControlManager.deleteControl({
+                    mutAppProperty: data.property
+                });
                 break;
             }
         }

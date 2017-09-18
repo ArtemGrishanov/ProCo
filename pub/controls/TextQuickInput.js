@@ -63,7 +63,7 @@ TextQuickInput.prototype.destroy = function() {
         this.$productDomElement.off('input');
         this.$productDomElement.off('keypress');
     }
-    this.$directive.remove();
+    // this.$directive.remove(); у TextQuickInput нет директивы
 };
 
 /**

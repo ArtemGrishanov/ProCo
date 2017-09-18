@@ -274,8 +274,8 @@ MutApp.EVENT_SCREEN_DELETED = 'mutapp_event_screen_deleted';
 MutApp.EVENT_APP_SIZE_CHANGED = 'mutapp_event_app_size_changed';
 MutApp.EVENT_PROPERTY_CREATED = 'mutapp_event_property_created';
 MutApp.EVENT_PROPERTY_VALUE_CHANGED = 'mutapp_event_property_value_changed';
-MutApp.EVENT_PROPERTY_DELETED = 'mutapp_event_property_created';
-MutApp.ENGINE_STORAGE_VALUE_CHANGED = 'mutapp_engine_value_changed';
+MutApp.EVENT_PROPERTY_DELETED = 'mutapp_event_property_deleted';
+MutApp.ENGINE_STORAGE_VALUE_CHANGED = 'mutapp_storage_value_changed';
 MutApp.ENGINE_SET_PROPERTY_VALUE = 'mutapp_set_property_value';
 
 /**
@@ -350,11 +350,14 @@ MutApp.prototype.addScreen = function(v) {
 MutApp.prototype.deleteScreen = function(v) {
     var index = this._screens.indexOf(v);
     if (index >= 0) {
-        this.trigger(MutApp.EVENT_SCREEN_DELETED, {
-            screenId: v.id
-        });
         this._screens.splice(index, 1);
         v.$el.remove();
+        // событие после произведенных действий. клиент работает в колбеке так, как будто в _screens уже нет экрана
+        this.trigger(MutApp.EVENT_SCREEN_DELETED, {
+            screenId: v.id,
+            screenIndex: index,
+            screen: v // скрин передаем в колюек, так как в приложении его уже нельзя будет получить
+        });
     }
     else {
         console.error('MutApp.deleteScreen: This view not found');
@@ -2551,6 +2554,10 @@ MutAppProperty.prototype.destroy = function() {
     var dsInx = this._application._mutappProperties.indexOf(this);
     if (dsInx >= 0) {
         this._application._mutappProperties.splice(dsInx, 1);
+        this._application.trigger(MutApp.EVENT_PROPERTY_DELETED, {
+            property: this,
+            propertyString: this.propertyString
+        });
     }
     else {
         throw new Error('MutAppProperty.destroy: property \''+this.propertyString+'\' doesnot exist in _mutappProperties array');

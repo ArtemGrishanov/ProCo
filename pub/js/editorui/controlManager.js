@@ -127,6 +127,29 @@ var ControlManager = {};
     }
 
     /**
+     * Удалить контрол, так как удаляется свойство в приложении
+     *
+     * @param {MutAppProperty} mutAppProperty
+     * @return {Array} только что удаленные контролы
+     */
+    function deleteControl(param) {
+        var result = [];
+        param = param || {};
+        if (!param.mutAppProperty) {
+            throw new Error('ControlManager.deleteControl: mutAppProperty does not specified!');
+        }
+        var ctrls = getControls({propertyString: param.mutAppProperty.propertyString});
+        for (var i = 0; i < ctrls.length; i++) {
+            var delIdx = _controls.indexOf(ctrls[i]);
+            _controls.splice(delIdx, 1);
+            ctrls[i].destroy();
+            ctrls[i].$wrapper.remove();
+            result.push(ctrls[i]);
+        }
+        return result;
+    }
+
+    /**
      * В эту функцию будут приходит сообщения об изменении значения в контроле.
      * Каждый конкретный экземпляр контрола вызывает эту функцию
      * ControlManager будет передавать это изменение дальше в редактор, а тот далее в приложение.
@@ -310,6 +333,7 @@ var ControlManager = {};
     }
 
     global.createControl = createControl;
+    global.deleteControl = deleteControl;
     global.getControlsCount = function() { return _controls.length; }
     // global.find = find;
     global.getControls = getControls;
