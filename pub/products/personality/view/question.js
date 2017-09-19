@@ -73,15 +73,19 @@ var QuestionScreen = MutApp.Screen.extend({
     },
 
     onNextClick: function(e) {
-        this.model.next();
+        if (this.model.application.mode !== 'edit') {
+            this.model.next();
+        }
     },
 
     onLogoClick: function(e) {
-        var ll = this.model.get('logoLink');
-        if (ll) {
-            var win = window.open(ll, '_blank');
-            win.focus();
-            this.model.application.stat('Test', 'logoclick');
+        if (this.model.application.mode !== 'edit') {
+            var ll = this.model.get('logoLink');
+            if (ll) {
+                var win = window.open(ll, '_blank');
+                win.focus();
+                this.model.application.stat('Test', 'logoclick');
+            }
         }
     },
 
@@ -185,16 +189,18 @@ var QuestionScreen = MutApp.Screen.extend({
                 //в нем могут быть заложены разные опции расположения элементов, поэтому реализоан в виде отдельного шаблона
                 var $ea = $(this.template[answerData.uiTemplate](answerData));
                 this.$el.find('.js-answer_cnt').append($ea);
-                for (var i = 0; i < answerData.options.length; i++) {
-                    var o = MutApp.Util.getObjectForRender(answerData.options[i]);
+                for (var i = 0; i < answerData.options.getValue().length; i++) {
+                    var o = MutApp.Util.getObjectForRender(answerData.options.getValue()[i]);
                     if (o.uiTemplate) {
                         o.currentQuestionIndex = this.currentQuestionIndex;
                         o.currentOptionIndex = i;
                         var $e = $(this.template[o.uiTemplate](o));
                         $e.click((function(e) {
-                            var oId = $(e.currentTarget).attr('data-id');
-                            this.model.answer(oId);
-                            this.model.next();
+                            if (this.model.application.mode !== 'edit') {
+                                var oId = $(e.currentTarget).attr('data-id');
+                                this.model.answer(oId);
+                                this.model.next();
+                            }
                         }).bind(this));
                         $ea.append($e); // ea is js-options_cnt
                     }

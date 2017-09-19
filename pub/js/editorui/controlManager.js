@@ -13,6 +13,7 @@ var ControlManager = {};
 (function(global) {
     var _controls = [];
     var _valueChangedCallback = null;
+    var _filterCallback = null;
     var _filterValue = {};
 
     /**
@@ -70,7 +71,13 @@ var ControlManager = {};
             }
 
             // Container для контролов одного типа, например static_controls_cnt для type=controlpanel
-            var $directiveContainer = (param.mutAppProperty._controlFilter === 'always') ? $('#id-static-no_filter_controls') : $('#'+cfg.parentId);
+            var $directiveContainer = null;
+            if (cfg.type === 'quickcontrolpanel') {
+                $directiveContainer = $('#id-control_cnt').find('.js-quick_panel .js-items');
+            }
+            else {
+                $directiveContainer = (param.mutAppProperty._controlFilter === 'always') ? $('#id-static-no_filter_controls') : $('#'+cfg.parentId);
+            }
             // Для некоторых контролов добавляется обертка, например static_control_cnt_template
             var $directiveWrapper = null;
             if (cfg.type === 'controlpanel') {
@@ -245,22 +252,37 @@ var ControlManager = {};
         if (param.hasOwnProperty('propertyStrings') === true) { // может быть и null
             _filterValue.propertyStrings = param.propertyStrings;
         }
+        // признак того, что контролы из quick panel попали в фильтр и их надо показывать
+        var quickControlsFiltered = false;
         for (var i = 0; i < param.controls.length; i++) {
             var c = param.controls[i];
+            var needShow = false;
             if (c.controlFilter === 'always') {
-                c.show();
-                continue;
+                needShow = true;
             }
-            if (c.controlFilter === 'screen' && c.controlFilterScreenCriteria &&
+            else if (c.controlFilter === 'screen' && c.controlFilterScreenCriteria &&
                 _filterValue.screen && _filterValue.screen[c.controlFilterScreenCriteria.key] === c.controlFilterScreenCriteria.value) {
-                c.show();
-                continue;
+                needShow = true;
             }
-            if (_filterValue.propertyStrings && _filterValue.propertyStrings.indexOf(c.propertyString) >= 0) {
-                c.show();
-                continue;
+            else if (_filterValue.propertyStrings && _filterValue.propertyStrings.indexOf(c.propertyString) >= 0) {
+                needShow = true;
             }
-            c.hide();
+            if (needShow === true) {
+                if (config.controls[c.controlName].type === 'quickcontrolpanel') {
+                    quickControlsFiltered = true;
+                }
+                c.show()
+            }
+            else {
+                c.hide();
+            }
+        }
+        if (_filterCallback) {
+            _filterCallback({
+                propertyStrings: _filterValue.propertyStrings,
+                screen: _filterValue.screen,
+                quickControlsFiltered: quickControlsFiltered
+            });
         }
     }
 
@@ -338,6 +360,7 @@ var ControlManager = {};
     // global.find = find;
     global.getControls = getControls;
     global.setChangeValueCallback = function(clb) { _valueChangedCallback = clb; }
+    global.setFilterCallback = function(clb) { _filterCallback = clb; }
     global.filter = filter;
     global.clearFilter = clearFilter;
     global.handleShowScreen = handleShowScreen;

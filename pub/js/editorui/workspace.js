@@ -7,6 +7,7 @@
  * 4) Показывать экран в рабочем поле?
  */
 var workspace = {};
+
 (function(global) {
 
     var selectionTemplate = null,
@@ -47,7 +48,12 @@ var workspace = {};
          * @type {Array}
          * @private
          */
-        _ignoreDataAppPropertyAttribute = [];
+        _ignoreDataAppPropertyAttribute = [],
+        /**
+         * Панелька с контролами, которая всплывает рядом с элементом и указывает на него
+         * @type {QuickControlPanel}
+         */
+        quickControlPanel = null;
 
     /**
      * Выделить элемент на экране приложения.
@@ -215,6 +221,23 @@ var workspace = {};
     }
 
     /**
+     * Показать панельку с быстрыми контролами
+     */
+    function showQuickControlPanel() {
+        if ($selectedElementOnAppScreen) {
+            // только если есть выделенный элемент, рядом с которым показывается панелька
+            quickControlPanel.show($selectedElementOnAppScreen);
+        }
+    }
+
+    /**
+     * Скрыть панельку с быстрыми контролами
+     */
+    function hideQuickControlPanel() {
+        quickControlPanel.hide();
+    }
+
+    /**
      * Инициализация
      *
      * @param {function} param.onSelectElementCallback
@@ -225,6 +248,7 @@ var workspace = {};
         $controlContainer = $('#id-control_cnt');
         selectionTemplate = $('#id-elem_selection_template').html();
         _onSelectElementCallback = param.onSelectElementCallback;
+        quickControlPanel = new QuickControlPanel();
         $('#id-workspace').click(function(){
             // любой клик по документу сбрасывает фильтр контролов
             selectElementOnAppScreen(null);
@@ -236,6 +260,8 @@ var workspace = {};
     global.setAppSize = setAppSize;
     global.selectElementOnAppScreen = selectElementOnAppScreen;
     global.updateSelection = updateSelection;
+    global.showQuickControlPanel = showQuickControlPanel;
+    global.hideQuickControlPanel = hideQuickControlPanel;
     global.getSelectedElement = function() { return $selectedElementOnAppScreen; }
 
 })(workspace);

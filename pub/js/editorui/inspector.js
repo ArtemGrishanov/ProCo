@@ -6,7 +6,7 @@
  * - экранов в приложении и экраны в контроле
  * -
  *
- * Каждый модуль в отдельности (ControlManager, workspace и т.д.) yt может обеспечить проверки,
+ * Каждый модуль в отдельности (ControlManager, workspace и т.д.) не может обеспечить проверки,
  * так как у них нет всех данных для этого.
  *
  * 1) используется в автотестах
@@ -58,6 +58,7 @@ var inspector = {};
         // проверить что фильтрованные контролы действительно видны, а другие скрыты
         var ctrls = ControlManager.getControls();
         var filter = ControlManager.getFilter()
+        var quickControlsFiltered = false; // признак того, что контролы из quick panel попали в фильтр и их надо показывать
         for (var i = 0; i < ctrls.length; i++) {
             var c = ctrls[i];
             if (c.controlFilter === 'always' ||
@@ -66,12 +67,23 @@ var inspector = {};
                 ) {
                 // в фильтре - должен быть показан
                 assert.ok(c.isShown() === true, 'control \''+c.propertyString+'\' is shown');
+                if (config.controls[c.controlName].type === 'quickcontrolpanel') {
+                    quickControlsFiltered = true;
+                }
             }
             else {
                 // не в фильре - должен быть скрыт
                 assert.ok(c.isShown() === false, 'control \''+c.propertyString+'\' is hidden');
             }
         }
+        if (quickControlsFiltered === true) {
+            // для контрола типа quickcontrolpanel надо проверить что показана и сама панелька
+            assert.ok($('#id-control_cnt').find('.js-quick_panel').css('display') === 'block', 'quickcontrolpanel panel is shown for \''+c.propertyString+'\'');
+        }
+        else {
+            assert.ok($('#id-control_cnt').find('.js-quick_panel').css('display') === 'none', 'quickcontrolpanel panel is hidden for \''+c.propertyString+'\'');
+        }
+
 
         // для текущего экрана у всех контролов установлен productDomElements и равен uiElement
         var activeScreen = app.getScreenById(Editor.getActiveScreen());

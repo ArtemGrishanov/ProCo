@@ -37,6 +37,9 @@ var PersonalityApp = MutApp.extend({
                     controls: 'StringControl',
                     controlFilter: 'onclick'
                 },
+                "id=pm quiz.{{number}}.answer.options": {
+                    controls: "AddArrayElementControl"
+                },
                 "id=pm quiz.{{number}}.answer.options.{{number}}.text": {
                     controls: "TextQuickInput"
                 }

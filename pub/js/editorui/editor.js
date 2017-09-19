@@ -147,11 +147,6 @@ var Editor = {};
      */
     var startCallback = null;
     /**
-     * Панелька с контролами, которая всплывает рядом с элементом и указывает на него
-     * @type {QuickControlPanel}
-     */
-    var quickControlPanel = null;
-    /**
      * Таймер для запуска проверки на показ стрелок прокрутки при изменении размеров окна
      * @type {null}
      */
@@ -194,8 +189,8 @@ var Editor = {};
             onSelectElementCallback: onSelectElementCallback
         });
         ControlManager.setChangeValueCallback(onControlValueChanged);
+        ControlManager.setFilterCallback(onControlFilterChanged);
         resourceManager = new ResourceManager();
-        quickControlPanel = new QuickControlPanel();
         window.onbeforeunload = confirmExit;
         $('.js-app_preview').click(onPreviewClick);
         $('.js-app_publish').click(onPublishClick);
@@ -1146,6 +1141,23 @@ var Editor = {};
     }
 
     /**
+     * Событие о смене фильтра в ControlManager
+     *
+     * @param {MutApp.Screen} data.screen
+     * @param {Array<string>} data.propertyStrings
+     * @param {boolean} data.quickControlsFiltered
+     */
+    function onControlFilterChanged(data) {
+        if (data.quickControlsFiltered === true) {
+            // был зафильтрован контрол с типом quickcontrolpanel, говорим workspace показать панель с контролами quickcontrolpanel
+            workspace.showQuickControlPanel();
+        }
+        else {
+            workspace.hideQuickControlPanel();
+        }
+    }
+
+    /**
      * Показать экран приложения в редакторе
      * Будут применены филтрации контролов
      *
@@ -1508,7 +1520,6 @@ var Editor = {};
     global.getResourceManager = function() { return resourceManager; }
     global.showSelectDialog = showSelectDialog;
     global.getAppId = function() { return appId; };
-    global.getQuickControlPanel = function() { return quickControlPanel; }
     global.getEditorEnvironment = getEditorEnvironment;
     global.getEditedApp = function() { return editedApp; }
     global.showEditor = showEditor;
