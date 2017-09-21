@@ -106,5 +106,5 @@ Alternative.prototype.destroy = function() {
 Alternative.prototype.onItemClick = function(e) {
     var v = $(e.currentTarget).attr('data-value');
     this.setValue(v);
-    this.valueChangedCallback(this);
+    this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
 };

@@ -85,7 +85,7 @@ var inspector = {};
         }
 
 
-        // для текущего экрана у всех контролов установлен productDomElements и равен uiElement
+        // для текущего экрана у всех контролов установлен productDomElement и равен соответствующему _linkedElementsOnScreen[screen_id]
         var activeScreen = app.getScreenById(Editor.getActiveScreen());
         for (var i = 0; i < activeScreen._linkedMutAppProperties.length; i++) {
             var ap = activeScreen._linkedMutAppProperties[i];
@@ -93,19 +93,23 @@ var inspector = {};
                 propertyString: ap.propertyString
             });
             for (var j = 0; j < ctrls.length; j++) {
-                assert.ok(ap.uiElement === ctrls[j].$productDomElement[0], 'For property \''+ap.propertyString+'\' uiElement == $productDomElement in control');
+                // TODO
+                // $productDomElements - по умолчанию в AbstractControls
+                // $productDomElement в Drag + TextQuickInput используется
+                //assert.ok(ap.getLinkedElementsOnScreen(activeScreen.id)[0] === ctrls[j].$productDomElement[0], 'For property \''+ap.propertyString+'\' uiElement == $productDomElement in control');
             }
         }
 
-        // проверка что screen._linkedMutAppProperties[i].uiElement действительно есть на экране screen
+        // проверка что screen._linkedMutAppProperties[i].getLinkedElementsOnScreen(screen_id) действительно есть на экране screen
+        // проверяется только активный экран
         var scr = app.getScreenById(Editor.getActiveScreen());
         for (var i = 0; i < scr._linkedMutAppProperties.length; i++) {
             var ap = scr._linkedMutAppProperties[i];
-            assert.ok($.contains(scr.$el[0], ap.uiElement) === true, 'Screen \''+scr.id+'\' contains uiElement from \''+ap.propertyString+'\'');
+            var elems = ap.getLinkedElementsOnScreen(Editor.getActiveScreen());
+            for (var n = 0; n < elems.length; n++) {
+                assert.ok($.contains(scr.$el[0], elems[n]) === true, 'Screen \''+scr.id+'\' contains ui element from \''+ap.propertyString+'\'');
+            }
         }
-
-        // todo equal
-        // uiElement === productDomElement
 
         // для текущего экрана: экран действительно содержит $productDomElement контролов (которые должны быть на экране)
         // pre: экран должен быть показан, то есть произошла линковка $productDomElement

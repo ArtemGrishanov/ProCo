@@ -125,11 +125,24 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm showLogoInQuestions',
             value: true
         });
+        // свойство одно на все экраны с вопросами
+        this.attributes.shadowEnableInQuestions = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=pm shadowEnableInQuestions',
+            value: false
+        });
         this.attributes.logoUrl = new MutAppProperty({
             application: this.application,
             model: this,
             propertyString: 'id=pm logoUrl',
             value: '//s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg'
+        });
+        this.attributes.logoPositionInQuestions = new MutAppPropertyPosition({
+            application: this.application,
+            model: this,
+            value: {top: 300, left: 20},
+            propertyString: 'id=pm logoPositionInQuestions'
         });
     },
 
@@ -512,6 +525,12 @@ var PersonalityModel = MutApp.Model.extend({
                     propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.question.backgroundImage',
                     value: null
                 }),
+                backgroundColor: new MutAppProperty({
+                    model: this,
+                    application: this.application,
+                    propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.question.backgroundColor',
+                    value: '#ffffff'
+                }),
             },
             answer: {
                 // тип механики ответа: выбор только одной опции, и сразу происходит обработка ответа
@@ -594,9 +613,36 @@ var PersonalityModel = MutApp.Model.extend({
                 application: this.application,
                 propertyString: 'id=pm results.'+this.attributes.results.getValue().length+'.backgroundImage',
                 value: null
-            }),
+            })
         };
         return result;
+    },
+
+    /**
+     * Функция прототип для генерации текстовых опций ответа
+     */
+    proto_optionText: function() {
+        //todo
+        var questionIndex = 0;
+
+        if (questionIndex >= this.attributes.quiz.getValue().length) {
+            throw new Error('PersonalityModel.proto_optionText: questionIndex >= this.attributes.quiz');
+        }
+        var q = this.attributes.quiz.getValue()[questionIndex];
+        var option = {
+            id: MutApp.Util.getUniqId(6),
+            strongLink: [],
+            weakLink: [],
+            type: 'text',
+            uiTemplate: 'id-option_text_template',
+            text: new MutAppProperty({
+                model: this,
+                application: this.application,
+                propertyString: 'id=pm quiz.'+questionIndex+'.answer.options.'+q.answer.options.getValue().length+'.text',
+                value: 'New option'
+            })
+        };
+        return option;
     },
 
     /**

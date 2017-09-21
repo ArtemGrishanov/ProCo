@@ -40,7 +40,7 @@ function StringControl(param) {
             var inpv = (this.colorpicker) ? this.colorpicker.toHEXString(): this.$input.val();
             if (this.inputValue !== inpv) {
                 this.inputValue = inpv;
-                this.valueChangedCallback(this);
+                this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
             }
         }
     };

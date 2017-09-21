@@ -188,8 +188,9 @@ var Editor = {};
         workspace.init({
             onSelectElementCallback: onSelectElementCallback
         });
-        ControlManager.setChangeValueCallback(onControlValueChanged);
-        ControlManager.setFilterCallback(onControlFilterChanged);
+        ControlManager.init({
+            onControlEvents: onControlEvents
+        });
         resourceManager = new ResourceManager();
         window.onbeforeunload = confirmExit;
         $('.js-app_preview').click(onPreviewClick);
@@ -594,133 +595,6 @@ var Editor = {};
     //    }
     //}
 
-//    /**
-//     * Отфильтровать и показать только те контролы, appPropertyString которых есть в dataAppPropertyString
-//     * Это могут быть контролы на боковой панели или во всплывающей панели quickControlPanel
-//     *
-//     * @param {string} dataAppPropertyString например 'backgroundColor,showBackgroundImage'
-//     * @param {domElement} element на который кликнул пользователь
-//     * @param {Array} activeScreenIds экраны активные в данный момент. Есть такой тип фильтрации showWhileScreenIsActive
-//     */
-//    function filterControls(dataAppPropertyString, element, activeScreenIds) {
-//        var quickControlPanelControls = [];
-//        if (dataAppPropertyString) {
-//            $('#id-static_controls_cnt').children().hide();
-//            // может быть несколько свойств через запятую: фон кнопки, ее бордер, цвет шрифта кнопки и так далее
-//            var keys = dataAppPropertyString.split(',');
-//            for (var i = 0; i < keys.length; i++) {
-//                var cArr = findControlInfo(keys[i].trim(), element);
-//
-//                // результатов поиска может быть несколько
-//                // например по id=tm quiz.0.answer.options - контрол добавлени и удаления
-//                for (var j = 0; j < cArr.length; j++) {
-//                    var c = cArr[j];
-//                    // контролы которые должны показаться на всплывающей панели quickControlPanel
-//                    if (c && c.type === 'quickcontrolpanel') {
-//                        // событие _onShow будет вызвано позже для этого типа 'quickcontrolpanel'
-//                        quickControlPanelControls.push(c);
-//                    }
-//                    else {
-//                        if (c && c.wrapper) {
-//                            c.wrapper.show();
-//                            if (c.control._onShow) {
-//                                c.control._onShow();
-//                            }
-//                        }
-//                    }
-//
-//                    //TODO test
-//                    // refactor
-//                    // $productDOMElement не устанавливается для контролов controlpanel при создании
-//                    // а он оказался нужен для Alternative
-//                    if (c.type === 'controlpanel') {
-//                        c.control.$productDOMElement = $(element);
-//                    }
-//                }
-//            }
-//        }
-//        else {
-//            // сбрасываем фильтр - показываем всё что не имеет filter=true
-//            for (var i = 0; i < uiControlsInfo.length; i++) {
-//                var c = uiControlsInfo[i];
-//                if (c.type && c.type === 'controlpanel') {
-//                    if (c.filter === true) {
-//                        c.wrapper.hide();
-//                    }
-//                    else {
-//                        c.wrapper.show();
-//                        if (c.control._onShow) {
-//                            c.control._onShow();
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        // Фильтрация контролов которые должны быть показаны во время показа экрана
-//        for (var i = 0; i < uiControlsInfo.length; i++) {
-//            var c = uiControlsInfo[i];
-//            if (c.type && c.type === 'controlpanel') {
-//                var found = false;
-//                for (var n = 0; n < activeScreenIds.length; n++) {
-//                    if (activeScreenIds[n].indexOf(c.showWhileScreenIsActive) >= 0) {
-//                        found = true;
-//                        break;
-//                    }
-//                }
-//                if (c.showWhileScreenIsActive !== undefined && found === true) {
-//                    // пока активен экран c.showWhileScreenIsActive надо показывать контрол, такой тип фильтрации по экрану
-//                    c.wrapper.show();
-//                    $('#id-static_controls_cnt').prepend(c.wrapper); // контроля фильтруемые по экрану должны быть выше, у них более высокий приоритет
-//                    if (c.control._onShow) {
-//                        c.control._onShow();
-//                    }
-//                }
-//            }
-//        }
-//
-//        // есть несколько контролов для всплывашки, которые надо показать
-//        if (quickControlPanelControls.length > 0) {
-//            quickControlPanel.show(element, quickControlPanelControls);
-//            for (var n = 0; n < quickControlPanelControls.length; n++) {
-//                var c = quickControlPanelControls[n];
-//                if (c.control._onShow) {
-//                    c.control._onShow();
-//                }
-//            }
-//        }
-//        else {
-//            quickControlPanel.hide();
-//        }
-//    }
-
-//    /**
-//     * Найти информацию об элементе управления
-//     * @param {string} propertyString свойство для которого ищем элемент управления
-//     * @param [domElement]
-//     * @returns {array}
-//     */
-//    function findControlInfo(propertyString, domElement) {
-//        var results = [];
-//        for (var j = 0; j < uiControlsInfo.length; j++) {
-//            // TODO для контролов типа controlpanel я не сохранял элементы domElement, и в эту функцию передается undefined
-//            // поэтому такая заточка
-//            if (domElement && uiControlsInfo[j].type!=='controlpanel') {
-//                // если важен domElem
-//                if (propertyString === uiControlsInfo[j].propertyString && domElement === uiControlsInfo[j].domElement) {
-//                    results.push(uiControlsInfo[j]);
-//                }
-//            }
-//            else {
-//                // если domElem не важен
-//                if (propertyString === uiControlsInfo[j].propertyString) {
-//                    results.push(uiControlsInfo[j]);
-//                }
-//            }
-//        }
-//        return results;
-//    }
-
     function onPublishClick() {
         if (App.getUserData() !== null) {
             Modal.showLoading();
@@ -1105,7 +979,8 @@ var Editor = {};
                     ctrls[0].setValue(data.property.getValue());
                 }
                 else {
-                    console.error('onAppChanged: there is no control for appProperty: \'' + data.propertyString + '\'');
+                    // for example id=pm quiz has no controls, and some hidden properties
+                    //console.error('onAppChanged: there is no control for appProperty: \'' + data.propertyString + '\'');
                 }
                 break;
             }
@@ -1130,30 +1005,47 @@ var Editor = {};
     }
 
     /**
-     * Сообщение об изменении присланное из ControlManager
+     * Событие присланное из ControlManager
      *
-     * @param {string} propertyString
-     * @param {*} value
+     * @param {string} event
+     * @param {*} data
      */
-    function onControlValueChanged(propertyString, value) {
-        editedApp.getProperty(propertyString).setValue(value);
-        workspace.updateSelection();
-    }
-
-    /**
-     * Событие о смене фильтра в ControlManager
-     *
-     * @param {MutApp.Screen} data.screen
-     * @param {Array<string>} data.propertyStrings
-     * @param {boolean} data.quickControlsFiltered
-     */
-    function onControlFilterChanged(data) {
-        if (data.quickControlsFiltered === true) {
-            // был зафильтрован контрол с типом quickcontrolpanel, говорим workspace показать панель с контролами quickcontrolpanel
-            workspace.showQuickControlPanel();
-        }
-        else {
-            workspace.hideQuickControlPanel();
+    function onControlEvents(event, data) {
+        data = data || {};
+        switch (event) {
+            case ControlManager.VALUE_CHANGED: {
+                editedApp.getProperty(data.propertyString).setValue(data.value);
+                workspace.updateSelection();
+                break;
+            }
+            case ControlManager.EVENT_FILTER_CHANGED: {
+                // {MutApp.Screen} data.screen
+                // {Array<string>} data.propertyStrings
+                // {boolean} data.quickControlsFiltered
+                if (data.quickControlsFiltered === true) {
+                    // был зафильтрован контрол с типом quickcontrolpanel, говорим workspace показать панель с контролами quickcontrolpanel
+                    workspace.showQuickControlPanel();
+                }
+                else {
+                    workspace.hideQuickControlPanel();
+                }
+                break;
+            }
+            case ControlManager.EVENT_ARRAY_ADD_REQUESTED: {
+                // может потребоваться участие пользователя
+                var ap = editedApp.getProperty(data.propertyString);
+                // по умолчанию добавляем в конец
+                var position = ap.getValue().length;
+                if (ap.prototypes.length > 1) {
+                    // требуется участие пользователя чтобы сделать выбор прототипа
+                    throw new Error('Editor.onControlEvents(EVENT_ARRAY_ADD_REQUESTED): not developed yet');
+                }
+                else {
+                    // прототип один сразу добавляем
+                    ap.addElementByPrototype(ap.prototypes[0].protoFunction, position);
+                }
+                break;
+            }
         }
     }
 

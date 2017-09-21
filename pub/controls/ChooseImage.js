@@ -47,7 +47,7 @@ function ChooseImage(param) {
 
     this.onImageSelected = function(url) {
         this.imageUrl = url;
-        this.valueChangedCallback(this);
+        this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
         this.makePreview();
     };
 

@@ -68,37 +68,47 @@ var ResultScreen = MutApp.Screen.extend({
     },
 
     onNextClick: function(e) {
-        this.model.next();
+        if (this.model.application.mode !== 'edit') {
+            this.model.next();
+        }
     },
 
     onLogoClick: function(e) {
-        var ll = this.model.get('logoLink');
-        if (ll) {
-            var win = window.open(ll, '_blank');
-            win.focus();
-            this.model.application.stat('Test', 'logoclick');
+        if (this.model.application.mode !== 'edit') {
+            var ll = this.model.get('logoLink');
+            if (ll) {
+                var win = window.open(ll, '_blank');
+                win.focus();
+                this.model.application.stat('Test', 'logoclick');
+            }
         }
     },
 
     onDownloadClick: function(e) {
-        var dl = this.model.get('downloadLink');
-        if (dl) {
-            var win = window.open(dl, '_blank');
-            win.focus();
-            this.model.application.stat('Test', 'downloadclick');
+        if (this.model.application.mode !== 'edit') {
+            var dl = this.model.get('downloadLink');
+            if (dl) {
+                var win = window.open(dl, '_blank');
+                win.focus();
+                this.model.application.stat('Test', 'downloadclick');
+            }
         }
     },
 
     onFBShareClick: function(e) {
-        // ид экрана выступает также и в роли идентификатора для постинга
-        // это определили при создании приложения в app.js
-        this.model.application.share(this.id);
+        if (this.model.application.mode !== 'edit') {
+            // ид экрана выступает также и в роли идентификатора для постинга
+            // это определили при создании приложения в app.js
+            this.model.application.share(this.id);
+        }
     },
 
     onVKShareClick: function(e) {
-        // ид экрана выступает также и в роли идентификатора для постинга
-        // это определили при создании приложения в app.js
-        this.model.application.share(this.id, 'vk');
+        if (this.model.application.mode !== 'edit') {
+            // ид экрана выступает также и в роли идентификатора для постинга
+            // это определили при создании приложения в app.js
+            this.model.application.share(this.id, 'vk');
+        }
     },
 
     initialize: function (param) {

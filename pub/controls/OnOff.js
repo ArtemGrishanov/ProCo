@@ -22,7 +22,7 @@ _.extend(OnOff.prototype, AbstractControl);
 
 OnOff.prototype.onCheckboxChange = function() {
     var v = this.$checkbox.prop('checked');
-    this.valueChangedCallback(this);
+    this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
 };
 
 OnOff.prototype.getValue = function() {

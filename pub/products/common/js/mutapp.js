@@ -1474,8 +1474,9 @@ MutApp.Screen = Backbone.View.extend({
     renderCompleted: function() {
         if (this.model.application.mode === 'edit') {
             this._linkedMutAppProperties = [];
-            this._findAndAttachAppProperty();
-            this._findAndAttachCssAppProperty();
+            this._clearUiElementsForThisScreen();
+            this._findAndAttachAppProperties();
+            this._findAndAttachCssAppProperties();
             // обновить значения css свойств - что-то могло измениться согласно логике render() экрана
             this.model.application.updateCssMutAppPropertiesValues(this);
         }
@@ -1494,13 +1495,27 @@ MutApp.Screen = Backbone.View.extend({
     },
 
     /**
+     * Во всех MutAppProperty._linkedElementsOnScreen приложения очистить элементы связанные с этим экраном
+     *
+     * @private
+     */
+    _clearUiElementsForThisScreen: function() {
+        for (var i = 0; i < this.model.application._mutappProperties.length; i++) {
+            var ap = this.model.application._mutappProperties[i];
+            if (ap._linkedElementsOnScreen.hasOwnProperty(this.id) === true) {
+                delete ap._linkedElementsOnScreen[this.id];
+            }
+        }
+    },
+
+    /**
      * 1) Найти в экране элементы с атрибутами data-app-property
      * 2) Записать в MutAppProperty ссылку на этот dom-элемент
      *
      * @returns {Number}
      * @private
      */
-    _findAndAttachAppProperty: function() {
+    _findAndAttachAppProperties: function() {
         var dataElems = this.$el.find('[data-app-property]');
         if (dataElems.length > 0) {
             for (var j = 0; j < dataElems.length; j++) {
@@ -1510,11 +1525,15 @@ MutApp.Screen = Backbone.View.extend({
                     var tspAtr = psArr[k].trim();
                     var ap = this.model.application.getProperty(tspAtr);
                     if (ap!==null) {
-                        ap.uiElement = dataElems[j];
+                        // связать найденный на экране элемент со свойством
+                        ap._linkElementOnScreen({
+                            screenId: this.id,
+                            element: dataElems[j]
+                        });
                         this._linkedMutAppProperties.push(ap);
                     }
                     else {
-                        console.error('MutApp.Screen._findAndAttachAppProperty: app does not has this mutAppProperty \''+tspAtr+'\' (but it was found on screen)');
+                        console.error('MutApp.Screen._findAndAttachAppProperties: app does not has this mutAppProperty \''+tspAtr+'\' (but it was found on screen)');
                     }
                 }
             }
@@ -1529,7 +1548,7 @@ MutApp.Screen = Backbone.View.extend({
      *
      * @private
      */
-    _findAndAttachCssAppProperty: function() {
+    _findAndAttachCssAppProperties: function() {
         for (var i = 0; i < this.model.application._mutappProperties.length; i++) {
             var ap = this.model.application._mutappProperties[i];
             if (MutApp.Util.isCssMutAppProperty(ap) === true) {
@@ -1537,8 +1556,11 @@ MutApp.Screen = Backbone.View.extend({
                 for (var k = 0; k < elemsOnView.length; k++) {
                     // добавить проперти в data-app-property атрибут, так как css свойств там возможно нет
                     this._addDataAttribute(elemsOnView[k], ap.propertyString);
-                    // для экрана подготавливаем domElement связанные с appProperty, чтобы потом не искать их при каждом показе экрана
-                    ap.uiElement = elemsOnView[k];
+                    // связать найденный на экране элемент со свойством
+                    ap._linkElementOnScreen({
+                        screenId: this.id,
+                        element: elemsOnView[k]
+                    });
                     this._linkedMutAppProperties.push(ap);
                 }
             }
@@ -2544,7 +2566,13 @@ MutAppProperty.prototype.initialize = function(param) {
     }
     this.compareDetails = null;
     // dom элемент на экране с которым связано свойства в режиме режактирования приложения
-    this.uiElement = null;
+    // Одно и то же MutAppProperty свойство могут представлять несколько элементов на одном экране (несколько опций ответов на одном экране)
+    // или даже не нескольких экранах (позиция логотипа во всех экрана вопроса)
+    this._linkedElementsOnScreen = {
+        // screenId1: [uiElement0, uiElement1, ...],
+        // screenId2: [uiElement0, uiElement1, ...]
+        // ...
+    };
 };
 /**
  * Удалить MutAppProperty
@@ -2562,6 +2590,44 @@ MutAppProperty.prototype.destroy = function() {
     else {
         throw new Error('MutAppProperty.destroy: property \''+this.propertyString+'\' doesnot exist in _mutappProperties array');
     }
+};
+/**
+ * Связать со свойством элемент на экране приложения
+ * Элементов может быть несколько. И они могут быть на разных экранах
+ *
+ * @param {string} param.screenId
+ * @param {DOMelement} param.element
+ *
+ * @private
+ */
+MutAppProperty.prototype._linkElementOnScreen = function(param) {
+    param = param || {};
+    if (!param.screenId) {
+        throw new Error('MutAppProperty._linkElementOnScreen: screenId must be set');
+    }
+    if (!param.element) {
+        throw new Error('MutAppProperty._linkElementOnScreen: element must be set');
+    }
+    if (this._linkedElementsOnScreen.hasOwnProperty(param.screenId) === false) {
+        this._linkedElementsOnScreen[param.screenId] = [];
+    }
+    this._linkedElementsOnScreen[param.screenId].push(param.element);
+};
+/**
+ * Вернуть ui элементы для свойства которые расположены на этом экране
+ *
+ * @param {string} screenId
+ * @return {Array}
+ */
+MutAppProperty.prototype.getLinkedElementsOnScreen = function(screenId) {
+    if (this._linkedElementsOnScreen.hasOwnProperty(screenId) === true) {
+        var result = [];
+        for (var i = 0; i < this._linkedElementsOnScreen[screenId].length; i++) {
+            result.push(this._linkedElementsOnScreen[screenId][i]);
+        }
+        return result;
+    }
+    return null;
 };
 /**
  * Сравнение двух объектов свойств

@@ -9,11 +9,16 @@
  *
  *
  */
-var ControlManager = {};
+var ControlManager = {
+    EVENT_CHANGE_VALUE: 'ControlManager.EVENT_CHANGE_VALUE',
+    EVENT_FILTER_CHANGED: 'ControlManager.EVENT_FILTER_CHANGED',
+    EVENT_ARRAY_ADD_REQUESTED: 'ControlManager.EVENT_ARRAY_ADD_REQUESTED'
+};
+
+
 (function(global) {
     var _controls = [];
-    var _valueChangedCallback = null;
-    var _filterCallback = null;
+    var _onControlEvents = null;
     var _filterValue = {};
 
     /**
@@ -120,7 +125,7 @@ var ControlManager = {};
                 additionalParam: controlAdditionalParam,
                 controlFilter: param.mutAppProperty._controlFilter,
                 controlFilterScreenCriteria: param.mutAppProperty._controlFilterScreenCriteria,
-                valueChangedCallback: _controlsValueUpdateCallback
+                controlEventCallback: _controlsValueUpdateCallback
             });
             _controls.push(ctrl);
             filter({
@@ -162,15 +167,20 @@ var ControlManager = {};
      * ControlManager будет передавать это изменение дальше в редактор, а тот далее в приложение.
      *
      * @private
+     *
+     * @param {string} event
      * @param {AbstractControl} control
      */
-    function _controlsValueUpdateCallback(control) {
+    function _controlsValueUpdateCallback(event, control) {
         // здесь делается проверка, что колбек вызвал действительно активный контрол, который сейчас есть в списке, а не какой-то контрол-зомби
         for (var i = 0; i < _controls.length; i++) {
             if (_controls[i] === control) {
                 // убедились что контрол действительно сущестует и активен
-                if (_valueChangedCallback) {
-                    _valueChangedCallback(control.propertyString, control.getValue());
+                if (_onControlEvents) {
+                    _onControlEvents(event, {
+                        propertyString: control.propertyString,
+                        value: control.getValue()
+                    });
                 }
                 return;
             }
@@ -277,8 +287,8 @@ var ControlManager = {};
                 c.hide();
             }
         }
-        if (_filterCallback) {
-            _filterCallback({
+        if (_onControlEvents) {
+            _onControlEvents(ControlManager.EVENT_FILTER_CHANGED, {
                 propertyStrings: _filterValue.propertyStrings,
                 screen: _filterValue.screen,
                 quickControlsFiltered: quickControlsFiltered
@@ -309,7 +319,9 @@ var ControlManager = {};
                     }
                     // связать контрол и элемент на экране MutApp-приложения
                     for (var j = 0; j < apControls.length; j++) {
-                        apControls[j].setProductDomElement(ap.uiElement);
+                        // элементы на экране param.screen связнные со свойством (может быть несколько)
+                        var linkedElems = ap.getLinkedElementsOnScreen(param.screen.id);
+                        apControls[j].setProductDomElement(linkedElems);
                     }
                 }
             }
@@ -354,13 +366,21 @@ var ControlManager = {};
         return results1.concat(results2).concat(results3);
     }
 
+    /**
+     *
+     * @param {function} param.onControlEvents
+     */
+    function init(param) {
+        param = param || {};
+        _onControlEvents = param.onControlEvents;
+    }
+
+    global.init = init;
     global.createControl = createControl;
     global.deleteControl = deleteControl;
     global.getControlsCount = function() { return _controls.length; }
     // global.find = find;
     global.getControls = getControls;
-    global.setChangeValueCallback = function(clb) { _valueChangedCallback = clb; }
-    global.setFilterCallback = function(clb) { _filterCallback = clb; }
     global.filter = filter;
     global.clearFilter = clearFilter;
     global.handleShowScreen = handleShowScreen;

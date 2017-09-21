@@ -187,7 +187,7 @@ Drag.prototype.onDraggableParentMouseMove = function(e) {
         // Editor.updateSelection();
         // Editor.getQuickControlPanel().updatePosition(this.$productDomElement);
         this.position = this.prodElemPositionCached;
-        this.valueChangedCallback(this);
+        this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
     }
 };
 
@@ -199,7 +199,7 @@ Drag.prototype.onDraggableParentMouseUp = function(e) {
     // console.log('Drag.onMouseUp');
     if (this.isDragging === true && this.prodElemPositionCached) {
         this.position = this.prodElemPositionCached;
-        this.valueChangedCallback(this);
+        this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
     }
     this.isDragging = false;
 };

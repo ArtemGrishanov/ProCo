@@ -42,9 +42,6 @@ var QuestionScreen = MutApp.Screen.extend({
     questionId: null,
     topColontitleText: 'Текст колонтитула',
     backgroundImg: null,
-    logoPosition: {top: 200, left: 200},
-    showLogo: null,
-    shadowEnable: false,
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -109,6 +106,31 @@ var QuestionScreen = MutApp.Screen.extend({
                 this.model.application.showScreen(this);
             }
         }, this);
+
+        this.model.bind("change:logoPositionInQuestions", function () {
+            // спорно, можно рендерить а можно и нет. Есть плюсы и минусы у обоих подходов
+            //this.render();
+        }, this);
+
+        this.model.bind("change:showLogoInQuestions", function () {
+            this.render();
+        }, this);
+
+        this.model.bind("change:shadowEnableInQuestions", function () {
+            this.render();
+        }, this);
+
+        this.model.bind("change:shadowEnableInQuestions", function () {
+            this.render();
+        }, this);
+
+        // Подписка с помощью backbone не получится
+        // возможно подписаться только вот так на само MutAppPropertyArray свойство
+        q.answer.options.bind('change', function() {
+            var q = this.model.getQuestionById(this.questionId);
+            console.log('Options changed for question: ' + q.id);
+            this.renderAnswers(q.answer);
+        }, this);
     },
 
     render: function() {
@@ -120,12 +142,7 @@ var QuestionScreen = MutApp.Screen.extend({
 
         this.renderAnswers(q.answer);
 
-        if (this.model.get('showBullits') === true) {
-            this.$el.find('.bullit').show();
-        }
-        else {
-            this.$el.find('.bullit').hide();
-        }
+        // поработать над верхним колонтитулом
         if (this.showTopColontitle === true) {
             var $c = this.$el.find('.js-topColontitleText').show();
             if (this.topColontitleText) {
@@ -151,23 +168,32 @@ var QuestionScreen = MutApp.Screen.extend({
         // установка свойств логотипа на экране вопросов
         var $l = this.$el.find('.js-question_logo');
         if (this.model.get('showLogoInQuestions').getValue() === true) {
-            $l.css('backgroundImage','url('+this.model.get('logoUrl')+')');
-            $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
+            $l.css('backgroundImage','url('+this.model.get('logoUrl').getValue()+')');
+            $l.css('top',this.model.get('logoPositionInQuestions').getValue().top+'px')
+                .css('left',this.model.get('logoPositionInQuestions').getValue().left+'px');
         }
         else {
             $l.hide();
         }
 
+        // цвет фона
+        this.$el.find('.js-back_color').css('backgroundColor','url(' + q.backgroundColor + ')');
+
+        // фоновая картинка
         if (this.model.get('showBackgroundImage')===true) {
-            if (this.backgroundImg) {
-                this.$el.find('.js-back_img').css('backgroundImage','url('+this.backgroundImg+')');
+            if (q.backgroundImage) {
+                this.$el.find('.js-back_img').css('backgroundImage','url('+q.backgroundImage+')');
+            }
+            else {
+                this.$el.find('.js-back_img').css('backgroundImage','none');
             }
         }
         else {
             this.$el.find('.js-back_img').css('backgroundImage','none');
         }
 
-        if (this.shadowEnable === true) {
+        // затемнение фона, чтобы сделать стильно
+        if (this.model.get('shadowEnableInQuestions').getValue() === true) {
             this.$el.find('.js-back_shadow').css('background-color','rgba(0,0,0,0.4)');
         }
         else {
@@ -188,7 +214,7 @@ var QuestionScreen = MutApp.Screen.extend({
                 //сначала нужно отрендерить контейнер опций ответа
                 //в нем могут быть заложены разные опции расположения элементов, поэтому реализоан в виде отдельного шаблона
                 var $ea = $(this.template[answerData.uiTemplate](answerData));
-                this.$el.find('.js-answer_cnt').append($ea);
+                this.$el.find('.js-answer_cnt').empty().append($ea);
                 for (var i = 0; i < answerData.options.getValue().length; i++) {
                     var o = MutApp.Util.getObjectForRender(answerData.options.getValue()[i]);
                     if (o.uiTemplate) {
@@ -207,6 +233,13 @@ var QuestionScreen = MutApp.Screen.extend({
                     else {
                         throw new Error('Option does not have uiTemplate attribute');
                     }
+                }
+
+                if (this.model.get('showBullits') === true) {
+                    this.$el.find('.bullit').show();
+                }
+                else {
+                    this.$el.find('.bullit').hide();
                 }
 
                 break;

@@ -150,23 +150,31 @@ QUnit.test("MutApp test: Screens in edit mode. data-app-property attribute", fun
     // после рендера экрана должна произойти связь элемента на экране и MutAppProperty
     var startScr = app.getScreenById('startScr');
     var ap1 = app.getProperty('id=startScr startButtonText');
-    assert.ok(ap1.uiElement, 'uiElement connected');
-    assert.ok($(ap1.uiElement).attr('data-app-property').indexOf('id=startScr startButtonText') >= 0, 'data-app-property connected');
-    assert.ok(ap1.uiElement === startScr.$el.find('.js-start_btn')[0]);
+    var uie = ap1.getLinkedElementsOnScreen('startScr')[0];
+    assert.ok(ap1.getLinkedElementsOnScreen('startScr').length === 1);
+    assert.ok(uie, 'uiElement connected');
+    assert.ok($(uie).attr('data-app-property').indexOf('id=startScr startButtonText') >= 0, 'data-app-property connected');
+    assert.ok(uie === startScr.$el.find('.js-start_btn')[0]);
 
     var ap2 = app.getProperty('.js-start_header color');
-    assert.ok(ap2.uiElement, 'uiElement connected');
-    assert.ok($(ap2.uiElement).attr('data-app-property').indexOf('.js-start_header color') >= 0, 'data-app-property connected');
-    assert.ok(ap2.uiElement === startScr.$el.find(ap2.cssSelector)[0]);
+    var uie = ap2.getLinkedElementsOnScreen('startScr')[0];
+    assert.ok(ap2.getLinkedElementsOnScreen('startScr').length === 1);
+    assert.ok(uie, 'uiElement connected');
+    assert.ok($(uie).attr('data-app-property').indexOf('.js-start_header color') >= 0, 'data-app-property connected');
+    assert.ok(uie === startScr.$el.find(ap2.cssSelector)[0]);
 
     // также после ренденра в режиме edit в экране будет список всех MutAppProperty, которые к нему привязаны
     // то есть на этом экране есть data-app-property от нескольких MutAppProperty
-    var linkedMutAppProperties = startScr.getLinkedMutAppProperties()
+    var linkedMutAppProperties = startScr.getLinkedMutAppProperties();
     assert.ok(linkedMutAppProperties.length >= 1, 'there are linked MutAppProperties on the screen');
     for (var i = 0; i < linkedMutAppProperties.length; i++) {
         var lp = linkedMutAppProperties[i];
-        assert.ok(lp.uiElement);
-        assert.ok($.contains(startScr.$el[0], lp.uiElement));
+        assert.ok(lp.getLinkedElementsOnScreen('startScr').length > 0);
+
+        var uielems = lp.getLinkedElementsOnScreen('startScr');
+        for (var j = 0; j < uielems.length; j++) {
+            assert.ok($.contains(startScr.$el[0], uielems[j]));
+        }
     }
 
 
@@ -174,25 +182,56 @@ QUnit.test("MutApp test: Screens in edit mode. data-app-property attribute", fun
     app.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
     var scrQuestion0 = app.getScreenById('questionScreen0');
     var ap3 = app.getProperty('id=pm quiz.0.question.text');
-    assert.ok(ap3.uiElement, 'uiElement connected');
-    assert.ok($(ap3.uiElement).attr('data-app-property').indexOf('id=pm quiz.0.question.text') >= 0, 'data-app-property connected');
-    assert.ok($.contains(scrQuestion0.$el[0], ap3.uiElement));
+    var uie = ap3.getLinkedElementsOnScreen('questionScreen0')[0];
+    assert.ok(ap3.getLinkedElementsOnScreen('questionScreen0').length === 1);
+    assert.ok(uie, 'uiElement connected');
+    assert.ok($(uie).attr('data-app-property').indexOf('id=pm quiz.0.question.text') >= 0, 'data-app-property connected');
+    assert.ok($.contains(scrQuestion0.$el[0], uie));
 
     // добавить второй вопрос
     // и снова проверить нулевой экран
     app.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
     var scrQuestion0 = app.getScreenById('questionScreen0');
     var ap3 = app.getProperty('id=pm quiz.0.question.text');
-    assert.ok(ap3.uiElement, 'uiElement connected');
-    assert.ok($(ap3.uiElement).attr('data-app-property').indexOf('id=pm quiz.0.question.text') >= 0, 'data-app-property connected');
-    assert.ok($.contains(scrQuestion0.$el[0], ap3.uiElement));
+    var uie = ap3.getLinkedElementsOnScreen('questionScreen0')[0];
+    assert.ok(ap3.getLinkedElementsOnScreen('questionScreen0').length === 1);
+    assert.ok(uie, 'uiElement connected');
+    assert.ok($(uie).attr('data-app-property').indexOf('id=pm quiz.0.question.text') >= 0, 'data-app-property connected');
+    assert.ok($.contains(scrQuestion0.$el[0], uie));
 
     var scrQuestion1 = app.getScreenById('questionScreen1');
     var ap4 = app.getProperty('id=pm quiz.1.question.text');
-    assert.ok(ap4.uiElement, 'uiElement connected');
-    assert.ok($(ap4.uiElement).attr('data-app-property').indexOf('id=pm quiz.1.question.text') >= 0, 'data-app-property connected');
-    assert.ok($.contains(scrQuestion1.$el[0], ap4.uiElement));
+    var uie = ap4.getLinkedElementsOnScreen('questionScreen1')[0];
+    assert.ok(ap4.getLinkedElementsOnScreen('questionScreen1').length === 1);
+    assert.ok(uie, 'uiElement connected');
+    assert.ok($(uie).attr('data-app-property').indexOf('id=pm quiz.1.question.text') >= 0, 'data-app-property connected');
+    assert.ok($.contains(scrQuestion1.$el[0], uie));
 
+    // на первом и втором экране вопроса есть логотип, то есть два разных UI элемента
+    // а свойство MutAppProperty одно
+    var logoPositionInQuestions = app.getProperty('id=pm logoPositionInQuestions');
+    assert.ok(logoPositionInQuestions.getLinkedElementsOnScreen('questionScreen0').length === 1);
+    assert.ok(logoPositionInQuestions.getLinkedElementsOnScreen('questionScreen1').length === 1);
+    var uie = logoPositionInQuestions.getLinkedElementsOnScreen('questionScreen0')[0];
+    assert.ok(uie, 'logoPositionInQuestions uiElement connected');
+    assert.ok($.contains(scrQuestion0.$el[0], uie));
+    var uie = logoPositionInQuestions.getLinkedElementsOnScreen('questionScreen1')[0];
+    assert.ok(uie, 'logoPositionInQuestions uiElement connected');
+    assert.ok($.contains(scrQuestion1.$el[0], uie));
+
+    // на одном экране есть несколько опций ответа. Это всё одно mutAppProperty с несколькими ui элементами
+    var options0 = app.getProperty('id=pm quiz.0.answer.options');
+    assert.ok(options0.getLinkedElementsOnScreen('questionScreen0').length === 3);
+    var uielems = options0.getLinkedElementsOnScreen('questionScreen0');
+    for (var j = 0; j < uielems.length; j++) {
+        assert.ok($.contains(scrQuestion0.$el[0], uielems[j]));
+    }
+    var options1 = app.getProperty('id=pm quiz.1.answer.options');
+    assert.ok(options1.getLinkedElementsOnScreen('questionScreen1').length === 3);
+    var uielems = options1.getLinkedElementsOnScreen('questionScreen1');
+    for (var j = 0; j < uielems.length; j++) {
+        assert.ok($.contains(scrQuestion1.$el[0], uielems[j]));
+    }
 });
 
 /**

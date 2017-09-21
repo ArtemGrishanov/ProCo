@@ -15,7 +15,7 @@ function TextQuickInput(param) {
     this.screenDocument = this.additionalParam.appIframe.contentDocument;
 
     this.onProductElementInput = function() {
-        this.valueChangedCallback(this);
+        this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
     };
 }
 
@@ -92,7 +92,7 @@ TextQuickInput.prototype.onKeyPress = function(e) {
             selection.addRange(range);
 
             // также надо сделать обновление свойства. Так как в "input" событие не попадем
-            this.valueChangedCallback(this);
+            this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
 
             return false;
         }
@@ -104,5 +104,5 @@ TextQuickInput.prototype.onPaste = function() {
 };
 
 TextQuickInput.prototype.onProductElementInput = function() {
-    this.valueChangedCallback(this);
+    this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
 };

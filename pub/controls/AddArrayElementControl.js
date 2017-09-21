@@ -3,26 +3,26 @@
  *
  * Контрол добавления элемента в массив
  */
-function AddArrayElementControl(propertyString, directiveName, $parent, productDOMElement, params) {
-    this.init(propertyString, directiveName, $parent, productDOMElement, params);
-
+function AddArrayElementControl(param) {
+    this.init(param);
+    this._arrayValue = null;
     this.$directive.click(this.onAddQuickButtonClick.bind(this));
-
-    this.onAddQuickButtonClick = function(e) {
-        var ap = Engine.getAppProperty(this.propertyString);
-        var protoIndex = params.prototypeIndex || 0;
-        var prototypeNameToAdd = ap.canAdd[protoIndex];
-        var proto = Engine.getPrototypeForAppProperty(ap, prototypeNameToAdd);
-
-        if (proto) {
-            Engine.addArrayElement(ap, proto.getValue());
-            if (ap.updateScreens === true) {
-                Editor.syncUIControlsToAppProperties();
-            }
-        }
-        else {
-            log('There is no prototypes for \''+this.propertyString+'\'', true);
-        }
-    }
 }
-AddArrayElementControl.prototype = AbstractControl;
+_.extend(AddArrayElementControl.prototype, AbstractControl);
+
+AddArrayElementControl.prototype.getValue = function() {
+    return this._arrayValue;
+};
+
+AddArrayElementControl.prototype.setValue = function(value) {
+    this._arrayValue = value;
+};
+
+AddArrayElementControl.prototype.destroy = function() {
+    this.$directive.off('click');
+    this.$directive.remove();
+};
+
+AddArrayElementControl.prototype.onAddQuickButtonClick = function() {
+    this.controlEventCallback(ControlManager.EVENT_ARRAY_ADD_REQUESTED, this);
+};

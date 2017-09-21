@@ -22,7 +22,7 @@ var AbstractControl = {
      * @param {object} additionalParam
      * @param {string} controlFilter
      * @param {string} controlFilterScreenCriteria
-     * @param {Function} valueChangedCallback - ссылка на функцию куда надо отправлять уведомление об изменении
+     * @param {Function} controlEventCallback - ссылка на функцию куда надо отправлять уведомление об изменении
      */
     init: function(param) {
         this.self = this;
@@ -70,13 +70,12 @@ var AbstractControl = {
             throw new Error('AbstractControl.init: controlFilter does not specified');
         }
         if (param.productDomElement) {
-            this.$productDomElement = $(param.productDomElement);
-            this.$productDomElement.on('paste', this.handlePaste.bind(this));
+            this.setProductDomElement(param.productDomElement);
         }
         else {
-            this.$productDomElement = null;
+            this.$productDomElements = null;
         }
-        this.valueChangedCallback = param.valueChangedCallback;
+        this.controlEventCallback = param.controlEventCallback;
     },
 
     /**
@@ -97,11 +96,15 @@ var AbstractControl = {
     },
 
     /**
-     * Связать хтмл элемент из приложения с этим контролом
-     * @param {domElement} element
+     * Связать хтмл элемент(элементы) из приложения с этим контролом
+     * @param {domElement | Array} elements
      */
-    setProductDomElement: function(element) {
-        this.$productDomElement = $(element);
+    setProductDomElement: function(elements) {
+        this.$productDomElements = Array.isArray(elements) ? elements: [elements];
+        for (var n = 0; n < this.$productDomElements.length; n++) {
+            this.$productDomElements[n] = $(this.$productDomElements[n]);
+            this.$productDomElements[n].on('paste', this.handlePaste.bind(this));
+        }
     },
 
     /**
@@ -155,7 +158,11 @@ var AbstractControl = {
         clipboardData = e.originalEvent.clipboardData || window.clipboardData;
         pastedData = clipboardData.getData('Text');
         // Do whatever with pasteddata
-        this.$productDomElement.text(pastedData);
+        if (this.$productDomElements) {
+            for (var n = 0; n < this.$productDomElements.length; n++) {
+                this.$productDomElements[n].text(pastedData);
+            }
+        }
         if (this.onPaste) {
             // дать возможность наследникам сделать собственную обработку вставки, например сохранить в appProperty значение
             this.onPaste();

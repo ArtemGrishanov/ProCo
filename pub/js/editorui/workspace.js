@@ -194,10 +194,14 @@ var workspace = {};
                     if (_ignoreDataAppPropertyAttribute.length > 0 && _ignoreDataAppPropertyAttribute.indexOf($(ap.uiElement).attr('data-app-property')) >= 0) {
                         continue;
                     }
-                    // проверка что к этому элемент уже привязан клик, так как на одном элементе много свойств может быть завязано
-                    if (regElems.indexOf(ap.uiElement) < 0) {
-                        $(ap.uiElement).click(_onRegisteredElementClick);
-                        regElems.push(ap.uiElement);
+
+                    var linkedElements = ap.getLinkedElementsOnScreen(param.screen.id);
+                    for (var n = 0; n < linkedElements.length; n++) {
+                        // проверка что к этому элемент уже привязан клик, так как на одном элементе много свойств может быть завязано
+                        if (regElems.indexOf(linkedElements[n]) < 0) {
+                            $(linkedElements[n]).click(_onRegisteredElementClick);
+                            regElems.push(linkedElements[n]);
+                        }
                     }
                 }
             }
