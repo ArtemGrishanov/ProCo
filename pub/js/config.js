@@ -718,7 +718,7 @@ var config = {
             parentId: 'id-control_cnt',
             type: 'quickcontrolpanel' // контрол появляется на всплывающей панельке рядом с элементом
         },
-        DeleteQuickButton: {
+        DeleteArrayElementControl: {
             defaultDirectiveIndex: 0,
             directives: ['deletequickbutton'],
             parentId: 'id-control_cnt',

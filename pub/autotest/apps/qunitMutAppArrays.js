@@ -1,4 +1,75 @@
 /**
+ * Используется упрощенная модель теста
+ * @returns
+ */
+function createQuizElem() {
+    return {
+        question: {
+            uiTemplate: 'uiu_template',
+            backgroundColor: new MutAppProperty({
+                propertyString: 'id=pm quiz.{{id}}.question.backgroundColor',
+                value: '#ffffff'
+            })
+        },
+        answer: {
+            type: 'radiobutton',
+            options: new MutAppPropertyArray({
+                propertyString: 'id=pm quiz.{{id}}.answer.options',
+                value: [
+                    {
+                        text: new MutAppProperty({
+                            propertyString: 'id=pm quiz.{{id}}.answer.options.{{id}}.text',
+                            value: 'Rock'
+                        })
+                    },
+                    {
+                        text: new MutAppProperty({
+                            propertyString: 'id=pm quiz.{{id}}.answer.options.{{id}}.text',
+                            value: 'Jazz'
+                        })
+                    },
+                    {
+                        text: new MutAppProperty({
+                            propertyString: 'id=pm quiz.{{id}}.answer.options.{{id}}.text',
+                            value: 'Pop'
+                        })
+                    }
+                ]
+            })
+        }
+    };
+}
+
+function createOption() {
+    return {};
+}
+
+
+QUnit.test("MutApp test: Arrays operations", function( assert ) {
+    // Операция добавления: ОК с индексами и с сабэлементами
+    // Операция перемещения и удаления: не ОК
+    // С массивами: не ОК то что без приложения их не потестируешь нормально
+    // постараться обойтись без приложения: лучшая локализация проблемы, легче воспринимать
+    // просто не нравятся propertyString для массива при создании: выглядит нелогично и стремно
+
+    var quizArray = new MutAppPropertyArray({
+        propertyString: 'quizArray',
+        value: []
+    });
+
+    assert.ok(quizArray.length === 0);
+    quizArray.push(createQuizElem());
+    assert.ok(quizArray.length === 1);
+
+    assert.ok(MutApp.Util.getPropertiesBySelector(arr1, '0.foo') === null);
+    assert.ok(MutApp.Util.getPropertiesBySelector(arr1, '0.question'));
+    assert.ok(MutApp.Util.getPropertiesBySelector(arr1, '0.answer'));
+    assert.ok(MutApp.Util.getPropertiesBySelector(arr1, '0.answer.options'));
+    assert.ok(MutApp.Util.getPropertiesBySelector(arr1, '0.answer.options.0'));
+    assert.ok(MutApp.Util.getPropertiesBySelector(arr1, '0.answer.options.0.text'));
+});
+
+/**
  * Created by alex on 10.08.17.
  */
 QUnit.test("MutApp test: Arrays operations", function( assert ) {

@@ -1013,7 +1013,7 @@ var Editor = {};
     function onControlEvents(event, data) {
         data = data || {};
         switch (event) {
-            case ControlManager.VALUE_CHANGED: {
+            case ControlManager.EVENT_CHANGE_VALUE: {
                 editedApp.getProperty(data.propertyString).setValue(data.value);
                 workspace.updateSelection();
                 break;
@@ -1045,6 +1045,24 @@ var Editor = {};
                     ap.addElementByPrototype(ap.prototypes[0].protoFunction, position);
                 }
                 break;
+            }
+            case ControlManager.EVENT_ARRAY_DELETING_REQUESTED: {
+                var $elem = workspace.getSelectedElement();
+                // у контрола DeleteArrayElement нет информации о выделенном элементе, то есть какой из вариантов ответа (options) пользователь выбрал
+                // У DeleteArrayElement есть несколько productDomElements, и какой-то из них workspace.getSelectedElement(), но какой он не знает.
+                if ($elem) {
+                    var ap = editedApp.getProperty(data.propertyString);
+                    var optionIndexAttr = $elem.attr('data-option-index');
+                    var optionIndex = parseInt(optionIndexAttr);
+                    if (isNumeric(optionIndex) === false) {
+                        throw new Error('Editor.onControlEvents(EVENT_ARRAY_DELETING_REQUESTED): data-option-index attribute must be specified in productDomElement');
+                    }
+                    ap.deleteElement(optionIndex);
+                }
+                break;
+            }
+            default: {
+                throw new Error('Editor.onControlEvents: event \'' + event + '\' is not supported.');
             }
         }
     }

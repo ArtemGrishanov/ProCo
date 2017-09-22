@@ -12,7 +12,8 @@
 var ControlManager = {
     EVENT_CHANGE_VALUE: 'ControlManager.EVENT_CHANGE_VALUE',
     EVENT_FILTER_CHANGED: 'ControlManager.EVENT_FILTER_CHANGED',
-    EVENT_ARRAY_ADD_REQUESTED: 'ControlManager.EVENT_ARRAY_ADD_REQUESTED'
+    EVENT_ARRAY_ADD_REQUESTED: 'ControlManager.EVENT_ARRAY_ADD_REQUESTED',
+    EVENT_ARRAY_DELETING_REQUESTED: 'ControlManager.EVENT_ARRAY_DELETING_REQUESTED'
 };
 
 
@@ -62,6 +63,9 @@ var ControlManager = {
                     throw new Error('ControlManager.createControl: invalid viewName name \'' + viewName + '\' in property \'' + propertyString + '\'');
                 }
                 controlAdditionalParam = param.mutAppProperty.controls[i].param || {};
+            }
+            if (!cfg) {
+                throw new Error('ControlManager.createControl: can not find info for control \'' + controlName + '\' in config.js');
             }
             if (!controlName) {
                 throw new Error('ControlManager.createControl: can not detect control name in property \'' + propertyString + '\'');
@@ -170,17 +174,28 @@ var ControlManager = {
      *
      * @param {string} event
      * @param {AbstractControl} control
+     * @param {object} data additional information from control
      */
-    function _controlsValueUpdateCallback(event, control) {
+    function _controlsValueUpdateCallback(event, control, data) {
         // здесь делается проверка, что колбек вызвал действительно активный контрол, который сейчас есть в списке, а не какой-то контрол-зомби
         for (var i = 0; i < _controls.length; i++) {
             if (_controls[i] === control) {
                 // убедились что контрол действительно сущестует и активен
                 if (_onControlEvents) {
-                    _onControlEvents(event, {
+                    var controlEventData = {
                         propertyString: control.propertyString,
                         value: control.getValue()
-                    });
+                    };
+                    if (data) {
+                        // если контрол прислал дополнительные данные, передаем из дальше в editor
+                        // например, DeleteArrayElementControl шлет optionIndex
+                        for (var key in data) {
+                            if (data.hasOwnProperty(key) === true) {
+                                controlEventData[key] = data[key];
+                            }
+                        }
+                    }
+                    _onControlEvents(event, controlEventData);
                 }
                 return;
             }

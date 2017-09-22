@@ -177,7 +177,7 @@ var QuestionScreen = MutApp.Screen.extend({
         }
 
         // цвет фона
-        this.$el.find('.js-back_color').css('backgroundColor','url(' + q.backgroundColor + ')');
+        this.$el.find('.js-question_back_color').css('backgroundColor','url(' + q.backgroundColor + ')');
 
         // фоновая картинка
         if (this.model.get('showBackgroundImage')===true) {

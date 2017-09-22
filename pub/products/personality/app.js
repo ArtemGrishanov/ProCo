@@ -38,7 +38,7 @@ var PersonalityApp = MutApp.extend({
                     controlFilter: 'screen(type=questions)'
                 },
                 "id=pm quiz.{{number}}.question.backgroundColor": {
-                    label: {RU:'Цвет фона',EN:'Background color'},
+                    label: {RU:'Цвет фона экрана',EN:'Screen background color'},
                     controls: {
                         name: "StringControl",
                         view: 'ColorPicker'
@@ -46,7 +46,7 @@ var PersonalityApp = MutApp.extend({
                     controlFilter: 'screen(type=questions)'
                 },
                 "id=pm quiz.{{number}}.answer.options": {
-                    controls: "AddArrayElementControl",
+                    controls: ["AddArrayElementControl","DeleteArrayElementControl"],
                     prototypes: [{
                         protoFunction: 'id=pm proto_optionText',
                         label: '',
@@ -103,7 +103,7 @@ var PersonalityApp = MutApp.extend({
             controlFilter: 'screen(type=questions)' // 'always', 'screen(startScr)', 'onclick', 'hidden'
         },
         "id=pm startScreenBackgroundImg": {
-            label: {RU:'Фоновая картинка стартового экрана',EN:'Start screen Background image'},
+            label: {RU:'Фоновая картинка стартового экрана',EN:'Start screen background image'},
             controls: 'ChooseImage',
             controlFilter: 'screen(id=startScr)'
         },
@@ -154,8 +154,8 @@ var PersonalityApp = MutApp.extend({
                 view: 'ColorPicker'
             }
         },
-        ".js-back_color background-color": {
-            label: {RU:'Цвет фона',EN:'Background color'},
+        ".js-start_back_color background-color": {
+            label: {RU:'Цвет фона экрана',EN:'Screen background color'},
             controlFilter: 'screen(id=startScr)',
             controls: {
                 name: "StringControl",
