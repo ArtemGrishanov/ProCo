@@ -1,7 +1,9 @@
 /**
  * Created by alex on 10.08.17.
  */
-var EXPECTED_MUTAPP_PROPERTIES_COUNT = 23;
+var EXPECTED_MUTAPP_PROPERTIES_COUNT = 30;
+var PROPETIES_IN_ONE_QUIZ_ELEM = 7;
+var PROPETIES_IN_ONE_RESULT_ELEM = 3;
 
 QUnit.test("MutApp test: MutAppProperties array serialization (PersonalityTest)", function( assert ) {
 
@@ -11,19 +13,24 @@ QUnit.test("MutApp test: MutAppProperties array serialization (PersonalityTest)"
     app.start();
 
     assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT);
-    assert.ok(app.model.attributes.quiz.getValue().length === 0);
+    assert.ok(app.model.attributes.quiz.toArray().length === 0);
     app.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
-    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + 1);
+    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + PROPETIES_IN_ONE_QUIZ_ELEM);
 
     var serString = app.model.attributes.quiz.serialize();
     assert.ok(typeof serString === 'string' && serString.length > 10);
+
+    var count = (serString.match(/_orderedIds/g) || []).length; // сколько раз встречается атрибуты dictionary в сериализованой строке
+    assert.ok(count === 2, 'quiz array, options array');
+    var count = (serString.match(/MutAppPropertyDictionary/g) || []).length; // сколько раз встречается атрибуты dictionary в сериализованой строке
+    assert.ok(count === 2, 'quiz array, options array');
 
     var app2 = new PersonalityApp({
         defaults: null // no defaults
     });
     app2.start();
     app2.model.attributes.quiz.deserialize(serString);
-    assert.ok(app2._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + 1);
+    assert.ok(app2._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + PROPETIES_IN_ONE_QUIZ_ELEM);
     // сравниваем только свойства, не приложения
     assert.ok(app.model.attributes.quiz.compare(app2.model.attributes.quiz) === true, app.model.attributes.quiz.compareDetails.message);
 });
@@ -39,10 +46,10 @@ QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityT
     app.start();
 
     assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT);
-    assert.ok(app.model.attributes.results.getValue().length === 0);
+    assert.ok(app.model.attributes.results.toArray().length === 0);
     app.model.attributes.results.addElementByPrototype('id=pm resultProto1');
     checkResult(app, 1);
-    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + 2);
+    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + PROPETIES_IN_ONE_RESULT_ELEM); // PROPETIES_IN_ONE_RESULT_ELEM sub property in result elem
 
     // запоминаем оригиальные значения и сериализованные строки
     var serRes = app.model.attributes.results.serialize();
@@ -66,15 +73,15 @@ QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityT
     checkResult(app, 1);
     app.model.attributes.showBackgroundImage.deserialize(serShowBackgroundImage);
 
-    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + 2);
+    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + PROPETIES_IN_ONE_RESULT_ELEM); // 3 sub property in result elem
     // сравниваем свойства по одному
     assert.ok(app.model.attributes.results.compare(savedResults1));
     assert.ok(app.model.attributes.showBackgroundImage.compare(showBackgroundImage1));
 
     function checkResult(app, expectedResultsCount) {
-        assert.ok(app.model.attributes.results.getValue().length === expectedResultsCount);
+        assert.ok(app.model.attributes.results.toArray().length === expectedResultsCount);
         assert.ok(app._mutappProperties.indexOf(app.model.attributes.results) >= 0);
-        var resValue = app.model.attributes.results.getValue();
+        var resValue = app.model.attributes.results.toArray();
         for (var i = 0; i < resValue.length; i++) {
             assert.ok(app._mutappProperties.indexOf(resValue[i].title) >= 0);
             assert.ok(app._mutappProperties.indexOf(resValue[i].description) >= 0);
@@ -120,12 +127,15 @@ QUnit.test("MutApp test: MutApp serialization with array element delete. (Person
         defaults: null // no defaults
     });
     originApp.start();
+    originApp.isOK({assert: assert});
 
     originApp.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
     originApp.model.attributes.results.addElementByPrototype('id=pm resultProto1');
+    originApp.isOK({assert: assert});
 
     // сериализовать приложение
     var str = originApp.serialize();
+    originApp.isOK({assert: assert});
 
     // создать новое приложение
     var app2 = new PersonalityApp({
@@ -135,6 +145,7 @@ QUnit.test("MutApp test: MutApp serialization with array element delete. (Person
 
     // десериализовать в новом приложении
     app2.deserialize(str);
+    originApp.isOK({assert: assert});
     assert.ok(originApp.compare(app2), originApp.compareDetails.message);
 
     // теперь удалить элементы из массива

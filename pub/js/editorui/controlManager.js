@@ -12,8 +12,8 @@
 var ControlManager = {
     EVENT_CHANGE_VALUE: 'ControlManager.EVENT_CHANGE_VALUE',
     EVENT_FILTER_CHANGED: 'ControlManager.EVENT_FILTER_CHANGED',
-    EVENT_ARRAY_ADD_REQUESTED: 'ControlManager.EVENT_ARRAY_ADD_REQUESTED',
-    EVENT_ARRAY_DELETING_REQUESTED: 'ControlManager.EVENT_ARRAY_DELETING_REQUESTED'
+    EVENT_DICTIONARY_ADD_REQUESTED: 'ControlManager.EVENT_DICTIONARY_ADD_REQUESTED',
+    EVENT_DICTIONARY_DELETING_REQUESTED: 'ControlManager.EVENT_DICTIONARY_DELETING_REQUESTED'
 };
 
 
@@ -104,8 +104,11 @@ var ControlManager = {
                     }
                 }
             }
-            else if (cfg.type === 'workspace' || cfg.type === 'quickcontrolpanel') {
+            else if (cfg.type === 'workspace' || cfg.type === 'popup') {
                 $directiveWrapper = $('<div></div>').appendTo($directiveContainer);
+            }
+            else if (cfg.type === 'quickcontrolpanel') {
+                $directiveWrapper = $('<div class="qp_item"></div>').appendTo($directiveContainer);
             }
             else {
                 throw new Error('ControlManager.createControl: unknown control type \'' + cfg.type + '\'');
@@ -188,7 +191,7 @@ var ControlManager = {
                     };
                     if (data) {
                         // если контрол прислал дополнительные данные, передаем из дальше в editor
-                        // например, DeleteArrayElementControl шлет optionIndex
+                        // например, DeleteDictionaryElementControl шлет optionIndex
                         for (var key in data) {
                             if (data.hasOwnProperty(key) === true) {
                                 controlEventData[key] = data[key];
@@ -279,6 +282,8 @@ var ControlManager = {
         }
         // признак того, что контролы из quick panel попали в фильтр и их надо показывать
         var quickControlsFiltered = false;
+        // признак того, что контролы popup типа попали в фильтр и их надо показывать
+        var controlPopupFiltered = false;
         for (var i = 0; i < param.controls.length; i++) {
             var c = param.controls[i];
             var needShow = false;
@@ -292,9 +297,15 @@ var ControlManager = {
             else if (_filterValue.propertyStrings && _filterValue.propertyStrings.indexOf(c.propertyString) >= 0) {
                 needShow = true;
             }
+            else if (c.controlFilter === 'screenPropertyString' && _screenHasDataFilter(_filterValue.screen, c.propertyString) === true) {
+                needShow = true;
+            }
             if (needShow === true) {
                 if (config.controls[c.controlName].type === 'quickcontrolpanel') {
                     quickControlsFiltered = true;
+                }
+                if (config.controls[c.controlName].type === 'popup') {
+                    controlPopupFiltered = true;
                 }
                 c.show()
             }
@@ -306,9 +317,30 @@ var ControlManager = {
             _onControlEvents(ControlManager.EVENT_FILTER_CHANGED, {
                 propertyStrings: _filterValue.propertyStrings,
                 screen: _filterValue.screen,
-                quickControlsFiltered: quickControlsFiltered
+                quickControlsFiltered: quickControlsFiltered,
+                controlPopupFiltered: controlPopupFiltered
             });
         }
+    }
+
+    /**
+     * Проверить содержит ли экран элемент с атрибутом data-filter в котором есть propertyString
+     *
+     * @param screen
+     * @param propertyString
+     * @returns {boolean}
+     * @private
+     */
+    function _screenHasDataFilter(screen, propertyString) {
+        var dataFltrElm = screen.$el.find('[data-filter]');
+        dataFltrElm.push(screen.$el);
+        for (var i = 0; i < dataFltrElm.length; i++) {
+            var dataFltrStr = $(dataFltrElm[i]).attr('data-filter');
+            if (dataFltrStr && dataFltrStr.indexOf(propertyString) >= 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -401,5 +433,6 @@ var ControlManager = {
     global.handleShowScreen = handleShowScreen;
     global.find = find;
     global.getFilter = function() { return _filterValue; }
+    global._screenHasDataFilter = _screenHasDataFilter; // for qunit tests
 
 })(ControlManager)

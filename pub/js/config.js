@@ -712,13 +712,13 @@ var config = {
             directives: ['slide'],
             parentId: null // вставляется в группу контролов Slide
         },
-        AddArrayElementControl: {
+        AddDictionaryElementControl: {
             defaultDirectiveIndex: 0,
             directives: ['addquickbutton','addscreenbutton'],
             parentId: 'id-control_cnt',
             type: 'quickcontrolpanel' // контрол появляется на всплывающей панельке рядом с элементом
         },
-        DeleteArrayElementControl: {
+        DeleteDictionaryElementControl: {
             defaultDirectiveIndex: 0,
             directives: ['deletequickbutton'],
             parentId: 'id-control_cnt',
@@ -777,6 +777,12 @@ var config = {
             directives: ['customqcontrol'],
             parentId: 'id-control_cnt',
             type: 'workspace'
+        },
+        PersonalityResultLinking: {
+            defaultDirectiveIndex: 0,
+            directives: ['personalityresultlinking'],
+            parentId: 'id-popup_controls_cnt',
+            type: 'popup'
         }
     },
     editor: {

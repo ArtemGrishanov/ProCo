@@ -4,7 +4,7 @@
  * Контрол удаления, привязан к свойству массиву
  * Он отвечает за удаление элементов массива
  */
-function DeleteArrayElementControl(param) {
+function DeleteDictionaryElementControl(param) {
     this.init(param);
     this._arrayValue = null;
     /**
@@ -18,30 +18,30 @@ function DeleteArrayElementControl(param) {
 //    this._optionIndex = undefined;
     this.$directive.on('click', this.onDeleteButtonClick.bind(this));
 }
-_.extend(DeleteArrayElementControl.prototype, AbstractControl);
+_.extend(DeleteDictionaryElementControl.prototype, AbstractControl);
 
-//DeleteArrayElementControl.prototype.setProductDomElement = function(elem) {
+//DeleteDictionaryElementControl.prototype.setProductDomElement = function(elem) {
 //    this.$productDomElement = $(elem);
 //    var optionIndexAttr = this.$productDomElement.attr('data-option-index');
 //    this._optionIndex = parseInt(optionIndexAttr);
 //    if (isNumeric(this._optionIndex) === false) {
-//        throw new Error('DeleteArrayElementControl.setProductDomElement: data-option-index attribute must be specified in productDomElement');
+//        throw new Error('DeleteDictionaryElementControl.setProductDomElement: data-option-index attribute must be specified in productDomElement');
 //    }
 //};
 
-DeleteArrayElementControl.prototype.getValue = function() {
+DeleteDictionaryElementControl.prototype.getValue = function() {
     return this._arrayValue;
 };
 
-DeleteArrayElementControl.prototype.setValue = function(value) {
+DeleteDictionaryElementControl.prototype.setValue = function(value) {
     this._arrayValue = value;
 };
 
-DeleteArrayElementControl.prototype.destroy = function() {
+DeleteDictionaryElementControl.prototype.destroy = function() {
     this.$directive.off('click');
     this.$directive.remove();
 };
 
-DeleteArrayElementControl.prototype.onDeleteButtonClick = function() {
-    this.controlEventCallback(ControlManager.EVENT_ARRAY_DELETING_REQUESTED, this, {optionIndex: this._optionIndex});
+DeleteDictionaryElementControl.prototype.onDeleteButtonClick = function() {
+    this.controlEventCallback(ControlManager.EVENT_DICTIONARY_DELETING_REQUESTED, this, {optionIndex: this._optionIndex});
 };

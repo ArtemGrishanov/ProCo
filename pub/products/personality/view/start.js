@@ -100,9 +100,6 @@ var StartScreen = MutApp.Screen.extend({
                 this.model.application.showScreen(this);
             }
         }, this);
-        this.model.bind("change:showBackgroundImage", function () {
-            this.render();
-        }, this);
         this.model.bind("change:backgroundImg", function () {
             this.render();
         }, this);
@@ -130,13 +127,11 @@ var StartScreen = MutApp.Screen.extend({
             $l.hide();
         }
 
-        if (this.model.get('showBackgroundImage').getValue() === true) {
-            if (this.model.get('startScreenBackgroundImg').getValue()) {
-                this.$el.find('.js-back_img').css('backgroundImage','url('+this.model.get('startScreenBackgroundImg').getValue()+')');
-            }
+        if (this.model.get('startScreenBackgroundImg').getValue()) {
+            this.$el.find('.js-start_back_img').css('backgroundImage','url('+this.model.get('startScreenBackgroundImg').getValue()+')');
         }
         else {
-            this.$el.find('.js-back_img').css('backgroundImage','none');
+            this.$el.find('.js-start_back_img').css('backgroundImage','none');
         }
 
         var sbt = this.startButtonText.getValue();

@@ -63,7 +63,8 @@ var inspector = {};
             var c = ctrls[i];
             if (c.controlFilter === 'always' ||
                 (c.controlFilter === 'screen' && c.controlFilterScreenCriteria && filter.screen && filter.screen[c.controlFilterScreenCriteria.key] === c.controlFilterScreenCriteria.value) ||
-                (filter.propertyStrings && filter.propertyStrings.indexOf(c.propertyString) >= 0)
+                (filter.propertyStrings && filter.propertyStrings.indexOf(c.propertyString) >= 0) ||
+                (c.controlFilter === 'screenPropertyString' && ControlManager._screenHasDataFilter(filter.screen, c.propertyString) === true)
                 ) {
                 // в фильтре - должен быть показан
                 assert.ok(c.isShown() === true, 'control \''+c.propertyString+'\' is shown');
@@ -83,7 +84,6 @@ var inspector = {};
         else {
             assert.ok($('#id-control_cnt').find('.js-quick_panel').css('display') === 'none', 'quickcontrolpanel panel is hidden for \''+c.propertyString+'\'');
         }
-
 
         // для текущего экрана у всех контролов установлен productDomElement и равен соответствующему _linkedElementsOnScreen[screen_id]
         var activeScreen = app.getScreenById(Editor.getActiveScreen());

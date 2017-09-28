@@ -18,7 +18,7 @@ QUnit.test("MutApp test: findMutAppPropertiesInObject", function( assert ) {
         propertyString: 'id=pm test2',
         value: null
     });
-    var m3 = new MutAppPropertyArray({
+    var m3 = new MutAppPropertyDictionary({
         application: app,
         model: app.model,
         propertyString: 'id=pm test3',

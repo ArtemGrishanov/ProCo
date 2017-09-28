@@ -15,7 +15,7 @@
     </div>
 
     <script id="id-welcome_template" type="text/template">
-        <div class="modal __active js-start_back_color js-back_img">
+        <div class="modal __active js-start_back_color js-start_back_img">
             <div class="modal_cnt info js-back_shadow js-logo_cnt">
                 <div class="info_title js-start_header" data-app-property="id=startScr startHeaderText"><b>Дзюдо: </b>иппон или вазаари</div>
                 <div class="info_tx js-start_description" data-app-property="id=startScr startDescription">Пройдите тест и узнайте, как хорошо вы разбираетесь в этом виде восточных единоборств</div>
@@ -28,7 +28,7 @@
     </script>
 
     <script id="id-slide_template" type="text/template">
-        <div class="modal __active js-question_back_color js-back_img">
+        <div class="modal __active js-question_back_color js-question_back_img">
             <div class="modal_cnt js-back_shadow js-logo_cnt">
                 <div data-app-property="id=pm questionProgressPosition" class="js-question_progress question_progress"></div>
                 <div class="modal_hld question">
@@ -77,44 +77,38 @@
     </script>
 
     <script id="id-option_text_template" type="text/template">
-        <div class="question_i js-a_wr" data-question-index="<%=currentQuestionIndex%>" data-id="<%=id%>" data-option-index="<%=currentOptionIndex%>" data-control-filter="filter=ok,prototypeIndex=0" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.answer.options, id=pm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>">
+        <div class="question_i js-a_wr" data-question-index="<%=currentQuestionIndex%>" data-id="<%=id%>" data-dictionary-id="<%=currentOptionIndex%>" data-control-filter="filter=ok,prototypeIndex=0" data-app-property="id=pm resultLinking, id=pm quiz.<%=currentQuestionIndex%>.answer.options">
             <div class="bullit"></div>
             <span class="js-option_text" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.text"><%=text%></span>
         </div>
-        <!--<div class="a_wr" data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}">-->
-        <!--<div class="a_text">-->
-        <!--<div class="bullit"></div>-->
-        <!--<span data-app-property="quiz.{{currentQuestion}}.options.{{currentOption}}.text">{{answer_options_text}}</span>-->
-        <!--</div>-->
-        <!--</div>-->
     </script>
     <script id="id-option_img_template" type="text/template">
         <div class="question_grid-i" data-id="<%=id%>">
-            <img data-id="<%=id%>" data-question-index="<%=currentQuestionIndex%>" data-option-index="<%=currentOptionIndex%>" data-control-filter="filter=ok,prototypeIndex=1" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.answer.options, id=pm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>, id=pm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.img" class="question_img" src="<%=img%>" />
+            <img data-id="<%=id%>" data-question-index="<%=currentQuestionIndex%>" data-dictionary-id="<%=currentOptionIndex%>" data-control-filter="filter=ok,prototypeIndex=1" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.answer.options, id=pm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.img" class="question_img" src="<%=img%>" />
         </div>
     </script>
 
     <script id="id-result_template" type="text/template">
-        <div class="modal __active js-result_back_color js-back_img" data-app-property="type=result backgroundImg, type=result shadowEnable">
-            <div class="modal_cnt info js-back_shadow">
+        <div class="modal __active js-result_back_color js-result_back_img" data-app-property="id=pm results.<%=currentResultIndex%>.backgroundImage, id=pm results.<%=currentResultIndex%>.backgroundColor, id=pm shadowEnableInResults">
+            <div class="modal_cnt info js-back_shadow js-logo_cnt">
                 <div class="info_title js-result_title" data-app-property="id=pm results.<%=currentResultIndex%>.title"><%=title%></div>
                 <div class="info_tx js-result_description" data-app-property="id=pm results.<%=currentResultIndex%>.description"><%=description%></div>
-                <div class="js-mutapp_share_fb fb_share" data-app-property="type=result fbSharePosition"></div>
-                <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="type=result fbSharePosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
+                <!--<div class="js-mutapp_share_fb fb_share" data-app-property="type=results fbSharePosition"></div>-->
+                <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="id=pm fbSharingPosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
                     <span class="tstx_share_i"></span>
                     Поделиться
                 </div>
-                <div class="tstx_share_btn __vk js-mutapp_share_vk" data-app-property="type=result vkSharePosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
+                <div class="tstx_share_btn __vk js-mutapp_share_vk" data-app-property="id=pm vkSharingPosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
                     <span class="tstx_share_i __vk"></span>
                     Поделиться
                 </div>
                 <div class="info_f js-btn_wr js-restart_btn_wr">
-                    <div class="button js-next js-restart js-test_btn" data-app-property="type=result restartButtonText">Пройти тест еще раз</div>
+                    <div class="button js-next js-restart js-test_btn" data-app-property="type=results restartButtonText">Пройти тест еще раз</div>
                 </div>
                 <div class="info_f js-download_btn_wr">
-                    <div class="button js-download_btn" data-app-property="type=result downloadButtonText, type=result showDownload">Скачать</div>
+                    <div class="button js-download_btn" data-app-property="type=results downloadButtonText">Скачать</div>
                 </div>
-                <div class="logo js-logo js-result_logo" data-app-property="type=result logoPosition, type=result showLogo, id=pm logoUrl"></div>
+                <div class="logo js-logo js-result_logo" data-app-property="id=pm logoPositionInResults, id=pm showLogoInResults, id=pm logoUrl"></div>
             </div>
         </div>
     </script>

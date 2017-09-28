@@ -73,7 +73,7 @@ QUnit.test("MutApp test: Css properties and deserialization in edit mode", funct
     ap4.setValue('33px');
     var r = app._getCssRule('.js-start_description');
     assert.ok(r.selector === '.js-start_description');
-    assert.ok(r.rules[0].value === '33px');
+    assert.ok(findRuleByCssProperty(r.rules, 'padding-top').value === '33px');
     assert.ok(app.getCssRulesString().indexOf('33px') >= 0);
     assert.ok(app.screenRoot.find('#id-custom_styles').html().indexOf(ap4.getValue()) >= 0 );
 
@@ -107,6 +107,22 @@ QUnit.test("MutApp test: Css properties and deserialization in edit mode", funct
         }, 500);
 
     }, 500);
+
+    /**
+     * локальная функция для тестов
+     *
+     * @param rules
+     * @param propertyName
+     * @returns {*}
+     */
+    function findRuleByCssProperty(rules, propertyName) {
+        for (var i = 0; i < rules.length; i++) {
+            if (rules[i].property === propertyName) {
+                return rules[i];
+            }
+        }
+        return null;
+    }
 
 });
 
@@ -171,12 +187,14 @@ QUnit.test("MutApp test: Css properties 2", function( assert ) {
 
         var r = app._getCssRule('.js-start_header');
         assert.ok(r.selector === '.js-start_header');
-        assert.ok(r.rules[0].value === null);
+        // обнуленное ранее свойство .js-start_description padding-top
+        assert.ok(findRuleByCssProperty(r.rules, 'color').value === null);
         assert.ok(app.getCssRulesString().indexOf('rgb(255, 255, 0)') < 0);
 
         var r = app._getCssRule('.js-start_description');
         assert.ok(r.selector === '.js-start_description');
-        assert.ok(r.rules[0].value === null);
+        // обнуленное ранее свойство .js-start_description padding-top
+        assert.ok(findRuleByCssProperty(r.rules, 'padding-top').value === null);
         assert.ok(app.getCssRulesString().indexOf('33px') < 0);
 
         setTimeout(function() {
@@ -188,4 +206,21 @@ QUnit.test("MutApp test: Css properties 2", function( assert ) {
         }, 500);
 
     }, 500);
+
+    /**
+     * локальная функция для тестов
+     *
+     * @param rules
+     * @param propertyName
+     * @returns {*}
+     */
+    function findRuleByCssProperty(rules, propertyName) {
+        for (var i = 0; i < rules.length; i++) {
+            if (rules[i].property === propertyName) {
+                return rules[i];
+            }
+        }
+        return null;
+    }
+
 });

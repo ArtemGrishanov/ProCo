@@ -352,3 +352,19 @@ function writeCssTo(stylesId, cssString, container) {
 function isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
+
+/**
+ * Подсчитать количество собственных свойств в объекте
+ *
+ * @param obj
+ * @returns {number}
+ */
+function getOwnPropertiesCount(obj) {
+    var result = 0;
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key) === true) {
+            result++;
+        }
+    }
+    return result;
+}

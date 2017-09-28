@@ -995,12 +995,12 @@ var Editor = {};
 
     /**
      * Колбек из worspace о клике по элементу
-     * @param {string} dataAppPropertyString
+     * @param {string} dataAppPropertyString (can be null to reset selection)
      */
     function onSelectElementCallback(dataAppPropertyString) {
         console.log('onSelectElementCallback: ' + dataAppPropertyString);
         ControlManager.filter({
-            propertyStrings: dataAppPropertyString.split(',')
+            propertyStrings: dataAppPropertyString ? dataAppPropertyString.split(',') : null
         });
     }
 
@@ -1022,6 +1022,7 @@ var Editor = {};
                 // {MutApp.Screen} data.screen
                 // {Array<string>} data.propertyStrings
                 // {boolean} data.quickControlsFiltered
+                // {boolean} data.controlPopupFiltered
                 if (data.quickControlsFiltered === true) {
                     // был зафильтрован контрол с типом quickcontrolpanel, говорим workspace показать панель с контролами quickcontrolpanel
                     workspace.showQuickControlPanel();
@@ -1029,16 +1030,23 @@ var Editor = {};
                 else {
                     workspace.hideQuickControlPanel();
                 }
+                if (data.controlPopupFiltered === true) {
+                    // был зафильтрован контрол с типом popup, говорим workspace показать popup контейнер
+                    workspace.showPopupContainer();
+                }
+                else {
+                    workspace.hidePopupContainer();
+                }
                 break;
             }
-            case ControlManager.EVENT_ARRAY_ADD_REQUESTED: {
+            case ControlManager.EVENT_DICTIONARY_ADD_REQUESTED: {
                 // может потребоваться участие пользователя
                 var ap = editedApp.getProperty(data.propertyString);
                 // по умолчанию добавляем в конец
                 var position = ap.getValue().length;
                 if (ap.prototypes.length > 1) {
                     // требуется участие пользователя чтобы сделать выбор прототипа
-                    throw new Error('Editor.onControlEvents(EVENT_ARRAY_ADD_REQUESTED): not developed yet');
+                    throw new Error('Editor.onControlEvents(EVENT_DICTIONARY_ADD_REQUESTED): not developed yet');
                 }
                 else {
                     // прототип один сразу добавляем
@@ -1046,18 +1054,17 @@ var Editor = {};
                 }
                 break;
             }
-            case ControlManager.EVENT_ARRAY_DELETING_REQUESTED: {
+            case ControlManager.EVENT_DICTIONARY_DELETING_REQUESTED: {
                 var $elem = workspace.getSelectedElement();
                 // у контрола DeleteArrayElement нет информации о выделенном элементе, то есть какой из вариантов ответа (options) пользователь выбрал
                 // У DeleteArrayElement есть несколько productDomElements, и какой-то из них workspace.getSelectedElement(), но какой он не знает.
                 if ($elem) {
                     var ap = editedApp.getProperty(data.propertyString);
-                    var optionIndexAttr = $elem.attr('data-option-index');
-                    var optionIndex = parseInt(optionIndexAttr);
-                    if (isNumeric(optionIndex) === false) {
-                        throw new Error('Editor.onControlEvents(EVENT_ARRAY_DELETING_REQUESTED): data-option-index attribute must be specified in productDomElement');
+                    var optionDictionaryId = $elem.attr('data-dictionary-id');
+                    if (typeof optionDictionaryId !== 'string') {
+                        throw new Error('Editor.onControlEvents(EVENT_DICTIONARY_DELETING_REQUESTED): data-dictionary-id attribute must be specified in productDomElement');
                     }
-                    ap.deleteElement(optionIndex);
+                    ap.deleteElementById(optionDictionaryId);
                 }
                 break;
             }

@@ -683,7 +683,7 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
         }
         // свойство показывающее как фильтровать контролы свойства
         if (prInfo.controlFilter) {
-            if (prInfo.controlFilter.indexOf('screen') === 0) {
+            if (prInfo.controlFilter.indexOf('screen(') === 0) {
                 mutAppProperty._controlFilter = 'screen';
                 // получаем id экрана указанного в скобках
                 var r = new RegExp(/screen\(([A-z0-9_]+)\=([A-z0-9_]+)\)/i);
@@ -698,7 +698,7 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
                     throw new Error('MutApp.linkMutAppProperty: can not match screen id in \'' + prInfo.controlFilter + '\' for app property \'' + mutAppProperty.propertyString + '\'');
                 }
             }
-            else if (prInfo.controlFilter === 'always' || prInfo.controlFilter === 'onclick' || prInfo.controlFilter === 'hidden') {
+            else if (prInfo.controlFilter === 'always' || prInfo.controlFilter === 'onclick' || prInfo.controlFilter === 'screenPropertyString' || prInfo.controlFilter === 'hidden') {
                 mutAppProperty._controlFilter = prInfo.controlFilter;
                 mutAppProperty._controlFilterScreenCriteria = null;
             }
@@ -721,7 +721,7 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
             mutAppProperty.controls = [];
         }
 
-        if (MutApp.Util.isMutAppPropertyArray(mutAppProperty) === true) {
+        if (MutApp.Util.isMutAppPropertyDictionary(mutAppProperty) === true) {
             mutAppProperty.prototypes = prInfo.prototypes;
         }
         if (mutAppProperty._application !== this) {
@@ -1325,7 +1325,35 @@ MutApp.prototype.getCssRulesString = function() {
     }
     return cssStr;
 };
+/**
+ * Проверить состояние и консистентность MutApp приложения
+ *
+ */
+MutApp.prototype.isOK = function(param) {
+    param = param || {};
+    var assert = param.assert || MutApp.Util._getMockAssert();
 
+    // проверить что все по всем propertyString действительно можно найти свойство
+    for (var i = 0; i < this._mutappProperties.length; i++) {
+        var ap = this._mutappProperties[i];
+        var props = this.getPropertiesBySelector(ap.propertyString);
+        if (!props || props.length !== 1) {
+            assert.ok(false, ap.propertyString + ' not found');
+        }
+
+    }
+
+    // проверить что значения CssMutAppProperty актуальны
+    for (var i = 0; i < this._mutappProperties.length; i++) {
+        var ap = this._mutappProperties[i];
+        if (MutApp.Util.isCssMutAppProperty(ap) === true) {
+
+        }
+
+    }
+
+    console.log('MutApp.isOK: Checking finished. See qunit log or console for details.');
+};
 /**
  * Таймер, мониторящий состояние приложения
  */
@@ -1623,6 +1651,24 @@ MutApp.Model = Backbone.Model.extend({
  * @type {{setDefaultProperties: Function}}
  */
 MutApp.Util = {
+
+    /**
+     * Подготовить фейковый объект assert
+     *
+     * @returns {{ok: Function}}
+     * @private
+     */
+    _getMockAssert: function() {
+        return {
+            ok: function(value, message) {
+                if (!!value === false) {
+                    console.error(message);
+                }
+                return !!value === true;
+            }
+        }
+    },
+
     /**
      * Установит в указанный объект параметры
      *
@@ -1652,17 +1698,31 @@ MutApp.Util = {
      */
     matchPropertyString: function(propertyString, selector) {
         var selectorElems = selector.split(',');
+        var p;
         // selector может быть составным: через запятую перечислены несколько свойств
         for (var i = 0; i < selectorElems.length; i++) {
             var selElem = selectorElems[i].trim();
             if (propertyString === selElem) {
                 return true;
             }
-            var p = propertyString.replace(/(^|\.|\s)([0-9]+)(\.|\s|$)/g, function(allMatch, group1, group2, group3) {
-                return allMatch.replace(group2,'{{number}}');
-            });
-            if (p === selElem) {
-                return true;
+            if (selector.indexOf('{{number}}') >= 0) {
+                p = propertyString.replace(/(^|\.|\s)([0-9]+)(\.|\s|$)/g, function(allMatch, group1, group2, group3) {
+                    return allMatch.replace(group2,'{{number}}');
+                });
+                if (p === selElem) {
+                    return true;
+                }
+            }
+            if (selector.indexOf('{{id}}') >= 0) {
+                //            if (selector.indexOf('{{id}}') >= 0 && propertyString.indexOf('id=pm quiz.') >= 0) {
+                //                var stayhere = 0;
+                //            }
+                p = propertyString.replace(/(^|\.|\s)([0-9abcdef]+)(\.|\s|$)/g, function(allMatch, group1, group2, group3) {
+                    return allMatch.replace(group2,'{{id}}');
+                });
+                if (p === selElem) {
+                    return true;
+                }
             }
         }
         return false;
@@ -1724,6 +1784,29 @@ MutApp.Util = {
             for (var objkey in obj) {
                 if (MutApp.Util.objectHasProperty(obj, objkey) === true && isNaN(objkey)===false) {
                     // нашли совпадение. Например, это индекс массива
+                    // у модели надо брать значение из атрибутов
+                    var o = (isModel===true && obj.attributes[objkey]) ? obj.attributes[objkey]: obj[objkey];
+                    if (restSelector.length > 0) {
+                        // смотрим дальше вглубь пока не закончится селектор
+                        result=result.concat(this.getPropertiesBySelector(o, restSelector, path+objkey));
+                    }
+                    else {
+                        // дошли до конца, весь селектор сопоставлен
+                        result.push({
+                            path: path+objkey,
+                            value: o
+                        });
+                    }
+                }
+            }
+        }
+        if (parts[0].indexOf('{{id')===0) {
+            // найти все свойства которые подходят под id
+            for (var objkey in obj) {
+                var idMatchResult = objkey.match(/(^|\.|\s)([0-9abcdef]+)(\.|\s|$)/g);
+                if (idMatchResult && idMatchResult.length > 0) {
+                    var stophere = 0;
+                    // нашли совпадение. objkey - это id вида '43ed01'
                     // у модели надо брать значение из атрибутов
                     var o = (isModel===true && obj.attributes[objkey]) ? obj.attributes[objkey]: obj[objkey];
                     if (restSelector.length > 0) {
@@ -1919,18 +2002,18 @@ MutApp.Util = {
      * @return {boolean}
      */
     isMutAppProperty: function(obj) {
-        return obj instanceof MutAppProperty || obj instanceof MutAppPropertyArray
+        return obj instanceof MutAppProperty || obj instanceof MutAppPropertyDictionary
             || obj instanceof CssMutAppProperty || obj instanceof MutAppPropertyPosition;
     },
 
     /**
-     * Проверить, что объект является MutAppPropertyArray
+     * Проверить, что объект является MutAppPropertyDictionary
      *
      * @param {*} obj
      * @return {boolean}
      */
-    isMutAppPropertyArray: function(obj) {
-        return obj instanceof MutAppPropertyArray;
+    isMutAppPropertyDictionary: function(obj) {
+        return obj instanceof MutAppPropertyDictionary;
     },
 
     /**
@@ -2006,20 +2089,28 @@ MutApp.Util = {
                 (x instanceof RegExp && y instanceof RegExp) ||
                 (x instanceof String && y instanceof String) ||
                 (x instanceof Number && y instanceof Number)) {
+                details = {result: false, message: 'MutApp.Util.deepCompare: please add details here 9s378faqw'};
                 return x.toString() === y.toString();
             }
 
             // MutAppProperty comparison
             if (MutApp.Util.isMutAppProperty(x) === true && MutApp.Util.isMutAppProperty(y) === true) {
-                return x.compare(y);
+                var r = x.compare(y);
+                if (r === false) {
+                    details = {result: false, message: 'MutApp.Util.deepCompare: two MutAppProperties compare. Details: ' + x.compareDetails.message};
+                    return false;
+                }
+                return true;
             }
 
             // At last checking prototypes as good as we can
             if (!(x instanceof Object && y instanceof Object)) {
+                details = {result: false, message: 'MutApp.Util.deepCompare: please add details here 7453638'};
                 return false;
             }
 
             if (x.isPrototypeOf(y) || y.isPrototypeOf(x)) {
+                details = {result: false, message: 'MutApp.Util.deepCompare: please add details here 1263g456'};
                 return false;
             }
 
@@ -2029,11 +2120,13 @@ MutApp.Util = {
             }
 
             if (x.prototype !== y.prototype) {
+                details = {result: false, message: 'MutApp.Util.deepCompare: please add details here 5gw5477u'};
                 return false;
             }
 
             // Check for infinitive linking loops
             if (leftChain.indexOf(x) > -1 || rightChain.indexOf(y) > -1) {
+                details = {result: false, message: 'MutApp.Util.deepCompare: please add details here 54dvrw6'};
                 return false;
             }
 
@@ -2041,20 +2134,22 @@ MutApp.Util = {
             // todo: cache the structure of arguments[0] for performance
             for (p in y) {
                 if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) {
+                    details = {result: false, message: 'MutApp.Util.deepCompare: property \'' + p + '\' matters'};
                     return false;
                 }
                 else if (typeof y[p] !== typeof x[p]) {
+                    details = {result: false, message: 'MutApp.Util.deepCompare: typeof property \'' + p + '\' are not equal'};
                     return false;
                 }
             }
 
             for (p in x) {
                 if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) {
-                    details = {result: false, message: 'MutApp.Util.deepCompare: property \'' + p + '\' matters'}
+                    details = {result: false, message: 'MutApp.Util.deepCompare: property \'' + p + '\' matters'};
                     return false;
                 }
                 else if (typeof y[p] !== typeof x[p]) {
-                    details = {result: false, message: 'MutApp.Util.deepCompare: typeof property \'' + p + '\' are not equal'}
+                    details = {result: false, message: 'MutApp.Util.deepCompare: typeof property \'' + p + '\' are not equal'};
                     return false;
                 }
 
@@ -2075,7 +2170,7 @@ MutApp.Util = {
 
                     default:
                         if (x[p] !== y[p]) {
-                            details = {result: false, message: 'MutApp.Util.deepCompare: values of property \'' + p + '\' are not equal'}
+                            details = {result: false, message: 'MutApp.Util.deepCompare: values of property \'' + p + '\' are not equal'};
                             return false;
                         }
                         break;
@@ -2191,6 +2286,32 @@ MutApp.Util = {
         }
         return result;
     },
+
+    /**
+     * В объекте obj найти рекурсивно MutAppProperty и установить им propertyString
+     *
+     * Полезный был эксперимент с этой функцией, но всё надо propertyString сразу в конструкторе указывать: события, линковка и тд
+     *
+     * @param {object} obj
+     * @param {string} initialPropertyString
+     */
+//    resolvePropertyStringsForSubproperties: function(obj, initialPropertyString) {
+//        initialPropertyString = initialPropertyString || '';
+//        for (var key in obj) {
+//            if (obj.hasOwnProperty(key) === true) {
+//                if (MutApp.Util.isMutAppProperty(obj[key]) === true) {
+//                    obj[key].propertyString = initialPropertyString + '.' + key;
+//                    MutApp.Util.resolvePropertyStringsForSubproperties(obj[key]._value, obj[key].propertyString);
+//                }
+//                else {
+//                    if (MutApp.Util.isPrimitive(obj[key]) === false) {
+//                        // объект Не mutappproperty - идем рекурсивно вглубь
+//                        MutApp.Util.resolvePropertyStringsForSubproperties(obj[key], initialPropertyString+'.'+key);
+//                    }
+//                }
+//            }
+//        }
+//    },
 
     /**
      * Записать стили css в dom элемент
@@ -2544,11 +2665,13 @@ MutAppProperty.prototype.initialize = function(param) {
     if (pr) {
         this._propertyName = pr.valueKey;
     }
-    if (this._validateDataType(param.value) === true) {
-        this._value = param.value;
-    }
-    else {
-        throw new Error('MutAppProperty.initialize: MutAppProperty implements only primitives: Number, Boolean, String, Undefined, Null. For array use MutAppPropertyArray');
+    if (param.hasOwnProperty('value') === true) {
+        if (this._validateDataType(param.value) === true) {
+            this._value = param.value;
+        }
+        else {
+            throw new Error('MutAppProperty.initialize: MutAppProperty implements only primitives: Number, Boolean, String, Undefined, Null. For array use MutAppPropertyDictionary');
+        }
     }
     if (typeof param.propertyString === 'string') {
         this.propertyString = param.propertyString;
@@ -2646,7 +2769,7 @@ MutAppProperty.prototype.compare = function(otherMProperty) {
         // сравниваются те атрибуты, которые существенны
         this.compareDetails = {
             result: false,
-            message: 'MutAppProperty.compare: base attributes id, propertyString or _propertyName are not equal.'
+            message: 'MutAppProperty.compare: base attributes id, propertyString or _propertyName are not equal. PropertyString=' + this.propertyString
         };
         return false;
     }
@@ -2838,91 +2961,216 @@ var CssMutAppProperty = function(param) {
 _.extend(CssMutAppProperty.prototype, MutAppProperty.prototype);
 
 /**
- * Класс-обертка для управления массивом
+ * Хранилище элементов с уникальным id
+ * Для соблюдения концепции фреймворка нужны особые структуры данных.
+ *
+ * 1) Каждому элементу после добавления присваивается уникальный постоянный id, пример '42a7f0'
+ *    Получить позже id можно так getIdFromPosition()
+ *    обеспечивает уникальный постоянный path к каждому элементу используя уникальные id для элементов
+ *    Пример: 'id=pm quiz.12ed42a.answer.options.a45f09.text'
+ *
+ * 2) Элементы упорядочены, порядок важен в вопросах / опциях и прочей предметной области
+ *    addElement() / deleteElement() работают с позицией
+ *    toArray() возвращает обычный массив значений для работы
+ *
  * @constructor
  */
-var MutAppPropertyArray = function(param) {
+var MutAppPropertyDictionary = function(param) {
+    param = param || {};
+    this._orderedIds = [];
+    this._value = {};
+    if (param.hasOwnProperty('value') === true) {
+        if (Array.isArray(param.value)) {
+            // обработать значение по умолчанию
+            // пользователь может указать js-массив в виде дефолтного значения, надо сконвертировать его в нужный вид, как это делается в addElement
+            for (var i = 0; i < param.value.length; i++) {
+                var id = MutApp.Util.getUniqId(6);
+                this._orderedIds.push(id);
+                // Для element начало его path будет таким: this.propertyString+'.'+id
+                //MutApp.Util.resolvePropertyStringsForSubproperties(param.value[i], param.propertyString+'.'+id);
+                this._value[id] = param.value[i];
+            }
+            delete param.value; // удалить чтобы внутри MutAppProperty.initialize не прошла установка
+        }
+        else if (this._validateDataType(param.value) && Array.isArray(param._orderedIds) === true) {
+            // это десериализация
+            this._orderedIds = param._orderedIds;
+            this._value = param.value;
+        }
+        else {
+            throw new Error('MutAppPropertyDictionary.initialize: unsupported value type.');
+        }
+    }
     this.initialize(param);
 };
 // наследуем от простого базового свойства
-_.extend(MutAppPropertyArray.prototype, MutAppProperty.prototype);
+_.extend(MutAppPropertyDictionary.prototype, MutAppProperty.prototype);
 /**
- * Проверить что устанавливаемое значение является массивом
+ * Проверить что устанавливаемое значение корректно.
+ * Это должен быть {'56473': value1, '87654': value2, ...}
+ *
  * @param value
  * @returns {boolean}
  * @private
  */
-MutAppPropertyArray.prototype._validateDataType = function(value) {
-    return Array.isArray(value);
+MutAppPropertyDictionary.prototype._validateDataType = function(value) {
+    return typeof value === 'object';
+};
+/**
+ * Причем делает отметка времени, когда было получено значение последний раз
+ *
+ * Пример:
+ *  returns {
+ *      '093bc4': 'value1',
+ *      '4ea119': 'value2',
+ *      ...
+ *  }
+ */
+MutAppPropertyDictionary.prototype.getValue = function() {
+    this._getValueTimestamp = new Date().getTime();
+    return this._value;
+};
+/**
+ * Returns common js array for work
+ * ['value1','value2', ...]
+ *
+ * @returns Array
+ */
+MutAppPropertyDictionary.prototype.toArray = function() {
+    var result = [];
+    for (var i = 0; i < this._orderedIds.length; i++) {
+        result.push(this._value[this._orderedIds[i]]);
+    }
+    return result;
+};
+/**
+ * Вернуть id элемента по его позиции в структуре
+ * @param {number} position
+ * @return {string} например '34ea90'
+ */
+MutAppPropertyDictionary.prototype.getIdFromPosition = function(position) {
+    if (Number.isInteger(position) === false || position < 0 || position >= this._orderedIds.length) {
+        return undefined;
+    }
+    return this._orderedIds[position];
+};
+/**
+ * Вернуть позицию элемента по его id
+ * Обратная операция getIdFromPosition
+ *
+ * @param {string} dictionaryId
+ * @returns {number}
+ */
+MutAppPropertyDictionary.prototype.getPosition = function(dictionaryId) {
+    for (var i = 0; i < this._orderedIds.length; i++) {
+        if (this._orderedIds[i] === dictionaryId) {
+            return i;
+        }
+    }
+    return null;
 };
 /**
  * Добавить новый элемент на позицию. По умолчанию в конец.
  * @param {*} element
- * @param [number] position
+ * @param [{number}] position - optional
+ * @param [{string}] newElementId - optional, иногда указывается извне в сложных случаях
  */
-MutAppPropertyArray.prototype.addElement = function(element, position) {
-    var newArray = this._value.slice(0);
+MutAppPropertyDictionary.prototype.addElement = function(element, position, newElementId) {
     if (Number.isInteger(position) === false || position < 0) {
-        position = newArray.length;
+        position = this._orderedIds.length;
     }
-    newArray.splice(position, -1, element);
-    // считается, что устанавливаем новый массив целиком
-    this.setValue(newArray);
+    // id - постоянный на всё время работы и сериализации приложения
+    if (!newElementId) {
+        newElementId = MutApp.Util.getUniqId(6);
+    }
+    this._orderedIds.splice(position, -1, newElementId);
+    // Для element начало его path будет таким: this.propertyString+'.'+id
+    //MutApp.Util.resolvePropertyStringsForSubproperties(element, this.propertyString+'.'+id);
+    this._value[newElementId] = element;
+    // считается, что устанавливаем новый dictionary целиком
+    var nv = {};
+    for (var i = 0; i < this._orderedIds.length; i++) {
+        nv[this._orderedIds[i]] = this._value[this._orderedIds[i]];
+    }
+    this.setValue(nv);
 };
 /**
  * Удалить элемент массива по определеной позиции
+ *
  * @param {number} position
  */
-MutAppPropertyArray.prototype.deleteElement = function(position) {
-    var newArray = this._value.slice(0);
+MutAppPropertyDictionary.prototype.deleteElement = function(position) {
     if (Number.isInteger(position) === false || position < 0) {
-        throw new Error('MutAppPropertyArray.deleteElement: position must be specified');
+        throw new Error('MutAppPropertyDictionary.deleteElement: position must be specified');
     }
-    if (position >= newArray.length) {
-        position = newArray.length-1;
+    if (position >= this._orderedIds.length) {
+        position = this._orderedIds.length-1;
     }
-    var deletedArrayElement = newArray.splice(position, 1);
+    var deletedId = this._orderedIds[position];
+    var deletedElement = this._value[deletedId];
     // согласно допущениям по документации ссылка на один MutAppProperty может быть объявлена только в одном месте в приложении
     // исследуем удаляемый элемент масива на то, что внутри могут быть MutAppProperty которые также надо теперь удалить
-    var deletedSubProperties = MutApp.Util.findMutAppPropertiesInObject(deletedArrayElement);
+    var deletedSubProperties = MutApp.Util.findMutAppPropertiesInObject(deletedElement);
     if (deletedSubProperties && deletedSubProperties.length > 0) {
         for (var i = 0; i < deletedSubProperties.length; i++) {
             deletedSubProperties[i].destroy();
         }
     }
-    // считается, что устанавливаем новый массив целиком
-    this.setValue(newArray);
+    // после того как удалили сабпроперти можно удалить и сам элемент
+    this._orderedIds.splice(position, 1);
+    delete this._value[deletedId];
+    // считается, что устанавливаем новый dictionary целиком
+    var nv = {};
+    for (var i = 0; i < this._orderedIds.length; i++) {
+        nv[this._orderedIds[i]] = this._value[this._orderedIds[i]];
+    }
+    this.setValue(nv);
+};
+/**
+ * Удалить элемент по id в словаре
+ * @param {string} dictionaryId
+ */
+MutAppPropertyDictionary.prototype.deleteElementById = function(dictionaryId) {
+    var position = this.getPosition(dictionaryId);
+    this.deleteElement(position);
 };
 /**
  * Создать новый элемент из прототипа и сразу добавить его в массив
  *
  * @param {string} protoFunctionPath, например 'id=pm quizProto1'
- * @param [number] position
+ * @param [number] position - set '-1' or undefined for auto
+ * @param {object} param
  */
-MutAppPropertyArray.prototype.addElementByPrototype = function(protoFunctionPath, position) {
+MutAppPropertyDictionary.prototype.addElementByPrototype = function(protoFunctionPath, position, param) {
     var prt = this._getPrototype(protoFunctionPath);
     if (prt !== null) {
         var results = this._application.getPropertiesBySelector(protoFunctionPath);
         if (results && results.length > 0 && _.isFunction(results[0].value)) {
             // clone to be sure it's new JSON.parse(JSON.stringify())
             // в качестве контекста передается объект в котором нашли функцию-прототип
-            var newElem = results[0].value.call(results[0].entity);
-            this.addElement(newElem, position);
+            var newElem = results[0].value.call(results[0].entity, param);
+            if (!newElem.element) {
+                throw new Error('MutAppPropertyDictionary.addElementByPrototype: proto function must return object {id, element}. Element does not specified');
+            }
+            if (typeof newElem.id !== 'string') {
+                throw new Error('MutAppPropertyDictionary.addElementByPrototype: proto function must return object {id, element}. Id does not specified');
+            }
+            this.addElement(newElem.element, position, newElem.id);
         }
         else {
-            console.error('MutAppPropertyArray.addElementByPrototype: can not find prototype function \''+protoFunctionPath+'\'');
+            console.error('MutAppPropertyDictionary.addElementByPrototype: can not find prototype function \''+protoFunctionPath+'\'');
         }
     }
     else {
-        console.error('MutAppPropertyArray.addElementByPrototype: prototype \''+protoFunctionPath+'\' is not specified for this property \''+this.propertyString+'\'');
+        console.error('MutAppPropertyDictionary.addElementByPrototype: prototype \''+protoFunctionPath+'\' is not specified for this property \''+this.propertyString+'\'');
     }
 };
 /**
- * Найти описание прототипа, если таковой если в свойстве MutAppPropertyArray
+ * Найти описание прототипа, если таковой если в свойстве MutAppPropertyDictionary
  * @param {string} protoFunctionPath например, 'id=pm quizProto1'
  * @private
  */
-MutAppPropertyArray.prototype._getPrototype = function(protoFunctionPath) {
+MutAppPropertyDictionary.prototype._getPrototype = function(protoFunctionPath) {
     for (var i = 0; i < this.prototypes.length; i++) {
         if (this.prototypes[i].protoFunction === protoFunctionPath) {
             return this.prototypes[i];
@@ -2931,26 +3179,27 @@ MutAppPropertyArray.prototype._getPrototype = function(protoFunctionPath) {
     return null;
 };
 /**
- * Сериализовать MutAppPropertyArray
+ * Сериализовать MutAppPropertyDictionary
  * Сохраняются только элементарные значения
  *
  * @returns {string}
  */
-MutAppPropertyArray.prototype.serialize = function() {
+MutAppPropertyDictionary.prototype.serialize = function() {
     return JSON.stringify(this._prepareSerializedObject());
 };
 /**
  * Подготовить свойства для сериализации в виде отдельного объекта
  * @return {object}
  */
-MutAppPropertyArray.prototype._prepareSerializedObject = function() {
+MutAppPropertyDictionary.prototype._prepareSerializedObject = function() {
     var data = {
         // special mark for deserialization
-        _mutAppConstructor: 'MutAppPropertyArray',
+        _mutAppConstructor: 'MutAppPropertyDictionary',
         id: this.id,
         propertyString: this.propertyString,
-        // так как массив сложный тип данных используется рекурсивный проход по всем подсвойствам
-        value: this._serializeSubProperty(this._value, []), // имя именно публичного параметра "value", который передается в конструктор. Не приватного "_value"
+        _orderedIds: this._orderedIds,
+        // так как dictionary сложный тип данных используется рекурсивный проход по всем подсвойствам
+        value: this._serializeSubProperty(this._value), // имя именно публичного параметра "value", который передается в конструктор. Не приватного "_value"
         _getValueTimestamp: this._getValueTimestamp,
         _setValueTimestamp: this._setValueTimestamp
     };
@@ -2963,7 +3212,7 @@ MutAppPropertyArray.prototype._prepareSerializedObject = function() {
  * @returns {{}}
  * @private
  */
-MutAppPropertyArray.prototype._serializeSubProperty = function(obj, result) {
+MutAppPropertyDictionary.prototype._serializeSubProperty = function(obj, result) {
     result = result || {};
     for (var key in obj) {
         if (obj.hasOwnProperty(key) === true) {
@@ -2985,11 +3234,20 @@ MutAppPropertyArray.prototype._serializeSubProperty = function(obj, result) {
 };
 /**
  * Десериализовать свойство из json-строки
- * В MutAppPropertyArray могут быть суб-свойства MutAppProperty
+ * В MutAppPropertyDictionary могут быть суб-свойства MutAppProperty
  *
  * @param {string|object} data
  */
-MutAppPropertyArray.prototype.deserialize = function(data) {
+MutAppPropertyDictionary.prototype.deserialize = function(data) {
+    // перед десериализацией надо удалить существующие саб свойства в Dictionary, так как значение будет полностью заменено
+    // согласно допущениям по документации ссылка на один MutAppProperty может быть объявлена только в одном месте в приложении
+    // исследуем удаляемый элемент масива на то, что внутри могут быть MutAppProperty которые также надо теперь удалить
+    var deletedSubProperties = MutApp.Util.findMutAppPropertiesInObject(this._value);
+    if (deletedSubProperties && deletedSubProperties.length > 0) {
+        for (var i = 0; i < deletedSubProperties.length; i++) {
+            deletedSubProperties[i].destroy();
+        }
+    }
     if (typeof data === 'string') {
         data = JSON.parse(data);
     }
@@ -2997,6 +3255,7 @@ MutAppPropertyArray.prototype.deserialize = function(data) {
     this.id = data.id;
     this._deserializeSubProperty(data.value); // значение массива это сложный объект, внутри могут быть другие MutAppProperty
     this._value = data.value;
+    this._orderedIds = data._orderedIds;
     this._getValueTimestamp = data._getValueTimestamp;
     this._setValueTimestamp = data._setValueTimestamp;
     if (this._application) {
@@ -3009,9 +3268,10 @@ MutAppPropertyArray.prototype.deserialize = function(data) {
  * @param data
  * @private
  */
-MutAppPropertyArray.prototype._deserializeSubProperty = function(data) {
+MutAppPropertyDictionary.prototype._deserializeSubProperty = function(data) {
     for (var key in data) {
-        if (data[key].hasOwnProperty('_mutAppConstructor') === true) {
+        // data[key] can be 'undefined'
+        if (data[key] && data[key].hasOwnProperty('_mutAppConstructor') === true) {
             // создаем новое MutAppProperty прямо в сериализации
             var param = data[key];
             param.application = this._application;
@@ -3026,8 +3286,18 @@ MutAppPropertyArray.prototype._deserializeSubProperty = function(data) {
                 ap = new window[data[key]['_mutAppConstructor']](param);
             }
             data[key] = ap;
+            if (MutApp.Util.isPrimitive(ap._value) === false &&
+                ap._value instanceof MutApp.Model === false &&
+                ap._value instanceof MutApp === false) {
+                // дальше вглубь продолжаем если MutAppProperty.value сложный объект, там внутри могут быть еще MutAppProperty
+                // примечательно что этот код работает только когда десериализуется одно MutAppProperty свойство, а это только в автотестах
+                // когда десериализуется всё приложение целиком при старте, то н
+                this._deserializeSubProperty(ap._value);
+            }
         }
-        else if (MutApp.Util.isPrimitive(data[key]) === false) {
+        else if (MutApp.Util.isPrimitive(data[key]) === false &&
+            data[key] instanceof MutApp.Model === false &&
+            data[key] instanceof MutApp === false) {
             this._deserializeSubProperty(data[key]);
         }
     }

@@ -15,12 +15,12 @@ var valueGenerator = {};
         // поэтому надо пройти по свойствам и изменить значения массивов, а после еще проход по простым свойствам
         // при добавлении нового элемета массива новые проперти добавятся в список __mutappProperties
         for (var i = 0; i < app._mutappProperties.length; i++) {
-            if (MutApp.Util.isMutAppPropertyArray(app._mutappProperties[i]) === true) {
+            if (MutApp.Util.isMutAppPropertyDictionary(app._mutappProperties[i]) === true) {
                 _randomChangeProperty(app._mutappProperties[i]);
             }
         }
         for (var i = 0; i < app._mutappProperties.length; i++) {
-            if (MutApp.Util.isMutAppPropertyArray(app._mutappProperties[i]) !== true) {
+            if (MutApp.Util.isMutAppPropertyDictionary(app._mutappProperties[i]) !== true) {
                 _randomChangeProperty(app._mutappProperties[i]);
             }
         }
@@ -36,9 +36,9 @@ var valueGenerator = {};
         if (MutApp.Util.isCssMutAppProperty(ap) === true) {
             ap.setValue(_getRandomCssValue(ap));
         }
-        else if (MutApp.Util.isMutAppPropertyArray(ap) === true) {
-            var protoName = ap.prototypes[_randInt(0, ap.prototypes.length-1)];
-            ap.addElementByPrototype(protoName);
+        else if (MutApp.Util.isMutAppPropertyDictionary(ap) === true) {
+            var prot = ap.prototypes[_randInt(0, ap.prototypes.length-1)];
+            ap.addElementByPrototype(prot.protoFunction);
         }
         else if (MutApp.Util.isMutAppPropertyPosition(ap) === true) {
             ap.setValue(_getRandomPositionValue(ap));

@@ -37,11 +37,13 @@ var QuestionScreen = MutApp.Screen.extend({
      */
     currentQuestionIndex: undefined,
     /**
+     * Уникальный id этого вопроса в dictionary quiz
+     */
+    dictionaryId: undefined,
+    /**
      * Id вопроса, за показ которого отвечает этот экран
      */
     questionId: null,
-    topColontitleText: 'Текст колонтитула',
-    backgroundImg: null,
 
     /**
      * Контейнер в котором будет происходить рендер этого вью
@@ -97,7 +99,16 @@ var QuestionScreen = MutApp.Screen.extend({
 
         // определяем индекс вопроса, за который отвечает этот экран
         var q = this.model.getQuestionById(this.questionId);
-        this.currentQuestionIndex = this.model.get('quiz').getValue().indexOf(q);
+        // порядковый индекс вопрса в dictionary quiz
+        this.currentQuestionIndex = this.model.get('quiz').toArray().indexOf(q);
+        if (this.currentQuestionIndex < 0) {
+            throw new Error('QuestionsScreen.initialize: can not find this question in quiz dictionary');
+        }
+        // уникальный id этого вопросв в dictionary quiz
+        this.dictionaryId = this.model.get('quiz').getIdFromPosition(this.currentQuestionIndex);
+        if (typeof this.dictionaryId !== 'string') {
+            throw new Error('QuestionsScreen.initialize: can not find dictionary id for this question');
+        }
 
         this.model.bind("change:currentQuestionId", function () {
             if ('question' === this.model.get('state') &&
@@ -129,7 +140,17 @@ var QuestionScreen = MutApp.Screen.extend({
         q.answer.options.bind('change', function() {
             var q = this.model.getQuestionById(this.questionId);
             console.log('Options changed for question: ' + q.id);
-            this.renderAnswers(q.answer);
+            // нужно делать полный рендер, потому что в конце renderCompleted()
+            this.render();
+            //this.renderAnswers(q.answer);
+        }, this);
+
+        q.question.backgroundImage.bind('change', function() {
+            this.render();
+        }, this);
+
+        q.question.backgroundColor.bind('change', function() {
+            this.render();
         }, this);
     },
 
@@ -137,7 +158,7 @@ var QuestionScreen = MutApp.Screen.extend({
         var q = this.model.getQuestionById(this.questionId);
         this.$el.html(this.template['default'](q));
 
-        q.question.currentQuestionIndex = this.currentQuestionIndex;
+        q.question.currentQuestionIndex = this.dictionaryId;
         this.renderQuestion(MutApp.Util.getObjectForRender(q.question));
 
         this.renderAnswers(q.answer);
@@ -157,7 +178,7 @@ var QuestionScreen = MutApp.Screen.extend({
         var $qp = this.$el.find('.js-question_progress');
         if (this.model.get('showQuestionProgress') === true) {
             $qp.show()
-               .text('Вопрос '+(this.currentQuestionIndex+1)+'/'+this.model.get('quiz').getValue().length);
+               .text('Вопрос '+(this.currentQuestionIndex+1)+'/'+this.model.get('quiz').toArray().length);
             $qp.css('top',this.model.get('questionProgressPosition').top+'px')
                .css('left',this.model.get('questionProgressPosition').left+'px');
         }
@@ -177,19 +198,17 @@ var QuestionScreen = MutApp.Screen.extend({
         }
 
         // цвет фона
-        this.$el.find('.js-question_back_color').css('backgroundColor','url(' + q.backgroundColor + ')');
+        this.$el.find('.js-question_back_color')
+            .css('background-color', q.question.backgroundColor.getValue());
 
         // фоновая картинка
-        if (this.model.get('showBackgroundImage')===true) {
-            if (q.backgroundImage) {
-                this.$el.find('.js-back_img').css('backgroundImage','url('+q.backgroundImage+')');
-            }
-            else {
-                this.$el.find('.js-back_img').css('backgroundImage','none');
-            }
+        if (q.question.backgroundImage.getValue()) {
+            this.$el.find('.js-question_back_img')
+                .css('backgroundImage','url('+q.question.backgroundImage.getValue()+')');
         }
         else {
-            this.$el.find('.js-back_img').css('backgroundImage','none');
+            this.$el.find('.js-question_back_img')
+                .css('backgroundImage','none');
         }
 
         // затемнение фона, чтобы сделать стильно
@@ -199,6 +218,9 @@ var QuestionScreen = MutApp.Screen.extend({
         else {
             this.$el.find('.js-back_shadow').css('background-color','');
         }
+
+        // установка атрибута для фильтрации
+        this.$el.attr('data-filter', q.question.backgroundImage.propertyString+','+q.question.backgroundColor.propertyString);
 
         this.renderCompleted();
         return this;
@@ -215,11 +237,15 @@ var QuestionScreen = MutApp.Screen.extend({
                 //в нем могут быть заложены разные опции расположения элементов, поэтому реализоан в виде отдельного шаблона
                 var $ea = $(this.template[answerData.uiTemplate](answerData));
                 this.$el.find('.js-answer_cnt').empty().append($ea);
-                for (var i = 0; i < answerData.options.getValue().length; i++) {
-                    var o = MutApp.Util.getObjectForRender(answerData.options.getValue()[i]);
+                var optionsArr = answerData.options.toArray();
+                for (var i = 0; i < optionsArr.length; i++) {
+                    var o = MutApp.Util.getObjectForRender(optionsArr[i]);
                     if (o.uiTemplate) {
-                        o.currentQuestionIndex = this.currentQuestionIndex;
-                        o.currentOptionIndex = i;
+                        o.currentQuestionIndex = this.dictionaryId;
+                        o.currentOptionIndex = answerData.options.getIdFromPosition(i);
+                        if (typeof o.currentOptionIndex !== 'string') {
+                            throw new Error('QuestionsScreen.renderAnswers: can not find current option in dictionary');
+                        }
                         var $e = $(this.template[o.uiTemplate](o));
                         $e.click((function(e) {
                             if (this.model.application.mode !== 'edit') {

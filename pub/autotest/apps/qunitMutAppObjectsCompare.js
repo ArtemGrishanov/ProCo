@@ -55,14 +55,27 @@ QUnit.test("MutApp test: objects comparison", function( assert ) {
     m3.id = m4.id; // hack
     assert.ok(MutApp.Util.deepCompare(m3, m4));
     assert.ok(m3.compare(m4) === true);
-    m3.addElementByPrototype('id=pm resultProto1');
+    m3.addElementByPrototype('id=pm resultProto1'); // для сабпроперти тут будут уникалные идишки
     assert.ok(m3.compare(m4) === false);
-    m4.addElementByPrototype('id=pm resultProto1');
+    m4.addElementByPrototype('id=pm resultProto1'); // для сабпроперти тут будут уникалные идишки
 
-    m3._value[0].id= m4._value[0].id;
-    m3._value[0].title.id= m4._value[0].title.id;
-    m3._value[0].description.id= m4._value[0].description.id;
-    assert.ok(m3.compare(m4));
+    // dictionary идишки разные будут в m3 и m4, искусственно делаем одинаковыми
+    m3._value[m4._orderedIds[0]] = m3._value[m3._orderedIds[0]];
+    delete m3._value[m3._orderedIds[0]];
+    m3._orderedIds[0] = m4._orderedIds[0];
+
+    // искусственно пытаемся сделать два объекта одинаковыми чтобы показать что мы контролируем процесс
+    m3.toArray()[0].id= m4.toArray()[0].id;
+    m3.toArray()[0].title.id= m4.toArray()[0].title.id;
+    m3.toArray()[0].title.propertyString= m4.toArray()[0].title.propertyString;
+    m3.toArray()[0].title._propertyName= m4.toArray()[0].title._propertyName;
+    m3.toArray()[0].description.id= m4.toArray()[0].description.id;
+    m3.toArray()[0].description.propertyString= m4.toArray()[0].description.propertyString;
+    m3.toArray()[0].description._propertyName= m4.toArray()[0].description._propertyName;
+    m3.toArray()[0].backgroundImage.id= m4.toArray()[0].backgroundImage.id;
+    m3.toArray()[0].backgroundImage.propertyString= m4.toArray()[0].backgroundImage.propertyString;
+    m3.toArray()[0].backgroundImage._propertyName= m4.toArray()[0].backgroundImage._propertyName;
+    assert.ok(m3.compare(m4), m3.compareDetails.message);
 
     // сравнение приложения
     assert.ok(app.compare(app));

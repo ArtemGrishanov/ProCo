@@ -120,7 +120,8 @@ QUnit.test("MutApp test: Screens and events", function( assert ) {
                 break;
             }
             case MutApp.EVENT_SCREEN_DELETED: {
-                assert.ok(app.getScreenById(data.screenId));
+                assert.ok(app.getScreenById(data.screenId) === null); // экрана уже нет в движочке
+                assert.ok(data.screen.id === data.screenId); // удаленный только что экранчик
                 destroyHistory[data.screenId]++;
                 // удалить контролы и листенеры
                 // ...
@@ -181,30 +182,33 @@ QUnit.test("MutApp test: Screens in edit mode. data-app-property attribute", fun
     // добавить первый вопрос
     app.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
     var scrQuestion0 = app.getScreenById('questionScreen0');
-    var ap3 = app.getProperty('id=pm quiz.0.question.text');
+
+    var quizId0 = app.model.attributes.quiz.getIdFromPosition(0);
+    var ap3 = app.getProperty('id=pm quiz.'+quizId0+'.question.text');
     var uie = ap3.getLinkedElementsOnScreen('questionScreen0')[0];
     assert.ok(ap3.getLinkedElementsOnScreen('questionScreen0').length === 1);
     assert.ok(uie, 'uiElement connected');
-    assert.ok($(uie).attr('data-app-property').indexOf('id=pm quiz.0.question.text') >= 0, 'data-app-property connected');
+    assert.ok($(uie).attr('data-app-property').indexOf('id=pm quiz.'+quizId0+'.question.text') >= 0, 'data-app-property connected');
     assert.ok($.contains(scrQuestion0.$el[0], uie));
 
     // добавить второй вопрос
     // и снова проверить нулевой экран
     app.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
     var scrQuestion0 = app.getScreenById('questionScreen0');
-    var ap3 = app.getProperty('id=pm quiz.0.question.text');
+    var ap3 = app.getProperty('id=pm quiz.'+quizId0+'.question.text');
     var uie = ap3.getLinkedElementsOnScreen('questionScreen0')[0];
     assert.ok(ap3.getLinkedElementsOnScreen('questionScreen0').length === 1);
     assert.ok(uie, 'uiElement connected');
-    assert.ok($(uie).attr('data-app-property').indexOf('id=pm quiz.0.question.text') >= 0, 'data-app-property connected');
+    assert.ok($(uie).attr('data-app-property').indexOf('id=pm quiz.'+quizId0+'.question.text') >= 0, 'data-app-property connected');
     assert.ok($.contains(scrQuestion0.$el[0], uie));
 
+    var quizId1 = app.model.attributes.quiz.getIdFromPosition(1); // dictionary идишка второго вопроса
     var scrQuestion1 = app.getScreenById('questionScreen1');
-    var ap4 = app.getProperty('id=pm quiz.1.question.text');
+    var ap4 = app.getProperty('id=pm quiz.'+quizId1+'.question.text');
     var uie = ap4.getLinkedElementsOnScreen('questionScreen1')[0];
     assert.ok(ap4.getLinkedElementsOnScreen('questionScreen1').length === 1);
     assert.ok(uie, 'uiElement connected');
-    assert.ok($(uie).attr('data-app-property').indexOf('id=pm quiz.1.question.text') >= 0, 'data-app-property connected');
+    assert.ok($(uie).attr('data-app-property').indexOf('id=pm quiz.'+quizId1+'.question.text') >= 0, 'data-app-property connected');
     assert.ok($.contains(scrQuestion1.$el[0], uie));
 
     // на первом и втором экране вопроса есть логотип, то есть два разных UI элемента
@@ -220,13 +224,13 @@ QUnit.test("MutApp test: Screens in edit mode. data-app-property attribute", fun
     assert.ok($.contains(scrQuestion1.$el[0], uie));
 
     // на одном экране есть несколько опций ответа. Это всё одно mutAppProperty с несколькими ui элементами
-    var options0 = app.getProperty('id=pm quiz.0.answer.options');
+    var options0 = app.getProperty('id=pm quiz.'+quizId0+'.answer.options');
     assert.ok(options0.getLinkedElementsOnScreen('questionScreen0').length === 3);
     var uielems = options0.getLinkedElementsOnScreen('questionScreen0');
     for (var j = 0; j < uielems.length; j++) {
         assert.ok($.contains(scrQuestion0.$el[0], uielems[j]));
     }
-    var options1 = app.getProperty('id=pm quiz.1.answer.options');
+    var options1 = app.getProperty('id=pm quiz.'+quizId1+'.answer.options');
     assert.ok(options1.getLinkedElementsOnScreen('questionScreen1').length === 3);
     var uielems = options1.getLinkedElementsOnScreen('questionScreen1');
     for (var j = 0; j < uielems.length; j++) {
@@ -253,7 +257,7 @@ QUnit.test("MutApp test: Screens after deserialization", function( assert ) {
         defaults: strApp2Serialized
     });
 
-    assert.ok(app3.model.attributes.quiz.getValue().length === 2);
+    assert.ok(app3.model.attributes.quiz.toArray().length === 2);
     assert.ok(app3._screens.length === 3);
 
 });

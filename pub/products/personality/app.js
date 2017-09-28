@@ -18,8 +18,10 @@ var PersonalityApp = MutApp.extend({
             controls: 'OnOff',
             controlFilter: 'always'
         },
-        "id=pm showBackgroundImage": {
-            label: {RU: 'Показывать фоновую картинку', EN: 'Show background image'},
+        "id=pm resultLinking": {
+            label: {RU: 'Привязка результатов к ответам', EN: 'Linking results'},
+            controls: 'PersonalityResultLinking',
+            controlFilter: 'onclick'
         },
         "id=pm quiz": {
             label: {RU:'Вопросы теста',EN:'Personality quiz'},
@@ -29,31 +31,31 @@ var PersonalityApp = MutApp.extend({
                 img: 'products/test_new/i/editor/Icon-text-vopros.png'
             }],
             children: {
-                "id=pm quiz.{{number}}.question.text": {
+                "id=pm quiz.{{id}}.question.text": {
                     controls: "TextQuickInput"
                 },
-                "id=pm quiz.{{number}}.question.backgroundImage": {
+                "id=pm quiz.{{id}}.question.backgroundImage": {
                     label: {RU:'Фоновая картинка',EN:'Background image'},
                     controls: 'ChooseImage',
-                    controlFilter: 'screen(type=questions)'
+                    controlFilter: 'screenPropertyString'
                 },
-                "id=pm quiz.{{number}}.question.backgroundColor": {
+                "id=pm quiz.{{id}}.question.backgroundColor": {
                     label: {RU:'Цвет фона экрана',EN:'Screen background color'},
                     controls: {
                         name: "StringControl",
                         view: 'ColorPicker'
                     },
-                    controlFilter: 'screen(type=questions)'
+                    controlFilter: 'screenPropertyString'
                 },
-                "id=pm quiz.{{number}}.answer.options": {
-                    controls: ["AddArrayElementControl","DeleteArrayElementControl"],
+                "id=pm quiz.{{id}}.answer.options": {
+                    controls: ["AddDictionaryElementControl","DeleteDictionaryElementControl"],
                     prototypes: [{
                         protoFunction: 'id=pm proto_optionText',
                         label: '',
                         img: ''
-                    }]
+                }]
                 },
-                "id=pm quiz.{{number}}.answer.options.{{number}}.text": {
+                "id=pm quiz.{{id}}.answer.options.{{id}}.text": {
                     controls: "TextQuickInput"
                 }
             }
@@ -66,20 +68,27 @@ var PersonalityApp = MutApp.extend({
                 img: null
             }],
             children: {
-                "id=pm results.{{number}}.title": {
+                "id=pm results.{{id}}.title": {
                     controls: "TextQuickInput"
                 },
-                "id=pm results.{{number}}.description": {
+                "id=pm results.{{id}}.description": {
                     controls: "TextQuickInput"
                 },
-                "id=pm results.{{number}}.backgroundImage": {
-
+                "id=pm results.{{id}}.backgroundImage": {
+                    label: {RU:'Фоновая картинка',EN:'Background image'},
+                    controls: 'ChooseImage',
+                    controlFilter: 'screenPropertyString'
+                },
+                "id=pm results.{{id}}.backgroundColor": {
+                    label: {RU:'Цвет фона',EN:'Background Color'},
+                    controls: {
+                        name: "StringControl",
+                        view: 'ColorPicker'
+                    },
+                    controlFilter: 'screenPropertyString'
                 }
             }
         },
-        // селекторы можно группировать
-//        "id=startScr startHeaderText, id=startScr startDescription, id=startScr startButtonText": {
-//        },
         "id=startScr startHeaderText": {
             label: {RU: 'Заголовок', EN: 'Header'},
             controls: "TextQuickInput"
@@ -92,6 +101,17 @@ var PersonalityApp = MutApp.extend({
             label: {RU:'Текст кнопки', EN:'Start button text'},
             controls: "TextQuickInput"
         },
+        "type=results restartButtonText": {
+            controls: "TextQuickInput"
+        },
+        "type=results downloadButtonText": {
+            controls: "TextQuickInput"
+        },
+        "id=pm showDownload": {
+            label: {RU:'Кнопка "Скачать"', EN:'Download button'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)'
+        },
         "id=startScr shadowEnable": {
             label: {RU:'Включить тень', EN:'Shadow enable'},
             controls: 'OnOff',
@@ -101,6 +121,11 @@ var PersonalityApp = MutApp.extend({
             label: {RU:'Включить тень', EN:'Shadow enable'},
             controls: 'OnOff',
             controlFilter: 'screen(type=questions)' // 'always', 'screen(startScr)', 'onclick', 'hidden'
+        },
+        "id=pm shadowEnableInResults": {
+            label: {RU:'Включить тень', EN:'Shadow enable'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)' // 'always', 'screen(startScr)', 'onclick', 'hidden'
         },
         "id=pm startScreenBackgroundImg": {
             label: {RU:'Фоновая картинка стартового экрана',EN:'Start screen background image'},
@@ -132,19 +157,66 @@ var PersonalityApp = MutApp.extend({
                 }
             }
         },
+        "id=pm logoPositionInResults": {
+            label: {},
+            controls: {
+                name: 'Drag',
+                param: {
+                    // контейнер в котором будет происходить перетаскивание
+                    draggableParentSelector: '.js-logo_cnt'
+                }
+            }
+        },
         "id=pm showLogoInQuestions": {
             label: {RU:'Показывать лого в вопросах',EN:'Show logo on question screens'},
             controls: 'OnOff',
             controlFilter: 'screen(type=questions)'
         },
-        "id=pm test1": { label: {RU: 'Тест', EN: 'Test1'} },
-        "id=pm test2": { label: {RU: 'Тест', EN: 'Test2'} },
-        "id=pm test3": { label: {RU: 'Тест', EN: 'Test3'} },
+        "id=pm showLogoInResults": {
+            label: {RU:'Показывать лого в результатах',EN:'Show logo on result screens'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)'
+        },
+        "id=pm fbSharingEnabled": {
+            label: {RU:'Шаринг в Facebook',EN:'Facebook sharing'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)'
+        },
+        "id=pm vkSharingEnabled": {
+            label: {RU:'Шаринг во ВКонтакте',EN:'Vk.com sharing'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)'
+        },
+        "id=pm fbSharingPosition": {
+            label: {},
+            controls: {
+                name: 'Drag',
+                param: {
+                    // контейнер в котором будет происходить перетаскивание
+                    draggableParentSelector: '.js-logo_cnt'
+                }
+            }
+        },
+        "id=pm vkSharingPosition": {
+            label: {},
+            controls: {
+                name: 'Drag',
+                param: {
+                    // контейнер в котором будет происходить перетаскивание
+                    draggableParentSelector: '.js-logo_cnt'
+                }
+            }
+        },
         "id=pm logoUrl": {
             label: {RU: 'Логотип', EN: 'Logo'},
             controls: 'StringControl',
             controlFilter: 'always'
         },
+
+        "id=pm test1": { label: {RU: 'Тест', EN: 'Test1'} },
+        "id=pm test2": { label: {RU: 'Тест', EN: 'Test2'} },
+        "id=pm test3": { label: {RU: 'Тест', EN: 'Test3'} },
+
         ".js-start_header color, .js-start_description color, .js-start_btn color, .js-question_text color, .js-option_text color": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Цвет шрифта',EN:'Font color'},
@@ -322,7 +394,7 @@ var PersonalityApp = MutApp.extend({
             this.deleteScreen(this.questionScreens[i]);
         }
         this.questionScreens = [];
-        var quizValue = this.model.get('quiz').getValue();
+        var quizValue = this.model.get('quiz').toArray();
         var qs = null;
         var id = null;
         for (var i = 0; i < quizValue.length; i++) {
@@ -348,7 +420,7 @@ var PersonalityApp = MutApp.extend({
         }
         var sEntities = [];
         this.resultsScreens = [];
-        var resultsValue = this.model.get('results').getValue();
+        var resultsValue = this.model.get('results').toArray();
         var rs = null;
         var id = null;
         for (var i = 0; i < resultsValue.length; i++) {

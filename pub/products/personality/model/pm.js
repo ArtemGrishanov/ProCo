@@ -31,11 +31,6 @@ var PersonalityModel = MutApp.Model.extend({
          * Вопросы теста Personality
          */
         quiz: null,
-        /**
-         * Специальное свойство
-         * MutAppProperty доступное для редактирования вовне приложения
-         */
-        showBackgroundImage: null,
 
         startScreenBackgroundImg: null,
         /**
@@ -46,6 +41,10 @@ var PersonalityModel = MutApp.Model.extend({
          * Показывать ли логотип на эйране с вопросами
          */
         showLogoInQuestions: null,
+        /**
+         * Показывать ли лого в результатах
+         */
+        showLogoInResults: null,
         /**
          * Personality текущие набранные результаты
          * Map
@@ -68,7 +67,18 @@ var PersonalityModel = MutApp.Model.extend({
         /**
          * url logo один на все экраны
          */
-        logoUrl: null
+        logoUrl: null,
+        /**
+         * MutAppPropertyDictionary
+         * Сложное свойство, которое задает соответствие между опциями и результатами
+         *
+         * [
+         *  {optionId_n: {'strong', resultId_m}},
+         *  {optionId_n: {'weak', resultId_k}},
+         *  ...
+         * ]
+         */
+        resultLinking: null
     },
 
     initialize: function(param) {
@@ -88,13 +98,13 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm randomizeQuestions',
             value: false
         });
-        this.attributes.results = new MutAppPropertyArray({
+        this.attributes.results = new MutAppPropertyDictionary({
             application: this.application,
             model: this,
             propertyString: 'id=pm results',
             value: []
         });
-        this.attributes.quiz = new MutAppPropertyArray({
+        this.attributes.quiz = new MutAppPropertyDictionary({
             application: this.application,
             model: this,
             propertyString: 'id=pm quiz',
@@ -105,12 +115,6 @@ var PersonalityModel = MutApp.Model.extend({
             model: this,
             propertyString: 'id=pm startScreenBackgroundImg',
             value: null // 'http://cdn0.redkassa.ru/live/sitenew/picture/871de92e-2b5f-4a3f-be16-8e2b6031bd66',
-        });
-        this.attributes.showBackgroundImage = new MutAppProperty({
-            application: this.application,
-            model: this,
-            propertyString: 'id=pm showBackgroundImage',
-            value: true
         });
         this.attributes.showLogoOnStartScreen = new MutAppProperty({
             application: this.application,
@@ -125,11 +129,24 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm showLogoInQuestions',
             value: true
         });
+        this.attributes.showLogoInResults = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=pm showLogoInResults',
+            value: true
+        });
         // свойство одно на все экраны с вопросами
         this.attributes.shadowEnableInQuestions = new MutAppProperty({
             application: this.application,
             model: this,
             propertyString: 'id=pm shadowEnableInQuestions',
+            value: false
+        });
+        // свойство одно на все экраны с результатами
+        this.attributes.shadowEnableInResults = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=pm shadowEnableInResults',
             value: false
         });
         this.attributes.logoUrl = new MutAppProperty({
@@ -143,6 +160,48 @@ var PersonalityModel = MutApp.Model.extend({
             model: this,
             value: {top: 300, left: 20},
             propertyString: 'id=pm logoPositionInQuestions'
+        });
+        this.attributes.logoPositionInResults = new MutAppPropertyPosition({
+            application: this.application,
+            model: this,
+            value: {top: 300, left: 20},
+            propertyString: 'id=pm logoPositionInResults'
+        });
+        this.attributes.fbSharingEnabled = new MutAppProperty({
+            application: this.application,
+            model: this,
+            value: true,
+            propertyString: 'id=pm fbSharingEnabled'
+        });
+        this.attributes.vkSharingEnabled = new MutAppProperty({
+            application: this.application,
+            model: this,
+            value: true,
+            propertyString: 'id=pm vkSharingEnabled'
+        });
+        this.attributes.fbSharingPosition = new MutAppPropertyPosition({
+            application: this.application,
+            model: this,
+            value: {top: 219, left: 294},
+            propertyString: 'id=pm fbSharingPosition'
+        });
+        this.attributes.vkSharingPosition = new MutAppPropertyPosition({
+            application: this.application,
+            model: this,
+            value: {top: 270, left: 294},
+            propertyString: 'id=pm vkSharingPosition'
+        });
+        this.attributes.showDownload = new MutAppProperty({
+            application: this.application,
+            model: this,
+            value: false,
+            propertyString: 'id=pm showDownload'
+        });
+        this.attributes.resultLinking = new MutAppPropertyDictionary({
+            application: this.application,
+            model: this,
+            value: [],
+            propertyString: 'id=pm resultLinking'
         });
     },
 
@@ -164,7 +223,7 @@ var PersonalityModel = MutApp.Model.extend({
      * @returns {*}
      */
     getQuestionById: function(id) {
-        var quizValue = this.attributes.quiz.getValue();
+        var quizValue = this.attributes.quiz.toArray();
         for (var i = 0; i < quizValue.length; i++) {
             if (id === quizValue[i].id) {
                 return quizValue[i];
@@ -180,9 +239,9 @@ var PersonalityModel = MutApp.Model.extend({
      * @returns {*}
      */
     getOptionById: function(id) {
-        var quizValue = this.attributes.quiz.getValue();
+        var quizValue = this.attributes.quiz.toArray();
         for (var i = 0; i < quizValue.length; i++) {
-            var options = quizValue[i].answer.options.getValue();
+            var options = quizValue[i].answer.options.toArray();
             for (var n = 0; n < options.length; n++) {
                 if (id === options[n].id) {
                     return options[n];
@@ -330,10 +389,11 @@ var PersonalityModel = MutApp.Model.extend({
      */
     _makeUidForQuizElement: function(quizElement) {
         quizElement.id = MutApp.Util.getUniqId(6);
-        if (quizElement.answer.options.getValue()) {
+        var options = quizElement.answer.options.toArray();
+        if (options) {
             // опций ответа может и не быть
-            for (var i = 0; i < quizElement.answer.options.getValue().length; i++) {
-                var o = quizElement.answer.options.getValue()[i];
+            for (var i = 0; i < options.length; i++) {
+                var o = options[i];
                 o.id = MutApp.Util.getUniqId(6);
             }
         }
@@ -345,11 +405,11 @@ var PersonalityModel = MutApp.Model.extend({
      * @returns
      */
     next: function() {
-        if (this.attributes.quiz.getValue().length === 0) {
+        if (this.attributes.quiz.toArray().length === 0) {
             console.error('Personality Model.next: no quiz elements');
             return;
         }
-        if (this.attributes.results.getValue().length === 0) {
+        if (this.attributes.results.toArray().length === 0) {
             console.error('Personality Model.next: no results');
             return;
         }
@@ -365,7 +425,7 @@ var PersonalityModel = MutApp.Model.extend({
                 }
                 this.set({
                     currentQuestionIndex: 0,
-                    currentQuestionId: this.attributes.quiz.getValue()[0].id,
+                    currentQuestionId: this.attributes.quiz.toArray()[0].id,
                     state: 'question'
                 });
                 this.application.stat('Test', 'start', 'First question');
@@ -373,11 +433,11 @@ var PersonalityModel = MutApp.Model.extend({
                 break;
             }
             case 'question': {
-                if (this.attributes.currentQuestionIndex < this.attributes.quiz.getValue().length-1) {
+                if (this.attributes.currentQuestionIndex < this.attributes.quiz.toArray().length-1) {
                     var ni = this.attributes.currentQuestionIndex+1;
                     this.set({
                         currentQuestionIndex: ni,
-                        currentQuestionId: this.attributes.quiz.getValue()[ni].id
+                        currentQuestionId: this.attributes.quiz.toArray()[ni].id
                     });
                     this.application.stat('Test', 'next', 'question', ni+1);
                 }
@@ -449,8 +509,9 @@ var PersonalityModel = MutApp.Model.extend({
      * @param {string} id - уник ид результата
      */
     getResultById: function(id) {
-        for (var i = 0; i < this.attributes.results.getValue().length; i++) {
-            var r = this.attributes.results.getValue()[i];
+        var results = this.attributes.results.toArray();
+        for (var i = 0; i < results.length; i++) {
+            var r = results[i];
             if (r.id === id) {
                 return r;
             }
@@ -465,8 +526,9 @@ var PersonalityModel = MutApp.Model.extend({
      */
     _clearResult: function() {
         var rp = {};
-        for (var i = 0; i < this.attributes.results.getValue().length; i++) {
-            rp[this.attributes.results.getValue()[i].id] = 0;
+        var results = this.attributes.results.toArray();
+        for (var i = 0; i < results.length; i++) {
+            rp[results[i].id] = 0;
         }
         this.set({
             resultPoints: rp
@@ -480,12 +542,14 @@ var PersonalityModel = MutApp.Model.extend({
      * @returns {boolean}
      */
     answer: function(id) {
-        if (this.attributes.quiz.getValue()[this.attributes.currentQuestionIndex].answer.options.getValue()) {
+        var quizArr = this.attributes.quiz.toArray();
+        var optionsArr = quizArr[this.attributes.currentQuestionIndex].answer.options.toArray();
+        if (optionsArr) {
             this.set({
                 currentOptionId: id
             });
-            for (var i = 0; i < this.attributes.quiz.getValue()[this.attributes.currentQuestionIndex].answer.options.getValue().length; i++) {
-                var o = this.attributes.quiz.getValue()[this.attributes.currentQuestionIndex].answer.options.getValue()[i];
+            for (var i = 0; i < optionsArr.length; i++) {
+                var o = optionsArr[i];
                 if (o.id === id) {
                     // забираем из опции все привязки которые там есть, сильные и слабые
                     for (var n = 0; n < o.weakLink.length; n++) {
@@ -508,84 +572,109 @@ var PersonalityModel = MutApp.Model.extend({
      * Возможно нужна функция
      */
     quizProto1: function() {
-        var result = {
-            // id: '23434536645'; id for question will be generated
+
+        var quizElemId = MutApp.Util.getUniqId(6);
+
+        var qText = new MutAppProperty({
+            propertyString: 'id=pm quiz.'+quizElemId+'.question.text',
+            model: this,
+            application: this.application,
+            value: 'Your favourite music?'
+        });
+        var qBackgroundImage = new MutAppProperty({
+            propertyString: 'id=pm quiz.'+quizElemId+'.question.backgroundImage',
+            model: this,
+            application: this.application,
+            value: null
+        });
+        var qBackgroundColor = new MutAppProperty({
+            propertyString: 'id=pm quiz.'+quizElemId+'.question.backgroundColor',
+            model: this,
+            application: this.application,
+            value: '#ffffff'
+        });
+
+//        var option1Id = MutApp.Util.getUniqId(6);
+//        var option1text = new MutAppProperty({
+//            propertyString: 'id=pm quiz.'+quizElemId+'.answer.options.'+option1Id+'.text',
+//            model: this,
+//            application: this.application,
+//            value: 'Rock'
+//        });
+//        var option2Id = MutApp.Util.getUniqId(6);
+//        var option2text = new MutAppProperty({
+//            propertyString: 'id=pm quiz.'+quizElemId+'.answer.options.'+option2Id+'.text',
+//            model: this,
+//            application: this.application,
+//            value: 'Jazz'
+//        });
+//        var option3Id = MutApp.Util.getUniqId(6);
+//        var option3text = new MutAppProperty({
+//            propertyString: 'id=pm quiz.'+quizElemId+'.answer.options.'+option3Id+'.text',
+//            model: this,
+//            application: this.application,
+//            value: 'Classic'
+//        });
+
+
+        var options = new MutAppPropertyDictionary({
+            model: this,
+            application: this.application,
+            propertyString: 'id=pm quiz.'+quizElemId+'.answer.options'
+//            value: [
+//                {
+//                    // атрибуты внутри используются для рендера uiTemplate
+//                    uiTemplate: 'id-option_text_template',
+//                    text: option1text,
+//                    type: 'text',
+//                    // через запятую идишки результатов, привязки
+//                    strongLink: [],
+//                    weakLink: []
+//                },
+//                {
+//                    uiTemplate: 'id-option_text_template',
+//                    text: option2text,
+//                    type: 'text',
+//                    strongLink: [],
+//                    weakLink: []
+//                },
+//                {
+//                    uiTemplate: 'id-option_text_template',
+//                    text: option3text,
+//                    type: 'text',
+//                    strongLink: [],
+//                    weakLink: []
+//                }
+//            ]
+        });
+
+        options.addElementByPrototype('id=pm proto_optionText', -1, {questionId: quizElemId});
+        options.addElementByPrototype('id=pm proto_optionText', -1, {questionId: quizElemId});
+        options.addElementByPrototype('id=pm proto_optionText', -1, {questionId: quizElemId});
+
+        // теперь из подготовленных объектов собираем целый объект-слайд
+        var element = {
+            // id for question will be generated
             question: {
                 // атрибуты внутри используются для рендера uiTemplate
                 uiTemplate: 'id-question_text_template',
-                text: new MutAppProperty({
-                    model: this,
-                    application: this.application,
-                    propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.question.text',
-                    value: 'Your favourite music?'
-                }),
-                backgroundImage: new MutAppProperty({
-                    model: this,
-                    application: this.application,
-                    propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.question.backgroundImage',
-                    value: null
-                }),
-                backgroundColor: new MutAppProperty({
-                    model: this,
-                    application: this.application,
-                    propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.question.backgroundColor',
-                    value: '#ffffff'
-                }),
+                text: qText,
+                backgroundImage: qBackgroundImage,
+                backgroundColor: qBackgroundColor
             },
             answer: {
                 // тип механики ответа: выбор только одной опции, и сразу происходит обработка ответа
                 type: 'radiobutton',
                 uiTemplate: 'id-answer_question_lst',
-                options: new MutAppPropertyArray({
-                    model: this,
-                    application: this.application,
-                    propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.answer.options',
-                    value: [
-                        {
-                            // атрибуты внутри используются для рендера uiTemplate
-                            uiTemplate: 'id-option_text_template',
-                            text: new MutAppProperty({
-                                model: this,
-                                application: this.application,
-                                // id=pm quiz.0.answer.options.0.text
-                                propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.answer.options.0.text',
-                                value: 'Rock'
-                            }),
-                            type: 'text',
-                            // через запятую идишки результатов, привязки
-                            strongLink: [],
-                            weakLink: []
-                        },
-                        {
-                            uiTemplate: 'id-option_text_template',
-                            text: new MutAppProperty({
-                                model: this,
-                                application: this.application,
-                                propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.answer.options.1.text',
-                                value: 'Jazz'
-                            }),
-                            type: 'text',
-                            strongLink: [],
-                            weakLink: []
-                        },
-                        {
-                            uiTemplate: 'id-option_text_template',
-                            text: new MutAppProperty({
-                                model: this,
-                                application: this.application,
-                                propertyString: 'id=pm quiz.'+this.attributes.quiz.getValue().length+'.answer.options.2.text',
-                                value: 'Pop'
-                            }),
-                            type: 'text',
-                            strongLink: [],
-                            weakLink: []
-                        }
-                     ]
-                 })
+                options: options
             }
         };
-        this._makeUidForQuizElement(result);
-        return result;
+        this._makeUidForQuizElement(element);
+
+        return {
+            id: quizElemId,
+            element: element
+        };
     },
 
     /**
@@ -594,55 +683,85 @@ var PersonalityModel = MutApp.Model.extend({
      * @returns {{id: string, title: MutAppProperty}}
      */
     resultProto1: function() {
+        var resultId = MutApp.Util.getUniqId(6);
+
+        var resultTitle = new MutAppProperty({
+            propertyString: 'id=pm results.'+resultId+'.title',
+            model: this,
+            application: this.application,
+            value: 'Result title'
+        });
+        var resultDescription = new MutAppProperty({
+            propertyString: 'id=pm results.'+resultId+'.description',
+            model: this,
+            application: this.application,
+            value: 'Result description'
+        });
+        var backgroundImage = new MutAppProperty({
+            propertyString: 'id=pm results.'+resultId+'.backgroundImage',
+            model: this,
+            application: this.application,
+            value: null
+        });
+        var backgroundColor = new MutAppProperty({
+            propertyString: 'id=pm results.'+resultId+'.backgroundColor',
+            model: this,
+            application: this.application,
+            value: null
+        });
+
         var result = {
             id: MutApp.Util.getUniqId(6),
-            title: new MutAppProperty({
-                model: this,
-                application: this.application,
-                propertyString: 'id=pm results.'+this.attributes.results.getValue().length+'.title',
-                value: 'Result title'
-            }),
-            description: new MutAppProperty({
-                model: this,
-                application: this.application,
-                propertyString: 'id=pm results.'+this.attributes.results.getValue().length+'.description',
-                value: 'Result description'
-            }),
-            backgroundImage: new MutAppProperty({
-                model: this,
-                application: this.application,
-                propertyString: 'id=pm results.'+this.attributes.results.getValue().length+'.backgroundImage',
-                value: null
-            })
+            title: resultTitle,
+            description: resultDescription,
+            backgroundImage: backgroundImage,
+            backgroundColor: backgroundColor
         };
-        return result;
+
+        return {
+            id: resultId,
+            element: result
+        };
     },
 
     /**
      * Функция прототип для генерации текстовых опций ответа
      */
-    proto_optionText: function() {
+    proto_optionText: function(param) {
         //todo
-        var questionIndex = 0;
+//        var questionIndex = 0;
+//        var questionId = this.attributes.quiz.getIdFromPosition(questionIndex);
 
-        if (questionIndex >= this.attributes.quiz.getValue().length) {
-            throw new Error('PersonalityModel.proto_optionText: questionIndex >= this.attributes.quiz');
+//        if (questionIndex >= this.attributes.quiz.toArray().length) {
+//            throw new Error('PersonalityModel.proto_optionText: questionIndex >= this.attributes.quiz');
+//        }
+//        var q = this.attributes.quiz.toArray()[questionIndex];
+
+        if (!param.questionId) {
+            throw new Error('PersonalityModel.proto_optionText: questionId does not specified');
         }
-        var q = this.attributes.quiz.getValue()[questionIndex];
+
+        var optionId = MutApp.Util.getUniqId(6);
+
+        var optionText = new MutAppProperty({
+            propertyString: 'id=pm quiz.'+param.questionId+'.answer.options.'+optionId+'.text',
+            model: this,
+            application: this.application,
+            value: 'New option'
+        });
+
         var option = {
             id: MutApp.Util.getUniqId(6),
             strongLink: [],
             weakLink: [],
             type: 'text',
             uiTemplate: 'id-option_text_template',
-            text: new MutAppProperty({
-                model: this,
-                application: this.application,
-                propertyString: 'id=pm quiz.'+questionIndex+'.answer.options.'+q.answer.options.getValue().length+'.text',
-                value: 'New option'
-            })
+            text: optionText
         };
-        return option;
+        return {
+            id: optionId,
+            element: option
+        };
     },
 
     /**
@@ -652,14 +771,14 @@ var PersonalityModel = MutApp.Model.extend({
      */
     getResultProbabilities: function() {
         var res = {};
-        var resultsValue = this.attributes.results.getValue();
+        var resultsValue = this.attributes.results.toArray();
         for (var i = 0; i < resultsValue.length; i++) {
             res[resultsValue[i].id] = 0;
         }
         // сложим сумму привязок к результату по всем опциям
-        var quizValue = this.attributes.quiz.getValue();
+        var quizValue = this.attributes.quiz.toArray();
         for (var i = 0; i < quizValue.length; i++) {
-            var options = quizValue[i].answer.options.getValue();
+            var options = quizValue[i].answer.options.toArray();
             for (var n = 0; n < options.length; n++) {
 
                 for (var k = 0; k < options[n].strongLink.length; k++) {

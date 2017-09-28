@@ -32,18 +32,19 @@ QUnit.test("MutApp test: getPropertiesBySelector", function( assert ) {
     app.model.attributes.results.addElementByPrototype('id=pm resultProto1');
 
     var quizProperty = app.getPropertiesBySelector('id=pm quiz')[0].value;
-    assert.ok(quizProperty instanceof MutAppPropertyArray === true);
-    assert.ok(quizProperty.getValue().length === 0);
+    assert.ok(quizProperty instanceof MutAppPropertyDictionary === true);
+    assert.ok(quizProperty.toArray().length === 0);
     assert.ok(MutApp.Util.isMutAppProperty(quizProperty) === true);
 
     var resultsProperty = app.getPropertiesBySelector('id=pm results')[0].value;
-    assert.ok(resultsProperty instanceof MutAppPropertyArray === true);
-    assert.ok(resultsProperty.getValue().length === 2); // two prototypes was added before
+    assert.ok(resultsProperty instanceof MutAppPropertyDictionary === true);
+    assert.ok(resultsProperty.toArray().length === 2); // two prototypes was added before
     assert.ok(MutApp.Util.isMutAppProperty(resultsProperty) === true);
 
-    assert.ok(app.getPropertiesBySelector('id=pm results.{{number}}.title').length === 2);
+    assert.ok(app.getPropertiesBySelector('id=pm results.{{id}}.title').length === 2);
 
-    var title0Property = app.getPropertiesBySelector('id=pm results.0.title')[0].value;
+    var result0id = resultsProperty.getIdFromPosition(0);
+    var title0Property = app.getPropertiesBySelector('id=pm results.'+result0id+'.title')[0].value;
     assert.ok(title0Property instanceof MutAppProperty === true);
     assert.ok(typeof title0Property.getValue() === 'string');
     assert.ok(MutApp.Util.isMutAppProperty(title0Property) === true);
@@ -85,8 +86,8 @@ QUnit.test("MutApp test: MutAppProperties basic operations. PersonalityTest was 
 
 
     var quizProperty = app.getPropertiesBySelector('id=pm quiz')[0].value;
-    assert.ok(quizProperty instanceof MutAppPropertyArray === true);
-    assert.ok(quizProperty.getValue().length === 0);
+    assert.ok(quizProperty instanceof MutAppPropertyDictionary === true);
+    assert.ok(quizProperty.toArray().length === 0);
 });
 
 QUnit.test("MutApp test: Screen", function( assert ) {
@@ -176,12 +177,14 @@ QUnit.test("MutApp test: getEntities, getPropertiesBySelector", function( assert
     assert.ok(p1 !== null, 'getPropertiesBySelector');
     assert.ok(p1.length === 1, 'getPropertiesBySelector');
 
-    var p2 = app.getPropertiesBySelector('id=pm quiz.{{number}}.question.text');
+    var quiz0id = app.model.attributes.quiz.getIdFromPosition(0);
+    var quiz1id = app.model.attributes.quiz.getIdFromPosition(1);
+    var p2 = app.getPropertiesBySelector('id=pm quiz.{{id}}.question.text');
     assert.ok(p2 !== null, 'getPropertiesBySelector');
     assert.ok(p2.length === 2, 'getPropertiesBySelector');
-    assert.ok(p2[0].path === 'quiz.0.question.text', 'getPropertiesBySelector path');
+    assert.ok(p2[0].path === 'quiz.'+quiz0id+'.question.text', 'getPropertiesBySelector path');
     assert.ok(MutApp.Util.isMutAppProperty(p2[0].value) === true, 'getPropertiesBySelector value');
-    assert.ok(p2[1].path === 'quiz.1.question.text', 'getPropertiesBySelector path');
+    assert.ok(p2[1].path === 'quiz.'+quiz1id+'.question.text', 'getPropertiesBySelector path');
     assert.ok(MutApp.Util.isMutAppProperty(p2[1].value) === true, 'getPropertiesBySelector value');
 
     var p3 = app.getPropertiesBySelector('id=pm showLogoInQuestions');
@@ -323,7 +326,5 @@ QUnit.test("MutApp test: operations count", function( assert ) {
     var serStr = app2.model.attributes.results.serialize();
 
     app1.model.attributes.results.deserialize(serStr);
-    // +3 операции (и плюс одна ранее как добавление элемента в result)
-    // сам массив и два вложенных в него свойства
-    assert.ok(app1.getOperationsCount() === initialOperationCount+4);
+    assert.ok(app1.getOperationsCount() === initialOperationCount+2);
 });
