@@ -325,22 +325,6 @@ var PersonalityApp = MutApp.extend({
         this.updateQuestionScreens();
         this.updateResultsScreens();
 
-//        // для всех вопросов создается по отдельному экрану
-//        var quiz = tm.get('quiz').value;
-//        var qs = null;
-//        var id = null;
-//        for (var i = 0; i < quiz.length; i++) {
-//            id = 'questionScreen'+i;
-//            qs = new QuestionScreen({
-//                id: id,
-//                model: tm,
-//                questionId: quiz[i].id,
-//                screenRoot: this.screenRoot
-//            });
-//            this.addScreen(qs);
-//        }
-//
-//        // для всех результатов по отдельному экрану
 //        var results = tm.get('results');
 //        var rs = null;
 //        var sEntities = [];

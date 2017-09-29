@@ -73,8 +73,8 @@ var PersonalityModel = MutApp.Model.extend({
          * Сложное свойство, которое задает соответствие между опциями и результатами
          *
          * [
-         *  {optionId_n: {'strong', resultId_m}},
-         *  {optionId_n: {'weak', resultId_k}},
+         * {optionId_n, strongLinks: [resultId_m], weakLinks: []},
+         * {optionId_x, strongLinks: [resultId_y], weakLinks: [resultId_u]},
          *  ...
          * ]
          */
@@ -88,9 +88,11 @@ var PersonalityModel = MutApp.Model.extend({
 
         this.bind('change:quiz', function() {
             this.start();
+            this.updateResultLinking();
         });
         this.bind('change:results', function() {
             this.start();
+            this.updateResultLinking();
         });
         this.attributes.randomizeQuestions = new MutAppProperty({
             application: this.application,
@@ -215,6 +217,86 @@ var PersonalityModel = MutApp.Model.extend({
             currentResult: null,
             currentQuestionId: null
         });
+    },
+
+    /**
+     *
+     * Обновить структуру 'id=pm resultLinking'
+     * 1) удалить опции которых не существует более
+     * 2) Добавить новые опции которых нет в resultLinking
+     *
+     * Вызывается когда:
+     * - изменение quiz
+     * - dictionary options одного из вопросов
+     * - results
+     */
+    updateResultLinking: function() {
+        //[
+          //{optionId_n, strongLinks: [resultId_m], weakLinks: []},
+          //{optionId_x, strongLinks: [resultId_y], weakLinks: [resultId_u]},
+        //  ]
+
+        var resultLinkingArr = this.attributes.resultLinking.toArray();
+        // первый проход на удаление несуществующих
+        for (var i = 0; i < resultLinkingArr.length; i++) {
+            var rl = resultLinkingArr[i];
+            var opt = this.getOptionById(rl.optionId);
+            if (opt) {
+                // чтобы не дублировать код для каждого массива strongLinks и weakLinks
+                var linksArrays = [rl.strongLinks, rl.weakLinks];
+                while (linksArrays.length > 0) {
+                    var larr = linksArrays.shift();
+                    for (var k = 0; k < larr;) {
+                        var resultId = larr[k];
+                        var res = this.getResultById(resultId)
+                        if (res) {
+                            k++
+                        }
+                        else {
+                            // todo проверить будет ли такое удаление работать (это же результат вызова toArray)
+                            rl.strongLinks.splice(k, 1)
+                        }
+                    }
+                }
+            }
+            else {
+                // опции такой не существует
+                this.attributes.resultLinking.deleteElement(i); // deleting in dictionary by position
+            }
+        }
+
+        // второй проход на добавление новых опций
+        // даже если нет привязок к опции, то элемент с такой опцией всё равно должен быть
+        var quizArr = this.attributes.quiz.toArray();
+        for (var i = 0; i < quizArr.length; i++) {
+            var options = quizArr[i].answer.options.toArray();
+            for (var k = 0; k < options.length; k++) {
+                if (this.getResultLinkingOption(options[k].id) === null) {
+                    // новая опция, например добавли новый экран или ответ
+                    this.attributes.resultLinking.addElement({
+                        optionId: options[k].id,
+                        strongLinks: [],
+                        weakLinks: []
+                    });
+                }
+            }
+        }
+
+        var stophrr = 0;
+    },
+
+    /**
+     * Найти опцию в словаре resultLinking
+     * @param {string} optionId
+     */
+    getResultLinkingOption: function(optionId) {
+        var resultLinkingArr = this.attributes.resultLinking.toArray();
+        for (var i = 0; i < resultLinkingArr.length; i++) {
+            if (resultLinkingArr[i].optionId == optionId) {
+                return resultLinkingArr[i];
+            }
+        }
+        return null;
     },
 
     /**
@@ -388,13 +470,13 @@ var PersonalityModel = MutApp.Model.extend({
      * @private
      */
     _makeUidForQuizElement: function(quizElement) {
-        quizElement.id = MutApp.Util.getUniqId(6);
+        quizElement.id = 'question_'+MutApp.Util.getUniqId(6);
         var options = quizElement.answer.options.toArray();
         if (options) {
             // опций ответа может и не быть
             for (var i = 0; i < options.length; i++) {
                 var o = options[i];
-                o.id = MutApp.Util.getUniqId(6);
+                o.id = 'option_'+MutApp.Util.getUniqId(6);
             }
         }
     },
@@ -711,7 +793,7 @@ var PersonalityModel = MutApp.Model.extend({
         });
 
         var result = {
-            id: MutApp.Util.getUniqId(6),
+            id: 'result_'+MutApp.Util.getUniqId(6),
             title: resultTitle,
             description: resultDescription,
             backgroundImage: backgroundImage,
@@ -752,8 +834,6 @@ var PersonalityModel = MutApp.Model.extend({
 
         var option = {
             id: MutApp.Util.getUniqId(6),
-            strongLink: [],
-            weakLink: [],
             type: 'text',
             uiTemplate: 'id-option_text_template',
             text: optionText

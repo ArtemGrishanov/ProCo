@@ -17,6 +17,9 @@ img {
 .narrow_width {
     display: none;
 }
+.popup_cnt {
+    z-index: 80;
+}
 .modal_wr {
     position: fixed;
     top: 0;

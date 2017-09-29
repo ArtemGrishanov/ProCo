@@ -1032,10 +1032,10 @@ var Editor = {};
                 }
                 if (data.controlPopupFiltered === true) {
                     // был зафильтрован контрол с типом popup, говорим workspace показать popup контейнер
-                    workspace.showPopupContainer();
+                    workspace.showPopupControlsContainer();
                 }
                 else {
-                    workspace.hidePopupContainer();
+                    workspace.hidePopupControlsContainer();
                 }
                 break;
             }

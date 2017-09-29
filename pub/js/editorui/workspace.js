@@ -242,6 +242,21 @@ var workspace = {};
     }
 
     /**
+     * Показать контейнер с контролами-popup
+     */
+    function showPopupControlsContainer() {
+        // контролы внутри контейнера как положено фильтруются в ControlManager
+        $('#id-popup_controls').show();
+    }
+
+    /**
+     * Скрыть контейнер с контролами-popup
+     */
+    function hidePopupControlsContainer() {
+        $('#id-popup_controls').hide();
+    }
+
+    /**
      * Инициализация
      *
      * @param {function} param.onSelectElementCallback
@@ -267,5 +282,7 @@ var workspace = {};
     global.showQuickControlPanel = showQuickControlPanel;
     global.hideQuickControlPanel = hideQuickControlPanel;
     global.getSelectedElement = function() { return $selectedElementOnAppScreen; }
+    global.showPopupControlsContainer = showPopupControlsContainer;
+    global.hidePopupControlsContainer = hidePopupControlsContainer;
 
 })(workspace);

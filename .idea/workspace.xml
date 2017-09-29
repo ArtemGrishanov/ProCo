@@ -26,10 +26,10 @@
       <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/products/personality/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="36" selection-start="331" selection-end="331" vertical-scroll-proportion="0.0" vertical-offset="42" max-vertical-offset="7095">
+            <state line="12" column="53" selection-start="286" selection-end="286" vertical-scroll-proportion="0.0" vertical-offset="57" max-vertical-offset="2610">
               <folding>
-                <marker date="1506596869000" expanded="true" signature="2068:2202" placeholder="[...]" />
-                <marker date="1506596869000" expanded="true" signature="2069:2202" placeholder="{&quot;protoFunction&quot;: 'id=pm proto_optionText'...}" />
+                <element signature="e#330#11734#0" expanded="false" />
+                <marker date="1506662463000" expanded="true" signature="12531:14146" placeholder="//..." />
               </folding>
             </state>
           </provider>
@@ -38,34 +38,61 @@
       <file leaf-file-name="editor.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/editor.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="145" column="34" selection-start="8513" selection-end="8534" vertical-scroll-proportion="-10.875" vertical-offset="1914" max-vertical-offset="6360">
+            <state line="147" column="0" selection-start="8637" selection-end="8637" vertical-scroll-proportion="-10.458333" vertical-offset="1954" max-vertical-offset="6360">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="editor.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
+      <file leaf-file-name="common.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/css/common.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1027" column="38" selection-start="41263" selection-end="41263" vertical-scroll-proportion="-11.56" vertical-offset="15116" max-vertical-offset="21750">
+            <state line="20" column="16" selection-start="357" selection-end="357" vertical-scroll-proportion="-9.6" vertical-offset="60" max-vertical-offset="22170">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="workspace.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pub/js/editorui/workspace.js">
+      <file leaf-file-name="test_index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/test_index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="227" column="41" selection-start="8458" selection-end="8458" vertical-scroll-proportion="0.29073033" vertical-offset="3198" max-vertical-offset="4140">
+            <state line="154" column="9" selection-start="1941" selection-end="4834" vertical-scroll-proportion="-2.510204" vertical-offset="2187" max-vertical-offset="3540">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="personalityResultLinking.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="style.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/controls/css/style.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="186" column="29" selection-start="3454" selection-end="3454" vertical-scroll-proportion="0.0" vertical-offset="1788" max-vertical-offset="3840">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="personalityresultlinking.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/controls/view/personalityresultlinking.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="49" column="52" selection-start="2831" selection-end="2831" vertical-scroll-proportion="-22.083334" vertical-offset="205" max-vertical-offset="870">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="personalityResultLinking.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pub/controls/custom/personality/personalityResultLinking.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="24" selection-start="732" selection-end="732" vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="795">
+            <state line="37" column="24" selection-start="922" selection-end="946" vertical-scroll-proportion="0.66239315" vertical-offset="90" max-vertical-offset="1110">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbstractControl.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/controls/AbstractControl.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="135" column="23" selection-start="4486" selection-end="4492" vertical-scroll-proportion="-15.0" vertical-offset="1650" max-vertical-offset="2865">
               <folding />
             </state>
           </provider>
@@ -74,16 +101,7 @@
       <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="784" column="25" selection-start="34685" selection-end="34685" vertical-scroll-proportion="0.0" vertical-offset="11251" max-vertical-offset="14265">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="controlManager.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/js/editorui/controlManager.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="307" column="40" selection-start="14172" selection-end="14192" vertical-scroll-proportion="-16.96" vertical-offset="4181" max-vertical-offset="6645">
+            <state line="783" column="40" selection-start="34653" selection-end="34653" vertical-scroll-proportion="60.76" vertical-offset="13264" max-vertical-offset="14265">
               <folding />
             </state>
           </provider>
@@ -92,7 +110,7 @@
       <file leaf-file-name="pm.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/products/personality/model/pm.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="202" column="21" selection-start="6918" selection-end="6918" vertical-scroll-proportion="0.0" vertical-offset="2727" max-vertical-offset="12165">
+            <state line="245" column="54" selection-start="8332" selection-end="8332" vertical-scroll-proportion="-9.0" vertical-offset="3450" max-vertical-offset="13365">
               <folding />
             </state>
           </provider>
@@ -108,22 +126,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppArrays.js" />
-        <option value="$PROJECT_DIR$/pub/products/common/js/mutapp.js" />
-        <option value="$PROJECT_DIR$/pub/js/editorui/inspector.js" />
-        <option value="$PROJECT_DIR$/pub/js/editorui/workspace.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/view/result.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/view/start.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/view/question.js" />
-        <option value="$PROJECT_DIR$/pub/controls/view/personalityresultlinking.html" />
         <option value="$PROJECT_DIR$/pub/products/personality/index.html" />
-        <option value="$PROJECT_DIR$/pub/products/personality/app.js" />
-        <option value="$PROJECT_DIR$/pub/products/personality/model/pm.js" />
-        <option value="$PROJECT_DIR$/pub/editor.html" />
-        <option value="$PROJECT_DIR$/pub/js/config.js" />
-        <option value="$PROJECT_DIR$/pub/controls/custom/personality/personalityResultLinking.js" />
         <option value="$PROJECT_DIR$/pub/js/editorui/controlManager.js" />
         <option value="$PROJECT_DIR$/pub/js/editorui/editor.js" />
+        <option value="$PROJECT_DIR$/pub/js/editorui/workspace.js" />
+        <option value="$PROJECT_DIR$/pub/js/config.js" />
+        <option value="$PROJECT_DIR$/pub/editor.html" />
+        <option value="$PROJECT_DIR$/pub/controls/css/style.css" />
+        <option value="$PROJECT_DIR$/pub/css/common.css" />
+        <option value="$PROJECT_DIR$/pub/products/personality/app.js" />
+        <option value="$PROJECT_DIR$/pub/controls/view/personalityresultlinking.html" />
+        <option value="$PROJECT_DIR$/pub/products/personality/model/pm.js" />
+        <option value="$PROJECT_DIR$/pub/controls/AbstractControl.js" />
+        <option value="$PROJECT_DIR$/pub/controls/custom/personality/personalityResultLinking.js" />
       </list>
     </option>
   </component>
@@ -503,45 +521,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/js/editorui/inspector.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="86" column="0" selection-start="4347" selection-end="4347" vertical-scroll-proportion="0.7846386" vertical-offset="769" max-vertical-offset="2250">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="700" column="142" selection-start="24456" selection-end="24476" vertical-scroll-proportion="-16.04" vertical-offset="10099" max-vertical-offset="49950">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/view/result.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="217" column="46" selection-start="7149" selection-end="7149" vertical-scroll-proportion="-16.0" vertical-offset="2855" max-vertical-offset="3585">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/view/start.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="133" column="37" selection-start="4115" selection-end="4115" vertical-scroll-proportion="-11.12" vertical-offset="1717" max-vertical-offset="2460">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/view/question.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="209" column="48" selection-start="7596" selection-end="7596" vertical-scroll-proportion="-10.0" vertical-offset="2885" max-vertical-offset="3585">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#8411#10466#0" expanded="false" />
-            <marker date="1506588585000" expanded="true" signature="-1:-1" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/controls/StringControl.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="96" column="2" selection-start="1894" selection-end="2787" vertical-scroll-proportion="0.0" vertical-offset="825" max-vertical-offset="1530">
@@ -549,54 +528,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/view/personalityresultlinking.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="9" selection-start="9" selection-end="9" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="678">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/model/pm.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="202" column="21" selection-start="6918" selection-end="6918" vertical-scroll-proportion="0.0" vertical-offset="2727" max-vertical-offset="12165">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/personality/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="17" column="25" selection-start="591" selection-end="596" vertical-scroll-proportion="0.3846154" vertical-offset="0" max-vertical-offset="2175">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="36" selection-start="331" selection-end="331" vertical-scroll-proportion="0.0" vertical-offset="42" max-vertical-offset="7095">
-          <folding>
-            <marker date="1506596869000" expanded="true" signature="2068:2202" placeholder="[...]" />
-            <marker date="1506596869000" expanded="true" signature="2069:2202" placeholder="{&quot;protoFunction&quot;: 'id=pm proto_optionText'...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/editor.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="145" column="34" selection-start="8513" selection-end="8534" vertical-scroll-proportion="-10.875" vertical-offset="1914" max-vertical-offset="6360">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="784" column="25" selection-start="34685" selection-end="34685" vertical-scroll-proportion="0.0" vertical-offset="11251" max-vertical-offset="14265">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/custom/personality/personalityResultLinking.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="24" selection-start="732" selection-end="732" vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="795">
           <folding />
         </state>
       </provider>
@@ -610,14 +544,94 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1027" column="38" selection-start="41263" selection-end="41263" vertical-scroll-proportion="-11.56" vertical-offset="15116" max-vertical-offset="21750">
+        <state line="1342" column="46" selection-start="54430" selection-end="54430" vertical-scroll-proportion="-10.36" vertical-offset="19871" max-vertical-offset="21750">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/editorui/workspace.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="227" column="41" selection-start="8458" selection-end="8458" vertical-scroll-proportion="0.29073033" vertical-offset="3198" max-vertical-offset="4140">
+        <state line="264" column="9" selection-start="9384" selection-end="9384" vertical-scroll-proportion="0.0" vertical-offset="3631" max-vertical-offset="4395">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/css/editor.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.037650604" vertical-offset="25" max-vertical-offset="7410">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="783" column="40" selection-start="34653" selection-end="34653" vertical-scroll-proportion="60.76" vertical-offset="13264" max-vertical-offset="14265">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/editor.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="147" column="0" selection-start="8637" selection-end="8637" vertical-scroll-proportion="-10.458333" vertical-offset="1954" max-vertical-offset="6360">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/test_index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="154" column="9" selection-start="1941" selection-end="4834" vertical-scroll-proportion="-2.510204" vertical-offset="2187" max-vertical-offset="3540">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="186" column="29" selection-start="3454" selection-end="3454" vertical-scroll-proportion="0.0" vertical-offset="1788" max-vertical-offset="3840">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/css/common.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="16" selection-start="357" selection-end="357" vertical-scroll-proportion="-9.6" vertical-offset="60" max-vertical-offset="22170">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/personality/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="53" selection-start="286" selection-end="286" vertical-scroll-proportion="0.0" vertical-offset="57" max-vertical-offset="2610">
+          <folding>
+            <element signature="e#330#11734#0" expanded="false" />
+            <marker date="1506662463000" expanded="true" signature="12531:14146" placeholder="//..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/view/personalityresultlinking.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="49" column="52" selection-start="2831" selection-end="2831" vertical-scroll-proportion="-22.083334" vertical-offset="205" max-vertical-offset="870">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/personality/model/pm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="245" column="54" selection-start="8332" selection-end="8332" vertical-scroll-proportion="-9.0" vertical-offset="3450" max-vertical-offset="13365">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/AbstractControl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="135" column="23" selection-start="4486" selection-end="4492" vertical-scroll-proportion="-15.0" vertical-offset="1650" max-vertical-offset="2865">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/custom/personality/personalityResultLinking.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="24" selection-start="922" selection-end="946" vertical-scroll-proportion="0.66239315" vertical-offset="90" max-vertical-offset="1110">
           <folding />
         </state>
       </provider>

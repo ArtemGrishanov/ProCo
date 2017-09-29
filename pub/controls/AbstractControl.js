@@ -133,6 +133,10 @@ var AbstractControl = {
      */
     show: function() {
         this.$wrapper.show();
+        if (this.onShow) {
+            // можно определить функцию которая будет вызываться при показе контрола
+            this.onShow();
+        }
     },
 
     /**
@@ -140,6 +144,10 @@ var AbstractControl = {
      */
     hide: function() {
         this.$wrapper.hide();
+        if (this.onHide) {
+            // можно определить функцию которая будет вызываться при скрытии контрола
+            this.onHide();
+        }
     },
 
     /**
