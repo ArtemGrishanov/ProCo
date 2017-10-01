@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['prod'], //dev test prod
+        configurationSetsOnStart: ['dev'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -216,9 +216,19 @@ var config = {
          */
         shareImagesAppPropertyString: 'appConstructor=mutapp _shareEntities.{{number}}.imgUrl',
         /**
+         * Эксперимент с использованиеи одной картинки (например стартового экрана) для всех сущностей
+         */
+        oneDefaultImageForAllShareEntities: true,
+        /**
          * Шаблон для кода встраивания
          */
-        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"{{custom_attributes}}><script src="//s3.eu-central-1.amazonaws.com/testix.me/js/loader.js" async></script></div>'
+        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"{{custom_attributes}}{{logo_policy}}><script src="//s3.eu-central-1.amazonaws.com/testix.me/js/loader.js" async></script></div>'
+    },
+    tariffs: {
+        /**
+         * Список пользователей тарифа basic
+         */
+        basicUserList: ['1045302892173346','121947341568004','127867420975996','902609146442342']
     },
     storage: {
         /**

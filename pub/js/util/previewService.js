@@ -69,6 +69,7 @@ var previewService = {};
     function createInIframe(html, callback, type, stylesToEmbed, width, height) {
         type = type || 'html2canvas';
         var t = {
+            type: 'create_preview',
             run: function() {
                 if (type === 'html2canvas') {
                     // внутри iframe имеется собственный сервис previewService

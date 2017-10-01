@@ -340,6 +340,7 @@ var Editor = {};
             if (App.getUserData() && config.common.excludeUsersFromStatistic.indexOf(App.getUserData().id) >= 0) {
                 $('#id-app_prevew_img_wr').show();
             }
+            setTariffPolicy();
         }
         else {
             App.on(USER_DATA_RECEIVED, function() {
@@ -349,6 +350,7 @@ var Editor = {};
                 if (App.getUserData() && config.common.excludeUsersFromStatistic.indexOf(App.getUserData().id) >= 0) {
                     $('#id-app_prevew_img_wr').show();
                 }
+                setTariffPolicy();
             });
         }
 
@@ -372,6 +374,7 @@ var Editor = {};
             showEditor();
             createScreenControls();
             syncUIControlsToAppProperties();
+            setTariffPolicy();
             workspaceOffset = $('#id-product_screens_cnt').offset();
             // проверить что редактор готов, и вызвать колбек
             checkEditorIsReady();
@@ -389,6 +392,28 @@ var Editor = {};
                 $('.js-app_publish').text(App.getText('publish_to_fb'));
             }
         }
+    }
+
+    /**
+     * Применение политик тарифа к текущему пользователю
+     */
+    function setTariffPolicy() {
+        if (isBasicTariff() === true) {
+            showProductPageBackgroungImage();
+        }
+        else {
+            var cntr = Editor.findControlInfo('appConstructor=mutapp productPageBackgroundImage')[0];
+            if (cntr) {
+                cntr.wrapper.hide();
+            }
+        }
+    }
+
+    function isBasicTariff() {
+        if (App && App.getUserData()) {
+            return config.tariffs.basicUserList.indexOf(App.getUserData().id) >= 0;
+        }
+        return false;
     }
 
     /**
@@ -925,6 +950,8 @@ var Editor = {};
         else {
             quickControlPanel.hide();
         }
+
+        setTariffPolicy();
     }
 
     /**
@@ -1269,7 +1296,9 @@ var Editor = {};
                     //TODO refactor
                     shareEntities: app._shareEntities,
                     shareLink: app.shareLink,
-                    ogImage: (app._shareEntities && (app._shareEntities.length > 0) && app._shareEntities[0].imgUrl) ? app._shareEntities[0].imgUrl: app.shareDefaultImgUrl // og tag
+                    ogImage: (app._shareEntities && (app._shareEntities.length > 0) && app._shareEntities[0].imgUrl) ? app._shareEntities[0].imgUrl: app.shareDefaultImgUrl, // og tag
+                    productBackgroundImageUrl: Engine.getAppProperty('appConstructor=mutapp productPageBackgroundImage').propertyValue,
+                    tariffIsBasic: isBasicTariff()
                 });
             });
         }
@@ -1768,6 +1797,26 @@ var Editor = {};
         }
     }
 
+    /**
+     * Функция реализующую предпросмотр платной фичи смены фона для страницы.
+     * Картинка ставится и в редактировании и в предпросмотре
+     */
+    function showProductPageBackgroungImage() {
+        // проверка что фича соответствует тарифу
+        if (isBasicTariff() === true) {
+            var ap = Engine.getAppProperty('appConstructor=mutapp productPageBackgroundImage');
+            if (ap) {
+                var imageUrl = ap.propertyValue;
+                $('#id-workspace').css('background-image', (imageUrl) ? 'url('+imageUrl+')': 'none')
+                    .css('background-repeat','no-repeat')
+                    .css('background-size','cover');
+                $('#id-preview_background-image').css('background-image', (imageUrl) ? 'url('+imageUrl+')': 'none')
+                    .css('background-repeat','no-repeat')
+                    .css('background-size','cover');
+            }
+        }
+    }
+
     // public methods
     global.start = start;
     global.forEachElementOnScreen = forEachElementOnScreen;
@@ -1790,5 +1839,6 @@ var Editor = {};
     global.updateSelection = updateSelection;
     global.getQuickControlPanel = function() { return quickControlPanel; }
     global.getEditorEnvironment = getEditorEnvironment;
+    global.showProductPageBackgroungImage = showProductPageBackgroungImage;
 
 })(Editor);

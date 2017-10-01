@@ -43,6 +43,8 @@ var shareImageService = {};
      * @param {function} callback
      */
     function requestImageUrls(callback) {
+        // удалить всё что сейчас запущено с такими типами
+        //Queue.clearTasks({type:'create_preview'});
         _requestImageTasks.push({
             task: 'canvas',
             callback: null
@@ -59,6 +61,8 @@ var shareImageService = {};
      * @param {function} callback
      */
     function requestCanvases(callback) {
+        // удалить всё что сейчас запущено с такими типами
+        //Queue.clearTasks({type:'create_preview'});
         _requestImageTasks.push({
             task: 'canvas',
             callback: callback
@@ -178,6 +182,7 @@ var shareImageService = {};
             // проверим, надо ли генерировать картинки для шаринга для каждого entity
             // если пользователь задает картинки сам, то не надо генерировать ничего
             if (isCustomUrl(e.imgUrl) === false) {
+
                 (function(entityId, entityIndex, entityView){
 
                     // создать замыкание для сохранения значений entityId

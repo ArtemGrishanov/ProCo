@@ -283,6 +283,14 @@ descriptor.app = [
         label: 'Google Analytics Id',
         filter: false,
         rules: 'url'
+    },
+    {
+        // page background
+        selector: 'appConstructor=mutapp productPageBackgroundImage',
+        updateScreens: false,
+        label: {RU:'Фон промо-страницы',EN:'Promo page background'},
+        filter: false,
+        rules: 'imgUrl'
     }
 ];
 

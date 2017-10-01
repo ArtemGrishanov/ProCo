@@ -164,12 +164,13 @@ if (window.textix === undefined) {
                     var h = parseInt(e.getAttribute('data-height')) || '600';
                     var p = normalizeDataPublished(e.getAttribute('data-published'));
                     var l = e.getAttribute('data-icon-mod');
+                    var lp = e.getAttribute('data-l');
                     e.style.maxWidth = w+'px';
                     e.style.height = h+'px';
 
                     createIframe(p, e, w, h);
                     // sperbank july 2017
-                    if (p.indexOf('37a6197612') < 0 && p.indexOf('db2ea526ed') < 0) {
+                    if (lp !== 'no' && p.indexOf('37a6197612') < 0 && p.indexOf('db2ea526ed') < 0) {
                         createPoweredLabel(e, l);
                     }
                     initGA(e);

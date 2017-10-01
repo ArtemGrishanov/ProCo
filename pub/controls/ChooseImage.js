@@ -71,6 +71,9 @@ function ChooseImage(propertyString, directiveName, $parent, productDOMElement, 
         var p = Engine.getAppProperty(this.propertyString);
         Engine.setValue(p, url);
         this.makePreview();
+        if (this.propertyString === 'appConstructor=mutapp productPageBackgroundImage') {
+            Editor.showProductPageBackgroungImage();
+        }
     };
 
     /**

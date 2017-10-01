@@ -92,6 +92,11 @@ var MutApp = function(param) {
         //        }
     ];
     /**
+     * Фон промо страницы
+     * @type {string}
+     */
+    this.productPageBackgroundImage = null;
+    /**
      * Ид для публикации
      *
      * @type {string}

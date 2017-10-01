@@ -228,6 +228,14 @@ descriptor.app = [
         label: {RU:'Включить горизонтальные карточки',EN:'Horizontal cards orientation'},
         filter: true,
         showWhileScreenIsActive: 'gamescreen'
+    },
+    {
+        // page background
+        selector: 'appConstructor=mutapp productPageBackgroundImage',
+        updateScreens: false,
+        label: {RU:'Фон промо-страницы',EN:'Promo page background'},
+        filter: false,
+        rules: 'imgUrl'
     }
 ];
 

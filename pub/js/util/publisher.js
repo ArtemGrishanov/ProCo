@@ -87,6 +87,16 @@ var Publisher = {};
      * @type {string}
      */
     var shareLink = null;
+    /**
+     * Ссылка на картинку фон для страницы публикации
+     * @type {string}
+     */
+    var productBackgroundImageUrl = null;
+    /**
+     * Признак тарифа basic
+     * @type {boolean}
+     */
+    var tariffIsBasic = null;
 
     /**
      * Сохранить промо проект на сервере
@@ -127,6 +137,8 @@ var Publisher = {};
             ogImage = params.ogImage;
             shareEntities = params.shareEntities || [];
             shareLink = params.shareLink;
+            productBackgroundImageUrl = params.productBackgroundImageUrl;
+            tariffIsBasic = (typeof params.tariffIsBasic === 'boolean') ? params.tariffIsBasic: false;
 
             errorInPublish = false;
             //TODO собираем ресурсы в несколько проходов
@@ -209,7 +221,8 @@ var Publisher = {};
         embedCode = embedCode.replace('{{width}}', appWidth+'px')
             .replace('{{height}}', appHeight+'px')
             .replace('{{published}}', App.getUserData().id+'/'+publishedAppId)
-            .replace('{{custom_attributes}}',' '+projectCustomAttr);
+            .replace('{{custom_attributes}}', ' '+(projectCustomAttr)?projectCustomAttr:'')
+            .replace('{{logo_policy}}', (tariffIsBasic===true)?' data-l="no"':''); // space before 'data-l' is needed
         return embedCode;
     }
 
@@ -430,7 +443,8 @@ var Publisher = {};
     }
 
     /**
-     * Вставить айфрейм в анонимку
+     * Вставить данные в шаблон
+     * Замена строк на значения
      *
      * @param param
      */
@@ -451,6 +465,9 @@ var Publisher = {};
 
                 // todo move somewhere
                 writeShareEntities();
+
+                // embed page customization according to tariffs
+                indexResource.data = writeTariffAttributes(indexResource.data);
 
                 Queue.release(this);
             }
@@ -483,6 +500,24 @@ var Publisher = {};
             res.data = res.data.replace('{{og:url}}', getAnonymLink() + 'share/' + shareEntities[i].id+'.html');
             res.data = res.data.replace('{{share_link}}', shareLink);
         }
+    }
+
+    /**
+     * Согласно тарифам прописать кастомизацию
+     * @param {string} template
+     * @return {string}
+     */
+    function writeTariffAttributes(template) {
+        if (tariffIsBasic === true) {
+            var imgval = (productBackgroundImageUrl) ? productBackgroundImageUrl: 'none';
+            template = template.replace('{{page_background_styles}}','background-image:url('+productBackgroundImageUrl+');background-size:cover;background-repeat:no-repeat;');
+            template = template.replace('{{topbar_styles}}','display:none');
+        }
+        else {
+            template = template.replace('{{page_background_styles}}','');
+            template = template.replace('{{topbar_styles}}','');
+        }
+        return template;
     }
 
     /**
