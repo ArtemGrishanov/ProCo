@@ -44,7 +44,12 @@ var shareImageService = {};
      */
     function requestImageUrls(callback) {
         // удалить всё что сейчас запущено с такими типами
-        //Queue.clearTasks({type:'create_preview'});
+        Queue.clearTasks({type:'create_preview'});
+
+        //TODO воспроизвел случай как-то, что публикация висит вечно, так как _activeTask никогда не завершается
+        _activeTask = null;
+
+
         _requestImageTasks.push({
             task: 'canvas',
             callback: null
@@ -62,7 +67,7 @@ var shareImageService = {};
      */
     function requestCanvases(callback) {
         // удалить всё что сейчас запущено с такими типами
-        //Queue.clearTasks({type:'create_preview'});
+        Queue.clearTasks({type:'create_preview'});
         _requestImageTasks.push({
             task: 'canvas',
             callback: callback

@@ -222,7 +222,7 @@ function __init_queue(global) {
     global.clearTasks = function(param) {
         param = param || {};
         if (typeof param.type === 'string') {
-            if (currentTask.type === param.type) {
+            if (currentTask && currentTask.type === param.type) {
                 currentTask = null;
             }
             for (var i = 0; i < tasks.length;) {
