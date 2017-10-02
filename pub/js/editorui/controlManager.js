@@ -136,7 +136,7 @@ var ControlManager = {
             });
             _controls.push(ctrl);
             filter({
-                // применить фильтр для созданного контрола
+                // применить фильтр для созданного контрола, будут использованы те настройки фильтра (propertyString + screen) которые выставлены в данный момент
                 controls: [ctrl]
             });
             ctrl.setValue(param.mutAppProperty.getValue());
@@ -272,13 +272,16 @@ var ControlManager = {
      * @param {Array<string>} param.propertyStrings
      */
     function filter(param) {
+        var filterChanged = false; // определять что значение фильтра реально изменилось
         param = param || {};
         param.controls = param.controls || _controls; // контролы из этого массива будем фильтровать
-        if (param.hasOwnProperty('screen') === true) { // может быть и null
+        if (param.hasOwnProperty('screen') === true && _filterValue.screen !== param.screen) { // может быть и null
             _filterValue.screen = param.screen;
+            filterChanged = true;
         }
-        if (param.hasOwnProperty('propertyStrings') === true) { // может быть и null
+        if (param.hasOwnProperty('propertyStrings') === true && _filterValue.propertyStrings !== param.propertyStrings) { // может быть и null
             _filterValue.propertyStrings = param.propertyStrings;
+            filterChanged = true;
         }
         // признак того, что контролы из quick panel попали в фильтр и их надо показывать
         var quickControlsFiltered = false;
@@ -313,7 +316,8 @@ var ControlManager = {
                 c.hide();
             }
         }
-        if (_onControlEvents) {
+        if (_onControlEvents && filterChanged === true) {
+            // только если значение фильтра реально изменилось
             _onControlEvents(ControlManager.EVENT_FILTER_CHANGED, {
                 propertyStrings: _filterValue.propertyStrings,
                 screen: _filterValue.screen,

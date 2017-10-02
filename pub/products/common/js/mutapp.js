@@ -1510,7 +1510,8 @@ MutApp.Screen = Backbone.View.extend({
         }
         // вызвать события о рендере экрана
         this.model.application.trigger(MutApp.EVENT_SCREEN_RENDERED, {
-            screenId: this.id
+            screenId: this.id,
+            screen: this
         });
     },
 

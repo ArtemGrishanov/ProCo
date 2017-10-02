@@ -83,7 +83,7 @@ var Editor = {};
      * Нужен для позиционирования рамок selections
      * @type {left: 0, top: 0}
      */
-    var workspaceOffset = null;
+    var WorkspaceOffset = null;
     /**
      * Массив контролов и свойств AppProperty продукта
      * @type {Array.<object>}
@@ -185,8 +185,8 @@ var Editor = {};
             // сразу без превью - аплоад
             uploadUserCustomTemplatePreview();
         });
-        workspace.init({
-            onSelectElementCallback: onSelectElementCallback
+        Workspace.init({
+            onWorkspaceEvents: onWorkspaceEvents
         });
         ControlManager.init({
             onControlEvents: onControlEvents
@@ -299,7 +299,7 @@ var Editor = {};
 //        $('#id-product_cnt')
 //            //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
 //            //.width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width)
-//            // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
+//            // высота нужна для задания размеров id-Workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
 //            .height(appContainerSize.height+2*config.editor.ui.screen_blocks_border_width+config.editor.ui.id_product_cnt_additional_height);
         // в поле для редактирования подтягиваем стили продукта
 
@@ -314,7 +314,7 @@ var Editor = {};
             showEditor();
             showScreen();
             updateAppContainerSize();
-            workspaceOffset = $('#id-product_iframe_cnt').offset();
+            WorkspaceOffset = $('#id-product_iframe_cnt').offset();
             // проверить что редактор готов, и вызвать колбек
             checkEditorIsReady();
 
@@ -453,13 +453,13 @@ var Editor = {};
 //            }
 //        }
 //        //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
-//        // высота нужна для задания размеров id-workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
+//        // высота нужна для задания размеров id-Workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
 //        $('#id-product_cnt, #id-product_wr').height(previewHeight + config.editor.ui.id_product_cnt_additional_height);
 //        // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
 //        $('#id-product_iframe_cnt, #id-control_cnt').width(appContainerSize.width + 2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
 //        // боковые панели вытягиваем также вслед за экранами
 //        $('.js-setting_panel').height(previewHeight);
-//        $('#id-workspace').height(previewHeight);
+//        $('#id-Workspace').height(previewHeight);
 //
 //        //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
 //        // подсветка контрола Slide по которому кликнули
@@ -928,10 +928,13 @@ var Editor = {};
             }
             case MutApp.EVENT_SCREEN_RENDERED: {
                 log('Editor.onAppChanged: MutApp.EVENT_SCREEN_RENDERED \''+data.screenId+'\'');
+                Workspace.handleRenderScreen({
+                    screen: data.screen
+                });
                 if (activeScreen === data.screenId) {
-                    // элементы на экране сменились после рендера для активного экрана, надо апдейтить контролы и workspace
+                    // элементы на экране сменились после рендера для активного экрана, надо апдейтить контролы и Workspace
                     var scr = app.getScreenById(activeScreen);
-                    workspace.handleShowScreen({
+                    Workspace.handleShowScreen({
                         screen: scr
                     });
                     ControlManager.handleShowScreen({
@@ -941,7 +944,7 @@ var Editor = {};
                         screen: scr,
                         propertyStrings: null
                     });
-                    // todo? workspace.selectElementOnAppScreen( prev selected element );
+                    // todo? Workspace.selectElementOnAppScreen( prev selected element );
                 }
                 // апдейтить в любом случае, не только для активного экрана
                 ScreenManager.update({
@@ -954,6 +957,9 @@ var Editor = {};
                 log('Editor.onAppChanged: MutApp.EVENT_SCREEN_DELETED \''+data.screenId+'\'');
                 ScreenManager.update({
                     deleted: data.screen
+                });
+                Workspace.handleDeleteScreen({
+                    screen: data.screen
                 });
                 if (activeScreen === data.screenId) {
                     // если экран activeScreen был удален, то вмето него надо показать другой, "ближайший" по индексу
@@ -995,13 +1001,36 @@ var Editor = {};
 
     /**
      * Колбек из worspace о клике по элементу
-     * @param {string} dataAppPropertyString (can be null to reset selection)
+     *
+     * @param {string} event
+     * @param {object} data.dataAppPropertyString (can be null to reset selection)
      */
-    function onSelectElementCallback(dataAppPropertyString) {
-        console.log('onSelectElementCallback: ' + dataAppPropertyString);
-        ControlManager.filter({
-            propertyStrings: dataAppPropertyString ? dataAppPropertyString.split(',') : null
-        });
+    function onWorkspaceEvents(event, data) {
+        console.log('onWorkspaceEvents: event=' + event + ' dataAppPropertyString=' + data.dataAppPropertyString);
+        switch (event) {
+            case Workspace.EVENET_SELECT_ELEMENT: {
+                ControlManager.filter({
+                    propertyStrings: data.dataAppPropertyString ? data.dataAppPropertyString.split(',') : null
+                });
+                break;
+            }
+            case Workspace.EVENET_CONTROL_POPUP_SHOWED: {
+
+                break;
+            }
+            case Workspace.EVENET_CONTROL_POPUP_HIDED: {
+
+                break;
+            }
+            case Workspace.EVENET_QUICK_PANEL_SHOWED: {
+
+                break;
+            }
+            case Workspace.EVENET_QUICK_PANEL_HIDED: {
+
+                break;
+            }
+        }
     }
 
     /**
@@ -1015,7 +1044,7 @@ var Editor = {};
         switch (event) {
             case ControlManager.EVENT_CHANGE_VALUE: {
                 editedApp.getProperty(data.propertyString).setValue(data.value);
-                workspace.updateSelection();
+                Workspace.updateSelection();
                 break;
             }
             case ControlManager.EVENT_FILTER_CHANGED: {
@@ -1024,18 +1053,18 @@ var Editor = {};
                 // {boolean} data.quickControlsFiltered
                 // {boolean} data.controlPopupFiltered
                 if (data.quickControlsFiltered === true) {
-                    // был зафильтрован контрол с типом quickcontrolpanel, говорим workspace показать панель с контролами quickcontrolpanel
-                    workspace.showQuickControlPanel();
+                    // был зафильтрован контрол с типом quickcontrolpanel, говорим Workspace показать панель с контролами quickcontrolpanel
+                    Workspace.showQuickControlPanel();
                 }
                 else {
-                    workspace.hideQuickControlPanel();
+                    Workspace.hideQuickControlPanel();
                 }
                 if (data.controlPopupFiltered === true) {
-                    // был зафильтрован контрол с типом popup, говорим workspace показать popup контейнер
-                    workspace.showPopupControlsContainer();
+                    // был зафильтрован контрол с типом popup, говорим Workspace показать popup контейнер
+                    Workspace.showPopupControlsContainer();
                 }
                 else {
-                    workspace.hidePopupControlsContainer();
+                    Workspace.hidePopupControlsContainer();
                 }
                 break;
             }
@@ -1055,9 +1084,9 @@ var Editor = {};
                 break;
             }
             case ControlManager.EVENT_DICTIONARY_DELETING_REQUESTED: {
-                var $elem = workspace.getSelectedElement();
+                var $elem = Workspace.getSelectedElement();
                 // у контрола DeleteArrayElement нет информации о выделенном элементе, то есть какой из вариантов ответа (options) пользователь выбрал
-                // У DeleteArrayElement есть несколько productDomElements, и какой-то из них workspace.getSelectedElement(), но какой он не знает.
+                // У DeleteArrayElement есть несколько productDomElements, и какой-то из них Workspace.getSelectedElement(), но какой он не знает.
                 if ($elem) {
                     var ap = editedApp.getProperty(data.propertyString);
                     var optionDictionaryId = $elem.attr('data-dictionary-id');
@@ -1088,8 +1117,8 @@ var Editor = {};
         if (activeScreen !== screenId) {
             var scr = editedApp.getScreenById(screenId);
             editedApp.showScreen(scr);
-            workspace.selectElementOnAppScreen(null);
-            workspace.handleShowScreen({
+            Workspace.selectElementOnAppScreen(null);
+            Workspace.handleShowScreen({
                 screen: scr
             });
             ControlManager.handleShowScreen({
@@ -1238,8 +1267,8 @@ var Editor = {};
         // сначала элемент надо добавить в дерево, чтобв рассчитать его размеры
         $(document.body).append($hint);
         // выравнивание слева от элемента, учитывая актуальный размер элемента и подсказки
-        $hint.css('top',eo.top+workspaceOffset.top+($elem.outerHeight(false)-$hint.outerHeight(false))/2+'px');
-        $hint.css('left',eo.left+workspaceOffset.left-$hint.outerWidth(false)-config.editor.ui.hintRightMargin+'px');
+        $hint.css('top',eo.top+WorkspaceOffset.top+($elem.outerHeight(false)-$hint.outerHeight(false))/2+'px');
+        $hint.css('left',eo.left+WorkspaceOffset.left-$hint.outerWidth(false)-config.editor.ui.hintRightMargin+'px');
         //TODO добавить треугольный указатель
         activeScreenHints.push($hint);
         return $hint;
@@ -1336,7 +1365,7 @@ var Editor = {};
     }
 
     function showSelectDialog(params) {
-        workspace.selectElementOnAppScreen(null);
+        Workspace.selectElementOnAppScreen(null);
         hideWorkspaceHints();
         $('#id-control_cnt').empty();
         var dialog = new SelectDialog(params);
@@ -1344,7 +1373,7 @@ var Editor = {};
     }
 
     function showPublishDialog(params) {
-        workspace.selectElementOnAppScreen(null);
+        Workspace.selectElementOnAppScreen(null);
         hideWorkspaceHints();
         $('#id-control_cnt').empty();
         var dialog = new PublishDialog(params);

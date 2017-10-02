@@ -6,7 +6,13 @@
  * 3) Панель быстрых контролов quickcontrolpanel
  * 4) Показывать экран в рабочем поле?
  */
-var workspace = {};
+var Workspace = {
+    EVENET_SELECT_ELEMENT: 'event_select_element',
+    EVENET_CONTROL_POPUP_SHOWED: 'event_control_popup_showed',
+    EVENET_CONTROL_POPUP_HIDED: 'event_control_popup_hided',
+    EVENET_QUICK_PANEL_SHOWED: 'event_quick_panel_showed',
+    EVENET_QUICK_PANEL_HIDED: 'event_quick_panel_hided'
+};
 
 (function(global) {
 
@@ -29,18 +35,20 @@ var workspace = {};
          */
         horScrollEventsBinded = false,
         /**
-         * Элементы, для которых уже зарегистрированы обработчики
+         * Слинкованные элементы (у которых есть data-app-property и который в списке _linkedMutAppProperties),
+         * для которых уже зарегистрированы обработчики
+         *
          * Пример, _registeredElements['startScr'] = [e1,e2...]
          *
          * @type {}
          */
         _registeredElements = {},
         /**
-         * Колбек который будет зваться когда пользователь кликает на один из зарегистрированных элементов
+         * Колбек о событиях в этом классе, например будет зваться когда пользователь кликает на один из зарегистрированных элементов
          * @type {DOMElement}
          * @private
          */
-        _onSelectElementCallback = null,
+        _onEventsCallback = null,
         /**
          * Только для отладки и тестирования
          * Запретить навешивать обработчики на элементы с такими значениями data-app-property, например 'id=startScr backgroundImg, id=startScr shadowEnable'
@@ -53,7 +61,12 @@ var workspace = {};
          * Панелька с контролами, которая всплывает рядом с элементом и указывает на него
          * @type {QuickControlPanel}
          */
-        quickControlPanel = null;
+        quickControlPanel = null,
+        /**
+         * Панелька popup с контролами, всплывает поверх редактора
+         * @type {PopupControlPanel}
+         */
+        popupControlPanel = null;
 
     /**
      * Выделить элемент на экране приложения.
@@ -84,8 +97,10 @@ var workspace = {};
             $selection.show();
             $controlContainer.append($selection);
         }
-        if (_onSelectElementCallback) {
-            _onSelectElementCallback($selectedElementOnAppScreen ? $selectedElementOnAppScreen.attr('data-app-property'): null);
+        if (_onEventsCallback) {
+            _onEventsCallback(Workspace.EVENET_SELECT_ELEMENT, {
+                dataAppPropertyString: $selectedElementOnAppScreen ? $selectedElementOnAppScreen.attr('data-app-property'): null
+            });
         }
     }
 
@@ -133,23 +148,37 @@ var workspace = {};
         }
     }
 
-    function createScreen(param) {
+    function handleCreateScreen(param) {
         // do nothing
     }
 
-    function deleteScreen(param) {
+    /**
+     *
+     * @param {MutApp.Screen} param.screen
+     */
+    function handleDeleteScreen(param) {
         _deleteRegisteredElement(param.screen.id);
     }
 
-    function renderScreen(param) {
+    /**
+     *
+     * @param {MutApp.Screen} param.screen
+     */
+    function handleRenderScreen(param) {
         _deleteRegisteredElement(param.screen.id);
     }
 
+    /**
+     * Удалить click-обработчики и data-app-property элементы
+     *
+     * @param {string} screenId
+     * @private
+     */
     function _deleteRegisteredElement(screenId) {
         if (_registeredElements.hasOwnProperty(screenId)) {
             var $e = null;
             for (var i = 0; i < _registeredElements[screenId].length; i++) {
-                $e = _registeredElements[screenId][i];
+                $e = $(_registeredElements[screenId][i]);
                 $e.off();
             }
             delete _registeredElements[screenId];
@@ -180,11 +209,7 @@ var workspace = {};
                 // возможно, это первый показ этого экрана после рендера, еще не добавляли обработчики
                 _registeredElements[param.screen.id] = [];
             }
-
-            //TODO чистить прежние элементы и их обработчики
-
             var regElems = _registeredElements[param.screen.id];
-
             //привязка элементов на экране приложения и контролов
             if (param.screen._linkedMutAppProperties) {
                 // для всех свойств прилинкованных к экрану
@@ -228,9 +253,15 @@ var workspace = {};
      * Показать панельку с быстрыми контролами
      */
     function showQuickControlPanel() {
-        if ($selectedElementOnAppScreen) {
+        if ($selectedElementOnAppScreen && quickControlPanel.isShown() === false) {
             // только если есть выделенный элемент, рядом с которым показывается панелька
             quickControlPanel.show($selectedElementOnAppScreen);
+
+            if (_onEventsCallback) {
+                _onEventsCallback(Workspace.EVENET_QUICK_PANEL_SHOWED, {
+                    dataAppPropertyString: $selectedElementOnAppScreen ? $selectedElementOnAppScreen.attr('data-app-property'): null
+                });
+            }
         }
     }
 
@@ -238,22 +269,54 @@ var workspace = {};
      * Скрыть панельку с быстрыми контролами
      */
     function hideQuickControlPanel() {
-        quickControlPanel.hide();
+        if (quickControlPanel.isShown() === true) {
+            quickControlPanel.hide();
+
+            if (_onEventsCallback) {
+                _onEventsCallback(Workspace.EVENET_QUICK_PANEL_HIDED, {
+                    dataAppPropertyString: $selectedElementOnAppScreen ? $selectedElementOnAppScreen.attr('data-app-property'): null
+                });
+            }
+        }
     }
 
     /**
      * Показать контейнер с контролами-popup
      */
     function showPopupControlsContainer() {
-        // контролы внутри контейнера как положено фильтруются в ControlManager
-        $('#id-popup_controls').show();
+        if (popupControlPanel.isShown() === false) {
+            // контролы внутри контейнера как положено фильтруются в ControlManager
+            popupControlPanel.show();
+
+            if (_onEventsCallback) {
+                _onEventsCallback(Workspace.EVENET_CONTROL_POPUP_SHOWED, {
+                    dataAppPropertyString: $selectedElementOnAppScreen ? $selectedElementOnAppScreen.attr('data-app-property'): null
+                });
+            }
+        }
     }
 
     /**
      * Скрыть контейнер с контролами-popup
      */
     function hidePopupControlsContainer() {
-        $('#id-popup_controls').hide();
+        if (popupControlPanel.isShown() === true) {
+            popupControlPanel.hide();
+
+            if (_onEventsCallback) {
+                _onEventsCallback(Workspace.EVENET_CONTROL_POPUP_HIDED, {
+                    dataAppPropertyString: $selectedElementOnAppScreen ? $selectedElementOnAppScreen.attr('data-app-property'): null
+                });
+            }
+        }
+    }
+
+    /**
+     * Внутри popupControlPanel произошел клик на кнопку закрытия, popupControlPanel просит закрыть его
+     * @private
+     */
+    function _onPopupControlNeedToClose() {
+        hidePopupControlsContainer();
     }
 
     /**
@@ -266,8 +329,11 @@ var workspace = {};
         $productCnt = $('#id-product_cnt');
         $controlContainer = $('#id-control_cnt');
         selectionTemplate = $('#id-elem_selection_template').html();
-        _onSelectElementCallback = param.onSelectElementCallback;
+        _onEventsCallback = param.onWorkspaceEvents;
         quickControlPanel = new QuickControlPanel();
+        popupControlPanel = new PopupControlPanel({
+            closeCallback: _onPopupControlNeedToClose
+        });
         $('#id-workspace').click(function(){
             // любой клик по документу сбрасывает фильтр контролов
             selectElementOnAppScreen(null);
@@ -275,7 +341,11 @@ var workspace = {};
     }
 
     global.init = init;
+
     global.handleShowScreen = handleShowScreen;
+    global.handleRenderScreen = handleRenderScreen;
+    global.handleDeleteScreen = handleDeleteScreen;
+
     global.setAppSize = setAppSize;
     global.selectElementOnAppScreen = selectElementOnAppScreen;
     global.updateSelection = updateSelection;
@@ -285,4 +355,6 @@ var workspace = {};
     global.showPopupControlsContainer = showPopupControlsContainer;
     global.hidePopupControlsContainer = hidePopupControlsContainer;
 
-})(workspace);
+    global._registeredElements = _registeredElements; // for autotests, inspector
+
+})(Workspace);

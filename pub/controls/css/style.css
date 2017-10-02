@@ -148,9 +148,6 @@ form input {
 /*
 Personality custom control
 */
-.modal.__personality_res_link {
-    padding: 0;
-}
 .pers_opt_list_cnt {
     width: 275px;
     height: 426px;

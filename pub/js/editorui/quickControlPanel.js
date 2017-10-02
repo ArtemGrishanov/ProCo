@@ -11,21 +11,20 @@ var QuickControlPanel = function() {
     this._view.hide();
 }
 
-QuickControlPanel.prototype.show = function(element, controls) {
-//    this._cnt.empty();
-//    for (var i = 0; i < controls.length; i++) {
-//        this.addControl(controls[i]);
-//    }
+/**
+ * Показать всплывающую панельку с быстрыми контролами
+ * @param element - элемент на который указывает панель и рядом с которым появляется
+ */
+QuickControlPanel.prototype.show = function(element) {
     this._view.show();
     this.updatePosition(element)
     this._view.css('zIndex', config.editor.ui.quickControlPanelZIndex);
 }
 
-//QuickControlPanel.prototype.addControl = function(control) {
-//    var item = $('<div class="qp_item"></div>').append(control.wrapper);
-//    this._cnt.append(item);
-//}
-
+/**
+ * Обновить позицию панели, выровнять относительно элемента element
+ * @param element
+ */
 QuickControlPanel.prototype.updatePosition = function(element) {
     this._height = this._view.height();
     // позиционирование сверху по центру над элементом element
@@ -35,6 +34,18 @@ QuickControlPanel.prototype.updatePosition = function(element) {
     this._view.css('left',eo.left+($(element).outerWidth(false)-w)/2+'px'); // false - not including margins
 }
 
+/**
+ * Скрытие
+ */
 QuickControlPanel.prototype.hide = function() {
     this._view.hide();
+}
+
+/**
+ * Показана ли панель или нет
+ *
+ * @returns {boolean}
+ */
+QuickControlPanel.prototype.isShown = function() {
+    return this._view.css('display') === 'block';
 }

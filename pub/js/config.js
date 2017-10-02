@@ -781,7 +781,7 @@ var config = {
         PersonalityResultLinking: {
             defaultDirectiveIndex: 0,
             directives: ['personalityresultlinking'],
-            parentId: 'id-popup_controls',
+            parentId: 'id-popup_controls_cnt',
             type: 'popup'
         }
     },

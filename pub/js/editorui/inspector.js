@@ -6,7 +6,7 @@
  * - экранов в приложении и экраны в контроле
  * -
  *
- * Каждый модуль в отдельности (ControlManager, workspace и т.д.) не может обеспечить проверки,
+ * Каждый модуль в отдельности (ControlManager, Workspace и т.д.) не может обеспечить проверки,
  * так как у них нет всех данных для этого.
  *
  * 1) используется в автотестах
@@ -50,7 +50,7 @@ var inspector = {};
         }
 
         // фильтр по propertyString соответствует выделенному элементу
-        var se = workspace.getSelectedElement();
+        var se = Workspace.getSelectedElement();
         if (se) {
             assert.ok(se.attr('data-app-property') === ControlManager.getFilter().propertyStrings.join(','), 'ControlManager propertyString filter is ok');
         }
@@ -110,6 +110,35 @@ var inspector = {};
                 assert.ok($.contains(scr.$el[0], elems[n]) === true, 'Screen \''+scr.id+'\' contains ui element from \''+ap.propertyString+'\'');
             }
         }
+
+        // _registeredElements внутри Workspace
+        //      _registeredElements['startScr'] = [e1,e2...]
+        // - количество элементов _registeredElements соответствует уникальным элементам screen._linkedMutAppProperties
+        // - сравнение элементов _registeredElements и уникальных в screen._linkedMutAppProperties
+        // - нет лишних экранов в _registeredElements
+        // scr - активный экран
+        var unicLinkedElemenents = [];
+        for (var i = 0; i < scr._linkedMutAppProperties.length; i++) {
+            // переберем все data-app-property элементы для текущего экрана, соберем уникальные
+            var ap = scr._linkedMutAppProperties[i];
+            var linkedElements = ap.getLinkedElementsOnScreen(scr.id);
+            for (var j = 0; j < linkedElements.length; j++) {
+                if (unicLinkedElemenents.indexOf(linkedElements[j]) < 0) {
+                    unicLinkedElemenents.push(linkedElements[j]);
+                    // проверить что внутри workspace есть те же самые элементы
+                    assert.ok(Workspace._registeredElements[scr.id].indexOf(linkedElements[j]) >= 0, 'one Workspace._registeredElement exist');
+                }
+            }
+        }
+        assert.ok(Workspace._registeredElements[scr.id].length === unicLinkedElemenents.length, 'Workspace._registeredElements count is ok');
+        // нет лишних экранов внутри Workspace
+        for (var key in Workspace._registeredElements) {
+            if (Workspace._registeredElements.hasOwnProperty(key) === true) {
+                assert.ok(app.getScreenById(key), 'Screen from Workspace._registeredElements: \'' + key + '\' exist in app');
+            }
+        }
+
+
 
         // для текущего экрана: экран действительно содержит $productDomElement контролов (которые должны быть на экране)
         // pre: экран должен быть показан, то есть произошла линковка $productDomElement
