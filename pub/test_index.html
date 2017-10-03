@@ -153,6 +153,38 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .pers_res_hover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(128, 128, 128, 0.66);
+            padding-top: 14px;
+            text-align: center;
+            color: #fff;
+            font-size: 12px;
+        }
+        .pers_res_icon {
+            display: inline-block;
+            width: 44px;
+            height: 44px;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #fff;
+            border-radius: 999px
+        }
+        .pers_res_icon.__weak {
+            background-image: url('i/icon-weak.png');
+        }
+        .pers_res_icon.__strong {
+            background-image: url('i/icon-strong.png');
+        }
+        .pers_res_hover_link_elem {
+            display: inline-block;
+            vertical-align: top;
+            width: 66px;
+        }
     </style>
 </head>
 <body style="background-color: #888">
@@ -189,6 +221,19 @@
                     <div class="pers_res_item __linked_weak">
                         <p class="pers_res_title">Вы из 80-х bfuhryf yegvryg veghvg veghrv eghrv hgervh egv </p>
                         <p class="pers_res_desc">Ваше детство прошло под BoneyM и Игоря Корнелюка. Вы еще застали rjhgeurhgbhu berjghb jtbghr btjhgb rtjhb rbt jgbrth bjrhtb irjbtiru htiuhrt iuhj oirthrtn ijkrn k</p>
+                        <div class="pers_res_hover">
+                            <p class="">Выберите тип привязки</p>
+                            <div>
+                                <div class="pers_res_hover_link_elem">
+                                    <div class="pers_res_icon __weak"></div>
+                                    <p>Слабая</p>
+                                </div>
+                                <div class="pers_res_hover_link_elem">
+                                    <div class="pers_res_icon __strong"></div>
+                                    <p>Сильная</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="pers_res_item __linked_strong">
                         <p class="pers_res_title">Вы из 80-х</p>

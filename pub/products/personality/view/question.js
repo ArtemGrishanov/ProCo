@@ -255,6 +255,11 @@ var QuestionScreen = MutApp.Screen.extend({
                             }
                         }).bind(this));
                         $ea.append($e); // ea is js-options_cnt
+                        if (this.model.application.mode === 'edit') {
+                            // в режиме редактирования показывать символы привязки на опциях
+                            // так должен быть атрибут data-app-property для открытия контрола привязки
+                            $e.find('.js-result_link').show();
+                        }
                     }
                     else {
                         throw new Error('Option does not have uiTemplate attribute');

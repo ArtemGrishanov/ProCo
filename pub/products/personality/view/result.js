@@ -13,7 +13,10 @@ var ResultScreen = MutApp.Screen.extend({
      * @see MutApp
      */
     group: 'result',
-
+    /**
+     * Для контрола SlideGroupControl, который управляет порядком группы экранов
+     */
+    arrayAppPropertyString: 'id=pm results',
     /**
      * Метка которая показывается в редакторе, рядом с превью экрана
      * @see MutApp
@@ -22,8 +25,11 @@ var ResultScreen = MutApp.Screen.extend({
     /**
      * Схлопываем результаты в один
      */
-    collapse: true,
-
+    collapse: false,
+    draggable: false,
+    canAdd: true,
+    canDelete: true,
+    canClone: true,
     /**
      * Контейнер в котором будет происходить рендер этого вью
      */
@@ -32,10 +38,6 @@ var ResultScreen = MutApp.Screen.extend({
     template: {
         "default": _.template($('#id-result_template').html())
     },
-
-    restartButtonText: null,
-
-    downloadButtonText: null,
 
     events: {
         "click .js-next": "onNextClick",
@@ -107,18 +109,6 @@ var ResultScreen = MutApp.Screen.extend({
             }
         }, this);
 
-        this.restartButtonText = new MutAppProperty({
-            application: this.model.application,
-            value: 'Restart',
-            propertyString: 'type=results restartButtonText'
-        });
-
-        this.downloadButtonText = new MutAppProperty({
-            application: this.model.application,
-            value: 'Download',
-            propertyString: 'type=results downloadButtonText'
-        });
-
         r.backgroundImage.bind('change', function() {
             this.render();
         }, this);
@@ -146,20 +136,27 @@ var ResultScreen = MutApp.Screen.extend({
         this.model.bind("change:vkSharingEnabled", function () {
             this.render();
         }, this);
+
+        this.model.bind("change:restartButtonText", function () {
+            this.render();
+        }, this);
+
+        this.model.bind("change:downloadButtonText", function () {
+            this.render();
+        }, this);
     },
 
     render: function() {
         var r = this.model.getResultById(this.resultId);
         var resIndex = this.model.get('results').toArray().indexOf(r);
         var dictionaryId = this.model.get('results').getIdFromPosition(resIndex);
-        r.currentResultIndex = dictionaryId;
+        var renderObject = MutApp.Util.getObjectForRender(r);
+        renderObject.currentResultIndex = dictionaryId;
         if (this.model.application.isSmallWidth() === true) {
-            //description title
-            r = JSON.parse(JSON.stringify(r));
-            if (r.title) r.title = r.title.replace(/<br>/g,' ');
-            if (r.description) r.description = r.description.replace(/<br>/g,' ');
+            if (renderObject.title) renderObject.title = renderObject.title.replace(/<br>/g,' ');
+            if (renderObject.description) renderObject.description = renderObject.description.replace(/<br>/g,' ');
         }
-        this.$el.html(this.template['default'](MutApp.Util.getObjectForRender(r)));
+        this.$el.html(this.template['default'](MutApp.Util.getObjectForRender(renderObject)));
 
         // установка свойств логотипа
         var $l = this.$el.find('.js-result_logo');
@@ -201,9 +198,9 @@ var ResultScreen = MutApp.Screen.extend({
             css('top', this.model.get('vkSharingPosition').getValue().top+'px').
             css('left', this.model.get('vkSharingPosition').getValue().left+'px');
 
-        this.$el.find('.js-restart').html(this.restartButtonText.getValue());
+        this.$el.find('.js-restart').html(this.model.get('restartButtonText').getValue());
 
-        this.$el.find('.js-download_btn').html(this.downloadButtonText.getValue());
+        this.$el.find('.js-download_btn').html(this.model.get('downloadButtonText').getValue());
 
         // цвет фона
         this.$el.find('.js-result_back_color')

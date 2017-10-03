@@ -101,10 +101,10 @@ var PersonalityApp = MutApp.extend({
             label: {RU:'Текст кнопки', EN:'Start button text'},
             controls: "TextQuickInput"
         },
-        "type=results restartButtonText": {
+        "id=pm restartButtonText": {
             controls: "TextQuickInput"
         },
-        "type=results downloadButtonText": {
+        "id=pm downloadButtonText": {
             controls: "TextQuickInput"
         },
         "id=pm showDownload": {

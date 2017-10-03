@@ -205,6 +205,18 @@ var PersonalityModel = MutApp.Model.extend({
             value: [],
             propertyString: 'id=pm resultLinking'
         });
+        this.attributes.restartButtonText = new MutAppProperty({
+            application: this.application,
+            model: this,
+            value: 'Заново',
+            propertyString: 'id=pm restartButtonText'
+        });
+        this.attributes.downloadButtonText = new MutAppProperty({
+            application: this.application,
+            model: this,
+            value: 'Download',
+            propertyString: 'id=pm downloadButtonText'
+        });
     },
 
     /**
@@ -222,8 +234,9 @@ var PersonalityModel = MutApp.Model.extend({
     /**
      *
      * Обновить структуру 'id=pm resultLinking'
-     * 1) удалить опции которых не существует более
-     * 2) Добавить новые опции которых нет в resultLinking
+     * 1) Удалить опции которых не существует более
+     * 2) Удалить id результатов которых больше не существует
+     * 3) Добавить новые опции которых нет в resultLinking
      *
      * Вызывается когда:
      * - изменение quiz
@@ -250,7 +263,7 @@ var PersonalityModel = MutApp.Model.extend({
                         var resultId = larr[k];
                         var res = this.getResultById(resultId)
                         if (res) {
-                            k++
+                            k++;
                         }
                         else {
                             // todo проверить будет ли такое удаление работать (это же результат вызова toArray)
@@ -339,24 +352,24 @@ var PersonalityModel = MutApp.Model.extend({
      * @param {string} optionId
      * @param {string} resultId
      */
-    setStrongConnection: function(optionId, resultId) {
-        var o = this.getOptionById(optionId);
-        if (!o) {
-            throw new Error('PersonalityModel.setStrongConnection: option \''+optionId+' does not exist');
-        }
-        var r = this.getResultById(resultId);
-        if (!r) {
-            throw new Error('PersonalityModel.setStrongConnection: option \''+optionId+' does not exist');
-        }
-        if (o.strongLink.indexOf(resultId) >= 0) {
-            // уже привязано
-        }
-        else {
-            // удалить слабую связь если она есть, одновременно сильная и слабая связь не могут существовать
-            this.deleteWeakConnection(optionId, resultId);
-            o.strongLink.push(resultId);
-        }
-    },
+//    setStrongConnection: function(optionId, resultId) {
+//        var o = this.getOptionById(optionId);
+//        if (!o) {
+//            throw new Error('PersonalityModel.setStrongConnection: option \''+optionId+' does not exist');
+//        }
+//        var r = this.getResultById(resultId);
+//        if (!r) {
+//            throw new Error('PersonalityModel.setStrongConnection: option \''+optionId+' does not exist');
+//        }
+//        if (o.strongLink.indexOf(resultId) >= 0) {
+//            // уже привязано
+//        }
+//        else {
+//            // удалить слабую связь если она есть, одновременно сильная и слабая связь не могут существовать
+//            this.deleteWeakConnection(optionId, resultId);
+//            o.strongLink.push(resultId);
+//        }
+//    },
 
     /**
      * Проверить наличие сильной связи между опцией и результатом
@@ -365,17 +378,17 @@ var PersonalityModel = MutApp.Model.extend({
      * @param {string} resultId
      * @returns {boolean}
      */
-    isStrongConnection: function(optionId, resultId) {
-        var o = this.getOptionById(optionId);
-        if (!o) {
-            throw new Error('PersonalityModel.isStrongConnection: option \''+optionId+' does not exist');
-        }
-        var r = this.getResultById(resultId);
-        if (!r) {
-            throw new Error('PersonalityModel.isStrongConnection: option \''+optionId+' does not exist');
-        }
-        return o.strongLink.indexOf(resultId) >= 0;
-    },
+//    isStrongConnection: function(optionId, resultId) {
+//        var o = this.getOptionById(optionId);
+//        if (!o) {
+//            throw new Error('PersonalityModel.isStrongConnection: option \''+optionId+' does not exist');
+//        }
+//        var r = this.getResultById(resultId);
+//        if (!r) {
+//            throw new Error('PersonalityModel.isStrongConnection: option \''+optionId+' does not exist');
+//        }
+//        return o.strongLink.indexOf(resultId) >= 0;
+//    },
 
     /**
      * Удалить сильную связь между опцией и резальтатом
@@ -383,20 +396,20 @@ var PersonalityModel = MutApp.Model.extend({
      * @param {string} optionId
      * @param {string} resultId
      */
-    deleteStrongConnection: function(optionId, resultId) {
-        var o = this.getOptionById(optionId);
-        if (!o) {
-            throw new Error('PersonalityModel.deleteStrongConnection: option \''+optionId+' does not exist');
-        }
-        var r = this.getResultById(resultId);
-        if (!r) {
-            throw new Error('PersonalityModel.deleteStrongConnection: option \''+optionId+' does not exist');
-        }
-        var delIndex = o.strongLink.indexOf(resultId);
-        if (delIndex >= 0) {
-            o.strongLink.splice(delIndex, 1);
-        }
-    },
+//    deleteStrongConnection: function(optionId, resultId) {
+//        var o = this.getOptionById(optionId);
+//        if (!o) {
+//            throw new Error('PersonalityModel.deleteStrongConnection: option \''+optionId+' does not exist');
+//        }
+//        var r = this.getResultById(resultId);
+//        if (!r) {
+//            throw new Error('PersonalityModel.deleteStrongConnection: option \''+optionId+' does not exist');
+//        }
+//        var delIndex = o.strongLink.indexOf(resultId);
+//        if (delIndex >= 0) {
+//            o.strongLink.splice(delIndex, 1);
+//        }
+//    },
 
     /**
      * Задать слабую связь между опцией и результатом
@@ -404,24 +417,24 @@ var PersonalityModel = MutApp.Model.extend({
      * @param {string} optionId
      * @param {string} resultId
      */
-    setWeakConnection: function(optionId, resultId) {
-        var o = this.getOptionById(optionId);
-        if (!o) {
-            throw new Error('PersonalityModel.setWeakConnection: option \''+optionId+' does not exist');
-        }
-        var r = this.getResultById(resultId);
-        if (!r) {
-            throw new Error('PersonalityModel.setWeakConnection: option \''+optionId+' does not exist');
-        }
-        if (o.weakLink.indexOf(resultId) >= 0) {
-            // уже привязано
-        }
-        else {
-            // удалить сильную связь если она есть, одновременно сильная и слабая связь не могут существовать
-            this.deleteStrongConnection(optionId, resultId);
-            o.weakLink.push(resultId);
-        }
-    },
+//    setWeakConnection: function(optionId, resultId) {
+//        var o = this.getOptionById(optionId);
+//        if (!o) {
+//            throw new Error('PersonalityModel.setWeakConnection: option \''+optionId+' does not exist');
+//        }
+//        var r = this.getResultById(resultId);
+//        if (!r) {
+//            throw new Error('PersonalityModel.setWeakConnection: option \''+optionId+' does not exist');
+//        }
+//        if (o.weakLink.indexOf(resultId) >= 0) {
+//            // уже привязано
+//        }
+//        else {
+//            // удалить сильную связь если она есть, одновременно сильная и слабая связь не могут существовать
+//            this.deleteStrongConnection(optionId, resultId);
+//            o.weakLink.push(resultId);
+//        }
+//    },
 
     /**
      * Проверить наличие слабой связи между опцией и результатом
@@ -430,17 +443,17 @@ var PersonalityModel = MutApp.Model.extend({
      * @param {string} resultId
      * @returns {boolean}
      */
-    isWeakConnection: function(optionId, resultId) {
-        var o = this.getOptionById(optionId);
-        if (!o) {
-            throw new Error('PersonalityModel.isWeakConnection: option \''+optionId+' does not exist');
-        }
-        var r = this.getResultById(resultId);
-        if (!r) {
-            throw new Error('PersonalityModel.isWeakConnection: option \''+optionId+' does not exist');
-        }
-        return o.weakLink.indexOf(resultId) >= 0;
-    },
+//    isWeakConnection: function(optionId, resultId) {
+//        var o = this.getOptionById(optionId);
+//        if (!o) {
+//            throw new Error('PersonalityModel.isWeakConnection: option \''+optionId+' does not exist');
+//        }
+//        var r = this.getResultById(resultId);
+//        if (!r) {
+//            throw new Error('PersonalityModel.isWeakConnection: option \''+optionId+' does not exist');
+//        }
+//        return o.weakLink.indexOf(resultId) >= 0;
+//    },
 
     /**
      * Удалить слабую связь между опцией и резальтатом
@@ -448,20 +461,20 @@ var PersonalityModel = MutApp.Model.extend({
      * @param {string} optionId
      * @param {string} resultId
      */
-    deleteWeakConnection: function(optionId, resultId) {
-        var o = this.getOptionById(optionId);
-        if (!o) {
-            throw new Error('PersonalityModel.deleteWeakConnection: option \''+optionId+' does not exist');
-        }
-        var r = this.getResultById(resultId);
-        if (!r) {
-            throw new Error('PersonalityModel.deleteWeakConnection: option \''+optionId+' does not exist');
-        }
-        var delIndex = o.weakLink.indexOf(resultId);
-        if (delIndex >= 0) {
-            o.weakLink.splice(delIndex, 1);
-        }
-    },
+//    deleteWeakConnection: function(optionId, resultId) {
+//        var o = this.getOptionById(optionId);
+//        if (!o) {
+//            throw new Error('PersonalityModel.deleteWeakConnection: option \''+optionId+' does not exist');
+//        }
+//        var r = this.getResultById(resultId);
+//        if (!r) {
+//            throw new Error('PersonalityModel.deleteWeakConnection: option \''+optionId+' does not exist');
+//        }
+//        var delIndex = o.weakLink.indexOf(resultId);
+//        if (delIndex >= 0) {
+//            o.weakLink.splice(delIndex, 1);
+//        }
+//    },
 
     /**
      * Сгенерировать идишки для вопроса и опций ответа
@@ -620,33 +633,32 @@ var PersonalityModel = MutApp.Model.extend({
     /**
      * Ответить на текущий вопрос
      *
-     * @param {string} id - идентификатор выбранного ответа
-     * @returns {boolean}
+     * @param {string} optionId - id выбранного ответа
      */
-    answer: function(id) {
-        var quizArr = this.attributes.quiz.toArray();
-        var optionsArr = quizArr[this.attributes.currentQuestionIndex].answer.options.toArray();
-        if (optionsArr) {
-            this.set({
-                currentOptionId: id
-            });
-            for (var i = 0; i < optionsArr.length; i++) {
-                var o = optionsArr[i];
-                if (o.id === id) {
-                    // забираем из опции все привязки которые там есть, сильные и слабые
-                    for (var n = 0; n < o.weakLink.length; n++) {
-                        var resultId = o.weakLink[n];
-                        this.attributes.resultPoints[resultId] += this.attributes.WEAK_LINK_POINTS;
-                    }
-                    for (var n = 0; n < o.strongLink.length; n++) {
-                        var resultId = o.strongLink[n];
-                        this.attributes.resultPoints[resultId] += this.attributes.STRONG_LINK_POINTS;
-                    }
-                    return true;
+    answer: function(optionId) {
+        if (this.getOptionById(optionId) === null) {
+            throw new Error('PersonalityModel.answer: option \''+optionId+'\' does not exist in model');
+        }
+        this.set({
+            currentOptionId: optionId
+        });
+        var resLinksArr = this.attributes.resultLinking.toArray();
+        for (var i = 0; i < resLinksArr.length; i++) {
+            var o = resLinksArr[i];
+            if (o.optionId === optionId) {
+                // забираем из опции все привязки которые там есть, сильные и слабые
+                for (var n = 0; n < o.weakLinks.length; n++) {
+                    var resultId = o.weakLinks[n];
+                    this.attributes.resultPoints[resultId] += this.attributes.WEAK_LINK_POINTS;
                 }
+                for (var n = 0; n < o.strongLinks.length; n++) {
+                    var resultId = o.strongLinks[n];
+                    this.attributes.resultPoints[resultId] += this.attributes.STRONG_LINK_POINTS;
+                }
+                return;
             }
         }
-        return false;
+        throw new Error('PersonalityModel.answer: option \''+optionId+'\' not found in resultLinking dictionary');
     },
 
     /**
@@ -676,58 +688,10 @@ var PersonalityModel = MutApp.Model.extend({
             value: '#ffffff'
         });
 
-//        var option1Id = MutApp.Util.getUniqId(6);
-//        var option1text = new MutAppProperty({
-//            propertyString: 'id=pm quiz.'+quizElemId+'.answer.options.'+option1Id+'.text',
-//            model: this,
-//            application: this.application,
-//            value: 'Rock'
-//        });
-//        var option2Id = MutApp.Util.getUniqId(6);
-//        var option2text = new MutAppProperty({
-//            propertyString: 'id=pm quiz.'+quizElemId+'.answer.options.'+option2Id+'.text',
-//            model: this,
-//            application: this.application,
-//            value: 'Jazz'
-//        });
-//        var option3Id = MutApp.Util.getUniqId(6);
-//        var option3text = new MutAppProperty({
-//            propertyString: 'id=pm quiz.'+quizElemId+'.answer.options.'+option3Id+'.text',
-//            model: this,
-//            application: this.application,
-//            value: 'Classic'
-//        });
-
-
         var options = new MutAppPropertyDictionary({
             model: this,
             application: this.application,
             propertyString: 'id=pm quiz.'+quizElemId+'.answer.options'
-//            value: [
-//                {
-//                    // атрибуты внутри используются для рендера uiTemplate
-//                    uiTemplate: 'id-option_text_template',
-//                    text: option1text,
-//                    type: 'text',
-//                    // через запятую идишки результатов, привязки
-//                    strongLink: [],
-//                    weakLink: []
-//                },
-//                {
-//                    uiTemplate: 'id-option_text_template',
-//                    text: option2text,
-//                    type: 'text',
-//                    strongLink: [],
-//                    weakLink: []
-//                },
-//                {
-//                    uiTemplate: 'id-option_text_template',
-//                    text: option3text,
-//                    type: 'text',
-//                    strongLink: [],
-//                    weakLink: []
-//                }
-//            ]
         });
 
         options.addElementByPrototype('id=pm proto_optionText', -1, {questionId: quizElemId});
@@ -810,14 +774,6 @@ var PersonalityModel = MutApp.Model.extend({
      * Функция прототип для генерации текстовых опций ответа
      */
     proto_optionText: function(param) {
-        //todo
-//        var questionIndex = 0;
-//        var questionId = this.attributes.quiz.getIdFromPosition(questionIndex);
-
-//        if (questionIndex >= this.attributes.quiz.toArray().length) {
-//            throw new Error('PersonalityModel.proto_optionText: questionIndex >= this.attributes.quiz');
-//        }
-//        var q = this.attributes.quiz.toArray()[questionIndex];
 
         if (!param.questionId) {
             throw new Error('PersonalityModel.proto_optionText: questionId does not specified');
@@ -855,17 +811,26 @@ var PersonalityModel = MutApp.Model.extend({
         for (var i = 0; i < resultsValue.length; i++) {
             res[resultsValue[i].id] = 0;
         }
-        // сложим сумму привязок к результату по всем опциям
-        var quizValue = this.attributes.quiz.toArray();
-        for (var i = 0; i < quizValue.length; i++) {
-            var options = quizValue[i].answer.options.toArray();
-            for (var n = 0; n < options.length; n++) {
 
-                for (var k = 0; k < options[n].strongLink.length; k++) {
-                    res[options[n].strongLink[k]] += this.attributes.STRONG_LINK_POINTS;
+        var resLinksArr = this.attributes.resultLinking.toArray();
+        // по всем привязкам складываем суммы: STRONG_LINK_POINTS за 1 сильную привязку, WEAK_LINK_POINTS за одну слабую
+        for (var i = 0; i < resLinksArr.length; i++) {
+            for (var k = 0; k < resLinksArr[i].strongLinks.length; k++) {
+                var resultId = resLinksArr[i].strongLinks[k];
+                if (res.hasOwnProperty(resultId) === false) {
+                    throw new Error('PersonalityModel.getResultProbabilities: result \'' + resultId + '\' in resultLinking dictionary does not exist in model');
                 }
-                for (var k = 0; k < options[n].weakLink.length; k++) {
-                    res[options[n].weakLink[k]] += this.attributes.WEAK_LINK_POINTS;
+                else {
+                    res[resultId] += this.attributes.STRONG_LINK_POINTS;
+                }
+            }
+            for (var k = 0; k < resLinksArr[i].weakLinks.length; k++) {
+                var resultId = resLinksArr[i].weakLinks[k];
+                if (res.hasOwnProperty(resultId) === false) {
+                    throw new Error('PersonalityModel.getResultProbabilities: result \'' + resultId + '\' in resultLinking dictionary does not exist in model');
+                }
+                else {
+                    res[resultId] += this.attributes.WEAK_LINK_POINTS;
                 }
             }
         }
@@ -882,5 +847,64 @@ var PersonalityModel = MutApp.Model.extend({
         }
 
         return res;
+    },
+
+    /**
+     * Функция проверки модели
+     *
+     * @param assert
+     * @returns {boolean}
+     */
+    isOK: function(assert) {
+        assert = assert || MutApp.Util.getMockAssert();
+
+        var resLinksArr = this.attributes.resultLinking.toArray();
+        var foundOptionIds = [];
+
+        for (var i = 0; i < resLinksArr.length; i++) {
+            var optionId = resLinksArr[i].optionId;
+            // проверка что все опции в resultLinking существуют
+            assert.ok(this.getOptionById(optionId), 'Option exist');
+            // проверка что опции не дублируются
+            if (foundOptionIds.indexOf(optionId) >= 0) {
+                assert.ok(false, 'Duplicate option \''+optionId+'\' in resultLinking dictionary');
+            }
+            else {
+                foundOptionIds.push(optionId);
+            }
+
+            var foundResultIds = [];
+            // все результаты в resultLinking.strongLinks существуют
+            for (var k = 0; k < resLinksArr[i].strongLinks.length; k++) {
+                var resultId = resLinksArr[i].strongLinks[k];
+                assert.ok(this.getResultById(resultId), 'Result exist in model');
+
+                // один resultId встречается для одной опции только один раз: либо в weakLinks, либо в strongLinks
+                if (foundResultIds.indexOf(resultId) >= 0) {
+                    assert.ok(false, 'Duplicate result \''+resultId+'\' in strongLinks for option \''+optionId+'\'');
+                }
+                else {
+                    foundResultIds.push(resultId);
+                }
+            }
+            // все результаты в resultLinking.weakLinks существуют
+            for (var k = 0; k < resLinksArr[i].weakLinks.length; k++) {
+                var resultId = resLinksArr[i].weakLinks[k];
+                assert.ok(this.getResultById(resultId), 'Result exist in model');
+
+                // один resultId встречается для одной опции только один раз: либо в weakLinks, либо в strongLinks
+                if (foundResultIds.indexOf(resultId) >= 0) {
+                    assert.ok(false, 'Duplicate result \''+resultId+'\' in strongLinks for option \''+optionId+'\'');
+                }
+                else {
+                    foundResultIds.push(resultId);
+                }
+            }
+        }
+
+        // вероятность распределения ответов getResultProbabilities нормальная
+        var prps = this.getResultProbabilities();
+
+        console.log('PersonalityModel.isOK: Checking finished. See qunit log or console for details.');
     }
 });

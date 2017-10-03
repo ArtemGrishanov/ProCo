@@ -1331,7 +1331,7 @@ MutApp.prototype.getCssRulesString = function() {
  */
 MutApp.prototype.isOK = function(param) {
     param = param || {};
-    var assert = param.assert || MutApp.Util._getMockAssert();
+    var assert = param.assert || MutApp.Util.getMockAssert();
 
     // проверить что все по всем propertyString действительно можно найти свойство
     for (var i = 0; i < this._mutappProperties.length; i++) {
@@ -1659,7 +1659,7 @@ MutApp.Util = {
      * @returns {{ok: Function}}
      * @private
      */
-    _getMockAssert: function() {
+    getMockAssert: function() {
         return {
             ok: function(value, message) {
                 if (!!value === false) {
