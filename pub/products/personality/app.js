@@ -25,14 +25,26 @@ var PersonalityApp = MutApp.extend({
         },
         "id=pm quiz": {
             label: {RU:'Вопросы теста',EN:'Personality quiz'},
-            prototypes: [{
-                protoFunction: 'id=pm quizProto1', // функция в приложении, которая вернет новый объект
-                label: {RU:'Текстовый вопрос',EN:'Text question'},
-                img: 'products/test_new/i/editor/Icon-text-vopros.png'
-            }],
+            prototypes: [
+                {
+                    protoFunction: 'id=pm quizProto1', // функция в приложении, которая вернет новый объект
+                    label: {RU:'Текстовый вопрос',EN:'Text question'},
+                    img: 'products/personality/i/editor/Icon-text-vopros.png'
+                },
+                {
+                    protoFunction: 'id=pm quizProto2', // функция в приложении, которая вернет новый объект
+                    label: {RU:'Фото вопрос',EN:'Photo question'},
+                    img: 'products/personality/i/editor/Icon-fotovopros.png'
+                }
+            ],
             children: {
                 "id=pm quiz.{{id}}.question.text": {
                     controls: "TextQuickInput"
+                },
+                "id=pm quiz.{{id}}.question.questionImage": {
+                    label: {RU:'Картинка вопроса',EN:'Question image'},
+                    controls: 'ChooseImage',
+                    controlFilter: 'screenPropertyString'
                 },
                 "id=pm quiz.{{id}}.question.backgroundImage": {
                     label: {RU:'Фоновая картинка',EN:'Background image'},
@@ -448,5 +460,28 @@ var PersonalityApp = MutApp.extend({
             this._screens[i].$el.hide();
         }
         this._models[0].start();
+    },
+
+    /**
+     * Обработчик событий приложения MutApp
+     * Любое клиентское приложение может определить такую функцию
+     *
+     * @param {string} event
+     * @param {object} data
+     */
+    onAppEvent: function(event, data) {
+        switch(event) {
+            case MutApp.EVENT_PROPERTY_CREATED:
+            case MutApp.EVENT_PROPERTY_VALUE_CHANGED:
+            case MutApp.EVENT_PROPERTY_DELETED: {
+                if (MutApp.Util.matchPropertyString(data.propertyString, 'id=pm quiz.{{id}}.answer.options') === true ||
+                    data.propertyString === 'id=pm quiz' ||
+                    data.propertyString === 'id=pm results') {
+                    // при изменении любых свойств которые влияют на привязки нужно делсть апдейт
+                    if (this.model) this.model.updateResultLinking();
+                }
+                break;
+            }
+        }
     }
 });

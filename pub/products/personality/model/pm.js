@@ -88,11 +88,9 @@ var PersonalityModel = MutApp.Model.extend({
 
         this.bind('change:quiz', function() {
             this.start();
-            this.updateResultLinking();
         });
         this.bind('change:results', function() {
             this.start();
-            this.updateResultLinking();
         });
         this.attributes.randomizeQuestions = new MutAppProperty({
             application: this.application,
@@ -664,6 +662,9 @@ var PersonalityModel = MutApp.Model.extend({
     /**
      * Объект-Прототип для добавления в массив
      * Возможно нужна функция
+     *
+     * Текстовый вопрос: текстовые ответы
+     *
      */
     quizProto1: function() {
 
@@ -705,6 +706,77 @@ var PersonalityModel = MutApp.Model.extend({
                 // атрибуты внутри используются для рендера uiTemplate
                 uiTemplate: 'id-question_text_template',
                 text: qText,
+                backgroundImage: qBackgroundImage,
+                backgroundColor: qBackgroundColor
+            },
+            answer: {
+                // тип механики ответа: выбор только одной опции, и сразу происходит обработка ответа
+                type: 'radiobutton',
+                uiTemplate: 'id-answer_question_lst',
+                options: options
+            }
+        };
+        this._makeUidForQuizElement(element);
+
+        return {
+            id: quizElemId,
+            element: element
+        };
+    },
+
+    /**
+     * Фото+текст вопрос, текстовые ответы
+     * Шаблон id-question_text_photo_template
+     *
+     * @returns {}
+     */
+    quizProto2: function() {
+
+        var quizElemId = MutApp.Util.getUniqId(6);
+
+        var qText = new MutAppProperty({
+            propertyString: 'id=pm quiz.'+quizElemId+'.question.text',
+            model: this,
+            application: this.application,
+            value: 'Your favourite music?'
+        });
+        var qImage = new MutAppProperty({
+            propertyString: 'id=pm quiz.'+quizElemId+'.question.questionImage',
+            model: this,
+            application: this.application,
+            value: 'i/questionImage.png'
+        });
+        var qBackgroundImage = new MutAppProperty({
+            propertyString: 'id=pm quiz.'+quizElemId+'.question.backgroundImage',
+            model: this,
+            application: this.application,
+            value: null
+        });
+        var qBackgroundColor = new MutAppProperty({
+            propertyString: 'id=pm quiz.'+quizElemId+'.question.backgroundColor',
+            model: this,
+            application: this.application,
+            value: '#ffffff'
+        });
+
+        var options = new MutAppPropertyDictionary({
+            model: this,
+            application: this.application,
+            propertyString: 'id=pm quiz.'+quizElemId+'.answer.options'
+        });
+
+        options.addElementByPrototype('id=pm proto_optionText', -1, {questionId: quizElemId});
+        options.addElementByPrototype('id=pm proto_optionText', -1, {questionId: quizElemId});
+        options.addElementByPrototype('id=pm proto_optionText', -1, {questionId: quizElemId});
+
+        // теперь из подготовленных объектов собираем целый объект-слайд
+        var element = {
+            // id for question will be generated
+            question: {
+                // атрибуты внутри используются для рендера uiTemplate
+                uiTemplate: 'id-question_text_photo_template',
+                text: qText,
+                questionImage: qImage,
                 backgroundImage: qBackgroundImage,
                 backgroundColor: qBackgroundColor
             },
@@ -789,7 +861,7 @@ var PersonalityModel = MutApp.Model.extend({
         });
 
         var option = {
-            id: MutApp.Util.getUniqId(6),
+            id: 'option_' + MutApp.Util.getUniqId(6),
             type: 'text',
             uiTemplate: 'id-option_text_template',
             text: optionText
@@ -839,6 +911,14 @@ var PersonalityModel = MutApp.Model.extend({
         var sum = 0;
         for (var i = 0; i < resultsValue.length; i++) {
             sum += res[resultsValue[i].id];
+        }
+
+        if (sum === 0) {
+            // если sum == 0, то привязок нет совсем, надо сделать равнозначные вероятности искусственно
+            for (var i = 0; i < resultsValue.length; i++) {
+                res[resultsValue[i].id] = 1;
+                sum += res[resultsValue[i].id];
+            }
         }
 
         // процентное соотношение баллов результата от всех возможных баллов в тесте

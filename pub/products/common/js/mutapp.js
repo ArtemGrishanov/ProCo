@@ -1181,6 +1181,10 @@ MutApp.prototype.isSmallWidth = function() {
 MutApp.prototype.trigger = function(eventType, data) {
     data = data || {};
     data.application = this;
+    if (this.onAppEvent) {
+        // у приложения которое напишет пользователь есть возможность определить функцию "onAppEvent" и обрабатывать события приложения там
+        this.onAppEvent(eventType, data);
+    }
     for (var j = 0; j < this._appChangeCallbacks.length; j++) {
         this._appChangeCallbacks[j](eventType, data);
     }
@@ -1350,6 +1354,14 @@ MutApp.prototype.isOK = function(param) {
 
         }
 
+    }
+
+    // модели могут определить свои проверки
+    for (var i = 0; i < this._models.length; i++) {
+        var m = this._models[i];
+        if (m.isOK) {
+            m.isOK.call(m);
+        }
     }
 
     console.log('MutApp.isOK: Checking finished. See qunit log or console for details.');

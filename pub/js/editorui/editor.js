@@ -1167,7 +1167,7 @@ var Editor = {};
                         var selectOptions = [];
                         for (var i = 0; i < pp.length; i++) {
                             selectOptions.push({
-                                id: pp[i].key,
+                                id: pp[i].protoFunction, // имя функции прототипа в виде ключа используется
                                 label: pp[i].label,
                                 icon: pp[i].img
                             });
@@ -1178,9 +1178,10 @@ var Editor = {};
                             options: selectOptions,
                             callback: (function(selectedOptionId) {
                                 if (selectedOptionId) {
+                                    // имя функции прототипа в виде ключа (selectedOptionId) используется
                                     for (var j = 0; j < pp.length; j++) {
-                                        if (pp[j].key == selectedOptionId) {
-                                            ap.addElementByPrototype(pp[j].getValue(), data.position);
+                                        if (pp[j].protoFunction == selectedOptionId) {
+                                            ap.addElementByPrototype(pp[j].protoFunction, data.position);
                                         }
                                     }
                                 }
@@ -1367,7 +1368,6 @@ var Editor = {};
     function showSelectDialog(params) {
         Workspace.selectElementOnAppScreen(null);
         hideWorkspaceHints();
-        $('#id-control_cnt').empty();
         var dialog = new SelectDialog(params);
         $('#id-dialogs_view').empty().append(dialog.view).show();
     }
@@ -1375,7 +1375,6 @@ var Editor = {};
     function showPublishDialog(params) {
         Workspace.selectElementOnAppScreen(null);
         hideWorkspaceHints();
-        $('#id-control_cnt').empty();
         var dialog = new PublishDialog(params);
         $('#id-dialogs_view').empty().append(dialog.view).show();
     }
