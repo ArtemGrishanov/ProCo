@@ -744,7 +744,7 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm quiz.'+quizElemId+'.question.questionImage',
             model: this,
             application: this.application,
-            value: 'i/questionImage.png'
+            value: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/ocean.jpg'
         });
         var qBackgroundImage = new MutAppProperty({
             propertyString: 'id=pm quiz.'+quizElemId+'.question.backgroundImage',
