@@ -41,8 +41,11 @@
             </div>
         </div>
     </div>
-    <div class="js-option_template" style="display:none">
+    <div class="js-option_text_template" style="display:none">
         <div class="pers_opt_item">{{option_name}}</div>
+    </div>
+    <div class="js-option_img_template" style="display:none">
+        <div class="pers_opt_item __img" style="background-image:url({{option_img}})"></div>
     </div>
     <div class="js-result_template" style="display:none">
         <div class="pers_res_item __linked_weak">
@@ -58,6 +61,10 @@
                     <div class="pers_res_hover_link_elem">
                         <div class="pers_res_icon __strong js-link_strong"></div>
                         <p>Сильная</p>
+                    </div>
+                    <div class="pers_res_hover_link_elem">
+                        <div class="pers_res_icon __delete js-link_delete"></div>
+                        <p>Нет</p>
                     </div>
                 </div>
             </div>

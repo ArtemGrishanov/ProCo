@@ -35,6 +35,11 @@ var PersonalityApp = MutApp.extend({
                     protoFunction: 'id=pm quizProto2', // функция в приложении, которая вернет новый объект
                     label: {RU:'Фото вопрос',EN:'Photo question'},
                     img: 'products/personality/i/editor/Icon-fotovopros.png'
+                },
+                {
+                    protoFunction: 'id=pm quizProto3', // функция в приложении, которая вернет новый объект
+                    label: {RU:'Фото ответы',EN:'Photo answers'},
+                    img: 'products/personality/i/editor/Icon-fotootvet.png'
                 }
             ],
             children: {
@@ -61,14 +66,26 @@ var PersonalityApp = MutApp.extend({
                 },
                 "id=pm quiz.{{id}}.answer.options": {
                     controls: ["AddDictionaryElementControl","DeleteDictionaryElementControl"],
-                    prototypes: [{
-                        protoFunction: 'id=pm proto_optionText',
-                        label: '',
-                        img: ''
-                }]
+                    prototypes: [
+                        {
+                            protoFunction: 'id=pm proto_optionText',
+                            label: '',
+                            img: ''
+                        },
+                        {
+                            protoFunction: 'id=pm proto_optionPhoto',
+                            label: '',
+                            img: ''
+                        }
+                    ]
                 },
                 "id=pm quiz.{{id}}.answer.options.{{id}}.text": {
                     controls: "TextQuickInput"
+                },
+                "id=pm quiz.{{id}}.answer.options.{{id}}.img": {
+                    label: {RU:'Картинка вопроса',EN:'Question image'},
+                    controls: 'ChooseImage',
+                    controlFilter: "onclick"
                 }
             }
         },
@@ -169,6 +186,16 @@ var PersonalityApp = MutApp.extend({
                 }
             }
         },
+        "id=pm questionProgressPosition": {
+            label: {},
+            controls: {
+                name: 'Drag',
+                    param: {
+                    // контейнер в котором будет происходить перетаскивание
+                    draggableParentSelector: '.js-logo_cnt'
+                }
+            }
+        },
         "id=pm logoPositionInResults": {
             label: {},
             controls: {
@@ -178,6 +205,11 @@ var PersonalityApp = MutApp.extend({
                     draggableParentSelector: '.js-logo_cnt'
                 }
             }
+        },
+        "id=pm showQuestionProgress": {
+            label: {RU:'Счетчик вопросов',EN:'Question number'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=questions)'
         },
         "id=pm showLogoInQuestions": {
             label: {RU:'Показывать лого в вопросах',EN:'Show logo on question screens'},
@@ -221,7 +253,7 @@ var PersonalityApp = MutApp.extend({
         },
         "id=pm logoUrl": {
             label: {RU: 'Логотип', EN: 'Logo'},
-            controls: 'StringControl',
+            controls: 'ChooseImage',
             controlFilter: 'always'
         },
 
@@ -483,5 +515,21 @@ var PersonalityApp = MutApp.extend({
                 break;
             }
         }
+    },
+
+    /**
+     * Определить dictionaryId вопроса, который пользователь в данный момент видит на экране
+     *
+     * @returns {string}
+     */
+    getCurrentQuestionDictionaryId: function() {
+        var pos = -1;
+        for (var i = 0; i < this._screens.length; i++) {
+            var scr = this._screens[i];
+            if (scr.isShowed === true && scr.dictionaryId) {
+                return scr.dictionaryId;
+            }
+        }
+        throw new Error('Personality.getCurrentQuestionDictionaryId: can not detect question dictionaryId');
     }
 });

@@ -7,6 +7,7 @@ var ScreenManager = {
     EVENT_ADD_SCREEN: 'ScreenManager.EVENT_ADD_SCREEN',
     EVENT_DELETE_SCREEN: 'ScreenManager.EVENT_DELETE_SCREEN',
     EVENT_CHANGE_POSITION: 'ScreenManager.EVENT_CHANGE_POSITION',
+    EVENT_CLONE_SCREEN: 'ScreenManager.EVENT_CLONE_SCREEN'
 };
 (function(global) {
 

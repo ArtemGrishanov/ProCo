@@ -173,6 +173,11 @@ Personality custom control
     margin-bottom: 14px;
     cursor: pointer;
 }
+.pers_opt_item.__img {
+    height: 140px;
+    background-size: cover;
+    background-position: center;
+}
 .pers_opt_item::before {
     display: none;
     content: '';
@@ -274,6 +279,9 @@ Personality custom control
 }
 .pers_res_icon.__strong {
     background-image: url('../i/icon-link-result-strong.png');
+}
+.pers_res_icon.__delete {
+    background-image: url('../i/icon-delete-link.png');
 }
 .pers_res_hover_link_elem {
     display: inline-block;

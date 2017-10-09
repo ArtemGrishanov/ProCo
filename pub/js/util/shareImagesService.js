@@ -124,7 +124,7 @@ var shareImageService = {};
      */
     function findImageInfo(entityId) {
         if (_generatedImages.length === 0) {
-            var app = Engine.getApp();
+            var app = Editor.getEditedApp();
             var entities = app._shareEntities;
             for (var i = 0; i < entities.length; i++) {
                 var e = entities[i];
@@ -161,7 +161,7 @@ var shareImageService = {};
     function _generateCanvases() {
         _generatedImages = [];
 
-        var app = Engine.getApp();
+        var app = Editor.getEditedApp();
         var entities = app._shareEntities;
         _activeTask.imagesCount = entities.length;
 

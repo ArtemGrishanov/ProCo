@@ -26,7 +26,8 @@ function PersonalityResultLinking(param) {
      * @type {string}
      * @private
      */
-    this._optionTempl = this.$directive.find('.js-option_template').html();
+    this._optionTextTempl = this.$directive.find('.js-option_text_template').html();
+    this._optionImgTempl = this.$directive.find('.js-option_img_template').html();
     /**
      * Строка из которой можно моздать карточку результата
      * @type {string}
@@ -68,10 +69,23 @@ PersonalityResultLinking.prototype.render = function() {
             for (var i = 0; i < quizArray.length; i++) {
                 var optionsArray = quizArray[i].answer.options.toArray();
                 for (var j = 0; j < optionsArray.length; j++) {
-                    $(this._optionTempl.replace('{{option_name}}',optionsArray[j].text.getValue()))
-                        .attr('data-option-id',optionsArray[j].id)
-                        .click(this.onOptionClick.bind(this))
-                        .appendTo($optCnt);
+                    if (optionsArray[j].text) {
+                        // текстовая опция
+                        $(this._optionTextTempl.replace('{{option_name}}', optionsArray[j].text.getValue()))
+                            .attr('data-option-id',optionsArray[j].id)
+                            .click(this.onOptionClick.bind(this))
+                            .appendTo($optCnt);
+                    }
+                    else if (optionsArray[j].img) {
+                        // опция-картинка
+                        $(this._optionImgTempl.replace('{{option_img}}',optionsArray[j].img.getValue()))
+                            .attr('data-option-id',optionsArray[j].id)
+                            .click(this.onOptionClick.bind(this))
+                            .appendTo($optCnt);
+                    }
+                    else {
+                        throw new Error('PersonalityResultLinking: unsupported option type');
+                    }
                 }
             }
             // создать резальтаты
@@ -85,6 +99,7 @@ PersonalityResultLinking.prototype.render = function() {
                 $re.mouseout(this.onResultMouseout.bind(this));
                 $re.find('.js-link_weak').click(this.onResultLinkWeak.bind(this));
                 $re.find('.js-link_strong').click(this.onResultLinkStrong.bind(this));
+                $re.find('.js-link_delete').click(this.onResultLinkDelete.bind(this));
             }
             // выделить одну из опций и показать привязки
             this.selectOption(this._selectedOptionId);
@@ -135,6 +150,20 @@ PersonalityResultLinking.prototype.onResultLinkStrong = function(event) {
     // если связка уже есть не добавлять повторно
     this.deleteResultLinksForOption(this._selectedOptionId, resultId);
     this.getOptionValue(this._selectedOptionId).strongLinks.push(resultId);
+    this.selectOption(this._selectedOptionId);
+    this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
+};
+
+/**
+ * Удалить все связи между опцией и результатом
+ * @param event
+ */
+PersonalityResultLinking.prototype.onResultLinkDelete = function(event) {
+    var resultId = $(event.currentTarget).parent().parent().parent().parent().attr('data-result-id');
+    console.log('resultId: '+resultId);
+    // если задается связь одного типа то надо удалить связь другого типа
+    // если связка уже есть не добавлять повторно
+    this.deleteResultLinksForOption(this._selectedOptionId, resultId);
     this.selectOption(this._selectedOptionId);
     this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
 };

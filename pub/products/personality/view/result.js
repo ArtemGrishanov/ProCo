@@ -144,6 +144,10 @@ var ResultScreen = MutApp.Screen.extend({
         this.model.bind("change:downloadButtonText", function () {
             this.render();
         }, this);
+
+        this.model.bind("change:logoUrl", function() {
+            this.render();
+        }, this);
     },
 
     render: function() {
@@ -161,7 +165,7 @@ var ResultScreen = MutApp.Screen.extend({
         // установка свойств логотипа
         var $l = this.$el.find('.js-result_logo');
         if (this.model.get('showLogoInResults').getValue() === true) {
-            $l.css('backgroundImage','url('+this.model.get('logoUrl')+')');
+            $l.css('backgroundImage','url('+this.model.get('logoUrl').getValue()+')');
             $l.css('top',this.model.get('logoPositionInResults').getValue().top+'px')
                 .css('left',this.model.get('logoPositionInResults').getValue().left+'px');
         }

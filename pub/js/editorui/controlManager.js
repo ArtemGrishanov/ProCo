@@ -330,18 +330,20 @@ var ControlManager = {
     /**
      * Проверить содержит ли экран элемент с атрибутом data-filter в котором есть propertyString
      *
-     * @param screen
-     * @param propertyString
+     * @param {MutApp.Screen} screen
+     * @param {string} propertyString
      * @returns {boolean}
      * @private
      */
     function _screenHasDataFilter(screen, propertyString) {
-        var dataFltrElm = screen.$el.find('[data-filter]');
-        dataFltrElm.push(screen.$el);
-        for (var i = 0; i < dataFltrElm.length; i++) {
-            var dataFltrStr = $(dataFltrElm[i]).attr('data-filter');
-            if (dataFltrStr && dataFltrStr.indexOf(propertyString) >= 0) {
-                return true;
+        if (screen && propertyString) {
+            var dataFltrElm = screen.$el.find('[data-filter]');
+            dataFltrElm.push(screen.$el);
+            for (var i = 0; i < dataFltrElm.length; i++) {
+                var dataFltrStr = $(dataFltrElm[i]).attr('data-filter');
+                if (dataFltrStr && dataFltrStr.indexOf(propertyString) >= 0) {
+                    return true;
+                }
             }
         }
         return false;

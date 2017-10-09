@@ -135,6 +135,12 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm showLogoInResults',
             value: true
         });
+        this.attributes.showQuestionProgress = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=pm showQuestionProgress',
+            value: true
+        });
         // свойство одно на все экраны с вопросами
         this.attributes.shadowEnableInQuestions = new MutAppProperty({
             application: this.application,
@@ -154,6 +160,12 @@ var PersonalityModel = MutApp.Model.extend({
             model: this,
             propertyString: 'id=pm logoUrl',
             value: '//s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg'
+        });
+        this.attributes.questionProgressPosition = new MutAppPropertyPosition({
+            application: this.application,
+            model: this,
+            value: {top: 30, left: 209},
+            propertyString: 'id=pm questionProgressPosition'
         });
         this.attributes.logoPositionInQuestions = new MutAppPropertyPosition({
             application: this.application,
@@ -668,22 +680,22 @@ var PersonalityModel = MutApp.Model.extend({
      */
     quizProto1: function() {
 
-        var quizElemId = MutApp.Util.getUniqId(6);
+        var questionDictionaryId = MutApp.Util.getUniqId(6);
 
         var qText = new MutAppProperty({
-            propertyString: 'id=pm quiz.'+quizElemId+'.question.text',
+            propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.text',
             model: this,
             application: this.application,
             value: 'Your favourite music?'
         });
         var qBackgroundImage = new MutAppProperty({
-            propertyString: 'id=pm quiz.'+quizElemId+'.question.backgroundImage',
+            propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.backgroundImage',
             model: this,
             application: this.application,
             value: null
         });
         var qBackgroundColor = new MutAppProperty({
-            propertyString: 'id=pm quiz.'+quizElemId+'.question.backgroundColor',
+            propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.backgroundColor',
             model: this,
             application: this.application,
             value: '#ffffff'
@@ -692,12 +704,12 @@ var PersonalityModel = MutApp.Model.extend({
         var options = new MutAppPropertyDictionary({
             model: this,
             application: this.application,
-            propertyString: 'id=pm quiz.'+quizElemId+'.answer.options'
+            propertyString: 'id=pm quiz.'+questionDictionaryId+'.answer.options'
         });
 
-        options.addElementByPrototype('id=pm proto_optionText', -1, {questionId: quizElemId});
-        options.addElementByPrototype('id=pm proto_optionText', -1, {questionId: quizElemId});
-        options.addElementByPrototype('id=pm proto_optionText', -1, {questionId: quizElemId});
+        options.addElementByPrototype('id=pm proto_optionText', -1, {questionDictionaryId: questionDictionaryId});
+        options.addElementByPrototype('id=pm proto_optionText', -1, {questionDictionaryId: questionDictionaryId});
+        options.addElementByPrototype('id=pm proto_optionText', -1, {questionDictionaryId: questionDictionaryId});
 
         // теперь из подготовленных объектов собираем целый объект-слайд
         var element = {
@@ -719,7 +731,7 @@ var PersonalityModel = MutApp.Model.extend({
         this._makeUidForQuizElement(element);
 
         return {
-            id: quizElemId,
+            id: questionDictionaryId,
             element: element
         };
     },
@@ -732,28 +744,28 @@ var PersonalityModel = MutApp.Model.extend({
      */
     quizProto2: function() {
 
-        var quizElemId = MutApp.Util.getUniqId(6);
+        var questionDictionaryId = MutApp.Util.getUniqId(6);
 
         var qText = new MutAppProperty({
-            propertyString: 'id=pm quiz.'+quizElemId+'.question.text',
+            propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.text',
             model: this,
             application: this.application,
             value: 'Your favourite music?'
         });
         var qImage = new MutAppProperty({
-            propertyString: 'id=pm quiz.'+quizElemId+'.question.questionImage',
+            propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.questionImage',
             model: this,
             application: this.application,
             value: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/ocean.jpg'
         });
         var qBackgroundImage = new MutAppProperty({
-            propertyString: 'id=pm quiz.'+quizElemId+'.question.backgroundImage',
+            propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.backgroundImage',
             model: this,
             application: this.application,
             value: null
         });
         var qBackgroundColor = new MutAppProperty({
-            propertyString: 'id=pm quiz.'+quizElemId+'.question.backgroundColor',
+            propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.backgroundColor',
             model: this,
             application: this.application,
             value: '#ffffff'
@@ -762,12 +774,12 @@ var PersonalityModel = MutApp.Model.extend({
         var options = new MutAppPropertyDictionary({
             model: this,
             application: this.application,
-            propertyString: 'id=pm quiz.'+quizElemId+'.answer.options'
+            propertyString: 'id=pm quiz.'+questionDictionaryId+'.answer.options'
         });
 
-        options.addElementByPrototype('id=pm proto_optionText', -1, {questionId: quizElemId});
-        options.addElementByPrototype('id=pm proto_optionText', -1, {questionId: quizElemId});
-        options.addElementByPrototype('id=pm proto_optionText', -1, {questionId: quizElemId});
+        options.addElementByPrototype('id=pm proto_optionText', -1, {questionDictionaryId: questionDictionaryId});
+        options.addElementByPrototype('id=pm proto_optionText', -1, {questionDictionaryId: questionDictionaryId});
+        options.addElementByPrototype('id=pm proto_optionText', -1, {questionDictionaryId: questionDictionaryId});
 
         // теперь из подготовленных объектов собираем целый объект-слайд
         var element = {
@@ -790,7 +802,70 @@ var PersonalityModel = MutApp.Model.extend({
         this._makeUidForQuizElement(element);
 
         return {
-            id: quizElemId,
+            id: questionDictionaryId,
+            element: element
+        };
+    },
+
+    /**
+     * Текст вопрос, фото-ответы
+     * Шаблон id-question_text_template
+     *
+     * @returns {}
+     */
+    quizProto3: function() {
+
+        var questionDictionaryId = MutApp.Util.getUniqId(6);
+
+        var qText = new MutAppProperty({
+            propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.text',
+            model: this,
+            application: this.application,
+            value: 'Your favourite picture?'
+        });
+        var qBackgroundImage = new MutAppProperty({
+            propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.backgroundImage',
+            model: this,
+            application: this.application,
+            value: null
+        });
+        var qBackgroundColor = new MutAppProperty({
+            propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.backgroundColor',
+            model: this,
+            application: this.application,
+            value: '#ffffff'
+        });
+
+        var options = new MutAppPropertyDictionary({
+            model: this,
+            application: this.application,
+            propertyString: 'id=pm quiz.'+questionDictionaryId+'.answer.options'
+        });
+
+        options.addElementByPrototype('id=pm proto_optionPhoto', -1, {questionDictionaryId: questionDictionaryId});
+        options.addElementByPrototype('id=pm proto_optionPhoto', -1, {questionDictionaryId: questionDictionaryId});
+
+        // теперь из подготовленных объектов собираем целый объект-слайд
+        var element = {
+            // id for question will be generated
+            question: {
+                // атрибуты внутри используются для рендера uiTemplate
+                uiTemplate: 'id-question_text_template',
+                text: qText,
+                backgroundImage: qBackgroundImage,
+                backgroundColor: qBackgroundColor
+            },
+            answer: {
+                // тип механики ответа: выбор только одной опции, и сразу происходит обработка ответа
+                type: 'radiobutton',
+                uiTemplate: 'id-answer_question_grid_2',
+                options: options
+            }
+        };
+        this._makeUidForQuizElement(element);
+
+        return {
+            id: questionDictionaryId,
             element: element
         };
     },
@@ -844,17 +919,25 @@ var PersonalityModel = MutApp.Model.extend({
 
     /**
      * Функция прототип для генерации текстовых опций ответа
+     * Надо указать questionDictionaryId, чтобы было понятно в какой именно вопрос теста добавляется опция
+     *
+     * @param {string} param.questionDictionaryId - например, 'fe1341a'
      */
     proto_optionText: function(param) {
+        param = param || {};
 
-        if (!param.questionId) {
-            throw new Error('PersonalityModel.proto_optionText: questionId does not specified');
+        // не удалось придумать нормально как передавать param.questionDictionaryId
+        // решил что будет определять по тому какой именно экран вопроса сейчас показан в редакторе
+        param.questionDictionaryId = param.questionDictionaryId || this.application.getCurrentQuestionDictionaryId();
+
+        if (!param.questionDictionaryId) {
+            throw new Error('PersonalityModel.proto_optionText: questionDictionaryId does not specified');
         }
 
         var optionId = MutApp.Util.getUniqId(6);
 
         var optionText = new MutAppProperty({
-            propertyString: 'id=pm quiz.'+param.questionId+'.answer.options.'+optionId+'.text',
+            propertyString: 'id=pm quiz.'+param.questionDictionaryId+'.answer.options.'+optionId+'.text',
             model: this,
             application: this.application,
             value: 'New option'
@@ -865,6 +948,44 @@ var PersonalityModel = MutApp.Model.extend({
             type: 'text',
             uiTemplate: 'id-option_text_template',
             text: optionText
+        };
+        return {
+            id: optionId,
+            element: option
+        };
+    },
+
+    /**
+     * Функция прототип для генерации фото опций
+     * Надо указать questionDictionaryId, чтобы было понятно в какой именно вопрос теста добавляется опция
+     *
+     * @param {string} param.questionDictionaryId - например, 'fe1341a'
+     */
+    proto_optionPhoto: function(param) {
+        param = param || {};
+
+        // не удалось придумать нормально как передавать param.questionDictionaryId
+        // решил что будет определять по тому какой именно экран вопроса сейчас показан в редакторе
+        param.questionDictionaryId = param.questionDictionaryId || this.application.getCurrentQuestionDictionaryId();
+
+        if (!param.questionDictionaryId) {
+            throw new Error('PersonalityModel.proto_optionPhoto: questionDictionaryId does not specified');
+        }
+
+        var optionId = MutApp.Util.getUniqId(6);
+
+        var optionImg = new MutAppProperty({
+            propertyString: 'id=pm quiz.'+param.questionDictionaryId+'.answer.options.'+optionId+'.img',
+            model: this,
+            application: this.application,
+            value: '//p.testix.me/images/products/common/i/image-sample1.jpg'
+        });
+
+        var option = {
+            id: 'option_' + MutApp.Util.getUniqId(6),
+            type: 'img',
+            uiTemplate: 'id-option_img_template',
+            img: optionImg
         };
         return {
             id: optionId,

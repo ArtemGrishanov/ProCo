@@ -61,9 +61,6 @@ Template.validAttributes = {
     previewUrl: null,
     appName: null, // имя промо-прототипа, например test timeline и так далее
     propertyValues: null,
-    // была идея сериализовать дескриптор тоже для того, чтобы у разных шаблонов были разные настройки
-    // но сложностей много и фича сомнительная
-    // descriptor: null,
     lastModified: null,
     publishDate: null
 };

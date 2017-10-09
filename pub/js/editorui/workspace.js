@@ -114,6 +114,9 @@ var Workspace = {
             $selection.css('left',eo.left+'px');
             $selection.css('width',$selectedElementOnAppScreen.outerWidth(false)-1+'px'); // false - not including margins
             $selection.css('height',$selectedElementOnAppScreen.outerHeight(false)-1+'px');
+            if (quickControlPanel.isShown() === true) {
+                quickControlPanel.updatePosition($selectedElementOnAppScreen);
+            }
         }
     }
 
@@ -253,14 +256,18 @@ var Workspace = {
      * Показать панельку с быстрыми контролами
      */
     function showQuickControlPanel() {
-        if ($selectedElementOnAppScreen && quickControlPanel.isShown() === false) {
-            // только если есть выделенный элемент, рядом с которым показывается панелька
-            quickControlPanel.show($selectedElementOnAppScreen);
-
-            if (_onEventsCallback) {
-                _onEventsCallback(Workspace.EVENET_QUICK_PANEL_SHOWED, {
-                    dataAppPropertyString: $selectedElementOnAppScreen ? $selectedElementOnAppScreen.attr('data-app-property'): null
-                });
+        if ($selectedElementOnAppScreen) {
+            if (quickControlPanel.isShown() === false) {
+                // только если есть выделенный элемент, рядом с которым показывается панелька
+                quickControlPanel.show($selectedElementOnAppScreen);
+                if (_onEventsCallback) {
+                    _onEventsCallback(Workspace.EVENET_QUICK_PANEL_SHOWED, {
+                        dataAppPropertyString: $selectedElementOnAppScreen ? $selectedElementOnAppScreen.attr('data-app-property'): null
+                    });
+                }
+            }
+            else {
+                quickControlPanel.updatePosition($selectedElementOnAppScreen);
             }
         }
     }

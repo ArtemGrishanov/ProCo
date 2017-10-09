@@ -123,6 +123,11 @@ var QuestionScreen = MutApp.Screen.extend({
             //this.render();
         }, this);
 
+        this.model.bind("change:questionProgressPosition", function () {
+            // спорно, можно рендерить а можно и нет. Есть плюсы и минусы у обоих подходов
+            //this.render();
+        }, this);
+
         this.model.bind("change:showLogoInQuestions", function () {
             this.render();
         }, this);
@@ -132,6 +137,14 @@ var QuestionScreen = MutApp.Screen.extend({
         }, this);
 
         this.model.bind("change:shadowEnableInQuestions", function () {
+            this.render();
+        }, this);
+
+        this.model.bind("change:showQuestionProgress", function () {
+            this.render();
+        }, this);
+
+        this.model.bind("change:logoUrl", function() {
             this.render();
         }, this);
 
@@ -176,11 +189,11 @@ var QuestionScreen = MutApp.Screen.extend({
 
         // счетчик текущего номера вопроса
         var $qp = this.$el.find('.js-question_progress');
-        if (this.model.get('showQuestionProgress') === true) {
+        if (this.model.get('showQuestionProgress').getValue() === true) {
             $qp.show()
                .text('Вопрос '+(this.currentQuestionIndex+1)+'/'+this.model.get('quiz').toArray().length);
-            $qp.css('top',this.model.get('questionProgressPosition').top+'px')
-               .css('left',this.model.get('questionProgressPosition').left+'px');
+            $qp.css('top',this.model.get('questionProgressPosition').getValue().top+'px')
+               .css('left',this.model.get('questionProgressPosition').getValue().left+'px');
         }
         else {
             $qp.hide();

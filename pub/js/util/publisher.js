@@ -122,7 +122,7 @@ var Publisher = {};
 
                 // удалим лишние параметры внутри приложения если они там есть
                 var indexRes = getResourceByUrl(indexPrefix+indexHtml);
-                indexRes.data = deleteOverridedAppParams(indexRes.data);
+                //indexRes.data = deleteOverridedAppParams(indexRes.data);
 
                 Queue.onComplete('overrideApp', function() {
                     log('Apps were overrided.');
@@ -182,7 +182,7 @@ var Publisher = {};
         embedCode = embedCode.replace('{{width}}', appWidth+'px')
             .replace('{{height}}', appHeight+'px')
             .replace('{{published}}', App.getUserData().id+'/'+publishedAppId)
-            .replace('{{custom_attributes}}',' '+projectCustomAttr);
+            .replace('{{custom_attributes}}', (projectCustomAttr) ? ' '+projectCustomAttr: '');
         return embedCode;
     }
 
@@ -336,15 +336,15 @@ var Publisher = {};
     /**
      * Удаляет из промо проекта перезаписанные параметры, если они там есть
      */
-    function deleteOverridedAppParams(str) {
-        var tags = config.common.tagsForOverridingParams;
-        var p1 = str.indexOf(tags[0]);
-        var p2 = str.indexOf(tags[1]);
-        if (p1 >= 0 && p2 >= 0) {
-            return str.replace(str.substring(p1,p2+tags[1].length),'');
-        }
-        return str;
-    }
+//    function deleteOverridedAppParams(str) {
+//        var tags = config.common.tagsForOverridingParams;
+//        var p1 = str.indexOf(tags[0]);
+//        var p2 = str.indexOf(tags[1]);
+//        if (p1 >= 0 && p2 >= 0) {
+//            return str.replace(str.substring(p1,p2+tags[1].length),'');
+//        }
+//        return str;
+//    }
 
     /**
      * Переписать параметры промо-приложения прототипа на новые, которые получились в результате редактирования
@@ -362,6 +362,10 @@ var Publisher = {};
                 if (match && match[1]) {
                     var positionToInsert = match.index+match[1].length;
 
+                    // раскомментить код запуска приложения
+                    indexResource.data = indexResource.data.replace('/*start_code','').replace('start_code*/','');
+
+                    // подставить default-параметры
                     overrideParamsStr = 'var DEFAULT_PARAMS = '+appStr+';';
                     indexResource.data = indexResource.data.slice(0,positionToInsert) + overrideParamsStr + indexResource.data.slice(positionToInsert);
                     //var overrideParamsStr = '\n'+config.common.tagsForOverridingParams[0]+'var o='+appStr+';'+'for(var key in o)if(o.hasOwnProperty(key))app[key]=o[key];'+config.common.tagsForOverridingParams[1]+'\n'

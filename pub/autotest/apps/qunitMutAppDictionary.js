@@ -120,6 +120,62 @@ QUnit.test("MutAppPropertyDictionary: basics 1", function( assert ) {
     assert.ok(arr1.getIdFromPosition(0) === undefined);
 });
 
+QUnit.test("MutAppPropertyDictionary: basics 2", function( assert ) {
+    var arr1 = new MutAppPropertyDictionary({
+        propertyString: 'arr1',
+        value: []
+    });
+    assert.ok(arr1.toArray().length === 0);
+
+    arr1.addElement('elem1');
+    arr1.addElement('elem2');
+
+    assert.ok(getOwnPropertiesCount(arr1.getValue()) === 2); // utils.js
+    assert.ok(arr1.toArray().length === 2);
+    assert.ok(arr1.toArray()[0] === 'elem1');
+    assert.ok(arr1.toArray()[1] === 'elem2');
+    assert.ok(typeof arr1.getIdFromPosition(0) === 'string');
+    assert.ok(typeof arr1.getIdFromPosition(1) === 'string');
+    assert.ok(arr1.getIdFromPosition(2) === undefined);
+    assert.ok(arr1.getValue()[arr1.getIdFromPosition(0)]  === 'elem1');
+    assert.ok(arr1.getValue()[arr1.getIdFromPosition(1)]  === 'elem2');
+
+    var elementIndex = 1;
+    var newElementIndex = 0
+    arr1.changePosition(elementIndex, newElementIndex);
+
+    assert.ok(getOwnPropertiesCount(arr1.getValue()) === 2);
+    assert.ok(arr1.toArray().length === 2);
+    assert.ok(arr1.toArray()[0] === 'elem2'); // changed!
+    assert.ok(arr1.toArray()[1] === 'elem1');
+    assert.ok(typeof arr1.getIdFromPosition(0) === 'string');
+    assert.ok(typeof arr1.getIdFromPosition(1) === 'string');
+    assert.ok(arr1.getIdFromPosition(2) === undefined);
+    assert.ok(arr1.getValue()[arr1.getIdFromPosition(0)]  === 'elem2'); // changed!
+    assert.ok(arr1.getValue()[arr1.getIdFromPosition(1)]  === 'elem1');
+
+    arr1.addElement('elem3');
+    arr1.addElement('elem4');
+    arr1.changePosition(0, 99);
+
+    assert.ok(arr1.toArray()[0] === 'elem1');
+    assert.ok(arr1.toArray()[1] === 'elem3');
+    assert.ok(arr1.toArray()[2] === 'elem4');
+    assert.ok(arr1.toArray()[3] === 'elem2');
+
+    arr1.changePosition(3, 1);
+    assert.ok(arr1.toArray()[0] === 'elem1');
+    assert.ok(arr1.toArray()[1] === 'elem2');
+    assert.ok(arr1.toArray()[2] === 'elem3');
+    assert.ok(arr1.toArray()[3] === 'elem4');
+    assert.ok(arr1.toArray().length === 4);
+    assert.ok(getOwnPropertiesCount(arr1.getValue()) === 4);
+    assert.ok(arr1.getValue()[arr1.getIdFromPosition(0)]  === 'elem1'); // changed!
+    assert.ok(arr1.getValue()[arr1.getIdFromPosition(1)]  === 'elem2');
+    assert.ok(arr1.getValue()[arr1.getIdFromPosition(2)]  === 'elem3');
+    assert.ok(arr1.getValue()[arr1.getIdFromPosition(3)]  === 'elem4');
+});
+
 /**
  * Delete elements in dictionary inside another dictionary
  */
@@ -335,5 +391,56 @@ QUnit.test("MutAppPropertyDictionary: dictionary operations in personality model
     assert.ok(app.getPropertiesBySelector('id=pm quiz.{{id}}.question.text') === null);
     // удалится не только последний элемент массива, но и свойство showLogo на экране вопроса
     assert.ok(originCount === app._mutappProperties.length);
+
+});
+
+QUnit.test("MutAppPropertyDictionary: dictionary getElementCopy", function( assert ) {
+
+    var app = new PersonalityApp({
+        mode: 'edit',
+        defaults: null
+    });
+    app.start();
+
+    var originCount = app._mutappProperties.length;
+
+    app.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
+    // увеличилось на одно суб свойство которое есть внутри элемента массива
+    var quizProperty = app.getPropertiesBySelector('id=pm quiz')[0].value;
+    assert.ok(quizProperty.toArray().length === 1);
+    assert.ok(MutApp.Util.isMutAppPropertyDictionary(quizProperty) === true);
+    assert.ok(app.getPropertiesBySelector('id=pm quiz.{{id}}.question.text').length === 1);
+    var quizTextProperty = app.model.attributes.quiz.toArray()[0].question.text;
+    assert.ok(app.getPropertiesBySelector(quizTextProperty.propertyString).length === 1, 'quizTextProperty.propertyString found in app');
+    // добавятся
+    // + id=pm quiz.0.question.text
+    // + id=pm quiz.0.question.backgroundColor
+    // + id=pm quiz.0.question.backgroundImage
+    // + id=pm quiz.0.answer.options
+    // + id=pm quiz.0.answer.options.0.text
+    // + id=pm quiz.0.answer.options.1.text
+    // + id=pm quiz.0.answer.options.2.text
+    assert.ok(originCount+7 === app._mutappProperties.length);
+
+    var clonedElement = app.model.attributes.quiz.getElementCopy(0);
+    assert.ok(MutApp.Util.deepCompare(clonedElement, app.model.attributes.quiz.toArray()[0]) === true, 'Compare info: ' + MutApp.Util.compareDetails.message);
+    app.model.attributes.quiz.addElement(clonedElement);
+
+    // увеличилось на одно суб свойство которое есть внутри элемента массива
+    var quizProperty = app.getPropertiesBySelector('id=pm quiz')[0].value;
+    var quizProperty0ElemId = quizProperty.getIdFromPosition(0);
+    assert.ok(quizProperty.toArray().length === 2);
+    assert.ok(MutApp.Util.isMutAppPropertyDictionary(quizProperty) === true);
+    assert.ok(app.getPropertiesBySelector('id=pm quiz.{{id}}.question.text').length === 2);
+    var quizTextProperty = app.model.attributes.quiz.toArray()[1].question.text;
+    assert.ok(app.getPropertiesBySelector(quizTextProperty.propertyString).length === 1, 'quizTextProperty.propertyString found in app');
+
+    // проверяем массив в массиве
+    var optionsProperty = app.getPropertiesBySelector('id=pm quiz.'+quizProperty0ElemId+'.answer.options')[0].value; // array in array
+    assert.ok(optionsProperty.toArray().length === 3);
+    assert.ok(MutApp.Util.isMutAppPropertyDictionary(optionsProperty) === true);
+    assert.ok(app.getPropertiesBySelector('id=pm quiz.{{id}}.answer.options').length === 2);
+    assert.ok(originCount+14 === app._mutappProperties.length);
+
 
 });

@@ -85,17 +85,6 @@ var Editor = {};
      */
     var WorkspaceOffset = null;
     /**
-     * Массив контролов и свойств AppProperty продукта
-     * @type {Array.<object>}
-     */
-    var uiControlsInfo = [
-        // Контрол определяется парой: appProperty+domElement
-        //   - одного appProperty не достаточно, так как для одного и того же appProperty на экранах или даже одном экране могут быть дублирующие элементы
-        // control
-        // appProperty
-        // domElement
-    ];
-    /**
      * Один контрол для управления экранами промо приложения
      * превью, управления порядком, добавление и удаление
      * @type {Array.<SlideGroupControl>}
@@ -109,11 +98,6 @@ var Editor = {};
      * @type {Array}
      */
     var activeTriggers = [];
-    /**
-     * Элемент внутри айФрейма куда добавляем экраны промо приложения
-     * @type {null}
-     */
-    var previewScreensIframeBody = null;
     /**
      *
      * @type {{width: number}}
@@ -131,16 +115,6 @@ var Editor = {};
      * @type {number}
      */
     var operationsCount = 0;
-    /**
-     * Html объект, рамка выделения
-     * @type {Array}
-     */
-    var $selectionBorder = null;
-    /**
-     * Выделенный элемент, вокруг которого рисуется рамка выделения $selectionBorder
-     * @type {null}
-     */
-    var selectedElem = null;
     /**
      * Функция колбек на запуск редактора
      * @type {function}
@@ -194,8 +168,8 @@ var Editor = {};
         resourceManager = new ResourceManager();
         window.onbeforeunload = confirmExit;
         $('.js-app_preview').click(onPreviewClick);
-        $('.js-app_publish').click(onPublishClick);
-        $('.js-app_save_template').click(saveTemplate);
+        $('.js-app_publish').click(onPublishClick.bind(this));
+        $('.js-app_save_template').click(onSaveTemplateClick.bind(this));
         $('.js-back_to_editor').click(onBackToEditorClick);
         $('#id-to_mob_preview').click(toMobPreview);
         $('#id-to_desktop_preview').click(toDesktopPreview);
@@ -212,7 +186,11 @@ var Editor = {};
             var t = getQueryParams(document.location.search)[config.common.templateUrlParamName] || param[config.common.templateUrlParamName];
             if (t) {
                 cloneTemplate = getQueryParams(document.location.search)[config.common.cloneParamName] === 'true' || param[config.common.cloneParamName] === 'true';
-                openTemplate(t, cloneTemplate);
+                openTemplate({
+                    templateUrl: t,
+                    clone: cloneTemplate,
+                    callback: loadApps
+                });
             }
             else {
                 // если ссылки на шаблон нет, то открываем по имени промо-проекта, если оно есть
@@ -595,14 +573,18 @@ var Editor = {};
     //    }
     //}
 
+    function onSaveTemplateClick() {
+        saveTemplate({
+            showLoadingPopup: true
+        });
+    }
+
     function onPublishClick() {
         if (App.getUserData() !== null) {
             Modal.showLoading();
-            // appId - уникальный ид проекта, например appId
-            var app = Engine.getApp();
             // сначала создать превью-картинки для шаринга, записать ссылки на них в приложение
             // и уже потом выкатывать приложение
-            createPreviewsForShare(function() {
+            //createPreviewsForShare(function() {
                 if (config.products[appName].customPublisherObject) {
                     activePublisher = window[config.products[appName].customPublisherObject];
                 }
@@ -610,22 +592,27 @@ var Editor = {};
                     activePublisher = Publisher;
                 }
                 // нужно дописать свойство "опубликованности" именно в опубликованное приложение
-                var appStr = Engine.serializeAppValues({
-                    addIsPublishedParam: true
-                });
+                var appStr = editedApp.serialize();
                 activePublisher.publish({
                     appId: appId,
                     appName: appName,
-                    width: app.width,
-                    height: app.height,
+                    width: editedApp.width,
+                    height: editedApp.height,
                     appStr: appStr,
-                    cssStr: Engine.getCustomStylesString(),
-                    promoIframe: editorLoader.getIframe(),
+                    cssStr: editedApp.getCssRulesString(),
+                    promoIframe: editorLoader.getIframe('id-product_iframe_cnt'),
                     baseProductUrl: config.products[appName].baseProductUrl,
                     //awsBucket: App.getAWSBucketForPublishedProjects(),
-                    callback: showEmbedDialog
+                    callback: function(publishResult) {
+                        // после каждой публикации автоматически сохраняем шаблон
+                        saveTemplate({
+                            callback: function() {
+                                showEmbedDialog(publishResult);
+                            }
+                        });
+                    }
                 });
-            });
+            //});
         }
         else {
             Modal.showLogin();
@@ -636,34 +623,36 @@ var Editor = {};
      * Сохранение проекта над которым работает пользователь
      * Сохраняет текущее состояние app+desc в сторадж
      *
-     * @param {boolean} showResultMessage - показывать ли сообщение после сохранения. Например при фоновом сохранении не надо
+     * @param {boolean} [param.showResultMessage] - показывать ли сообщение после сохранения. Например при фоновом сохранении не надо
+     * @param {boolean} [param.showLoadingPopup] - показывать ли всплывающую "крутилку"
+     * @param {function} [param.callback]
      */
-    function saveTemplate(showResultMessage) {
-        if (showResultMessage === undefined) {
-            showResultMessage = true;
-        }
-        //TODO автосохранение
-        //TODO возможно шифрование
+    function saveTemplate(param) {
+        param = param || {};
+        param.showResultMessage = (typeof param.showResultMessage === 'boolean') ? param.showResultMessage: false;
+        param.showLoadingPopup = (typeof param.showLoadingPopup === 'boolean') ? param.showLoadingPopup: false;
+
         if (App.getAWSBucket() !== null && App.getUserData() !== null) {
-            Modal.showLoading();
+            if (param.showLoadingPopup === true) {
+                Modal.showLoading();
+            }
             // параметры сохраняемого шаблона
-            var param = {
+            var templParam = {
                 id: appId,
                 appName: appName,
-                propertyValues: Engine.getAppPropertiesValues(),
-                descriptor: iframeWindow.descriptor,
+                propertyValues: editedApp.serialize(),
                 title: $('.js-proj_name').val()
             };
             if (sessionPublishDate) {
                 // если в процессе сессии была сделана публикация, то сохраняем дату
                 // иначе сохранять дату не надо
-                param.publishDate = sessionPublishDate;
+                templParam.publishDate = sessionPublishDate;
             }
             // если пользовательское - перезаписать урл и ничего не аплоадить (аплоадил пользователь раньше)
             // если не пользовательское то в любом случае запустить таску на генерацию а sessionPreviewUrl перезаписать путем
             if (sessionPreviewUrl && sessionPreviewUrl.indexOf(config.common.userCustomPreviewFileNamePrefix) >= 0) {
                 // превью пользовательское и было изменено в этой сессии, обновляем урл для записи
-                param.previewUrl = sessionPreviewUrl;
+                templParam.previewUrl = sessionPreviewUrl;
             } else if (appTemplate && appTemplate.previewUrl && appTemplate.previewUrl.indexOf(config.common.userCustomPreviewFileNamePrefix) >= 0) {
                 // превью пользовательское уже сохранено в шаблоне, то ничего делать не надо
                 // не предусмотрено удаление картинки превью, которое пользователь сам привязал к тесту
@@ -671,35 +660,41 @@ var Editor = {};
             else {
                 // превью автоматическое
                 // будет возвращен урл картинки, а сама таска на генерацию и аплоад сделана позже
-                sessionPreviewUrl = generateAutoPreview();
+                sessionPreviewUrl = generateAppAutoPreview();
                 if (sessionPreviewUrl) {
                     // если появился новый урл превью картинки то сохраняем его
-                    param.previewUrl = sessionPreviewUrl;
+                    templParam.previewUrl = sessionPreviewUrl;
                 }
             }
             var storingTempl = openedTemplateCollection.getById(appId);
             if (storingTempl === null) {
                 // это новый шаблон
                 // мы не открывали из своих шаблонов что-то, и не сохранили ранее ничего
-                storingTempl = new Template(param);
+                storingTempl = new Template(templParam);
                 openedTemplateCollection.add(storingTempl);
             }
-            storingTempl.set(param);
+            storingTempl.set(templParam);
             openedTemplateCollection.saveTemplate(function(result){
                 if (result === 'ok') {
-                    operationsCount = Engine.getOperationsCount();
-                    if (showResultMessage === true) {
+                    operationsCount = editedApp.getOperationsCount();
+                    if (param.showResultMessage === true) {
                         alert('Сохранено');
                     }
                     App.stat('Testix.me', 'Template_saved');
                 }
                 else {
-                    if (showResultMessage === true) {
+                    if (param.showResultMessage === true) {
                         alert('Не удалось сохранить проект');
                     }
+                    App.stat('Testix.me', 'Template_save_error');
+                }
+                if (param.callback) {
+                    param.callback();
                 }
                 if (!activePublisher || activePublisher.isPublishing() !== true) {
-                    Modal.hideLoading();
+                    if (param.showLoadingPopup === true) {
+                        Modal.hideLoading();
+                    }
                 }
             }, appId);
         }
@@ -726,7 +721,7 @@ var Editor = {};
                     } else {
                         alert('Превью для промки загружена');
                         sessionPreviewUrl = objKey;
-                        saveTemplate(false);
+                        saveTemplate();
                     }
                 }).bind(this));
             }
@@ -740,18 +735,27 @@ var Editor = {};
      * Создать таск на генерацию картинки превью
      * Генерация и аплоад будут сделаны позже, хотя урл возвращается сразу
      *
+     * @param {MutApp} [param.app] - опционально, будет использован editedApp по умолчанию
      * @return {string} - урл на превью картинки
      */
-    function generateAutoPreview() {
-        // проверяем что надо генеритьб првеью для проекта если только пользователь ранее не установил свое кастомное превью
+    function generateAppAutoPreview(param) {
+        param = param || {};
+        param = param.app || editedApp;
+        // проверяем что надо генерить првеью для проекта если только пользователь ранее не установил свое кастомное превью
         // его не надо перезаписывать
         if (config.common.previewAutoGeneration === true) {
-            var app = Engine.getApp();
             var url = 'facebook-'+App.getUserData().id+'/app/'+appId+'.jpg';
 
-            previewService.createInIframe(previewScreensIframeBody, function(canvas) {
-                s3util.uploadCanvas(App.getAWSBucket(), null, url, canvas);
-            }, null, [config.products.common.styles, config.products[app.type].stylesForEmbed], appContainerSize.width, appContainerSize.height);
+            previewService.createInIframe({
+                html: editedApp.getAutoPreviewHtml(),
+                stylesToEmbed: [config.products.common.styles, config.products[appName].stylesForEmbed],
+                cssString: editedApp.getCssRulesString(),
+                width: appContainerSize.width,
+                height: appContainerSize.height,
+                callback: function(canvas) {
+                    s3util.uploadCanvas(App.getAWSBucket(), null, url, canvas);
+                }
+            });
 
             return url;
         }
@@ -780,14 +784,12 @@ var Editor = {};
 
         if (App.getUserData() !== null) {
 
-            var app = Engine.getApp();
-            if (app._shareEntities && app._shareEntities.length > 0) {
+            if (editedApp._shareEntities && editedApp._shareEntities.length > 0) {
                 // генерация канвасов заново и аплоад их с получением урла
                 shareImageService.requestImageUrls((function(){
                     // перед публикацией переустановка всех урлов картинок для публикации
-                    var app = Engine.getApp();
                     for (var i = 0; i < app._shareEntities.length; i++) {
-                        var url = shareImageService.findImageInfo(app._shareEntities[i].id).imgUrl;
+                        var url = shareImageService.findImageInfo(editedApp._shareEntities[i].id).imgUrl;
                         var ps = config.common.shareImagesAppPropertyString.replace('{{number}}',i);
                         var ap = Engine.getAppProperty(ps);
                         Engine.setValue(ap, url);
@@ -846,19 +848,25 @@ var Editor = {};
      * По сути это функция "Открыть шаблон" из витрины или "Открыть мой ранее сохраненный проект". В этих случаях проект открывается на основе файла шаблона
      * сохраненных app+desc+appName
      *
-     * @param {string} templateUrl
-     * @param {boolean} clone - клонировать ли открываемый шаблон. Технически это просто смена appId
+     * @param {function} param.callback
+     * @param {string} param.templateUrl
+     * @param {boolean} param.clone - клонировать ли открываемый шаблон. Технически это просто смена appId
      */
-    function openTemplate(templateUrl, clone) {
+    function openTemplate(param) {
+        param = param || {};
+        param.clone = typeof param.clone === 'boolean' ? param.clone: false;
+        if (typeof param.templateUrl !== 'string') {
+            throw new Error('Editor.openTemplate: templateUrl not set');
+        }
         openedTemplateCollection = new TemplateCollection({
             // в ручную добавили в коллекцию один шаблон, останется только получить инфо о нем
-            templateUrls: [templateUrl]
+            templateUrls: [param.templateUrl]
         });
         openedTemplateCollection.loadTemplatesInfo(function(template) {
             if (template.isValid() === true) {
                 appTemplate = template;
                 appName = template.appName;
-                if (clone !== true) {
+                if (param.clone !== true) {
                     appId = template.id;
                     if (template.title) {
                         $('.js-proj_name').val(template.title);
@@ -871,7 +879,10 @@ var Editor = {};
                 }
                 serializedProperties = appTemplate.propertyValues;
                 // после загрузки шаблона надо загрузить код самого промо проекта
-                loadApps();
+                if (param.callback) {
+                    // можем передавать в колбек все загруженные свойства для консистентности. Автотесты используют это
+                    param.callback(template);
+                }
             }
             else {
                 log('Data not valid. Template url: \''+templateUrl+'\'', true);
@@ -1009,8 +1020,15 @@ var Editor = {};
         console.log('onWorkspaceEvents: event=' + event + ' dataAppPropertyString=' + data.dataAppPropertyString);
         switch (event) {
             case Workspace.EVENET_SELECT_ELEMENT: {
+                var ps = data.dataAppPropertyString ? data.dataAppPropertyString.split(',') : null;
+                if (ps) {
+                    // надо обязательно затримить пробелы по краям
+                    for (var i = 0; i < ps.length; i++) {
+                        ps[i] = ps[i].trim();
+                    }
+                }
                 ControlManager.filter({
-                    propertyStrings: data.dataAppPropertyString ? data.dataAppPropertyString.split(',') : null
+                    propertyStrings: ps
                 });
                 break;
             }
@@ -1203,12 +1221,22 @@ var Editor = {};
                 ap.deleteElement(data.position);
                 break;
             }
-            case ScreenManager.EVENY_CHANGE_POSITION: {
+            case ScreenManager.EVENT_CHANGE_POSITION: {
                 if (isNumeric(data.elementIndex) === false || isNumeric(data.newElementIndex) === false) {
                     throw new Error('onScreenEvents.EVENY_CHANGE_POSITION: invalid params');
                 }
                 var ap = editedApp.getProperty(data.propertyString);
                 ap.changePosition(data.elementIndex, data.newElementIndex);
+                break;
+            }
+            case ScreenManager.EVENT_CLONE_SCREEN: {
+                throw new Error('Editor.onScreenEvents(EVENT_CLONE_SCREEN): not implemented');
+//                todo были трудности, решил отложить
+//                var ap = editedApp.getProperty(data.propertyString);
+//                // копируем указанный элемент массива
+//                var newItem = ap.getElementCopy(data.elementIndex);
+//                // далее обычное добавление, но без выбора прототипа
+//                ap.addElement(newItem, clonedItemIndex+1);
                 break;
             }
         }
@@ -1248,7 +1276,6 @@ var Editor = {};
             });
             // надо сохранить статус публикации
             sessionPublishDate = new Date().toString();
-            saveTemplate(false);
         }
         else {
             Modal.showMessage({text: App.getText('publish_error')});
@@ -1469,5 +1496,6 @@ var Editor = {};
     global.getEditedApp = function() { return editedApp; }
     global.showEditor = showEditor;
     global.getActiveScreen = function() { return activeScreen; }
+    global.openTemplate = openTemplate;
 
 })(Editor);

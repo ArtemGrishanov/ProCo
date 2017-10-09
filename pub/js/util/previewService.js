@@ -59,37 +59,46 @@ var previewService = {};
      * Создать превью с помощью дополнительного iframe
      * Смысл в том чтобы изолировать html элемент со своими стилями
      *
-     * @param html
-     * @param callback
-     * @param type
-     * @param Array stylesToEmbed
-     * @param width ширина вью
-     * @param height высота вью
+     * @param {string} html
+     * @param {function} callback
+     * @param {string} [type]
+     * @param {Array<string>} stylesToEmbed - готовая ссылка на стили, например '<link href="products/common/css/tstx_cmn_products.css" rel="stylesheet"/>'
+     * @param {string} cssString - строка со стилями '.classname { color:#fff;... }'
+     * @param {number} width ширина вью
+     * @param {number} height высота вью
      */
-    function createInIframe(html, callback, type, stylesToEmbed, width, height) {
-        type = type || 'html2canvas';
+    function createInIframe(param) {
+        param = param || {};
+        param.type = param.type || 'html2canvas';
+        param.cssString = param.cssString || '';
+        param.stylesToEmbed = param.stylesToEmbed || [];
+        if (!param.html || !param.callback || !param.width || !param.height) {
+            throw new Error('PreviewService.createInIframe: one of param not set');
+        }
         var t = {
             run: function() {
-                if (type === 'html2canvas') {
+                if (param.type === 'html2canvas') {
                     // внутри iframe имеется собственный сервис previewService
                     var ps = $('#id-html_rasterization_iframe')[0].contentWindow.previewService;
                     var cnt = $('#id-html_rasterization_iframe').contents().find('#id-html_rasterization_cnt');
                     // стили от этого вью добавляем,
                     var $h = $("#id-html_rasterization_iframe").contents().find('head');
-                    for (var i = 0; i < stylesToEmbed.length; i++) {
-                        $h.append(stylesToEmbed[i]);
+                    for (var i = 0; i < param.stylesToEmbed.length; i++) {
+                        $h.append(param.stylesToEmbed[i]);
                     }
-                    // в превью контейнер дописать кастомные стили, которые получились в результате редактирования css appProperties
-                    Engine.writeCssRulesTo($("#id-html_rasterization_iframe").contents().find('body'));
+                    if (param.cssString) {
+                        // в превью контейнер дописать кастомные стили, которые получились в результате редактирования css appProperties
+                        writeCssTo('id-rast_styles', param.cssString, $("#id-html_rasterization_iframe").contents().find('body')); // utils.js
+                    }
                     // Обязательно display !== none
-                    var $cloned = $(html).clone().show();
-                    $("#id-html_rasterization_iframe").width(width).height(height);
-                    $(cnt).width(width).height(height).empty().append($cloned);
-                    // time fro browser to apply css styles
+                    var $cloned = $(param.html).clone().show();
+                    $("#id-html_rasterization_iframe").width(param.width).height(param.height);
+                    $(cnt).width(param.width).height(param.height).empty().append($cloned);
+                    // time for browser to apply css styles
                     setTimeout(function() {
                         html2canvas($cloned, {
                             onrendered: (function(canvas) {
-                                callback(canvas);
+                                param.callback(canvas);
                                 Queue.release(this);
                             }).bind(this),
                             background: '#eee',

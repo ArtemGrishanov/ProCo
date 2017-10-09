@@ -162,6 +162,7 @@
     left: 0;
     color: #444;
     margin: 20px auto;
+    z-index: 2; /* чуть выше остальных элементов для перетаскивания */
 }
 .topColontitle {
     margin: 0;

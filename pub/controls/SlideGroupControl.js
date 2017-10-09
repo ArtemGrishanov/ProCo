@@ -548,11 +548,13 @@ SlideGroupControl.prototype.addNewItem = function(position, newItem) {
 SlideGroupControl.prototype.cloneItem = function(itemId) {
     if (this.canClone === true) {
         var clonedItemIndex = this.getItemIndexById(itemId);
-        var ap = Engine.getAppProperty(this.propertyString);
-        // копируем указанный элемент массива
-        var newItem = ap.getArrayElementCopy(clonedItemIndex);
-        // далее обычное добавление, но без выбора прототипа
-        this.addNewItem(clonedItemIndex+1, newItem);
+        var eventData = {
+            propertyString: this.propertyString,
+            position: clonedItemIndex
+            //elementIndex: clonedItemIndex
+        };
+        // клонирование экрана не реализовано, используется простое добавление
+        this.additionalParam.onScreenEvents(/*ScreenManager.EVENT_CLONE_SCREEN*/ScreenManager.EVENT_ADD_SCREEN, eventData);
     }
 };
 SlideGroupControl.prototype.onInsertButtonClick = function(e) {
@@ -698,19 +700,5 @@ SlideGroupControl.prototype.arrangeViews = function() {
         if (this.draggingElementId !== this.items[i].attr('data-id')) {
             this.items[i].css('left',this.leftPositions[i]+'px');
         }
-    }
-};
-SlideGroupControl.prototype.onAddQuickButtonClick = function(e) {
-    var ap = Engine.getAppProperty(this.propertyString);
-    var pp = Engine.getPrototypesForAppProperty(ap);
-    if (pp && pp.length > 0) {
-        var protoIndex = params.prototypeIndex || 0;
-        Engine.addArrayElement(ap, pp[protoIndex].value);
-        if (ap.updateScreens === true) {
-            Editor.syncUIControlsToAppProperties();
-        }
-    }
-    else {
-        log('There is no prototypes for \''+this.propertyString+'\'', true);
     }
 };

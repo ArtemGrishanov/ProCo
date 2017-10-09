@@ -1330,6 +1330,21 @@ MutApp.prototype.getCssRulesString = function() {
     return cssStr;
 };
 /**
+ * Вернуть html для генерации превью проекта.
+ * Обычно это первый экран
+ * В редакторе из этого html генерируется canvas который потом аплоадится на сервер
+ *
+ * Клиентское приложение может опредеить свой вью, переписав функцию
+ *
+ * @returns {string}
+ */
+MutApp.prototype.getAutoPreviewHtml = function() {
+    if (this._screens.length > 0) {
+        return this._screens[0].$el.html();
+    }
+    return '';
+};
+/**
  * Проверить состояние и консистентность MutApp приложения
  *
  */
@@ -3108,6 +3123,33 @@ MutAppPropertyDictionary.prototype.addElement = function(element, position, newE
     this.setValue(nv);
 };
 /**
+ * Переместить элемент с одной позиции на другую
+ * @param {number} elementIndex текущий индекс элемента
+ * @param {number} newElementIndex новая позиция элемента
+ */
+MutAppPropertyDictionary.prototype.changePosition = function(elementIndex, newElementIndex) {
+    if (Number.isInteger(elementIndex) === false || elementIndex < 0 || elementIndex >= this._orderedIds.length) {
+        throw new Error('MutAppPropertyDictionary.changePosition: illegal elementIndex param');
+    }
+    if (Number.isInteger(newElementIndex) === false || newElementIndex < 0) {
+        throw new Error('MutAppPropertyDictionary.newElementIndex: illegal newElementIndex param');
+    }
+    if (newElementIndex >= this._orderedIds.length) {
+        newElementIndex = this._orderedIds.length-1;
+    }
+//    var t = this._orderedIds[newElementIndex];
+//    this._orderedIds[newElementIndex] = this._orderedIds[elementIndex];
+//    this._orderedIds[elementIndex] = t;
+    var movedElem = this._orderedIds.splice(elementIndex, 1)[0];
+    this._orderedIds.splice(newElementIndex, -1, movedElem);
+    // считается, что устанавливаем новый dictionary целиком
+    var nv = {};
+    for (var i = 0; i < this._orderedIds.length; i++) {
+        nv[this._orderedIds[i]] = this._value[this._orderedIds[i]];
+    }
+    this.setValue(nv);
+};
+/**
  * Удалить элемент массива по определеной позиции
  *
  * @param {number} position
@@ -3146,6 +3188,18 @@ MutAppPropertyDictionary.prototype.deleteElement = function(position) {
 MutAppPropertyDictionary.prototype.deleteElementById = function(dictionaryId) {
     var position = this.getPosition(dictionaryId);
     this.deleteElement(position);
+};
+/**
+ *
+ * @param {number} position
+ */
+MutAppPropertyDictionary.prototype.getElementCopy = function(position) {
+    if (Number.isInteger(position) === false || position < 0 || position >= this._orderedIds.length) {
+        throw new Error('MutApp.getElementCopy: illegal position');
+    }
+    var obj = this._serializeSubProperty(this._value[this._orderedIds[position]]);
+    this._deserializeSubProperty(obj);
+    return obj;
 };
 /**
  * Создать новый элемент из прототипа и сразу добавить его в массив

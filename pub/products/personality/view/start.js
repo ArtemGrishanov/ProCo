@@ -109,6 +109,9 @@ var StartScreen = MutApp.Screen.extend({
         this.model.bind("change:startScreenBackgroundImg", function() {
             this.render();
         }, this);
+        this.model.bind("change:logoUrl", function() {
+            this.render();
+        }, this);
         this.shadowEnable.bind('change', function() {
             this.render();
         }, this);

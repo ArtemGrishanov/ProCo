@@ -86,8 +86,8 @@
     <script id="id-option_img_template" type="text/template">
         <div class="question_grid-i" data-id="<%=id%>">
             <img data-id="<%=id%>" data-question-index="<%=currentQuestionIndex%>" data-dictionary-id="<%=currentOptionIndex%>" data-control-filter="filter=ok,prototypeIndex=1" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.answer.options, id=pm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.img" class="question_img" src="<%=img%>" />
+            <div class="link_icon js-result_link" style="display:none" data-app-property="id=pm resultLinking"></div>
         </div>
-        <div class="link_icon js-result_link" style="display:none" data-app-property="id=pm resultLinking"></div>
     </script>
 
     <script id="id-result_template" type="text/template">
@@ -95,7 +95,13 @@
             <div class="modal_cnt info js-back_shadow js-logo_cnt">
                 <div class="info_title js-result_title" data-app-property="id=pm results.<%=currentResultIndex%>.title"><%=title%></div>
                 <div class="info_tx js-result_description" data-app-property="id=pm results.<%=currentResultIndex%>.description"><%=description%></div>
-                <!--<div class="js-mutapp_share_fb fb_share" data-app-property="type=results fbSharePosition"></div>-->
+                <!--<div class="js-mutapp_share_fb fb_share" data-app-property="id=pm fbSharePosition"></div>-->
+                <div class="info_f js-download_btn_wr">
+                    <div class="button js-download_btn" data-app-property="id=pm downloadButtonText">Скачать</div>
+                </div>
+                <div class="info_f js-btn_wr js-restart_btn_wr">
+                    <div class="button js-next js-restart js-test_btn" data-app-property="id=pm restartButtonText">Пройти тест еще раз</div>
+                </div>
                 <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="id=pm fbSharingPosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
                     <span class="tstx_share_i"></span>
                     Поделиться
@@ -103,12 +109,6 @@
                 <div class="tstx_share_btn __vk js-mutapp_share_vk" data-app-property="id=pm vkSharingPosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
                     <span class="tstx_share_i __vk"></span>
                     Поделиться
-                </div>
-                <div class="info_f js-btn_wr js-restart_btn_wr">
-                    <div class="button js-next js-restart js-test_btn" data-app-property="type=results restartButtonText">Пройти тест еще раз</div>
-                </div>
-                <div class="info_f js-download_btn_wr">
-                    <div class="button js-download_btn" data-app-property="type=results downloadButtonText">Скачать</div>
                 </div>
                 <div class="logo js-logo js-result_logo" data-app-property="id=pm logoPositionInResults, id=pm showLogoInResults, id=pm logoUrl"></div>
             </div>
@@ -128,15 +128,16 @@
     <script type="text/javascript" src="app.js"></script>
     <!-- endbuild -->
     <script>
-//        var app = null;
-//        var tests = {};
-//        $(document).ready(function() {
-//            var DEFAULT_PARAMS = {};
-//            app = new PersonalityApp({
-//                defaults: DEFAULT_PARAMS
-//            });
-//            app.start();
-//        });
+        /*start_code
+        var app = null;
+        $(document).ready(function() {
+            var DEFAULT_PARAMS = {};
+            app = new PersonalityApp({
+                defaults: DEFAULT_PARAMS
+            });
+            app.start();
+        });
+         start_code*/
     </script>
 </body>
 </html>
