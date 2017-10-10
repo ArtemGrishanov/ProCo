@@ -859,7 +859,7 @@ var Editor = {};
                 inspector.isOK();
                 event.preventDefault();
             }
-            return false;
+            //return false;
         });
     }
 
@@ -1112,13 +1112,20 @@ var Editor = {};
                 var ap = editedApp.getProperty(data.propertyString);
                 // по умолчанию добавляем в конец
                 var position = ap.getValue().length;
-                if (ap.prototypes.length > 1) {
-                    // требуется участие пользователя чтобы сделать выбор прототипа
-                    throw new Error('Editor.onControlEvents(EVENT_DICTIONARY_ADD_REQUESTED): not developed yet');
+                // может быть прислан контролом уже имя прототипа, чтобы не приходилось выбирать
+                if (typeof data.prototypeName === 'string') {
+                    // берется из атрибута data-prototype-name если имеется такой атрибут
+                    ap.addElementByPrototype(data.prototypeName, position);
                 }
                 else {
-                    // прототип один сразу добавляем
-                    ap.addElementByPrototype(ap.prototypes[0].protoFunction, position);
+                    if (ap.prototypes.length > 1) {
+                        // требуется участие пользователя чтобы сделать выбор прототипа
+                        throw new Error('Editor.onControlEvents(EVENT_DICTIONARY_ADD_REQUESTED): not developed yet');
+                    }
+                    else {
+                        // прототип один сразу добавляем
+                        ap.addElementByPrototype(ap.prototypes[0].protoFunction, position);
+                    }
                 }
                 break;
             }

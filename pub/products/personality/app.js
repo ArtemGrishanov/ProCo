@@ -570,11 +570,12 @@ var PersonalityApp = MutApp.extend({
                 visualizationData.push([r.title.getValue(), Math.round(prbs[resultId]*100)]);
             }
         }
-        var visualizationTitle = '{EN:\'Result propabilities\',RU:\'Вероятности результатов\'}';
+        //var visualizationTitle = '{EN:\'Result propabilities\',RU:\'Вероятности результатов\'}';
+        var visualizationTitle = 'Result propabilities';
         var visualizationType = 'PieChart';
         res.push({
             type: 'info',
-            message: msg,
+            message: 'Below you can see result probabilities based on your option links',
             html: null,
             visualization: {
                 data: visualizationData,
@@ -586,16 +587,24 @@ var PersonalityApp = MutApp.extend({
         // ==========================================
         // Информация о не связанных ни с чем опций
         // ==========================================
-        var msg = '';
         var resultLinkingArr = this.model.attributes.resultLinking.toArray();
         for (var k = 0; k < resultLinkingArr.length; k++) {
             var rl = resultLinkingArr[k];
             if (rl.strongLinks.length === 0 && rl.weakLinks.length === 0) {
-                var optName = this.model.getOptionById(rl.optionId).text || '';
-                res.push({
-                    type: 'warning',
-                    message: '{EN:\'Option \''+optName+'\' has no result links\',RU:\'Ответ \''+optName+'\' не имеет привязок ни к одному из результатов\'}'
-                });
+                var opt = this.model.getOptionById(rl.optionId);
+                if (opt.text) {
+                    res.push({
+                        type: 'warning',
+                        message: 'Option \''+opt.text.getValue()+'\' has no result links. Perhaps, you forgot to link it to result.'
+                    });
+                }
+                else if (opt.img) {
+                    res.push({
+                        type: 'warning',
+                        message: 'Image option has no result links. Perhaps, you forgot to link it to result.',
+                        html: '<img src="'+opt.img.getValue()+'" width="200px" height="200px"/>'
+                    });
+                }
             }
         }
 

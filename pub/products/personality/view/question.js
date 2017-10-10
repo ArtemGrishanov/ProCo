@@ -148,6 +148,14 @@ var QuestionScreen = MutApp.Screen.extend({
             this.render();
         }, this);
 
+        q.question.backgroundImage.bind('change', function() {
+            this.render();
+        }, this);
+
+        q.question.backgroundColor.bind('change', function() {
+            this.render();
+        }, this);
+
         // Подписка с помощью backbone не получится
         // возможно подписаться только вот так на само MutAppPropertyArray свойство
         q.answer.options.bind('change', function() {
@@ -158,13 +166,16 @@ var QuestionScreen = MutApp.Screen.extend({
             //this.renderAnswers(q.answer);
         }, this);
 
-        q.question.backgroundImage.bind('change', function() {
-            this.render();
-        }, this);
-
-        q.question.backgroundColor.bind('change', function() {
-            this.render();
-        }, this);
+        // на изменение опций картинок надо подписаться
+        var optionsArr = q.answer.options.toArray();
+        for (var i = 0; i < optionsArr.length; i++) {
+            if (optionsArr[i].img) {
+                optionsArr[i].img.bind('change', function() {
+                    console.log('Img option changed');
+                    this.render();
+                }, this);
+            }
+        }
     },
 
     render: function() {
@@ -252,6 +263,16 @@ var QuestionScreen = MutApp.Screen.extend({
                 this.$el.find('.js-answer_cnt').empty().append($ea);
                 var optionsArr = answerData.options.toArray();
                 for (var i = 0; i < optionsArr.length; i++) {
+
+//                    if (!optionsArr[i].prototypeName) {
+//                        if (optionsArr[i].text) {
+//                            optionsArr[i].prototypeName = 'id=pm proto_optionText';
+//                        }
+//                        if (optionsArr[i].img) {
+//                            optionsArr[i].prototypeName = 'id=pm proto_optionPhoto';
+//                        }
+//                    }
+
                     var o = MutApp.Util.getObjectForRender(optionsArr[i]);
                     if (o.uiTemplate) {
                         o.currentQuestionIndex = this.dictionaryId;

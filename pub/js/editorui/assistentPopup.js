@@ -22,32 +22,32 @@ var AssistentPopup = {};
         _onContinueCallback = param.continueCallback;
         _onCloseCallback = param.closeCallback;
         _$messagesCnt = $('#id-assistent_cnt');
-        _view = $('#id-assistent');
-        _view.hide();
-        _view.find('.js-close').click(_onCloseClick.bind(this));
-        _view.find('.js-cancel').click(_onCloseClick.bind(this));
-        _view.find('.js-continue').click(_onContinueClick.bind(this));
+        _$view = $('#id-assistent');
+        _$view.hide();
+        _$view.find('.js-close').click(_onCloseClick.bind(this));
+        _$view.find('.js-cancel').click(_onCloseClick.bind(this));
+        _$view.find('.js-continue').click(_onContinueClick.bind(this));
     }
 
     /**
      * Установить подсказки в диалог
      *
-     * @param {Array} data
+     * @param {Array} messages
      */
-    function setMessages(data) {
+    function setMessages(messages) {
         _$messagesCnt.empty();
-        for (var i = 0; i < data.length; i++) {
-            var m = data[i];
-            // data.type
-            // data.html
-            // data.message
-            // data.visualization
+        for (var i = 0; i < messages.length; i++) {
+            var m = messages[i];
+            // m.type
+            // m.html
+            // m.message
+            // m.visualization
             //todo localization
             if (m.message) {
                 $('<p>'+m.message+'</p>').appendTo(_$messagesCnt);
             }
             if (m.html) {
-                $('<p></p>').html().appendTo(_$messagesCnt);
+                $('<p></p>').html(m.html).appendTo(_$messagesCnt);
             }
             if (m.visualization && m.visualization.type && m.visualization.data) {
                 if (SUPPORTED_VISUALIZATION_TYPES.indexOf(m.visualization.type) >= 0) {
@@ -56,7 +56,7 @@ var AssistentPopup = {};
                         title: m.visualization.title || ''
                     };
                     var chartid = m.visualization.type+'_'+getUniqId();
-                    $('<div id="'+id+'"></div>').html().appendTo(_$messagesCnt);
+                    $('<div id="'+chartid+'"></div>').appendTo(_$messagesCnt);
                     var chart = new google.visualization[m.visualization.type](document.getElementById(chartid));
                     chart.draw(data, options);
                 }
@@ -75,21 +75,21 @@ var AssistentPopup = {};
     function show(param) {
         param = param || {};
         if (param.showContinueButton === true) {
-            _view.find('.js-cancel').show();
-            _view.find('.js-continue').show();
+            _$view.find('.js-cancel').show();
+            _$view.find('.js-continue').show();
         }
         else {
-            _view.find('.js-cancel').hide();
-            _view.find('.js-continue').hide();
+            _$view.find('.js-cancel').hide();
+            _$view.find('.js-continue').hide();
         }
-        _view.show();
+        _$view.show();
     }
 
     /**
      * Скрытие
      */
     function hide() {
-        _view.hide();
+        _$view.hide();
     }
 
     /**
@@ -98,14 +98,14 @@ var AssistentPopup = {};
      * @returns {boolean}
      */
     function isShown() {
-        return _view.css('display') === 'block';
+        return _$view.css('display') === 'block';
     }
 
     /**
      * Клик на кнопку закрытия
      */
     function _onCloseClick() {
-        this.hide();
+        hide();
         if (_onCloseCallback) {
             _onCloseCallback();
         }
@@ -115,9 +115,9 @@ var AssistentPopup = {};
      * Клик на кнопку закрытия
      */
     function _onContinueClick() {
-        this.hide();
-        if (_onContinueClick) {
-            _onContinueClick();
+        hide();
+        if (_onContinueCallback) {
+            _onContinueCallback();
         }
     }
 

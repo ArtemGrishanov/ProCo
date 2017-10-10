@@ -24,5 +24,14 @@ AddDictionaryElementControl.prototype.destroy = function() {
 };
 
 AddDictionaryElementControl.prototype.onAddQuickButtonClick = function() {
-    this.controlEventCallback(ControlManager.EVENT_DICTIONARY_ADD_REQUESTED, this);
+    /**
+     * Возможность указать имя прототипа для свойства, чтобы не приходилось выбирать.
+     * Например если на слайде текстовые опции то логично добавлять только текстовые прототипы, а не фото
+     * Клиентское приложение может выставлять такой атрибут при рендере
+     * @type {string}
+     */
+    var defaultPrototypeName = this.$productDomElements[0].attr('data-prototype-name') || null;
+    this.controlEventCallback(ControlManager.EVENT_DICTIONARY_ADD_REQUESTED, this, {
+        prototypeName: defaultPrototypeName
+    });
 };

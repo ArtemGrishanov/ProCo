@@ -269,15 +269,16 @@ var PersonalityModel = MutApp.Model.extend({
                 var linksArrays = [rl.strongLinks, rl.weakLinks];
                 while (linksArrays.length > 0) {
                     var larr = linksArrays.shift();
-                    for (var k = 0; k < larr;) {
+                    for (var k = 0; k < larr.length;) {
                         var resultId = larr[k];
                         var res = this.getResultById(resultId)
                         if (res) {
                             k++;
                         }
                         else {
-                            // todo проверить будет ли такое удаление работать (это же результат вызова toArray)
-                            rl.strongLinks.splice(k, 1)
+                            // проверить будет ли такое удаление работать (это же результат вызова toArray)
+                            // проверил - работает!
+                            rl.strongLinks.splice(k, 1);
                         }
                     }
                 }
@@ -947,7 +948,8 @@ var PersonalityModel = MutApp.Model.extend({
             id: 'option_' + MutApp.Util.getUniqId(6),
             type: 'text',
             uiTemplate: 'id-option_text_template',
-            text: optionText
+            text: optionText,
+            prototypeName: 'id=pm proto_optionText'
         };
         return {
             id: optionId,
@@ -985,7 +987,8 @@ var PersonalityModel = MutApp.Model.extend({
             id: 'option_' + MutApp.Util.getUniqId(6),
             type: 'img',
             uiTemplate: 'id-option_img_template',
-            img: optionImg
+            img: optionImg,
+            prototypeName: 'id=pm proto_optionPhoto'
         };
         return {
             id: optionId,

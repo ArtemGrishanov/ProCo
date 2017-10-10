@@ -148,6 +148,8 @@ var inspector = {};
 //        assert.ok(ctrls.length === 1 && ctrls[0].$productDomElement);
 //        assert.ok($.contains(scrQuestion0.$el[0], ctrls[0].$productDomElement[0]) === true);
 
+        app.isOK(assert);
+
         console.log('Inspector.isOK: checking finished. See qunit log or console for details.');
     }
 
