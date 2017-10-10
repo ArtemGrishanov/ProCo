@@ -165,6 +165,9 @@ var Editor = {};
         ControlManager.init({
             onControlEvents: onControlEvents
         });
+        AssistentPopup.init({
+            continueCallback: onAssistenContinue
+        });
         resourceManager = new ResourceManager();
         window.onbeforeunload = confirmExit;
         $('.js-app_preview').click(onPreviewClick);
@@ -581,42 +584,60 @@ var Editor = {};
 
     function onPublishClick() {
         if (App.getUserData() !== null) {
-            Modal.showLoading();
-            // сначала создать превью-картинки для шаринга, записать ссылки на них в приложение
-            // и уже потом выкатывать приложение
-            //createPreviewsForShare(function() {
-                if (config.products[appName].customPublisherObject) {
-                    activePublisher = window[config.products[appName].customPublisherObject];
-                }
-                else {
-                    activePublisher = Publisher;
-                }
-                // нужно дописать свойство "опубликованности" именно в опубликованное приложение
-                var appStr = editedApp.serialize();
-                activePublisher.publish({
-                    appId: appId,
-                    appName: appName,
-                    width: editedApp.width,
-                    height: editedApp.height,
-                    appStr: appStr,
-                    cssStr: editedApp.getCssRulesString(),
-                    promoIframe: editorLoader.getIframe('id-product_iframe_cnt'),
-                    baseProductUrl: config.products[appName].baseProductUrl,
-                    //awsBucket: App.getAWSBucketForPublishedProjects(),
-                    callback: function(publishResult) {
-                        // после каждой публикации автоматически сохраняем шаблон
-                        saveTemplate({
-                            callback: function() {
-                                showEmbedDialog(publishResult);
-                            }
-                        });
-                    }
+            var appMsg = editedApp.getStatus();
+            if (appMsg && appMsg.length > 0) {
+                // если у приложения есть какая-то важная информация, то надо показать ее перед публикацией
+                AssistentPopup.setMessages(editedApp.getStatus());
+                AssistentPopup.show({
+                    showContinueButton: true
                 });
-            //});
+            }
+            else {
+                publish();
+            }
         }
         else {
             Modal.showLogin();
         }
+    }
+
+    function onAssistenContinue() {
+        publish();
+    }
+
+    function publish() {
+        Modal.showLoading();
+        // сначала создать превью-картинки для шаринга, записать ссылки на них в приложение
+        // и уже потом выкатывать приложение
+        //createPreviewsForShare(function() {
+        if (config.products[appName].customPublisherObject) {
+            activePublisher = window[config.products[appName].customPublisherObject];
+        }
+        else {
+            activePublisher = Publisher;
+        }
+        // нужно дописать свойство "опубликованности" именно в опубликованное приложение
+        var appStr = editedApp.serialize();
+        activePublisher.publish({
+            appId: appId,
+            appName: appName,
+            width: editedApp.width,
+            height: editedApp.height,
+            appStr: appStr,
+            cssStr: editedApp.getCssRulesString(),
+            promoIframe: editorLoader.getIframe('id-product_iframe_cnt'),
+            baseProductUrl: config.products[appName].baseProductUrl,
+            //awsBucket: App.getAWSBucketForPublishedProjects(),
+            callback: function(publishResult) {
+                // после каждой публикации автоматически сохраняем шаблон
+                saveTemplate({
+                    callback: function() {
+                        showEmbedDialog(publishResult);
+                    }
+                });
+            }
+        });
+        //});
     }
 
     /**

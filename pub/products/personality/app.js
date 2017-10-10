@@ -531,5 +531,63 @@ var PersonalityApp = MutApp.extend({
             }
         }
         throw new Error('Personality.getCurrentQuestionDictionaryId: can not detect question dictionaryId');
+    },
+
+    /**
+     * Информация о приложении
+     *
+     * Для локализации слежует использовать конструкции вида:
+     * {EN: '', RU: ''}
+     */
+    getStatus: function() {
+        var res = [];
+
+        // ==========================================
+        // Информация о распределении результатов
+        // ==========================================
+        var prbs = this.model.getResultProbabilities();
+        // специальный табличный формат данных требуемый по https://developers.google.com/chart/interactive/docs/gallery/piechart
+        var visualizationData = [
+            ['Result', 'Probability']
+            // ['Work',     11],
+            // ['Eat',      2],
+        ];
+        for (var resultId in prbs) {
+            if (prbs.hasOwnProperty(resultId) === true) {
+                var r = this.model.getResultById(resultId);
+                //msg += 'Результат: \''+ r.title.getValue()+'\': '+Math.round(prbs[resultId]*100)+'%<br>';
+                visualizationData.push([r.title.getValue(), Math.round(prbs[resultId]*100)]);
+            }
+        }
+        var visualizationTitle = '{EN:\'Result propabilities\',RU:\'Вероятности результатов\'}';
+        var visualizationType = 'PieChart';
+        res.push({
+            type: 'info',
+            message: msg,
+            html: null,
+            visualization: {
+                data: visualizationData,
+                title: visualizationTitle,
+                type: visualizationType
+            }
+        });
+
+        // ==========================================
+        // Информация о не связанных ни с чем опций
+        // ==========================================
+        var msg = '';
+        var resultLinkingArr = this.model.attributes.resultLinking.toArray();
+        for (var k = 0; k < resultLinkingArr.length; k++) {
+            var rl = resultLinkingArr[k];
+            if (rl.strongLinks.length === 0 && rl.weakLinks.length === 0) {
+                var optName = this.model.getOptionById(rl.optionId).text || '';
+                res.push({
+                    type: 'warning',
+                    message: '{EN:\'Option \''+optName+'\' has no result links\',RU:\'Ответ \''+optName+'\' не имеет привязок ни к одному из результатов\'}'
+                });
+            }
+        }
+
+        return res;
     }
 });

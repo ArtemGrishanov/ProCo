@@ -152,6 +152,24 @@
         </div>
     </div>
 
+    <div id="id-assistent" class="modal_wr popup_cnt" style="display: none;">
+        <div class="modal_wr">
+            <div class="select_dialog_back">
+                <div class="select_dialog_caption">
+                    <span class="js-caption pts_string pts_hints">Подсказки</span>
+                </div>
+                <div id="id-assistent_cnt" class="select_dialog_options_cnt">
+                    <!-- сюда добавляется информация -->
+                </div>
+                <div class="select_dialog_button_cnt">
+                    <span class="pbtn js-cancel pts_string pts_cancel">Отмена</span>
+                    <span class="pbtn __blue js-continue pts_string pts_cont">Продолжить</span>
+                </div>
+                <div class="close_dialog_btn __grey js-close"></div>
+            </div>
+        </div>
+    </div>
+
     <div id="id-dialogs_view" class="scr_dialog" style="display: none;">
         <!-- для показа диалогов поверх остальных вью -->
     </div>
@@ -392,7 +410,12 @@
     <script type="text/javascript" src="js/editorui/popupControlPanel.js"></script>
     <script type="text/javascript" src="js/editorui/editor.js"></script>
     <script type="text/javascript" src="js/editorui/inspector.js"></script>
+    <script type="text/javascript" src="js/editorui/assistentPopup.js"></script>
     <!-- endbuild -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+    </script>
     <script>
         $(document).ready(function() {
             if (config.common.facebookAuthEnabled === true) {
