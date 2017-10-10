@@ -18,11 +18,9 @@ function StringControl(param) {
      * Событие при нажатии Enter
      */
     this.onInputKeyUp = function(e) {
-        if (this.changeOnTimer !== true) {
-            if (e.keyCode == 13) {
-                this.checkValue();
-            }
-        }
+        //if (e.keyCode == 13) {
+        this.checkValue();
+        //}
     };
 
     /**

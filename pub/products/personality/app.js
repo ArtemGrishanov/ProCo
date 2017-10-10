@@ -261,7 +261,7 @@ var PersonalityApp = MutApp.extend({
         "id=pm test2": { label: {RU: 'Тест', EN: 'Test2'} },
         "id=pm test3": { label: {RU: 'Тест', EN: 'Test3'} },
 
-        ".js-start_header color, .js-start_description color, .js-start_btn color, .js-question_text color, .js-option_text color": {
+        ".js-start_header color, .js-start_description color, .js-start_btn color, .js-download_btn color, .js-restart color, .js-question_text color, .js-option_text color, .js-question_progress color": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Цвет шрифта',EN:'Font color'},
             controlFilter: 'onclick',
@@ -278,19 +278,23 @@ var PersonalityApp = MutApp.extend({
                 view: 'ColorPicker'
             }
         },
-        ".js-start_header font-size": {
+        ".js-start_header font-size, .js-start_description font-size, .js-question_text font-size, .js-result_title font-size, .js-result_description font-size, .js-option_text font-size, .js-question_progress font-size": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Размер шрифта',EN:'Font size'},
             controls: "StringControl",
             controlFilter: 'onclick'
         },
-        ".js-start_header padding-top, .js-start_description padding-top": {
-            // css mutAppProperty описываются только схемой
+        ".js-start_header padding-top, .js-start_description padding-top, .js-question_text padding-top, .js-result_title padding-top, .js-result_description padding-top, .js-btn_wr padding-top": {
             label: {RU:'Отступ сверху',EN:'Padding top'},
             controls: "StringControl",
             controlFilter: 'onclick'
         },
-        ".js-start_header text-align, .js-start_description text-align": {
+        ".js-start_header padding-bottom, .js-start_description padding-bottom, .js-question_text padding-bottom, .js-result_title padding-bottom, .js-result_description padding-bottom": {
+            label: {RU:'Отступ снизу',EN:'Padding bottom'},
+            controls: "StringControl",
+            controlFilter: 'onclick'
+        },
+        ".js-start_header text-align, .js-start_description text-align, .js-question_text text-align, .js-result_title text-align, .js-result_description text-align": {
             label: {RU:'Выравнивание текста',EN:'Text-align'},
             controlFilter: 'onclick',
             controls: {
@@ -311,7 +315,7 @@ var PersonalityApp = MutApp.extend({
                 }
             }
         },
-        ".js-start_header font-family, .js-start_description font-family": {
+        ".js-start_header font-family, .js-start_description font-family, .js-question_progress font-family, .js-question_text font-family, .js-result_title font-family, .js-result_description font-family": {
             label: {RU:'Шрифт',EN:'Font family'},
             controlFilter: 'onclick',
             controls: {
@@ -322,7 +326,7 @@ var PersonalityApp = MutApp.extend({
                 }
             }
         },
-        ".js-start_btn background-color": {
+        ".js-start_btn background-color, .js-download_btn background-color, .js-restart background-color": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Цвет фона кнопки',EN:'Button background color'},
             controlFilter: 'onclick',
@@ -330,15 +334,22 @@ var PersonalityApp = MutApp.extend({
                 name: "StringControl",
                 view: 'ColorPicker'
             }
+        },
+        ".js-a_wr border-width": {
+            label: {RU:'Толщина обводки',EN:'Border width'},
+            controls: "StringControl",
+            controlFilter: 'onclick'
+        },
+        ".js-a_wr border-color": {
+            label: {RU:'Цвет обводки',EN:'Border color'},
+            controls: "StringControl",
+            controlFilter: 'onclick'
+        },
+        ".js-a_wr border-radius": {
+            label: {RU:'Радиус угла',EN:'Border radius'},
+            controls: "StringControl",
+            controlFilter: 'onclick'
         }
-
-//        ".js-start_header .js-start_description .js-question_text .js-result_title .js-result_description": {
-//            // TODO
-//            // перечислил все классы к которым применять правила
-//            // можно прописать сразу несколько правил, получается отношение "многие ко многим"
-//            // это позволит делать наборы правил
-//            rules: 'fontFamily fontColor fontSize textAlign paddingTop paddingBottom paddingLeft',
-//        }
     }),
     /**
      * Конструктор приложения: создание моделей и экранов
