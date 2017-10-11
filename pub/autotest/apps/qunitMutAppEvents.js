@@ -1,10 +1,6 @@
 /**
  * Created by artyom.grishanov on 07.07.16.
  */
-var EXPECTED_MUTAPP_PROPERTIES_COUNT = 30;
-var PROPETIES_IN_ONE_QUIZ_ELEM = 7;
-var PROPETIES_IN_ONE_RESULT_ELEM = 3;
-
 QUnit.test("MutApp test: MutApp Events", function( assert ) {
     var createdEventsCount = 0;
     var deletedEventsCount = 0;

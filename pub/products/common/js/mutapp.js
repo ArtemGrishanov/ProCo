@@ -94,9 +94,9 @@ var MutApp = function(param) {
     /**
      * Можно установить линк на страницу паблишера
      * Или он будет установлен на конкретный проект (http://testix.me/13435255)
-     * @type {string}
+     * @type {MutAppProperty}
      */
-    this.shareLink = this.shareDefaultLink;
+    this.shareLink = null;
     /**
      * Массив сущностей для публикации
      * Например, ид какого-то результата или достижения (которых в приложении может быть несколько)
@@ -128,7 +128,7 @@ var MutApp = function(param) {
     this.shareFBbtnClass = 'js-mutapp_share_fb';
     /**
      * Идентификатор Google Analytics
-     * @type {null}
+     * @type {MutAppPropety}
      */
     this.gaId = undefined;
     /**
@@ -249,11 +249,21 @@ var MutApp = function(param) {
         propertyString: 'appConstructor=mutapp customCssStyles',
         value: ''
     });
+    this.shareLink = new MutAppProperty({
+        application: this,
+        propertyString: 'appConstructor=mutapp shareLink',
+        value: this.shareDefaultLink
+    })
+    this.gaId = new MutAppProperty({
+        application: this,
+        propertyString: 'appConstructor=mutapp gaId',
+        value: ''
+    });
 
     // инициализация апи для статистики, если задан идентификатор Google Analytics
     // при использовании другого или нескольких провайдеров надо будет рефакторить
-    if (this.gaId && this.mode === 'published') {
-        this.initStatistics(this.gaId);
+    if (this.gaId.getValue() && this.mode === 'published') {
+        this.initStatistics(this.gaId.getValue());
     }
 
     // вызов конструктора initialize, аналогично backbone
@@ -990,11 +1000,12 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
     var ent = this.findShareEntity(entityId);
     if (ent) {
         var imgUrl = ent.imgUrl;
+        var sl = this.shareLink.getValue();
         if (!!imgUrl === false) {
             imgUrl = this.shareDefaultImgUrl;
         }
-        if (!!this.shareLink===false) {
-            this.shareLink = this.shareDefaultLink;
+        if (typeof sl !== 'string') {
+            sl = this.shareDefaultLink;
         }
         var name = ent.title.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
         var description = ent.description.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
@@ -1005,7 +1016,7 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
                 this.hideRecommendations();
                 FB.ui({
                     method: 'feed',
-                    link: this.shareLink,
+                    link: sl,
                     name: name,
                     description: description,
                     picture: imgUrl
@@ -1027,7 +1038,7 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
             if (isFakeShare !== true) {
                 // способ построения ссылки взят из интернета и не рекомендован официально ВК
                 var url = 'http://vkontakte.ru/share.php?';
-                url += 'url='          + encodeURIComponent(this.shareLink);
+                url += 'url='          + encodeURIComponent(sl);
                 url += '&title='       + encodeURIComponent(name);
                 url += '&description=' + encodeURIComponent(description);
                 url += '&image='       + encodeURIComponent(imgUrl);
@@ -1039,20 +1050,6 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
                         provider: 'Vkontakte'
                     }, '*');
                 }
-                // но вот такой официальный код я заставил работать только под localhost
-                // в приложении параметр noparse не работал
-//                $(vks).html(
-//                    VK.Share.button({
-//                            url: this.model.application.shareLink,
-//                            title: e.title,
-//                            description: e.description,
-//                            image: imgUrl,
-//                            noparse: true
-//                        }, {
-//                            type: 'custom',
-//                            text: '<img src="http://testix.me/i/products/vk_64.png" />'
-//                    )
-//                );
             }
             return true;
         }

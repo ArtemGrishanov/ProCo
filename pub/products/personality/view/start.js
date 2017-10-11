@@ -53,7 +53,7 @@ var StartScreen = MutApp.Screen.extend({
 
     onLogoClick: function(e) {
         if (this.model.application.mode !== 'edit') {
-            var ll = this.model.get('logoLink');
+            var ll = this.model.get('logoLink').getValue();
             if (ll) {
                 var win = window.open(ll, '_blank');
                 win.focus();

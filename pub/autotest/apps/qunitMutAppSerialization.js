@@ -1,9 +1,9 @@
 /**
  * Created by alex on 10.08.17.
  */
-var EXPECTED_MUTAPP_PROPERTIES_COUNT = 30;
+var EXPECTED_MUTAPP_PROPERTIES_COUNT = 76;
 var PROPETIES_IN_ONE_QUIZ_ELEM = 7;
-var PROPETIES_IN_ONE_RESULT_ELEM = 3;
+var PROPETIES_IN_ONE_RESULT_ELEM = 4;
 
 QUnit.test("MutApp test: MutAppProperties array serialization (PersonalityTest)", function( assert ) {
 
@@ -55,10 +55,10 @@ QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityT
     var serRes = app.model.attributes.results.serialize();
     assert.ok(serRes.length > 30);
     var savedResults1 = app.model.attributes.results; // сохраняем первую версию объекта для последующего сравнения
-    var serShowBackgroundImage = app.model.attributes.showBackgroundImage.serialize();
+    var serShowBackgroundImage = app.model.attributes.showLogoOnStartScreen.serialize();
 
     assert.ok(serShowBackgroundImage.length > 10);
-    var showBackgroundImage1 = app.model.attributes.showBackgroundImage; // сохраняем первую версию объекта для последующего сравнения
+    var showBackgroundImage1 = app.model.attributes.showLogoOnStartScreen; // сохраняем первую версию объекта для последующего сравнения
 
     // запустим новое приложение
     var app = new PersonalityApp({
@@ -71,12 +71,12 @@ QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityT
     // десериализуем свойства по одному
     app.model.attributes.results.deserialize(serRes);
     checkResult(app, 1);
-    app.model.attributes.showBackgroundImage.deserialize(serShowBackgroundImage);
+    app.model.attributes.showLogoOnStartScreen.deserialize(serShowBackgroundImage);
 
     assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + PROPETIES_IN_ONE_RESULT_ELEM); // 3 sub property in result elem
     // сравниваем свойства по одному
     assert.ok(app.model.attributes.results.compare(savedResults1));
-    assert.ok(app.model.attributes.showBackgroundImage.compare(showBackgroundImage1));
+    assert.ok(app.model.attributes.showLogoOnStartScreen.compare(showBackgroundImage1));
 
     function checkResult(app, expectedResultsCount) {
         assert.ok(app.model.attributes.results.toArray().length === expectedResultsCount);

@@ -68,6 +68,8 @@ var PersonalityModel = MutApp.Model.extend({
          * url logo один на все экраны
          */
         logoUrl: null,
+        logoLink: null,
+        downloadLink: null,
         /**
          * MutAppPropertyDictionary
          * Сложное свойство, которое задает соответствие между опциями и результатами
@@ -160,6 +162,18 @@ var PersonalityModel = MutApp.Model.extend({
             model: this,
             propertyString: 'id=pm logoUrl',
             value: '//s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg'
+        });
+        this.attributes.logoLink = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=pm logoLink',
+            value: 'http://testix.me'
+        });
+        this.attributes.downloadLink = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=pm downloadLink',
+            value: 'http://testix.me'
         });
         this.attributes.questionProgressPosition = new MutAppPropertyPosition({
             application: this.application,
@@ -555,7 +569,7 @@ var PersonalityModel = MutApp.Model.extend({
                         currentQuestionId: null,
                         currentQuestionIndex: undefined
                     });
-                    this.application.stat('Test', 'result', this.attributes.currentResult.title, this.attributes.resultPoints);
+                    this.application.stat('Test', 'result', this.attributes.currentResult.title.getValue());
                     // показать рекомендации с небольшой задержкой
                     var a = this.application;
                     setTimeout(function() {

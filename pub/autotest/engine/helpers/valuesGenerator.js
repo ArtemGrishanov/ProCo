@@ -37,8 +37,15 @@ var valueGenerator = {};
             ap.setValue(_getRandomCssValue(ap));
         }
         else if (MutApp.Util.isMutAppPropertyDictionary(ap) === true) {
-            var prot = ap.prototypes[_randInt(0, ap.prototypes.length-1)];
-            ap.addElementByPrototype(prot.protoFunction);
+            if (ap.prototypes && ap.prototypes.length > 0) {
+                var prot = ap.prototypes[_randInt(0, ap.prototypes.length-1)];
+                ap.addElementByPrototype(prot.protoFunction);
+            }
+            else {
+                //throw new Error('valuesGenerator._randomChangeProperty: no prototypes for \'' + ap.propertyString + '\'');
+                // its ok
+                console.error('valuesGenerator._randomChangeProperty: no prototypes for \'' + ap.propertyString + '\'');
+            }
         }
         else if (MutApp.Util.isMutAppPropertyPosition(ap) === true) {
             ap.setValue(_getRandomPositionValue(ap));

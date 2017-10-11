@@ -14,8 +14,8 @@ QUnit.test("MutApp test: objects comparison", function( assert ) {
     });
     app2.start();
 
-    var m1 = app.model.attributes.showBackgroundImage;
-    var m2 = app2.model.attributes.showBackgroundImage;
+    var m1 = app.model.attributes.showLogoOnStartScreen;
+    var m2 = app2.model.attributes.showLogoOnStartScreen;
     var m3 = app.model.attributes.results;
     var m4 = app2.model.attributes.results;
 
@@ -75,6 +75,9 @@ QUnit.test("MutApp test: objects comparison", function( assert ) {
     m3.toArray()[0].backgroundImage.id= m4.toArray()[0].backgroundImage.id;
     m3.toArray()[0].backgroundImage.propertyString= m4.toArray()[0].backgroundImage.propertyString;
     m3.toArray()[0].backgroundImage._propertyName= m4.toArray()[0].backgroundImage._propertyName;
+    m3.toArray()[0].backgroundColor.id= m4.toArray()[0].backgroundColor.id;
+    m3.toArray()[0].backgroundColor.propertyString= m4.toArray()[0].backgroundColor.propertyString;
+    m3.toArray()[0].backgroundColor._propertyName= m4.toArray()[0].backgroundColor._propertyName;
     assert.ok(m3.compare(m4), m3.compareDetails.message);
 
     // сравнение приложения

@@ -368,7 +368,7 @@ QUnit.test("MutAppPropertyDictionary: dictionary operations in personality model
     assert.ok(originCount+14 === app._mutappProperties.length);
 
     // add element in array, inside in array
-    app.model.attributes.quiz.getValue()[quizProperty0ElemId].answer.options.addElementByPrototype('id=pm proto_optionText', -1, {questionId: quizProperty0ElemId});
+    app.model.attributes.quiz.getValue()[quizProperty0ElemId].answer.options.addElementByPrototype('id=pm proto_optionText', -1, {questionDictionaryId: quizProperty0ElemId});
     var optionsProperty = app.getPropertiesBySelector('id=pm quiz.'+quizProperty0ElemId+'.answer.options')[0].value; // array in array
     assert.ok(optionsProperty.toArray().length === 4);
     assert.ok(MutApp.Util.isMutAppPropertyDictionary(optionsProperty) === true);
@@ -442,5 +442,6 @@ QUnit.test("MutAppPropertyDictionary: dictionary getElementCopy", function( asse
     assert.ok(app.getPropertiesBySelector('id=pm quiz.{{id}}.answer.options').length === 2);
     assert.ok(originCount+14 === app._mutappProperties.length);
 
+    throw new Error('getElementCopy not working and not using in editor so far');
 
 });

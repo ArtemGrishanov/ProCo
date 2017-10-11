@@ -133,7 +133,8 @@
         $(document).ready(function() {
             var DEFAULT_PARAMS = {};
             app = new PersonalityApp({
-                defaults: DEFAULT_PARAMS
+                defaults: DEFAULT_PARAMS,
+                mode: 'published'
             });
             app.start();
         });

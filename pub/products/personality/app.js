@@ -13,6 +13,26 @@ var PersonalityApp = MutApp.extend({
      * Схема свойств MutAppProperty в этом приложении
      */
     mutAppSchema: new MutAppSchema({
+        "appConstructor=mutapp shareLink": {
+            label: {RU: 'Ссылка для поста в соц сети', EN: 'Post link in social network'},
+            controls: 'StringControl',
+            controlFilter: 'always'
+        },
+        "appConstructor=mutapp gaId": {
+            label: {RU: 'Код Google Analytics', EN: 'Google Analytics code'},
+            controls: 'StringControl',
+            controlFilter: 'always'
+        },
+        "id=pm logoLink": {
+            label: {RU: 'Ссылка по клику на лого', EN: 'Logo click link'},
+            controls: 'StringControl',
+            controlFilter: 'always'
+        },
+        "id=pm downloadLink": {
+            label: {RU: 'Ссылка по кнопке "Скачать"', EN: 'Download button link'},
+            controls: 'StringControl',
+            controlFilter: 'always'
+        },
         "id=pm randomizeQuestions": {
             label: {RU: 'Случайный порядок вопросов', EN: 'Randomize questions'},
             controls: 'OnOff',
@@ -488,8 +508,8 @@ var PersonalityApp = MutApp.extend({
             // в тесте это количество результатов
             sEntities.push({
                 id: id,
-                title: this.startHeaderText,
-                description: this.startDescription,
+                title: resultsValue[i].title.getValue(),
+                description: resultsValue[i].description.getValue(),
                 // удалить элементы, оставить только те которые в whitelist
                 view: viewForShare,
                 imgUrl: null

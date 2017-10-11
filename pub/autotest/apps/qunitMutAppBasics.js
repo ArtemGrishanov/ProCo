@@ -9,7 +9,18 @@ QUnit.test("MutApp test: basics", function( assert ) {
 
     var AppClass = MutApp.extend({
         inited: false,
-        mutAppSchema: new MutAppSchema(),
+        mutAppSchema: new MutAppSchema({
+            "appConstructor=mutapp shareLink": {
+                label: {RU: 'Ссылка для поста в соц сети', EN: 'Post link in social network'},
+                controls: 'StringControl',
+                controlFilter: 'always'
+            },
+            "appConstructor=mutapp gaId": {
+                label: {RU: 'Код Google Analytics', EN: 'Google Analytics code'},
+                controls: 'StringControl',
+                controlFilter: 'always'
+            }
+        }),
         initialize: function() {
             this.inited = true;
         }
@@ -131,7 +142,18 @@ QUnit.test("MutApp test: Screen", function( assert ) {
 QUnit.test("MutApp test: app size", function( assert ) {
     var AppClass = MutApp.extend({
         screenRoot: $('#id-swimming_test'),
-        mutAppSchema: new MutAppSchema(),
+        mutAppSchema: new MutAppSchema({
+            "appConstructor=mutapp shareLink": {
+                label: {RU: 'Ссылка для поста в соц сети', EN: 'Post link in social network'},
+                controls: 'StringControl',
+                controlFilter: 'always'
+            },
+            "appConstructor=mutapp gaId": {
+                label: {RU: 'Код Google Analytics', EN: 'Google Analytics code'},
+                controls: 'StringControl',
+                controlFilter: 'always'
+            }
+        }),
         initialize: function() {
             this.inited = true;
         }

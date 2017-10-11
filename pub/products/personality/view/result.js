@@ -55,7 +55,7 @@ var ResultScreen = MutApp.Screen.extend({
 
     onLogoClick: function(e) {
         if (this.model.application.mode !== 'edit') {
-            var ll = this.model.get('logoLink');
+            var ll = this.model.get('logoLink').getValue();
             if (ll) {
                 var win = window.open(ll, '_blank');
                 win.focus();
@@ -66,7 +66,7 @@ var ResultScreen = MutApp.Screen.extend({
 
     onDownloadClick: function(e) {
         if (this.model.application.mode !== 'edit') {
-            var dl = this.model.get('downloadLink');
+            var dl = this.model.get('downloadLink').getValue();
             if (dl) {
                 var win = window.open(dl, '_blank');
                 win.focus();
