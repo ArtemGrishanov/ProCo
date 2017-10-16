@@ -40,14 +40,21 @@ var shareImageService = {};
      * Запросить картинки для шаринга.
      * Если они еще не были сгенерированы, то это будет сделано.
      *
-     * @param {function} callback
+     * @param {function} param.callback
+     * @param {MutApp} param.app
      */
-    function requestImageUrls(callback) {
+    function generateAndUploadSharingImages(param) {
+        param = param || {};
+        if (!param.app) {
+            throw new Error('ShareImageService.requestImageUrls: app not specified.');
+        }
         _requestImageTasks.push({
+            app: param.app,
             task: 'canvas',
             callback: null
         });
         _requestImageTasks.push({
+            app: param.app,
             task: 'upload',
             callback: callback
         });
@@ -56,9 +63,14 @@ var shareImageService = {};
     /**
      * Запросить генерацию только канваса без аплоада
      *
-     * @param {function} callback
+     * @param {function} param.callback
+     * @param {MutApp} param.app
      */
-    function requestCanvases(callback) {
+    function requestCanvases(param) {
+        param = param || {};
+        if (!param.app) {
+            throw new Error('ShareImageService.requestCanvases: app not specified.');
+        }
         _requestImageTasks.push({
             task: 'canvas',
             callback: callback
@@ -75,10 +87,14 @@ var shareImageService = {};
             // если картинок нет - запустить генерацию
             _activeTask = _requestImageTasks.shift();
             if (_activeTask.task === 'canvas') {
-                _generateCanvases();
+                _generateCanvases({
+                    app: _activeTask.app
+                });
             }
             else if (_activeTask.task === 'upload') {
-                _generateImageUrls();
+                _generateImageUrls({
+                    app: _activeTask.app
+                });
             }
             else {
                 _activeTask = null;
@@ -158,11 +174,24 @@ var shareImageService = {};
         }
     }
 
-    function _generateCanvases() {
+    /**
+     * Пройти по всем app._shareEntities и если картинка НЕ установлена пользователем, то сгенерировать ее
+     * из MutApp.getAutoPreviewHtml()
+     * За один вызов функции создаются вызовы на генерацию всех канвасов
+     *
+     * @param {MutApp} param.app
+     * @private
+     */
+    function _generateCanvases(param) {
+        param = param || {};
+        if (!param.app) {
+            throw new Error('ShareImageService.generateCanvas: app not specified.');
+        }
+        // если хотя бы у одного из _shareEntities не установлена пользовательская картинка,
+        // то надо сгенерировать один на всех канвас MutApp.getAutoPreviewHtml()
+        var needToGenerateAutoImage = false;
         _generatedImages = [];
-
-        var app = Editor.getEditedApp();
-        var entities = app._shareEntities;
+        var entities = param.app._shareEntities;
         _activeTask.imagesCount = entities.length;
 
         for (var i = 0; i < entities.length; i++) {
@@ -178,40 +207,63 @@ var shareImageService = {};
             // проверим, надо ли генерировать картинки для шаринга для каждого entity
             // если пользователь задает картинки сам, то не надо генерировать ничего
             if (isCustomUrl(e.imgUrl) === false) {
-                (function(entityId, entityIndex, entityView){
-
-                    // создать замыкание для сохранения значений entityId
-                    previewService.createInIframe(entityView, function(canvas) {
-                        log('createPreviewsForShare: preview created '+entityId);
-                        var info = findImageInfo(entityId);
-                        info.canvas = canvas;
-                        info.canvasTimestamp = new Date().getTime();
-
-                        _activeTask.imagesCount--;
-                        if (_activeTask.imagesCount <= 0) {
-                            // закрыть таск вызвав колбек
-                            if (_activeTask.callback) _activeTask.callback();
-                            _activeTask = null;
-                        }
-
-                    }, null, [config.products.common.styles, config.products[app.type].stylesForEmbed], Editor.getAppContainerSize().width, Editor.getAppContainerSize().height);
-
-                })(e.id, i, e.view);
+                needToGenerateAutoImage = true;
+//                (function(entityId, entityIndex, entityView){
+//
+//                    // создать замыкание для сохранения значений entityId
+//                    previewService.createInIframe(entityView, function(canvas) {
+//                        log('createPreviewsForShare: preview created '+entityId);
+//                        var info = findImageInfo(entityId);
+//                        info.canvas = canvas;
+//                        info.canvasTimestamp = new Date().getTime();
+//                        _imageLoadedInActiveTask();
+//                    }, null, [config.products.common.styles, config.products[app.type].stylesForEmbed], Editor.getAppContainerSize().width, Editor.getAppContainerSize().height);
+//
+//                })(e.id, i, e.view);
             }
-            else {
-                // не надо генерировал превью, пользователь установил превью сам
-                log('createPreviewsForShare: dont need generate preview for '+ e.id);
-
-                _activeTask.imagesCount--;
-                if (_activeTask.imagesCount <= 0) {
-                    // закрыть таск вызвав колбек
-                    if (_activeTask.callback) _activeTask.callback();
-                    _activeTask = null;
-                }
-            }
+//            else {
+//                // не надо генерировал превью, пользователь установил превью сам
+//                log('createPreviewsForShare: dont need generate preview for '+ e.id);
+//                _imageLoadedInActiveTask();
+//            }
         }
+
+        if (needToGenerateAutoImage === true) {
+            previewService.createInIframe({
+                html: param.app.getAutoPreviewHtml(),
+                stylesToEmbed: [config.products.common.styles, config.products[app.type].stylesForEmbed],
+                width: param.app.width,
+                height: param.app.height,
+                callback: function(canvas) {
+                    log('createPreviewsForShare: app autopreview created');
+                    // сгенерировали один канвас на основе app.getAutoPreviewHtml()
+                    // снова смотрим где не заданы клиентские картинки - ставим этот канвас
+                    for (var i = 0; i < entities.length; i++) {
+                        var e = entities[i];
+                        if (isCustomUrl(e.imgUrl) === false) {
+                            var info = findImageInfo(e.id);
+                            info.canvas = canvas;
+                            info.canvasTimestamp = new Date().getTime();
+                        }
+                        _imageLoadedInActiveTask();
+                    }
+                }
+            });
+        }
+        else {
+            log('createPreviewsForShare: dont need generate autopreview at all');
+            _activeTask.imagesCount = 0;
+            _imageLoadedInActiveTask();
+        }
+
     }
 
+    /**
+     * Зааплоадить все сгенерированные канвасы для паблишинга
+     * по последней логике это только максимум 1 канвас app.getAutoPreviewHtml()
+     *
+     * @private
+     */
     function _generateImageUrls() {
         _activeTask.imagesCount = _generatedImages.length;
 
@@ -228,29 +280,31 @@ var shareImageService = {};
                             // дописать в хранилище картинок картинку для публикации
                             findImageInfo(entityId).imgUrl = fullImageUrl;
                         }
-
-                        _activeTask.imagesCount--;
-                        if (_activeTask.imagesCount <= 0) {
-                            // закрыть таск вызвав колбек
-                            if (_activeTask.callback) _activeTask.callback();
-                            _activeTask = null;
-                        }
+                        _imageLoadedInActiveTask();
                     }, url, _generatedImages[i].canvas);
 
                 })(_generatedImages[i].entityId, _generatedImages[i].entityIndex);
             }
             else {
-                _activeTask.imagesCount--;
-                if (_activeTask.imagesCount <= 0) {
-                    // закрыть таск вызвав колбек
-                    if (_activeTask.callback) _activeTask.callback();
-                    _activeTask = null;
-                }
+                _imageLoadedInActiveTask()
             }
         }
     }
 
-    global.requestImageUrls = requestImageUrls;
+    /**
+     * Обработка события о загрузке одного изображения в активной задаче (_activeTask)
+     * @private
+     */
+    function _imageLoadedInActiveTask() {
+        _activeTask.imagesCount--;
+        if (_activeTask.imagesCount <= 0) {
+            // закрыть таск вызвав колбек
+            if (_activeTask.callback) _activeTask.callback();
+            _activeTask = null;
+        }
+    }
+
+    global.generateAndUploadSharingImages = generateAndUploadSharingImages;
     global.requestCanvases = requestCanvases;
     global.isCustomUrl = isCustomUrl;
     global.getGeneratedImages = function() { return _generatedImages; }

@@ -529,35 +529,19 @@ var Editor = {};
     }
 
 //    /**
-//     * Вернуть активные экраны. Те которые показаны в текущий момент.
+//     * Перебрать все элементы на активном экране
+//     * Нужно для автотестирования в TProduct
 //     *
-//     * @returns {Array}
+//     * @param {function} iterator
 //     */
-//    function getActiveScreens() {
-//        var result = []
+//    function forEachElementOnScreen(iterator) {
 //        for (var i = 0; i < activeScreens.length; i++) {
-//            var s = Engine.getAppScreen(activeScreens[i]);
-//            if (s) {
-//                result.push(s);
+//            var appScreen = Engine.getAppScreen(activeScreens[i]);
+//            for (var k = 0; k < appScreen.appPropertyElements.length; k++) {
+//                iterator(appScreen.appPropertyElements[k]);
 //            }
 //        }
-//        return result;
 //    }
-
-    /**
-     * Перебрать все элементы на активном экране
-     * Нужно для автотестирования в TProduct
-     *
-     * @param {function} iterator
-     */
-    function forEachElementOnScreen(iterator) {
-        for (var i = 0; i < activeScreens.length; i++) {
-            var appScreen = Engine.getAppScreen(activeScreens[i]);
-            for (var k = 0; k < appScreen.appPropertyElements.length; k++) {
-                iterator(appScreen.appPropertyElements[k]);
-            }
-        }
-    }
 
     ///**
     // * Показать подсказки для экрана
@@ -807,13 +791,18 @@ var Editor = {};
 
             if (editedApp._shareEntities && editedApp._shareEntities.length > 0) {
                 // генерация канвасов заново и аплоад их с получением урла
-                shareImageService.requestImageUrls((function(){
-                    // перед публикацией переустановка всех урлов картинок для публикации
+                shareImageService.generateAndUploadSharingImages((function(){
+                    // перед публикацией переустановка всех урлов картинок для шаринга
                     for (var i = 0; i < app._shareEntities.length; i++) {
                         var url = shareImageService.findImageInfo(editedApp._shareEntities[i].id).imgUrl;
-                        var ps = config.common.shareImagesAppPropertyString.replace('{{number}}',i);
-                        var ap = Engine.getAppProperty(ps);
-                        Engine.setValue(ap, url);
+                        var ps = config.common.shareImagesAppPropertyString.replace('{{id}}',i);
+                        var p = editedApp.getProperty(ps);
+                        if (p) {
+                            p.setValue(url);
+                        }
+                        else {
+                            throw new Error('Editor.preparedShareEntities: property not found \''+ps+'\'');
+                        }
                     }
 
                     // далее может начать работать publisher

@@ -63,8 +63,8 @@ a {
     display: inline-block;
     vertical-align: top;
     background: url(../i/paleo-logo.png) no-repeat center;
-    width: 74px;
-    height: 61px;
+    width: 75px;
+    height: 76px;
 }
 .paleo_logo_txt {
     display: inline-block;
@@ -72,6 +72,7 @@ a {
     line-height: 30px;
     font-size: 22px;
     padding-left: 10px;
+    padding-top: 10px;
     margin: 0;
     text-align: left;
     font-family: Glober;
@@ -189,6 +190,18 @@ a {
 }
 .footer_link a {
     text-decoration: underline;
+}
+.goto_museum_block {
+    padding: 30px 0 70px;
+}
+.trans_btn {
+    width: 206px;
+    height: 20px;
+    padding: 10px 20px 14px 20px;
+    border: 1px solid #fff;
+    font-size: 20px;
+    color: #fff;
+    display: inline-block;
 }
 
 @media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 1.5dppx) {

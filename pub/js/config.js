@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev'], //dev test prod
+        configurationSetsOnStart: ['test'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -214,7 +214,7 @@ var config = {
         /**
          * Редактор по этому идентификатору ищет свойство и записывает туда картинки для публикации
          */
-        shareImagesAppPropertyString: 'appConstructor=mutapp _shareEntities.{{number}}.imgUrl',
+        shareImagesAppPropertyString: 'appConstructor=mutapp _shareEntities.{{id}}.imgUrl',
         /**
          * Шаблон для кода встраивания
          */

@@ -400,45 +400,6 @@ var PersonalityApp = MutApp.extend({
         this.updateQuestionScreens();
         this.updateResultsScreens();
 
-//        var results = tm.get('results');
-//        var rs = null;
-//        var sEntities = [];
-//        for (var i = 0; i < results.length; i++) {
-//            var r = results[i];
-//
-//            id = 'resultScreen'+i;
-//            rs = new ResultScreen({
-//                id: id,
-//                model: tm,
-//                resultId: r.id,
-//                screenRoot: this.screenRoot
-//            });
-//            this.addScreen(rs);
-//
-//            // выравнивание заголовка и пояснения по вертикали
-//            var viewForShare = MutApp.Util.clarifyElement(rs.$el, ['modal','modal_cnt','info_title','info_tx','b_title']);
-//            var titleView = viewForShare.find('.info_title').css('padding','0 50px 0 50px').css('margin','0');
-//            var th = titleView.outerHeight(false);
-//            var descView = viewForShare.find('.info_tx').css('padding','0 50px 0 50px').css('margin','0');
-//            var dh = descView.outerHeight(false);
-//            var ind = (this.height-dh-th)/4;
-//            titleView.css('padding-top',ind+'px');
-//            descView.css('padding-top',ind+'px');
-//
-//            // создать сущности для публикации
-//            // в тесте это количество результатов
-//            sEntities.push({
-//                id: id,
-//                title: startScr.startHeaderText,
-//                description: startScr.startDescription,
-//                // удалить элементы, оставить только те которые в whitelist
-//                view: viewForShare,
-//                imgUrl: null
-//            });
-//        }
-//
-//        this.setShareEntities(sEntities);
-
         // способ указания этих атрибутов уникален для каждого проекта
         this.title = this.getPropertiesBySelector('id=startScr startHeaderText')[0].value.getValue();
         this.description = this.getPropertiesBySelector('id=startScr startDescription')[0].value.getValue();
