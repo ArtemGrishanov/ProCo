@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['test'], //dev test prod
+        configurationSetsOnStart: ['dev','offline'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -84,6 +84,8 @@ var config = {
         awsPublishedProjectsBucketName: 'p.testix.me',
         awsRoleArn: 'arn:aws:iam::520270155749:role/ProCo_FBUsers',
         awsRegion: 'eu-central-1',
+        awsUserPoolId: 'us-east-1_HgTsPcpEZ',
+        awsUserPoolClientId: '6nshsam5quudsd8vdrknnc9t70', // client 'testix_localhost'
         /**
          * Задержка перед возможностью релогина
          * Применяется когда сессия устаревает
@@ -910,6 +912,14 @@ var config = {
         requestFBPublishPermissionsModal: {
             templateUrl: 'templates/requestFBPublishPermissionsModal.html',
             defZIndex: 103
+        },
+        signupModal: {
+            templateUrl: 'templates/signup.html',
+            defZIndex: 95
+        },
+        signinModal: {
+            templateUrl: 'templates/signin.html',
+            defZIndex: 95
         }
     },
     scripts: {

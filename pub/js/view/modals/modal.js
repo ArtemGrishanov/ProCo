@@ -4,7 +4,7 @@
  * Контроллер для управления модалками
  *
  * Ограничения
- * 1) Предполашается что есть котейнер для размещения модалок на веб странице config.ui.modalsParentSelector
+ * 1) Предполагается, что есть контейнер для размещения модалок на веб странице config.ui.modalsParentSelector
  *    Этот контейнер показывается пока есть хотя бы одно активное модальное окно.
  * 2) В один момент может быть показано только одно окно одного типа (например только один message)
  *
@@ -95,5 +95,11 @@ var Modal = {};
 
     global.showRequestPublishFBPermissions = function (data) { _show(RequestFBPublishPermissionsModal, data) };
     global.hideRequestPublishFBPermissions = function () { _hide(RequestFBPublishPermissionsModal) };
+
+    global.showSignup = function (data) { _show(SignupModal, data) };
+    global.hideSignup = function () { _hide(SignupModal) };
+
+    global.showSignin = function (data) { _show(SigninModal, data) };
+    global.hideSignin = function () { _hide(SigninModal) };
 
 })(Modal);

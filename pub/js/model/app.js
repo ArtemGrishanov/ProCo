@@ -60,12 +60,12 @@ var App = App || {};
      *
      * @type {object}
      */
-    var userData = null;
+    // var userData = null;
     /**
      * Статус который возвращает FB api (например connected - подключено)
      * @type {null}
      */
-    var responseStatus = null;
+    // var responseStatus = null;
     /**
      * Был получен при авторизации в ФБ
      * @type {null}
@@ -242,7 +242,18 @@ var App = App || {};
             unsaved_changes: 'У вас есть несохраненные изменения',
             select_template: 'Выберите шаблон для открытия',
             publish_error: 'Ошибка: Не удалось опубликовать проект.',
-            hints: 'Подсказки'
+            hints: 'Подсказки',
+            confirm_signout: 'Вы действительно хотите выйти?',
+
+            signin_completed: 'Вход выполнен',
+            error_incorrect_email: 'Некорректный email',
+            error_no_username: 'Укажите email',
+            error_no_password: 'Введите пароль',
+            error_incorrect_username_or_password: 'Неверная пара email/пароль',
+            error_password_attempts_exceeded: 'Слишком частый ввод пароля',
+            error_user_not_exist: 'Пользователь не найден',
+            error_user_not_confirmed: 'Пользователь не подтвердил регистрацию',
+            error_signin: 'Не удалось войти'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -401,7 +412,18 @@ var App = App || {};
             unsaved_changes: 'You have unsaved changes',
             select_template: 'You need select a template for editing',
             publish_error: 'Error: Could not publish project',
-            hints: 'Hints'
+            hints: 'Hints',
+            confirm_signout: 'Do you really want to sign out?',
+
+            signin_completed: 'Sign in completed',
+            error_incorrect_email: 'Incorrect email format',
+            error_no_username: 'Enter email',
+            error_no_password: 'Enter password',
+            error_incorrect_username_or_password: 'Incorrect email or password',
+            error_password_attempts_exceeded: 'Password attempts exceeded',
+            error_user_not_exist: 'User does not exist',
+            error_user_not_confirmed: 'User has not confirm email',
+            error_signin: 'Can not enter'
         }
     },
     /**
@@ -492,11 +514,15 @@ var App = App || {};
 
     /**
      * Вернуть значение ключа для текущего языка
-     * @param key
-     * @returns {}
+     * @param {string} key
+     * @returns {string}
      */
     function getText(key) {
-        return dict[getLang()][key];
+        if (typeof dict[getLang()][key] === 'string') {
+            return dict[getLang()][key];
+        }
+        // пользователь увидит что ресурс не локализован
+        return key;
     }
 
     /**
@@ -526,18 +552,55 @@ var App = App || {};
         else {
             document.documentElement.className += " no-touch";
         }
-        if (config.common.facebookAuthEnabled === true) {
-            initFB();
-        }
-        else {
+//        if (config.common.facebookAuthEnabled === true) {
+//            initFB();
+//        }
+//        else {
             // если отключена авторизация через фб то пытаемся сразу встроить скрипты
             // иначе там будет проверка по ИД пользователя: нужно ли подключать статистику или нет
-            initScripts();
-        }
+//            initScripts(); ??
+//        }
         initUIHandlers();
-
         initLang();
+
+        // атоматически при старте пытаемся возобновить предыдущую сессию
+        Auth.addEventCallback(onAuthEvent);
+        Auth.tryRestoreSession();
     }
+
+    /**
+     * Обработка событий из модуля авторизации
+     *
+     * @param {string} event
+     * @param {object} data
+     */
+    function onAuthEvent(event, data) {
+        switch(event) {
+            case Auth.EVENT_AUTO_SIGNIN_FAILED: {
+//                initScripts(); ??
+                bucket = null;
+                bucketForPublishedProjects = null;
+                if (typeof callbacks[FB_CONNECTED] === 'function') {
+                    callbacks[FB_CONNECTED]('not_authorized, unknown');
+                    // todo change callback name
+                }
+                updateUI();
+                break;
+            }
+            case Auth.EVENT_SIGNIN_SUCCESS: {
+                if (config.common.awsEnabled === true && bucket === null && bucketForPublishedProjects === null) {
+                    initAwsBuckets(Auth.getAuthToken());
+                }
+                // todo callbacks
+                updateUI();
+                break;
+            }
+            case Auth.EVENT_SIGNOUT: {
+                updateUI();
+                break;
+            }
+        }
+    };
 
     /**
      * В зависимости от конфига добавить на страницу доп скрипты типа GA или плагинов для обратной связи
@@ -562,7 +625,6 @@ var App = App || {};
     /**
      * Привязать стандартные обработчики событий в интерфейсе
      *
-     * .js-login
      * .js-logout
      * .js-show_login
      */
@@ -583,9 +645,8 @@ var App = App || {};
         });
         $('.js-to_my_templates').click(onMyTemplates);
         $('.js-logout').click(onLogoutClick);
-        $('.js-login').click(onFBLoginClick);
         $('.js-show_login').click(function(){
-            Modal.showLogin();
+            Modal.showSignin();
         });
         $('.js-video').click(function() {
             $('#id-video').show();
@@ -627,41 +688,41 @@ var App = App || {};
     /**
      * Инициализация js fb sdk
      */
-    function initFB() {
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId      : config.common.facebookAppId,
-                cookie     : true,  // enable cookies to allow the server to access
-                // the session
-                xfbml      : true,  // parse social plugins on this page
-                version    : 'v2.5' // use graph api version 2.5
-            });
-            // Now that we've initialized the JavaScript SDK, we call
-            // FB.getLoginStatus().  This function gets the state of the
-            // person visiting this page and can return one of three states to
-            // the callback you provide.  They can be:
-            //
-            // 1. Logged into your app ('connected')
-            // 2. Logged into Facebook, but not your app ('not_authorized')
-            // 3. Not logged into Facebook and can't tell if they are logged into
-            //    your app or not.
-            //
-            // These three cases are handled in the callback function.
-            FB.getLoginStatus(function(response) {
-                // если приложение в тестовом режиме, то пользователь должен быть добавлен в приложение руками
-                // иначе никакого колбека не будет, ни с каким статусом
-                statusChangeCallback(response);
-            });
-        };
-        // Load the SDK asynchronously
-        (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    }
+//    function initFB() {
+//        window.fbAsyncInit = function() {
+//            FB.init({
+//                appId      : config.common.facebookAppId,
+//                cookie     : true,  // enable cookies to allow the server to access
+//                // the session
+//                xfbml      : true,  // parse social plugins on this page
+//                version    : 'v2.5' // use graph api version 2.5
+//            });
+//            // Now that we've initialized the JavaScript SDK, we call
+//            // FB.getLoginStatus().  This function gets the state of the
+//            // person visiting this page and can return one of three states to
+//            // the callback you provide.  They can be:
+//            //
+//            // 1. Logged into your app ('connected')
+//            // 2. Logged into Facebook, but not your app ('not_authorized')
+//            // 3. Not logged into Facebook and can't tell if they are logged into
+//            //    your app or not.
+//            //
+//            // These three cases are handled in the callback function.
+//            FB.getLoginStatus(function(response) {
+//                // если приложение в тестовом режиме, то пользователь должен быть добавлен в приложение руками
+//                // иначе никакого колбека не будет, ни с каким статусом
+//                statusChangeCallback(response);
+//            });
+//        };
+//        // Load the SDK asynchronously
+//        (function(d, s, id) {
+//            var js, fjs = d.getElementsByTagName(s)[0];
+//            if (d.getElementById(id)) return;
+//            js = d.createElement(s); js.id = id;
+//            js.src = "//connect.facebook.net/en_US/sdk.js";
+//            fjs.parentNode.insertBefore(js, fjs);
+//        }(document, 'script', 'facebook-jssdk'));
+//    }
 
     /**
      * Инициализация апи для работы с хранилищем Amazon
@@ -669,7 +730,7 @@ var App = App || {};
      *
      * @param {string} token - fb access token, that was got after authorization
      */
-    function initAWS(token) {
+    function initAwsBuckets(token) {
         if (config.common.awsEnabled === true) {
             AWS.config.region = config.common.awsRegion;
             bucket = new AWS.S3({
@@ -720,132 +781,119 @@ var App = App || {};
     }
 
     /**
-     * Проверить состояние логина пользвателя.
-     * Если пользователь незалогинен, то запросить логин
-     */
-    function checkLoginState() {
-        if (FB) {
-            FB.getLoginStatus(function(response) {
-                statusChangeCallback(response);
-            });
-        }
-    }
-
-    /**
      * This is called with the results from from FB.getLoginStatus().
      *
      * @param response
      */
-    function statusChangeCallback(response) {
-        // The response object is returned with a status field that lets the
-        // app know the current login status of the person.
-        // Full docs on the response object can be found in the documentation
-        // for FB.getLoginStatus().
-        responseStatus = response.status;
-        if (response.status === 'connected') {
-            // событие: установлена свзяь с фб, пользователь вошел
-            if (typeof callbacks[FB_CONNECTED] === 'function') {
-                callbacks[FB_CONNECTED]('connected');
-            }
-            // Logged into your app and Facebook.
-            if (userData === null) {
-                getUserInfo();
-            }
-            accessToken = response.authResponse.accessToken;
-            // Первый раз должны проинициализировать апи для aws
-            if (config.common.awsEnabled === true && bucket === null && bucketForPublishedProjects === null) {
-                initAWS(accessToken);
-            }
-        } else {
-            //not_authorized, unknown
-            initScripts();
-            userData = null;
-            bucket = null;
-            bucketForPublishedProjects = null;
-            if (typeof callbacks[FB_CONNECTED] === 'function') {
-                callbacks[FB_CONNECTED]('not_authorized, unknown');
-            }
-        }
-        updateUI();
-    }
+//    function statusChangeCallback(response) {
+//        // The response object is returned with a status field that lets the
+//        // app know the current login status of the person.
+//        // Full docs on the response object can be found in the documentation
+//        // for FB.getLoginStatus().
+//        responseStatus = response.status;
+//        if (response.status === 'connected') {
+//            // событие: установлена свзяь с фб, пользователь вошел
+//            if (typeof callbacks[FB_CONNECTED] === 'function') {
+//                callbacks[FB_CONNECTED]('connected');
+//            }
+//            // Logged into your app and Facebook.
+//            if (userData === null) {
+//                getUserInfo();
+//            }
+//            accessToken = response.authResponse.accessToken;
+//            // Первый раз должны проинициализировать апи для aws
+//            if (config.common.awsEnabled === true && bucket === null && bucketForPublishedProjects === null) {
+//                initAwsBuckets(accessToken);
+//            }
+//        } else {
+//            //not_authorized, unknown
+//            initScripts();
+//            userData = null;
+//            bucket = null;
+//            bucketForPublishedProjects = null;
+//            if (typeof callbacks[FB_CONNECTED] === 'function') {
+//                callbacks[FB_CONNECTED]('not_authorized, unknown');
+//            }
+//        }
+//        updateUI();
+//    }
 
     /**
      * Запросить логин у FB апи
      *
      * @param {boolean} fromModal
      */
-    function requestLogin(fromModal) {
-        fbLoginRequestedInModal = fromModal;
-        if (fbLoginRequestedInModal === true) {
-            stat('Testix.me', 'First_Login_Click', 'Facebook_login');
-        }
-        if (FB) {
-            loginTime = new Date().getTime();
-            FB.login(function(response) {
-                statusChangeCallback(response);
-            }, {scope:'user_friends,email'});
-        }
-    }
+//    function requestLogin(fromModal) {
+//        fbLoginRequestedInModal = fromModal;
+//        if (fbLoginRequestedInModal === true) {
+//            stat('Testix.me', 'First_Login_Click', 'Facebook_login');
+//        }
+//        if (FB) {
+//            loginTime = new Date().getTime();
+//            FB.login(function(response) {
+//                statusChangeCallback(response);
+//            }, {scope:'user_friends,email'});
+//        }
+//    }
 
     /**
      * Request basic info from fb api
      */
-    function getUserInfo() {
-        if (FB) {
-            userData = null;
-            FB.api('/me',
-                {
-                    fields: "id,about,age_range,picture,bio,birthday,context,email,first_name,gender,hometown,link,location,middle_name,name,timezone,website,work"
-                },
-                function(response) {
-                    userData = response;
-                    initScripts(userData.id);
-                    updateUI();
-                    if (typeof callbacks[USER_DATA_RECEIVED] === 'function') {
-                        callbacks[USER_DATA_RECEIVED]('ok');
-                    }
-                    if (fbLoginRequestedInModal === true) {
-                        stat('Testix.me', 'First_Login_Completed', 'Facebook_login');
-                        fbLoginRequestedInModal = false;
-                    }
-                    else {
-                        stat('Testix.me', 'Auto_login', 'Facebook_login');
-                    }
-                    //getFriends();
-            });
-        }
-    }
+//    function getUserInfo() {
+//        if (FB) {
+//            userData = null;
+//            FB.api('/me',
+//                {
+//                    fields: "id,about,age_range,picture,bio,birthday,context,email,first_name,gender,hometown,link,location,middle_name,name,timezone,website,work"
+//                },
+//                function(response) {
+//                    userData = response;
+//                    initScripts(userData.id);
+//                    updateUI();
+//                    if (typeof callbacks[USER_DATA_RECEIVED] === 'function') {
+//                        callbacks[USER_DATA_RECEIVED]('ok');
+//                    }
+//                    if (fbLoginRequestedInModal === true) {
+//                        stat('Testix.me', 'First_Login_Completed', 'Facebook_login');
+//                        fbLoginRequestedInModal = false;
+//                    }
+//                    else {
+//                        stat('Testix.me', 'Auto_login', 'Facebook_login');
+//                    }
+//                    //getFriends();
+//            });
+//        }
+//    }
 
     /**
      * Get friends
      */
-    function getFriends() {
-        if (FB) {
-            FB.api(userData.id+'/friends',
-                {fields: "id,about,age_range,picture,bio,birthday,context,email,first_name,gender,hometown,link,location,middle_name,name,timezone,website,work"},
-                function(response) {
-                });
-        }
-    }
+//    function getFriends() {
+//        if (FB) {
+//            FB.api(userData.id+'/friends',
+//                {fields: "id,about,age_range,picture,bio,birthday,context,email,first_name,gender,hometown,link,location,middle_name,name,timezone,website,work"},
+//                function(response) {
+//                });
+//        }
+//    }
 
-    /**
-     * Обработчик клика на любую кнопку с классом js-login
-     * Но в модальном окне свой обработчик и вызов requestLogin(true)
-     */
-    function onFBLoginClick() {
-        requestLogin(true);
-    }
+//    function onFBLoginClick() {
+//        requestLogin(true);
+//    }
 
     /**
      * Кликнули на кнопку разлогина
      */
     function onLogoutClick() {
-        if (FB) {
-            FB.logout(function(response) {
-                // Person is now logged out
-                statusChangeCallback(response);
-            });
+        if (window.confirm(App.getText('confirm_signout'))) {
+            Auth.signOut();
         }
+//        if (FB) {
+//            FB.logout(function(response) {
+//                // Person is now logged out
+//                statusChangeCallback(response);
+//            });
+//        }
     }
 
     /**
@@ -864,28 +912,19 @@ var App = App || {};
      * .js-authorization_status
      */
     function updateUI() {
-        if (userData) {
+        if (Auth.getUser()) {
             Modal.hideLogin();
-            $('.js-login').hide();
             $('.js-show_login').hide();
             $('.js-user_ctx_menu').show().find('#id-user_ctx_menu').hide();
-            $('.js-profile_picture').show().empty().append('<img src="' + userData.picture.data.url + '"> ');
-            $('.js-user_name').text(userData.name);
-            $('.js-authorization_status').text('Thanks for logging in, ' + userData.name + '!');
+            //$('.js-profile_picture').show().empty().append('<img src="' + userData.picture.data.url + '"> ');
+            $('.js-user_name').show().text(Auth.getUser().email);
+            $('.js-authorization_status').text('Thanks for logging in, ' + Auth.getUser().email + '!');
         }
         else {
-            if (responseStatus === 'connected') {
-                $('.js-show_login').hide();
-                $('.js-login').hide();
-                Modal.hideLogin();
-            }
-            else {
-                $('.js-show_login').show();
-                $('.js-login').show();
-            }
+            $('.js-show_login').show();
             $('.js-user_ctx_menu').hide();
             $('.js-profile_picture').empty().hide();
-            $('.js-user_name').text('');
+            $('.js-user_name').hide().text('');
             $('.js-authorization_status').text('Not logged');
         }
     }
@@ -1086,13 +1125,12 @@ var App = App || {};
     // public methoods below
     global.start = start;
     // global.getUserAnonimId = getUserAnonimId;
-    global.getUserData = function() { return userData; };
+    //global.getUserData = function() { return userData; };
     global.getAWSBucket = function() { return bucket; };
     global.getAWSBucketForPublishedProjects = function() { return bucketForPublishedProjects; };
     global.getDict = function() { return dict; };
     global.on = on;
-    global.getFriends = getFriends;
-    global.requestLogin = requestLogin;
+//    global.requestLogin = requestLogin;
     global.openEditor = openEditor;
     global.openUrl = openUrl;
     global.relogin = relogin;
