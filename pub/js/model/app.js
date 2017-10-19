@@ -947,10 +947,10 @@ var App = App || {};
      * @param {function} onTemplateInfoLoaded
      */
     function requestUserTemplates(onTemplateListLoaded, onTemplateInfoLoaded) {
-        if (App.getUserData() !== null) {
+        if (Auth.getUser() !== null) {
             userTemplateCollection = new TemplateCollection({
                 // каталог с шаблонами который надо загружать
-                folder: 'facebook-'+App.getUserData().id+'/app'
+                folder: Auth.getUser().id+'/app'
             });
             userTemplateCollection.loadTemplateList(function() {
                 if (onTemplateListLoaded) {
@@ -1072,7 +1072,7 @@ var App = App || {};
      * @param {number} [value], например 10 - длительность
      */
     function stat(category, action, label, value) {
-        var userId = (App.getUserData()) ? App.getUserData().id: null;
+        var userId = (Auth.getUser()) ? Auth.getUser().id: null;
         if (window.ga && config.common.excludeUsersFromStatistic.indexOf(userId)<0) {
             var statData = {
                 hitType: 'event',

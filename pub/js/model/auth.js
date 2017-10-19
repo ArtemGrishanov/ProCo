@@ -316,7 +316,13 @@ var Auth = {
             // установка с помощью атрибутов полученных например в tryRestoreSession
             for (var i = 0; i < param.cognitoAttributes.length; i++) {
                 var atr = param.cognitoAttributes[i];
-                _user[atr.Name] = atr.Value;
+                if (atr.Name === 'sub') {
+                    // меняем название UID на 'sub' -> 'id'
+                    _user['id'] = atr.Value;
+                }
+                else {
+                    _user[atr.Name] = atr.Value;
+                }
             }
         }
         if (param.cognitoUser) {
