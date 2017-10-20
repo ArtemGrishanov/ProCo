@@ -98,7 +98,7 @@ var ResultScreen = MutApp.Screen.extend({
             .css('width','100%')
             .css('min-height','100%'));
         this.resultId = param.resultId;
-        var r = this.model.getResultById(this.resultId);
+        this.result = this.model.getResultById(this.resultId);
 
         param.screenRoot.append(this.$el);
         this.model.bind("change:state", function () {
@@ -109,57 +109,26 @@ var ResultScreen = MutApp.Screen.extend({
             }
         }, this);
 
-        r.backgroundImage.bind('change', function() {
-            this.render();
-        }, this);
+        this.result.backgroundImage.bind('change', this.onMutAppPropertyChanged, this);
+        this.result.backgroundColor.bind('change', this.onMutAppPropertyChanged, this);
+        this.result.titleColor.bind('change', this.onMutAppPropertyChanged, this);
+        this.result.descriptionColor.bind('change', this.onMutAppPropertyChanged, this);
+        this.model.bind("change:showLogoInResults", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:shadowEnableInResults", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:showDownload", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:fbSharingEnabled", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:vkSharingEnabled", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:restartButtonText", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:downloadButtonText", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:logoUrl", this.onMutAppPropertyChanged, this);
+    },
 
-        r.backgroundColor.bind('change', function() {
-            this.render();
-        }, this);
-
-        r.titleColor.bind('change', function() {
-            this.render();
-        }, this);
-
-        r.descriptionColor.bind('change', function() {
-            this.render();
-        }, this);
-
-        this.model.bind("change:showLogoInResults", function () {
-            this.render();
-        }, this);
-
-        this.model.bind("change:shadowEnableInResults", function () {
-            this.render();
-        }, this);
-
-        this.model.bind("change:showDownload", function () {
-            this.render();
-        }, this);
-
-        this.model.bind("change:fbSharingEnabled", function () {
-            this.render();
-        }, this);
-
-        this.model.bind("change:vkSharingEnabled", function () {
-            this.render();
-        }, this);
-
-        this.model.bind("change:restartButtonText", function () {
-            this.render();
-        }, this);
-
-        this.model.bind("change:downloadButtonText", function () {
-            this.render();
-        }, this);
-
-        this.model.bind("change:logoUrl", function() {
-            this.render();
-        }, this);
+    onMutAppPropertyChanged: function() {
+        this.render();
     },
 
     render: function() {
-        var r = this.model.getResultById(this.resultId);
+        var r = this.result;
         var resIndex = this.model.get('results').toArray().indexOf(r);
         var dictionaryId = this.model.get('results').getIdFromPosition(resIndex);
         var renderObject = MutApp.Util.getObjectForRender(r);
@@ -245,5 +214,26 @@ var ResultScreen = MutApp.Screen.extend({
 
         this.renderCompleted();
         return this;
+    },
+
+    /**
+     * Функция будет вызвана перед удалением экрана
+     * Надо позаботиться об удалении всех обработчиков
+     *
+     */
+    destroy: function() {
+        this.model.off("change:showLogoInResults", this.onMutAppPropertyChanged, this);
+        this.model.off("change:shadowEnableInResults", this.onMutAppPropertyChanged, this);
+        this.model.off("change:showDownload", this.onMutAppPropertyChanged, this);
+        this.model.off("change:fbSharingEnabled", this.onMutAppPropertyChanged, this);
+        this.model.off("change:vkSharingEnabled", this.onMutAppPropertyChanged, this);
+        this.model.off("change:restartButtonText", this.onMutAppPropertyChanged, this);
+        this.model.off("change:downloadButtonText", this.onMutAppPropertyChanged, this);
+        this.model.off("change:logoUrl", this.onMutAppPropertyChanged, this);
+
+        this.result.backgroundImage.unbind('change', this.onMutAppPropertyChanged, this);
+        this.result.backgroundColor.unbind('change', this.onMutAppPropertyChanged, this);
+        this.result.titleColor.unbind('change', this.onMutAppPropertyChanged, this);
+        this.result.descriptionColor.unbind('change', this.onMutAppPropertyChanged, this);
     }
 });

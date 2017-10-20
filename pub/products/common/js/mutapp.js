@@ -360,6 +360,10 @@ MutApp.prototype.addScreen = function(v) {
 MutApp.prototype.deleteScreen = function(v) {
     var index = this._screens.indexOf(v);
     if (index >= 0) {
+        if (v.destroy) {
+            // Экран может определить функцию удаления, в которой можно очистить обработчики и т.п.
+            v.destroy();
+        }
         this._screens.splice(index, 1);
         v.$el.remove();
         // событие после произведенных действий. клиент работает в колбеке так, как будто в _screens уже нет экрана
@@ -2932,6 +2936,37 @@ MutAppProperty.prototype.bind = function(eventType, callback, context) {
     }
     else {
         throw new Error('MutAppProperty.bind: event \'' + eventType + '\' is not supported');
+    }
+};
+
+/**
+ * Отвязать событие
+ *
+ * @param {string} eventType
+ * @param {function} callback
+ */
+MutAppProperty.prototype.unbind = function(eventType, callback) {
+    if (MutAppProperty.EVENT_TYPES.indexOf(eventType) >= 0) {
+        if (this._bindedEvents.hasOwnProperty(eventType) !== true) {
+            throw new Error('MutAppProperty.unbind: event \'' + eventType + '\' is not binded to this property \''+this.propertyString+'\'');
+        }
+        if (callback) {
+            var wasUnbinded = false;
+            for (var i = 0; i < this._bindedEvents[eventType].length; i++) {
+                var ev = this._bindedEvents[eventType][i];
+                if (ev.callback === callback) {
+                    this._bindedEvents[eventType].splice(i, 1);
+                    wasUnbinded = true;
+                    break;
+                }
+            }
+            if (wasUnbinded !== true) {
+                throw new Error('MutAppProperty.unbind: event \'' + eventType + '\' is not binded to this property \''+this.propertyString+'\'');
+            }
+        }
+    }
+    else {
+        throw new Error('MutAppProperty.unbind: event \'' + eventType + '\' is not supported');
     }
 };
 

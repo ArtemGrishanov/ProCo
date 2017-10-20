@@ -96,11 +96,10 @@ var QuestionScreen = MutApp.Screen.extend({
             .css('min-height','100%'));
         param.screenRoot.append(this.$el);
         this.questionId = param.questionId;
-
         // определяем индекс вопроса, за который отвечает этот экран
-        var q = this.model.getQuestionById(this.questionId);
+        this.quizElement = this.model.getQuestionById(this.questionId);
         // порядковый индекс вопрса в dictionary quiz
-        this.currentQuestionIndex = this.model.get('quiz').toArray().indexOf(q);
+        this.currentQuestionIndex = this.model.get('quiz').toArray().indexOf(this.quizElement);
         if (this.currentQuestionIndex < 0) {
             throw new Error('QuestionsScreen.initialize: can not find this question in quiz dictionary');
         }
@@ -110,72 +109,38 @@ var QuestionScreen = MutApp.Screen.extend({
             throw new Error('QuestionsScreen.initialize: can not find dictionary id for this question');
         }
 
-        this.model.bind("change:currentQuestionId", function () {
-            if ('question' === this.model.get('state') &&
-                this.questionId === this.model.get('currentQuestionId')) {
-                this.render();
-                this.model.application.showScreen(this);
-            }
-        }, this);
-
-        this.model.bind("change:logoPositionInQuestions", function () {
-            // спорно, можно рендерить а можно и нет. Есть плюсы и минусы у обоих подходов
-            //this.render();
-        }, this);
-
-        this.model.bind("change:questionProgressPosition", function () {
-            // спорно, можно рендерить а можно и нет. Есть плюсы и минусы у обоих подходов
-            //this.render();
-        }, this);
-
-        this.model.bind("change:showLogoInQuestions", function () {
-            this.render();
-        }, this);
-
-        this.model.bind("change:shadowEnableInQuestions", function () {
-            this.render();
-        }, this);
-
-        this.model.bind("change:shadowEnableInQuestions", function () {
-            this.render();
-        }, this);
-
-        this.model.bind("change:showQuestionProgress", function () {
-            this.render();
-        }, this);
-
-        this.model.bind("change:logoUrl", function() {
-            this.render();
-        }, this);
-
-        q.question.backgroundImage.bind('change', function() {
-            this.render();
-        }, this);
-
-        q.question.backgroundColor.bind('change', function() {
-            this.render();
-        }, this);
-
-        // Подписка с помощью backbone не получится
-        // возможно подписаться только вот так на само MutAppPropertyArray свойство
-        q.answer.options.bind('change', function() {
-            var q = this.model.getQuestionById(this.questionId);
-            console.log('Options changed for question: ' + q.id);
-            // нужно делать полный рендер, потому что в конце renderCompleted()
-            this.render();
-            //this.renderAnswers(q.answer);
-        }, this);
+        this.model.bind("change:currentQuestionId", this.onCurrentQuestionIdChanged, this);
+        // спорно, можно рендерить а можно и нет. Есть плюсы и минусы у обоих подходов
+        // this.model.bind("change:logoPositionInQuestions", onMutAppPropertyChanged, this);
+        // this.model.bind("change:questionProgressPosition", onMutAppPropertyChanged, this);
+        this.model.bind("change:showLogoInQuestions", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:shadowEnableInQuestions", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:shadowEnableInQuestions", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:showQuestionProgress", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:logoUrl", this.onMutAppPropertyChanged, this);
+        this.quizElement.question.backgroundImage.bind('change', this.onMutAppPropertyChanged, this);
+        this.quizElement.question.backgroundColor.bind('change', this.onMutAppPropertyChanged, this);
+        this.quizElement.answer.options.bind('change', this.onMutAppPropertyChanged, this); // нужно делать полный рендер, потому что в конце renderCompleted()
 
         // на изменение опций картинок надо подписаться
-        var optionsArr = q.answer.options.toArray();
+        var optionsArr = this.quizElement.answer.options.toArray();
         for (var i = 0; i < optionsArr.length; i++) {
             if (optionsArr[i].img) {
-                optionsArr[i].img.bind('change', function() {
-                    console.log('Img option changed');
-                    this.render();
-                }, this);
+                optionsArr[i].img.bind('change', this.onMutAppPropertyChanged, this);
             }
         }
+    },
+
+    onCurrentQuestionIdChanged: function() {
+        if ('question' === this.model.get('state') &&
+            this.questionId === this.model.get('currentQuestionId')) {
+            this.render();
+            this.model.application.showScreen(this);
+        }
+    },
+
+    onMutAppPropertyChanged: function() {
+        this.render();
     },
 
     render: function() {
@@ -311,6 +276,34 @@ var QuestionScreen = MutApp.Screen.extend({
             }
             case 'input': {
                 //TODO
+            }
+        }
+    },
+
+    /**
+     * Функция будет вызвана перед удалением экрана
+     * Надо позаботиться об удалении всех обработчиков
+     *
+     */
+    destroy: function() {
+        this.model.off("change:currentQuestionId", this.onCurrentQuestionIdChanged, this);
+        // спорно, можно рендерить а можно и нет. Есть плюсы и минусы у обоих подходов
+        // this.model.off("change:logoPositionInQuestions", onMutAppPropertyChanged, this);
+        // this.model.off("change:questionProgressPosition", onMutAppPropertyChanged, this);
+        this.model.off("change:showLogoInQuestions", this.onMutAppPropertyChanged, this);
+        this.model.off("change:shadowEnableInQuestions", this.onMutAppPropertyChanged, this);
+        this.model.off("change:shadowEnableInQuestions", this.onMutAppPropertyChanged, this);
+        this.model.off("change:showQuestionProgress", this.onMutAppPropertyChanged, this);
+        this.model.off("change:logoUrl", this.onMutAppPropertyChanged, this);
+        this.quizElement.question.backgroundImage.unbind('change', this.onMutAppPropertyChanged, this);
+        this.quizElement.question.backgroundColor.unbind('change', this.onMutAppPropertyChanged, this);
+        this.quizElement.answer.options.unbind('change', this.onMutAppPropertyChanged, this); // нужно делать полный рендер, потому что в конце renderCompleted()
+
+        // на изменение опций картинок надо подписаться
+        var optionsArr = this.quizElement.answer.options.toArray();
+        for (var i = 0; i < optionsArr.length; i++) {
+            if (optionsArr[i].img) {
+                optionsArr[i].img.unbind('change', this.onMutAppPropertyChanged, this);
             }
         }
     }
