@@ -117,6 +117,14 @@ var ResultScreen = MutApp.Screen.extend({
             this.render();
         }, this);
 
+        r.titleColor.bind('change', function() {
+            this.render();
+        }, this);
+
+        r.descriptionColor.bind('change', function() {
+            this.render();
+        }, this);
+
         this.model.bind("change:showLogoInResults", function () {
             this.render();
         }, this);
@@ -209,6 +217,12 @@ var ResultScreen = MutApp.Screen.extend({
         // цвет фона
         this.$el.find('.js-result_back_color')
             .css('background-color', r.backgroundColor.getValue());
+        // цвет описания
+        this.$el.find('.js-result_description')
+            .css('color', r.descriptionColor.getValue());
+        // цвет заголовка
+        this.$el.find('.js-result_title')
+            .css('color', r.titleColor.getValue());
 
         // фоновая картинка
         if (r.backgroundImage.getValue()) {

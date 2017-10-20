@@ -298,6 +298,7 @@ img {
 }
 .question_i {
     position: relative;
+    background-color: #F0F4FF;
     font-size: 18px;
     border: 1px #5c5c5c solid;
     box-sizing: border-box;
@@ -358,9 +359,11 @@ img {
     position: absolute;
     top: 12px;
     right: 12px;
-    width: 22px;
-    height: 22px;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
     background: url(i/icon-link-result-strong.png) no-repeat center;
+    background-color: #fff;
     cursor: pointer;
 }
 

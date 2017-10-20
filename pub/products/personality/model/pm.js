@@ -106,6 +106,8 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm results',
             value: []
         });
+        this.normalizeResults(); // проверить что всех атрибутов результата хватает, если что дописать новые
+
         this.attributes.quiz = new MutAppPropertyDictionary({
             application: this.application,
             model: this,
@@ -273,6 +275,7 @@ var PersonalityModel = MutApp.Model.extend({
           //{optionId_x, strongLinks: [resultId_y], weakLinks: [resultId_u]},
         //  ]
 
+        var optionDictionaryIdsToDelete = [];
         var resultLinkingArr = this.attributes.resultLinking.toArray();
         // первый проход на удаление несуществующих
         for (var i = 0; i < resultLinkingArr.length; i++) {
@@ -285,22 +288,29 @@ var PersonalityModel = MutApp.Model.extend({
                     var larr = linksArrays.shift();
                     for (var k = 0; k < larr.length;) {
                         var resultId = larr[k];
-                        var res = this.getResultById(resultId)
+                        var res = this.getResultById(resultId);
                         if (res) {
                             k++;
                         }
                         else {
                             // проверить будет ли такое удаление работать (это же результат вызова toArray)
                             // проверил - работает!
-                            rl.strongLinks.splice(k, 1);
+                            larr.splice(k, 1); // larr - либо rl.strongLinks, либо rl.weakLinks
                         }
                     }
                 }
             }
             else {
                 // опции такой не существует
-                this.attributes.resultLinking.deleteElement(i); // deleting in dictionary by position
+                // запомнить этот dictionaryId для удаления, удалять в этом проходе нельзя, чтобы не нарушить индексацию по массиву
+                optionDictionaryIdsToDelete.push(this.attributes.resultLinking.getIdFromPosition(i));
             }
+        }
+
+        // сначала только собрали идишки для удаления
+        // теперь можно пройти и удалить какие надо опции
+        for (var i = 0; i < optionDictionaryIdsToDelete.length; i++) {
+            this.attributes.resultLinking.deleteElementById(optionDictionaryIdsToDelete[i]);
         }
 
         // второй проход на добавление новых опций
@@ -319,8 +329,6 @@ var PersonalityModel = MutApp.Model.extend({
                 }
             }
         }
-
-        var stophrr = 0;
     },
 
     /**
@@ -891,28 +899,40 @@ var PersonalityModel = MutApp.Model.extend({
      * @returns {{id: string, title: MutAppProperty}}
      */
     resultProto1: function() {
-        var resultId = MutApp.Util.getUniqId(6);
+        var resultDictionaryId = MutApp.Util.getUniqId(6);
 
         var resultTitle = new MutAppProperty({
-            propertyString: 'id=pm results.'+resultId+'.title',
+            propertyString: 'id=pm results.'+resultDictionaryId+'.title',
             model: this,
             application: this.application,
             value: 'Result title'
         });
         var resultDescription = new MutAppProperty({
-            propertyString: 'id=pm results.'+resultId+'.description',
+            propertyString: 'id=pm results.'+resultDictionaryId+'.description',
             model: this,
             application: this.application,
             value: 'Result description'
         });
         var backgroundImage = new MutAppProperty({
-            propertyString: 'id=pm results.'+resultId+'.backgroundImage',
+            propertyString: 'id=pm results.'+resultDictionaryId+'.backgroundImage',
             model: this,
             application: this.application,
             value: null
         });
         var backgroundColor = new MutAppProperty({
-            propertyString: 'id=pm results.'+resultId+'.backgroundColor',
+            propertyString: 'id=pm results.'+resultDictionaryId+'.backgroundColor',
+            model: this,
+            application: this.application,
+            value: null
+        });
+        var titleColor = new MutAppProperty({
+            propertyString: 'id=pm results.'+resultDictionaryId+'.titleColor',
+            model: this,
+            application: this.application,
+            value: null
+        });
+        var descriptionColor = new MutAppProperty({
+            propertyString: 'id=pm results.'+resultDictionaryId+'.descriptionColor',
             model: this,
             application: this.application,
             value: null
@@ -923,11 +943,13 @@ var PersonalityModel = MutApp.Model.extend({
             title: resultTitle,
             description: resultDescription,
             backgroundImage: backgroundImage,
-            backgroundColor: backgroundColor
+            backgroundColor: backgroundColor,
+            titleColor: titleColor,
+            descriptionColor: descriptionColor
         };
 
         return {
-            id: resultId,
+            id: resultDictionaryId,
             element: result
         };
     },
@@ -1124,5 +1146,36 @@ var PersonalityModel = MutApp.Model.extend({
         var prps = this.getResultProbabilities();
 
         console.log('PersonalityModel.isOK: Checking finished. See qunit log or console for details.');
+    },
+
+    /**
+     * Проверить что у всех результатов имеются необходимые атрибуты
+     *
+     * Решает такие проблемы как:
+     * - Шаблон был сохранен. А после добавили новое mutAppProperty titleColor в элемент результата. При открытии шаблона надо добавить свойство, если не существует
+     *
+     */
+    normalizeResults: function() {
+        var results = this.attributes.results.toArray();
+        for (var i = 0; i < results.length; i++) {
+            var r = results[i];
+            var dictionaryId = this.attributes.results.getIdFromPosition(i);
+            if (!r.titleColor) {
+                r.titleColor = new MutAppProperty({
+                    propertyString: 'id=pm results.'+dictionaryId+'.titleColor',
+                    model: this,
+                    application: this.application,
+                    value: null
+                });
+            }
+            if (!r.descriptionColor) {
+                r.descriptionColor = new MutAppProperty({
+                    propertyString: 'id=pm results.'+dictionaryId+'.descriptionColor',
+                    model: this,
+                    application: this.application,
+                    value: null
+                });
+            }
+        }
     }
 });

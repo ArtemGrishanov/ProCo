@@ -135,6 +135,22 @@ var PersonalityApp = MutApp.extend({
                         view: 'ColorPicker'
                     },
                     controlFilter: 'screenPropertyString'
+                },
+                "id=pm results.{{id}}.titleColor": {
+                    label: {RU:'Цвет заголовка',EN:'Title color'},
+                    controls: {
+                        name: "StringControl",
+                        view: 'ColorPicker'
+                    },
+                    controlFilter: 'onclick'
+                },
+                "id=pm results.{{id}}.descriptionColor": {
+                    label: {RU:'Цвет пояснения',EN:'Description color'},
+                    controls: {
+                        name: "StringControl",
+                        view: 'ColorPicker'
+                    },
+                    controlFilter: 'onclick'
                 }
             }
         },
@@ -362,12 +378,23 @@ var PersonalityApp = MutApp.extend({
         },
         ".js-a_wr border-color": {
             label: {RU:'Цвет обводки',EN:'Border color'},
-            controls: "StringControl",
+            controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            },
             controlFilter: 'onclick'
         },
         ".js-a_wr border-radius": {
             label: {RU:'Радиус угла',EN:'Border radius'},
             controls: "StringControl",
+            controlFilter: 'onclick'
+        },
+        ".js-a_wr background-color": {
+            label: {RU:'Цвет фона опции',EN:'Option background color'},
+            controls: "StringControl",controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            },
             controlFilter: 'onclick'
         }
     }),

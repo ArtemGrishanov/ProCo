@@ -1499,7 +1499,6 @@ var Editor = {};
 
     // public methods
     global.start = start;
-    global.forEachElementOnScreen = forEachElementOnScreen;
     global.showScreen = showScreen;
     global.getAppContainerSize = function() { return appContainerSize; };
     global.getSlideGroupControls = function() { return slideGroupControls; };
