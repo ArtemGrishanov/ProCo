@@ -82,10 +82,12 @@ var config = {
         awsHostName: 'https://s3.eu-central-1.amazonaws.com/',
         awsBucketName: 'proconstructor',
         awsPublishedProjectsBucketName: 'p.testix.me',
-        awsRoleArn: 'arn:aws:iam::520270155749:role/ProCo_FBUsers',
-        awsRegion: 'eu-central-1',
-        awsUserPoolId: 'us-east-1_HgTsPcpEZ',
-        awsUserPoolClientId: '6nshsam5quudsd8vdrknnc9t70', // client 'testix_localhost'
+        awsRoleArn: 'arn:aws:iam::520270155749:role/Cognito_TestixIdentityPoolAuth_Role',
+        // obsolete facebook arn value 'arn:aws:iam::520270155749:role/ProCo_FBUsers'
+        awsRegion: 'eu-central-1', //'us-east-1'
+        awsUserPoolId: 'eu-central-1_jYfT2ZhfI',
+        awsIdentityPoolId: 'eu-central-1:c84ab2e1-6dc2-4362-8320-e438773c41db',
+        awsUserPoolClientId: '7e0ml3f1ienelt84691dmsgpij', // client 'Testix Localhost' in region eu-central-1
         /**
          * Задержка перед возможностью релогина
          * Применяется когда сессия устаревает

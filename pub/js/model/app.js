@@ -739,11 +739,12 @@ var App = App || {};
                     CacheControl: 'no-cache'
                 }
             });
-            bucket.config.credentials = new AWS.WebIdentityCredentials({
-                ProviderId: 'graph.facebook.com',
-                RoleArn: config.common.awsRoleArn,
-                WebIdentityToken: token
-            });
+//            bucket.config.credentials = new AWS.WebIdentityCredentials({
+//                //ProviderId: 'graph.facebook.com',
+//                ProviderId: 'cognito-identity.amazonaws.com',
+//                RoleArn: config.common.awsRoleArn,
+//                WebIdentityToken: token
+//            });
 
             bucketForPublishedProjects = new AWS.S3({
                 params: {
@@ -751,11 +752,12 @@ var App = App || {};
                     CacheControl: 'no-cache'
                 }
             });
-            bucketForPublishedProjects.config.credentials = new AWS.WebIdentityCredentials({
-                ProviderId: 'graph.facebook.com',
-                RoleArn: config.common.awsRoleArn,
-                WebIdentityToken: token
-            });
+//            bucketForPublishedProjects.config.credentials = new AWS.WebIdentityCredentials({
+//                //ProviderId: 'graph.facebook.com',
+//                ProviderId: 'cognito-identity.amazonaws.com',
+//                RoleArn: config.common.awsRoleArn,
+//                WebIdentityToken: token
+//            });
 
             if (typeof callbacks[AWS_INIT_EVENT] === 'function') {
                 callbacks[AWS_INIT_EVENT]();

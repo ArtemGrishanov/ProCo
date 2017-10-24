@@ -187,10 +187,9 @@ var Auth = {
                 var key = 'cognito-idp.'+config.common.awsRegion+'.amazonaws.com/'+config.common.awsUserPoolId;
                 AWS.config.region = config.common.awsRegion;
                 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-                    IdentityPoolId: config.common.awsUserPoolId, // your identity pool id here
+                    IdentityPoolId: config.common.awsIdentityPoolId,
                     Logins: {
-                        // Change the key below according to the specific region your user pool is in.
-                        key: result.getIdToken().getJwtToken()
+                        [key]: result.getIdToken().getJwtToken()
                     }
                 });
                 cognitoUser.getUserAttributes(function(err, attributes) {
@@ -207,6 +206,10 @@ var Auth = {
                         });
                         _sessionToken = result.getIdToken().getJwtToken();
                         _trigger(Auth.EVENT_SIGNIN_SUCCESS);
+
+                        if (typeof getUser().short_id !== 'string') {
+                            _updateShortUserId();
+                        }
                     }
                 });
             },
@@ -233,9 +236,58 @@ var Auth = {
                     _trigger(Auth.EVENT_SIGNIN_ERROR);
                     console.error(err.code + ' ' + err.message);
                 }
+            },
+
+            mfaRequired: function(codeDeliveryDetails) {
+                // MFA is required to complete user authentication.
+                // Get the code from user and call
+                // cognitoUser.sendMFACode(mfaCode, this)
+                // unknown error
+                _trigger(Auth.EVENT_SIGNIN_ERROR);
+                console.error(err.code + ' ' + err.message);
+            },
+
+            newPasswordRequired: function(userAttributes, requiredAttributes) {
+                // User was signed up by an admin and must provide new
+                // password and required attributes, if any, to complete
+                // authentication.
+
+                // the api doesn't accept this field back
+                delete userAttributes.email_verified;
+
+                // Get these details and call
+                var newPassword = prompt('Enter new password ' ,'');
+                cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, this);
             }
 
         });
+    }
+
+    /**
+     * Обновить короткий идишник пользователя,
+     * Сгенерировать его из уникального id юзер пула
+     * Пример: 0235e985-8b92-4666-83fa-25fd85ee1072 -> 96326a41c9
+     *
+     * @private
+     */
+    function _updateShortUserId() {
+        if (_user) {
+            var sid = MD5.calc(_user.id).substr(0,10);
+            if (_user.short_id !== sid) {
+                // сразу запишем локально для использования, дальше на бекенд запрос отправляется
+                _user.short_id = sid;
+                var attributeList = [];
+                var attribute = {
+                    Name : 'custom:short_id',
+                    Value : sid
+                };
+                var attribute = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(attribute);
+                attributeList.push(attribute);
+                _user.cognitoUser.updateAttributes(attributeList, function(err, result) {
+                    // do nothing
+                });
+            }
+        }
     }
 
     /**
@@ -281,18 +333,19 @@ var Auth = {
                         });
                         _sessionToken = session.getIdToken().getJwtToken();
                         _trigger(Auth.EVENT_SIGNIN_SUCCESS);
+
+                        _updateShortUserId();
                     }
                 });
 
-//                пока не уверен надо ли это
-//                var key = 'cognito-idp.'+config.common.awsRegion+'.amazonaws.com/'+config.common.awsUserPoolId;
-//                AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-//                    IdentityPoolId: config.common.awsUserPoolId,
-//                    Logins: {
-//                        // Change the key below according to the specific region your user pool is in.
-//                        key: session.getIdToken().getJwtToken()
-//                    }
-//                });
+                var key = 'cognito-idp.'+config.common.awsRegion+'.amazonaws.com/'+config.common.awsUserPoolId;
+                AWS.config.region = config.common.awsRegion;
+                AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                    IdentityPoolId: config.common.awsIdentityPoolId,
+                    Logins: {
+                        [key]: session.getIdToken().getJwtToken()
+                    }
+                });
             });
         }
         else {
@@ -391,5 +444,13 @@ var Auth = {
     global.confirmRegisteredUnauthUser = confirmRegisteredUnauthUser;
     global.tryRestoreSession = tryRestoreSession;
     global.getUser = getUser;
+
+    // for debug
+    global._getCredentials = function() {
+        AWS.config.credentials.get(function (err) {
+            if (err) console.log(err);
+            else console.log(AWS.config.credentials);
+        });
+    }
 
 })(Auth);

@@ -76,7 +76,7 @@ TemplateCollection.prototype.loadTemplateList = function(callback) {
                     // создаем пока практически пустой объект-шаблон
                     // позже он будет дописан более подробной информацией из loadTemplatesInfo
                     thisCollection.templates.push(new Template({
-                        // key example facebook-902609146442342/app/abc123.txt
+                        // key example 0235e985-8b92-4666-83fa-25fd85ee1072/app/abc123.txt
                         url: obj.Key,
                         id: tId,
                         lastModified: obj.LastModified
@@ -151,7 +151,7 @@ TemplateCollection.prototype.delete = function(callback, id) {
     var template = this.getById(id);
     if (template) {
         log('Deleting project:' + id);
-        var objKey = 'facebook-'+App.getUserData().id+'/app/'+id+'.txt';
+        var objKey = Auth.getUser().id+'/app/'+id+'.txt';
         var params = {
             Key: objKey
         };
@@ -213,7 +213,7 @@ TemplateCollection.prototype.saveTemplate = function(callback,
                 template.title = title;
             }
             log('Saving project:' + appId);
-            var objKey = 'facebook-'+App.getUserData().id+'/app/'+appId+'.txt';
+            var objKey = Auth.getUser().id+'/app/'+appId+'.txt';
             var params = {
                 Key: objKey,
                 ContentType: 'text/plain',
