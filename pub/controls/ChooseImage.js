@@ -110,6 +110,6 @@ ChooseImage.prototype.onDirectiveClick = function() {
         }
     }
     else {
-        Modal.showLogin();
+        Modal.showSignin();
     }
 };

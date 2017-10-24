@@ -4,8 +4,16 @@
  * Модуль для управления авторизацией в приложении
  *
  */
-
 var Auth = {
+    // signup event group
+    EVENT_SIGNUP_SUCCESS: 'event_signup_success',
+    EVENT_SIGNUP_ERROR: 'event_signup_error',
+    EVENT_SIGNUP_ERROR_INCORRECT_EMAIL: 'event_signup_error_incorrect_email',
+    EVENT_SIGNUP_ERROR_NO_USERNAME: 'event_signup_error_no_username',
+    EVENT_SIGNUP_ERROR_NO_PASSWORD: 'event_signup_error_no_password',
+    EVENT_SIGNUP_ERROR_INVALID_PASSWORD: 'event_signup_error_invalid_password',
+    EVENT_SIGNUP_ERROR_USER_ALREADY_EXIST: 'event_signup_error_user_already_exist',
+
     // signin event group
     EVENT_SIGNIN_SUCCESS: 'event_signin_success',
     EVENT_SIGNIN_ERROR_USER_NOT_CONFIRMED: 'event_signin_error_user_not_confirmed',
@@ -56,17 +64,25 @@ var Auth = {
      *
      * @param {string} param.email
      * @param {string} param.password
+     * @param {number} param.news_subscription - 0 | 1 - разрешается ли присылать новости. По умолчанию '1'
      */
     function signUp(param) {
         param = param || {};
         if (typeof param.email !== 'string' || param.email.length === 0) {
-            throw new Error('signUp: email not specified');
+            _trigger(Auth.EVENT_SIGNUP_ERROR_NO_USERNAME);
+            return;
         }
         // используем емайл как имя юзера, но можно заставить вводить еще и username
         param.username = param.email;
         if (!param.password || param.password.length === 0) {
-            throw new Error('signUp: password not specified');
+            _trigger(Auth.EVENT_SIGNUP_ERROR_NO_PASSWORD);
+            return;
         }
+        if (_validateEmail(param.username) !== true) {
+            _trigger(Auth.EVENT_SIGNUP_ERROR_INCORRECT_EMAIL);
+            return;
+        }
+        param.news_subscription = (param.news_subscription.toString() === '0') ? '0': '1';
 
         var CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
         var poolData = {
@@ -83,32 +99,42 @@ var Auth = {
         var attributeEmail = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataEmail);
         attributeList.push(attributeEmail);
 
-        var dataEmail = {
-            Name : 'nickname',
-            Value : 'Nickname_remove_this_field'
-        };
-        var attributeNickname = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataEmail);
-        attributeList.push(attributeNickname);
+//        var dataEmail = {
+//            Name : 'nickname',
+//            Value : 'Nickname_remove_this_field'
+//        };
+//        var attributeNickname = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataEmail);
+//        attributeList.push(attributeNickname);
 
-        //TODO add attribute: allow to get some news
+        var attribute = {
+            Name : 'custom:news_subscription',
+            Value : param.news_subscription
+        };
+        var attribute = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(attribute);
+        attributeList.push(attribute);
 
         userPool.signUp(param.username, param.password, attributeList, null, function(err, result) {
             if (err) {
-                // err.code == 'InvalidPasswordException' || 'InvalidParameterException' || 'UsernameExistsException'
-
-                // Details:
-
-                // UsernameExistsException: User already exists
-                // InvalidPasswordException: Password did not conform with policy: Password must have uppercase characters
-                // InvalidParameterException: Attributes did not conform to the schema: nickname: The attribute is required
-
-                alert(err);
+                if (err.code === 'InvalidPasswordException' || err.message.indexOf('Value at \'password\' failed to satisfy constraint') >= 0) {
+                    // err.message InvalidPasswordException: Password did not conform with policy: Password must have uppercase characters
+                    _trigger(Auth.EVENT_SIGNUP_ERROR_INVALID_PASSWORD);
+                }
+                else if (err.code === 'UsernameExistsException') {
+                    // err.message: UsernameExistsException: User already exists
+                    _trigger(Auth.EVENT_SIGNUP_ERROR_USER_ALREADY_EXIST);
+                }
+                else {
+                    // unknown error
+                    _trigger(Auth.EVENT_SIGNUP_ERROR);
+                    console.error(err.code + ' ' + err.message);
+                }
                 return;
             }
             else {
+                cognitoUser = result.user;
+                _updateShortUserId();
+                _trigger(Auth.EVENT_SIGNUP_SUCCESS);
             }
-            cognitoUser = result.user;
-            console.log('user name is ' + cognitoUser.getUsername());
         });
     }
 

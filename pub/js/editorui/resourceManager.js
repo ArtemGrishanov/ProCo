@@ -64,6 +64,9 @@ function ResourceManager(params) {
                 callback();
             }).bind(this));
         }
+        else {
+            Modal.showSignin();
+        }
     };
 
     this.getUserResourceBaseUrl = function() {
@@ -97,6 +100,9 @@ function ResourceManager(params) {
                     this.show(this.selectCallback, {zIndex:this.zIndex});
                 }).bind(this), config.storage.putNewResourceMaxDelay);
             }
+        }
+        else {
+            Modal.showSignin();
         }
     };
 
@@ -135,6 +141,9 @@ function ResourceManager(params) {
             else {
                 this.setDialogOptions();
             }
+        }
+        else {
+            Modal.showSignin();
         }
     };
 

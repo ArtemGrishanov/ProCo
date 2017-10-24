@@ -102,4 +102,7 @@ var Modal = {};
     global.showSignin = function (data) { _show(SigninModal, data) };
     global.hideSignin = function () { _hide(SigninModal) };
 
+    global.showEmailSent = function (data) { _show(EmailSentModal, data) };
+    global.hideEmailSent = function () { _hide(EmailSentModal) };
+
 })(Modal);

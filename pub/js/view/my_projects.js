@@ -148,14 +148,24 @@ var myProjectsView = {};
         renderTemplateInfo(template);
     }
 
-    // публичные свойства
-    //
+    /**
+     * Обработка событий из модуля авторизации
+     *
+     * @param {string} event
+     * @param {object} data
+     */
+    function onAuthEvent(event, data) {
+        switch(event) {
+            case Auth.EVENT_SIGNIN_SUCCESS: {
+                showMyTemplates();
+                break;
+            }
+        }
+    };
 
     // авто инициализация
     initUIHandlers();
-    App.on(USER_DATA_RECEIVED, function() {
-        // автоматический запрос сохраненных темплейтов пользователя как только это становится возможным
-        showMyTemplates();
-    });
+    // автоматический запрос сохраненных темплейтов пользователя как только это становится возможным
+    Auth.addEventCallback(onAuthEvent);
 
 })(myProjectsView);

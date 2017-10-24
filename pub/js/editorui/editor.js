@@ -581,7 +581,7 @@ var Editor = {};
             }
         }
         else {
-            Modal.showLogin();
+            Modal.showSignin();
         }
     }
 
@@ -704,7 +704,7 @@ var Editor = {};
             }, appId);
         }
         else {
-            Modal.showLogin();
+            Modal.showSignin();
         }
     }
 
@@ -732,7 +732,7 @@ var Editor = {};
             }
         }
         else {
-            Modal.showLogin();
+            Modal.showSignin();
         }
     }
 
@@ -817,7 +817,7 @@ var Editor = {};
 
         }
         else {
-            Modal.showLogin();
+            Modal.showSignin();
         }
     }
 
@@ -844,10 +844,11 @@ var Editor = {};
      */
     function handleInspector() {
         $(window).keypress(function(event) {
-            if (event.which == 105) {
-                inspector.isOK();
-                event.preventDefault();
-            }
+            //todo blocks test input 'i'. Make cmd+i
+//            if (event.which == 105) {
+//                inspector.isOK();
+//                event.preventDefault();
+//            }
             //return false;
         });
     }

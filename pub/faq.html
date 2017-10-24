@@ -44,8 +44,9 @@
                     <span class="tx __18 lang_item __active __light js-lang" data-lang="RU">RU</span><span class="tx __18 lang_item __leftborder __light js-lang" data-lang="EN">EN</span>
                 </div>
                 <div id="id-user_toolbar" class="toolbar_user ml12">
-                    <div style="display:none" class="user_avatar js-profile_picture"></div>
-                    <span style="display:none" class="pbtn __blue __small mt2 js-show_login pts_string pts_sign_in">Войти</span>
+                    <!--<div style="display:none" class="user_avatar js-profile_picture"></div>-->
+                    <div style="display:none" class="user_name js-user_name"></div>
+                    <span style="display:none" class="pbtn __blue __small mt4 js-show_login">Войти</span>
                     <div style="display:none" class="dropdown_btn js-user_ctx_menu">
                         <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
                             <div class="ctx_menu_item js-to_my_templates pts_string pts_my_projects">
@@ -143,6 +144,8 @@
     </div>
 
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.139.0.min.js"></script>
+    <script type="text/javascript" src="lib/aws-cognito-sdk.min.js"></script>
+    <script type="text/javascript" src="lib/amazon-cognito-identity.min.js"></script>
     <script type="text/javascript" src="lib/jquery.js"></script>
     <!-- build:js info.min.js -->
     <script type="text/javascript" src="js/config.js"></script>
@@ -150,8 +153,12 @@
     <script type="text/javascript" src="js/view/modals/loadingModal.js"></script>
     <script type="text/javascript" src="js/view/modals/loginModal.js"></script>
     <script type="text/javascript" src="js/view/modals/messageModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/signupModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/signinModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/emailSentModal.js"></script>
     <script type="text/javascript" src="js/view/modals/modal.js"></script>
     <script type="text/javascript" src="js/model/app.js"></script>
+    <script type="text/javascript" src="js/model/auth.js"></script>
     <script type="text/javascript" src="js/util/utils.js"></script>
     <!-- endbuild -->
     <script>

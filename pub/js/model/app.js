@@ -253,7 +253,11 @@ var App = App || {};
             error_password_attempts_exceeded: 'Слишком частый ввод пароля',
             error_user_not_exist: 'Пользователь не найден',
             error_user_not_confirmed: 'Пользователь не подтвердил регистрацию',
-            error_signin: 'Не удалось войти'
+            error_signin: 'Не удалось войти',
+            error_invalid_password: 'Пароль должен быть не менее 8 символов, содержать хотя бы одну заглавную букву и цифру.',
+            error_user_already_exist: 'Пользователь уже существует',
+            error_signup: 'Не удалось зарегистрироваться',
+            signup_completed: 'Регистрация выполнена. Подтвердите email.'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -423,7 +427,11 @@ var App = App || {};
             error_password_attempts_exceeded: 'Password attempts exceeded',
             error_user_not_exist: 'User does not exist',
             error_user_not_confirmed: 'User has not confirm email',
-            error_signin: 'Can not enter'
+            error_signin: 'Can not enter',
+            error_invalid_password: 'Passwords must be at least 8 characters long. Contain at least one uppercase letter and digit',
+            error_user_already_exist: 'User already exist',
+            error_signup: 'Can not sign up',
+            signup_completed: 'Signing up completed. Please confirm email.'
         }
     },
     /**

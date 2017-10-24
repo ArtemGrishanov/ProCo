@@ -922,6 +922,10 @@ var config = {
         signinModal: {
             templateUrl: 'templates/signin.html',
             defZIndex: 95
+        },
+        emailSentModal: {
+            templateUrl: 'templates/emailSent.html',
+            defZIndex: 95
         }
     },
     scripts: {

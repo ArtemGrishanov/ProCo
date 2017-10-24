@@ -16,7 +16,7 @@ function ChooseImageQuick(propertyString, directiveName, $parent, productDOMElem
             Editor.getResourceManager().show(this.onImageSelected.bind(this));
         }
         else {
-            Modal.showLogin();
+            Modal.showSignin();
         }
     };
 

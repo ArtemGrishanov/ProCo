@@ -84,6 +84,13 @@ input:focus {
     width: 36px;
     height: 36px;
 }
+.su-compl_label {
+    font-size: 17px;
+}
+.su-compl_desc {
+    font-size: 14px;
+    line-height: 1.5em;
+}
 .su-reg_fb_btn {
     position: relative;
     display: inline-block;
@@ -118,6 +125,10 @@ input:focus {
 .su-reg_label {
     background-color: #fff;
 }
+.su-reg_label.__error {
+    color: #ff515b;
+}
+
 .su-input {
     width: 248px;
     height: 20px;
@@ -199,7 +210,11 @@ input:focus {
     padding: 0;
 }
 .su-bottom {
-    padding: 20px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 40px 0;
 }
 .su-signin_label {
     line-height: 1.5em;
@@ -346,6 +361,9 @@ input:focus {
 }
 .mt60 {
     margin-top: 60px;
+}
+.mt70 {
+    margin-top: 70px;
 }
 .ml12 {
     margin-left: 12px;
