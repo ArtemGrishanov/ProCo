@@ -31,6 +31,25 @@ var Auth = {
 
     // signup event group
     EVENT_SIGNUP_ERROR: 'event_signup_error',
+
+    // changepassword event group
+    EVENT_CHANGEPASS_SUCCESS: 'event_changepass_success',
+    EVENT_CHANGEPASS_ERROR: 'event_changepass_error',
+    EVENT_CHANGEPASS_ERROR_NO_ACTUAL_PASSWORD: 'event_changepass_error_no_actual_password',
+    EVENT_CHANGEPASS_ERROR_NO_PASSWORD: 'event_changepass_error_no_password',
+    EVENT_CHANGEPASS_ERROR_NO_PASSWORD_CONFIRM: 'event_changepass_error_no_password_confirm',
+    EVENT_CHANGEPASS_ERROR_NO_CONFIRM_CODE: 'event_changepass_error_no_confirm_code', // только при восстановлении пароля через емайл возникает этот кейс
+    EVENT_CHANGEPASS_ERROR_NO_USERNAME: 'event_changepass_no_username', // только при восстановлении пароля через емайл возникает этот кейс
+    EVENT_CHANGEPASS_ERROR_INVALID_CODE: 'event_error_invalid_code',
+    EVENT_CHANGEPASS_ERROR_DIFF_PASSWORDS: 'event_changepass_error_diff_passwords',
+    EVENT_CHANGEPASS_ERROR_INVALID_PASSWORD: 'event_changepass_error_invalid_password',
+    EVENT_CHANGEPASS_WRONG_PASSWORD: 'event_changepass_wrong_pass',
+    EVENT_CHANGEPASS_INVALID_NEW_PASSWORD: 'event_changepass_invalid_new_pass',
+
+
+    //restore password
+    EVENT_RESTORE_SENT: 'event_restore_sent',
+    EVENT_RESTORE_ERROR: 'event_restore_error'
 };
 
 (function(global) {
@@ -99,12 +118,12 @@ var Auth = {
         var attributeEmail = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataEmail);
         attributeList.push(attributeEmail);
 
-//        var dataEmail = {
-//            Name : 'nickname',
-//            Value : 'Nickname_remove_this_field'
-//        };
-//        var attributeNickname = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataEmail);
-//        attributeList.push(attributeNickname);
+        //        var dataEmail = {
+        //            Name : 'nickname',
+        //            Value : 'Nickname_remove_this_field'
+        //        };
+        //        var attributeNickname = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataEmail);
+        //        attributeList.push(attributeNickname);
 
         var attribute = {
             Name : 'custom:news_subscription',
@@ -144,13 +163,43 @@ var Auth = {
      * @param {string} param.username
      * @param {string} param.code
      */
-    function confirmRegisteredUnauthUser(param) {
+//    function confirmRegisteredUnauthUser(param) {
+//        param = param || {};
+//        if (typeof param.username !== 'string' || param.username.length === 0) {
+//            throw new Error('confirmRegisteredUnauthUser: username not specified');
+//        }
+//        if (!param.code || param.code.length === 0) {
+//            throw new Error('confirmRegisteredUnauthUser: code not specified');
+//        }
+//        var poolData = {
+//            UserPoolId : config.common.awsUserPoolId,
+//            ClientId : config.common.awsUserPoolClientId
+//        };
+//        var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+//        var userData = {
+//            Username : param.username,
+//            Pool : userPool
+//        };
+//        var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+//        cognitoUser.confirmRegistration(param.code, true, function(err, result) {
+//            if (err) {
+//                alert(err);
+//                return;
+//            }
+//            console.log('call result: ' + result);
+//        });
+//    }
+
+    /**
+     * Пользователь восстанавливает свой пароль
+     *
+     * @param {string} param.username
+     */
+    function restorePassword(param) {
         param = param || {};
         if (typeof param.username !== 'string' || param.username.length === 0) {
-            throw new Error('confirmRegisteredUnauthUser: username not specified');
-        }
-        if (!param.code || param.code.length === 0) {
-            throw new Error('confirmRegisteredUnauthUser: code not specified');
+            _trigger(Auth.EVENT_RESTORE_ERROR);
+            return;
         }
         var poolData = {
             UserPoolId : config.common.awsUserPoolId,
@@ -162,12 +211,87 @@ var Auth = {
             Pool : userPool
         };
         var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
-        cognitoUser.confirmRegistration(param.code, true, function(err, result) {
-            if (err) {
-                alert(err);
-                return;
+        cognitoUser.forgotPassword({
+            onSuccess: function (data) {
+                // successfully initiated reset password request
+                _trigger(Auth.EVENT_RESTORE_SENT);
+            },
+            onFailure: function(err) {
+                _trigger(Auth.EVENT_RESTORE_ERROR);
             }
-            console.log('call result: ' + result);
+            //Optional automatic callback
+            //            inputVerificationCode: function(data) {
+            //                var verificationCode = prompt('Please input verification code ' ,'');
+            //                var newPassword = prompt('Enter new password ' ,'');
+            //                cognitoUser.confirmPassword(verificationCode, newPassword, this);
+            //            }
+        });
+    }
+
+    /**
+     * Ввести код подтверждения и новый пароль
+     *
+     * @param {string} param.username
+     * @param {string} param.code
+     * @param {string} param.password
+     * @param {string} param.passwordConfirm
+     */
+    function confirmCodeAndEnterPassword(param) {
+        param = param || {};
+        if (typeof param.username !== 'string' || param.username.length === 0) {
+            _trigger(Auth.EVENT_CHANGEPASS_ERROR_NO_USERNAME);
+            return;
+        }
+        if (typeof param.code !== 'string' || param.code.length === 0) {
+            _trigger(Auth.EVENT_CHANGEPASS_ERROR_NO_CONFIRM_CODE);
+            return;
+        }
+        if (typeof param.password !== 'string' || param.password.length === 0) {
+            _trigger(Auth.EVENT_CHANGEPASS_ERROR_NO_PASSWORD);
+            return;
+        }
+        if (typeof param.passwordConfirm !== 'string' || param.passwordConfirm.length === 0) {
+            _trigger(Auth.EVENT_CHANGEPASS_ERROR_NO_PASSWORD_CONFIRM);
+            return;
+        }
+        if (param.passwordConfirm !== param.password) {
+            _trigger(Auth.EVENT_CHANGEPASS_ERROR_DIFF_PASSWORDS);
+            return;
+        }
+        var poolData = {
+            UserPoolId : config.common.awsUserPoolId,
+            ClientId : config.common.awsUserPoolClientId
+        };
+        var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+        var userData = {
+            Username : param.username,
+            Pool : userPool
+        };
+        var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+        cognitoUser.confirmPassword(param.code, param.password, {
+            onSuccess: function (data) {
+                _trigger(Auth.EVENT_RESTORE_CONFIRM_SUCCESS);
+            },
+            onFailure: function(err) {
+                if (err.message.indexOf('Incorrect username or password') >= 0 || err.message.indexOf('Value at \'previousPassword\' failed to satisfy constraint') >= 0) {
+                    // настоящий пароль не соответствуетс требованиям безопасности - это всё равно, что и "он не правильный"
+                    _trigger(Auth.EVENT_CHANGEPASS_WRONG_PASSWORD);
+                }
+                else if (err.code === 'CodeMismatchException') {
+                    _trigger(Auth.EVENT_CHANGEPASS_ERROR_INVALID_CODE);
+                }
+                else if (err.message.indexOf('Value at \'proposedPassword\' failed to satisfy constraint') >= 0) {
+                    _trigger(Auth.EVENT_CHANGEPASS_INVALID_NEW_PASSWORD);
+                }
+                else if (err.code === 'InvalidPasswordException' || err.message.indexOf('Value at \'password\' failed to satisfy constraint') >= 0) {
+                    // err.message InvalidPasswordException: Password did not conform with policy: Password must have uppercase characters
+                    _trigger(Auth.EVENT_CHANGEPASS_ERROR_INVALID_PASSWORD);
+                }
+                else {
+                    _trigger(Auth.EVENT_CHANGEPASS_ERROR);
+                    console.error(err.code + ' ' + err.message);
+                }
+            }
         });
     }
 
@@ -287,6 +411,57 @@ var Auth = {
             }
 
         });
+    }
+
+    /**
+     * Смена пароля
+     *
+     * @param {string} param.actualPassword
+     * @param {string} param.password
+     * @param {string} param.passwordConfirm
+     */
+    function changePassword(param) {
+        param = param || {};
+        if (typeof param.actualPassword !== 'string' || param.actualPassword.length === 0) {
+            _trigger(Auth.EVENT_CHANGEPASS_ERROR_NO_ACTUAL_PASSWORD);
+            return;
+        }
+        if (typeof param.password !== 'string' || param.password.length === 0) {
+            _trigger(Auth.EVENT_CHANGEPASS_ERROR_NO_PASSWORD);
+            return;
+        }
+        if (typeof param.passwordConfirm !== 'string' || param.passwordConfirm.length === 0) {
+            _trigger(Auth.EVENT_CHANGEPASS_ERROR_NO_PASSWORD_CONFIRM);
+            return;
+        }
+        if (param.passwordConfirm !== param.password) {
+            _trigger(Auth.EVENT_CHANGEPASS_ERROR_DIFF_PASSWORDS);
+            return;
+        }
+        if (_user && _user.cognitoUser) {
+            _user.cognitoUser.changePassword(param.actualPassword, param.password, function(err, result) {
+                if (err) {
+                    if (err.message.indexOf('Incorrect username or password') >= 0 || err.message.indexOf('Value at \'previousPassword\' failed to satisfy constraint') >= 0) {
+                        // настоящий пароль не соответствуетс требованиям безопасности - это всё равно, что и "он не правильный"
+                        _trigger(Auth.EVENT_CHANGEPASS_WRONG_PASSWORD);
+                    }
+                    else if (err.message.indexOf('Value at \'proposedPassword\' failed to satisfy constraint') >= 0) {
+                        _trigger(Auth.EVENT_CHANGEPASS_INVALID_NEW_PASSWORD);
+                    }
+                    else if (err.code === 'InvalidPasswordException' || err.message.indexOf('Value at \'password\' failed to satisfy constraint') >= 0) {
+                        // err.message InvalidPasswordException: Password did not conform with policy: Password must have uppercase characters
+                        _trigger(Auth.EVENT_CHANGEPASS_ERROR_INVALID_PASSWORD);
+                    }
+                    else {
+                        _trigger(Auth.EVENT_CHANGEPASS_ERROR);
+                        console.error(err.code + ' ' + err.message);
+                    }
+                }
+                else {
+                    _trigger(Auth.EVENT_CHANGEPASS_SUCCESS);
+                }
+            });
+        }
     }
 
     /**
@@ -467,9 +642,11 @@ var Auth = {
     global.signUp = signUp;
     global.signIn = signIn;
     global.signOut = signOut;
-    global.confirmRegisteredUnauthUser = confirmRegisteredUnauthUser;
     global.tryRestoreSession = tryRestoreSession;
     global.getUser = getUser;
+    global.changePassword = changePassword;
+    global.restorePassword = restorePassword;
+    global.confirmCodeAndEnterPassword = confirmCodeAndEnterPassword;
 
     // for debug
     global._getCredentials = function() {

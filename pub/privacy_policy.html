@@ -52,6 +52,9 @@
                             <div class="ctx_menu_item js-to_my_templates pts_string pts_my_projects">
                                 Мои проекты
                             </div>
+                            <div class="ctx_menu_item js-change_password pts_string pts_change_password">
+                                Сменить пароль
+                            </div>
                             <div class="ctx_menu_item js-logout pts_string pts_sign_out">
                                 Выйти
                             </div>
@@ -115,7 +118,7 @@
             </div>
         </div>
     </div>
-    <div id="id-modal_cnt" style="display:none">
+    <div id="id-modal_cnt" class="modal_cnt" style="display:none;">
         <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
     </div>
 
@@ -158,6 +161,8 @@
     <script type="text/javascript" src="js/view/modals/signupModal.js"></script>
     <script type="text/javascript" src="js/view/modals/signinModal.js"></script>
     <script type="text/javascript" src="js/view/modals/emailSentModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/changePasswordModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/restorePasswordModal.js"></script>
     <script type="text/javascript" src="js/view/modals/modal.js"></script>
     <script type="text/javascript" src="js/model/app.js"></script>
     <script type="text/javascript" src="js/model/auth.js"></script>

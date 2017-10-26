@@ -11,40 +11,23 @@
  * 1.4 Множество UI обработчиков (применяются, понятно, только актуальные для страницы)
  * 2. В верстке каждой страницы: избыточность и повторы.
  *
- *
- * Дальше:
- * TODO вынести обработчики в view-контроллеры, в модели только работа с данными
- * TODO заменить на серверные шаблоны.
- * TODO авторизация: будет замена на свою куку вместо запроса к ФБ каждый раз
- *
  */
 
-/**
- * AWS bucket доступен для работы
- * @type {string}
- */
-var AWS_INIT_EVENT = 'AWS_INIT_EVENT';
-/**
- *
- * @type {string}
- */
-var FB_CONNECTED = 'FB_CONNECTED';
-/**
- *
- * @type {string}
- */
-var USER_DATA_RECEIVED = 'USER_DATA_RECEIVED';
 ///**
-// * Был загружен список шаблонов пользователя
-// * Например, можно начинать рисовать список шаблонов пользователя
+// * AWS bucket доступен для работы
 // * @type {string}
 // */
-//var USER_TEMPLATES_LIST_RECEIVED = 'USER_TEMPLATES_LIST_RECEIVED';
+//var AWS_INIT_EVENT = 'AWS_INIT_EVENT';
 ///**
-// * Вызывается на каждый загруженный шаблон индивидуально
+// *
 // * @type {string}
 // */
-//var USER_TEMPLATES_LIST_RECEIVED = 'USER_TEMPLATE_INFO_RECEIVED';
+//var FB_CONNECTED = 'FB_CONNECTED';
+///**
+// *
+// * @type {string}
+// */
+//var USER_DATA_RECEIVED = 'USER_DATA_RECEIVED';
 
 var App = App || {};
 (function(global){
@@ -95,7 +78,7 @@ var App = App || {};
      *
      * @type {{function}}
      */
-    var callbacks = {};
+//    var callbacks = {};
     /**
      * Мобильное устройство или нет
      * @type {undefined}
@@ -106,6 +89,11 @@ var App = App || {};
      * @type {boolean}
      */
     var scriptsWereInited = false;
+    /**
+     * Признак того, что пользователь исключается из статистики, не грузятся скрипты для этого пользователя
+     * @type {boolean}
+     */
+    var userExcludedFromStatistics = false;
     /**
      * Запрошен логин, пользователь кликнул на кнопку ФБ чтобы войти
      * @type {boolean}
@@ -244,6 +232,7 @@ var App = App || {};
             publish_error: 'Ошибка: Не удалось опубликовать проект.',
             hints: 'Подсказки',
             confirm_signout: 'Вы действительно хотите выйти?',
+            change_password: 'Сменить пароль',
 
             signin_completed: 'Вход выполнен',
             error_incorrect_email: 'Некорректный email',
@@ -255,9 +244,22 @@ var App = App || {};
             error_user_not_confirmed: 'Пользователь не подтвердил регистрацию',
             error_signin: 'Не удалось войти',
             error_invalid_password: 'Пароль должен быть не менее 8 символов, содержать хотя бы одну заглавную букву и цифру.',
+            error_invalid_code: 'Неверный код подтверждения',
             error_user_already_exist: 'Пользователь уже существует',
             error_signup: 'Не удалось зарегистрироваться',
-            signup_completed: 'Регистрация выполнена. Подтвердите email.'
+            signup_completed: 'Регистрация выполнена. Подтвердите email.',
+
+            error_change_pass: 'Не удается изменить пароль',
+            error_change_pass_no_actualpass: 'Введите текущий пароль',
+            error_change_pass_no_password: 'Введите пароль',
+            error_change_pass_no_password_confirm: 'Подтвердите пароль',
+            event_change_pass_diff_pass: 'Новые пароли не совпадают',
+            error_wrong_password: 'Неверный пароль',
+            password_changed: 'Пароль изменен',
+
+            error_input_confirmation_code: 'Введите код подтверждения',
+            error_restore_password: 'Не удалется восстановить пароль',
+            enter_code_and_password: 'Введите код подтверждения и новый пароль'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -418,6 +420,7 @@ var App = App || {};
             publish_error: 'Error: Could not publish project',
             hints: 'Hints',
             confirm_signout: 'Do you really want to sign out?',
+            change_password: 'Change password',
 
             signin_completed: 'Sign in completed',
             error_incorrect_email: 'Incorrect email format',
@@ -429,9 +432,21 @@ var App = App || {};
             error_user_not_confirmed: 'User has not confirm email',
             error_signin: 'Can not enter',
             error_invalid_password: 'Passwords must be at least 8 characters long. Contain at least one uppercase letter and digit',
+            error_invalid_code: 'Invalid confirmation code',
             error_user_already_exist: 'User already exist',
             error_signup: 'Can not sign up',
-            signup_completed: 'Signing up completed. Please confirm email.'
+            signup_completed: 'Signing up completed. Please confirm email.',
+            error_change_pass: 'Can not change pass',
+            error_change_pass_no_actualpass: 'Please, type actual password',
+            error_change_pass_no_password: 'Please, type password',
+            error_change_pass_no_password_confirm: 'Please, confirm password',
+            event_change_pass_diff_pass: 'Passwords are different',
+            error_wrong_password: 'Wrong password',
+            password_changed: 'Password changed',
+
+            error_input_confirmation_code: 'Please, input confirmation code',
+            error_restore_password: 'Can not restore password',
+            enter_code_and_password: 'Input verification code and new password'
         }
     },
     /**
@@ -566,7 +581,6 @@ var App = App || {};
 //        else {
             // если отключена авторизация через фб то пытаемся сразу встроить скрипты
             // иначе там будет проверка по ИД пользователя: нужно ли подключать статистику или нет
-//            initScripts(); ??
 //        }
         initUIHandlers();
         initLang();
@@ -585,13 +599,12 @@ var App = App || {};
     function onAuthEvent(event, data) {
         switch(event) {
             case Auth.EVENT_AUTO_SIGNIN_FAILED: {
-//                initScripts(); ??
                 bucket = null;
                 bucketForPublishedProjects = null;
-                if (typeof callbacks[FB_CONNECTED] === 'function') {
-                    callbacks[FB_CONNECTED]('not_authorized, unknown');
-                    // todo change callback name
-                }
+//                if (typeof callbacks[FB_CONNECTED] === 'function') {
+//                    callbacks[FB_CONNECTED]('not_authorized, unknown');
+//                    // todo change callback name
+//                }
                 updateUI();
                 break;
             }
@@ -599,7 +612,6 @@ var App = App || {};
                 if (config.common.awsEnabled === true && bucket === null && bucketForPublishedProjects === null) {
                     initAwsBuckets(Auth.getAuthToken());
                 }
-                // todo callbacks
                 updateUI();
                 break;
             }
@@ -613,22 +625,27 @@ var App = App || {};
     /**
      * В зависимости от конфига добавить на страницу доп скрипты типа GA или плагинов для обратной связи
      */
-    function initScripts(userId) {
-        if (scriptsWereInited !== true) {
-            // undefined or null returns '-1'
-            if (config.common.excludeUsersFromStatistic.indexOf(userId)<0) {
-                for (var key in config.scripts) {
-                    if (config.scripts.hasOwnProperty(key)) {
-                        var sc = config.scripts[key];
-                        if (sc.enable === true) {
-                            $('body').append(sc.code);
-                        }
-                    }
-                }
-            }
-            scriptsWereInited = true;
-        }
-    }
+    // deprecated
+    // Скрипты для статистики надо вставлять сразу, иначе она считается с ошибками или не считается вовсе
+    //    function initScripts(userId) {
+    //        if (scriptsWereInited !== true) {
+    //            // undefined or null returns '-1'
+    //            if (config.common.excludeUsersFromStatistic.indexOf(userId)<0) {
+    //                for (var key in config.scripts) {
+    //                    if (config.scripts.hasOwnProperty(key)) {
+    //                        var sc = config.scripts[key];
+    //                        if (sc.enable === true) {
+    //                            $('body').append(sc.code);
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //            else {
+    //                userExcludedFromStatistics = true;
+    //            }
+    //            scriptsWereInited = true;
+    //        }
+    //    }
 
     /**
      * Привязать стандартные обработчики событий в интерфейсе
@@ -653,6 +670,9 @@ var App = App || {};
         });
         $('.js-to_my_templates').click(onMyTemplates);
         $('.js-logout').click(onLogoutClick);
+        $('.js-change_password').click(function(){
+            Modal.showChangePassword();
+        });
         $('.js-show_login').click(function(){
             Modal.showSignin();
         });
@@ -719,7 +739,7 @@ var App = App || {};
 //            FB.getLoginStatus(function(response) {
 //                // если приложение в тестовом режиме, то пользователь должен быть добавлен в приложение руками
 //                // иначе никакого колбека не будет, ни с каким статусом
-//                statusChangeCallback(response);
+//                //statusChangeCallback(response);
 //            });
 //        };
 //        // Load the SDK asynchronously
@@ -767,9 +787,9 @@ var App = App || {};
 //                WebIdentityToken: token
 //            });
 
-            if (typeof callbacks[AWS_INIT_EVENT] === 'function') {
-                callbacks[AWS_INIT_EVENT]();
-            }
+//            if (typeof callbacks[AWS_INIT_EVENT] === 'function') {
+//                callbacks[AWS_INIT_EVENT]();
+//            }
         }
     }
 
@@ -817,7 +837,6 @@ var App = App || {};
 //            }
 //        } else {
 //            //not_authorized, unknown
-//            initScripts();
 //            userData = null;
 //            bucket = null;
 //            bucketForPublishedProjects = null;
@@ -858,7 +877,6 @@ var App = App || {};
 //                },
 //                function(response) {
 //                    userData = response;
-//                    initScripts(userData.id);
 //                    updateUI();
 //                    if (typeof callbacks[USER_DATA_RECEIVED] === 'function') {
 //                        callbacks[USER_DATA_RECEIVED]('ok');
@@ -946,9 +964,9 @@ var App = App || {};
      * @param event
      * @param callback
      */
-    function on(event, callback) {
-        callbacks[event] = callback;
-    }
+//    function on(event, callback) {
+//        callbacks[event] = callback;
+//    }
 
     /**
      * Запросить шаблоны пользователя
@@ -1009,7 +1027,7 @@ var App = App || {};
     function openEditor(param) {
         // доступен ли редактор для запуска или только по прямой ссылке
         if (config.common.editorIsUnderConstruction === false ||
-            (userData !== null && config.common.editorIsUnderConstructionWhitelist.indexOf(userData.id) >= 0)) {
+            (Auth.getUser() !== null && config.common.editorIsUnderConstructionWhitelist.indexOf(Auth.getUser().id) >= 0)) {
             if (isMobile() !== true) {
                 var url = 'editor.html?';
                 if (param.appName) {
@@ -1134,12 +1152,10 @@ var App = App || {};
 
     // public methoods below
     global.start = start;
-    // global.getUserAnonimId = getUserAnonimId;
-    //global.getUserData = function() { return userData; };
     global.getAWSBucket = function() { return bucket; };
     global.getAWSBucketForPublishedProjects = function() { return bucketForPublishedProjects; };
     global.getDict = function() { return dict; };
-    global.on = on;
+//    global.on = on;
 //    global.requestLogin = requestLogin;
     global.openEditor = openEditor;
     global.openUrl = openUrl;
@@ -1157,4 +1173,6 @@ var App = App || {};
     // шаблоны. Запросить с колбеком
     global.requestUserTemplates = requestUserTemplates;
     global.deleteTemplate = deleteTemplate;
+    global.isUserExcludedFromStatistics = function() { return userExcludedFromStatistics; }
+
 })(App);

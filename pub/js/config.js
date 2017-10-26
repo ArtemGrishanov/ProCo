@@ -108,19 +108,14 @@ var config = {
          * Список fb ид пользователей которые могут зайти в редактор в то время как
          * editorIsUnderConstruction === true
          */
-        editorIsUnderConstructionWhitelist: ['1045302892173346','121947341568004','127867420975996'],
+        editorIsUnderConstructionWhitelist: ['43d927ad-17a1-4d07-84c2-c273dff1a831'],
         /**
          * Не отправлять программные события для этих пользователей
          * При условии, что они залогинены конечно
          * В разных приложениях/доменах ид пользователя может быть разный
          */
         excludeUsersFromStatistic: [
-            '1008194042550518', //artem grishanov
-            '1045302892173346', //oleg lukinov
-            '121947341568004', //семен робот
-            '127867420975996', //oleg lukinov
-            '902609146442342', //artem grishanov
-            '937567369613566' //oleg lukinov
+            //'43d927ad-17a1-4d07-84c2-c273dff1a831' // grishanov.artem@gmail.com
         ],
         /**
          * Хост для опубликованных проектов
@@ -810,6 +805,11 @@ var config = {
              */
             topZIndex: 25,
             /**
+             * z-index id-modal_cnt
+             * программно не ставится, только в css .modal_cnt
+             */
+            modalCntZIndex: 26,
+            /**
              * zIndex подсказок
              */
             hintZIndex: 30,
@@ -926,19 +926,27 @@ var config = {
         emailSentModal: {
             templateUrl: 'templates/emailSent.html',
             defZIndex: 95
+        },
+        changePasswordModal: {
+            templateUrl: 'templates/changePasswordModal.html',
+            defZIndex: 95
+        },
+        restorePasswordModal: {
+            templateUrl: 'templates/restorePasswordModal.html',
+            defZIndex: 95
         }
     },
     scripts: {
-//        '22.03.2017' - при быстром закрытии страницы такой "умный" способ вставки кода не успевает работать и конверсия не считается.
-//        ga: {
-//            enabled: false,
-//            code: '<script>(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create", "UA-88595022-1", "auto");ga("send", "pageview");</script>'
-//        },
-//        '12.03.2017' - начало эксперимента по статичной вставке кода. Так как веб-визор иногда отказывается работать.
-//        yaMetrika: {
-//            enabled: false,
-//            code: '<!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) {(w[c] = w[c] || []).push(function() {try {w.yaCounter37720792 = new Ya.Metrika({id:37720792,clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});} catch(e) { }});var n = d.getElementsByTagName("script")[0],s = d.createElement("script"),f = function () { n.parentNode.insertBefore(s, n); };s.type = "text/javascript";s.async = true;s.src = "https://mc.yandex.ru/metrika/watch.js";if (w.opera == "[object Opera]") {d.addEventListener("DOMContentLoaded", f, false);} else { f(); }})(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="https://mc.yandex.ru/watch/37720792" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->'
-//        },
+        //        '22.03.2017' - при быстром закрытии страницы такой "умный" способ вставки кода не успевает работать и конверсия не считается.
+        //        ga: {
+        //            enabled: false,
+        //            code: '<script>(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create", "UA-88595022-1", "auto");ga("send", "pageview");</script>'
+        //        },
+        //        '12.03.2017' - начало эксперимента по статичной вставке кода. Так как веб-визор иногда отказывается работать.
+        //        yaMetrika: {
+        //            enabled: false,
+        //            code: '<!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) {(w[c] = w[c] || []).push(function() {try {w.yaCounter37720792 = new Ya.Metrika({id:37720792,clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});} catch(e) { }});var n = d.getElementsByTagName("script")[0],s = d.createElement("script"),f = function () { n.parentNode.insertBefore(s, n); };s.type = "text/javascript";s.async = true;s.src = "https://mc.yandex.ru/metrika/watch.js";if (w.opera == "[object Opera]") {d.addEventListener("DOMContentLoaded", f, false);} else { f(); }})(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="https://mc.yandex.ru/watch/37720792" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->'
+        //        },
         jivoSite: {
             enabled: false,
             code: '<!-- BEGIN JIVOSITE CODE {literal} --><script type=\'text/javascript\'>(function(){ var widget_id = \'45oOHsZGmj\';var d=document;var w=window;function l(){var s = document.createElement(\'script\'); s.type = \'text/javascript\'; s.async = true; s.src = \'//code.jivosite.com/script/widget/\'+widget_id; var ss = document.getElementsByTagName(\'script\')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState==\'complete\'){l();}else{if(w.attachEvent){w.attachEvent(\'onload\',l);}else{w.addEventListener(\'load\',l,false);}}})();</script><!-- {/literal} END JIVOSITE CODE -->'

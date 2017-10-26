@@ -9,13 +9,14 @@ var RequestFBPublishPermissionsModal = function(param) {
     AbstractModal.call(this, param);
     this.callback = param.callback;
 };
+
 RequestFBPublishPermissionsModal.prototype = Object.create(AbstractModal.prototype);
 RequestFBPublishPermissionsModal.prototype.constructor = RequestFBPublishPermissionsModal;
+
 /**
  *
  */
 RequestFBPublishPermissionsModal.prototype.render = function() {
-    console.log('RequestFBPublishPermissionsModal window render');
     this.$ui.find('.js-close').click((function() {
         if (this.callback) {
             this.callback('cancel');

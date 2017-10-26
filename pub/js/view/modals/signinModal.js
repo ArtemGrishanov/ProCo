@@ -10,7 +10,7 @@ var SigninModal = function(param) {
     param = param || {};
     param.name = 'signinModal';
     // по умолчанию закрыть окно можно
-    this.canClose = param.hasOwnProperty('canClose')?!!param.canClose:true;
+    this.canClose = param.hasOwnProperty('canClose') ? !!param.canClose : true;
     AbstractModal.call(this, param);
     Auth.addEventCallback(this.onAuthEvent.bind(this));
     this.requestPerforming = false;
@@ -71,20 +71,20 @@ SigninModal.prototype.onAuthEvent = function(event, data) {
         }
     }
     if (successMessage) {
-        $('.js-signin_message').text(successMessage);
-        $('.js-signin_message').removeClass('__error');
+        this.$ui.find('.js-signin_message').text(successMessage);
+        this.$ui.find('.js-signin_message').removeClass('__error');
     }
     else {
         if (errorMessage) {
-            $('.js-signin_message').text(errorMessage);
-            $('.js-signin_message').addClass('__error');
+            this.$ui.find('.js-signin_message').text(errorMessage);
+            this.$ui.find('.js-signin_message').addClass('__error');
         }
         else {
-            $('.js-signin_message').text('_');
-            $('.js-signin_message').removeClass('__error');
+            this.$ui.find('.js-signin_message').text('_');
+            this.$ui.find('.js-signin_message').removeClass('__error');
         }
     }
-    $('.js-signin').removeClass('__disabled');
+    this.$ui.find('.js-signin').removeClass('__disabled');
     this.requestPerforming = false;
 };
 
@@ -92,8 +92,6 @@ SigninModal.prototype.onAuthEvent = function(event, data) {
  *
  */
 SigninModal.prototype.render = function() {
-    console.log('Signin render');
-
     this.$ui.find('.js-facebook_signin').click(this.onFacebookSigninClick.bind(this));
 
     this.$ui.find('.js-signin').click(this.onSigninClick.bind(this));
@@ -102,6 +100,8 @@ SigninModal.prototype.render = function() {
 
     this.$ui.find('.js-email').keydown(this.onInputKeydown.bind(this));
     this.$ui.find('.js-password').keydown(this.onInputKeydown.bind(this));
+
+    this.$ui.find('.js-to_restore_pass').click(this.onRestoreClick);
 
     if (this.canClose === true) {
         this.$ui.find('.js-close').show().click((function() {
@@ -119,9 +119,9 @@ SigninModal.prototype.render = function() {
 SigninModal.prototype.onSigninClick = function() {
     if (this.requestPerforming === false) {
         this.requestPerforming = true;
-        $('.js-signin_message').text(App.getText('please_wait'));
-        $('.js-signin_message').removeClass('__error');
-        $('.js-signin').addClass('__disabled');
+        this.$ui.find('.js-signin_message').text(App.getText('please_wait'));
+        this.$ui.find('.js-signin_message').removeClass('__error');
+        this.$ui.find('.js-signin').addClass('__disabled');
         var email = this.$ui.find('.js-email').val().trim();
         var password = this.$ui.find('.js-password').val().trim();
         Auth.signIn({
@@ -142,7 +142,6 @@ SigninModal.prototype.onInputKeydown = function(e) {
  */
 SigninModal.prototype.onFacebookSigninClick = function() {
     //todo продумать можно ли реализовать флоу с помощью ФБ
-
     //App.requestLogin(true);
 }
 
@@ -150,6 +149,14 @@ SigninModal.prototype.onFacebookSigninClick = function() {
  * Перейти в окно логина
  */
 SigninModal.prototype.onToSignupClick = function() {
-    Modal.hideSignin();
     Modal.showSignup();
+    Modal.hideSignin();
+}
+
+/**
+ * Перейти в окно восстановления пароля
+ */
+SigninModal.prototype.onRestoreClick = function() {
+    Modal.hideSignin();
+    Modal.showRestorePassword();
 }

@@ -63,20 +63,19 @@ SignupModal.prototype.onAuthEvent = function(event, data) {
         }
     }
     if (successMessage) {
-        $('.js-signup_message').text(successMessage);
-        // $('.js-signup_message').removeClass('__error'); disable button anyway
+        this.$ui.find('.js-signup_message').text(successMessage);
     }
     else {
         if (errorMessage) {
-            $('.js-signup_message').text(errorMessage);
-            $('.js-signup_message').addClass('__error');
+            this.$ui.find('.js-signup_message').text(errorMessage);
+            this.$ui.find('.js-signup_message').addClass('__error');
         }
         else {
-            $('.js-signup_message').text('_');
-            $('.js-signup_message').removeClass('__error');
+            this.$ui.find('.js-signup_message').text('_');
+            this.$ui.find('.js-signup_message').removeClass('__error');
         }
     }
-    $('.js-signup').removeClass('__disabled');
+    this.$ui.find('.js-signup').removeClass('__disabled');
     this.requestPerforming = false;
 };
 
@@ -84,8 +83,6 @@ SignupModal.prototype.onAuthEvent = function(event, data) {
  *
  */
 SignupModal.prototype.render = function() {
-    console.log('Signup render');
-
     this.$ui.find('.js-facebook_signin').click(this.onFacebookSigninClick.bind(this));
 
     this.$regBtn = this.$ui.find('.js-signup').click(this.onSignupClick.bind(this));
@@ -110,12 +107,12 @@ SignupModal.prototype.render = function() {
 SignupModal.prototype.onSignupClick = function() {
     if (this.acceptPolicy === true && this.requestPerforming === false) {
         this.requestPerforming = true;
-        $('.js-signup_message').text(App.getText('please_wait'));
-        $('.js-signup_message').removeClass('__error');
-        $('.js-signup').addClass('__disabled');
+        this.$ui.find('.js-signup_message').text(App.getText('please_wait'));
+        this.$ui.find('.js-signup_message').removeClass('__error');
+        this.$ui.find('.js-signup').addClass('__disabled');
         var email = this.$ui.find('.js-email').val().trim();
         var password = this.$ui.find('.js-password').val().trim();
-        var newsOK = ($('.js-reg_attr_news').prop('checked') === true) ? '1': '0';
+        var newsOK = (this.$ui.find('.js-reg_attr_news').prop('checked') === true) ? '1': '0';
         // отправить запрос на регистрацию
         Auth.signUp({
             email: email,
@@ -130,7 +127,6 @@ SignupModal.prototype.onSignupClick = function() {
  */
 SignupModal.prototype.onFacebookSigninClick = function() {
     //todo продумать можно ли реализовать флоу с помощью ФБ
-
     //App.requestLogin(true);
 }
 

@@ -7,7 +7,7 @@ var EmailSentModal = function(param) {
     param = param || {};
     param.name = 'emailSentModal';
     // по умолчанию закрыть окно можно
-    this.canClose = param.hasOwnProperty('canClose')?!!param.canClose:true;
+    this.canClose = param.hasOwnProperty('canClose') ? !!param.canClose : true;
     AbstractModal.call(this, param);
 };
 
@@ -18,8 +18,6 @@ EmailSentModal.prototype.constructor = EmailSentModal;
  *
  */
 EmailSentModal.prototype.render = function() {
-    console.log('emailSent render');
-
     this.$ui.find('.js-to_signin').click(this.onToSigninClick.bind(this));
 
     if (this.canClose === true) {
