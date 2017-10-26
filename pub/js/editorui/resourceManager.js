@@ -30,20 +30,20 @@ function ResourceManager(params) {
     this.loadResources = function(callback) {
         if (App.getAWSBucket() !== null) {
             // все кастомне ресы находятся в каталоге /res в пользовательском каталоге
-            var prefix = 'facebook-' + App.getUserData().id + '/res';
+            var prefix = Auth.getUser().id + '/res';
             s3util.requestStorage('listObjects',{Prefix: prefix}, (function (err, data) {
                 if (err) {
                     log('ResourceManager: ' + err, true);
                 } else {
                     data.Contents.forEach((function (obj) {
                         //TODO Файл с точками в имени тоже бывают и они не отображаются
-                        var id = obj.Key.replace('facebook-'+App.getUserData().id+'\/res\/','');
-                        //var reg = new RegExp('(facebook-'+App.getUserData().id+'\/res\/)([^\.]+\.[A-z]+)','g');
+                        var id = obj.Key.replace(Auth.getUser().id+'\/res\/','');
+                        //var reg = new RegExp('(Auth.getUser().id+'\/res\/)([^\.]+\.[A-z]+)','g');
                         //var match = reg.exec(obj.Key);
                         this.resourcesList = this.resourcesList || [];
                         var time = new Date(obj.LastModified);
                         var newItem = {
-                            // key example facebook-902609146442342/app/abc123.txt
+                            // key example 0235e985-8b92-4666-83fa-25fd85ee1072/app/abc123.txt
                             key: obj.Key,
                             id: id,
                             lastModified: obj.LastModified,
@@ -60,10 +60,12 @@ function ResourceManager(params) {
                             this.resourcesList.push(newItem);
                         }
                     }).bind(this));
-                    log('Objects in dir '+prefix+':');
                 }
                 callback();
             }).bind(this));
+        }
+        else {
+            Modal.showSignin();
         }
     };
 
@@ -81,7 +83,7 @@ function ResourceManager(params) {
             if (file) {
                 // очищаем диалог от элементов на время аплоада, потом будет заново загрузка всех элементов
                 this.dialog.setOptions(null);
-                var objKey = 'facebook-' + App.getUserData().id + '/res/' + file.name;
+                var objKey = Auth.getUser().id + '/res/' + file.name;
                 var params = {
                     Key: objKey,
                     ContentType: file.type,
@@ -98,6 +100,9 @@ function ResourceManager(params) {
                     this.show(this.selectCallback, {zIndex:this.zIndex});
                 }).bind(this), config.storage.putNewResourceMaxDelay);
             }
+        }
+        else {
+            Modal.showSignin();
         }
     };
 
@@ -127,7 +132,7 @@ function ResourceManager(params) {
             this.zIndex = this.dialog.view.css('zIndex');
         }
         $('#id-dialogs_view').empty().append(this.dialog.view).show();
-        if (App.getUserData() !== null) {
+        if (Auth.getUser() !== null) {
             if (this.resourcesList === null) {
                 this.loadResources((function() {
                     this.setDialogOptions();
@@ -136,6 +141,9 @@ function ResourceManager(params) {
             else {
                 this.setDialogOptions();
             }
+        }
+        else {
+            Modal.showSignin();
         }
     };
 

@@ -4,7 +4,7 @@
  * Контроллер для управления модалками
  *
  * Ограничения
- * 1) Предполашается что есть котейнер для размещения модалок на веб странице config.ui.modalsParentSelector
+ * 1) Предполагается, что есть контейнер для размещения модалок на веб странице config.ui.modalsParentSelector
  *    Этот контейнер показывается пока есть хотя бы одно активное модальное окно.
  * 2) В один момент может быть показано только одно окно одного типа (например только один message)
  *
@@ -74,14 +74,7 @@ var Modal = {};
     }
 
     // public methods below
-    global.showLogin = function (data) {
-        _show(LoginModal, data);
-
-        // Окно логина может быть показано когда скрипт статистики еще не подгрузился
-        setTimeout(function(){
-            App.stat('Testix.me', 'Show_login');
-        },2000);
-    };
+    global.showLogin = function (data) { _show(LoginModal, data); };
     global.hideLogin = function () { _hide(LoginModal) };
 
     global.showMessage = function (data) { _show(MessageModal, data) };
@@ -95,5 +88,35 @@ var Modal = {};
 
     global.showRequestPublishFBPermissions = function (data) { _show(RequestFBPublishPermissionsModal, data) };
     global.hideRequestPublishFBPermissions = function () { _hide(RequestFBPublishPermissionsModal) };
+
+    global.showSignup = function (data) {
+        _show(SignupModal, data);
+        App.stat('Testix.me', 'Show_signup');
+    };
+    global.hideSignup = function () { _hide(SignupModal) };
+
+    global.showSignin = function (data) {
+        _show(SigninModal, data);
+        App.stat('Testix.me', 'Show_signin');
+    };
+    global.hideSignin = function () { _hide(SigninModal) };
+
+    global.showEmailSent = function (data) {
+        _show(EmailSentModal, data);
+        App.stat('Testix.me', 'Show_email_sent_after_signup');
+    };
+    global.hideEmailSent = function () { _hide(EmailSentModal) };
+
+    global.showChangePassword = function (data) {
+        _show(ChangePasswordModal, data);
+        App.stat('Testix.me', 'Show_change_password');
+    };
+    global.hideChangePassword = function () { _hide(ChangePasswordModal) };
+
+    global.showRestorePassword = function (data) {
+        _show(RestorePasswordModal, data);
+        App.stat('Testix.me', 'Show_restore_password');
+    };
+    global.hideRestorePassword = function () { _hide(RestorePasswordModal) };
 
 })(Modal);

@@ -50,12 +50,16 @@
                     <span class="tx __18 lang_item __active __light js-lang" data-lang="RU">RU</span><span class="tx __18 lang_item __leftborder __light js-lang" data-lang="EN">EN</span>
                 </div>
                 <div id="id-user_toolbar" class="toolbar_user ml12">
-                    <div style="display:none" class="user_avatar js-profile_picture"></div>
-                    <span style="display:none" class="pbtn __blue __small mt2 js-show_login pts_string pts_sign_in">Войти</span>
+                    <!--<div style="display:none" class="user_avatar js-profile_picture"></div>-->
+                    <div style="display:none" class="user_name js-user_name"></div>
+                    <span style="display:none" class="pbtn __blue __small mt4 js-show_login">Войти</span>
                     <div style="display:none" class="dropdown_btn js-user_ctx_menu">
                         <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
-                            <div class="ctx_menu_item pts_string pts_my_projects js-to_my_templates">
+                            <div class="ctx_menu_item js-to_my_templates pts_string pts_my_projects">
                                 Мои проекты
+                            </div>
+                            <div class="ctx_menu_item js-change_password pts_string pts_change_password">
+                                Сменить пароль
                             </div>
                             <div class="ctx_menu_item js-logout pts_string pts_sign_out">
                                 Выйти
@@ -77,7 +81,7 @@
             </div>
         </div>
     </div>
-    <div id="id-modal_cnt" style="display:none">
+    <div id="id-modal_cnt" class="modal_cnt" style="display:none;">
         <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
     </div>
 
@@ -111,6 +115,7 @@
     <!-- build:js info.min.js -->
     <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/model/app.js"></script>
+    <script type="text/javascript" src="js/model/auth.js"></script>
     <script type="text/javascript" src="js/util/utils.js"></script>
     <!-- endbuild -->
     <script>

@@ -14,11 +14,24 @@ img {
     vertical-align: middle;
     border: 0;
 }
+input:focus {
+    outline:none;
+}
 .narrow_width {
     display: none;
 }
 .popup_cnt {
     z-index: 80;
+}
+
+.modal_cnt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(63, 63, 63, 0.9);
+    z-index: 26; /* config.editor.ui.modalCntZIndex */
 }
 .modal_wr {
     position: fixed;
@@ -26,7 +39,7 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(63, 63, 63, 0.9);
+    overflow-y: scroll;
 }
 .modal {
     position: relative;
@@ -38,6 +51,7 @@ img {
     color: #555;
     text-align: center;
     padding: 20px;
+    border-radius: 4px;
 }
 .modal.__680 {
     width: 680px;
@@ -55,6 +69,186 @@ img {
     height: 511px;
     padding: 45px 42px 22px 42px;
 }
+.modal.__signup {
+    width: 388px;
+    height: 510px;
+    font-size: 14px;
+    color: #7d7d7d;
+}
+
+
+/*========================================================*/
+/*================== Sign up / Sign in ===================*/
+/*========================================================*/
+.su-reg_logo {
+    display: inline-block;
+    width: 139px;
+    height: 54px;
+    background: url(../i/Testix-logo-registration.png);
+}
+.su-complete_logo {
+    display: inline-block;
+    background: url(../i/icon-success-registration.png);
+    width: 36px;
+    height: 36px;
+}
+.su-compl_label {
+    font-size: 17px;
+}
+.su-compl_desc {
+    font-size: 14px;
+    line-height: 1.5em;
+}
+.su-reg_fb_btn {
+    position: relative;
+    display: inline-block;
+    width: 205px;
+    height: 22px;
+    background-color: #3b579b;
+    border-radius: 4px;
+    color: #fff;
+    padding: 13px 12px 9px 58px;
+    margin: 12px;
+    cursor: pointer;
+}
+.su-reg_fb_btn:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 44px;
+    height: 44px;
+    background: url(../i/icon-FB-registration.png) no-repeat center;
+    border-right: 1px solid #3c63ae;
+}
+.su-signup_divr {
+    position: relative;
+    width: 100%;
+}
+.su-divider {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px solid #d6d6d6;
+}
+.su-reg_label {
+    background-color: #fff;
+}
+.su-reg_label.__error {
+    color: #ff515b;
+}
+
+.su-input {
+    width: 248px;
+    height: 20px;
+    background-color: #f2f2f2;
+    border: none;
+    color: #7d7d7d;
+    padding: 10px 12px;
+    font-size: 14px;
+    margin: 12px;
+}
+.su-reg_btn {
+    display: inline-block;
+    width: 248px;
+    height: 22px;
+    background-color: #499cf3;
+    border-radius: 4px;
+    color: #fff;
+    padding: 13px 12px 9px;
+    margin: 12px;
+    cursor: pointer;
+}
+.su-reg_btn:hover {
+    background-color: #3776b8;
+}
+.su-reg_btn.__disabled {
+    background-color: #eee;
+    cursor: auto;
+}
+.su-reg_btn.__disabled:hover {
+    background-color: #eee;
+    cursor: auto;
+}
+.su-checkbox {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    margin: 0;
+}
+.su-details {
+    display: inline-block;
+    vertical-align: top;
+    width: 251px;
+    font-size: 11px;
+    line-height: 1.4em;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    color: #7d7d7d;
+}
+.su-details a {
+    color: #499cf3;
+    cursor: pointer;
+}
+.su-attr_cnt {
+    margin: 6px 0 10px;
+}
+.su-arr {
+    display: inline-block;
+    background: url(../i/arrow-registration.png);
+    width: 71px;
+    height: 14px;
+    margin: 0 20px;
+}
+.su-link {
+    display: inline-block;
+    font-size: 14px;
+    color: #499cf3;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.su-link.__grey {
+    color: #7d7d7d;
+}
+.su-link_details {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+    padding: 0;
+}
+.su-bottom {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 40px 0;
+}
+.su-bottom_left_link {
+    position: absolute;
+    left: 58px;
+    bottom: 46px;
+    margin: 0;
+    padding: 0
+}
+.su-bottom_right_link {
+    position: absolute;
+    right: 58px;
+    bottom: 46px;
+    margin: 0;
+    padding: 0
+}
+.su-signin_label {
+    line-height: 1.5em;
+}
+.su-signin_label.__error {
+    color: #ff515b;
+}
+/*========================================================*/
+/*================== Sign up / Sign in ===================*/
+/*========================================================*/
+
+
 .scr_wr {
     position: relative;
     height: 100%;
@@ -190,6 +384,9 @@ img {
 .mt60 {
     margin-top: 60px;
 }
+.mt70 {
+    margin-top: 70px;
+}
 .ml12 {
     margin-left: 12px;
 }
@@ -250,10 +447,6 @@ img {
     -webkit-transform: rotate(0deg);
     transform:rotate(0deg);
 }
-.close_dialog_btn.__ext {
-    top: 0;
-    right: -54px;
-}
 .close_dialog_btn.__grey {
     background-image: url(../i/Krestik-dark.png);
 }
@@ -261,6 +454,10 @@ img {
     background-size: 20px 20px;
     top: 10px;
     right: 10px;
+}
+.close_dialog_btn.__ext {
+    top: 0;
+    right: -54px;
 }
 .close_dialog_btn:hover {
     -webkit-animation:spin 0.3s linear;
@@ -487,6 +684,13 @@ img {
     /*padding: 5px;*/
     margin-top: -2px;
     cursor: pointer;
+}
+.user_name {
+    display: inline-block;
+    vertical-align: top;
+    line-height: 40px;
+    color: #ccc;
+    font-size: 14px;
 }
 .user_avatar {
     display: inline-block;

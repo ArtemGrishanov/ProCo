@@ -90,7 +90,7 @@ var Publisher = {};
      * @params.awsBucket {Object}
      */
     function publish(params) {
-        if (App.getUserData() !== null) {
+        if (Auth.getUser() !== null) {
             isPublishing = true;
             App.stat('Testix.me', 'Publish_started');
             callback = params.callback;
@@ -169,7 +169,7 @@ var Publisher = {};
      */
     function getAnonymLink(appId) {
         var appId = appId || publishedAppId;
-        return 'http:'+config.common.publishedProjectsHostName+App.getUserData().id+'/'+appId+'/';
+        return 'http:'+config.common.publishedProjectsHostName+Auth.getUser().short_id+'/'+appId+'/';
     }
 
     /**
@@ -181,7 +181,7 @@ var Publisher = {};
         var embedCode = config.common.embedCodeTemplate;
         embedCode = embedCode.replace('{{width}}', appWidth+'px')
             .replace('{{height}}', appHeight+'px')
-            .replace('{{published}}', App.getUserData().id+'/'+publishedAppId)
+            .replace('{{published}}', Auth.getUser().short_id+'/'+publishedAppId)
             .replace('{{custom_attributes}}', (projectCustomAttr) ? ' '+projectCustomAttr: '');
         return embedCode;
     }
@@ -436,7 +436,7 @@ var Publisher = {};
                 run: function() {
                     var u = this.data.destUrl || this.data.url;
                     // log('Upload task run:' + u);
-                    var objKey = App.getUserData().id+'/'+publishedAppId+'/'+u;
+                    var objKey = Auth.getUser().short_id+'/'+publishedAppId+'/'+u;
                     var params = {
                         Key: objKey,
                         ContentType: this.data.type,

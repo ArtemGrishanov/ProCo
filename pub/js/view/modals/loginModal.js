@@ -9,11 +9,13 @@ var LoginModal = function(param) {
     param.name = 'loginModal';
     this.text = param.text;
     // по умолчанию заркыть окно можно
-    this.canClose = param.hasOwnProperty('canClose')?!!param.canClose:true;
+    this.canClose = param.hasOwnProperty('canClose') ? !!param.canClose : true;
     AbstractModal.call(this, param);
 };
+
 LoginModal.prototype = Object.create(AbstractModal.prototype);
 LoginModal.prototype.constructor = LoginModal;
+
 /**
  *
  */

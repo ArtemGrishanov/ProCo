@@ -300,22 +300,22 @@ var Editor = {};
             checkEditorIsReady();
 
             // для установки ссылки шаринга требуются данные пользователя, ответ от апи возможно надо подождать
-            if (App.getUserData()) {
+//            if (App.getUserData()) {
                 trySetDefaultShareLink(cloneTemplate === true);
                 // показ кнопки загрузки превью картинки для проекта. Только для админов
-                if (App.getUserData() && config.common.excludeUsersFromStatistic.indexOf(App.getUserData().id) >= 0) {
+                if (Auth.getUser() && config.common.excludeUsersFromStatistic.indexOf(Auth.getUser().id) >= 0) {
                     $('#id-app_prevew_img_wr').show();
                 }
-            }
-            else {
-                App.on(USER_DATA_RECEIVED, function() {
-                    trySetDefaultShareLink(cloneTemplate === true);
-                    // показ кнопки загрузки превью картинки для проекта. Только для админов
-                    if (App.getUserData() && config.common.excludeUsersFromStatistic.indexOf(App.getUserData().id) >= 0) {
-                        $('#id-app_prevew_img_wr').show();
-                    }
-                });
-            }
+//            }
+//            else {
+//                App.on(USER_DATA_RECEIVED, function() {
+//                    trySetDefaultShareLink(cloneTemplate === true);
+//                    // показ кнопки загрузки превью картинки для проекта. Только для админов
+//                    if (App.getUserData() && config.common.excludeUsersFromStatistic.indexOf(App.getUserData().id) >= 0) {
+//                        $('#id-app_prevew_img_wr').show();
+//                    }
+//                });
+//            }
         }
         else {
             // не грузить контролы в этом режиме. Сразу колбек на старт
@@ -567,7 +567,7 @@ var Editor = {};
     }
 
     function onPublishClick() {
-        if (App.getUserData() !== null) {
+        if (Auth.getUser() !== null) {
             var appMsg = editedApp.getStatus();
             if (appMsg && appMsg.length > 0) {
                 // если у приложения есть какая-то важная информация, то надо показать ее перед публикацией
@@ -581,7 +581,7 @@ var Editor = {};
             }
         }
         else {
-            Modal.showLogin();
+            Modal.showSignin();
         }
     }
 
@@ -637,7 +637,7 @@ var Editor = {};
         param.showResultMessage = (typeof param.showResultMessage === 'boolean') ? param.showResultMessage: false;
         param.showLoadingPopup = (typeof param.showLoadingPopup === 'boolean') ? param.showLoadingPopup: false;
 
-        if (App.getAWSBucket() !== null && App.getUserData() !== null) {
+        if (App.getAWSBucket() !== null && Auth.getUser() !== null) {
             if (param.showLoadingPopup === true) {
                 Modal.showLoading();
             }
@@ -704,7 +704,7 @@ var Editor = {};
             }, appId);
         }
         else {
-            Modal.showLogin();
+            Modal.showSignin();
         }
     }
 
@@ -712,7 +712,7 @@ var Editor = {};
         if (App.getAWSBucket() !== null) {
             var file = $('#id-app_preview_img')[0].files[0];
             if (file) {
-                var objKey = 'facebook-'+App.getUserData().id+'/app/'+config.common.userCustomPreviewFileNamePrefix+appId+'.jpg';
+                var objKey = Auth.getUser().id+'/app/'+config.common.userCustomPreviewFileNamePrefix+appId+'.jpg';
                 var params = {
                     Key: objKey,
                     ContentType: file.type,
@@ -732,7 +732,7 @@ var Editor = {};
             }
         }
         else {
-            Modal.showLogin();
+            Modal.showSignin();
         }
     }
 
@@ -749,7 +749,7 @@ var Editor = {};
         // проверяем что надо генерить првеью для проекта если только пользователь ранее не установил свое кастомное превью
         // его не надо перезаписывать
         if (config.common.previewAutoGeneration === true) {
-            var url = 'facebook-'+App.getUserData().id+'/app/'+appId+'.jpg';
+            var url = Auth.getUser().id+'/app/'+appId+'.jpg';
 
             previewService.createInIframe({
                 html: editedApp.getAutoPreviewHtml(),
@@ -787,7 +787,7 @@ var Editor = {};
 
         preparedShareEntities = [];
 
-        if (App.getUserData() !== null) {
+        if (Auth.getUser() !== null) {
 
             if (editedApp._shareEntities && editedApp._shareEntities.length > 0) {
                 // генерация канвасов заново и аплоад их с получением урла
@@ -817,7 +817,7 @@ var Editor = {};
 
         }
         else {
-            Modal.showLogin();
+            Modal.showSignin();
         }
     }
 
@@ -844,10 +844,11 @@ var Editor = {};
      */
     function handleInspector() {
         $(window).keypress(function(event) {
-            if (event.which == 105) {
-                inspector.isOK();
-                event.preventDefault();
-            }
+            //todo blocks test input 'i'. Make cmd+i
+//            if (event.which == 105) {
+//                inspector.isOK();
+//                event.preventDefault();
+//            }
             //return false;
         });
     }
