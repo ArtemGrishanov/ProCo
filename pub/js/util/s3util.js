@@ -130,7 +130,9 @@ var s3util = {};
                     }).bind(this));
                 },
                 onFail: function() {
-                    callback('error');
+                    if (callback) {
+                        callback('error');
+                    }
                 },
                 maxWaitTime: config.common.imageUploadToAWSMaxWaitTime
             };

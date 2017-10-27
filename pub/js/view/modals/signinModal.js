@@ -70,21 +70,23 @@ SigninModal.prototype.onAuthEvent = function(event, data) {
             break;
         }
     }
-    if (successMessage) {
-        this.$ui.find('.js-signin_message').text(successMessage);
-        this.$ui.find('.js-signin_message').removeClass('__error');
-    }
-    else {
-        if (errorMessage) {
-            this.$ui.find('.js-signin_message').text(errorMessage);
-            this.$ui.find('.js-signin_message').addClass('__error');
-        }
-        else {
-            this.$ui.find('.js-signin_message').text('_');
+    if (this.$ui) {
+        if (successMessage) {
+            this.$ui.find('.js-signin_message').text(successMessage);
             this.$ui.find('.js-signin_message').removeClass('__error');
         }
+        else {
+            if (errorMessage) {
+                this.$ui.find('.js-signin_message').text(errorMessage);
+                this.$ui.find('.js-signin_message').addClass('__error');
+            }
+            else {
+                this.$ui.find('.js-signin_message').text('_');
+                this.$ui.find('.js-signin_message').removeClass('__error');
+            }
+        }
+        this.$ui.find('.js-signin').removeClass('__disabled');
     }
-    this.$ui.find('.js-signin').removeClass('__disabled');
     this.requestPerforming = false;
 };
 
@@ -149,7 +151,9 @@ SigninModal.prototype.onFacebookSigninClick = function() {
  * Перейти в окно логина
  */
 SigninModal.prototype.onToSignupClick = function() {
-    Modal.showSignup();
+    Modal.showSignup({
+        canClose: this.canClose
+    });
     Modal.hideSignin();
 }
 
@@ -158,5 +162,7 @@ SigninModal.prototype.onToSignupClick = function() {
  */
 SigninModal.prototype.onRestoreClick = function() {
     Modal.hideSignin();
-    Modal.showRestorePassword();
+    Modal.showRestorePassword({
+        canClose: this.canClose
+    });
 }

@@ -58,7 +58,9 @@ SignupModal.prototype.onAuthEvent = function(event, data) {
         case Auth.EVENT_SIGNUP_SUCCESS: {
             successMessage = App.getText('signup_completed');
             Modal.hideSignup();
-            Modal.showEmailSent();
+            Modal.showEmailSent({
+                canClose: this.canClose
+            });
             break;
         }
     }
@@ -134,7 +136,9 @@ SignupModal.prototype.onFacebookSigninClick = function() {
  * Перейти в окно логина
  */
 SignupModal.prototype.onToSigninClick = function() {
-    Modal.showSignin();
+    Modal.showSignin({
+        canClose: this.canClose
+    });
     Modal.hideSignup();
 }
 

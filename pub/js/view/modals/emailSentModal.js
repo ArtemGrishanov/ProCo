@@ -22,7 +22,7 @@ EmailSentModal.prototype.render = function() {
 
     if (this.canClose === true) {
         this.$ui.find('.js-close').show().click((function() {
-            Modal.hideSignup();
+            Modal.hideEmailSent();
         }).bind(this));
     }
     else {
@@ -34,6 +34,8 @@ EmailSentModal.prototype.render = function() {
  * Перейти в окно логина
  */
 EmailSentModal.prototype.onToSigninClick = function() {
-    Modal.showSignin();
+    Modal.showSignin({
+        canClose: this.canClose
+    });
     Modal.hideEmailSent();
 }

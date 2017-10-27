@@ -799,14 +799,21 @@ var App = App || {};
      * Тогда нужно вызвать этот метод и попробовать снова
      */
     function relogin() {
-        bucket = null;
-        bucketForPublishedProjects = null;
-        if (new Date().getTime() - loginTime < config.common.RELOGIN_DELAY) {
-            // чтобы нельзя было слишком часто перелогиниваться
-            return false;
-        }
-        // fb accessToken надо также пересоздать чтобы заново создать aws buckets
-        requestLogin();
+//        bucket = null;
+//        bucketForPublishedProjects = null;
+//        if (new Date().getTime() - loginTime < config.common.RELOGIN_DELAY) {
+//            // чтобы нельзя было слишком часто перелогиниваться
+//            return false;
+//        }
+//        // fb accessToken надо также пересоздать чтобы заново создать aws buckets
+//        requestLogin();
+        AWS.config.credentials.refresh(function(error) {
+            if (error) {
+                console.error(error);
+            } else {
+                console.log('Successfully logged!');
+            }
+        });
         return true;
     }
 

@@ -174,7 +174,7 @@
         </div>
     </div>
 
-    <div id="id-dialogs_view" class="scr_dialog" style="display: none;">
+    <div id="id-dialogs_view" class="modal_cnt" style="display: none;">
         <!-- для показа диалогов поверх остальных вью -->
     </div>
 
@@ -447,7 +447,9 @@
                             break;
                         }
                         case Auth.EVENT_AUTO_SIGNIN_FAILED: {
-                            Modal.showSignin();
+                            Modal.showSignin({
+                                canClose: false
+                            });
                             break;
                         }
                     }

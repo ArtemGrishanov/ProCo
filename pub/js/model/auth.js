@@ -27,7 +27,7 @@ var Auth = {
 
     EVENT_SIGNOUT: 'event_signout',
 
-    EVENT_AUTO_SIGNIN_FAILED: 'event_auto_failed', // автоматически не удалось восстановить сессию из localStorage браузера
+    EVENT_AUTO_SIGNIN_FAILED: 'event_auto_signin_failed', // автоматически не удалось восстановить сессию из localStorage браузера
 
     // signup event group
     EVENT_SIGNUP_ERROR: 'event_signup_error',
@@ -498,6 +498,7 @@ var Auth = {
         _user.cognitoUser.signOut();
         _user = null;
         _sessionToken = null;
+        AWS.config.credentials.clearCachedId();
         _trigger(Auth.EVENT_SIGNOUT);
     }
 

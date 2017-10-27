@@ -91,7 +91,9 @@ RestorePasswordModal.prototype.onAuthEvent = function(event, data) {
             successMessage = App.getText('password_changed');
             setTimeout(function() {
                 Modal.hideRestorePassword();
-                Modal.showSignin();
+                Modal.showSignin({
+                    canClose: this.canClose
+                });
             }, 999);
             break;
         }
@@ -199,7 +201,9 @@ RestorePasswordModal.prototype.onConfirmKeydown = function(e) {
  */
 RestorePasswordModal.prototype.onToSigninClick = function() {
     Modal.hideRestorePassword();
-    Modal.showSignin();
+    Modal.showSignin({
+        canClose: this.canClose
+    });
 }
 
 /**
@@ -207,5 +211,7 @@ RestorePasswordModal.prototype.onToSigninClick = function() {
  */
 RestorePasswordModal.prototype.onToSignupClick = function() {
     Modal.hideRestorePassword();
-    Modal.showSignup();
+    Modal.showSignup({
+        canClose: this.canClose
+    });
 }
