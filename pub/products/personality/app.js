@@ -13,16 +13,6 @@ var PersonalityApp = MutApp.extend({
      * Схема свойств MutAppProperty в этом приложении
      */
     mutAppSchema: new MutAppSchema({
-        "appConstructor=mutapp shareLink": {
-            label: {RU: 'Ссылка для поста в соц сети', EN: 'Post link in social network'},
-            controls: 'StringControl',
-            controlFilter: 'always'
-        },
-        "appConstructor=mutapp gaId": {
-            label: {RU: 'Код Google Analytics', EN: 'Google Analytics code'},
-            controls: 'StringControl',
-            controlFilter: 'always'
-        },
         "id=pm logoLink": {
             label: {RU: 'Ссылка по клику на лого', EN: 'Logo click link'},
             controls: 'StringControl',
@@ -482,25 +472,13 @@ var PersonalityApp = MutApp.extend({
             this.hideScreen(rs);
             this.resultsScreens.push(rs);
 
-            // выравнивание заголовка и пояснения по вертикали
-            var viewForShare = MutApp.Util.clarifyElement(rs.$el, ['modal','modal_cnt','info_title','info_tx','b_title']);
-            var titleView = viewForShare.find('.info_title').css('padding','0 50px 0 50px').css('margin','0');
-            var th = titleView.outerHeight(false);
-            var descView = viewForShare.find('.info_tx').css('padding','0 50px 0 50px').css('margin','0');
-            var dh = descView.outerHeight(false);
-            var ind = (this.height-dh-th)/4;
-            titleView.css('padding-top',ind+'px');
-            descView.css('padding-top',ind+'px');
-
             // создать сущности для публикации
             // в тесте это количество результатов
             sEntities.push({
                 id: id,
                 title: resultsValue[i].title.getValue(),
                 description: resultsValue[i].description.getValue(),
-                // удалить элементы, оставить только те которые в whitelist
-                view: viewForShare,
-                imgUrl: null
+                imgUrl: null // устанавливается в редакторе
             });
         }
         this.setShareEntities(sEntities);
@@ -617,5 +595,27 @@ var PersonalityApp = MutApp.extend({
         }
 
         return res;
+    },
+
+    /**
+     * Вернуть фрагмен html из которго будет сгенерирована картинка
+     *
+     * @returns {*}
+     */
+    getAutoPreviewHtml: function() {
+        if (this._screens.length > 0) {
+            var v = this.getScreenById('startScr').$el;
+            // выравнивание заголовка и пояснения по вертикали
+            var viewForShare = MutApp.Util.clarifyElement(v, ['modal','modal_cnt','info_title','info_tx','b_title']);
+            var titleView = viewForShare.find('.info_title').css('padding','0 50px 0 50px').css('margin','0');
+            var th = titleView.outerHeight(false);
+            var descView = viewForShare.find('.info_tx').css('padding','0 50px 0 50px').css('margin','0');
+            var dh = descView.outerHeight(false);
+            var ind = (this.height-dh-th)/4;
+            titleView.css('padding-top',ind+'px');
+            descView.css('padding-top',ind+'px');
+            return viewForShare.html();
+        }
+        return '';
     }
 });

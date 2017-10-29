@@ -76,6 +76,7 @@ var previewService = {};
             throw new Error('PreviewService.createInIframe: one of param not set');
         }
         var t = {
+            type: 'create_preview',
             run: function() {
                 if (param.type === 'html2canvas') {
                     // внутри iframe имеется собственный сервис previewService

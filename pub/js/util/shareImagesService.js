@@ -44,6 +44,11 @@ var shareImageService = {};
      * @param {MutApp} param.app
      */
     function generateAndUploadSharingImages(param) {
+        // удалить всё что сейчас запущено с такими типами
+        //Queue.clearTasks({type:'create_preview'});
+        //TODO воспроизвел случай как-то, что публикация висит вечно, так как _activeTask никогда не завершается
+        //_activeTask = null;
+
         param = param || {};
         if (!param.app) {
             throw new Error('ShareImageService.requestImageUrls: app not specified.');
@@ -67,6 +72,8 @@ var shareImageService = {};
      * @param {MutApp} param.app
      */
     function requestCanvases(param) {
+        // удалить всё что сейчас запущено с такими типами
+        //Queue.clearTasks({type:'create_preview'});
         param = param || {};
         if (!param.app) {
             throw new Error('ShareImageService.requestCanvases: app not specified.');
@@ -177,7 +184,7 @@ var shareImageService = {};
     /**
      * Пройти по всем app._shareEntities и если картинка НЕ установлена пользователем, то сгенерировать ее
      * из MutApp.getAutoPreviewHtml()
-     * За один вызов функции создаются вызовы на генерацию всех канвасов
+     *
      *
      * @param {MutApp} param.app
      * @private

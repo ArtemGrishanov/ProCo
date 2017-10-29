@@ -27,7 +27,7 @@ function Alternative(param) {
             if (typeof pv.icon === 'string') {
                 $newElem.css('backgroundImage', 'url('+pv.icon+')');
             }
-            else if (typeof pv.icon.normal === 'string') {
+            else if (pv.icon && typeof pv.icon.normal === 'string') {
                 // когда есть два вида иконок: для обычного и выбранного состояния
                 $newElem.css('backgroundImage', 'url('+pv.icon.normal+')');
             }
@@ -83,7 +83,7 @@ Alternative.prototype.setValue = function(value) {
         if (pv) {
             // Устанавливаем выделение на выбранный элемент
             var $se = this.$optionsCnt.find('[data-value='+value+']').addClass('__selected')
-            if (typeof pv.icon.selected === 'string') {
+            if (pv && pv.icon && typeof pv.icon.selected === 'string') {
                 // меняем иконку для выбранного состояния, если она задана
                 $se.css('backgroundImage', 'url('+pv.icon.selected+')');
             }

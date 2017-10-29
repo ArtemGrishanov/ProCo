@@ -86,14 +86,10 @@ var MutApp = function(param) {
      */
     this.shareDefaultImgUrl = 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/share_def.jpg';
     /**
-     * Ссылка для публикации по дефолту
-     * Также может быть ссылка на анонимную страницу на тестиксе
-     * Или создатель теста может указать какую страницу шарить.
-     */
-    this.shareDefaultLink = 'https://testix.me/';
-    /**
      * Можно установить линк на страницу паблишера
      * Или он будет установлен на конкретный проект (http://testix.me/13435255)
+     * Не используется здесь в mutapp.js, а встраивается в редирект ссылку в share_result.html
+     *
      * @type {MutAppProperty}
      */
     this.shareLink = null;
@@ -106,7 +102,6 @@ var MutApp = function(param) {
         //            id: 'result1',
         //            title: 'Название результата',
         //            description: 'Описание результата',
-        //            view: domElement, // view из которого будет сделана картинка,
         //            imgUrl: string
         //        }
     ];
@@ -115,6 +110,18 @@ var MutApp = function(param) {
      * @type {MutAppProperty}
      */
     this.customCssStyles = null;
+    /**
+     * Ссылка на опубликованный проект
+     * Пример: //p.testix.me/1234ab/4321fe
+     *
+     * @type {MutAppProperty}
+     */
+    this.projectPageUrl = null;
+    /**
+     * Версия приложения, накручивается при каждой публикации
+     * @type {number}
+     */
+    this.publishVersion = 0;
     /**
      * Ид для публикации
      *
@@ -131,6 +138,11 @@ var MutApp = function(param) {
      * @type {MutAppPropety}
      */
     this.gaId = undefined;
+    /**
+     * Ссылка на фоновую картинку для страницы
+     * @type {MutAppProperty}
+     */
+    this.projectPageBackgroundImageUrl = undefined;
     /**
      * Сохраненные значение для десериализации
      * Когда создается MutAppProperty, то свойства будут искаться здесь
@@ -249,14 +261,29 @@ var MutApp = function(param) {
         propertyString: 'appConstructor=mutapp customCssStyles',
         value: ''
     });
+    this.projectPageUrl = new MutAppProperty({
+        application: this,
+        propertyString: 'appConstructor=mutapp projectPageUrl',
+        value: 'http://testix.me' // установится при публикации например //p.testix.me/1234ab/4321fe
+    });
+    this.publishVersion = new MutAppProperty({
+        application: this,
+        propertyString: 'appConstructor=mutapp publishVersion',
+        value: 0
+    });
     this.shareLink = new MutAppProperty({
         application: this,
         propertyString: 'appConstructor=mutapp shareLink',
-        value: this.shareDefaultLink
+        value: null // если пользователь не установит будет использоваться projectPageUrl
     })
     this.gaId = new MutAppProperty({
         application: this,
         propertyString: 'appConstructor=mutapp gaId',
+        value: ''
+    });
+    this.projectPageBackgroundImageUrl = new MutAppProperty({
+        application: this,
+        propertyString: 'appConstructor=mutapp projectPageBackgroundImageUrl',
         value: ''
     });
 
@@ -1004,28 +1031,25 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
     var ent = this.findShareEntity(entityId);
     if (ent) {
         var imgUrl = ent.imgUrl;
-        var sl = this.shareLink.getValue();
         if (!!imgUrl === false) {
+            // если по какой-то причине нет картинки. Хотя такая ситуация может быть только в новом проекте в режиме предпросмотра, наверное.
             imgUrl = this.shareDefaultImgUrl;
         }
-        if (typeof sl !== 'string') {
-            sl = this.shareDefaultLink;
-        }
-        var name = ent.title.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
-        var description = ent.description.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
+        // var name = ent.title.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
+        // var description = ent.description.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
+        var link = this.projectPageUrl.getValue() + 'share/' + entityId + '.html?v=' + this.publishVersion.getValue();
         if (serviceId === 'fb') {
             if (isFakeShare !== true) {
                 // рекомендации перекрывают нижнюю часть окна постинга ФБ
                 // В случае ВК - открывается отдельный попап
                 this.hideRecommendations();
-                FB.ui({
+                var feedData = {
                     method: 'feed',
-                    link: sl,
-                    name: name,
-                    description: description,
-                    picture: imgUrl
-                }, (function(response) {
-                    console.log(response);
+                    app_id: this.fbAppId,
+                    link: link,
+                    display: 'popup'
+                };
+                FB.ui(feedData, (function(response) {
                     this.showRecommendations();
                 }).bind(this));
                 this.stat('app','feed', name);
@@ -1042,11 +1066,7 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
             if (isFakeShare !== true) {
                 // способ построения ссылки взят из интернета и не рекомендован официально ВК
                 var url = 'http://vkontakte.ru/share.php?';
-                url += 'url='          + encodeURIComponent(sl);
-                url += '&title='       + encodeURIComponent(name);
-                url += '&description=' + encodeURIComponent(description);
-                url += '&image='       + encodeURIComponent(imgUrl);
-                url += '&noparse=true';
+                url += 'url='          + encodeURIComponent(link);
                 window.open(url,'','toolbar=0,status=0,width=626,height=436');
                 if (this.loaderWindow) {
                     this.loaderWindow.postMessage({
@@ -1057,8 +1077,6 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
             }
             return true;
         }
-
-        //TODO other providers
     }
     return false;
 };
@@ -1962,7 +1980,8 @@ MutApp.Util = {
         var children = $(element).children();
         if (children.length === 0) {
             // конечный элемент, смотрим только на наличие классов
-            if (MutApp.Util.__containClass(element, classesWhiteList) === true) {
+            if (MutApp.Util.__containClass(element, classesWhiteList) === true || $(element).is('br') === true) {
+                // br - надо сохранять для переноса текста
                 return true;
             }
             element.remove();
@@ -2585,8 +2604,29 @@ var MutAppSchema = function(schema) {
 MutAppSchema.prototype.initialize = function(schema) {
     schema = schema || {};
     this._parentMutAppSchema = {
-        // схема для свойства где хранятся кастомные стили
         "appConstructor=mutapp customCssStyles": {
+            // скрытое свойство
+        },
+        "appConstructor=mutapp projectPageUrl": {
+            // скрытое свойство
+        },
+        "appConstructor=mutapp publishVersion": {
+            // скрытое свойство
+        },
+        "appConstructor=mutapp shareLink": {
+            label: {RU: 'Ссылка для поста в соц сети', EN: 'Post link in social network'},
+            controls: 'StringControl',
+            controlFilter: 'always'
+        },
+        "appConstructor=mutapp gaId": {
+            label: {RU: 'Код Google Analytics', EN: 'Google Analytics code'},
+            controls: 'StringControl',
+            controlFilter: 'always'
+        },
+        "appConstructor=mutapp projectPageBackgroundImageUrl": {
+            label: {RU: 'Фон промо-страницы', EN: 'Promo page background'},
+            controls: 'ChooseImage',
+            controlFilter: 'always'
         }
     };
     for (var key in this._parentMutAppSchema) {

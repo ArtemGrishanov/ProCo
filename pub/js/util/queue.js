@@ -213,6 +213,28 @@ function __init_queue(global) {
         __init_queue(newQueue);
         return newQueue;
     };
+
+    /**
+     * Удалить запущенные и ожидающие таски по типу
+     *
+     * @param {string} param.type
+     */
+    global.clearTasks = function(param) {
+        param = param || {};
+        if (typeof param.type === 'string') {
+            if (currentTask && currentTask.type === param.type) {
+                currentTask = null;
+            }
+            for (var i = 0; i < tasks.length;) {
+                if (tasks[i].type == param.type) {
+                    tasks.splice(i, 1);
+                }
+                else {
+                    i++;
+                }
+            }
+        }
+    };
 }
 // автоматический инит главного инстанса Queue
 // с ним работает редактор и все основные сервисы

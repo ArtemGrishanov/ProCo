@@ -8,7 +8,7 @@ if (window.textix === undefined) {
          * Локация раположения всех опубликованных проектов
          * @type {string}
          */
-        var publishedProjectsHome = '//s3.eu-central-1.amazonaws.com/p.testix.me/';
+        var publishedProjectsHome = '//p.testix.me/';
         /**
          * Приложения, которые хранятся на странице
          * @type {Array}
@@ -163,11 +163,14 @@ if (window.textix === undefined) {
                     var h = parseInt(e.getAttribute('data-height')) || '600';
                     var p = normalizeDataPublished(e.getAttribute('data-published'));
                     var l = e.getAttribute('data-icon-mod');
+                    var lp = e.getAttribute('data-l');
                     e.style.maxWidth = w+'px';
                     e.style.height = h+'px';
 
                     createIframe(p, e, w, h);
-                    createPoweredLabel(e, l);
+                    if (lp !== 'no') {
+                        createPoweredLabel(e, l);
+                    }
                     initGA(e);
                 }
             }

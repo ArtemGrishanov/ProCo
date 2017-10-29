@@ -21,12 +21,12 @@
     top: 10px;
     left: 12px;
     display: block;
-    background-image: url(//testix.me/products/common/i/fb-share-icon.png);
+    background-image: url(//p.testix.me/images/products/common/i/fb-share-icon.png);
     width: 22px;
     height: 20px;
 }
 .tstx_share_i.__vk {
-    background-image: url(//testix.me/products/common/i/vk-share-icon.png);
+    background-image: url(//p.testix.me/images/products/common/i/vk-share-icon.png);
 }
 
 @media (max-width:600px)  {
@@ -35,11 +35,11 @@
 
 @media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 1.5dppx) {
     .tstx_share_i {
-        background-image: url(//testix.me/products/common/i/fb-share-icon@2x.png);
+        background-image: url(//p.testix.me/images/products/common/i/fb-share-icon@2x.png);
         background-size: 22px 20px;
     }
     .tstx_share_i.__vk {
-        background-image: url(//testix.me/products/common/i/vk-share-icon@2x.png);
+        background-image: url(//p.testix.me/images/products/common/i/vk-share-icon@2x.png);
         background-size: 22px 20px;
     }
 }

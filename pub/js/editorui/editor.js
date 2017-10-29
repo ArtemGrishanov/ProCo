@@ -233,14 +233,34 @@ var Editor = {};
      * @param {boolean} forceChange сменить в любом случае (с витрины или клонирование)
      */
     function trySetDefaultShareLink(forceChange) {
-        var pp = editedApp.find('shareLink');
-        if (pp && pp.length > 0) {
-            if (forceChange === true || pp[0].propertyValue == config.common.defaultShareLinkToChange) {
-                pp[0].setValue(Publisher.getAnonymLink(appId));
+        var pp = editedApp.getProperty('appConstructor=mutapp shareLink');
+        if (pp) {
+            if (forceChange === true || pp.getValue() == config.common.defaultShareLinkToChange) {
+                pp.setValue(Publisher.getAnonymLink(appId));
             }
         }
         else {
             log('setDefaultShareLink: can not find shareLink property', true);
+        }
+    }
+
+    /**
+     * Поднять версию приложения на единицу
+     *
+     * @param {boolean} setZero
+     */
+    function bumpAppVersion(setZero) {
+        var pp = editedApp.getProperty('appConstructor=mutapp publishVersion');
+        if (pp) {
+            if (setZero === true) {
+                pp.setValue(0);
+            }
+            else {
+                pp.setValue(parseInt(pp.getValue()) + 1);
+            }
+        }
+        else {
+            log('Editor.bumpAppVersion: can not find publishVersion property', true);
         }
     }
 
@@ -301,11 +321,16 @@ var Editor = {};
 
             // для установки ссылки шаринга требуются данные пользователя, ответ от апи возможно надо подождать
 //            if (App.getUserData()) {
-                trySetDefaultShareLink(cloneTemplate === true);
-                // показ кнопки загрузки превью картинки для проекта. Только для админов
-                if (Auth.getUser() && config.common.excludeUsersFromStatistic.indexOf(Auth.getUser().id) >= 0) {
-                    $('#id-app_prevew_img_wr').show();
-                }
+            if (cloneTemplate) {
+                // при клонировании сменить ссылку на проект и версию публикаиции обнулить
+                trySetDefaultShareLink(true);
+                bumpAppVersion(true);
+            }
+            // показ кнопки загрузки превью картинки для проекта. Только для админов
+            if (Auth.getUser() && config.common.excludeUsersFromStatistic.indexOf(Auth.getUser().id) >= 0) {
+                $('#id-app_prevew_img_wr').show();
+            }
+            setTariffPolicy();
 //            }
 //            else {
 //                App.on(USER_DATA_RECEIVED, function() {
@@ -326,7 +351,7 @@ var Editor = {};
 
         //TODO refactor button name setting
         if (appName === 'fbPanorama') {
-            if (app.model.attributes.photoViewerMode !== true) {
+            if (editedApp.model.attributes.photoViewerMode !== true) {
                 $('.js-app_publish').text(App.getText('publish_to_fb'));
             }
         }
@@ -453,6 +478,21 @@ var Editor = {};
 ////            hideWorkspaceHints();
 ////        });
 //    }
+
+    /**
+     * Применение политик тарифа к текущему пользователю
+     */
+    function setTariffPolicy() {
+        if (Auth.isTariff('basic') === true) {
+            showProductPageBackgroungImage();
+        }
+        else {
+            var cntr = ControlManager.getControls({propertyString:'appConstructor=mutapp projectPageBackgroundImageUrl'})[0];
+            if (cntr) {
+                cntr.hide();
+            }
+        }
+    }
 
     /**
      * В зависимости от режиме превью: моб или веб а также истинного размера приложения
@@ -600,7 +640,16 @@ var Editor = {};
         else {
             activePublisher = Publisher;
         }
-        // нужно дописать свойство "опубликованности" именно в опубликованное приложение
+        // в приложение записывается ссылка на проект
+        var anonymUrl = 'https://p.testix.me/'+Auth.getUser().short_id+'/'+appId+'/';
+        var ap = editedApp.getProperty('appConstructor=mutapp projectPageUrl');
+        ap.setValue(anonymUrl);
+        var appTitle = clearHtmlSymbols(editedApp.title);
+        var appDescription = clearHtmlSymbols(editedApp.description);
+
+        // накрутить версию проекта при новой сборке, поможет сбросу кеша шаринга
+        bumpAppVersion();
+
         var appStr = editedApp.serialize();
         activePublisher.publish({
             appId: appId,
@@ -611,7 +660,16 @@ var Editor = {};
             cssStr: editedApp.getCssRulesString(),
             promoIframe: editorLoader.getIframe('id-product_iframe_cnt'),
             baseProductUrl: config.products[appName].baseProductUrl,
-            //awsBucket: App.getAWSBucketForPublishedProjects(),
+            callback: showEmbedDialog,
+            fbAppId: editedApp.fbAppId, // og tag
+            ogTitle: appTitle, // og tag
+            ogDescription: appDescription, // og tag
+            ogUrl: anonymUrl, // og url
+            ogImage: (editedApp._shareEntities && (editedApp._shareEntities.length > 0) && editedApp._shareEntities[0].imgUrl) ? editedApp._shareEntities[0].imgUrl: editedApp.shareDefaultImgUrl, // og tag
+            shareEntities: editedApp._shareEntities,
+            shareLink: editedApp.shareLink,
+            projectBackgroundImageUrl: editedApp.getProperty('appConstructor=mutapp projectPageBackgroundImageUrl').getValue(),
+            tariffIsBasic: Auth.isTariff('basic'),
             callback: function(publishResult) {
                 // после каждой публикации автоматически сохраняем шаблон
                 saveTemplate({
@@ -621,7 +679,6 @@ var Editor = {};
                 });
             }
         });
-        //});
     }
 
     /**
@@ -1004,11 +1061,16 @@ var Editor = {};
             case MutApp.EVENT_PROPERTY_VALUE_CHANGED: {
                 var ctrls = ControlManager.getControls({propertyString:data.propertyString});
                 if (ctrls && ctrls.length > 0) {
+                    //TODO разве тут не должен быть for по всем контролам? Контролов же может быть несколько для одного mutAppProperty
                     ctrls[0].setValue(data.property.getValue());
                 }
                 else {
                     // for example id=pm quiz has no controls, and some hidden properties
                     //console.error('onAppChanged: there is no control for appProperty: \'' + data.propertyString + '\'');
+                }
+                if (data.propertyString === 'appConstructor=mutapp projectPageBackgroundImageUrl') {
+                    // специальное премиум свойство для смены фона проекта
+                    showProductPageBackgroungImage();
                 }
                 break;
             }
@@ -1495,6 +1557,25 @@ var Editor = {};
             Modal: Modal,
             App: App,
             s3util: s3util
+        }
+    }
+
+    /**
+     * Функция реализующую предпросмотр платной фичи смены фона для страницы.
+     * Картинка ставится и в редактировании и в предпросмотре
+     */
+    function showProductPageBackgroungImage() {
+        // проверка что фича соответствует тарифу
+        if (Auth.isTariff('basic') === true) {
+            var ppBackUrl = editedApp.getProperty('appConstructor=mutapp projectPageBackgroundImageUrl').getValue();
+            if (ppBackUrl) {
+                $('#id-workspace').css('background-image', (ppBackUrl) ? 'url('+ppBackUrl+')': 'none')
+                    .css('background-repeat','no-repeat')
+                    .css('background-size','cover');
+                $('#id-preview_background-image').css('background-image', (ppBackUrl) ? 'url('+ppBackUrl+')': 'none')
+                    .css('background-repeat','no-repeat')
+                    .css('background-size','cover');
+            }
         }
     }
 

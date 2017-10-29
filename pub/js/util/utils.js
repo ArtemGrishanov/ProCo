@@ -368,3 +368,12 @@ function getOwnPropertiesCount(obj) {
     }
     return result;
 }
+
+/**
+ * Очистить подстроки <br> &nbsp; из введенной строки
+ * @param {string} str
+ * @return {string}
+ */
+function clearHtmlSymbols(str) {
+    return str.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
+}

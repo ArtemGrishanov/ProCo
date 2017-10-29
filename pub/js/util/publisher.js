@@ -70,6 +70,52 @@ var Publisher = {};
      * @type {boolean}
      */
     var isPublishing = false;
+    /**
+     * Атрибут для записи в og теги
+     * @type {string}
+     */
+    var fbAppId = null;
+    /**
+     * Атрибут для записи в og теги
+     * @type {string}
+     */
+    var ogTitle = null;
+    /**
+     * Атрибут для записи в og теги
+     * @type {string}
+     */
+    var ogDescription = null;
+    /**
+     * Атрибут для записи в og теги
+     * @type {string}
+     */
+    var ogUrl = null;
+    /**
+     * Атрибут для записи в og теги
+     * @type {string}
+     */
+    var ogImage = null;
+    /**
+     * Информация из приложения для публикации результатов
+     * @type {Array}
+     */
+    var shareEntities = [];
+    /**
+     * Ссылка на которую должно переходить при клике на шаринг в фб
+     * @type {string}
+     */
+    var shareLink = null;
+    /**
+     * Ссылка на картинку фон для страницы публикации
+     * @type {string}
+     */
+    var projectBackgroundImageUrl = null;
+    /**
+     * Признак тарифа basic
+     * @type {boolean}
+     */
+    var tariffIsBasic = null;
+
 
     /**
      * Сохранить промо проект на сервере
@@ -87,7 +133,7 @@ var Publisher = {};
      * @params.cssStr {string} - css стили приложения, которые надо добавить в index.html
      * @params.promoIframe {iFrame} - iframe приложения прототипа, который меняем
      * @params.baseProductUrl {string} - базовый каталог спецпроекта для работы с ресурсами, например 'products/test'
-     * @params.awsBucket {Object}
+     * @params.shareEntities {Array} - информация из приложения MutApp._shareEntities о результатах для шаринга
      */
     function publish(params) {
         if (Auth.getUser() !== null) {
@@ -102,6 +148,16 @@ var Publisher = {};
             appHeight = params.height;
             promoIframe = params.promoIframe;
             baseProductUrl = params.baseProductUrl;
+            fbAppId = params.fbAppId;
+            ogTitle = params.ogTitle;
+            ogDescription = params.ogDescription;
+            ogUrl = params.ogUrl;
+            ogImage = params.ogImage;
+            shareEntities = params.shareEntities || [];
+            shareLink = params.shareLink;
+            projectBackgroundImageUrl = params.projectBackgroundImageUrl;
+            tariffIsBasic = (typeof params.tariffIsBasic === 'boolean') ? params.tariffIsBasic: false;
+
             errorInPublish = false;
             //TODO собираем ресурсы в несколько проходов
             // например, для того чтобы забрать картинку, сначала надо скачать и распарсить файл css
@@ -169,7 +225,8 @@ var Publisher = {};
      */
     function getAnonymLink(appId) {
         var appId = appId || publishedAppId;
-        return 'http:'+config.common.publishedProjectsHostName+Auth.getUser().short_id+'/'+appId+'/';
+        // https надо - так как эту ссылку видит пользователь в окне публикаии, может скопировать ее и использовать руками
+        return 'https:'+config.common.publishedProjectsHostName+Auth.getUser().short_id+'/'+appId+'/';
     }
 
     /**
@@ -182,7 +239,8 @@ var Publisher = {};
         embedCode = embedCode.replace('{{width}}', appWidth+'px')
             .replace('{{height}}', appHeight+'px')
             .replace('{{published}}', Auth.getUser().short_id+'/'+publishedAppId)
-            .replace('{{custom_attributes}}', (projectCustomAttr) ? ' '+projectCustomAttr: '');
+            .replace('{{custom_attributes}}', (projectCustomAttr) ? ' '+projectCustomAttr:'')
+            .replace('{{logo_policy}}', (tariffIsBasic===true)?' data-l="no"':''); // space before 'data-l' is needed
         return embedCode;
     }
 
@@ -230,6 +288,17 @@ var Publisher = {};
             }
             productResources.push(c);
         }
+
+        // подготовить share_result.html для шаринга. Для каждого результата одна страница с индивидуальными данными и редиректом на shareUrl
+        for (var i = 0; i < shareEntities.length; i++) {
+            productResources.push({
+                baseUrl: '', // not needed
+                url: 'templates/anonymPage/share_result.html',
+                destUrl: 'share/'+shareEntities[i].id+'.html',
+                type: 'text/html'
+            });
+        }
+
 
         //TODO поиск предполагает что ресурсы находятся рядом с html в baseUrl
         var scriptExp = /src=(?:\"|\')([^\.](?:\w|\/|\.|\-|\_)+\.js)(?:\"|\')/ig;
@@ -397,7 +466,7 @@ var Publisher = {};
     }
 
     /**
-     * Вставить айфрейм в анонимку
+     * Вставить данные в шаблон страницы проекта
      *
      * @param param
      */
@@ -408,6 +477,20 @@ var Publisher = {};
                 // destUrl анонимной страницы == 'index.html'
                 var indexResource = getResourceByUrl('index.html');
                 indexResource.data = indexResource.data.replace(config.common.anonymPageAnchorToEmbed, getEmbedCode());
+
+                // embed og tags
+                indexResource.data = indexResource.data.replace('<!--fb:app_id-->', '<meta property="fb:app_id" content="'+fbAppId+'" />');
+                indexResource.data = indexResource.data.replace('<!--og:url-->', '<meta property="og:url" content="'+ogUrl+'" />');
+                indexResource.data = indexResource.data.replace('<!--og:title-->', '<meta property="og:title" content="'+ogTitle+'" />');
+                indexResource.data = indexResource.data.replace('<!--og:description-->', '<meta property="og:description" content="'+ogDescription+'" />');
+                indexResource.data = indexResource.data.replace('<!--og:image-->', '<meta property="og:image" content="'+ogImage+'" />');
+
+                // todo move somewhere
+                writeShareEntities();
+
+                // embed page customization according to tariffs
+                indexResource.data = writeTariffAttributes(indexResource.data);
+
                 Queue.release(this);
             }
         };
@@ -421,6 +504,41 @@ var Publisher = {};
             t.maxWaitTime = param.maxWaitTime;
         }
         Queue.push(t);
+    }
+
+    /**
+     * Заполняем html-страницы для шаринга
+     * Страница templates/share_result.html в ней есть разметка необходимая для шаринга в соц сеть
+     * Каждому результату соответствует одна такая страница
+     *
+     */
+    function writeShareEntities() {
+        for (var i = 0; i < shareEntities.length; i++) {
+            var res = getResourceByUrl('share/'+shareEntities[i].id+'.html');
+            res.data = res.data.replace('{{og:title}}', clearHtmlSymbols(shareEntities[i].title)); // util.js
+            res.data = res.data.replace('{{og:description}}', clearHtmlSymbols(shareEntities[i].description));
+            res.data = res.data.replace('{{og:image}}', shareEntities[i].imgUrl);
+            res.data = res.data.replace('{{og:url}}', getAnonymLink() + 'share/' + shareEntities[i].id+'.html');
+            res.data = res.data.replace('{{share_link}}', shareLink);
+        }
+    }
+
+    /**
+     * Согласно тарифам прописать кастомизацию
+     * @param {string} template
+     * @return {string}
+     */
+    function writeTariffAttributes(template) {
+        if (tariffIsBasic === true) {
+            var imgval = (projectBackgroundImageUrl) ? projectBackgroundImageUrl: 'none';
+            template = template.replace('{{page_background_styles}}','background-image:url('+projectBackgroundImageUrl+');background-size:cover;background-repeat:no-repeat;');
+            template = template.replace('{{topbar_styles}}','display:none');
+        }
+        else {
+            template = template.replace('{{page_background_styles}}','');
+            template = template.replace('{{topbar_styles}}','');
+        }
+        return template;
     }
 
     /**

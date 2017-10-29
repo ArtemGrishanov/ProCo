@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['test'], //dev test prod
+        configurationSetsOnStart: ['dev'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -218,6 +218,17 @@ var config = {
          * Шаблон для кода встраивания
          */
         embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"{{custom_attributes}}><script src="//s3.eu-central-1.amazonaws.com/testix.me/js/loader.js" async></script></div>'
+    },
+    tariff: {
+        /**
+         * Веса тарифов.
+         * Нужны для того, чтобы определять что более высокий тариф включает в себя меньший тариф (basic < enterprise)
+         */
+        weights: {
+            basic: 1,
+            business: 5,
+            enterprise: 10
+        }
     },
     storage: {
         /**

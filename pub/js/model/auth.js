@@ -637,6 +637,39 @@ var Auth = {
         return _user;
     }
 
+    /**
+     * Получить вес тарифа, чтобы сравнивать тарифы между собой
+     *
+     * @param {string} tariff
+     * @returns {boolean}
+     * @private
+     */
+    function _getTariffWeight(tariff) {
+        for (var key in config.tariff.weights) {
+            if (key === tariff) {
+                return config.tariff.weights[tariff];
+            }
+        }
+        return undefined;
+    }
+
+    /**
+     * Проверить поддерживает ли пользователь тариф
+     * Например: isTariff('basic')
+     *
+     * @param {string} tariff
+     * @returns {boolean}
+     */
+    function isTariff(tariff) {
+        if (_user) {
+            var t = Auth.getUser()['custom:tariff'];
+            if (t) {
+                return _getTariffWeight(tariff) <= _getTariffWeight(t);
+            }
+        }
+        return false;
+    }
+
     // public methods
     global.addEventCallback = addEventCallback;
     global.getAuthToken = getAuthToken;
@@ -648,6 +681,7 @@ var Auth = {
     global.changePassword = changePassword;
     global.restorePassword = restorePassword;
     global.confirmCodeAndEnterPassword = confirmCodeAndEnterPassword;
+    global.isTariff = isTariff;
 
     // for debug
     global._getCredentials = function() {
