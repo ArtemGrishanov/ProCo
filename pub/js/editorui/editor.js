@@ -626,58 +626,72 @@ var Editor = {};
     }
 
     function onAssistenContinue() {
-        publish();
+        if (Auth.getUser() !== null) {
+            publish();
+        }
+        else {
+            Modal.showSignin();
+        }
     }
 
     function publish() {
         Modal.showLoading();
         // сначала создать превью-картинки для шаринга, записать ссылки на них в приложение
         // и уже потом выкатывать приложение
-        //createPreviewsForShare(function() {
-        if (config.products[appName].customPublisherObject) {
-            activePublisher = window[config.products[appName].customPublisherObject];
-        }
-        else {
-            activePublisher = Publisher;
-        }
-        // в приложение записывается ссылка на проект
-        var anonymUrl = 'https://p.testix.me/'+Auth.getUser().short_id+'/'+appId+'/';
-        var ap = editedApp.getProperty('appConstructor=mutapp projectPageUrl');
-        ap.setValue(anonymUrl);
-        var appTitle = clearHtmlSymbols(editedApp.title);
-        var appDescription = clearHtmlSymbols(editedApp.description);
+        shareImageService.generateAndUploadSharingImages({
+            // внутри сервис shareImageService получает _shareEntities из приложения editedApp
+            // если надо создает canvas и аплоадит его на s3, затем устанавливает imgUrl's внутри _shareEntities
+            app: editedApp,
+            callback: (function() {
 
-        // накрутить версию проекта при новой сборке, поможет сбросу кеша шаринга
-        bumpAppVersion();
+                // далее может начать работать publisher
+                if (config.products[appName].customPublisherObject) {
+                    activePublisher = window[config.products[appName].customPublisherObject];
+                }
+                else {
+                    activePublisher = Publisher;
+                }
+                // в приложение записывается ссылка на проект
+                var anonymUrl = 'https://p.testix.me/'+Auth.getUser().short_id+'/'+appId+'/';
+                var ap = editedApp.getProperty('appConstructor=mutapp projectPageUrl');
+                ap.setValue(anonymUrl);
+                var appTitle = clearHtmlSymbols(editedApp.title);
+                var appDescription = clearHtmlSymbols(editedApp.description);
 
-        var appStr = editedApp.serialize();
-        activePublisher.publish({
-            appId: appId,
-            appName: appName,
-            width: editedApp.width,
-            height: editedApp.height,
-            appStr: appStr,
-            cssStr: editedApp.getCssRulesString(),
-            promoIframe: editorLoader.getIframe('id-product_iframe_cnt'),
-            baseProductUrl: config.products[appName].baseProductUrl,
-            callback: showEmbedDialog,
-            fbAppId: editedApp.fbAppId, // og tag
-            ogTitle: appTitle, // og tag
-            ogDescription: appDescription, // og tag
-            ogUrl: anonymUrl, // og url
-            ogImage: (editedApp._shareEntities && (editedApp._shareEntities.length > 0) && editedApp._shareEntities[0].imgUrl) ? editedApp._shareEntities[0].imgUrl: editedApp.shareDefaultImgUrl, // og tag
-            shareEntities: editedApp._shareEntities,
-            shareLink: editedApp.shareLink,
-            projectBackgroundImageUrl: editedApp.getProperty('appConstructor=mutapp projectPageBackgroundImageUrl').getValue(),
-            tariffIsBasic: Auth.isTariff('basic'),
-            callback: function(publishResult) {
-                // после каждой публикации автоматически сохраняем шаблон
-                saveTemplate({
-                    callback: function() {
-                        showEmbedDialog(publishResult);
+                // накрутить версию проекта при новой сборке, поможет сбросу кеша шаринга
+                bumpAppVersion();
+
+                var appStr = editedApp.serialize();
+                activePublisher.publish({
+                    appId: appId,
+                    appName: appName,
+                    width: editedApp.width,
+                    height: editedApp.height,
+                    appStr: appStr,
+                    cssStr: editedApp.getCssRulesString(),
+                    promoIframe: editorLoader.getIframe('id-product_iframe_cnt'),
+                    baseProductUrl: config.products[appName].baseProductUrl,
+                    callback: showEmbedDialog,
+                    fbAppId: editedApp.fbAppId, // og tag
+                    ogTitle: appTitle, // og tag
+                    ogDescription: appDescription, // og tag
+                    ogUrl: anonymUrl, // og url
+                    ogImage: (editedApp._shareEntities && (editedApp._shareEntities.length > 0) && editedApp._shareEntities[0].imgUrl) ? editedApp._shareEntities[0].imgUrl: editedApp.shareDefaultImgUrl, // og tag
+                    shareEntities: editedApp._shareEntities,
+                    shareLink: editedApp.shareLink,
+                    projectBackgroundImageUrl: editedApp.getProperty('appConstructor=mutapp projectPageBackgroundImageUrl').getValue(),
+                    tariffIsBasic: Auth.isTariff('basic'),
+                    callback: function(publishResult) {
+                        // после каждой публикации автоматически сохраняем шаблон
+                        saveTemplate({
+                            callback: function() {
+                                showEmbedDialog(publishResult);
+                            }
+                        });
                     }
                 });
-            }
+
+            }).bind(this)
         });
     }
 
@@ -822,60 +836,6 @@ var Editor = {};
             return url;
         }
         return null;
-    }
-
-    /**
-     * Создать картинки для публикации для ВСЕХ результатов если они: null или автоматически сгенерены (то есть пересоздать).
-     * А если картинка кастомная то не трогаем
-     * Вызывается при публикации проекта и при автотестах
-     *
-     * Забираем view и приложения, конвертируем в картинки и аплоадим
-     * Затем обратно полученные урлы ставим в приложение
-     *
-     * @param {function} previewsReadyCallback
-     * @param {boolean} options.upload - если true, то на самом деле не отправлять картинки на сервер
-     */
-    var preparedShareEntities = [];
-    function createPreviewsForShare(previewsReadyCallback, options) {
-        options = options || {};
-        if (options.hasOwnProperty('upload')===false) {
-            options.upload = true;
-        }
-
-        preparedShareEntities = [];
-
-        if (Auth.getUser() !== null) {
-
-            if (editedApp._shareEntities && editedApp._shareEntities.length > 0) {
-                // генерация канвасов заново и аплоад их с получением урла
-                shareImageService.generateAndUploadSharingImages((function(){
-                    // перед публикацией переустановка всех урлов картинок для шаринга
-                    for (var i = 0; i < app._shareEntities.length; i++) {
-                        var url = shareImageService.findImageInfo(editedApp._shareEntities[i].id).imgUrl;
-                        var ps = config.common.shareImagesAppPropertyString.replace('{{id}}',i);
-                        var p = editedApp.getProperty(ps);
-                        if (p) {
-                            p.setValue(url);
-                        }
-                        else {
-                            throw new Error('Editor.preparedShareEntities: property not found \''+ps+'\'');
-                        }
-                    }
-
-                    // далее может начать работать publisher
-                    previewsReadyCallback('ok');
-
-                }).bind(this));
-            }
-            else {
-                // не из чего делать предпросмотр
-                previewsReadyCallback('ok');
-            }
-
-        }
-        else {
-            Modal.showSignin();
-        }
     }
 
     /**
@@ -1584,7 +1544,7 @@ var Editor = {};
     global.showScreen = showScreen;
     global.getAppContainerSize = function() { return appContainerSize; };
     global.getSlideGroupControls = function() { return slideGroupControls; };
-    global.createPreviewsForShare = createPreviewsForShare;
+    //global.createPreviewsForShare = createPreviewsForShare;
     global.testPreviewsForShare = testPreviewsForShare;
     global.hideWorkspaceHints = hideWorkspaceHints;
     global.getResourceManager = function() { return resourceManager; }

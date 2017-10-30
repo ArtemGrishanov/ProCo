@@ -10,23 +10,13 @@ var shareImageService = {};
 
 (function(global) {
 
-    var CANVASES_CACHE_TIME = 5000;
-    var delay = 500;
-    var serviceTimerId = setInterval(_doInterval, delay);
     /**
-     * Таски на картинок
-     * Содержит действие которое надо сделать и колбек
-     *
+     * Вспомогательная информация
+     * Почти то же самое, что и app._shareEntities но в канвасом
      * @type {Array}
+     * @private
      */
-    var _requestImageTasks = [
-        // {
-        // task: 'canvas' | 'imgUrl'
-        // callback: {function}
-        // }
-    ];
-
-    var _generatedImages = [
+    var _entitiesInfo = [
         //{
         // entityId
         // imgUrl
@@ -34,7 +24,12 @@ var shareImageService = {};
         // entityIndex
         // }
     ];
-    var _activeTask = null;
+    /**
+     * Колбек вовне при завершении операции
+     *
+     * @type {null}
+     */
+    var callback = null;
 
     /**
      * Запросить картинки для шаринга.
@@ -44,25 +39,81 @@ var shareImageService = {};
      * @param {MutApp} param.app
      */
     function generateAndUploadSharingImages(param) {
-        // удалить всё что сейчас запущено с такими типами
-        //Queue.clearTasks({type:'create_preview'});
-        //TODO воспроизвел случай как-то, что публикация висит вечно, так как _activeTask никогда не завершается
-        //_activeTask = null;
-
         param = param || {};
         if (!param.app) {
-            throw new Error('ShareImageService.requestImageUrls: app not specified.');
+            throw new Error('ShareImageService.generateAndUploadSharingImages: app not specified.');
         }
-        _requestImageTasks.push({
-            app: param.app,
-            task: 'canvas',
-            callback: null
+        callback = param.callback;
+
+        // удалить всё что сейчас запущено с такими типами
+        //        queue.clearTasks({
+        //            type:'create_preview'
+        //        });
+
+        // инициализировать информацию об ентити, взять из приложения
+        _initEntitiesInfo({
+            app: param.app
         });
-        _requestImageTasks.push({
-            app: param.app,
-            task: 'upload',
-            callback: callback
-        });
+
+        if (needToGenerateAutoImage({app:param.app}) === true) {
+            previewService.createInIframe({
+                html: param.app.getAutoPreviewHtml(),
+                stylesToEmbed: [config.products.common.styles, config.products[param.app.type].stylesForEmbed],
+                width: param.app.width,
+                height: param.app.height,
+                callback: function(canvas) {
+                    log('ShareImageService.generateAndUploadSharingImages: app autopreview created');
+                    // сгенерировали один канвас на основе app.getAutoPreviewHtml()
+                    // смотрим где не заданы клиентские картинки - ставим этот канвас
+                    for (var i = 0; i < _entitiesInfo.length; i++) {
+                        var e = _entitiesInfo[i];
+                        if (isCustomUrl(e.imgUrl) === false) {
+                            e.canvas = canvas;
+                        }
+                    }
+                    var autoShareImgUrl = Auth.getUser().id+'/'+Editor.getAppId()+'/'+config.common.shareFileNamePrefix+'_auto.jpg';
+                    s3util.uploadCanvas(App.getAWSBucketForPublishedProjects(), function(result) {
+                        if (result === 'ok') {
+                            var fullImageUrl = 'http:'+config.common.publishedProjectsHostName+autoShareImgUrl;
+                            log('ShareImageService.generateAndUploadSharingImages: canvas uploaded ' + fullImageUrl);
+                            // дописать в хранилище картинок картинку для публикации
+                            for (var i = 0; i < _entitiesInfo.length; i++) {
+                                var e = _entitiesInfo[i];
+                                if (isCustomUrl(e.imgUrl) === false) {
+                                    e.imgUrl = fullImageUrl;
+                                }
+                            }
+
+                            // теперь установка урлов в само приложение
+                            for (var i = 0; i < param.app._shareEntities.length; i++) {
+                                var url = getEntityInfo(param.app._shareEntities[i].id).imgUrl;
+                                var ps = config.common.shareImagesAppPropertyString.replace('{{id}}',i);
+                                var p = param.app.getProperty(ps);
+                                if (p) {
+                                    p.setValue(url);
+                                }
+                                else {
+                                    console.error('ShareImageService.generateAndUploadSharingImages: property not found \''+ps+'\'');
+                                }
+                            }
+                        }
+
+                        // Окончание работы функции
+                        if (callback) {
+                            callback();
+                        }
+
+                    }, autoShareImgUrl, canvas);
+                }
+            });
+        }
+        else {
+            // не надо генерировать ни одной автокартинки, а значит все картинки заданы пользователем.
+            // сразу можно вызвать колбек
+            if (callback) {
+                callback();
+            }
+        }
     }
 
     /**
@@ -71,46 +122,18 @@ var shareImageService = {};
      * @param {function} param.callback
      * @param {MutApp} param.app
      */
-    function requestCanvases(param) {
-        // удалить всё что сейчас запущено с такими типами
-        //Queue.clearTasks({type:'create_preview'});
-        param = param || {};
-        if (!param.app) {
-            throw new Error('ShareImageService.requestCanvases: app not specified.');
-        }
-        _requestImageTasks.push({
-            task: 'canvas',
-            callback: callback
-        });
-    }
-
-    /**
-     *
-     * @private
-     */
-    function _doInterval() {
-        if (_activeTask === null && _requestImageTasks.length > 0) {
-            // кому-то потребовались картинки для публикации
-            // если картинок нет - запустить генерацию
-            _activeTask = _requestImageTasks.shift();
-            if (_activeTask.task === 'canvas') {
-                _generateCanvases({
-                    app: _activeTask.app
-                });
-            }
-            else if (_activeTask.task === 'upload') {
-                _generateImageUrls({
-                    app: _activeTask.app
-                });
-            }
-            else {
-                _activeTask = null;
-            }
-        }
-        if (_activeTask === null) {
-            _clearObsoleteCanvases();
-        }
-    }
+//    function requestCanvases(param) {
+//        // удалить всё что сейчас запущено с такими типами
+//        //Queue.clearTasks({type:'create_preview'});
+//        param = param || {};
+//        if (!param.app) {
+//            throw new Error('ShareImageService.requestCanvases: app not specified.');
+//        }
+//        _requestImageTasks.push({
+//            task: 'canvas',
+//            callback: callback
+//        });
+//    }
 
     /**
      * Надо ли генерировать превью для этого ентити или нет
@@ -140,181 +163,73 @@ var shareImageService = {};
     }
 
     /**
-     * Найти информацию о картинке
+     * Заполнить вспомогательную информацию об ентити из приложения
      *
-     * @param entityId
+     * @param {MutApp} param.app
+     * @private
+     */
+    function _initEntitiesInfo(param) {
+        param = param || {};
+        if (!param.app) {
+            throw new Error('ShareImageService._initEntitiesInfo: app not specified.');
+        }
+        _entitiesInfo = [];
+        var entities = param.app._shareEntities;
+        for (var i = 0; i < entities.length; i++) {
+            var e = entities[i];
+            _entitiesInfo.push({
+                entityId: e.id,
+                entityIndex: i,
+                imgUrl: e.imgUrl,
+                canvas: null
+            });
+        }
+    }
+
+    /**
+     * Найти информацию об entity для публикации
+     *
+     * @param {string} entityId - идентификатор entity
      * @returns {*}
      */
-    function findImageInfo(entityId) {
-        if (_generatedImages.length === 0) {
-            var app = Editor.getEditedApp();
-            var entities = app._shareEntities;
-            for (var i = 0; i < entities.length; i++) {
-                var e = entities[i];
-
-                _generatedImages.push({
-                    entityId: e.id,
-                    entityIndex: i,
-                    imgUrl: e.imgUrl,
-                    canvas: null
-                });
-            }
-        }
-        for (var i = 0; i < _generatedImages.length; i++) {
-            if (_generatedImages[i].entityId === entityId) {
-                return _generatedImages[i];
+    function getEntityInfo(entityId) {
+        for (var i = 0; i < _entitiesInfo.length; i++) {
+            if (_entitiesInfo[i].entityId === entityId) {
+                return _entitiesInfo[i];
             }
         }
         return null;
     }
 
     /**
-     *
-     * @private
-     */
-    function _clearObsoleteCanvases() {
-        var now = new Date().getTime();
-        for (var i = 0; i < _generatedImages.length; i++) {
-            if (_generatedImages[i].canvasTimestamp && (now-_generatedImages[i].canvasTimestamp) > CANVASES_CACHE_TIME) {
-                _generatedImages[i].canvas = null;
-            }
-        }
-    }
-
-    /**
-     * Пройти по всем app._shareEntities и если картинка НЕ установлена пользователем, то сгенерировать ее
-     * из MutApp.getAutoPreviewHtml()
-     *
+     * Проверить что надо генерировать автокартинку приложения.
+     * То есть не для всех ентити пользователь установил свои кастомные картинки
      *
      * @param {MutApp} param.app
-     * @private
+     * @return {boolean}
      */
-    function _generateCanvases(param) {
+    function needToGenerateAutoImage(param) {
         param = param || {};
         if (!param.app) {
-            throw new Error('ShareImageService.generateCanvas: app not specified.');
+            throw new Error('ShareImageService.needToGenerateAutoImage: app not specified.');
         }
-        // если хотя бы у одного из _shareEntities не установлена пользовательская картинка,
-        // то надо сгенерировать один на всех канвас MutApp.getAutoPreviewHtml()
-        var needToGenerateAutoImage = false;
-        _generatedImages = [];
-        var entities = param.app._shareEntities;
-        _activeTask.imagesCount = entities.length;
-
+        var entities = param.app._shareEntities || []; // _shareEntities может не быть вовсе в приложении
         for (var i = 0; i < entities.length; i++) {
-            var e = entities[i];
-
-            _generatedImages.push({
-                entityId: e.id,
-                entityIndex: i,
-                imgUrl: e.imgUrl,
-                canvas: null
-            });
-
             // проверим, надо ли генерировать картинки для шаринга для каждого entity
             // если пользователь задает картинки сам, то не надо генерировать ничего
+            var e = entities[i];
             if (isCustomUrl(e.imgUrl) === false) {
-                needToGenerateAutoImage = true;
-//                (function(entityId, entityIndex, entityView){
-//
-//                    // создать замыкание для сохранения значений entityId
-//                    previewService.createInIframe(entityView, function(canvas) {
-//                        log('createPreviewsForShare: preview created '+entityId);
-//                        var info = findImageInfo(entityId);
-//                        info.canvas = canvas;
-//                        info.canvasTimestamp = new Date().getTime();
-//                        _imageLoadedInActiveTask();
-//                    }, null, [config.products.common.styles, config.products[app.type].stylesForEmbed], Editor.getAppContainerSize().width, Editor.getAppContainerSize().height);
-//
-//                })(e.id, i, e.view);
-            }
-//            else {
-//                // не надо генерировал превью, пользователь установил превью сам
-//                log('createPreviewsForShare: dont need generate preview for '+ e.id);
-//                _imageLoadedInActiveTask();
-//            }
-        }
-
-        if (needToGenerateAutoImage === true) {
-            previewService.createInIframe({
-                html: param.app.getAutoPreviewHtml(),
-                stylesToEmbed: [config.products.common.styles, config.products[app.type].stylesForEmbed],
-                width: param.app.width,
-                height: param.app.height,
-                callback: function(canvas) {
-                    log('createPreviewsForShare: app autopreview created');
-                    // сгенерировали один канвас на основе app.getAutoPreviewHtml()
-                    // снова смотрим где не заданы клиентские картинки - ставим этот канвас
-                    for (var i = 0; i < entities.length; i++) {
-                        var e = entities[i];
-                        if (isCustomUrl(e.imgUrl) === false) {
-                            var info = findImageInfo(e.id);
-                            info.canvas = canvas;
-                            info.canvasTimestamp = new Date().getTime();
-                        }
-                        _imageLoadedInActiveTask();
-                    }
-                }
-            });
-        }
-        else {
-            log('createPreviewsForShare: dont need generate autopreview at all');
-            _activeTask.imagesCount = 0;
-            _imageLoadedInActiveTask();
-        }
-
-    }
-
-    /**
-     * Зааплоадить все сгенерированные канвасы для паблишинга
-     * по последней логике это только максимум 1 канвас app.getAutoPreviewHtml()
-     *
-     * @private
-     */
-    function _generateImageUrls() {
-        _activeTask.imagesCount = _generatedImages.length;
-
-        for (var i = 0; i < _generatedImages.length; i++) {
-            if (_generatedImages[i].canvas && isCustomUrl(_generatedImages[i].imgUrl) === false) {
-                // канваса может не быть если пользователь сам установил картинку
-                (function(entityId, entityIndex){
-
-                    var url = App.getUserData().id+'/'+Editor.getAppId()+'/'+config.common.shareFileNamePrefix+'_'+_generatedImages[i].entityId+'.jpg';
-                    s3util.uploadCanvas(App.getAWSBucketForPublishedProjects(), function(result) {
-                        if (result === 'ok') {
-                            var fullImageUrl = 'http:'+config.common.publishedProjectsHostName+url;
-                            log('createPreviewsForShare: canvas uploaded '+entityId+' '+fullImageUrl);
-                            // дописать в хранилище картинок картинку для публикации
-                            findImageInfo(entityId).imgUrl = fullImageUrl;
-                        }
-                        _imageLoadedInActiveTask();
-                    }, url, _generatedImages[i].canvas);
-
-                })(_generatedImages[i].entityId, _generatedImages[i].entityIndex);
-            }
-            else {
-                _imageLoadedInActiveTask()
+                return true;
             }
         }
-    }
-
-    /**
-     * Обработка события о загрузке одного изображения в активной задаче (_activeTask)
-     * @private
-     */
-    function _imageLoadedInActiveTask() {
-        _activeTask.imagesCount--;
-        if (_activeTask.imagesCount <= 0) {
-            // закрыть таск вызвав колбек
-            if (_activeTask.callback) _activeTask.callback();
-            _activeTask = null;
-        }
+        return false
     }
 
     global.generateAndUploadSharingImages = generateAndUploadSharingImages;
-    global.requestCanvases = requestCanvases;
+    // global.requestCanvases = requestCanvases;
     global.isCustomUrl = isCustomUrl;
-    global.getGeneratedImages = function() { return _generatedImages; }
-    global.findImageInfo = findImageInfo;
+    global.getGeneratedImages = function() { return _entitiesInfo; }
+    global.getEntityInfo = getEntityInfo;
+    global.needToGenerateAutoImage = needToGenerateAutoImage;
 
 })(shareImageService);

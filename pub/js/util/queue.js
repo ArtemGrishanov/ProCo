@@ -235,6 +235,15 @@ function __init_queue(global) {
             }
         }
     };
+
+    /**
+     * Вернуть количество тасков
+     *
+     * @returns {Number}
+     */
+    global.getTasksCount = function() {
+        return tasks.length;
+    }
 }
 // автоматический инит главного инстанса Queue
 // с ним работает редактор и все основные сервисы
