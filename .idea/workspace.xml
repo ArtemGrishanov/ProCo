@@ -23,10 +23,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="config.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="214" column="99" selection-start="8218" selection-end="8218" vertical-scroll-proportion="0.061797753" vertical-offset="3166" max-vertical-offset="13935">
+            <state line="59" column="19" selection-start="2379" selection-end="2379" vertical-scroll-proportion="0.0" vertical-offset="586" max-vertical-offset="13935">
               <folding />
             </state>
           </provider>
@@ -35,7 +35,7 @@
       <file leaf-file-name="editor.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1460" column="50" selection-start="63053" selection-end="63069" vertical-scroll-proportion="-9.16" vertical-offset="21671" max-vertical-offset="27735">
+            <state line="1460" column="50" selection-start="63053" selection-end="63069" vertical-scroll-proportion="0.0" vertical-offset="21671" max-vertical-offset="27735">
               <folding />
             </state>
           </provider>
@@ -44,16 +44,16 @@
       <file leaf-file-name="ChooseImage.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/controls/ChooseImage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="70" column="37" selection-start="2608" selection-end="2608" vertical-scroll-proportion="-2.8" vertical-offset="980" max-vertical-offset="1680">
+            <state line="70" column="37" selection-start="2608" selection-end="2608" vertical-scroll-proportion="0.0" vertical-offset="980" max-vertical-offset="1680">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="shareImagesService.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="shareImagesService.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pub/js/util/shareImagesService.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="49" column="8" selection-start="1297" selection-end="1297" vertical-scroll-proportion="-4.96" vertical-offset="611" max-vertical-offset="4110">
+            <state line="194" column="51" selection-start="5679" selection-end="5701" vertical-scroll-proportion="0.3988355" vertical-offset="2636" max-vertical-offset="4110">
               <folding />
             </state>
           </provider>
@@ -62,7 +62,7 @@
       <file leaf-file-name="tstx_cmn_products.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/products/common/css/tstx_cmn_products.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="16" selection-start="572" selection-end="572" vertical-scroll-proportion="-12.4" vertical-offset="50" max-vertical-offset="750">
+            <state line="24" column="16" selection-start="572" selection-end="572" vertical-scroll-proportion="0.0" vertical-offset="50" max-vertical-offset="750">
               <folding />
             </state>
           </provider>
@@ -71,7 +71,7 @@
       <file leaf-file-name="queue.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/util/queue.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="220" column="7" selection-start="8299" selection-end="8299" vertical-scroll-proportion="-11.88" vertical-offset="3003" max-vertical-offset="3690">
+            <state line="220" column="7" selection-start="8299" selection-end="8299" vertical-scroll-proportion="0.0" vertical-offset="3003" max-vertical-offset="3690">
               <folding />
             </state>
           </provider>
@@ -80,7 +80,7 @@
       <file leaf-file-name="publisher.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/util/publisher.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="230" column="7" selection-start="8300" selection-end="8300" vertical-scroll-proportion="-13.36" vertical-offset="3116" max-vertical-offset="8670">
+            <state line="230" column="7" selection-start="8300" selection-end="8300" vertical-scroll-proportion="0.0" vertical-offset="3116" max-vertical-offset="8670">
               <folding />
             </state>
           </provider>
@@ -89,10 +89,8 @@
       <file leaf-file-name="editor.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/editor.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="112" column="39" selection-start="7131" selection-end="7131" vertical-scroll-proportion="-5.5416665" vertical-offset="1547" max-vertical-offset="6225">
-              <folding>
-                <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
+            <state line="112" column="39" selection-start="7131" selection-end="7131" vertical-scroll-proportion="0.0" vertical-offset="1547" max-vertical-offset="6225">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -157,6 +155,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -263,19 +262,18 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="options.lastSelected" value="web-ide.project.structure" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="web-ide.project.structure" />
     <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PublishConfig">
     <servers>
@@ -310,6 +308,14 @@
       <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
       <method />
     </configuration>
+    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
+      <option name="VMOptions" />
+      <option name="arguments" />
+      <option name="filePath" />
+      <option name="scope" value="ALL" />
+      <option name="testName" />
+      <method />
+    </configuration>
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -318,14 +324,6 @@
       <option name="saveOutputToFile" value="false" />
       <option name="showConsoleOnStdErr" value="false" />
       <option name="showConsoleOnStdOut" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
-      <option name="VMOptions" />
-      <option name="arguments" />
-      <option name="filePath" />
-      <option name="scope" value="ALL" />
-      <option name="testName" />
       <method />
     </configuration>
     <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
@@ -383,7 +381,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18723099" sideWeight="0.8552457" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19010043" sideWeight="0.8552457" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20549928" sideWeight="0.4555113" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32802126" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -430,7 +428,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/util/publisher.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="230" column="7" selection-start="8300" selection-end="8300" vertical-scroll-proportion="-13.36" vertical-offset="3116" max-vertical-offset="8670">
+        <state line="230" column="7" selection-start="8300" selection-end="8300" vertical-scroll-proportion="0.0" vertical-offset="3116" max-vertical-offset="8670">
           <folding />
         </state>
       </provider>
@@ -447,25 +445,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/editor.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="112" column="39" selection-start="7131" selection-end="7131" vertical-scroll-proportion="-5.5416665" vertical-offset="1547" max-vertical-offset="6225">
-          <folding>
-            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+        <state line="112" column="39" selection-start="7131" selection-end="7131" vertical-scroll-proportion="0.0" vertical-offset="1547" max-vertical-offset="6225">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/test_new/descriptor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="293" column="5" selection-start="10717" selection-end="10967" vertical-scroll-proportion="-11.84" vertical-offset="4099" max-vertical-offset="14595">
-          <folding />
-        </state>
+        <state line="293" column="5" selection-start="10717" selection-end="10967" vertical-scroll-proportion="-11.84" vertical-offset="4099" max-vertical-offset="14595" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/memoriz/descriptor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="238" column="5" selection-start="8804" selection-end="8804" vertical-scroll-proportion="0.58780843" vertical-offset="3165" max-vertical-offset="9135">
-          <folding />
-        </state>
+        <state line="238" column="5" selection-start="8804" selection-end="8804" vertical-scroll-proportion="0.58780843" vertical-offset="3165" max-vertical-offset="9135" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/css/common.css">
@@ -484,49 +476,47 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/util/queue.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="220" column="7" selection-start="8299" selection-end="8299" vertical-scroll-proportion="-11.88" vertical-offset="3003" max-vertical-offset="3690">
+        <state line="220" column="7" selection-start="8299" selection-end="8299" vertical-scroll-proportion="0.0" vertical-offset="3003" max-vertical-offset="3690">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/util/previewService.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="33" selection-start="2391" selection-end="2391" vertical-scroll-proportion="0.12551723" vertical-offset="869" max-vertical-offset="1755">
-          <folding />
-        </state>
+        <state line="64" column="33" selection-start="2391" selection-end="2391" vertical-scroll-proportion="0.12551723" vertical-offset="869" max-vertical-offset="1755" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/controls/ChooseImage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="37" selection-start="2608" selection-end="2608" vertical-scroll-proportion="-2.8" vertical-offset="980" max-vertical-offset="1680">
+        <state line="70" column="37" selection-start="2608" selection-end="2608" vertical-scroll-proportion="0.0" vertical-offset="980" max-vertical-offset="1680">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1460" column="50" selection-start="63053" selection-end="63069" vertical-scroll-proportion="-9.16" vertical-offset="21671" max-vertical-offset="27735">
+        <state line="1460" column="50" selection-start="63053" selection-end="63069" vertical-scroll-proportion="0.0" vertical-offset="21671" max-vertical-offset="27735">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/common/css/tstx_cmn_products.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="16" selection-start="572" selection-end="572" vertical-scroll-proportion="-12.4" vertical-offset="50" max-vertical-offset="750">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/util/shareImagesService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="8" selection-start="1297" selection-end="1297" vertical-scroll-proportion="-4.96" vertical-offset="611" max-vertical-offset="4110">
+        <state line="24" column="16" selection-start="572" selection-end="572" vertical-scroll-proportion="0.0" vertical-offset="50" max-vertical-offset="750">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/config.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="214" column="99" selection-start="8218" selection-end="8218" vertical-scroll-proportion="0.061797753" vertical-offset="3166" max-vertical-offset="13935">
+        <state line="59" column="19" selection-start="2379" selection-end="2379" vertical-scroll-proportion="0.0" vertical-offset="586" max-vertical-offset="13935">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/util/shareImagesService.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="194" column="51" selection-start="5679" selection-end="5701" vertical-scroll-proportion="0.3988355" vertical-offset="2636" max-vertical-offset="4110">
           <folding />
         </state>
       </provider>
