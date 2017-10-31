@@ -460,7 +460,9 @@ var PersonalityApp = MutApp.extend({
         var resultsValue = this.model.get('results').toArray();
         var rs = null;
         var id = null;
+        var resDictId = null;
         for (var i = 0; i < resultsValue.length; i++) {
+            resDictId = this.model.get('results').getIdFromPosition(i);
             id = 'resultScreen'+i;
             rs = new ResultScreen({
                 id: id,
@@ -471,17 +473,7 @@ var PersonalityApp = MutApp.extend({
             this.addScreen(rs);
             this.hideScreen(rs);
             this.resultsScreens.push(rs);
-
-            // создать сущности для публикации
-            // в тесте это количество результатов
-            sEntities.push({
-                id: id,
-                title: resultsValue[i].title.getValue(),
-                description: resultsValue[i].description.getValue(),
-                imgUrl: null // устанавливается в редакторе
-            });
         }
-        this.setShareEntities(sEntities);
     },
 
     start: function() {
@@ -506,8 +498,11 @@ var PersonalityApp = MutApp.extend({
                 if (MutApp.Util.matchPropertyString(data.propertyString, 'id=pm quiz.{{id}}.answer.options') === true ||
                     data.propertyString === 'id=pm quiz' ||
                     data.propertyString === 'id=pm results') {
-                    // при изменении любых свойств которые влияют на привязки нужно делсть апдейт
+                    // при изменении любых свойств которые влияют на привязки нужно делать апдейт
                     if (this.model) this.model.updateResultLinking();
+                }
+                if (data.propertyString === 'id=pm results') {
+                    if (this.model) this.model.updateShareEntities();
                 }
                 break;
             }

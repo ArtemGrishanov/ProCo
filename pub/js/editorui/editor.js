@@ -639,8 +639,8 @@ var Editor = {};
         // сначала создать превью-картинки для шаринга, записать ссылки на них в приложение
         // и уже потом выкатывать приложение
         shareImageService.generateAndUploadSharingImages({
-            // внутри сервис shareImageService получает _shareEntities из приложения editedApp
-            // если надо создает canvas и аплоадит его на s3, затем устанавливает imgUrl's внутри _shareEntities
+            // внутри сервис shareImageService получает shareEntities из приложения editedApp
+            // если надо создает canvas и аплоадит его на s3, затем устанавливает imgUrl's внутри shareEntities
             app: editedApp,
             callback: (function() {
 
@@ -661,6 +661,10 @@ var Editor = {};
                 // накрутить версию проекта при новой сборке, поможет сбросу кеша шаринга
                 bumpAppVersion();
 
+                // для анонимной страницы anonymPage/index.html (не для шаринговой страницы share_result)
+                var shareEntArr = editedApp.shareEntities.toArray();
+                var ogImage = (shareEntArr && shareEntArr.length > 0 && shareEntArr[0].imgUrl) ? shareEntArr[0].imgUrl: editedApp.shareDefaultImgUrl;
+
                 var appStr = editedApp.serialize();
                 activePublisher.publish({
                     appId: appId,
@@ -676,9 +680,9 @@ var Editor = {};
                     ogTitle: appTitle, // og tag
                     ogDescription: appDescription, // og tag
                     ogUrl: anonymUrl, // og url
-                    ogImage: (editedApp._shareEntities && (editedApp._shareEntities.length > 0) && editedApp._shareEntities[0].imgUrl) ? editedApp._shareEntities[0].imgUrl: editedApp.shareDefaultImgUrl, // og tag
-                    shareEntities: editedApp._shareEntities,
-                    shareLink: editedApp.shareLink,
+                    ogImage: ogImage,
+                    shareEntities: editedApp.shareEntities.toArray(),
+                    shareLink: editedApp.shareLink.getValue(),
                     projectBackgroundImageUrl: editedApp.getProperty('appConstructor=mutapp projectPageBackgroundImageUrl').getValue(),
                     tariffIsBasic: Auth.isTariff('basic'),
                     callback: function(publishResult) {

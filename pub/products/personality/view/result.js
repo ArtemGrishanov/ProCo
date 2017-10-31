@@ -79,7 +79,7 @@ var ResultScreen = MutApp.Screen.extend({
         if (this.model.application.mode !== 'edit') {
             // ид экрана выступает также и в роли идентификатора для постинга
             // это определили при создании приложения в app.js
-            this.model.application.share(this.id);
+            this.model.application.share(this.resultId);
         }
     },
 
@@ -87,7 +87,7 @@ var ResultScreen = MutApp.Screen.extend({
         if (this.model.application.mode !== 'edit') {
             // ид экрана выступает также и в роли идентификатора для постинга
             // это определили при создании приложения в app.js
-            this.model.application.share(this.id, 'vk');
+            this.model.application.share(this.resultId, 'vk');
         }
     },
 

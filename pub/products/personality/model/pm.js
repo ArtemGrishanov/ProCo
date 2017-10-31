@@ -258,6 +258,43 @@ var PersonalityModel = MutApp.Model.extend({
     },
 
     /**
+     * Обновление сущностей для публикации
+     * В этой механике они зависят от результата теста
+     * Этот метод вызывается при любом изменении id=pm results
+     */
+    updateShareEntities: function() {
+        var shareEntitiesArr = this.application.shareEntities.toArray();
+        var idsToDelete = [];
+        // первый проход, удаление сущностей, для которых результата более не существует
+        for (var i = 0; i < shareEntitiesArr.length; i++) {
+            if (this.attributes.results.getPosition(shareEntitiesArr.id) >= 0) {
+                // результат такой есть, ентити актуальна
+                i++
+            }
+            else {
+                idsToDelete.push(shareEntitiesArr.id);
+            }
+        }
+        for (var i = 0; i < idsToDelete.length; i++) {
+            this.application.shareEntities.deleteElementById(idsToDelete[i]);
+        }
+
+        // теперь добавление новых ентити
+        var resultsArr = this.attributes.results.toArray();
+        for (var i = 0; i < resultsArr.length; i++) {
+            var resDictId = this.attributes.results.getIdFromPosition(i);
+            if (this.application.shareEntities.getPosition(resDictId) < 0) {
+                this.application.shareEntities.addElement({
+                    id: resultsArr[i].id, // именно этот id будет передаваться при шаринге app.share(id)
+                    title: resultsArr[i].title.getValue(),
+                    description: resultsArr[i].description.getValue(),
+                    imgUrl: null
+                }, null, resDictId);
+            }
+        }
+    },
+
+    /**
      *
      * Обновить структуру 'id=pm resultLinking'
      * 1) Удалить опции которых не существует более

@@ -176,7 +176,7 @@ var config = {
         /**
          * префикс для картинки шаринга
          */
-        shareFileNamePrefix: 'share_',
+        autoShareImageFileName: 'share_auto.jpg',
         /**
          * Автоматическая генерация превью проекта при его сохранении
          * Берется текущий экран и перегоняется в jpeg
@@ -213,7 +213,7 @@ var config = {
         /**
          * Редактор по этому идентификатору ищет свойство и записывает туда картинки для публикации
          */
-        shareImagesAppPropertyString: 'appConstructor=mutapp _shareEntities.{{id}}.imgUrl',
+        //shareImagesAppPropertyString: 'appConstructor=mutapp _shareEntities.{{id}}.imgUrl',
         /**
          * Шаблон для кода встраивания
          */

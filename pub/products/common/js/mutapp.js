@@ -94,17 +94,11 @@ var MutApp = function(param) {
      */
     this.shareLink = null;
     /**
-     * Массив сущностей для публикации
-     * Например, ид какого-то результата или достижения (которых в приложении может быть несколько)
+     *
+     * @type {MutAppPropertyDictionary}
+     * @private
      */
-    this._shareEntities = [
-        //        {
-        //            id: 'result1',
-        //            title: 'Название результата',
-        //            description: 'Описание результата',
-        //            imgUrl: string
-        //        }
-    ];
+    this.shareEntities = null;
     /**
      * Свойство MutAppProperty для установки кастомных css стилей приложения
      * @type {MutAppProperty}
@@ -119,7 +113,7 @@ var MutApp = function(param) {
     this.projectPageUrl = null;
     /**
      * Версия приложения, накручивается при каждой публикации
-     * @type {number}
+     * @type {MutAppProperty}
      */
     this.publishVersion = 0;
     /**
@@ -286,6 +280,11 @@ var MutApp = function(param) {
         propertyString: 'appConstructor=mutapp projectPageBackgroundImageUrl',
         value: ''
     });
+    this.shareEntities = new MutAppPropertyDictionary({
+        application: this,
+        propertyString: 'appConstructor=mutapp shareEntities',
+        value: []
+    });
 
     // инициализация апи для статистики, если задан идентификатор Google Analytics
     // при использовании другого или нескольких провайдеров надо будет рефакторить
@@ -299,10 +298,8 @@ var MutApp = function(param) {
     // подписка на postMessage
     window.addEventListener("message", this.receiveMessage.bind(this), false);
 
-    // включаем мониторинг состояния приложение
-//    setInterval((function(){
-//        this.onAppMonitorTimer();
-//    }).bind(this),200);
+    // инициализаци facebook-апи для шаринга
+    this.fbInit(this.fbAppId);
 };
 
 MutApp.EVENT_SCREEN_CREATED = 'mutapp_event_screen_created';
@@ -977,31 +974,26 @@ MutApp.prototype.getEntities = function(filterKey, filterValue) {
  * Будут инициализированы апи сервисов (соцсетей) для публикации
  * @param {Array} arr - ид елемента для публикации
  */
-MutApp.prototype.setShareEntities = function(arr) {
-    // к этому времени уже могут быть установлены движком часть свойств в конструкторе. Например сохраненные картинки _shareEntities.2.imgUrl
-    // id: id,
-    // title: r.title,
-    // description: descForShare,
-    // удалить элементы, оставить только те которые в whitelist
-    // view: MutApp.Util.clarifyElement(rs.$el, ['modal','modal_cnt','info_title','info_tx','b_title']),
-    // imgUrl: null
-    var result = [];
-    for (var i = 0; i < arr.length; i++) {
-        var e = arr[i];
-        if (this._shareEntities[i]) {
-            for (var key in this._shareEntities[i]) {
-                if (this._shareEntities[i].hasOwnProperty(key) === true) {
-                    // свойства this._shareEntities более приоритетны, так как они могуть прийти из defaults при запуске приложения
-                    // например _shareEntities.{{number}}.imgUrl
-                    e[key] = this._shareEntities[i][key];
-                }
-            }
-        }
-        result.push(e);
-    }
-    this._shareEntities = result;
-    this.fbInit(this.fbAppId);
-};
+//MutApp.prototype.setShareEntities = function(arr) {
+//    // id: id,
+//    // title: r.title,
+//    // description: descForShare,
+//    var result = [];
+//    for (var i = 0; i < arr.length; i++) {
+//        var e = arr[i];
+//        if (this._shareEntities[i]) {
+//            for (var key in this._shareEntities[i]) {
+//                if (this._shareEntities[i].hasOwnProperty(key) === true) {
+//                    // свойства this._shareEntities более приоритетны, так как они могуть прийти из defaults при запуске приложения
+//                    e[key] = this._shareEntities[i][key];
+//                }
+//            }
+//        }
+//        result.push(e);
+//    }
+//    this._shareEntities = result;
+//    this.fbInit(this.fbAppId);
+//};
 
 /**
  * Найти сущность для публикации с заданным ид
@@ -1009,9 +1001,10 @@ MutApp.prototype.setShareEntities = function(arr) {
  * @return {object}
  */
 MutApp.prototype.findShareEntity = function(entityId) {
-    for (var i = 0; i < this._shareEntities.length; i++) {
-        if (this._shareEntities[i].id === entityId) {
-            return this._shareEntities[i];
+    var entsArr = this.shareEntities.toArray();
+    for (var i = 0; i < entsArr.length; i++) {
+        if (entsArr[i].id === entityId) {
+            return entsArr[i];
         }
     }
     return null;
@@ -1030,13 +1023,15 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
     serviceId = serviceId || 'fb';
     var ent = this.findShareEntity(entityId);
     if (ent) {
-        var imgUrl = ent.imgUrl;
-        if (!!imgUrl === false) {
-            // если по какой-то причине нет картинки. Хотя такая ситуация может быть только в новом проекте в режиме предпросмотра, наверное.
-            imgUrl = this.shareDefaultImgUrl;
-        }
-        // var name = ent.title.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
-        // var description = ent.description.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
+        // все атрибуты entity будут записаны в теги og, а не передаются вручную в апи (это deprecated метод)
+
+        //        var imgUrl = ent.imgUrl;
+        //        if (!!imgUrl === false) {
+        //            // если по какой-то причине нет картинки. Хотя такая ситуация может быть только в новом проекте в режиме предпросмотра, наверное.
+        //            imgUrl = this.shareDefaultImgUrl;
+        //        }
+        //        var name = ent.title.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
+        //        var description = ent.description.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
         var link = this.projectPageUrl.getValue() + 'share/' + entityId + '.html?v=' + this.publishVersion.getValue();
         if (serviceId === 'fb') {
             if (isFakeShare !== true) {
@@ -2613,6 +2608,9 @@ MutAppSchema.prototype.initialize = function(schema) {
         "appConstructor=mutapp publishVersion": {
             // скрытое свойство
         },
+        "appConstructor=mutapp shareEntities": {
+            // скрытое свойство MutApppropertyDictionary
+        },
         "appConstructor=mutapp shareLink": {
             label: {RU: 'Ссылка для поста в соц сети', EN: 'Post link in social network'},
             controls: 'StringControl',
@@ -3154,7 +3152,7 @@ MutAppPropertyDictionary.prototype.getPosition = function(dictionaryId) {
             return i;
         }
     }
-    return null;
+    return -1;
 };
 /**
  * Добавить новый элемент на позицию. По умолчанию в конец.

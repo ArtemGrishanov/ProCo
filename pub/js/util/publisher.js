@@ -133,7 +133,7 @@ var Publisher = {};
      * @params.cssStr {string} - css стили приложения, которые надо добавить в index.html
      * @params.promoIframe {iFrame} - iframe приложения прототипа, который меняем
      * @params.baseProductUrl {string} - базовый каталог спецпроекта для работы с ресурсами, например 'products/test'
-     * @params.shareEntities {Array} - информация из приложения MutApp._shareEntities о результатах для шаринга
+     * @params.shareEntities {Array} - информация из приложения MutApp.shareEntities о результатах для шаринга
      */
     function publish(params) {
         if (Auth.getUser() !== null) {

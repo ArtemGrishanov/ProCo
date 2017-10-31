@@ -12,7 +12,7 @@ var shareImageService = {};
 
     /**
      * Вспомогательная информация
-     * Почти то же самое, что и app._shareEntities но в канвасом
+     * Почти то же самое, что и app.shareEntities но в канвасом
      * @type {Array}
      * @private
      */
@@ -71,7 +71,7 @@ var shareImageService = {};
                             e.canvas = canvas;
                         }
                     }
-                    var autoShareImgUrl = Auth.getUser().id+'/'+Editor.getAppId()+'/'+config.common.shareFileNamePrefix+'_auto.jpg';
+                    var autoShareImgUrl = Auth.getUser().id+'/'+Editor.getAppId()+'/'+config.common.autoShareImageFileName;
                     s3util.uploadCanvas(App.getAWSBucketForPublishedProjects(), function(result) {
                         if (result === 'ok') {
                             var fullImageUrl = 'http:'+config.common.publishedProjectsHostName+autoShareImgUrl;
@@ -85,16 +85,11 @@ var shareImageService = {};
                             }
 
                             // теперь установка урлов в само приложение
-                            for (var i = 0; i < param.app._shareEntities.length; i++) {
-                                var url = getEntityInfo(param.app._shareEntities[i].id).imgUrl;
-                                var ps = config.common.shareImagesAppPropertyString.replace('{{id}}',i);
-                                var p = param.app.getProperty(ps);
-                                if (p) {
-                                    p.setValue(url);
-                                }
-                                else {
-                                    console.error('ShareImageService.generateAndUploadSharingImages: property not found \''+ps+'\'');
-                                }
+                            var shareEntArr = param.app.shareEntities.toArray();
+                            for (var i = 0; i < shareEntArr.length; i++) {
+                                // new url to set
+                                var url = getEntityInfo(shareEntArr[i].id).imgUrl;
+                                shareEntArr[i].imgUrl = url;
                             }
                         }
 
@@ -174,7 +169,7 @@ var shareImageService = {};
             throw new Error('ShareImageService._initEntitiesInfo: app not specified.');
         }
         _entitiesInfo = [];
-        var entities = param.app._shareEntities;
+        var entities = param.app.shareEntities.toArray();
         for (var i = 0; i < entities.length; i++) {
             var e = entities[i];
             _entitiesInfo.push({
@@ -213,7 +208,7 @@ var shareImageService = {};
         if (!param.app) {
             throw new Error('ShareImageService.needToGenerateAutoImage: app not specified.');
         }
-        var entities = param.app._shareEntities || []; // _shareEntities может не быть вовсе в приложении
+        var entities = param.app.shareEntities.toArray() || []; // app.shareEntities может не быть вовсе в приложении
         for (var i = 0; i < entities.length; i++) {
             // проверим, надо ли генерировать картинки для шаринга для каждого entity
             // если пользователь задает картинки сам, то не надо генерировать ничего
