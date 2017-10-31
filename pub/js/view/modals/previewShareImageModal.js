@@ -62,6 +62,14 @@ function PreviewShareImageModal(param) {
             //TODO оптимизация: можно не генерить каждый раз, а только запрашивать при каких-то условиях
             //TODO в маленьком контроле превью на правой панели надо будет повторять эту логику?
             // надо запросить создание канваса, картинка в режиме автогенерации
+            var app = Engine.getApp();
+            for (var i = 0; i < app._shareEntities.length; i++) {
+                if (this.entityId === app._shareEntities[i].id) {
+                    var ps = config.common.shareImagesAppPropertyString.replace('{{number}}',i);
+                    var ap = Engine.getAppProperty(ps);
+                    Engine.setValue(ap, null);
+                }
+            }
             this.$ui.find('.js-set_autogenerate').hide();
             shareImageService.requestCanvases((function() {
                 var info = shareImageService.findImageInfo(this.entityId);

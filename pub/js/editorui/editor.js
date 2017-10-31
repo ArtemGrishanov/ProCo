@@ -1294,9 +1294,9 @@ var Editor = {};
                     ogDescription: appDescription, // og tag
                     ogUrl: anonymUrl, // og url
                     //TODO refactor
-                    shareEntities: app._shareEntities,
+                    shareEntities: shareImageService.getGeneratedImages(),
                     shareLink: app.shareLink,
-                    ogImage: (app._shareEntities && (app._shareEntities.length > 0) && app._shareEntities[0].imgUrl) ? app._shareEntities[0].imgUrl: app.shareDefaultImgUrl, // og tag
+                    ogImage: (shareImageService.getGeneratedImages() && (shareImageService.getGeneratedImages().length > 0) && shareImageService.getGeneratedImages()[0].imgUrl) ? shareImageService.getGeneratedImages()[0].imgUrl: app.shareDefaultImgUrl, // og tag
                     productBackgroundImageUrl: Engine.getAppProperty('appConstructor=mutapp productPageBackgroundImage').propertyValue,
                     tariffIsBasic: isBasicTariff()
                 });
