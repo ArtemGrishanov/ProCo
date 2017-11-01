@@ -109,7 +109,9 @@ var editorLoader = {};
             var inf = _loadedInfo[pid];
             inf.app = inf.appIframe.contentWindow.app;
             if (inf.clbOnLoad) {
-                inf.clbOnLoad();
+                inf.clbOnLoad({
+                    containerId: pid
+                });
             }
         }
         else {

@@ -55,9 +55,9 @@ QUnit.test("Personality: game 1", function( assert ) {
     app.model.attributes.quiz.addElementByPrototype('id=pm quizProto1');
 
     var qId = app.model.attributes.quiz.getIdFromPosition(0);
-    app.model.attributes.quiz.toArray()[0].answer.options.addElementByPrototype('id=pm proto_optionText', -1, {questionId:qId});
+    app.model.attributes.quiz.toArray()[0].answer.options.addElementByPrototype('id=pm proto_optionText', -1, {questionDictionaryId:qId});
     var qId = app.model.attributes.quiz.getIdFromPosition(1);
-    app.model.attributes.quiz.toArray()[1].answer.options.addElementByPrototype('id=pm proto_optionText', -1, {questionId:qId});
+    app.model.attributes.quiz.toArray()[1].answer.options.addElementByPrototype('id=pm proto_optionText', -1, {questionDictionaryId:qId});
 
     assert.ok(app.model.attributes.resultLinking.toArray().length === 8); // всего 6 опций в приложении
 

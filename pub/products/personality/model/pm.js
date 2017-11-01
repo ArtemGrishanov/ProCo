@@ -267,12 +267,13 @@ var PersonalityModel = MutApp.Model.extend({
         var idsToDelete = [];
         // первый проход, удаление сущностей, для которых результата более не существует
         for (var i = 0; i < shareEntitiesArr.length; i++) {
-            if (this.attributes.results.getPosition(shareEntitiesArr.id) >= 0) {
+            var entDictId = this.application.shareEntities.getIdFromPosition(i);
+            if (this.attributes.results.getPosition(entDictId) >= 0) {
                 // результат такой есть, ентити актуальна
-                i++
+                i++;
             }
             else {
-                idsToDelete.push(shareEntitiesArr.id);
+                idsToDelete.push(entDictId);
             }
         }
         for (var i = 0; i < idsToDelete.length; i++) {
@@ -415,136 +416,6 @@ var PersonalityModel = MutApp.Model.extend({
         }
         return null;
     },
-
-    /**
-     * Задать сильную связь между опцией и результатом
-     *
-     * @param {string} optionId
-     * @param {string} resultId
-     */
-//    setStrongConnection: function(optionId, resultId) {
-//        var o = this.getOptionById(optionId);
-//        if (!o) {
-//            throw new Error('PersonalityModel.setStrongConnection: option \''+optionId+' does not exist');
-//        }
-//        var r = this.getResultById(resultId);
-//        if (!r) {
-//            throw new Error('PersonalityModel.setStrongConnection: option \''+optionId+' does not exist');
-//        }
-//        if (o.strongLink.indexOf(resultId) >= 0) {
-//            // уже привязано
-//        }
-//        else {
-//            // удалить слабую связь если она есть, одновременно сильная и слабая связь не могут существовать
-//            this.deleteWeakConnection(optionId, resultId);
-//            o.strongLink.push(resultId);
-//        }
-//    },
-
-    /**
-     * Проверить наличие сильной связи между опцией и результатом
-     *
-     * @param {string} optionId
-     * @param {string} resultId
-     * @returns {boolean}
-     */
-//    isStrongConnection: function(optionId, resultId) {
-//        var o = this.getOptionById(optionId);
-//        if (!o) {
-//            throw new Error('PersonalityModel.isStrongConnection: option \''+optionId+' does not exist');
-//        }
-//        var r = this.getResultById(resultId);
-//        if (!r) {
-//            throw new Error('PersonalityModel.isStrongConnection: option \''+optionId+' does not exist');
-//        }
-//        return o.strongLink.indexOf(resultId) >= 0;
-//    },
-
-    /**
-     * Удалить сильную связь между опцией и резальтатом
-     *
-     * @param {string} optionId
-     * @param {string} resultId
-     */
-//    deleteStrongConnection: function(optionId, resultId) {
-//        var o = this.getOptionById(optionId);
-//        if (!o) {
-//            throw new Error('PersonalityModel.deleteStrongConnection: option \''+optionId+' does not exist');
-//        }
-//        var r = this.getResultById(resultId);
-//        if (!r) {
-//            throw new Error('PersonalityModel.deleteStrongConnection: option \''+optionId+' does not exist');
-//        }
-//        var delIndex = o.strongLink.indexOf(resultId);
-//        if (delIndex >= 0) {
-//            o.strongLink.splice(delIndex, 1);
-//        }
-//    },
-
-    /**
-     * Задать слабую связь между опцией и результатом
-     *
-     * @param {string} optionId
-     * @param {string} resultId
-     */
-//    setWeakConnection: function(optionId, resultId) {
-//        var o = this.getOptionById(optionId);
-//        if (!o) {
-//            throw new Error('PersonalityModel.setWeakConnection: option \''+optionId+' does not exist');
-//        }
-//        var r = this.getResultById(resultId);
-//        if (!r) {
-//            throw new Error('PersonalityModel.setWeakConnection: option \''+optionId+' does not exist');
-//        }
-//        if (o.weakLink.indexOf(resultId) >= 0) {
-//            // уже привязано
-//        }
-//        else {
-//            // удалить сильную связь если она есть, одновременно сильная и слабая связь не могут существовать
-//            this.deleteStrongConnection(optionId, resultId);
-//            o.weakLink.push(resultId);
-//        }
-//    },
-
-    /**
-     * Проверить наличие слабой связи между опцией и результатом
-     *
-     * @param {string} optionId
-     * @param {string} resultId
-     * @returns {boolean}
-     */
-//    isWeakConnection: function(optionId, resultId) {
-//        var o = this.getOptionById(optionId);
-//        if (!o) {
-//            throw new Error('PersonalityModel.isWeakConnection: option \''+optionId+' does not exist');
-//        }
-//        var r = this.getResultById(resultId);
-//        if (!r) {
-//            throw new Error('PersonalityModel.isWeakConnection: option \''+optionId+' does not exist');
-//        }
-//        return o.weakLink.indexOf(resultId) >= 0;
-//    },
-
-    /**
-     * Удалить слабую связь между опцией и резальтатом
-     *
-     * @param {string} optionId
-     * @param {string} resultId
-     */
-//    deleteWeakConnection: function(optionId, resultId) {
-//        var o = this.getOptionById(optionId);
-//        if (!o) {
-//            throw new Error('PersonalityModel.deleteWeakConnection: option \''+optionId+' does not exist');
-//        }
-//        var r = this.getResultById(resultId);
-//        if (!r) {
-//            throw new Error('PersonalityModel.deleteWeakConnection: option \''+optionId+' does not exist');
-//        }
-//        var delIndex = o.weakLink.indexOf(resultId);
-//        if (delIndex >= 0) {
-//            o.weakLink.splice(delIndex, 1);
-//        }
-//    },
 
     /**
      * Сгенерировать идишки для вопроса и опций ответа
@@ -1177,6 +1048,15 @@ var PersonalityModel = MutApp.Model.extend({
                     foundResultIds.push(resultId);
                 }
             }
+        }
+
+        var resultsArr = this.attributes.results.toArray();
+        // проверка, что количество результатов и shareEntites совпадает (а выше в цикле проверяли наличие всех идишек)
+        assert.ok(this.application.shareEntities.toArray().length === resultsArr.length, 'shareEntities and results have the same length');
+        for (var i = 0; i < resultsArr.length; i++) {
+            // проверка что существует элемент shareEntity для такоо результата
+            var resDictId = this.attributes.results.getIdFromPosition(i);
+            assert.ok(this.application.shareEntities.getPosition(resDictId) >= 0, 'Share entity exists for result \''+resDictId+'\'');
         }
 
         // вероятность распределения ответов getResultProbabilities нормальная

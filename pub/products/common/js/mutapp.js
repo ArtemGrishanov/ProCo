@@ -1389,7 +1389,7 @@ MutApp.prototype.isOK = function(param) {
     for (var i = 0; i < this._models.length; i++) {
         var m = this._models[i];
         if (m.isOK) {
-            m.isOK.call(m);
+            m.isOK.call(m, assert);
         }
     }
 

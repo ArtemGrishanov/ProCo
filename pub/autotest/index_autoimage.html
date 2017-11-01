@@ -14,9 +14,14 @@
 
     <style>
         #id-previews canvas {
-            -ms-transform: scale(0.5, 0.5); /* IE 9 */
-            -webkit-transform: scale(0.5, 0.5); /* Safari */
-            transform: scale(0.5, 0.5);
+            /*-ms-transform: scale(0.5, 0.5); *//* IE 9 */
+            /*-webkit-transform: scale(0.5, 0.5); *//* Safari */
+            /*transform: scale(0.5, 0.5);*/
+            width: 360px;
+        }
+        .app_block {
+            border-bottom: 4px gray solid;
+            padding: 10px;
         }
     </style>
 </head>
@@ -28,9 +33,23 @@
         <!--Проект должен загружаться и тестироваться через iframe в своем контекста-->
     </div>
 
+    <div id="id-app_containers" style="position:absolute;left:-9999px;">
+        <!--сюда загружаются айфремы с приложениями-->
+    </div>
+
     <div id="id-previews">
         <!--Превьюшки шаблонов-->
     </div>
+
+    <script id="id-app_info" type="text/template">
+        <div class="app_block">
+            <p>{{appId}}</p>
+            <div>
+                <p class="label">Preview canvas:</p>
+                <div class="js-autoimage"></div>
+            </div>
+        </div>
+    </script>
 
     <div id="id-html_rasterization_cnt" class="proto_cnt __hidden">
         <iframe id="id-html_rasterization_iframe" src="../rasterization_cnt.html" style="">
@@ -59,6 +78,6 @@
     <script type="text/javascript" src="../js/util/queue.js"></script>
     <script type="text/javascript" src="../js/util/previewService.js"></script>
 
-    <script type="text/javascript" src="editor/qunitAutoPreview.js"></script>
+    <script type="text/javascript" src="editor/qunitAutoImage.js"></script>
 </body>
 </html>

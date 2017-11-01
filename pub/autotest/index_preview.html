@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>QUnit Autotests</title>
+    <!--build:css css/index.min.css-->
+    <link rel="stylesheet" href="css/qunit-1.20.0.css">
+    <link rel="stylesheet" href="../products/personality/style.css">
+    <link rel="stylesheet" href="../controls/css/style.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/editor.css">
+    <!--<link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>-->
+    <!--endbuild-->
+
+    <style>
+        #id-previews canvas {
+            -ms-transform: scale(0.5, 0.5); /* IE 9 */
+            -webkit-transform: scale(0.5, 0.5); /* Safari */
+            transform: scale(0.5, 0.5);
+        }
+        .app_block {
+            border-bottom: 4px gray solid;
+            padding: 10px;
+        }
+        .label {
+            padding: 0;
+            margin: 0;
+        }
+        .preview_img {
+            width: 320px;
+        }
+        .share_entity {
+            display: inline-block;
+            vertical-align: top;
+            width: 320px;
+            padding: 0 10px 10px 0;
+        }
+        .share_entity_img {
+            width: 320px;
+        }
+    </style>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+
+    <div id="id-product_iframe_cnt" style="display:none;">
+        <!--Проект должен загружаться и тестироваться через iframe в своем контекста-->
+    </div>
+
+    <div id="id-previews">
+        <!--Превьюшки шаблонов-->
+    </div>
+
+    <div id="id-app_containers" style="position:absolute;left:-9999px;">
+        <!--сюда загружаются айфремы с приложениями-->
+    </div>
+
+    <div id="id-html_rasterization_cnt" class="proto_cnt __hidden">
+        <iframe id="id-html_rasterization_iframe" src="../rasterization_cnt.html" style="">
+            <!-- iframe используется для изоляции стилей, чтобы сгенерировать превью -->
+        </iframe>
+    </div>
+
+    <script id="id-app_info" type="text/template">
+        <div class="app_block">
+            <p>{{appId}}</p>
+            <div>
+                <p class="label">Preview image:</p>
+                <img class="preview_img" src="{{preview_img}}"/>
+            </div>
+            <br>
+            <div>
+                <p class="label">Sharing entities:</p>
+                <div class="js-share_entities">
+                    <!-- some id-share_entity_templ here -->
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="id-share_entity_templ" type="text/template">
+        <div class="share_entity">
+            <div class=""><img class="share_entity_img js-img" src="{{img}}"/></div>
+            <p class="js-title">{{title}}</p>
+            <p class="js-description">{{description}}</p>
+        </div>
+    </script>
+
+    <script type="text/javascript" src="../lib/jquery.js"></script>
+    <script type="text/javascript" src="../lib/underscore.js"></script>
+    <script type="text/javascript" src="../lib/backbone.js"></script>
+    <script type="text/javascript" src="../lib/qunit-1.20.0.js"></script>
+    <script type="text/javascript" src="../lib/html2canvas.js"></script>
+    <script type="text/javascript" src="../lib/rasterizeHTML.allinone.js"></script>
+    <script type="text/javascript" src="../lib/jpeg_encoder.js"></script>
+
+    <script type="text/javascript" src="../js/model/app.js"></script>
+    <script type="text/javascript" src="../js/model/templates/template.js"></script>
+    <script type="text/javascript" src="../js/model/templates/templateCollection.js"></script>
+    <script type="text/javascript" src="../js/config.js"></script>
+    <script type="text/javascript" src="../js/editorui/controlManager.js"></script>
+    <script type="text/javascript" src="../js/editorui/editorLoader.js"></script>
+    <script type="text/javascript" src="../js/editorui/workspace.js"></script>
+    <script type="text/javascript" src="../js/editorui/screenManager.js"></script>
+    <script type="text/javascript" src="../js/editorui/editor.js"></script>
+    <script type="text/javascript" src="../js/util/utils.js"></script>
+    <script type="text/javascript" src="../js/util/queue.js"></script>
+    <script type="text/javascript" src="../js/util/previewService.js"></script>
+
+    <script type="text/javascript" src="editor/qunitPreview.js"></script>
+</body>
+</html>
