@@ -1,0 +1,584 @@
+/**
+ * Created by artyom.grishanov on 01.06.16.
+ *
+ */
+var TriviaApp = MutApp.extend({
+
+    type: 'trivia',
+    model: null,
+    screenRoot: $('#id-mutapp_screens'),
+    questionScreens: [],
+    resultsScreens: [],
+    /**
+     * Схема свойств MutAppProperty в этом приложении
+     */
+    mutAppSchema: new MutAppSchema({
+        "id=tm logoLink": {
+            label: {RU: 'Ссылка по клику на лого', EN: 'Logo click link'},
+            controls: 'StringControl',
+            controlFilter: 'always'
+        },
+        "id=tm downloadLink": {
+            label: {RU: 'Ссылка по кнопке "Скачать"', EN: 'Download button link'},
+            controls: 'StringControl',
+            controlFilter: 'always'
+        },
+        "id=tm randomizeQuestions": {
+            label: {RU: 'Случайный порядок вопросов', EN: 'Randomize questions'},
+            controls: 'OnOff',
+            controlFilter: 'always'
+        },
+        "id=tm optionPoints": {
+            label: {RU: 'Назначение верных ответов', EN: 'Option Points'},
+            controls: 'TriviaOptionPoints',
+            controlFilter: 'onclick'
+        },
+        "id=tm quiz": {
+            label: {RU:'Вопросы теста',EN:'Trivia quiz'},
+            prototypes: [
+                {
+                    protoFunction: 'id=tm quizProto1', // функция в приложении, которая вернет новый объект
+                    label: {RU:'Текстовый вопрос',EN:'Text question'},
+                    img: 'products/trivia/i/editor/Icon-text-vopros.png'
+                },
+                {
+                    protoFunction: 'id=tm quizProto2', // функция в приложении, которая вернет новый объект
+                    label: {RU:'Фото вопрос',EN:'Photo question'},
+                    img: 'products/trivia/i/editor/Icon-fotovopros.png'
+                },
+                {
+                    protoFunction: 'id=tm quizProto3', // функция в приложении, которая вернет новый объект
+                    label: {RU:'Фото ответы',EN:'Photo answers'},
+                    img: 'products/trivia/i/editor/Icon-fotootvet.png'
+                }
+            ],
+            children: {
+                "id=tm quiz.{{id}}.question.text": {
+                    controls: "TextQuickInput"
+                },
+                "id=tm quiz.{{id}}.question.questionImage": {
+                    label: {RU:'Картинка вопроса',EN:'Question image'},
+                    controls: 'ChooseImage',
+                    controlFilter: 'screenPropertyString'
+                },
+                "id=tm quiz.{{id}}.question.backgroundImage": {
+                    label: {RU:'Фоновая картинка',EN:'Background image'},
+                    controls: 'ChooseImage',
+                    controlFilter: 'screenPropertyString'
+                },
+                "id=tm quiz.{{id}}.question.backgroundColor": {
+                    label: {RU:'Цвет фона экрана',EN:'Screen background color'},
+                    controls: {
+                        name: "StringControl",
+                        view: 'ColorPicker'
+                    },
+                    controlFilter: 'screenPropertyString'
+                },
+                "id=tm quiz.{{id}}.answer.options": {
+                    controls: ["AddDictionaryElementControl","DeleteDictionaryElementControl"],
+                    prototypes: [
+                        {
+                            protoFunction: 'id=tm proto_optionText',
+                            label: '',
+                            img: ''
+                        },
+                        {
+                            protoFunction: 'id=tm proto_optionPhoto',
+                            label: '',
+                            img: ''
+                        }
+                    ]
+                },
+                "id=tm quiz.{{id}}.answer.options.{{id}}.text": {
+                    controls: "TextQuickInput"
+                },
+                "id=tm quiz.{{id}}.answer.options.{{id}}.img": {
+                    label: {RU:'Картинка вопроса',EN:'Question image'},
+                    controls: 'ChooseImage',
+                    controlFilter: "onclick"
+                }
+            }
+        },
+        "id=tm results": {
+            label: {RU:'Результаты теста',EN:'Trivia results'},
+            prototypes: [{
+                protoFunction:'id=tm resultProto1',
+                label: {RU:'Результат',EN:'Result'},
+                img: null
+            }],
+            children: {
+                "id=tm results.{{id}}.title": {
+                    controls: "TextQuickInput"
+                },
+                "id=tm results.{{id}}.description": {
+                    controls: "TextQuickInput"
+                },
+                "id=tm results.{{id}}.backgroundImage": {
+                    label: {RU:'Фоновая картинка',EN:'Background image'},
+                    controls: 'ChooseImage',
+                    controlFilter: 'screenPropertyString'
+                },
+                "id=tm results.{{id}}.backgroundColor": {
+                    label: {RU:'Цвет фона',EN:'Background Color'},
+                    controls: {
+                        name: "StringControl",
+                        view: 'ColorPicker'
+                    },
+                    controlFilter: 'screenPropertyString'
+                },
+                "id=tm results.{{id}}.titleColor": {
+                    label: {RU:'Цвет заголовка',EN:'Title color'},
+                    controls: {
+                        name: "StringControl",
+                        view: 'ColorPicker'
+                    },
+                    controlFilter: 'onclick'
+                },
+                "id=tm results.{{id}}.descriptionColor": {
+                    label: {RU:'Цвет пояснения',EN:'Description color'},
+                    controls: {
+                        name: "StringControl",
+                        view: 'ColorPicker'
+                    },
+                    controlFilter: 'onclick'
+                }
+            }
+        },
+        "id=startScr startHeaderText": {
+            label: {RU: 'Заголовок', EN: 'Header'},
+            controls: "TextQuickInput"
+        },
+        "id=startScr startDescription": {
+            label: {RU:'Описание', EN:'Description'},
+            controls: "TextQuickInput"
+        },
+        "id=startScr startButtonText": {
+            label: {RU:'Текст кнопки', EN:'Start button text'},
+            controls: "TextQuickInput"
+        },
+        "id=tm restartButtonText": {
+            controls: "TextQuickInput"
+        },
+        "id=tm downloadButtonText": {
+            controls: "TextQuickInput"
+        },
+        "id=tm showExplanation": {
+            label: {RU:'Показывать верный был дан ответ или нет', EN:'Show answer was correct or not'},
+            controls: 'OnOff',
+            controlFilter: 'always'
+        },
+        "id=tm showDownload": {
+            label: {RU:'Кнопка "Скачать"', EN:'Download button'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)'
+        },
+        "id=startScr shadowEnable": {
+            label: {RU:'Включить тень', EN:'Shadow enable'},
+            controls: 'OnOff',
+            controlFilter: 'screen(id=startScr)' // 'always', 'screen(startScr)', 'onclick', 'hidden'
+        },
+        "id=tm shadowEnableInQuestions": {
+            label: {RU:'Включить тень', EN:'Shadow enable'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=questions)' // 'always', 'screen(startScr)', 'onclick', 'hidden'
+        },
+        "id=tm shadowEnableInResults": {
+            label: {RU:'Включить тень', EN:'Shadow enable'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)' // 'always', 'screen(startScr)', 'onclick', 'hidden'
+        },
+        "id=tm startScreenBackgroundImg": {
+            label: {RU:'Фоновая картинка стартового экрана',EN:'Start screen background image'},
+            controls: 'ChooseImage',
+            controlFilter: 'screen(id=startScr)'
+        },
+        "id=tm showLogoOnStartScreen": {
+            label: {RU:'Показывать лого на начальном экране',EN:'Show logo on start screen'},
+            controls: 'OnOff',
+            controlFilter: 'screen(id=startScr)'
+        },
+        "id=startScr logoPosition": {
+            label: {},
+            controls: {
+                name: 'Drag',
+                param: {
+                    // контейнер в котором будет происходить перетаскивание
+                    draggableParentSelector: '.js-logo_cnt'
+                }
+            }
+        },
+        "id=tm logoPositionInQuestions": {
+            label: {},
+            controls: {
+                name: 'Drag',
+                param: {
+                    // контейнер в котором будет происходить перетаскивание
+                    draggableParentSelector: '.js-logo_cnt'
+                }
+            }
+        },
+        "id=tm questionProgressPosition": {
+            label: {},
+            controls: {
+                name: 'Drag',
+                param: {
+                    // контейнер в котором будет происходить перетаскивание
+                    draggableParentSelector: '.js-logo_cnt'
+                }
+            }
+        },
+        "id=tm logoPositionInResults": {
+            label: {},
+            controls: {
+                name: 'Drag',
+                param: {
+                    // контейнер в котором будет происходить перетаскивание
+                    draggableParentSelector: '.js-logo_cnt'
+                }
+            }
+        },
+        "id=tm showQuestionProgress": {
+            label: {RU:'Счетчик вопросов',EN:'Question number'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=questions)'
+        },
+        "id=tm showLogoInQuestions": {
+            label: {RU:'Показывать лого в вопросах',EN:'Show logo on question screens'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=questions)'
+        },
+        "id=tm showLogoInResults": {
+            label: {RU:'Показывать лого в результатах',EN:'Show logo on result screens'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)'
+        },
+        "id=tm fbSharingEnabled": {
+            label: {RU:'Шаринг в Facebook',EN:'Facebook sharing'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)'
+        },
+        "id=tm vkSharingEnabled": {
+            label: {RU:'Шаринг во ВКонтакте',EN:'Vk.com sharing'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)'
+        },
+        "id=tm fbSharingPosition": {
+            label: {},
+            controls: {
+                name: 'Drag',
+                param: {
+                    // контейнер в котором будет происходить перетаскивание
+                    draggableParentSelector: '.js-logo_cnt'
+                }
+            }
+        },
+        "id=tm vkSharingPosition": {
+            label: {},
+            controls: {
+                name: 'Drag',
+                param: {
+                    // контейнер в котором будет происходить перетаскивание
+                    draggableParentSelector: '.js-logo_cnt'
+                }
+            }
+        },
+        "id=tm logoUrl": {
+            label: {RU: 'Логотип', EN: 'Logo'},
+            controls: 'ChooseImage',
+            controlFilter: 'always'
+        },
+
+        "id=tm test1": { label: {RU: 'Тест', EN: 'Test1'} },
+        "id=tm test2": { label: {RU: 'Тест', EN: 'Test2'} },
+        "id=tm test3": { label: {RU: 'Тест', EN: 'Test3'} },
+
+        ".js-start_header color, .js-start_description color, .js-start_btn color, .js-download_btn color, .js-restart color, .js-question_text color, .js-option_text color, .js-question_progress color": {
+            // css mutAppProperty описываются только схемой
+            label: {RU:'Цвет шрифта',EN:'Font color'},
+            controlFilter: 'onclick',
+            controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            }
+        },
+        ".js-start_back_color background-color": {
+            label: {RU:'Цвет фона экрана',EN:'Screen background color'},
+            controlFilter: 'screen(id=startScr)',
+            controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            }
+        },
+        ".js-start_header font-size, .js-start_description font-size, .js-question_text font-size, .js-result_title font-size, .js-result_description font-size, .js-option_text font-size, .js-question_progress font-size": {
+            // css mutAppProperty описываются только схемой
+            label: {RU:'Размер шрифта',EN:'Font size'},
+            controls: "StringControl",
+            controlFilter: 'onclick'
+        },
+        ".js-start_header padding-top, .js-start_description padding-top, .js-question_text padding-top, .js-result_title padding-top, .js-result_description padding-top, .js-btn_wr padding-top": {
+            label: {RU:'Отступ сверху',EN:'Padding top'},
+            controls: "StringControl",
+            controlFilter: 'onclick'
+        },
+        ".js-start_header padding-bottom, .js-start_description padding-bottom, .js-question_text padding-bottom, .js-result_title padding-bottom, .js-result_description padding-bottom": {
+            label: {RU:'Отступ снизу',EN:'Padding bottom'},
+            controls: "StringControl",
+            controlFilter: 'onclick'
+        },
+        ".js-start_header text-align, .js-start_description text-align, .js-question_text text-align, .js-result_title text-align, .js-result_description text-align": {
+            label: {RU:'Выравнивание текста',EN:'Text-align'},
+            controlFilter: 'onclick',
+            controls: {
+                name:"Alternative",
+                view: 'altbuttons',
+                param: {
+                    possibleValues: [
+                        {value:"left",icon:{
+                            normal:"i/altern/align-left.png", selected:"i/altern/align-left-selected.png"
+                        }},
+                        {value:"center",icon:{
+                            normal:"i/altern/align-center.png", selected:"i/altern/align-center-selected.png"
+                        }},
+                        {value:"right",icon:{
+                            normal:"i/altern/align-right.png", selected:"i/altern/align-right-selected.png"
+                        }}
+                    ],
+                }
+            }
+        },
+        ".js-start_header font-family, .js-start_description font-family, .js-question_progress font-family, .js-question_text font-family, .js-result_title font-family, .js-result_description font-family": {
+            label: {RU:'Шрифт',EN:'Font family'},
+            controlFilter: 'onclick',
+            controls: {
+                name:"Alternative",
+                view: 'dropdown',
+                param: {
+                    possibleValues: ["Arial","Times New Roman"]
+                }
+            }
+        },
+        ".js-start_btn background-color, .js-download_btn background-color, .js-restart background-color": {
+            // css mutAppProperty описываются только схемой
+            label: {RU:'Цвет фона кнопки',EN:'Button background color'},
+            controlFilter: 'onclick',
+            controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            }
+        },
+        ".js-a_wr border-width": {
+            label: {RU:'Толщина обводки',EN:'Border width'},
+            controls: "StringControl",
+            controlFilter: 'onclick'
+        },
+        ".js-a_wr border-color": {
+            label: {RU:'Цвет обводки',EN:'Border color'},
+            controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            },
+            controlFilter: 'onclick'
+        },
+        ".js-a_wr border-radius": {
+            label: {RU:'Радиус угла',EN:'Border radius'},
+            controls: "StringControl",
+            controlFilter: 'onclick'
+        },
+        ".js-a_wr background-color": {
+            label: {RU:'Цвет фона опции',EN:'Option background color'},
+            controls: "StringControl",controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            },
+            controlFilter: 'onclick'
+        }
+    }),
+
+    /**
+     * Конструктор приложения
+     * @param param
+     */
+    initialize: function(param) {
+        var tm = this.addModel(new TriviaModel({
+            application: this
+        }));
+        this.model = tm;
+
+        var startScr = new StartScreen({
+            model: tm,
+            screenRoot: this.screenRoot
+        });
+        this.addScreen(startScr);
+
+        this.model.bind('change:quiz', function() {
+            this.updateQuestionScreens();
+        }, this);
+
+        this.model.bind('change:results', function() {
+            this.updateResultsScreens();
+        }, this);
+
+        // начальное создание экранов.
+        // при десериализации нет событий change
+        this.updateQuestionScreens();
+        this.updateResultsScreens();
+
+        // способ указания этих атрибутов уникален для каждого проекта
+        this.title = this.getPropertiesBySelector('id=startScr startHeaderText')[0].value.getValue();
+        this.description = this.getPropertiesBySelector('id=startScr startDescription')[0].value.getValue();
+
+    },
+
+    /**
+     * Создать экраны вопросов на основе this.model.get('quiz')
+     */
+    updateQuestionScreens: function() {
+        for (var i = 0; i < this.questionScreens.length; i++) {
+            this.deleteScreen(this.questionScreens[i]);
+        }
+        this.questionScreens = [];
+        var quizValue = this.model.get('quiz').toArray();
+        var qs = null;
+        var id = null;
+        for (var i = 0; i < quizValue.length; i++) {
+            id = 'questionScreen'+i;
+            qs = new QuestionScreen({
+                id: id,
+                model: this.model,
+                questionId: quizValue[i].id,
+                screenRoot: this.screenRoot
+            });
+            this.addScreen(qs);
+            this.hideScreen(qs);
+            this.questionScreens.push(qs);
+        }
+    },
+
+    /**
+     * Создать экраны вопросов на основе this.model.get('results')
+     */
+    updateResultsScreens: function() {
+        for (var i = 0; i < this.resultsScreens.length; i++) {
+            this.deleteScreen(this.resultsScreens[i]);
+        }
+        var sEntities = [];
+        this.resultsScreens = [];
+        var resultsValue = this.model.get('results').toArray();
+        var rs = null;
+        var id = null;
+        var resDictId = null;
+        for (var i = 0; i < resultsValue.length; i++) {
+            resDictId = this.model.get('results').getIdFromPosition(i);
+            id = 'resultScreen'+i;
+            rs = new ResultScreen({
+                id: id,
+                model: this.model,
+                resultId: resultsValue[i].id,
+                screenRoot: this.screenRoot
+            });
+            this.addScreen(rs);
+            this.hideScreen(rs);
+            this.resultsScreens.push(rs);
+        }
+    },
+
+    start: function() {
+        for (var i = 0; i < this._screens.length; i++) {
+            this._screens[i].$el.hide();
+        }
+        this._models[0].start();
+    },
+
+    /**
+     * Обработчик событий приложения MutApp
+     * Любое клиентское приложение может определить такую функцию
+     *
+     * @param {string} event
+     * @param {object} data
+     */
+    onAppEvent: function(event, data) {
+        switch(event) {
+            case MutApp.EVENT_PROPERTY_CREATED:
+            case MutApp.EVENT_PROPERTY_VALUE_CHANGED:
+            case MutApp.EVENT_PROPERTY_DELETED: {
+                if (MutApp.Util.matchPropertyString(data.propertyString, 'id=pm quiz.{{id}}.answer.options') === true ||
+                    data.propertyString === 'id=tm quiz' ||
+                    data.propertyString === 'id=tm results' ||
+                    data.propertyString === 'id=tm optionPoints') {
+                    // при изменении любых свойств которые влияют на распределение результатов нужно делать апдейт
+                    if (this.model) {
+                        this.model.updateOptionPoints();
+                        this.model.updateResultPointsAllocation();
+                    }
+                }
+                if (data.propertyString === 'id=tm results') {
+                    if (this.model) this.model.updateShareEntities();
+                }
+                break;
+            }
+        }
+    },
+
+    /**
+     * Определить dictionaryId вопроса, который пользователь в данный момент видит на экране
+     *
+     * @returns {string}
+     */
+    getCurrentQuestionDictionaryId: function() {
+        var pos = -1;
+        for (var i = 0; i < this._screens.length; i++) {
+            var scr = this._screens[i];
+            if (scr.isShowed === true && scr.dictionaryId) {
+                return scr.dictionaryId;
+            }
+        }
+        throw new Error('Trivia.getCurrentQuestionDictionaryId: can not detect question dictionaryId');
+    },
+
+    /**
+     * Информация о приложении
+     *
+     * Для локализации слежует использовать конструкции вида:
+     * {EN: '', RU: ''}
+     */
+    getStatus: function() {
+
+        // TODO не назначенные верными ответы
+
+//        Ограничители (советники в то же время).
+//        - Если результат теста может быть не определен. Множество сумм баллов не включено полностью в множество результатов
+//        - мин число очков меньше или равно, чем максимальное для одного результата.
+//        - Минимальное количество результатов = 1
+//            - Минимальное количество ответов (2) в вопросе.
+//        - Максимально число ответов в вопросе 10.
+//        - Максимальное число вопросов 20.
+//        - WARNING: всего один вопрос в тесте, вы уверены?
+//            - Максимальное количество символов в вопросе
+//        - Максимальное количество символов в ответе
+//        - Максимальное количество символов в объяснении
+
+        return null;
+    },
+
+    /**
+     * Вернуть фрагмен html из которго будет сгенерирована картинка
+     *
+     * @returns {*}
+     */
+    getAutoPreviewHtml: function() {
+        if (this._screens.length > 0) {
+            var v = this.getScreenById('startScr').$el;
+            // выравнивание заголовка и пояснения по вертикали
+            var viewForShare = MutApp.Util.clarifyElement(v, ['modal','modal_cnt','info_title','info_tx','b_title']);
+            var titleView = viewForShare.find('.info_title').css('padding','0 50px 0 50px').css('margin','0');
+            var th = titleView.outerHeight(false);
+            var descView = viewForShare.find('.info_tx').css('padding','0 50px 0 50px').css('margin','0');
+            var dh = descView.outerHeight(false);
+            var ind = (this.height-dh-th)/4;
+            titleView.css('padding-top',ind+'px');
+            descView.css('padding-top',ind+'px');
+            return viewForShare.html();
+        }
+        return '';
+    }
+});

@@ -177,6 +177,42 @@ QUnit.test("MutAppPropertyDictionary: basics 2", function( assert ) {
 });
 
 /**
+ * Проверить функцию рандомного перемевания порядка элементов
+ */
+QUnit.test("MutAppPropertyDictionary: shuffle", function( assert ) {
+    var arr1 = new MutAppPropertyDictionary({
+        propertyString: 'arr1',
+        value: []
+    });
+    assert.ok(arr1.toArray().length === 0);
+
+    arr1.addElement('elem1');
+    arr1.addElement('elem2');
+    arr1.addElement('elem3');
+
+    // перемешать порядок элементов
+    arr1.shuffle();
+
+    assert.ok(getOwnPropertiesCount(arr1.getValue()) === 3); // utils.js
+    assert.ok(arr1.toArray().length === 3);
+
+    var firstElem = arr1.toArray()[0];
+    var secondElem = arr1.toArray()[0];
+    var thirdElem = arr1.toArray()[0];
+    assert.ok(firstElem === 'elem1' || firstElem === 'elem2' || firstElem === 'elem3');
+    assert.ok(secondElem === 'elem1' || secondElem === 'elem2' || secondElem === 'elem3');
+    assert.ok(thirdElem === 'elem1' || thirdElem === 'elem2' || thirdElem === 'elem3');
+    assert.ok(typeof arr1.getIdFromPosition(0) === 'string');
+    assert.ok(typeof arr1.getIdFromPosition(1) === 'string');
+    assert.ok(typeof arr1.getIdFromPosition(2) === 'string');
+    assert.ok(arr1.getIdFromPosition(3) === undefined);
+    assert.ok(arr1.getValue()[arr1.getIdFromPosition(0)]);
+    assert.ok(arr1.getValue()[arr1.getIdFromPosition(1)]);
+    assert.ok(arr1.getValue()[arr1.getIdFromPosition(2)]);
+
+});
+
+/**
  * Delete elements in dictionary inside another dictionary
  */
 QUnit.test("MutApp test: Delete elements in dictionary inside another dictionary", function( assert ) {
@@ -445,3 +481,4 @@ QUnit.test("MutAppPropertyDictionary: dictionary getElementCopy", function( asse
     throw new Error('getElementCopy not working and not using in editor so far');
 
 });
+

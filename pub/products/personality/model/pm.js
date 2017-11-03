@@ -31,7 +31,9 @@ var PersonalityModel = MutApp.Model.extend({
          * Вопросы теста Personality
          */
         quiz: null,
-
+        /**
+         *
+         */
         startScreenBackgroundImg: null,
         /**
          * Показывать ли лого на стартовом экране
@@ -456,16 +458,16 @@ var PersonalityModel = MutApp.Model.extend({
                     currentResult: null
                 });
                 // перемещать вопросы при переходе к тесту
-                if (this.attributes.randomizeQuestions === true) {
-                    this.attributes.quiz = _.shuffle(this.attributes.quiz);
+                if (this.attributes.randomizeQuestions.getValue() === true) {
+                    this.attributes.quiz.shuffle();
                 }
                 this.set({
                     currentQuestionIndex: 0,
                     currentQuestionId: this.attributes.quiz.toArray()[0].id,
                     state: 'question'
                 });
-                this.application.stat('Test', 'start', 'First question');
-                this.application.stat('Test', 'next', 'question', 1);
+                this.application.stat('Personality', 'start', 'First question');
+                this.application.stat('Personality', 'next', 'question', 1);
                 break;
             }
             case 'question': {
@@ -475,7 +477,7 @@ var PersonalityModel = MutApp.Model.extend({
                         currentQuestionIndex: ni,
                         currentQuestionId: this.attributes.quiz.toArray()[ni].id
                     });
-                    this.application.stat('Test', 'next', 'question', ni+1);
+                    this.application.stat('Personality', 'next', 'question', ni+1);
                 }
                 else {
                     // конец теста, финальный скрин
@@ -485,7 +487,7 @@ var PersonalityModel = MutApp.Model.extend({
                         currentQuestionId: null,
                         currentQuestionIndex: undefined
                     });
-                    this.application.stat('Test', 'result', this.attributes.currentResult.title.getValue());
+                    this.application.stat('Personality', 'result', this.attributes.currentResult.title.getValue());
                     // показать рекомендации с небольшой задержкой
                     var a = this.application;
                     setTimeout(function() {

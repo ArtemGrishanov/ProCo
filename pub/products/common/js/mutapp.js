@@ -3194,11 +3194,21 @@ MutAppPropertyDictionary.prototype.changePosition = function(elementIndex, newEl
     if (newElementIndex >= this._orderedIds.length) {
         newElementIndex = this._orderedIds.length-1;
     }
-//    var t = this._orderedIds[newElementIndex];
-//    this._orderedIds[newElementIndex] = this._orderedIds[elementIndex];
-//    this._orderedIds[elementIndex] = t;
     var movedElem = this._orderedIds.splice(elementIndex, 1)[0];
     this._orderedIds.splice(newElementIndex, -1, movedElem);
+    // считается, что устанавливаем новый dictionary целиком
+    var nv = {};
+    for (var i = 0; i < this._orderedIds.length; i++) {
+        nv[this._orderedIds[i]] = this._value[this._orderedIds[i]];
+    }
+    this.setValue(nv);
+};
+/**
+ * Перемешать случайным образом порядок элементов
+ * Событие об изменении значения вызывается
+ */
+MutAppPropertyDictionary.prototype.shuffle = function() {
+    this._orderedIds = _.shuffle(this._orderedIds);
     // считается, что устанавливаем новый dictionary целиком
     var nv = {};
     for (var i = 0; i < this._orderedIds.length; i++) {

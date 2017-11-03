@@ -276,99 +276,99 @@ var config = {
                 // заполняется программно в storefront -> init на основе других категорий
                 entities: []
             },
-            test: {
+            trivia: {
                 // шаблоны встроены прямо в верстку, НЕ создаются программно
                 enabled: true,
-                typeLabel: {EN:'Quiz',RU:'Тест'},
+                typeLabel: {EN:'Trivia',RU:'Тривиа'},
                 entities: [
                     {
                         // стандартный тест: http://p.testix.me/1045302892173346/7e7fef7bcf
                         name: {EN:'Default tutorial quiz',RU:'Testix. Дефолтный тест-туториал'},
-                        img: 'http://p.testix.me/storefront/test/7e7fef7bcf.jpg',
-                        published: 'http://p.testix.me/storefront/test/7e7fef7bcf/p_index.html',
+                        img: 'http://p.testix.me/storefront/trivia/7e7fef7bcf.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/7e7fef7bcf/p_index.html',
                         // in url is hardcoded in my_templates.html
-                        template: 'storefront/test/7e7fef7bcf.txt',
+                        template: 'storefront/trivia/7e7fef7bcf.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         // президенты США тест: http://p.testix.me/1045302892173346/02f9e0d7c7/
                         name: {EN:'American presidents',RU:'Президенты США'},
-                        img: 'http://p.testix.me/storefront/test/02f9e0d7c7.jpg',
-                        published: 'http://p.testix.me/storefront/test/02f9e0d7c7/p_index.html',
-                        template: 'storefront/test/02f9e0d7c7.txt',
+                        img: 'http://p.testix.me/storefront/trivia/02f9e0d7c7.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/02f9e0d7c7/p_index.html',
+                        template: 'storefront/trivia/02f9e0d7c7.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         // угадайте книгу по цитате: http://p.testix.me/1045302892173346/e33f556579
                         name: {EN:'Independent Media',RU:'Независимое издание'},
-                        img: 'http://p.testix.me/storefront/test/e33f556579.jpg',
-                        published: 'http://p.testix.me/storefront/test/e33f556579/p_index.html',
-                        template: 'storefront/test/e33f556579.txt',
+                        img: 'http://p.testix.me/storefront/trivia/e33f556579.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/e33f556579/p_index.html',
+                        template: 'storefront/trivia/e33f556579.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         // любят ли вас деньги: http://p.testix.me/1045302892173346/85c20b7628
                         name: {EN:'Financial Media',RU:'Финансовое издание'},
-                        img: 'http://p.testix.me/storefront/test/85c20b7628.jpg',
-                        published: 'http://p.testix.me/storefront/test/85c20b7628/p_index.html',
-                        template: 'storefront/test/85c20b7628.txt',
+                        img: 'http://p.testix.me/storefront/trivia/85c20b7628.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/85c20b7628/p_index.html',
+                        template: 'storefront/trivia/85c20b7628.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         // тест по психологии "Ты душа компании или зануда": http://p.testix.me/1045302892173346/1059f38c8b
                         name: {EN:'Psychology and Relationships',RU:'Психология и отношения'},
-                        img: 'http://p.testix.me/storefront/test/1059f38c8b.jpg',
-                        published: 'http://p.testix.me/storefront/test/1059f38c8b/p_index.html',
-                        template: 'storefront/test/1059f38c8b.txt',
+                        img: 'http://p.testix.me/storefront/trivia/1059f38c8b.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/1059f38c8b/p_index.html',
+                        template: 'storefront/trivia/1059f38c8b.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         // тест для художников: http://p.testix.me/1045302892173346/9000e567da
                         name: {EN:'Paintings',RU:'Картины'},
-                        img: 'http://p.testix.me/storefront/test/9000e567da.jpg',
-                        published: 'http://p.testix.me/storefront/test/9000e567da/p_index.html',
-                        template: 'storefront/test/9000e567da.txt',
+                        img: 'http://p.testix.me/storefront/trivia/9000e567da.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/9000e567da/p_index.html',
+                        template: 'storefront/trivia/9000e567da.txt',
                         width: '800px',
                         height: '600px'
                     },
 //                    {
 //                        //  Киев: http://p.testix.me/1045302892173346/870dcd0a6b
 //                        name: 'Знаешь ли ты Киев?',
-//                        img: 'http://p.testix.me/storefront/test/870dcd0a6b.jpg',
-//                        published: 'http://p.testix.me/storefront/test/870dcd0a6b/p_index.html',
-//                        template: 'storefront/test/870dcd0a6b.txt',
+//                        img: 'http://p.testix.me/storefront/trivia/870dcd0a6b.jpg',
+//                        published: 'http://p.testix.me/storefront/trivia/870dcd0a6b/p_index.html',
+//                        template: 'storefront/trivia/870dcd0a6b.txt',
 //                        width: '800px',
 //                        height: '600px'
 //                    }
                     {
                         // тест по географии "Пенза или Пиза": http://p.testix.me/1045302892173346/d61333fd5e
                         name: {EN:'Geography quiz',RU:'Тест по географии'},
-                        img: 'http://p.testix.me/storefront/test/d61333fd5e.jpg',
-                        published: 'http://p.testix.me/storefront/test/d61333fd5e/p_index.html',
-                        template: 'storefront/test/d61333fd5e.txt',
+                        img: 'http://p.testix.me/storefront/trivia/d61333fd5e.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/d61333fd5e/p_index.html',
+                        template: 'storefront/trivia/d61333fd5e.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         // тест по русскому языку: http://p.testix.me/1045302892173346/e4d58cd89b
                         name: {EN:'Test of Russian language',RU:'Тест по русскому языку'},
-                        img: 'http://p.testix.me/storefront/test/e4d58cd89b.jpg',
-                        published: 'http://p.testix.me/storefront/test/e4d58cd89b/p_index.html',
-                        template: 'storefront/test/e4d58cd89b.txt',
+                        img: 'http://p.testix.me/storefront/trivia/e4d58cd89b.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/e4d58cd89b/p_index.html',
+                        template: 'storefront/trivia/e4d58cd89b.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         // тест "Какой вы инвестор": http://p.testix.me/1045302892173346/39d1a71943
                         name: {EN:'What kind of investor are you?',RU:'Какой вы инвестор?'},
-                        img: 'http://p.testix.me/storefront/test/39d1a71943.jpg',
-                        published: 'http://p.testix.me/storefront/test/39d1a71943/p_index.html',
-                        template: 'storefront/test/39d1a71943.txt',
+                        img: 'http://p.testix.me/storefront/trivia/39d1a71943.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/39d1a71943/p_index.html',
+                        template: 'storefront/trivia/39d1a71943.txt',
                         width: '800px',
                         height: '600px'
                     }
@@ -493,7 +493,7 @@ var config = {
             defaultShareImageRecommendedSize: '1200x620',
             publishResources: [
                 {
-                    // ex: products/test_new/
+                    // ex: products/trivia/
                     baseUrl: undefined, // не указана, значит будет установлена publisher.js
                     // index.html промо проекта
                     url: 'index.html',
@@ -536,25 +536,25 @@ var config = {
             ]
         },
         // конфигурация для каждого типа промо-приложений
-        test: {
+        trivia: {
             prototypeId: 'test_v1.0',
             /**
              * Имя функции с помощью которой создается приложение этого типа
              */
-            constructorName: 'TestApp',
+            constructorName: 'TriviaApp',
             /**
              * Само приложение для загрузки через iframe
              */
-            src: 'products/test_new/index.html',
+            src: 'products/trivia/index.html',
             /**
              * В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae
              * Нужно для превью в контроле Slide
              */
-            stylesForEmbed: '<link href="{{config.common.home}}products/test_new/style.css" rel="stylesheet"/>',
+            stylesForEmbed: '<link href="{{config.common.home}}products/trivia/style.css" rel="stylesheet"/>',
             /**
              * каталог откуда publisher будет брать все ресурсы для публикации проекта
              */
-            baseProductUrl: 'products/test_new/',
+            baseProductUrl: 'products/trivia/',
             /**
              * Ширина по умолчанию, если не задана
              */
@@ -791,6 +791,12 @@ var config = {
         PersonalityResultLinking: {
             defaultDirectiveIndex: 0,
             directives: ['personalityresultlinking'],
+            parentId: 'id-popup_controls_cnt',
+            type: 'popup'
+        },
+        TriviaOptionPoints: {
+            defaultDirectiveIndex: 0,
+            directives: ['triviaoptionpoints'],
             parentId: 'id-popup_controls_cnt',
             type: 'popup'
         }

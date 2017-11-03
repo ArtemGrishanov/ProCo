@@ -1,5 +1,5 @@
 /**
- * Created by artyom.grishanov on 05.07.16.
+ * Created by artyom.grishanov on 09.07.16.
  */
 /**
  * Экран вопроса теста
@@ -17,7 +17,7 @@ var QuestionScreen = MutApp.Screen.extend({
      * Это свойство надо понимать так:
      * Порядок этой вот группы экранов questions зависит от этого массива 'id=tm quiz'
      */
-    arrayAppPropertyString: 'id=pm quiz',
+    arrayAppPropertyString: 'id=tm quiz',
     /**
      * Тег для группировки экранов в редакторе
      * @see MutApp
@@ -44,7 +44,10 @@ var QuestionScreen = MutApp.Screen.extend({
      * Id вопроса, за показ которого отвечает этот экран
      */
     questionId: null,
-
+    /**
+     * Задержка для показа explanation
+     */
+    explanationPauseDelay: 1100,
     /**
      * Контейнер в котором будет происходить рендер этого вью
      */
@@ -61,7 +64,10 @@ var QuestionScreen = MutApp.Screen.extend({
         "id-answer_question_grid_3": _.template($('#id-answer_question_grid_3').html()),
 
         "id-option_text_template": _.template($('#id-option_text_template').html()),
-        "id-option_img_template": _.template($('#id-option_img_template').html())
+        "id-option_img_template": _.template($('#id-option_img_template').html()),
+//        "id-answer_input_btn_template": _.template($('#id-answer_input_btn_template').html()),
+
+        "id-explanation_text_template": _.template($('#id-explanation_text_template').html())
     },
 
     events: {
@@ -81,7 +87,7 @@ var QuestionScreen = MutApp.Screen.extend({
             if (ll) {
                 var win = window.open(ll, '_blank');
                 win.focus();
-                this.model.application.stat('Personality', 'logoclick');
+                this.model.application.stat('Trivia', 'logoclick');
             }
         }
     },
@@ -165,9 +171,9 @@ var QuestionScreen = MutApp.Screen.extend({
         var $qp = this.$el.find('.js-question_progress');
         if (this.model.get('showQuestionProgress').getValue() === true) {
             $qp.show()
-               .text('Вопрос '+(this.currentQuestionIndex+1)+'/'+this.model.get('quiz').toArray().length);
+                .text('Вопрос '+(this.currentQuestionIndex+1)+'/'+this.model.get('quiz').toArray().length);
             $qp.css('top',this.model.get('questionProgressPosition').getValue().top+'px')
-               .css('left',this.model.get('questionProgressPosition').getValue().left+'px');
+                .css('left',this.model.get('questionProgressPosition').getValue().left+'px');
         }
         else {
             $qp.hide();
@@ -227,15 +233,6 @@ var QuestionScreen = MutApp.Screen.extend({
                 var optionsArr = answerData.options.toArray();
                 for (var i = 0; i < optionsArr.length; i++) {
 
-//                    if (!optionsArr[i].prototypeName) {
-//                        if (optionsArr[i].text) {
-//                            optionsArr[i].prototypeName = 'id=pm proto_optionText';
-//                        }
-//                        if (optionsArr[i].img) {
-//                            optionsArr[i].prototypeName = 'id=pm proto_optionPhoto';
-//                        }
-//                    }
-
                     var o = MutApp.Util.getObjectForRender(optionsArr[i]);
                     if (o.uiTemplate) {
                         o.currentQuestionIndex = this.dictionaryId;
@@ -247,34 +244,64 @@ var QuestionScreen = MutApp.Screen.extend({
                         $e.click((function(e) {
                             if (this.model.application.mode !== 'edit') {
                                 var oId = $(e.currentTarget).attr('data-id');
-                                this.model.answer(oId);
-                                this.model.next();
+                                var success = this.model.answer(oId);
+                                if (this.model.get('showExplanation').getValue() === true) {
+                                    this.renderExplanation(
+                                        success,
+                                        this.model.get('quiz').toArray()[this.model.get('currentQuestionIndex')].explanation
+                                    );
+                                    // автоматически скрываем explanation блок через пару секунд
+                                    setTimeout((function(){
+                                        this.model.next();
+                                    }).bind(this), this.explanationPauseDelay);
+                                }
+                                else {
+                                    // не показывать объяснение верного-неверного ответа, сразу к следующему вопросу
+                                    this.model.next();
+                                }
                             }
                         }).bind(this));
                         $ea.append($e); // ea is js-options_cnt
-                        if (this.model.application.mode === 'edit') {
-                            // в режиме редактирования показывать символы привязки на опциях
-                            // так должен быть атрибут data-app-property для открытия контрола привязки
-                            $e.find('.js-result_link').show();
-                        }
                     }
                     else {
                         throw new Error('Option does not have uiTemplate attribute');
                     }
                 }
 
-//                if (this.model.get('showBullits') === true) {
-//                    this.$el.find('.bullit').show();
-//                }
-//                else {
-//                    this.$el.find('.bullit').hide();
-//                }
-
                 break;
             }
             case 'input': {
                 //TODO
+//                var $e = $(this.template[answerData.uiTemplate](answerData));
+//                $e.find('js-make_answer').click((function(e) {
+//                    //TODO showExplanation через модель если это будет сабвью
+//                    this.renderExplanation();
+//                }).bind(this));
+//                this.$el.find('.js-answers_cnt').append($e);
+//                break;
             }
+        }
+    },
+
+    /**
+     * Показать верен ли был ответ или нет
+     * Также появляется кнопка Далее, чтобы перейти к следующему вопросу
+     *
+     * @param success - верно ли ответил пользователь
+     * @param {object} explanationData
+     */
+    renderExplanation: function(success, explanationData) {
+        // var $e = $(this.template[explanationData.uiTemplate](explanationData));
+        // this.$el.find('.js-explain').append($e).show();
+        this.$el.find('.js-explain').show();
+        // обработчик на js-next уже установлен через backbone events
+        if (success === true) {
+//            this.$el.find('.js-explanation_text').text('Верно');
+            this.$el.find('.explain_blk').removeClass('__err');
+        }
+        else {
+//            this.$el.find('.js-explanation_text').text('Неверно');
+            this.$el.find('.explain_blk').addClass('__err');
         }
     },
 

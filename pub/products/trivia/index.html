@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Personality</title>
+    <title>Trivia</title>
     <meta charset="UTF-8">
     <!-- этот файл кладется при публикации из products/common/css/tstx_cmn_products.css -->
     <link href="../common/css/tstx_cmn_products.css" rel="stylesheet">
@@ -13,7 +13,6 @@
 <body>
     <div id="id-mutapp_screens">
     </div>
-
     <script id="id-welcome_template" type="text/template">
         <div class="modal __active js-start_back_color js-start_back_img">
             <div class="modal_cnt info js-back_shadow js-logo_cnt">
@@ -26,11 +25,10 @@
             </div>
         </div>
     </script>
-
     <script id="id-slide_template" type="text/template">
         <div class="modal __active js-question_back_color js-question_back_img">
             <div class="modal_cnt js-back_shadow js-logo_cnt">
-                <div data-app-property="id=pm questionProgressPosition" class="js-question_progress question_progress"></div>
+                <div data-app-property="id=tm questionProgressPosition" class="js-question_progress question_progress"></div>
                 <div class="modal_hld question">
                     <div class="js-question_cnt">
                         <!--Сюда программно добавляется шаблон вопроса-->
@@ -39,18 +37,26 @@
                         <!--Сюда программно добавляются варианта ответов-->
                     </div>
                 </div>
-                <div class="logo js-logo js-question_logo" data-app-property="id=pm logoPositionInQuestions"></div>
+                <div class="logo js-logo js-question_logo" data-app-property="id=tm logoPositionInQuestions"></div>
+                <div class="js-explain explain_modal" style="display:none;">
+                    <div class="explain_blk">
+                        <!--<div class="explain_title js-explanation_text"></div>-->
+                        <!--<div class="туду js- jsbtn_wr">-->
+                        <!--<span class="button туду js- jstest_btn js-next">Далее</span>-->
+                        <!--</div>-->
+                    </div>
+                </div>
             </div>
         </div>
     </script>
     <script id="id-question_text_template" type="text/template">
-        <div class="question_title js-question_text" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
+        <div class="question_title js-question_text" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
     </script>
     <script id="id-question_text_photo_template" type="text/template">
-        <div class="question_title js-question_text" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
+        <div class="question_title js-question_text" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.text"><%=text%></div>
         <div class="question_grid">
             <div class="question_grid-i js-photo_cnt">
-                <img class="question_img js-photo" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.question.questionImage" src="<%=questionImage%>" />
+                <img class="question_img js-photo" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.question.questionImage" src="<%=questionImage%>" />
             </div>
         </div>
     </script>
@@ -77,67 +83,74 @@
     </script>
 
     <script id="id-option_text_template" type="text/template">
-        <div class="question_i js-a_wr" data-question-index="<%=currentQuestionIndex%>" data-id="<%=id%>" data-dictionary-id="<%=currentOptionIndex%>" data-prototype-name="<%=prototypeName%>" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.answer.options">
+        <div class="question_i js-a_wr" data-question-index="<%=currentQuestionIndex%>" data-id="<%=id%>" data-dictionary-id="<%=currentOptionIndex%>" data-prototype-name="<%=prototypeName%>" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options">
             <div class="bullit" style="display:none"></div>
-            <span class="js-option_text" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.text"><%=text%></span>
-            <div class="link_icon js-result_link" style="display:none" data-app-property="id=pm resultLinking"></div>
+            <span class="js-option_text" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.text"><%=text%></span>
         </div>
     </script>
     <script id="id-option_img_template" type="text/template">
         <div class="question_grid-i" data-id="<%=id%>">
-            <img data-id="<%=id%>" data-question-index="<%=currentQuestionIndex%>" data-dictionary-id="<%=currentOptionIndex%>" data-prototype-name="<%=prototypeName%>" data-app-property="id=pm quiz.<%=currentQuestionIndex%>.answer.options, id=pm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.img" class="question_img" src="<%=img%>" />
-            <div class="link_icon js-result_link" style="display:none" data-app-property="id=pm resultLinking"></div>
+            <img data-id="<%=id%>" data-question-index="<%=currentQuestionIndex%>" data-dictionary-id="<%=currentOptionIndex%>" data-prototype-name="<%=prototypeName%>" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options, id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.img" class="question_img" src="<%=img%>" />
         </div>
     </script>
 
-    <script id="id-result_template" type="text/template">
-        <div class="modal __active js-result_back_color js-result_back_img" data-app-property="id=pm results.<%=currentResultIndex%>.backgroundImage, id=pm results.<%=currentResultIndex%>.backgroundColor, id=pm shadowEnableInResults">
-            <div class="modal_cnt info js-back_shadow js-logo_cnt">
-                <div class="info_title js-result_title" data-app-property="id=pm results.<%=currentResultIndex%>.title, id=pm results.<%=currentResultIndex%>.titleColor"><%=title%></div>
-                <div class="info_tx js-result_description" data-app-property="id=pm results.<%=currentResultIndex%>.description, id=pm results.<%=currentResultIndex%>.descriptionColor"><%=description%></div>
-                <div class="info_f js-download_btn_wr">
-                    <div class="button js-download_btn" data-app-property="id=pm downloadButtonText">Скачать</div>
+    <script id="id-explanation_text_template" type="text/template">
+        <div class="modal __active">
+            <div class="modal_cnt">
+                <div class="modal_hld answer">
+                    <div class="answer_title js-expl_title">Заголовок</div>
+                    <div class="answer_tx"><%=text%></div>
+                    <div class="answer_f">
+                        <div class="answer_ac button js-next">Следующий вопрос</div>
+                    </div>
                 </div>
-                <div class="info_f js-btn_wr js-restart_btn_wr">
-                    <div class="button js-next js-restart js-test_btn" data-app-property="id=pm restartButtonText">Пройти тест еще раз</div>
-                </div>
-                <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="id=pm fbSharingPosition, appConstructor=mutapp shareEntities.<%=currentResultIndex%>.imgUrl">
-                    <span class="tstx_share_i"></span>
-                    Поделиться
-                </div>
-                <div class="tstx_share_btn __vk js-mutapp_share_vk" data-app-property="id=pm vkSharingPosition, appConstructor=mutapp shareEntities.<%=currentResultIndex%>.imgUrl">
-                    <span class="tstx_share_i __vk"></span>
-                    Поделиться
-                </div>
-                <div class="logo js-logo js-result_logo" data-app-property="id=pm logoPositionInResults"></div>
             </div>
         </div>
     </script>
-
+    <script id="id-result_template" type="text/template">
+        <div class="modal __active js-result_back_color js-result_back_img" data-app-property="id=tm results.<%=currentResultIndex%>.backgroundImage, id=tm results.<%=currentResultIndex%>.backgroundColor, id=tm shadowEnableInResults">
+            <div class="modal_cnt info js-back_shadow js-logo_cnt">
+                <div class="info_title js-result_title" data-app-property="id=tm results.<%=currentResultIndex%>.title, id=tm results.<%=currentResultIndex%>.titleColor"><%=title%></div>
+                <div class="info_tx js-result_description" data-app-property="id=tm results.<%=currentResultIndex%>.description, id=tm results.<%=currentResultIndex%>.descriptionColor"><%=description%></div>
+                <div class="info_f js-download_btn_wr">
+                    <div class="button js-download_btn" data-app-property="id=tm downloadButtonText">Скачать</div>
+                </div>
+                <div class="info_f js-btn_wr js-restart_btn_wr">
+                    <div class="button js-next js-restart js-test_btn" data-app-property="id=tm restartButtonText">Пройти тест еще раз</div>
+                </div>
+                <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="id=tm fbSharingPosition, appConstructor=mutapp shareEntities.<%=currentResultIndex%>.imgUrl">
+                    <span class="tstx_share_i"></span>
+                    Поделиться
+                </div>
+                <div class="tstx_share_btn __vk js-mutapp_share_vk" data-app-property="id=tm vkSharingPosition, appConstructor=mutapp shareEntities.<%=currentResultIndex%>.imgUrl">
+                    <span class="tstx_share_i __vk"></span>
+                    Поделиться
+                </div>
+                <div class="logo js-logo js-result_logo" data-app-property="id=tm logoPositionInResults"></div>
+            </div>
+        </div>
+    </script>
     <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
     <!-- build:js index.min.js -->
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="underscore.js"></script>
     <script type="text/javascript" src="backbone.js"></script>
     <script type="text/javascript" src="../common/js/mutapp.js"></script>
-    <script type="text/javascript" src="model/pm.js"></script>
+    <script type="text/javascript" src="model/tm.js"></script>
     <script type="text/javascript" src="view/start.js"></script>
-    <script type="text/javascript" src="view/question.js"></script>
     <script type="text/javascript" src="view/result.js"></script>
+    <script type="text/javascript" src="view/question.js"></script>
     <script type="text/javascript" src="app.js"></script>
     <!-- endbuild -->
     <script>
-        /*start_code
         var app = null;
         $(document).ready(function() {
             var DEFAULT_PARAMS = {};
-            app = new PersonalityApp({
-                defaults: DEFAULT_PARAMS,
-                mode: 'published'
+            app = new TriviaApp({
+                defaults: DEFAULT_PARAMS
             });
             app.start();
         });
-         start_code*/
     </script>
 </body>
 </html>
