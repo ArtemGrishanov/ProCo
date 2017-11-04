@@ -571,11 +571,11 @@ var TriviaModel = MutApp.Model.extend({
         // найти и удалить несуществующие опции
         for (var i = 0; i < optionPointsArr.length; i++) {
             if (this.getOptionById(optionPointsArr[i].optionId) === null) {
-                dictIdsToDelete.push(optionPoints.getIdFromPosition(i));
+                dictIdsToDelete.push(this.attributes.optionPoints.getIdFromPosition(i));
             }
         }
         for (var i = 0; i < dictIdsToDelete.length; i++) {
-            optionPoints.deleteElementById(dictIdsToDelete[i]);
+            this.attributes.optionPoints.deleteElementById(dictIdsToDelete[i]);
         }
 
         // добавить новые опции которых еще нет в optionPoints
@@ -591,6 +591,8 @@ var TriviaModel = MutApp.Model.extend({
                 }
             }
         }
+
+        var endstop = 0;
     },
 
     /**
@@ -617,13 +619,15 @@ var TriviaModel = MutApp.Model.extend({
         var resIndex = resultsArr.length-1; // начинаем распределять с конца
         if (resIndex >= 0) {
             var currentResultId = resultsArr[resIndex].id;
-            for (var i = maxPoints; i >= 0; i++) { // >= важно!
+            for (var i = maxPoints; i >= 0; i--) { // >= важно!
                 this.attributes.resulPointsAllocation[i] = currentResultId;
                 g++;
                 if (g > resGap) {
                     g = 1;
-                    resIndex--;
-                    currentResultId = resultsArr[resIndex].id;
+                    if (resIndex) {
+                        resIndex--;
+                        currentResultId = resultsArr[resIndex].id;
+                    }
                 }
             }
         }
@@ -674,6 +678,44 @@ var TriviaModel = MutApp.Model.extend({
                     application: this.application,
                     value: null
                 });
+            }
+        }
+    },
+
+    /**
+     * Обновление сущностей для публикации
+     * В этой механике они зависят от результата теста
+     * Этот метод вызывается при любом изменении id=pm results
+     */
+    updateShareEntities: function() {
+        var shareEntitiesArr = this.application.shareEntities.toArray();
+        var idsToDelete = [];
+        // первый проход, удаление сущностей, для которых результата более не существует
+        for (var i = 0; i < shareEntitiesArr.length; i++) {
+            var entDictId = this.application.shareEntities.getIdFromPosition(i);
+            if (this.attributes.results.getPosition(entDictId) >= 0) {
+                // результат такой есть, ентити актуальна
+                i++;
+            }
+            else {
+                idsToDelete.push(entDictId);
+            }
+        }
+        for (var i = 0; i < idsToDelete.length; i++) {
+            this.application.shareEntities.deleteElementById(idsToDelete[i]);
+        }
+
+        // теперь добавление новых ентити
+        var resultsArr = this.attributes.results.toArray();
+        for (var i = 0; i < resultsArr.length; i++) {
+            var resDictId = this.attributes.results.getIdFromPosition(i);
+            if (this.application.shareEntities.getPosition(resDictId) < 0) {
+                this.application.shareEntities.addElement({
+                    id: resultsArr[i].id, // именно этот id будет передаваться при шаринге app.share(id)
+                    title: resultsArr[i].title.getValue(),
+                    description: resultsArr[i].description.getValue(),
+                    imgUrl: null
+                }, null, resDictId);
             }
         }
     },
@@ -1014,6 +1056,75 @@ var TriviaModel = MutApp.Model.extend({
             id: optionId,
             element: option
         };
+    },
+
+    isOK: function(assert) {
+        // проверить что в optionPoints есть все опции и нет старых
+        var optionPointsArr = this.attributes.optionPoints.toArray();
+        for (var i = 0; i < optionPointsArr.length; i++) {
+            assert.ok(this.getOptionById(optionPointsArr[i].optionId), 'TriviaModel.isOK: option \''+optionPointsArr[i].optionId+'\' exist');
+        }
+        // еще раз проверить с другой стороны
+        var quizValue = this.attributes.quiz.toArray();
+        for (var i = 0; i < quizValue.length; i++) {
+            var options = quizValue[i].answer.options.toArray();
+            for (var n = 0; n < options.length; n++) {
+                assert.ok(this.getOptionPointsInfo(options[n].id), 'TriviaModel.isOK: info in optionPoints about option \''+options[n].id+'\' exist');
+            }
+        }
+
+        // проверить resultAllocation
+        var maxPoints = 0;
+        var optionPointsArr = this.attributes.optionPoints.toArray();
+        var maxPoints = 0;
+        for (var i = 0; i < optionPointsArr.length; i++) {
+            // столько баллов можно набрать максимально, все вопросы приносят по 1
+            maxPoints += optionPointsArr[i].points;
+        }
+        assert.ok(this.attributes.resulPointsAllocation[maxPoints], 'TriviaModel.isOK: Result for max points');
+
+        var resultsArr = this.attributes.results.toArray();
+        var quizArr = this.attributes.quiz.toArray();
+        // если вопросов больше или равно результатов, то хотя бы по одному баллу должно быть на каждый результат
+        if (quizArr.length >= resultsArr.length) {
+            var resInAlloc = [];
+            for (var i = maxPoints; i >= 0; i--) {
+                var resId = this.attributes.resulPointsAllocation[i];
+                if (resInAlloc.indexOf(resId) < 0) {
+                    resInAlloc.push(resId);
+                }
+            }
+            assert.ok(resInAlloc.length === resultsArr.length, 'TriviaModel.isOK: Every result exist in resulPointsAllocation');
+        }
+        else {
+            // todo ?
+        }
+
+        // проверить что стейт валидный и атрибуты соответствуют стейту
+        switch (this.attributes.state) {
+            case 'welcome': {
+                assert.ok(this.attributes.points === 0);
+                assert.ok(this.attributes.currentResult === null);
+                assert.ok(this.attributes.currentQuestionId === null);
+                break;
+            }
+            case 'question': {
+                assert.ok(this.attributes.points >= 0);
+                assert.ok(this.attributes.currentResult === null);
+                var ni = this.attributes.currentQuestionIndex;
+                assert.ok(this.attributes.currentQuestionId === this.attributes.quiz.toArray()[ni].id);
+                break;
+            }
+            case 'result': {
+                assert.ok(this.attributes.points >= 0);
+                assert.ok(this.attributes.currentResult === this.getResultByPoints(this.attributes.points));
+                assert.ok(this.attributes.currentQuestionId === null);
+                break;
+            }
+            default: {
+                assert.ok(false, 'TriviaModel.isOK: invalid state');
+            }
+        }
     }
 
 });

@@ -501,13 +501,17 @@ var TriviaApp = MutApp.extend({
             case MutApp.EVENT_PROPERTY_CREATED:
             case MutApp.EVENT_PROPERTY_VALUE_CHANGED:
             case MutApp.EVENT_PROPERTY_DELETED: {
-                if (MutApp.Util.matchPropertyString(data.propertyString, 'id=pm quiz.{{id}}.answer.options') === true ||
-                    data.propertyString === 'id=tm quiz' ||
-                    data.propertyString === 'id=tm results' ||
-                    data.propertyString === 'id=tm optionPoints') {
+                if (MutApp.Util.matchPropertyString(data.propertyString, 'id=tm quiz.{{id}}.answer.options') === true ||
+                    data.propertyString === 'id=tm quiz') {
                     // при изменении любых свойств которые влияют на распределение результатов нужно делать апдейт
                     if (this.model) {
                         this.model.updateOptionPoints();
+                    }
+                }
+                if (data.propertyString === 'id=tm optionPoints' ||
+                    data.propertyString === 'id=tm results') {
+                    // распределение результатов по баллам. Зависит вот от эти двух свойств
+                    if (this.model) {
                         this.model.updateResultPointsAllocation();
                     }
                 }

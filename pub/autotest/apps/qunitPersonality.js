@@ -21,7 +21,7 @@ QUnit.test("Personality: getOption, getQuestion, getResult", function( assert ) 
     assert.ok(app.model.getResultById(app.model.attributes.results.toArray()[0].id) === app.model.attributes.results.toArray()[0]);
     assert.ok(app.model.getResultById('1234ac') === null);
 
-    app.isOK(assert);
+    app.isOK({assert: assert});
 });
 
 QUnit.test("Personality: 1 question, 1 result", function( assert ) {
@@ -41,7 +41,7 @@ QUnit.test("Personality: 1 question, 1 result", function( assert ) {
     assert.ok(app.model.attributes.state === 'result');
     assert.ok(app.model.get('currentResult') === app.model.attributes.results.toArray()[0]);
 
-    app.isOK(assert);
+    app.isOK({assert: assert});
 });
 
 QUnit.test("Personality: game 1", function( assert ) {
@@ -59,7 +59,7 @@ QUnit.test("Personality: game 1", function( assert ) {
     var qId = app.model.attributes.quiz.getIdFromPosition(1);
     app.model.attributes.quiz.toArray()[1].answer.options.addElementByPrototype('id=pm proto_optionText', -1, {questionDictionaryId:qId});
 
-    assert.ok(app.model.attributes.resultLinking.toArray().length === 8); // всего 6 опций в приложении
+    assert.ok(app.model.attributes.resultLinking.toArray().length === 8); // всего 8 опций в приложении
 
     // первый вопрос
     var optionId1_1 = app.model.attributes.quiz.toArray()[0].answer.options.toArray()[0].id;
@@ -137,7 +137,7 @@ QUnit.test("Personality: game 1", function( assert ) {
     assert.ok(app.model.attributes.state === 'result');
     assert.ok(app.model.get('currentResult') === app.model.attributes.results.toArray()[1]);
 
-    app.isOK(assert);
+    app.isOK({assert: assert});
 });
 
 QUnit.test("Personality: game 2", function( assert ) {
@@ -148,7 +148,7 @@ QUnit.test("Personality: game 2", function( assert ) {
     for (var i = 0; i < 5; i++) {
         initApp(app);
         round(app);
-        app.isOK(assert);
+        app.isOK({assert: assert});
     }
 
     function initApp(app) {
@@ -176,7 +176,7 @@ QUnit.test("Personality: game 2", function( assert ) {
         // случайные привязки ответов
         var quizValue = app.model.attributes.quiz.toArray();
         for (var i = 0; i < quizValue.length; i++) {
-            var options = quizValue[i].answer.options;
+            var options = quizValue[i].answer.options.toArray();
             for (var n = 0; n < options.length; n++) {
 
                 var randomResultId = app.model.attributes.results.toArray()[getRandomArbitrary(0,rc-1)].id;

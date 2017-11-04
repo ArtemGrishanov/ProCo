@@ -22,95 +22,35 @@
     <favorites_list name="ProCo" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.47704446">
-      <split-first>
-        <leaf>
-          <file leaf-file-name="tm.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/products/trivia/model/tm.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="886" column="0" selection-start="31784" selection-end="31784" vertical-scroll-proportion="0.0" vertical-offset="13006" max-vertical-offset="15360">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="question.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/products/trivia/view/question.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="310" column="6" selection-start="12987" selection-end="12987" vertical-scroll-proportion="0.0" vertical-offset="4388" max-vertical-offset="5100">
-                  <folding>
-                    <element signature="n#!!doc" expanded="true" />
-                    <marker date="1509648837000" expanded="true" signature="966:977" placeholder="/** @see MutApp ...*/" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="result.js" pinned="false" current="true" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/pub/products/trivia/view/result.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="193" column="28" selection-start="7374" selection-end="7374" vertical-scroll-proportion="0.5761974" vertical-offset="2498" max-vertical-offset="3615">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/products/trivia/index.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="30" column="70" selection-start="1560" selection-end="1584" vertical-scroll-proportion="-4.5102043" vertical-offset="229" max-vertical-offset="2415">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/products/personality/app.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="189" column="25" selection-start="7807" selection-end="7817" vertical-scroll-proportion="-9.16" vertical-offset="2606" max-vertical-offset="9315">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="pm.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/products/personality/model/pm.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="40" column="12" selection-start="917" selection-end="921" vertical-scroll-proportion="-9.16" vertical-offset="371" max-vertical-offset="16575">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="question.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/products/personality/view/question.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="16" column="27" selection-start="377" selection-end="377" vertical-scroll-proportion="-9.6" vertical-offset="0" max-vertical-offset="4695">
-                  <folding>
-                    <element signature="n#!!doc" expanded="true" />
-                    <marker date="1509648706000" expanded="true" signature="11118:11194" placeholder="{...}" />
-                    <marker date="1509648706000" expanded="true" signature="11218:11294" placeholder="{...}" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="result.js" pinned="false" current="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/pub/products/personality/view/result.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="127" column="0" selection-start="4511" selection-end="8087" vertical-scroll-proportion="0.22786647" vertical-offset="1748" max-vertical-offset="3615">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf>
+      <file leaf-file-name="tm.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/products/trivia/model/tm.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="577" column="40" selection-start="20313" selection-end="20313" vertical-scroll-proportion="0.4206696" vertical-offset="8366" max-vertical-offset="17025">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="qunitTrivia.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitTrivia.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="175" column="68" selection-start="7617" selection-end="7617" vertical-scroll-proportion="-14.28" vertical-offset="2268" max-vertical-offset="2970">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="qunitPersonality.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitPersonality.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="150" column="34" selection-start="5638" selection-end="5638" vertical-scroll-proportion="0.0" vertical-offset="1831" max-vertical-offset="3900">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -120,15 +60,10 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/products/common/js/mutapp.js" />
-        <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppDictionary.js" />
-        <option value="$PROJECT_DIR$/pub/js/config.js" />
         <option value="$PROJECT_DIR$/pub/editor.html" />
         <option value="$PROJECT_DIR$/pub/controls/custom/trivia/triviaOptionPoints.js" />
         <option value="$PROJECT_DIR$/pub/controls/view/triviaoptionpoints.html" />
         <option value="$PROJECT_DIR$/pub/products/trivia/view/start.js" />
-        <option value="$PROJECT_DIR$/pub/products/trivia/model/tm.js" />
-        <option value="$PROJECT_DIR$/pub/products/trivia/app.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/view/question.js" />
         <option value="$PROJECT_DIR$/pub/products/trivia/view/question.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/index.html" />
@@ -136,12 +71,18 @@
         <option value="$PROJECT_DIR$/pub/products/trivia/style.css" />
         <option value="$PROJECT_DIR$/pub/products/personality/view/result.js" />
         <option value="$PROJECT_DIR$/pub/products/trivia/view/result.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/index_trivia.html" />
+        <option value="$PROJECT_DIR$/pub/products/trivia/app.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/apps/qunitPersonality.js" />
+        <option value="$PROJECT_DIR$/pub/autotest/apps/qunitTrivia.js" />
+        <option value="$PROJECT_DIR$/pub/products/trivia/model/tm.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="67" />
     <option name="y" value="23" />
-    <option name="width" value="1440" />
+    <option name="width" value="1373" />
     <option name="height" value="873" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -242,6 +183,14 @@
               <option name="myItemId" value="products" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="trivia" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -260,10 +209,6 @@
               <option name="myItemId" value="products" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="personality" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -280,28 +225,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="controls" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controls" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="view" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -324,10 +247,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="custom" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="trivia" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -354,6 +273,46 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="personality" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autotest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autotest" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apps" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -385,11 +344,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pub/autotest/apps" />
+      <recent name="$PROJECT_DIR$/pub/autotest" />
       <recent name="$PROJECT_DIR$/pub/controls/view" />
       <recent name="$PROJECT_DIR$/pub/controls/custom/personality" />
       <recent name="$PROJECT_DIR$/pub/products/trivia" />
-      <recent name="$PROJECT_DIR$/pub/autotest/editor" />
-      <recent name="$PROJECT_DIR$/pub/autotest" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/pub/controls/custom/trivia" />
@@ -490,7 +449,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <frame x="67" y="23" width="1373" height="873" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -499,7 +458,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2124834" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21736011" sideWeight="0.7875166" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22833459" sideWeight="0.7875166" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20549928" sideWeight="0.4555113" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32802126" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -527,93 +486,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/controls/custom/trivia/triviaOptionPoints.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="198" column="45" selection-start="7489" selection-end="7489" vertical-scroll-proportion="0.0" vertical-offset="2799" max-vertical-offset="4005">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3203" column="21" selection-start="116803" selection-end="116803" vertical-scroll-proportion="-13.96" vertical-offset="47696" max-vertical-offset="51960">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/view/start.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="6" selection-start="794" selection-end="794" vertical-scroll-proportion="0.24599709" vertical-offset="431" max-vertical-offset="2505">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/trivia/view/start.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="49" selection-start="2117" selection-end="2120" vertical-scroll-proportion="0.33333334" vertical-offset="1016" max-vertical-offset="2580">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="23" selection-start="1836" selection-end="1836" vertical-scroll-proportion="0.39767778" vertical-offset="1136" max-vertical-offset="8280">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/model/pm.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="12" selection-start="917" selection-end="921" vertical-scroll-proportion="-9.16" vertical-offset="371" max-vertical-offset="16575">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="189" column="25" selection-start="7807" selection-end="7817" vertical-scroll-proportion="-9.16" vertical-offset="2606" max-vertical-offset="9315">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/trivia/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="209" column="38" selection-start="8520" selection-end="8543" vertical-scroll-proportion="-9.16" vertical-offset="2906" max-vertical-offset="8835">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/trivia/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="70" selection-start="1560" selection-end="1584" vertical-scroll-proportion="-4.5102043" vertical-offset="229" max-vertical-offset="2415">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/trivia/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="148" column="23" selection-start="3048" selection-end="3048" vertical-scroll-proportion="0.0" vertical-offset="2131" max-vertical-offset="8055">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/trivia/model/tm.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="886" column="0" selection-start="31784" selection-end="31784" vertical-scroll-proportion="0.0" vertical-offset="13006" max-vertical-offset="15360">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/trivia/view/question.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="310" column="6" selection-start="12987" selection-end="12987" vertical-scroll-proportion="0.0" vertical-offset="4388" max-vertical-offset="5100">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <marker date="1509648837000" expanded="true" signature="966:977" placeholder="/** @see MutApp ...*/" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/personality/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="109" column="29" selection-start="6826" selection-end="6826" vertical-scroll-proportion="0.33575583" vertical-offset="1404" max-vertical-offset="2220">
@@ -625,23 +497,110 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="16" column="27" selection-start="377" selection-end="377" vertical-scroll-proportion="-9.6" vertical-offset="0" max-vertical-offset="4695">
           <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <marker date="1509648706000" expanded="true" signature="11118:11194" placeholder="{...}" />
-            <marker date="1509648706000" expanded="true" signature="11218:11294" placeholder="{...}" />
+            <element signature="n#!!doc" expanded="false" />
+            <marker date="1509648706000" expanded="true" signature="-1:-1" placeholder="{...}" />
+            <marker date="1509648706000" expanded="true" signature="-1:-1" placeholder="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/personality/view/result.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="127" column="0" selection-start="4511" selection-end="8087" vertical-scroll-proportion="0.22786647" vertical-offset="1748" max-vertical-offset="3615">
+        <state line="127" column="0" selection-start="4511" selection-end="8087" vertical-scroll-proportion="0.22050563" vertical-offset="1748" max-vertical-offset="3615">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/personality/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="189" column="25" selection-start="7807" selection-end="7817" vertical-scroll-proportion="0.33333334" vertical-offset="2606" max-vertical-offset="9315">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/trivia/view/question.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="310" column="6" selection-start="12987" selection-end="12987" vertical-scroll-proportion="0.0" vertical-offset="4388" max-vertical-offset="5100">
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+            <marker date="1509648837000" expanded="true" signature="-1:-1" placeholder="/** @see MutApp ...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/trivia/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="70" selection-start="1560" selection-end="1584" vertical-scroll-proportion="-4.5102043" vertical-offset="229" max-vertical-offset="2415">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/index_personality.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.2863372" vertical-offset="197" max-vertical-offset="1005">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/trivia/view/result.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="193" column="28" selection-start="7374" selection-end="7374" vertical-scroll-proportion="0.5761974" vertical-offset="2498" max-vertical-offset="3615">
+        <state line="186" column="21" selection-start="7112" selection-end="7112" vertical-scroll-proportion="0.40275863" vertical-offset="2498" max-vertical-offset="3615">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/index_trivia.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="52" column="66" selection-start="3064" selection-end="3064" vertical-scroll-proportion="0.6729651" vertical-offset="317" max-vertical-offset="1005">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/personality/model/pm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="297" column="6" selection-start="8893" selection-end="10535" vertical-scroll-proportion="-20.56" vertical-offset="3941" max-vertical-offset="16575">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/custom/personality/personalityResultLinking.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="64" column="31" selection-start="1923" selection-end="1927" vertical-scroll-proportion="0.33333334" vertical-offset="731" max-vertical-offset="4005">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/trivia/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="503" column="79" selection-start="19724" selection-end="19724" vertical-scroll-proportion="0.42696628" vertical-offset="7241" max-vertical-offset="8895">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1364" column="21" selection-start="49784" selection-end="49788" vertical-scroll-proportion="0.33333334" vertical-offset="20231" max-vertical-offset="51960">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitPersonality.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="150" column="34" selection-start="5638" selection-end="5638" vertical-scroll-proportion="0.0" vertical-offset="1831" max-vertical-offset="3900">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/autotest/apps/qunitTrivia.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="175" column="68" selection-start="7617" selection-end="7617" vertical-scroll-proportion="-14.28" vertical-offset="2268" max-vertical-offset="2970">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/trivia/model/tm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="577" column="40" selection-start="20313" selection-end="20313" vertical-scroll-proportion="0.4206696" vertical-offset="8366" max-vertical-offset="17025">
           <folding />
         </state>
       </provider>
