@@ -298,6 +298,7 @@ img {
     overflow: hidden;
 }
 .question_i {
+    position: relative;
     font-size: 18px;
     border: 1px #5c5c5c solid;
     box-sizing: border-box;
@@ -308,6 +309,17 @@ img {
     box-shadow: 0 0 0 #044d89 inset;
     transition: box-shadow 0.3s;
     background-color: #F0F4FF;
+}
+.question_i.right_answer:after {
+    position: absolute;
+    content: '';
+    top: 10px;
+    right: 10px;
+    width: 27px;
+    height: 27px;
+    border-radius: 999px;
+    background: url(i/icon-right-answer.png) no-repeat center;
+    background-color: #fff;
 }
 .question_lst.__2 .question_i {
     float: left;

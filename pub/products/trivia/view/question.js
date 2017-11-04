@@ -126,6 +126,9 @@ var QuestionScreen = MutApp.Screen.extend({
         this.quizElement.question.backgroundColor.bind('change', this.onMutAppPropertyChanged, this);
         this.quizElement.answer.options.bind('change', this.onMutAppPropertyChanged, this); // нужно делать полный рендер, потому что в конце renderCompleted()
 
+        // обновление галочек верных ответов
+        this.model.bind("change:optionPoints", this.updateCorrectOptionsLabels, this);
+
         // на изменение опций картинок надо подписаться
         var optionsArr = this.quizElement.answer.options.toArray();
         for (var i = 0; i < optionsArr.length; i++) {
@@ -302,6 +305,34 @@ var QuestionScreen = MutApp.Screen.extend({
         else {
 //            this.$el.find('.js-explanation_text').text('Неверно');
             this.$el.find('.explain_blk').addClass('__err');
+        }
+    },
+
+    /**
+     * Поставить галочки напротив верных ответов.
+     *
+     * Это сделано отдельным методом, а не в рендере специально
+     *
+     * 1) Пользователь редактирует правильность ответов, экран не должен рендерится, а контрол пропадать ил рефрешиться
+     *
+     * Можно вызвать вручную где-то изменение: app.model.trigger('change:optionPoints', app.model);
+     */
+    updateCorrectOptionsLabels: function() {
+        if (this.model.application.mode === 'edit') {
+            var q = this.model.getQuestionById(this.questionId);
+            var optionsArr = q.answer.options.toArray();
+            for (var i = 0; i < optionsArr.length; i++) {
+                var o = optionsArr[i];
+                var $e = $('[data-id="'+o.id+'"]');
+                // в режиме редактирования показывать если ответ является верным (голубую галочку в углу показывать)
+                var oInfo = this.model.getOptionPointsInfo(o.id);
+                if (oInfo && oInfo.points > 0) {
+                    $e.addClass('right_answer');
+                }
+                else {
+                    $e.removeClass('right_answer');
+                }
+            }
         }
     },
 

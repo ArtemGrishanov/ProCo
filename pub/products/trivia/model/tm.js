@@ -487,44 +487,6 @@ var TriviaModel = MutApp.Model.extend({
     },
 
     /**
-     * Установить опцию ответа как верную.
-     * Номер вопроса необязателен. Так как по ид опции мы определим к какому вопросу она относится.
-     * @param {string} id - ид опции, все опции в тесте имеют уникальные идентификаторы
-     */
-//    setCorrectAnswer: function(id) {
-//        //TODO верный ответ для произвольного ввода значения
-//        //TODO верный ответ для мультивыбора
-//        for (var i = 0; i < this.attributes.quiz.length; i++) {
-//            var q = this.attributes.quiz[i];
-//            var isActualQuestion = false;
-//            if (q.answer.options) {
-//                // если вопрос имеет опции для ответа
-//                for (var j = 0; j < q.answer.options.length; j++) {
-//                    var o = q.answer.options[j];
-//                    if (o.id === id) {
-//                        // это вопрос с индексом i
-//                        isActualQuestion = true;
-//                        break;
-//                    }
-//                }
-//            }
-//            if (isActualQuestion === true) {
-//                // теперь для найденного вопроса правим верные ответы
-//                for (var j = 0; j < q.answer.options.length; j++) {
-//                    var o = q.answer.options[j];
-//                    if (o.id === id) {
-//                        o.points = 1;
-//                    }
-//                    else {
-//                        o.points = 0;
-//                    }
-//                }
-//                break;
-//            }
-//        }
-//    },
-
-    /**
      * Найти опцию по идишнику
      *
      * @param {string} id
