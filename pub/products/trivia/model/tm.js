@@ -283,17 +283,6 @@ var TriviaModel = MutApp.Model.extend({
             currentQuestionId: null,
             points: 0
         });
-        // проверить что существует верный ответ, если нет, то поставить первый
-        // пользователь или автотесты могут удалить верный ответ, тогда состояние приложения будет неконсистентно
-//        for (var i = 0; i < this.attributes.quiz.length; i++) {
-//            var aid = this.getCorrectAnswerId(i);
-//            if (aid === null) {
-//                // есть как минимум одна опция ответа
-//                this.setCorrectAnswer(this.attributes.quiz[i].answer.options[0].id);
-//            }
-//        }
-//
-//        this.next();
     },
 
     next: function() {
@@ -487,6 +476,45 @@ var TriviaModel = MutApp.Model.extend({
     },
 
     /**
+     * Сделать опцию верной в рамках своего вопроса
+     *
+     * 1) установить балл верного ответа
+     * 2) для остальных опций вопроса сбросить баллы
+     * 3) Вызвать апдейт updateOptionPoints()
+     * 4) Вызвать событие об изменении вручную
+     *
+     * @param {string} optionId
+     */
+    setCorrectAnswer: function(optionId) {
+        var quizValue = this.attributes.quiz.toArray();
+        for (var i = 0; i < quizValue.length; i++) {
+            var options = quizValue[i].answer.options.toArray();
+            var thisQuestion = false;
+            // найти опцию и поставить ей балл
+            for (var n = 0; n < options.length; n++) {
+                if (optionId === options[n].id) {
+                    this.getOptionPointsInfo(optionId).points = 1;
+                    thisQuestion = true;
+                    break;
+                }
+            }
+            if (thisQuestion === true) {
+                // для этого вопроса сбросить все остальные баллы в ноль
+                for (var n = 0; n < options.length; n++) {
+                    if (optionId !== options[n].id) {
+                        this.getOptionPointsInfo(options[n].id).points = 0;
+                    }
+                }
+                break;
+            }
+        }
+
+        // Обязательно: нормализовать опции после установки балла
+        this.updateOptionPoints();
+        this.updateResultPointsAllocation();
+    },
+
+    /**
      * Найти опцию по идишнику
      *
      * @param {string} id
@@ -553,8 +581,6 @@ var TriviaModel = MutApp.Model.extend({
                 }
             }
         }
-
-        var endstop = 0;
     },
 
     /**
@@ -1034,6 +1060,23 @@ var TriviaModel = MutApp.Model.extend({
                 assert.ok(this.getOptionPointsInfo(options[n].id), 'TriviaModel.isOK: info in optionPoints about option \''+options[n].id+'\' exist');
             }
         }
+
+        // проверить что только одна опция верная в вопросе
+        for (var i = 0; i < quizValue.length; i++) {
+            var oneCorrectOptionFound = false;
+            var options = quizValue[i].answer.options.toArray();
+            for (var n = 0; n < options.length; n++) {
+                var oInfo = this.getOptionPointsInfo(options[n].id);
+                if (oInfo.points > 0) {
+                    if (oneCorrectOptionFound === true) {
+                        // нашли еще корректную опцию в вопросе
+                        assert.ok(false, 'TriviaModel.isOK: more than one correct options in question \''+options[n].id+'\'');
+                    }
+                    oneCorrectOptionFound = true;
+                }
+            }
+        }
+
 
         // проверить resultAllocation
         var maxPoints = 0;

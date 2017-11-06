@@ -798,7 +798,7 @@ var config = {
             defaultDirectiveIndex: 0,
             directives: ['triviaoptionpoints'],
             parentId: 'id-popup_controls_cnt',
-            type: 'popup'
+            type: 'quickcontrolpanel'
         }
     },
     editor: {

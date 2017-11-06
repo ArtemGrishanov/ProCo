@@ -985,7 +985,8 @@ var Editor = {};
                     });
                     ControlManager.filter({
                         screen: scr,
-                        propertyStrings: null
+                        propertyStrings: null,
+                        selectedElement: Workspace.getSelectedElement()
                     });
                     // todo? Workspace.selectElementOnAppScreen( prev selected element );
                 }
@@ -1065,7 +1066,8 @@ var Editor = {};
                     }
                 }
                 ControlManager.filter({
-                    propertyStrings: ps
+                    propertyStrings: ps,
+                    selectedElement: Workspace.getSelectedElement()
                 });
                 break;
             }
@@ -1188,7 +1190,8 @@ var Editor = {};
             });
             ControlManager.filter({
                 screen: scr,
-                propertyStrings: null
+                propertyStrings: null,
+                selectedElement: Workspace.getSelectedElement()
             });
             ScreenManager.showSelectionOnScreen(scr);
             activeScreen = screenId;

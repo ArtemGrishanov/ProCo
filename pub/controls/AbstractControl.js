@@ -130,12 +130,17 @@ var AbstractControl = {
 
     /**
      * Показать контрол
+     *
+     * @param {DomElement} [param.selectedElement] - опционально, элемент выделенный на экране в данный момент.
      */
-    show: function() {
+    show: function(param) {
+        param = param || {};
         this.$wrapper.show();
         if (this.onShow) {
             // можно определить функцию которая будет вызываться при показе контрола
-            this.onShow();
+            this.onShow({
+                selectedElement: param.selectedElement
+            });
         }
     },
 

@@ -270,6 +270,7 @@ var ControlManager = {
      * @param {Array<AbstractControl>} [controls] - опционально, контролы к которым применить фильтрацию
      * @param {MutApp.Screen} param.screen
      * @param {Array<string>} param.propertyStrings
+     * @param {DomElement} [param.selectedElement] - опционально, элемент выделенный на экране в данный момент. Передается дальше внутрь конрола в onShow()
      */
     function filter(param) {
         var filterChanged = false; // определять что значение фильтра реально изменилось
@@ -310,7 +311,9 @@ var ControlManager = {
                 if (config.controls[c.controlName].type === 'popup') {
                     controlPopupFiltered = true;
                 }
-                c.show()
+                c.show({
+                    selectedElement: param.selectedElement
+                })
             }
             else {
                 c.hide();

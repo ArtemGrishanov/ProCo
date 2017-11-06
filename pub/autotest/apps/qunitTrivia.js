@@ -77,13 +77,15 @@ QUnit.test("Trivia: game 1", function( assert ) {
     var resultId2 = app.model.attributes.results.toArray()[1].id;
 
     // установка верного результата для первого вопроса
-    app.model.getOptionPointsInfo(optionId1_1).points = 1;
-    // установка верного результата для второго вопроса
-    app.model.getOptionPointsInfo(optionId2_4).points = 1;
-    // ВАЖНО: посла установки верных/неверных ответов надо обновить распределение. Это должен сделать контрол
-    app.model.updateResultPointsAllocation();
-
+    //app.model.getOptionPointsInfo(optionId1_1).points = 1;
+    app.model.setCorrectAnswer(optionId1_1);
     app.isOK({assert: assert});
+    // установка верного результата для второго вопроса
+    //app.model.getOptionPointsInfo(optionId2_4).points = 1;
+    app.model.setCorrectAnswer(optionId2_4);
+    app.isOK({assert: assert});
+    // ВАЖНО: посла установки верных/неверных ответов надо обновить распределение. Это должен сделать контрол
+    //app.model.updateResultPointsAllocation();
 
     app.model.next();
     app.model.answer(optionId1_1); // верный ответ
@@ -165,9 +167,7 @@ QUnit.test("Trivia: game 2", function( assert ) {
             assert.ok(option);
             var oi = app.model.getOptionPointsInfo(option.id);
             assert.ok(oi);
-            oi.points = 1;
-            // ВАЖНО: посла установки верных/неверных ответов надо обновить распределение. Это должен сделать контрол
-            app.model.updateResultPointsAllocation();
+            app.model.setCorrectAnswer(option.id);
             maxPoints += oi.points;
         }
 

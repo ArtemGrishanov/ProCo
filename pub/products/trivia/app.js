@@ -30,8 +30,7 @@ var TriviaApp = MutApp.extend({
         },
         "id=tm optionPoints": {
             label: {RU: 'Назначение верных ответов', EN: 'Option Points'},
-            controls: 'TriviaOptionPoints',
-            controlFilter: 'onclick'
+            controls: 'TriviaOptionPoints'
         },
         "id=tm quiz": {
             label: {RU:'Вопросы теста',EN:'Trivia quiz'},
