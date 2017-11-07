@@ -512,6 +512,7 @@ var TriviaModel = MutApp.Model.extend({
         // Обязательно: нормализовать опции после установки балла
         this.updateOptionPoints();
         this.updateResultPointsAllocation();
+        this.trigger('change:optionPoints', this); // question.js обрабатывает и показывает галочки верного ответа
     },
 
     /**
@@ -702,7 +703,12 @@ var TriviaModel = MutApp.Model.extend({
                     id: resultsArr[i].id, // именно этот id будет передаваться при шаринге app.share(id)
                     title: resultsArr[i].title.getValue(),
                     description: resultsArr[i].description.getValue(),
-                    imgUrl: null
+                    imgUrl: new MutAppProperty({
+                        propertyString: 'appConstructor=mutapp shareEntities.'+resDictId+'.imgUrl',
+                        model: this,
+                        application: this.application,
+                        value: null
+                    })
                 }, null, resDictId);
             }
         }

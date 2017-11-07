@@ -743,7 +743,13 @@ var config = {
         },
         ChooseImage: {
             defaultDirectiveIndex: 0,
-            directives: ['chooseimage','chooseimagepreview'],
+            directives: ['chooseimage'],
+            parentId: 'id-static_controls_cnt',
+            type: 'controlpanel'
+        },
+        ChooseSharingImage: {
+            defaultDirectiveIndex: 0,
+            directives: ['choosesharingimage'],
             parentId: 'id-static_controls_cnt',
             type: 'controlpanel'
         },
@@ -817,6 +823,10 @@ var config = {
              */
             arrayControlDragZIndex: 20,
             /**
+             * z-index панели быстрого редактирования, которая всплывает рядом с элементом и указывает на него
+             */
+            quickControlPanelZIndex: 22,
+            /**
              * z-index топ-бара (где кнопка опубликовать)
              * программно не ставится, только в css
              */
@@ -838,10 +848,6 @@ var config = {
              * Диалог выбора, например выбор типа вопроса теста selectDialog.js
              */
             selectDialogZIndex: 35,
-            /**
-             * z-index панели быстрого редактирования, которая всплывает рядом с элементом и указывает на него
-             */
-            quickControlPanelZIndex: 35,
             /**
              * Отступы, насколько можно вынести перетаскиваемый элемент за границы группы
              */
@@ -886,6 +892,13 @@ var config = {
              * Имена доступных хуков, которые может определить пользователь
              */
             hookNames: ['beforePreview', 'afterPreview']
+        },
+        imageGeneration: {
+            /**
+             * Столько времени актуальным считает автосгенерированный канвас в приложении
+             * Используется в shareImageService
+             */
+            appAutoPreviewImageExpirationTimeMillis: 3000
         }
     },
     ui: {

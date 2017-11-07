@@ -1023,15 +1023,7 @@ MutApp.prototype.share = function(entityId, serviceId, isFakeShare) {
     serviceId = serviceId || 'fb';
     var ent = this.findShareEntity(entityId);
     if (ent) {
-        // все атрибуты entity будут записаны в теги og, а не передаются вручную в апи (это deprecated метод)
-
-        //        var imgUrl = ent.imgUrl;
-        //        if (!!imgUrl === false) {
-        //            // если по какой-то причине нет картинки. Хотя такая ситуация может быть только в новом проекте в режиме предпросмотра, наверное.
-        //            imgUrl = this.shareDefaultImgUrl;
-        //        }
-        //        var name = ent.title.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
-        //        var description = ent.description.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
+        // все атрибуты entity (title, description, imgUrl) будут записаны в теги og, а НЕ передаются вручную в апи (это deprecated метод)
         var link = this.projectPageUrl.getValue() + 'share/' + entityId + '.html?v=' + this.publishVersion.getValue();
         if (serviceId === 'fb') {
             if (isFakeShare !== true) {

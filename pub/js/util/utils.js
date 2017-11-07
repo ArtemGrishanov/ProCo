@@ -375,5 +375,5 @@ function getOwnPropertiesCount(obj) {
  * @return {string}
  */
 function clearHtmlSymbols(str) {
-    return str.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, '');
+    return str.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, ' ');
 }

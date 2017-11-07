@@ -259,7 +259,9 @@ var App = App || {};
 
             error_input_confirmation_code: 'Введите код подтверждения',
             error_restore_password: 'Не удалется восстановить пароль',
-            enter_code_and_password: 'Введите код подтверждения и новый пароль'
+            enter_code_and_password: 'Введите код подтверждения и новый пароль',
+            make_correct: 'Назначить верным',
+            is_correct: 'Это верный ответ'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -446,7 +448,10 @@ var App = App || {};
 
             error_input_confirmation_code: 'Please, input confirmation code',
             error_restore_password: 'Can not restore password',
-            enter_code_and_password: 'Input verification code and new password'
+            enter_code_and_password: 'Input verification code and new password',
+
+            make_correct: 'Mark as correct',
+            is_correct: 'Correct option'
         }
     },
     /**

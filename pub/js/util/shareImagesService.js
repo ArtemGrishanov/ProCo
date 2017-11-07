@@ -30,6 +30,25 @@ var shareImageService = {};
      * @type {null}
      */
     var callback = null;
+    /**
+     * Последний сгенерированный канвас автокартинки
+     * @type {Canvas}
+     * @private
+     */
+    var _appAutoPreviewCanvas = null;
+    /**
+     * Время начала последней генерации автоканваса
+     * @type {number}
+     * @private
+     */
+    var _canvasGenerationTimestamp = undefined;
+    /**
+     * Массив колбеков, которые будут вызываться при изменении _appAutoPreviewCanvas
+     *
+     * @type {Array}
+     * @private
+     */
+    var _appPreviewCanvasChangeCallbacks = [];
 
     /**
      * Запросить картинки для шаринга.
@@ -56,19 +75,14 @@ var shareImageService = {};
         });
 
         if (needToGenerateAutoImage({app:param.app}) === true) {
-            previewService.createInIframe({
-                html: param.app.getAutoPreviewHtml(),
-                stylesToEmbed: [config.products.common.styles, config.products[param.app.type].stylesForEmbed],
-                cssString: param.app.getCssRulesString(),
-                width: param.app.width,
-                height: param.app.height,
+            generateAppAutoPreviewCanvas({
+                app: param.app,
                 callback: function(canvas) {
-                    log('ShareImageService.generateAndUploadSharingImages: app autopreview created');
                     // сгенерировали один канвас на основе app.getAutoPreviewHtml()
                     // смотрим где не заданы клиентские картинки - ставим этот канвас
                     for (var i = 0; i < _entitiesInfo.length; i++) {
                         var e = _entitiesInfo[i];
-                        if (isCustomUrl(e.imgUrl) === false) {
+                        if (isCustomUrl(e.imgUrl.getValue()) === false) {
                             e.canvas = canvas;
                         }
                     }
@@ -80,8 +94,8 @@ var shareImageService = {};
                             // дописать в хранилище картинок картинку для публикации
                             for (var i = 0; i < _entitiesInfo.length; i++) {
                                 var e = _entitiesInfo[i];
-                                if (isCustomUrl(e.imgUrl) === false) {
-                                    e.imgUrl = fullImageUrl;
+                                if (isCustomUrl(e.imgUrl.getValue()) === false) {
+                                    e.imgUrl.setValue(fullImageUrl);
                                 }
                             }
 
@@ -113,23 +127,52 @@ var shareImageService = {};
     }
 
     /**
-     * Запросить генерацию только канваса без аплоада
+     * Получить автоканвас приложения
+     * @returns {Canvas}
+     */
+    function getAppAutoPreviewCanvas() {
+        return _appAutoPreviewCanvas;
+    }
+
+    /**
+     * Запросить генерацию только канваса без аплоада.
+     * на основе автопревью которое предоставляет приложения.
+     * Есть таймаут: новый канвас будет сгенерирован не ранее чем через config.imageGeneration.appAutoPreviewImageExpirationTimeMillis
      *
      * @param {function} param.callback
      * @param {MutApp} param.app
      */
-//    function requestCanvases(param) {
-//        // удалить всё что сейчас запущено с такими типами
-//        //Queue.clearTasks({type:'create_preview'});
-//        param = param || {};
-//        if (!param.app) {
-//            throw new Error('ShareImageService.requestCanvases: app not specified.');
-//        }
-//        _requestImageTasks.push({
-//            task: 'canvas',
-//            callback: callback
-//        });
-//    }
+    function generateAppAutoPreviewCanvas(param) {
+        param = param || {};
+        if (!param.app) {
+            throw new Error('ShareImageService.generateAppAutoPreviewCanvas: app not specified.');
+        }
+        var now = new Date().getTime();
+        if (_appAutoPreviewCanvas === null || (now - _canvasGenerationTimestamp) > config.editor.imageGeneration.appAutoPreviewImageExpirationTimeMillis) {
+            _canvasGenerationTimestamp = now;
+            previewService.createInIframe({
+                html: param.app.getAutoPreviewHtml(),
+                stylesToEmbed: [config.products.common.styles, config.products[param.app.type].stylesForEmbed],
+                cssString: param.app.getCssRulesString(),
+                width: param.app.width,
+                height: param.app.height,
+                callback: function(canvas) {
+                    log('ShareImageService.generateAppAutoPreviewCanvas: app autopreview created');
+                    _appAutoPreviewCanvas = canvas;
+                    _triggerAppPreviewCanvasChange();
+                    if (param.callback) {
+                        param.callback(_appAutoPreviewCanvas);
+                    }
+                }
+            });
+        }
+        else {
+            // канвас пока актуален, переиспользуем
+            if (param.callback) {
+                param.callback(_appAutoPreviewCanvas);
+            }
+        }
+    }
 
     /**
      * Надо ли генерировать превью для этого ентити или нет
@@ -181,6 +224,18 @@ var shareImageService = {};
     }
 
     /**
+     * Вызвать событие для всех колбеков об изменении автоканваса
+     * @private
+     */
+    function _triggerAppPreviewCanvasChange() {
+        if (_appAutoPreviewCanvas) {
+            for (var i = 0; i < _appPreviewCanvasChangeCallbacks.length; i++) {
+                _appPreviewCanvasChangeCallbacks[i](_appAutoPreviewCanvas);
+            }
+        }
+    }
+
+    /**
      * Найти информацию об entity для публикации
      *
      * @param {string} entityId - идентификатор entity
@@ -212,18 +267,29 @@ var shareImageService = {};
             // проверим, надо ли генерировать картинки для шаринга для каждого entity
             // если пользователь задает картинки сам, то не надо генерировать ничего
             var e = entities[i];
-            if (isCustomUrl(e.imgUrl) === false) {
+            if (isCustomUrl(e.imgUrl.getValue()) === false) {
                 return true;
             }
         }
         return false
     }
 
+    /**
+     * Возможность подписаться на обновление автоканваса приложения
+     *
+     * @param {function} callback
+     */
+    function addAppPreviewCanvasChangeCallback(callback) {
+        _appPreviewCanvasChangeCallbacks.push(callback);
+    }
+
     global.generateAndUploadSharingImages = generateAndUploadSharingImages;
-    // global.requestCanvases = requestCanvases;
+    global.generateAppAutoPreviewCanvas = generateAppAutoPreviewCanvas;
+    global.getAppAutoPreviewCanvas = getAppAutoPreviewCanvas;
     global.isCustomUrl = isCustomUrl;
     global.getGeneratedImages = function() { return _entitiesInfo; }
     global.getEntityInfo = getEntityInfo;
     global.needToGenerateAutoImage = needToGenerateAutoImage;
+    global.addAppPreviewCanvasChangeCallback = addAppPreviewCanvasChangeCallback;
 
 })(shareImageService);

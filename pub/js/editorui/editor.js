@@ -663,7 +663,7 @@ var Editor = {};
 
                 // для анонимной страницы anonymPage/index.html (не для шаринговой страницы share_result)
                 var shareEntArr = editedApp.shareEntities.toArray();
-                var ogImage = (shareEntArr && shareEntArr.length > 0 && shareEntArr[0].imgUrl) ? shareEntArr[0].imgUrl: editedApp.shareDefaultImgUrl;
+                var ogImage = (shareEntArr && shareEntArr.length > 0 && shareEntArr[0].imgUrl.getValue()) ? shareEntArr[0].imgUrl.getValue(): editedApp.shareDefaultImgUrl;
 
                 var appStr = editedApp.serialize();
                 activePublisher.publish({
@@ -826,12 +826,8 @@ var Editor = {};
         if (config.common.previewAutoGeneration === true) {
             var url = Auth.getUser().id+'/app/'+appId+'.jpg';
 
-            previewService.createInIframe({
-                html: editedApp.getAutoPreviewHtml(),
-                stylesToEmbed: [config.products.common.styles, config.products[appName].stylesForEmbed],
-                cssString: editedApp.getCssRulesString(),
-                width: appContainerSize.width,
-                height: appContainerSize.height,
+            shareImageService.generateAppAutoPreviewCanvas({
+                app: editedApp,
                 callback: function(canvas) {
                     s3util.uploadCanvas(App.getAWSBucket(), null, url, canvas);
                 }

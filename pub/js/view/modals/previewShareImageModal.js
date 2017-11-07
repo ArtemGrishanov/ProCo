@@ -18,10 +18,11 @@ function PreviewShareImageModal(param) {
     this.customUserUrl = (shareImageService.isCustomUrl(param.image) === true) ? param.image: null;
     this.resultLabel = param.resultLabel || null;
     if (!this.resultLabel) {
-        var app = Engine.getApp();
-        for (var i = 0; i < app._shareEntities.length; i++) {
-            if (this.entityId === app._shareEntities[i].id) {
-                this.resultLabel = (i+1)+'/'+app._shareEntities.length;
+        var app = Editor.getEditedApp();
+        var shareEntitiesArr = app.shareEntities.toArray();
+        for (var i = 0; i < shareEntitiesArr.length; i++) {
+            if (this.entityId === shareEntitiesArr[i].id) {
+                this.resultLabel = (i+1)+'/'+shareEntitiesArr.length;
                 break;
             }
         }
@@ -32,9 +33,11 @@ function PreviewShareImageModal(param) {
      * Показать диалог выбора ресурсов с колбеком
      */
     this.showResourceDialog = function() {
+        //TODO хак. Чтобы показать ресурсманагер выше надо его тоже сделать модалкой, чтобы они были в одном контейнере
+        $('#id-dialogs_view').css('zIndex', config.modals.previewShareImageModal.defZIndex+1);
         Editor.getResourceManager().show(this.onImageSelected.bind(this), {
             // хотим показать чуть выше чем это окно с превью
-            zIndex: config.modals.previewShareImageModal.defZIndex+1
+            // zIndex: config.modals.previewShareImageModal.defZIndex+1
         });
     };
 
@@ -43,8 +46,9 @@ function PreviewShareImageModal(param) {
      * @param {string} customUserUrl
      */
     this.onImageSelected = function(customUserUrl) {
+        $('#id-dialogs_view').css('zIndex', 'auto');
         this.setAndRenderImage(customUserUrl);
-        // далее пробросить в контрол ChooseImage, так как только контролы должны устанавливать свойства выбранные пользователем
+        // далее пробросить в контрол ChooseSharingImage, так как только контролы должны устанавливать свойства выбранные пользователем
         this.callback(customUserUrl);
     };
 
@@ -59,14 +63,15 @@ function PreviewShareImageModal(param) {
             this.$ui.find('.js-set_autogenerate').show();
         }
         else {
-            //TODO оптимизация: можно не генерить каждый раз, а только запрашивать при каких-то условиях
-            //TODO в маленьком контроле превью на правой панели надо будет повторять эту логику?
             // надо запросить создание канваса, картинка в режиме автогенерации
             this.$ui.find('.js-set_autogenerate').hide();
-            shareImageService.requestCanvases((function() {
-                var info = shareImageService.findImageInfo(this.entityId);
-                this.$ui.find('.js-image').css('background-image', 'url('+info.canvas.toDataURL()+')');
-            }).bind(this));
+
+            shareImageService.generateAppAutoPreviewCanvas({
+                app: Editor.getEditedApp(),
+                callback: (function(canvas) {
+                    this.$ui.find('.js-image').css('background-image', 'url('+canvas.toDataURL()+')');
+                }).bind(this)
+            });
         }
     }
 

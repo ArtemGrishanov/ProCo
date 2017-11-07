@@ -13,6 +13,12 @@ var TriviaApp = MutApp.extend({
      * Схема свойств MutAppProperty в этом приложении
      */
     mutAppSchema: new MutAppSchema({
+        "appConstructor=mutapp shareEntities.{{id}}.imgUrl": {
+            // это свойство описано в клиентской части а не в mutapp.js так как фильтр по экрану может указать только клиент
+            label: {RU: 'Картинка для шаринга', EN: 'Sharing image'},
+            controls: 'ChooseSharingImage',
+            controlFilter: 'screen(type=results)' // клиент знает какие экраны есть в приложении
+        },
         "id=tm logoLink": {
             label: {RU: 'Ссылка по клику на лого', EN: 'Logo click link'},
             controls: 'StringControl',
@@ -414,12 +420,14 @@ var TriviaApp = MutApp.extend({
         }, this);
 
         this.model.bind('change:results', function() {
+            this.model.updateShareEntities();
             this.updateResultsScreens();
         }, this);
 
         // начальное создание экранов.
         // при десериализации нет событий change
         this.updateQuestionScreens();
+        this.model.updateShareEntities();
         this.updateResultsScreens();
 
         // способ указания этих атрибутов уникален для каждого проекта
@@ -515,7 +523,9 @@ var TriviaApp = MutApp.extend({
                     }
                 }
                 if (data.propertyString === 'id=tm results') {
-                    if (this.model) this.model.updateShareEntities();
+                    // это событие вызывается позже чем от модели (где идет updateResultScreens())
+                    // перенес рядом с вызовом updateResultScreens
+                    // if (this.model) this.model.updateShareEntities();
                 }
                 break;
             }
@@ -545,22 +555,60 @@ var TriviaApp = MutApp.extend({
      * {EN: '', RU: ''}
      */
     getStatus: function() {
+        var res = [];
 
-        // TODO не назначенные верными ответы
+        // ==========================================
+        // Информация о распределении результатов
+        // ==========================================
+//        var prbs = this.model.getResultProbabilities();
+//        // специальный табличный формат данных требуемый по https://developers.google.com/chart/interactive/docs/gallery/piechart
+//        var visualizationData = [
+//            ['Result', 'Probability']
+//            // ['Work',     11],
+//            // ['Eat',      2],
+//        ];
+//        for (var resultId in prbs) {
+//            if (prbs.hasOwnProperty(resultId) === true) {
+//                var r = this.model.getResultById(resultId);
+//                visualizationData.push([r.title.getValue(), Math.round(prbs[resultId]*100)]);
+//            }
+//        }
+//        var visualizationTitle = 'Result propabilities';
+//        var visualizationType = 'PieChart';
+//        res.push({
+//            type: 'info',
+//            message: 'Below you can see result probabilities based on your option links',
+//            html: null,
+//            visualization: {
+//                data: visualizationData,
+//                title: visualizationTitle,
+//                type: visualizationType
+//            }
+//        });
 
-//        Ограничители (советники в то же время).
-//        - Если результат теста может быть не определен. Множество сумм баллов не включено полностью в множество результатов
-//        - мин число очков меньше или равно, чем максимальное для одного результата.
-//        - Минимальное количество результатов = 1
-//            - Минимальное количество ответов (2) в вопросе.
-//        - Максимально число ответов в вопросе 10.
-//        - Максимальное число вопросов 20.
-//        - WARNING: всего один вопрос в тесте, вы уверены?
-//            - Максимальное количество символов в вопросе
-//        - Максимальное количество символов в ответе
-//        - Максимальное количество символов в объяснении
+        // ==========================================
+        // не назначенные верными ответы
+        // ==========================================
+        var quizValue = this.model.attributes.quiz.toArray();
+        for (var i = 0; i < quizValue.length; i++) {
+            var options = quizValue[i].answer.options.toArray();
+            var correctOptionFound = false;
+            // найти опцию и поставить ей балл
+            for (var n = 0; n < options.length; n++) {
+                if (this.model.getOptionPointsInfo(options[n].id).points > 0) {
+                    correctOptionFound = true;
+                    break;
+                }
+            }
+            if (correctOptionFound === false) {
+                res.push({
+                    type: 'warning',
+                    message: 'No correct options in question "' + quizValue[i].text.getValue().substr(0, 15) + '"'
+                });
+            }
+        }
 
-        return null;
+        return res;
     },
 
     /**
@@ -577,9 +625,9 @@ var TriviaApp = MutApp.extend({
             var th = titleView.outerHeight(false);
             var descView = viewForShare.find('.info_tx').css('padding','0 50px 0 50px').css('margin','0');
             var dh = descView.outerHeight(false);
-            var ind = (this.height-dh-th)/4;
-            titleView.css('padding-top',ind+'px');
-            descView.css('padding-top',ind+'px');
+            var freeVertSpace = (this.height-dh-th);
+            titleView.css('padding-top',freeVertSpace*0.35+'px');
+            descView.css('padding-top',freeVertSpace*0.1+'px');
             return viewForShare.html();
         }
         return '';
