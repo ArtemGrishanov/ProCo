@@ -23,7 +23,7 @@ var TriviaModel = MutApp.Model.extend({
          * 2: 'result2',
          * ...}
          */
-        resulPointsAllocation: {},
+        resultPointsAllocation: {},
         /**
          *
          * @type {MutAppProperty}
@@ -382,12 +382,12 @@ var TriviaModel = MutApp.Model.extend({
      * @param {number} points - количество баллов, для которых найти результат
      */
     getResultByPoints: function(points) {
-        // resulPointsAllocation - распределение баллов по результатам
+        // resultPointsAllocation - распределение баллов по результатам
         // 0: 'result1',
         // 1: 'result1',
         // 2: 'result2',
         // ...
-        var resultId = this.attributes.resulPointsAllocation[points];
+        var resultId = this.attributes.resultPointsAllocation[points];
         if (resultId) {
             var result = this.getResultById(resultId);
             if (result) {
@@ -586,7 +586,7 @@ var TriviaModel = MutApp.Model.extend({
 
     /**
      * Апдейт соответствия набранных баллов и результатов
-     * resulPointsAllocation
+     * resultPointsAllocation
      *
      */
     updateResultPointsAllocation: function() {
@@ -599,7 +599,7 @@ var TriviaModel = MutApp.Model.extend({
         }
         var resultsArr = this.attributes.results.toArray();
         var quizArr = this.attributes.quiz.toArray();
-        this.attributes.resulPointsAllocation = {};
+        this.attributes.resultPointsAllocation = {};
         var resGap = Math.floor(quizArr.length / resultsArr.length); // длина промежутка на шкале распределения, которая приходится на один результат
         if (resGap < 1) {
             resGap = 1;
@@ -609,7 +609,7 @@ var TriviaModel = MutApp.Model.extend({
         if (resIndex >= 0) {
             var currentResultId = resultsArr[resIndex].id;
             for (var i = maxPoints; i >= 0; i--) { // >= важно!
-                this.attributes.resulPointsAllocation[i] = currentResultId;
+                this.attributes.resultPointsAllocation[i] = currentResultId;
                 g++;
                 if (g > resGap) {
                     g = 1;
@@ -698,7 +698,8 @@ var TriviaModel = MutApp.Model.extend({
         var resultsArr = this.attributes.results.toArray();
         for (var i = 0; i < resultsArr.length; i++) {
             var resDictId = this.attributes.results.getIdFromPosition(i);
-            if (this.application.shareEntities.getPosition(resDictId) < 0) {
+            var pos = this.application.shareEntities.getPosition(resDictId);
+            if (pos < 0) {
                 this.application.shareEntities.addElement({
                     id: resultsArr[i].id, // именно этот id будет передаваться при шаринге app.share(id)
                     title: resultsArr[i].title.getValue(),
@@ -710,6 +711,12 @@ var TriviaModel = MutApp.Model.extend({
                         value: null
                     })
                 }, null, resDictId);
+            }
+            else {
+                // необходимо обновить атрибуты ентити в любом случае
+                var se = this.application.shareEntities.toArray()[pos];
+                se.title = resultsArr[i].title.getValue();
+                se.description = resultsArr[i].description.getValue();
             }
         }
     },
@@ -1092,7 +1099,7 @@ var TriviaModel = MutApp.Model.extend({
             // столько баллов можно набрать максимально, все вопросы приносят по 1
             maxPoints += optionPointsArr[i].points;
         }
-        assert.ok(this.attributes.resulPointsAllocation[maxPoints], 'TriviaModel.isOK: Result for max points');
+        assert.ok(this.attributes.resultPointsAllocation[maxPoints], 'TriviaModel.isOK: Result for max points');
 
         var resultsArr = this.attributes.results.toArray();
         var quizArr = this.attributes.quiz.toArray();
@@ -1100,12 +1107,12 @@ var TriviaModel = MutApp.Model.extend({
         if (quizArr.length >= resultsArr.length) {
             var resInAlloc = [];
             for (var i = maxPoints; i >= 0; i--) {
-                var resId = this.attributes.resulPointsAllocation[i];
+                var resId = this.attributes.resultPointsAllocation[i];
                 if (resInAlloc.indexOf(resId) < 0) {
                     resInAlloc.push(resId);
                 }
             }
-            assert.ok(resInAlloc.length === resultsArr.length, 'TriviaModel.isOK: Every result exist in resulPointsAllocation');
+            assert.ok(resInAlloc.length === resultsArr.length, 'TriviaModel.isOK: Every result exist in resultPointsAllocation');
         }
         else {
             // todo ?

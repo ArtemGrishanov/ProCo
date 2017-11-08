@@ -367,7 +367,12 @@ img {
     cursor: pointer;
 }
 
-@media (max-width:600px)  {
+/**
+ Важное замечание про: min-width:1px
+ Стили вычисляются renderCompleted() -> updateCssMutAppPropertiesValues() когда экран имеет width=0
+ И правила типа body .info_title перебивают значения из шаблона
+**/
+@media (min-width:1px) and (max-width:600px)  {
     /* using body for making this rules more important then 'js-*' rules from engine.js */
     body .info_title {
         padding-top: 60px;

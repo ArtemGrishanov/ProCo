@@ -286,13 +286,25 @@ var PersonalityModel = MutApp.Model.extend({
         var resultsArr = this.attributes.results.toArray();
         for (var i = 0; i < resultsArr.length; i++) {
             var resDictId = this.attributes.results.getIdFromPosition(i);
-            if (this.application.shareEntities.getPosition(resDictId) < 0) {
+            var pos = this.application.shareEntities.getPosition(resDictId);
+            if (pos < 0) {
                 this.application.shareEntities.addElement({
                     id: resultsArr[i].id, // именно этот id будет передаваться при шаринге app.share(id)
                     title: resultsArr[i].title.getValue(),
                     description: resultsArr[i].description.getValue(),
-                    imgUrl: null
+                    imgUrl: new MutAppProperty({
+                        propertyString: 'appConstructor=mutapp shareEntities.'+resDictId+'.imgUrl',
+                        model: this,
+                        application: this.application,
+                        value: null
+                    })
                 }, null, resDictId);
+            }
+            else {
+                // необходимо обновить атрибуты ентити в любом случае
+                var se = this.application.shareEntities.toArray()[pos];
+                se.title = resultsArr[i].title.getValue();
+                se.description = resultsArr[i].description.getValue();
             }
         }
     },

@@ -269,7 +269,7 @@ var MutApp = function(param) {
         application: this,
         propertyString: 'appConstructor=mutapp shareLink',
         value: null // если пользователь не установит будет использоваться projectPageUrl
-    })
+    });
     this.gaId = new MutAppProperty({
         application: this,
         propertyString: 'appConstructor=mutapp gaId',

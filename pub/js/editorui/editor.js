@@ -682,7 +682,7 @@ var Editor = {};
                     ogUrl: anonymUrl, // og url
                     ogImage: ogImage,
                     shareEntities: editedApp.shareEntities.toArray(),
-                    shareLink: editedApp.shareLink.getValue(),
+                    shareLink: editedApp.shareLink.getValue() || editedApp.projectPageUrl.getValue(),
                     projectBackgroundImageUrl: editedApp.getProperty('appConstructor=mutapp projectPageBackgroundImageUrl').getValue(),
                     tariffIsBasic: Auth.isTariff('basic'),
                     callback: function(publishResult) {

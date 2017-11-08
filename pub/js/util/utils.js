@@ -375,5 +375,6 @@ function getOwnPropertiesCount(obj) {
  * @return {string}
  */
 function clearHtmlSymbols(str) {
-    return str.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, ' ');
+    // два пробела заменить на один пробел в итоге
+    return str.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, ' ').replace('  ', ' ');
 }

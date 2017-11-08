@@ -13,6 +13,12 @@ var PersonalityApp = MutApp.extend({
      * Схема свойств MutAppProperty в этом приложении
      */
     mutAppSchema: new MutAppSchema({
+        "appConstructor=mutapp shareEntities.{{id}}.imgUrl": {
+            // это свойство описано в клиентской части а не в mutapp.js так как фильтр по экрану может указать только клиент
+            label: {RU: 'Картинка для шаринга', EN: 'Sharing image'},
+            controls: 'ChooseSharingImage',
+            controlFilter: 'screenPropertyString' // клиент знает какие экраны есть в приложении
+        },
         "id=pm logoLink": {
             label: {RU: 'Ссылка по клику на лого', EN: 'Logo click link'},
             controls: 'StringControl',

@@ -207,7 +207,7 @@ var ResultScreen = MutApp.Screen.extend({
             this.$el.find('.js-back_shadow').css('background-color','');
         }
 
-        this.$el.attr('data-filter', r.backgroundImage.propertyString+','+r.backgroundColor.propertyString);
+        this.$el.attr('data-filter', r.backgroundImage.propertyString+','+r.backgroundColor.propertyString+',appConstructor=mutapp shareEntities.'+dictionaryId+'.imgUrl');
 
         this.renderCompleted();
         return this;

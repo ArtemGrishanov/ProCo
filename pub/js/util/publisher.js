@@ -517,7 +517,7 @@ var Publisher = {};
             var res = getResourceByUrl('share/'+shareEntities[i].id+'.html');
             res.data = res.data.replace('{{og:title}}', clearHtmlSymbols(shareEntities[i].title)); // util.js
             res.data = res.data.replace('{{og:description}}', clearHtmlSymbols(shareEntities[i].description));
-            res.data = res.data.replace('{{og:image}}', shareEntities[i].imgUrl);
+            res.data = res.data.replace('{{og:image}}', shareEntities[i].imgUrl.getValue());
             res.data = res.data.replace('{{og:url}}', getAnonymLink() + 'share/' + shareEntities[i].id+'.html');
             res.data = res.data.replace('{{share_link}}', shareLink);
         }

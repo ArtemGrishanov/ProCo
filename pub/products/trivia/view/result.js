@@ -16,7 +16,7 @@ var ResultScreen = MutApp.Screen.extend({
     /**
      * Для контрола SlideGroupControl, который управляет порядком группы экранов
      */
-    arrayAppPropertyString: 'id=pm results',
+    arrayAppPropertyString: 'id=tm results',
     /**
      * Метка которая показывается в редакторе, рядом с превью экрана
      * @see MutApp
@@ -207,10 +207,19 @@ var ResultScreen = MutApp.Screen.extend({
             this.$el.find('.js-back_shadow').css('background-color','');
         }
 
-        this.$el.attr('data-filter', r.backgroundImage.propertyString+','+r.backgroundColor.propertyString);
+        this.$el.attr('data-filter', r.backgroundImage.propertyString+','+r.backgroundColor.propertyString+',appConstructor=mutapp shareEntities.'+dictionaryId+'.imgUrl');
 
         this.renderCompleted();
         return this;
+    },
+
+    /**
+     * Вернуть текст подсказки для результата типа 0-2
+     *
+     * @returns {string}
+     */
+    getResultPointsHint: function() {
+        return '';
     },
 
     /**

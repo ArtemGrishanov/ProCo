@@ -115,7 +115,7 @@ TemplateCollection.prototype.loadTemplatesInfo = function(callback) {
                 // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
                 data: {
                     id: this.templates[i].id,
-                    templateUrl: config.common.awsHostName+config.common.awsBucketName+'/'+this.templates[i].url
+                    templateUrl: this.templates[i].url
                 },
                 run: function() {
                     log('Requesting template by id:' + this.data.id);

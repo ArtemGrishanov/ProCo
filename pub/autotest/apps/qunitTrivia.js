@@ -172,8 +172,8 @@ QUnit.test("Trivia: game 2", function( assert ) {
         }
 
         // проверить что с установкой корректных ответов произошло распределение результатов по баллам
-        assert.ok(typeof app.model.attributes.resulPointsAllocation[maxPoints] === 'string');
-        // более полная проверка resulPointsAllocation внутри model.isOK
+        assert.ok(typeof app.model.attributes.resultPointsAllocation[maxPoints] === 'string');
+        // более полная проверка resultPointsAllocation внутри model.isOK
     }
 
     function round(app) {

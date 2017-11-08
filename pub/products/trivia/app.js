@@ -17,7 +17,7 @@ var TriviaApp = MutApp.extend({
             // это свойство описано в клиентской части а не в mutapp.js так как фильтр по экрану может указать только клиент
             label: {RU: 'Картинка для шаринга', EN: 'Sharing image'},
             controls: 'ChooseSharingImage',
-            controlFilter: 'screen(type=results)' // клиент знает какие экраны есть в приложении
+            controlFilter: 'screenPropertyString' // клиент знает какие экраны есть в приложении
         },
         "id=tm logoLink": {
             label: {RU: 'Ссылка по клику на лого', EN: 'Logo click link'},
@@ -585,6 +585,18 @@ var TriviaApp = MutApp.extend({
 //                type: visualizationType
 //            }
 //        });
+        // пока текстовая подсказка про распределение правильых ответов и результатов
+        var text = '';
+        for (var points in this.model.attributes.resultPointsAllocation) {
+            var resultId = this.model.attributes.resultPointsAllocation[points];
+            var result = this.model.getResultById(resultId);
+            text += 'Points: '+points+', Result: "'+result.title.getValue()+'"';
+            text += '<br>';
+        }
+        res.push({
+            type: 'info',
+            message: text
+        });
 
         // ==========================================
         // не назначенные верными ответы
