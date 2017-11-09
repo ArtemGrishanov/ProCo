@@ -350,3 +350,31 @@ QUnit.test("MutApp test: operations count", function( assert ) {
     app1.model.attributes.results.deserialize(serStr);
     assert.ok(app1.getOperationsCount() === initialOperationCount+2);
 });
+
+QUnit.test('MutApp test: value patterns ("{{number}}px", etc)', function( assert ) {
+    assert.ok(MutApp.Util.applyPattern('14', '{{number}}px') === '14px');
+    assert.ok(MutApp.Util.applyPattern(' 1 4 ', '{{number}}px') === '14px');
+    assert.ok(MutApp.Util.applyPattern(' 1 4 px', '{{number}}px') === '14px');
+    assert.ok(MutApp.Util.applyPattern('14px', '{{number}}px') === '14px');
+    assert.ok(MutApp.Util.applyPattern('', '{{number}}px') === '0px');
+    assert.ok(MutApp.Util.applyPattern('px', '{{number}}px') === '0px');
+    assert.ok(MutApp.Util.applyPattern('14px', 'pre{{number}}px') === 'pre14px');
+
+    var app1 = new PersonalityApp({
+    });
+    app1.start();
+
+    var p = app1.getProperty('.js-start_header font-size');
+    p.setValue('20');
+    assert.ok(p.getValue() === '20px');
+    p.setValue('20px');
+    assert.ok(p.getValue() === '20px');
+    p.setValue(' 2 0 ');
+    assert.ok(p.getValue() === '20px');
+    p.setValue('');
+    assert.ok(p.getValue() === '0px');
+    p.setValue('px');
+    assert.ok(p.getValue() === '0px');
+    p.setValue('em');
+    assert.ok(p.getValue() === '0px');
+});

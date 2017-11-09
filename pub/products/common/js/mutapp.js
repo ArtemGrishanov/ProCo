@@ -2403,6 +2403,31 @@ MutApp.Util = {
     isRgb: function(str) {
         str = str.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
         return !!str && !!str[1] && !!str[2] && !!str[3];
+    },
+
+    /**
+     * Нормализовать значение в соответствии с шаблоном
+     * Поддерживается только вхождения {{number}} в шаблоне строго один раз
+     *
+     * @param {*} newValue, пример '12, '12px', '012'
+     * @param {string} pattern, пример "{{number}}px"
+     */
+    applyPattern: function(value, pattern) {
+        var numCount = (pattern.match(/{{number}}/g) || []).length;
+        if (numCount === 1) {
+            var s = value.toString().replace(/\s/g,'');
+            if (s === '') {
+                s = '0';
+            }
+            var num = parseInt(s);
+            if (isNaN(num) === true) {
+                num = 0;
+            }
+            return pattern.replace('{{number}}', num);
+        }
+        else {
+            throw new Error('MutApp.Util.applyPattern: this pattern \''+pattern+'\' is not supported');
+        }
     }
 };
 
@@ -2705,6 +2730,7 @@ MutAppProperty.prototype.initialize = function(param) {
     this.label = param.label || {RU:'MutAppProperty имя', EN:'MutAppProperty label'};
     this._getValueTimestamp = param._getValueTimestamp || undefined;
     this._setValueTimestamp = param._setValueTimestamp || undefined;
+    this._valuePattern = param.valuePattern || null;
     this._bindedEvents = {};
     // выделим из propertyString имя свойства. Потребуется в дальнейшем для генерации событий об изменении свойства (только для свойств в MutAppModel)
     var pr = MutApp.Util.parseSelector(param.propertyString);
@@ -2902,6 +2928,11 @@ MutAppProperty.prototype.deserialize = function(data) {
 MutAppProperty.prototype.setValue = function(newValue) {
     if (this._validateDataType(newValue) !== true) {
         throw new Error('MutAppProperty.setValue: MutAppProperty invalid data type \'' + (typeof newValue) + '\' in property \'' + this.propertyString + '\'');
+    }
+    if (this._valuePattern) {
+        // сначала необходимо нормализовать значение в соответствии с паттерном
+        // например: newValue="20", надо сделать "20px" (по паттерну {{number}}px)
+        newValue = MutApp.Util.applyPattern(newValue, this._valuePattern);
     }
     if (this._value !== newValue) {
         this._value = newValue;

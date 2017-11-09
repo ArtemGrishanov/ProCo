@@ -6,6 +6,9 @@ QUnit.test("Autopreview qunit: 1", function( assert ) {
 
     var appInfo = [];
     var templateUrls = [
+        '43d927ad-17a1-4d07-84c2-c273dff1a831/app/f0ce5473dc.txt', // Personality мой первый тест
+        '43d927ad-17a1-4d07-84c2-c273dff1a831/app/4acc02fb1f.txt', // Trivia мой первый тест
+
         '43d927ad-17a1-4d07-84c2-c273dff1a831/app/57b23309cd.txt',
         'cd811f5b-78b5-447c-955f-f08846862693/app/2bb7773ded.txt' // внутри параметр url невалидный
     ];

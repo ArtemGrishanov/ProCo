@@ -318,17 +318,20 @@ var TriviaApp = MutApp.extend({
             // css mutAppProperty описываются только схемой
             label: {RU:'Размер шрифта',EN:'Font size'},
             controls: "StringControl",
-            controlFilter: 'onclick'
+            controlFilter: 'onclick',
+            valuePattern: '{{number}}px'
         },
         ".js-start_header padding-top, .js-start_description padding-top, .js-question_text padding-top, .js-result_title padding-top, .js-result_description padding-top, .js-btn_wr padding-top": {
             label: {RU:'Отступ сверху',EN:'Padding top'},
             controls: "StringControl",
-            controlFilter: 'onclick'
+            controlFilter: 'onclick',
+            valuePattern: '{{number}}px'
         },
         ".js-start_header padding-bottom, .js-start_description padding-bottom, .js-question_text padding-bottom, .js-result_title padding-bottom, .js-result_description padding-bottom": {
             label: {RU:'Отступ снизу',EN:'Padding bottom'},
             controls: "StringControl",
-            controlFilter: 'onclick'
+            controlFilter: 'onclick',
+            valuePattern: '{{number}}px'
         },
         ".js-start_header text-align, .js-start_description text-align, .js-question_text text-align, .js-result_title text-align, .js-result_description text-align": {
             label: {RU:'Выравнивание текста',EN:'Text-align'},

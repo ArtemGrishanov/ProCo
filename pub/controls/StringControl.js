@@ -13,47 +13,12 @@ function StringControl(param) {
     this.$input = null;
     this.inputValue = undefined;
     this.colorpicker = null;
-
-    /**
-     * Событие при нажатии Enter
-     */
-    this.onInputKeyUp = function(e) {
-        //if (e.keyCode == 13) {
-        this.checkValue();
-        //}
-    };
-
-    /**
-     * Событие при сбросе фокуса с инпута
-     */
-    this.onInputFocusOut = function(e) {
-        this.checkValue();
-    };
-
-    /**
-     * Проверить что значение в поле ввода действительно изменилось и тогда вызвать колбек об уведомлении
-     */
-    this.checkValue = function() {
-        if (this.$input) {
-            var inpv = (this.colorpicker) ? this.colorpicker.toHEXString(): this.$input.val();
-            if (this.inputValue !== inpv) {
-                this.inputValue = inpv;
-                this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
-            }
-        }
-    };
-
-    /**
-     * Событие на изменение значения в колорпикере
-     * То есть не обязательно закрывать колорпикер (событие onInputFocusOut) чтобы сменить цвет
-     */
-    this.onColorpickerChange = function() {
-        this.checkValue();
-    };
+    this._isFocus = false;
 
     this.$input = this.$directive.find('input');
     this.$input.keyup(this.onInputKeyUp.bind(this));
     this.$input.focusout(this.onInputFocusOut.bind(this));
+    this.$input.focusin(this.onInputFocusIn.bind(this));
     if (this.$directive.hasClass('js-colorpicker') === true && window.jscolor) {
         // подключаем компонент выбора цвета
         this.colorpicker = new jscolor(this.$input[0]);
@@ -76,11 +41,16 @@ StringControl.prototype.setValue = function(value) {
             value = '';
         }
         this.inputValue = value;
-        if (this.colorpicker) {
-            this.colorpicker.fromString(value);
-        }
-        else {
-            this.$input.val(value);
+        if (this._isFocus === false) {
+            // пока пользователь находится в поле ввода не надо сбивать его курсор и переустанавливать значение
+            // после ввода пользователя в инпуте может остаться всякий мусор, даже пустое поле, если пользователь все стер
+            // но главное что в приложении будет корректное нормализованное значение
+            if (this.colorpicker) {
+                this.colorpicker.fromString(value);
+            }
+            else {
+                this.$input.val(value);
+            }
         }
     }
     else {
@@ -92,4 +62,47 @@ StringControl.prototype.destroy = function() {
     this.colorpicker = null;
     this.$input.off();
     this.$directive.remove();
+};
+
+/**
+ * Событие при нажатии Enter
+ */
+StringControl.prototype.onInputKeyUp = function(e) {
+    this.checkValue();
+};
+
+/**
+ * Событие при сбросе фокуса с инпута
+ */
+StringControl.prototype.onInputFocusOut = function(e) {
+    this._isFocus = false;
+    this.checkValue();
+};
+
+/**
+ * Событие при сбросе фокуса с инпута
+ */
+StringControl.prototype.onInputFocusIn = function(e) {
+    this._isFocus = true;
+};
+
+/**
+ * Проверить что значение в поле ввода действительно изменилось и тогда вызвать колбек об уведомлении
+ */
+StringControl.prototype.checkValue = function() {
+    if (this.$input) {
+        var inpv = (this.colorpicker) ? this.colorpicker.toHEXString(): this.$input.val();
+        if (this.inputValue !== inpv) {
+            this.inputValue = inpv;
+            this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
+        }
+    }
+};
+
+/**
+ * Событие на изменение значения в колорпикере
+ * То есть не обязательно закрывать колорпикер (событие onInputFocusOut) чтобы сменить цвет
+ */
+StringControl.prototype.onColorpickerChange = function() {
+    this.checkValue();
 };
