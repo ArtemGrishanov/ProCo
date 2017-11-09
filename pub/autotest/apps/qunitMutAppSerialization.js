@@ -172,7 +172,8 @@ QUnit.test("MutApp test: MutApp serialization with array element delete. (Person
  */
 QUnit.test("MutApp test: MutApp deserialization in start. (PersonalityTest)", function( assert ) {
     var originApp = new PersonalityApp({
-        defaults: null
+        defaults: null,
+        autotesting: true
     });
     originApp.start();
     // внести изменения во все свойства приложения

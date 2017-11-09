@@ -71,6 +71,12 @@ var MutApp = function(param) {
      * @type {string} 'published' || 'preview' || 'edit' || 'none'
      */
     this.mode = 'none';
+    /**
+     * Приложение запущено для автотестирования
+     * Клиент может реализовать какую-то особую логику по этому поводу
+     * @type {boolean}
+     */
+    this.autotesting = false;
     this.title = null;
     this.description = null;
     this._models = [];
@@ -204,6 +210,9 @@ var MutApp = function(param) {
     if (param) {
         if (param.mode) {
             this.mode = param.mode;
+        }
+        if (typeof param.autotesting === 'boolean') {
+            this.autotesting = param.autotesting;
         }
         if (this.screenRoot) {
             this.screenRoot.empty();
@@ -2413,6 +2422,10 @@ MutApp.Util = {
      * @param {string} pattern, пример "{{number}}px"
      */
     applyPattern: function(value, pattern) {
+        if (value === null || value == undefined) {
+            // не пытаемся ничего устанавливать
+            return value;
+        }
         var numCount = (pattern.match(/{{number}}/g) || []).length;
         if (numCount === 1) {
             var s = value.toString().replace(/\s/g,'');

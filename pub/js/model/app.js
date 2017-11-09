@@ -409,7 +409,7 @@ var App = App || {};
             quiz_example: 'View quiz example',
             mini_memory_create: 'Mini-games. Memory',
             memory_index1: 'Upload images to the template - and your own game is ready.<br><br>The game "Memory" allows you to check the knowledge of the correspondence of images: for example, what brand of car, a football player and his club, in which country is an architectural monument.',
-            create_memory_free: 'Create game fro free',
+            create_memory_free: 'Create game for free',
             memory_example: 'View game example',
             fbpano_create: 'Photos 360° for Facebook',
             fbpano_index1: 'A unique format that allows you to create a 360° panorama from a regular photo, sign any objects on it and publish it to Facebook. Create your own tours to interesting places - now you have the opportunity to tell the whole story!',

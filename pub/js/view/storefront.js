@@ -43,10 +43,12 @@ var storefrontView = {};
     function findTemplate(templateUrl) {
         for (var catName in config.storefront.categories) {
             var info = config.storefront.categories[catName];
-            for (var i = 0; i < info.entities.length; i++) {
-                var e = info.entities[i];
-                if (e.template === templateUrl) {
-                    return e;
+            if (info.entities) {
+                for (var i = 0; i < info.entities.length; i++) {
+                    var e = info.entities[i];
+                    if (e.template === templateUrl) {
+                        return e;
+                    }
                 }
             }
         }

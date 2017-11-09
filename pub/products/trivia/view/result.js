@@ -115,8 +115,25 @@ var ResultScreen = MutApp.Screen.extend({
         this.model.bind("change:showDownload", this.onMutAppPropertyChanged, this);
         this.model.bind("change:fbSharingEnabled", this.onMutAppPropertyChanged, this);
         this.model.bind("change:vkSharingEnabled", this.onMutAppPropertyChanged, this);
-        this.model.bind("change:restartButtonText", this.onMutAppPropertyChanged, this);
-        this.model.bind("change:downloadButtonText", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:restartButtonText", function() {
+            //this.onMutAppPropertyChanged
+            // чтобы другие экраны результата обновлялись. Но текущий экран не надо рефрешить так как это ломает ввод пользователя
+            // гибкость новой платформы в действии. Такие моменты должны реализовываться руками, силами разработчика
+            // а не "декларативными правилами" или "автоматически"
+            if (this.$el.find('.js-restart').html() !== this.model.get('restartButtonText').getValue()) {
+                // рендерим только если текст отличается
+                this.render();
+            }
+        }, this);
+        this.model.bind("change:downloadButtonText", function() {
+            // чтобы другие экраны результата обновлялись. Но текущий экран не надо рефрешить так как это ломает ввод пользователя
+            // гибкость новой платформы в действии. Такие моменты должны реализовываться руками, силами разработчика
+            // а не "декларативными правилами" или "автоматически"
+            if (this.$el.find('.js-restart').html() !== this.model.get('restartButtonText').getValue()) {
+                // рендерим только если текст отличается
+                this.render();
+            }
+        }, this);
         this.model.bind("change:logoUrl", this.onMutAppPropertyChanged, this);
     },
 

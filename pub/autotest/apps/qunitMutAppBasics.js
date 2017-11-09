@@ -256,19 +256,25 @@ QUnit.test("MutApp test: multiapp", function( assert ) {
     assert.ok(app2._models.length === 1, 'Models length 2');
 });
 
-QUnit.test("MutApp test: Sharing", function( assert ) {
+QUnit.test("MutApp test: Sharing, FB api initialization", function( assert ) {
+    var done = assert.async();
+
     var app = new PersonalityApp({
     });
 
     assert.ok(!!app.title===true, 'title in app');
     assert.ok(!!app.description===true, 'description in app');
     assert.ok(!!app.shareDefaultImgUrl===true, 'defaultImgUrl in Sharer');
-    assert.ok(app._shareEntities.length===0, 'entities in Sharer');
+    assert.ok(app.shareEntities.toArray().length===0, 'entities in Sharer');
     assert.ok(!!app.share('fooId')===false, 'share() in Sharer');
 
-    // не устанавливали setShareEntities, поэтому фб апи не должно инициализироваться
-    assert.ok(window.FB === undefined, 'FB === undefined');
-    assert.ok($('#facebook-jssdk').length === 0, 'facebook-jssdk dont exist');
+    setTimeout(function() {
+        // сейчас фб апи инитится всегда при старте приложения MutApp так как shareEntities асинхронно создаются в любой момент
+        assert.ok(window.FB, 'FB !== undefined');
+        assert.ok($('#facebook-jssdk').length > 0, 'facebook-jssdk exists');
+
+        done();
+    }, 999);
 });
 
 QUnit.test("MutApp test: clarifyElement", function( assert ) {

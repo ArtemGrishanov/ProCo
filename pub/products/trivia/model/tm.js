@@ -994,6 +994,12 @@ var TriviaModel = MutApp.Model.extend({
         // решил что будет определять по тому какой именно экран вопроса сейчас показан в редакторе
         param.questionDictionaryId = param.questionDictionaryId || this.application.getCurrentQuestionDictionaryId();
 
+        if (this.application.autotesting === true && !param.questionDictionaryId) {
+            // для автотестирования
+            // так как экраны все скрыты в процессе тестирования
+            param.questionDictionaryId = this.application.getScreenById('questionScreen0').dictionaryId;
+        }
+
         if (!param.questionDictionaryId) {
             throw new Error('TriviaModel.proto_optionText: questionDictionaryId does not specified');
         }
@@ -1032,6 +1038,12 @@ var TriviaModel = MutApp.Model.extend({
         // не удалось придумать нормально как передавать param.questionDictionaryId
         // решил что будет определять по тому какой именно экран вопроса сейчас показан в редакторе
         param.questionDictionaryId = param.questionDictionaryId || this.application.getCurrentQuestionDictionaryId();
+
+        if (this.application.autotesting === true && !param.questionDictionaryId) {
+            // для автотестирования
+            // так как экраны все скрыты в процессе тестирования
+            param.questionDictionaryId = this.application.getScreenById('questionScreen0').dictionaryId;
+        }
 
         if (!param.questionDictionaryId) {
             throw new Error('TriviaModel.proto_optionPhoto: questionDictionaryId does not specified');

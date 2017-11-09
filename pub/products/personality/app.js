@@ -531,7 +531,9 @@ var PersonalityApp = MutApp.extend({
                 return scr.dictionaryId;
             }
         }
-        throw new Error('Personality.getCurrentQuestionDictionaryId: can not detect question dictionaryId');
+        if (this.autotesting === false) {
+            throw new Error('Personality.getCurrentQuestionDictionaryId: can not detect question dictionaryId');
+        }
     },
 
     /**

@@ -77,7 +77,7 @@ TemplateCollection.prototype.loadTemplateList = function(callback) {
                     // позже он будет дописан более подробной информацией из loadTemplatesInfo
                     var newItem = new Template({
                         // key example 0235e985-8b92-4666-83fa-25fd85ee1072/app/abc123.txt
-                        url: obj.Key,
+                        url: config.common.awsHostName+'/'+config.common.awsBucketName+'/'+obj.Key,
                         id: tId,
                         lastModified: obj.LastModified
                     })
