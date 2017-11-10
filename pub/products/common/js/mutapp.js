@@ -525,7 +525,7 @@ MutApp.prototype.fbInit = function(appId) {
             appId      : appId,
             status     : true,
             xfbml      : true,
-            version    : 'v2.7'
+            version    : 'v2.11'
         });
     };
     (function(d, s, id){

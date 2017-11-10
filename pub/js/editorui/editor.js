@@ -1297,7 +1297,7 @@ var Editor = {};
                     shareEntities: shareImageService.getGeneratedImages(),
                     shareLink: app.shareLink,
                     ogImage: (shareImageService.getGeneratedImages() && (shareImageService.getGeneratedImages().length > 0) && shareImageService.getGeneratedImages()[0].imgUrl) ? shareImageService.getGeneratedImages()[0].imgUrl: app.shareDefaultImgUrl, // og tag
-                    productBackgroundImageUrl: Engine.getAppProperty('appConstructor=mutapp productPageBackgroundImage').propertyValue,
+                    productBackgroundImageUrl: (Engine.getAppProperty('appConstructor=mutapp productPageBackgroundImage')) ? Engine.getAppProperty('appConstructor=mutapp productPageBackgroundImage').propertyValue: '',
                     tariffIsBasic: isBasicTariff()
                 });
             });

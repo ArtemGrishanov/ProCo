@@ -625,11 +625,11 @@ var App = App || {};
         window.fbAsyncInit = function() {
             FB.init({
                 appId      : config.common.facebookAppId,
-                cookie     : true,  // enable cookies to allow the server to access
-                // the session
+                autoLogAppEvents : true,
                 xfbml      : true,  // parse social plugins on this page
-                version    : 'v2.5' // use graph api version 2.5
+                version    : 'v2.11' // use graph api version 2.5
             });
+            FB.AppEvents.logPageView();
             // Now that we've initialized the JavaScript SDK, we call
             // FB.getLoginStatus().  This function gets the state of the
             // person visiting this page and can return one of three states to
@@ -648,11 +648,11 @@ var App = App || {};
             });
         };
         // Load the SDK asynchronously
-        (function(d, s, id) {
+        (function(d, s, id){
             var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
+            if (d.getElementById(id)) {return;}
             js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     }
@@ -789,7 +789,7 @@ var App = App || {};
             userData = null;
             FB.api('/me',
                 {
-                    fields: "id,about,age_range,picture,bio,birthday,context,email,first_name,gender,hometown,link,location,middle_name,name,timezone,website,work"
+                    fields: "id,about,age_range,picture,birthday,context,email,first_name,gender,hometown,link,location,middle_name,name,timezone,website,work"
                 },
                 function(response) {
                     userData = response;
