@@ -41,15 +41,20 @@ var CanvasScreen = MutApp.Screen.extend({
             .css('width','100%')
             .css('min-height','100%'));
         param.screenRoot.append(this.$el);
-        this.model.bind("change:panoramaImage", function () {
-            if (this.model.get('photoViewerMode') !== true) {
-                this.render();
-                this.model.application.showScreen(this);
-            }
-            else {
-                this.model.application.hideScreen(this);
-            }
-        }, this);
+
+        // этот экран нужен только для превью когда делаем фейсбук панораму
+        if (this.model.application.mode === 'preview') {
+            this.model.bind("change:panoramaImage", function () {
+                if (this.model.get('photoViewerMode').getValue() === false) {
+                    // это фейсбук панорама в режиме превью. Надо показать этот экран
+                    this.render();
+                    this.model.application.showScreen(this);
+                }
+                else {
+                    this.model.application.hideScreen(this);
+                }
+            }, this);
+        }
     },
 
     render: function() {

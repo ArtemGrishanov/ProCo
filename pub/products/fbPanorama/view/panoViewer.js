@@ -67,7 +67,7 @@ var PanoViewerScreen = MutApp.Screen.extend({
             .css('min-height','100%'));
         param.screenRoot.append(this.$el);
         this.model.bind("change:panoConfig", function () {
-            if (this.model.get('photoViewerMode')===true && this.model.get('panoCompiledImage')) {
+            if (this.model.get('photoViewerMode').getValue()===true && this.model.get('panoCompiledImage').getValue()) {
                 this.render();
                 this.createPhotoSphereViewer('', this.model.get('panoConfig'));
             }
@@ -97,7 +97,7 @@ var PanoViewerScreen = MutApp.Screen.extend({
             this.model.attributes.viewer = PhotoSphereViewer({
                 //panorama: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Trafalgar_Square_360_Panorama_Cropped_Sky%2C_London_-_Jun_2009.jpg',
                 // устанавливается готовая и уже загруженная в aws bucket картинка, с нанесенными метками
-                panorama: this.model.get('panoCompiledImage'),
+                panorama: this.model.get('panoCompiledImage').getValue(),
                 container: 'id-photosphere',
                 longitude_range: [-halfLongtitude, halfLongtitude],
                 latitude_range: [-halfLatitude,halfLatitude],

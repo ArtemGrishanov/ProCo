@@ -85,7 +85,7 @@ var PanoramaEditScreen = MutApp.Screen.extend({
                     // изменение каждого процента не рендерим, так как это тяжело обновлять в редакторе
                     this.imageProgressShown = true;
                     this.render();
-                    if (this.model.get('photoViewerMode') !== true) {
+                    if (this.model.get('photoViewerMode').getValue() !== true) {
                         this.model.application.showScreen(this);
                     }
                     else {
@@ -99,6 +99,10 @@ var PanoramaEditScreen = MutApp.Screen.extend({
                 this.imageProgressShown = false;
                 this.render();
                 // this.model.application.showScreen(this);
+            }, this);
+
+            this.model.bind("change:pins", function () {
+                this.render();
             }, this);
 
             this.model.bind("change:previewScale", function () {
@@ -220,23 +224,25 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             this.$pins = [];
             // отрисовка пинов
             var $pinsCnt = this.$el.find('.js-pins_cnt');
-            for (var i = 0; i < this.model.attributes.pins.length; i++) {
-                var p = this.model.attributes.pins[i];
-                p.data.pinIndex = i;
-                var $pel = $(this.template[p.uiTemplate](p.data));
+
+            var pinsArr = this.model.attributes.pins.toArray();
+            for (var i = 0; i < pinsArr.length; i++) {
+                var p = pinsArr[i];
+                p.data.pinDictionaryId = this.model.attributes.pins.getIdFromPosition(i);
+                var $pel = $(this.template[p.uiTemplate](MutApp.Util.getObjectForRender(p.data)));
                 // класс стрелки
-                $pel.addClass(p.modArrow);
+                $pel.addClass(p.modArrow.getValue());
                 // цвет фона
-                if (p.backgroundColor) {
-                    $pel.css('background-color', p.backgroundColor);
-                    this.setPinAfterColor($pel, i, p.modArrow, p.backgroundColor);
+                if (p.backgroundColor.getValue()) {
+                    $pel.css('background-color', p.backgroundColor.getValue());
+                    this.setPinAfterColor($pel, i, p.modArrow.getValue(), p.backgroundColor.getValue());
                 }
                 // цвет текста
-                if (p.color) {
-                    $pel.css('color', p.color);
+                if (p.fontColor.getValue()) {
+                    $pel.css('color', p.fontColor.getValue());
                 }
-                var top = Math.round(p.position.top*ps);
-                var left = Math.round(p.position.left*ps);
+                var top = Math.round(p.position.getValue().top*ps);
+                var left = Math.round(p.position.getValue().left*ps);
                 $pel.css('top',top).css('left',left);
                 var textAlign = 'left';
                 switch(p.modArrow) {
@@ -276,7 +282,7 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             $l.hide();
         }
 
-        this.renderChecksum = Math.random();
+        this.renderCompleted();
         return this;
     }
 });

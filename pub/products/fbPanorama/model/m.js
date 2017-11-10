@@ -6,7 +6,6 @@ var FbPanoramaModel = MutApp.Model.extend({
 
     defaults: {
         id: 'mm',
-        state: null,
         logoUrl: 'https://s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg',
         logoLink: null,
         /**
@@ -14,61 +13,33 @@ var FbPanoramaModel = MutApp.Model.extend({
          * Из этого будет рассчитан масштаб previewScale
          */
         DEF_PANORAMA_PREVIEW_HEIGHT: 600,
-//        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2FIMG_8565-1.JPG',
-//        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/6000x3562.jpg',
-//        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F1600x1000.jpg',
-//        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F4096x433.jpg',
-//        panoramaImgSrc: 'http://localhost:63342/ProCo/demos/PanoramaDemo/images/6000x1217.jpg',
-        panoramaImgSrc: 'http://localhost:63342/ProCo/temp/bugs/IMG_8565-1.jpg',
+        //        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2FIMG_8565-1.JPG',
+        //        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/6000x3562.jpg',
+        //        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F1600x1000.jpg',
+        //        panoramaImgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/facebook-121947341568004%2Fres%2F4096x433.jpg',
+        //        panoramaImgSrc: 'http://localhost:63342/ProCo/demos/PanoramaDemo/images/6000x1217.jpg',
+        /**
+         * @type {MutAppProperty}
+         */
+        panoramaImgSrc: null, //'http://localhost:63342/ProCo/temp/bugs/IMG_8565-1.jpg',
         panoramaImage: null,
         imageProgress: 0,
         previewScale: 1,
         panoCanvas: null,
         panoConfig: null,
-        pins: [
-            {
-                id: '12345678',
-                data: {
-                    text: 'Пример метки<br>на панораме'
-                },
-                position: {
-                    // center of block
-                    left: 500,
-                    top: 500
-                },
-                backgroundColor: '#33bbed', // цвет фона
-                color: '#fff', // цвет текста
-                uiTemplate: 'id-text_pin_template',
-                // модификатор стрелки
-                modArrow: 'ar_bottom' // ar_bottom_left ar_bottom_right ar_top ar_top_left ar_bottom_right
-            }
-//            ,{
-//                id: '12345678',
-//                data: {
-//                    text: 'Пример метки<br>на панораме'
-//                },
-//                position: {
-//                    // center of block
-//                    left: 500,
-//                    top: 200
-//                },
-//                backgroundColor: '#f00', // цвет фона
-//                color: '#000', // цвет текста
-//                uiTemplate: 'id-text_pin_template',
-//                // модификатор стрелки
-//                modArrow: 'ar_bottom' // ar_bottom_left ar_bottom_right ar_top ar_top_left ar_bottom_right
-//            }
-        ],
+        /**
+         * @type {MutAppProperty}
+         */
+        pins: null,
         logoImgSrc: '../../i/logo_big.png',
         logoImg: null,
         /**
          * Режим просмотра панорамы с помощью проигрывателя http://photo-sphere-viewer.js.org/
+         * Если же photoViewerMode = false, то это фейсбук панорама
          *
-         * В консоли:
-         * var ap = Engine.getAppProperty('id=mm photoViewerMode');
-         * Engine.setValue(ap, true);
+         * @type MutAppProperty
          */
-        photoViewerMode: false,
+        photoViewerMode: null,
         /**
          * Скомпилированная картинка для плеера photo-sphere-viewer
          * Применяется в photoViewerMode=true
@@ -76,6 +47,8 @@ var FbPanoramaModel = MutApp.Model.extend({
          * Примеры
          * Дача 'https://s3.eu-central-1.amazonaws.com/p.testix.me/121947341568004/7e69f66993/forFBUpload.jpg',
          * Сингапур 'https://s3.eu-central-1.amazonaws.com/p.testix.me/121947341568004/1d1f4f3236/forFBUpload.jpg'
+         *
+         * @type MutAppProperty
          */
         panoCompiledImage: null,//'https://s3.eu-central-1.amazonaws.com/p.testix.me/121947341568004/1d1f4f3236/forFBUpload.jpg',
         /**
@@ -88,11 +61,39 @@ var FbPanoramaModel = MutApp.Model.extend({
         this.super.initialize.call(this, param);
         this.attributes.logoImg = new Image();
         this.attributes.logoImg.src = this.attributes.logoImgSrc;
+
+        this.attributes.panoramaImgSrc = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=mm panoramaImgSrc',
+            value: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/rome1200x600.png'
+        });
+
+        this.attributes.pins = new MutAppPropertyDictionary({
+            application: this.application,
+            model: this,
+            propertyString: 'id=mm pins',
+            value: []
+        });
+
+        this.attributes.photoViewerMode = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=mm photoViewerMode',
+            value: false
+        });
+
+        this.attributes.panoCompiledImage = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=mm panoCompiledImage',
+            value: null
+        });
     },
 
     start: function() {
         this.extendImageClass();
-        this.setPanoramaImage(this.attributes.panoramaImgSrc);
+        this.setPanoramaImage(this.attributes.panoramaImgSrc.getValue());
     },
 
     setPanoramaImage: function(url, callback) {
@@ -103,8 +104,14 @@ var FbPanoramaModel = MutApp.Model.extend({
         var img = new Image();
         img.crossOrigin = 'anonymous';
         img.onprogress = (function(e) {
+            var prct = img.completedPercentage || 0;
+            if (prct >= 100) {
+                // заключительно 100 будем ставить только в событии onload
+                // на этом завязано показ экрана редактирования
+                prct = 99;
+            }
             this.set({
-                imageProgress: img.completedPercentage || 0
+                imageProgress: prct
             });
         }).bind(this);
         img.onload = (function() {
@@ -160,7 +167,7 @@ var FbPanoramaModel = MutApp.Model.extend({
             });
 
 
-            if (this.attributes.photoViewerMode === true &&
+            if (this.attributes.photoViewerMode.getValue() === true &&
                 (this.application.mode === 'preview' || this.application.mode === 'publish')) {
                 // для опубликованного photo-viewer приложения оставить обычный размер 800x600
             }
@@ -229,5 +236,78 @@ var FbPanoramaModel = MutApp.Model.extend({
             };
             Image.prototype.completedPercentage = 0;
         }
+    },
+
+    /**
+     * Функция прототип для создания нового пина на панораме
+     *
+     */
+    pinProto1: function(param) {
+        var pinDictionaryId = MutApp.Util.getUniqId(6);
+
+        var pinText = new MutAppProperty({
+            propertyString: 'id=mm pins.'+pinDictionaryId+'.data.text',
+            model: this,
+            application: this.application,
+            value: 'Edit this text'
+        });
+
+        var pinPosition = new MutAppPropertyPosition({
+            propertyString: 'id=mm pins.'+pinDictionaryId+'.position',
+            model: this,
+            application: this.application,
+            value: {left: 200, top: 200}
+        })
+
+        var pinBackColor = new MutAppProperty({
+            propertyString: 'id=mm pins.'+pinDictionaryId+'.backgroundColor',
+            model: this,
+            application: this.application,
+            value: '#33bbed'
+        });
+
+        var pinFontColor = new MutAppProperty({
+            propertyString: 'id=mm pins.'+pinDictionaryId+'.fontColor',
+            model: this,
+            application: this.application,
+            value: '#fff'
+        });
+
+        var pinModArrow = new MutAppProperty({
+            propertyString: 'id=mm pins.'+pinDictionaryId+'.modArrow',
+            model: this,
+            application: this.application,
+            value: 'ar_bottom'
+        });
+
+        var pin = {
+            id: 'pin_'+MutApp.Util.getUniqId(6),
+            data: {
+                text: pinText
+            },
+            position: pinPosition,
+            backgroundColor: pinBackColor,
+            fontColor: pinFontColor,
+            modArrow: pinModArrow,
+            uiTemplate: 'id-text_pin_template'
+        };
+
+        return {
+            id: pinDictionaryId,
+            element: pin
+        };
+    },
+
+    /**
+     * Функция проверки модели
+     *
+     * @param assert
+     * @returns {boolean}
+     */
+    isOK: function(assert) {
+        assert = assert || MutApp.Util.getMockAssert();
+
+        console.log('FbPanoramaModel.isOK: Checking finished. See qunit log or console for details.');
     }
+
 });

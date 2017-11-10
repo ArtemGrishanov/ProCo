@@ -19,10 +19,10 @@
     <script id="id-panorama_edit_template" type="text/template">
         <div class="modal __active js-back_color js-back_img">
             <div class="modal_cnt info js-back_shadow">
-                <div class="pano_cnt js-pano js-pins_cnt" data-app-property="id=mm pins(createPin)">
+                <div class="pano_cnt js-pano js-pins_cnt" data-app-property="id=mm pins">
                     <div class="pano_img js-pano_image" style="background-image:url(<%=backgroundImage%>)"></div>
                 </div>
-                <div class="logo js-logo js-start_logo" data-app-property="id=startScr logoPosition, id=startScr showLogo, id=mm logoUrl"></div>
+                <!--<div class="logo js-logo js-start_logo" data-app-property="id=startScr logoPosition, id=startScr showLogo, id=mm logoUrl"></div>-->
                 <p class="img_progress js-image_progress">
                     Loading...<br><br>
                     <span class="spinner"></span>
@@ -40,7 +40,7 @@
     </script>
 
     <script id="id-text_pin_template" type="text/template">
-        <div class="pin_wr" data-option-index="<%=pinIndex%>" data-app-property="id=mm pins.<%=pinIndex%>.backgroundColor, id=mm pins.<%=pinIndex%>.position, id=mm pins.<%=pinIndex%>.data.text, id=mm pins(deletePin), id=mm pins.<%=pinIndex%>.modArrow"><%=text%></div>
+        <div class="pin_wr" data-option-index="<%=pinDictionaryId%>" data-app-property="id=mm pins.<%=pinDictionaryId%>.fontColor, id=mm pins.<%=pinDictionaryId%>.backgroundColor, id=mm pins.<%=pinDictionaryId%>.position, id=mm pins.<%=pinDictionaryId%>.data.text, id=mm pins, id=mm pins.<%=pinDictionaryId%>.modArrow"><%=text%></div>
     </script>
 
     <!-- build:js index.min.js -->
@@ -65,18 +65,17 @@
     <script type="text/javascript" src="descriptor.js"></script>
     <!-- endbuild -->
     <script>
-        var app = null;
-        var tests = {};
-        $(document).ready(function() {
-            var DEFAULT_PARAMS = {};
-            app = new FbPanoramaApp({
-                defaults: DEFAULT_PARAMS
-//                ,screensRenderCallbacks: [function(v){
-//                    console.log(v.id + ' rendered');
-//                }]
-            });
-            app.start();
-        });
+        /*start_code
+         var app = null;
+         $(document).ready(function() {
+         var DEFAULT_PARAMS = {};
+         app = new FbPanoramaApp({
+         defaults: DEFAULT_PARAMS,
+         mode: 'published'
+         });
+         app.start();
+         });
+         start_code*/
     </script>
 </body>
 </html>

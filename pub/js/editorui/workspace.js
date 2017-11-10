@@ -234,7 +234,7 @@ var Workspace = {
                 }
             }
             else {
-                throw new Error('workspace.filter: screen \'' + param.screen.id + '\' does not have linkedMutAppProperties');
+                throw new Error('workspace.filter: screen \'' + param.screen.id + '\' does not have linkedMutAppProperties. Maybe you forgot request renderCompleted().');
             }
         }
         else {
