@@ -9,7 +9,8 @@
     margin: 0 auto;
     position: relative;
     width: 800px;
-    height: 680px;
+    /*height: 680px; вроде вообще не надо указывать высоту, будет в зависимости от высоты дочерних элементов */
+    padding-top: 20px; /* чтобы экран проекта отступал от панели экранов немного */
 }
 .product_cnt {
     position: relative;
@@ -19,7 +20,7 @@
     width: 800px;
     /* Высота этому элементу может быть выставлена программно. 600 - это по умолчанию */
     height: 600px;
-    /* для панорам нужен scroll по x (выставляется программно), а у остальных проектов лишние полосы появляются */
+    /* для панорам нужен scroll по x (выставляется программно в Workspace), а у остальных проектов лишние полосы появляются */
     overflow-x: visible;
     /* по вертикали показываем все что есть, если что высоту ставим программно */
     overflow-y: visible;
@@ -33,7 +34,8 @@
 }
 .workspace_screens_iframe {
     position: absolute;
-    top: 20px;
+    top: 0;
+    left: 0;
     width: 100%;
     padding: 0;
     margin: 0;
@@ -43,7 +45,7 @@
 }
 .quick_controls_cnt {
     position: absolute;
-    top: 20px;
+    top: 0;
     left: 0;
     width: 100%;
     height: 100%;

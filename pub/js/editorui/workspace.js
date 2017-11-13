@@ -16,17 +16,20 @@ var Workspace = {
 
 (function(global) {
 
-    var selectionTemplate = null,
+    var
+        selectionTemplate = null,
         $controlContainer = null,
         $selection = null,
         $selectedElementOnAppScreen = null,
         $productCnt = null,
+        $productIframeCnt = null,
+        appSize = null,//{width: 800, height: 600},
         /**
          * Шаг горизонтальной прокрутки продукта, когда он шире чем workspace
          *
          * @type {number}
          */
-        HOR_SCROLL_STEP = 100,
+        HOR_SCROLL_STEP = 200,
         /**
          * Значит что события onclick привязаны к кнопкам горизонтальной прокрутки
          * Во избежание повторной привязки
@@ -125,28 +128,24 @@ var Workspace = {
      *
      * Содержимое #id-product_cnt может быть гораздо больше чем 800 по ширине
      * Например, горизонтальная панорама
-     *
-     * @param {number} param.width
-     * @param {number} param.height
      */
-    function _updateProductCntScroll(param) {
-        //$('#id-product_screens_cnt').width() - не успавает отрендериться иногда и возвращает неактуальныый размер
-        var productScreenWidth = param.width;
-        var productCntWidth = $productCnt.width();
-
-        if (productCntWidth < productScreenWidth) {
+    function _updateProductCntScroll() {
+        // в .product_wr в стилях стоит 800 ширина, это фиксированная видимая ширина проекта, а внутри по горизонтали может быть прокрутка
+        if (appSize.width > config.editor.ui.productWrapperWidth) {
+            $productCnt.css('overflow-x', 'scroll');
             $('#id-hor_scroll_left, #id-hor_scroll_right').show();
             if (horScrollEventsBinded !== true) {
                 $('#id-hor_scroll_left').click(function() {
-                    $productCnt.scrollLeft($productCnt.scrollLeft() - HOR_SCROLL_STEP);
+                    $productCnt.animate({scrollLeft: $productCnt.scrollLeft() - HOR_SCROLL_STEP}, 333);
                 });
                 $('#id-hor_scroll_right').click(function() {
-                    $productCnt.scrollLeft($productCnt.scrollLeft() + HOR_SCROLL_STEP);
+                    $productCnt.animate({scrollLeft: $productCnt.scrollLeft() + HOR_SCROLL_STEP}, 333);
                 });
                 horScrollEventsBinded = true;
             }
         }
         else {
+            $productCnt.css('overflow-x', 'auto');
             $('#id-hor_scroll_left, #id-hor_scroll_right').hide();
         }
     }
@@ -245,11 +244,24 @@ var Workspace = {
     /**
      * Обработать изменение размера приложения
      *
-     * @param param.width
-     * @param param.height
+     * @param {Number} param.width
+     * @param {Number} param.height
      */
     function setAppSize(param) {
-        _updateProductCntScroll(param);
+        if (isNumeric(param.width) !== true) {
+            throw new Error('Workspace: width is not specified');
+        }
+        if (isNumeric(param.height) !== true) {
+            throw new Error('Workspace: height is not specified');
+        }
+        appSize = {
+            width: param.width,
+            height: param.height
+        };
+        $productCnt.height(appSize.height + config.editor.ui.scrollBarHeight); // задача сделать по вертикали видимым всё приложение без прокрутки и т.п.
+        $productIframeCnt.width(appSize.width).height(appSize.height);
+        $('#id-control_cnt').width(appSize.width).height(appSize.height);
+        _updateProductCntScroll();
     }
 
     /**
@@ -334,6 +346,7 @@ var Workspace = {
     function init(param) {
         param = param || {};
         $productCnt = $('#id-product_cnt');
+        $productIframeCnt = $('#id-product_iframe_cnt');
         $controlContainer = $('#id-control_cnt');
         selectionTemplate = $('#id-elem_selection_template').html();
         _onEventsCallback = param.onWorkspaceEvents;

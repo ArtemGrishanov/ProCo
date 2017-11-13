@@ -314,7 +314,6 @@ var Editor = {};
             restartEditedApp();
             showEditor();
             showScreen();
-            updateAppContainerSize();
             WorkspaceOffset = $('#id-product_iframe_cnt').offset();
             // проверить что редактор готов, и вызвать колбек
             checkEditorIsReady();
@@ -498,12 +497,12 @@ var Editor = {};
      * В зависимости от режиме превью: моб или веб а также истинного размера приложения
      * выставляется размер iframe в котором загружено приложение
      */
-    function updateAppContainerSize() {
-        // выставляем первоначальный размер приложения, возможно, оно будет меняться
-        appContainerSize = {
-            width: editedApp.width,
-            height: editedApp.height
-        };
+//    function updateAppContainerSize() {
+//        // выставляем первоначальный размер приложения, возможно, оно будет меняться
+//        appContainerSize = {
+//            width: editedApp.width,
+//            height: editedApp.height
+//        };
 //        var appIframe = editorLoader.getIframe('');
 //        if (previewMode === 'mobile') {
 //            $(appIframe).css('border','0')
@@ -520,7 +519,7 @@ var Editor = {};
 //                .css('maxWidth','100%')
 //                .css('maxHeight',appContainerSize.height+'px') //так как у панорам гориз скролл и не умещается по высоте он
 //        }
-    }
+//    }
 
 //    function createPreviewScreenBlock(view) {
 //        var d = $('<div></div>')
@@ -954,6 +953,18 @@ var Editor = {};
         var app = data.application;
         var MutApp = editorLoader.getIframe('id-product_iframe_cnt').contentWindow.MutApp;
         switch (event) {
+            case MutApp.EVENT_APP_SIZE_CHANGED: {
+                log('Editor.onAppChanged: MutApp.EVENT_APP_SIZE_CHANGED \''+data.width+'x'+data.height+'\'');
+                appContainerSize = {
+                    width: data.width,
+                    height: data.height
+                };
+                Workspace.setAppSize({
+                    width: data.width,
+                    height: data.height
+                });
+                break;
+            }
             case MutApp.EVENT_SCREEN_CREATED: {
                 log('Editor.onAppChanged: MutApp.EVENT_SCREEN_CREATED \''+data.screenId+'\'');
                 if (activeScreen === data.screenId) {

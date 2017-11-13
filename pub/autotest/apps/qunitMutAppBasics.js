@@ -140,6 +140,9 @@ QUnit.test("MutApp test: Screen", function( assert ) {
 });
 
 QUnit.test("MutApp test: app size", function( assert ) {
+    var done = assert.async();
+    var sizeChangedEventsCount = 0;
+
     var AppClass = MutApp.extend({
         screenRoot: $('#id-swimming_test'),
         mutAppSchema: new MutAppSchema({
@@ -158,13 +161,49 @@ QUnit.test("MutApp test: app size", function( assert ) {
             this.inited = true;
         }
     });
-    var app = new AppClass({width:400,height:500});
+    var app = new AppClass({
+        width:400,
+        height:500,
+        appChangeCallbacks: [onAppChanged]
+    });
 
     assert.ok(app.screenRoot.length > 0, 'screenRoot is set');
-    assert.ok(app.width === 400, 'width is set (READ IT: If you got an error, may be you use too narrow browser window, less than 400px)');
-    assert.ok(app.height === 500, 'height is set');
+    assert.ok(app.getSize().width === 400, 'width is set (READ IT, PLEASE: If you got an error, may be you use too narrow browser window, less than 400px)');
+    assert.ok(app.getSize().height === 500, 'height is set');
     assert.ok($('#id-swimming_test').width() === 400, 'width is ok');
     assert.ok($('#id-swimming_test').height() === 500, 'height is ok');
+
+    app.setSize({
+        width: 444,
+        height: 555
+    });
+    assert.ok(app.getSize().width === 444, 'width is set (READ IT, PLEASE: If you got an error, may be you use too narrow browser window, less than 400px)');
+    assert.ok(app.getSize().height === 555, 'height is set');
+    assert.ok($('#id-swimming_test').width() === 444, 'width is ok');
+    assert.ok($('#id-swimming_test').height() === 555, 'height is ok');
+
+    function onAppChanged(event, data) {
+        switch(event) {
+            case MutApp.EVENT_APP_SIZE_CHANGED: {
+                if (sizeChangedEventsCount === 0) {
+                    // app is not created yet
+                    assert.ok(data.width === 400);
+                    assert.ok(data.height === 500);
+                }
+                if (sizeChangedEventsCount === 1) {
+                    assert.ok(app.getSize().width === 444);
+                    assert.ok(app.getSize().height === 555);
+                }
+                sizeChangedEventsCount++;
+                break;
+            }
+        }
+    }
+
+    setTimeout(function() {
+        assert.ok(sizeChangedEventsCount === 2);
+        done();
+    }, 555);
 });
 
 QUnit.test("MutApp test: getEntities, getPropertiesBySelector", function( assert ) {
@@ -346,7 +385,7 @@ QUnit.test("MutApp test: operations count", function( assert ) {
     var initialOperationCount = app1.getOperationsCount();
 
     app1.model.attributes.results.addElementByPrototype('id=pm resultProto1');
-    assert.ok(app1.getOperationsCount() === initialOperationCount+1);
+    assert.ok(app1.getOperationsCount() === initialOperationCount+2); // addElement(results) addElement(updateShareEntities)
 
     var app2 = new PersonalityApp({
     });
@@ -354,7 +393,7 @@ QUnit.test("MutApp test: operations count", function( assert ) {
     var serStr = app2.model.attributes.results.serialize();
 
     app1.model.attributes.results.deserialize(serStr);
-    assert.ok(app1.getOperationsCount() === initialOperationCount+2);
+    assert.ok(app1.getOperationsCount() === initialOperationCount+3);
 });
 
 QUnit.test('MutApp test: value patterns ("{{number}}px", etc)', function( assert ) {

@@ -98,8 +98,8 @@ var editorLoader = {};
         $(inf.appIframe).css('border','0')
             .css('width','100%')
             .css('height','100%')
-            .css('max-width', inf.app.width)
-            .css('max-height', inf.app.height);
+            .css('max-width', inf.app.getSize().width)
+            .css('max-height', inf.app.getSize().height);
         return inf.app;
     }
 

@@ -174,8 +174,10 @@ var FbPanoramaModel = MutApp.Model.extend({
             else {
                 // mode === edit || mode === none
                 // для предпросмотра facebook панорам нужно показывать картинку в полную ширину,
-                this.application.width = Math.round(cp.srcWidth * this.attributes.previewScale);
-                this.application.height = this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT;
+                this.application.setSize({
+                    width: Math.round(cp.srcWidth * this.attributes.previewScale),
+                    height: this.attributes.DEF_PANORAMA_PREVIEW_HEIGHT
+                });
             }
 
         }).bind(this);

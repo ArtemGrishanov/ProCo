@@ -84,9 +84,8 @@ var MutApp = function(param) {
     this._history = [];
     this._isMobile = this.isMobile();
     this._isSmallWidth = this.isSmallWidth();
-    //TODO mob 'auto'
-    this.width = (param && param.width > 0) ? param.width: 800;
-    this.height = (param && param.height > 0) ? param.height: 600;
+    this._width = 0;
+    this._height = 0;
     /**
      * Дефолтная картинка которая используется для шаринга, если нет сгенерированных редактором картинок
      */
@@ -214,13 +213,6 @@ var MutApp = function(param) {
         if (typeof param.autotesting === 'boolean') {
             this.autotesting = param.autotesting;
         }
-        if (this.screenRoot) {
-            this.screenRoot.empty();
-            this.screenRoot.css('max-width',this.width+'px')
-                .css('width','100%')
-                .css('min-height',this.height+'px')
-                .css('position','relative');
-        }
         if (param.defaults) {
             // _defaults может быть массивом, чтобы несколько объектов для сериализации можно было ставить упорядоченно
             this._defaults = Array.isArray(param.defaults) ? param.defaults : [param.defaults];
@@ -246,6 +238,13 @@ var MutApp = function(param) {
             }
             this.engineStorage._values = param.engineStorage;
         }
+
+        // размеры устанавливаем после установки appChangeCallbacks, чтобы уже в данный момент могли вызваться события об изменении размера
+        //TODO mob 'auto'
+        this.setSize({
+            width: (param && param.width > 0) ? param.width: 800,
+            height: (param && param.height > 0) ? param.height: 600
+        });
     }
 
     // должна быть объявлена схема
@@ -320,6 +319,52 @@ MutApp.EVENT_PROPERTY_VALUE_CHANGED = 'mutapp_event_property_value_changed';
 MutApp.EVENT_PROPERTY_DELETED = 'mutapp_event_property_deleted';
 MutApp.ENGINE_STORAGE_VALUE_CHANGED = 'mutapp_storage_value_changed';
 MutApp.ENGINE_SET_PROPERTY_VALUE = 'mutapp_set_property_value';
+
+
+/**
+ * Установить новый размер приложения
+ * Если размер новый, будет вызвано событие MutApp.EVENT_APP_SIZE_CHANGED
+ *
+ * @param {Number} param.width
+ * @param {Number} param.height
+ */
+MutApp.prototype.setSize = function(param) {
+    var w = parseInt(param.width);
+    var h = parseInt(param.height);
+    var sizeChanged = false;
+    if (w !== this._width) {
+        this._width = w;
+        sizeChanged = true;
+    }
+    if (h !== this._height) {
+        this._height = h;
+        sizeChanged = true;
+    }
+    if (sizeChanged === true) {
+        if (this.screenRoot) {
+            this.screenRoot.css('max-width',this._width+'px')
+                .css('width','100%')
+                .css('min-height',this._height+'px')
+                .css('position','relative')
+                .css('overflow','hidden');
+        }
+        this.trigger(MutApp.EVENT_APP_SIZE_CHANGED, {
+            width: this._width,
+            height: this._height
+        });
+    }
+};
+
+/**
+ * Получить размер приложения
+ * @returns {{width: (Number|*), height: (Number|*)}}
+ */
+MutApp.prototype.getSize = function() {
+    return {
+        width: this._width,
+        height: this._height
+    };
+};
 
 /**
  * Обработчик событий в приложении
@@ -2623,11 +2668,13 @@ var MutAppSchema = function(schema) {
     this.initialize(schema);
 };
 /**
+ * Инициализация схемы приложения
+ * Клиент может переписать правило
  *
- * @param {object} schema
+ * @param {object} clientSchema - указанная клиентом схема приложения
  */
-MutAppSchema.prototype.initialize = function(schema) {
-    schema = schema || {};
+MutAppSchema.prototype.initialize = function(clientSchema) {
+    clientSchema = clientSchema || {};
     this._parentMutAppSchema = {
         "appConstructor=mutapp customCssStyles": {
             // скрытое свойство
@@ -2657,10 +2704,11 @@ MutAppSchema.prototype.initialize = function(schema) {
             controlFilter: 'always'
         }
     };
-    for (var key in this._parentMutAppSchema) {
-        schema[key] = this._parentMutAppSchema[key];
+    // перезаписываем свойства, которые указал клиент поверх родительских. Клиент может переписать стандартные свойства
+    this._schema = JSON.parse(JSON.stringify(this._parentMutAppSchema));
+    for (var key in clientSchema) {
+        this._schema[key] = clientSchema[key];
     }
-    this._schema = schema;
 };
 /**
  * Найти MutAppProperty в приложении mutapp согласно схеме

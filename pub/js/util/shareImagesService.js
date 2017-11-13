@@ -154,8 +154,8 @@ var shareImageService = {};
                 html: param.app.getAutoPreviewHtml(),
                 stylesToEmbed: [config.products.common.styles, config.products[param.app.type].stylesForEmbed],
                 cssString: param.app.getCssRulesString(),
-                width: param.app.width,
-                height: param.app.height,
+                width: param.app.getSize().width,
+                height: param.app.getSize().height,
                 callback: function(canvas) {
                     log('ShareImageService.generateAppAutoPreviewCanvas: app autopreview created');
                     _appAutoPreviewCanvas = canvas;

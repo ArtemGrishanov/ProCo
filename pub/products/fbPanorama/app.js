@@ -12,6 +12,14 @@ var FbPanoramaApp = MutApp.extend({
      * Схема свойств MutAppProperty в этом приложении
      */
     mutAppSchema: new MutAppSchema({
+        "appConstructor=mutapp shareLink": {
+            // скрываем стандартное свойство, не нужно оно здесь
+            controlFilter: 'hidden'
+        },
+        "appConstructor=mutapp gaId": {
+            // скрываем стандартное свойство, не нужно оно здесь
+            controlFilter: 'hidden'
+        },
         /**
          * это скрытое свойства для переключение между facebook и универсальной панорамой в плеере
          */
