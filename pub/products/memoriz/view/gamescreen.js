@@ -110,7 +110,10 @@ var GameScreen = MutApp.Screen.extend({
             $cardField.append(this.template[c.uiTemplate](c));
             if ((i+1) % this.model.attributes.cardsInRow === 0) {
                 // соблюдаем количество карточек в одном ряду согласно настройке
-                $cardField.append('<br/>');
+                if (this.model.application.isSmallWidth() === false) {
+                    // на узком экране этого делать не надо
+                    $cardField.append('<br/>');
+                }
             }
         }
 
