@@ -862,6 +862,7 @@ MutApp.prototype.createCssMutAppProperties = function(schema) {
  */
 MutApp.prototype.updateCssMutAppPropertiesValues = function(screen) {
     var props = this._mutappProperties;
+    //TODO идет по всем свойствам а надо только по привязанным к экрану свойствам
     for (var i = 0; i < props.length; i++) {
         if (props[i] instanceof CssMutAppProperty) {
             var $elms = screen.$el.find(props[i].cssSelector);

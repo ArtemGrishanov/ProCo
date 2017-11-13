@@ -642,7 +642,7 @@ var TriviaApp = MutApp.extend({
             var th = titleView.outerHeight(false);
             var descView = viewForShare.find('.info_tx').css('padding','0 50px 0 50px').css('margin','0');
             var dh = descView.outerHeight(false);
-            var freeVertSpace = (this.height-dh-th);
+            var freeVertSpace = (this.getSize().height-dh-th);
             titleView.css('padding-top',freeVertSpace*0.35+'px');
             descView.css('padding-top',freeVertSpace*0.1+'px');
             return viewForShare.html();

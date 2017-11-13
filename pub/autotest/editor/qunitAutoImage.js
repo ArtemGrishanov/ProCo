@@ -78,8 +78,8 @@ QUnit.test("Autopreview qunit: 1", function( assert ) {
             app: editedApp,
             callback: function(canvas) {
                 assert.ok(canvas)
-                assert.ok(canvas.width === editedApp.width, 'canvas.width')
-                assert.ok(canvas.height === editedApp.height, 'canvas.height')
+                assert.ok(canvas.width === editedApp.getSize().width, 'canvas.width')
+                assert.ok(canvas.height === editedApp.getSize().height, 'canvas.height')
 
                 $appBlock.find('.js-autoimage').append(canvas);
                 done();
