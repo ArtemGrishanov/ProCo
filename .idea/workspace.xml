@@ -23,10 +23,63 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="mutapp.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="291" column="24" selection-start="9347" selection-end="9354" vertical-scroll-proportion="-8.84" vertical-offset="4144" max-vertical-offset="22020">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="welcome.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/memoriz/view/welcome.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="62" column="28" selection-start="1530" selection-end="1530" vertical-scroll-proportion="-9.6" vertical-offset="690" max-vertical-offset="1875">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/memoriz/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="19" column="40" selection-start="641" selection-end="641" vertical-scroll-proportion="-6.875" vertical-offset="120" max-vertical-offset="1950">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_index.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/test_index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="65" column="144" selection-start="3079" selection-end="3079" vertical-scroll-proportion="1.3828125" vertical-offset="90" max-vertical-offset="1425">
+              <folding>
+                <marker date="1510653947000" expanded="true" signature="2023:2277" placeholder="..." />
+                <marker date="1510653947000" expanded="true" signature="2077:2089" placeholder="..." />
+                <marker date="1510653947000" expanded="true" signature="2090:2194" placeholder="..." />
+                <marker date="1510653947000" expanded="true" signature="2236:2259" placeholder="..." />
+                <marker date="1510653947000" expanded="true" signature="5273:5543" placeholder="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="loader.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/loader.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="159" column="42" selection-start="12542" selection-end="12542" vertical-scroll-proportion="-14.24" vertical-offset="2029" max-vertical-offset="9375">
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="72" column="11" selection-start="2885" selection-end="2885" vertical-scroll-proportion="0.0" vertical-offset="776" max-vertical-offset="13935">
+            <state line="378" column="20" selection-start="16357" selection-end="16365" vertical-scroll-proportion="-8.84" vertical-offset="5449" max-vertical-offset="13935">
               <folding />
             </state>
           </provider>
@@ -35,34 +88,25 @@
       <file leaf-file-name="gamescreen.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/products/memoriz/view/gamescreen.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="121" column="29" selection-start="3899" selection-end="3899" vertical-scroll-proportion="-14.72" vertical-offset="1447" max-vertical-offset="2730">
+            <state line="172" column="41" selection-start="5713" selection-end="5713" vertical-scroll-proportion="-12.68" vertical-offset="2263" max-vertical-offset="3150">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="style.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/memoriz/css/style.css">
+      <file leaf-file-name="publisher.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/util/publisher.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="230" column="29" selection-start="4589" selection-end="4589" vertical-scroll-proportion="-11.8" vertical-offset="3155" max-vertical-offset="3855">
+            <state line="222" column="37" selection-start="7954" selection-end="7954" vertical-scroll-proportion="-11.84" vertical-offset="3034" max-vertical-offset="8685">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/index.html">
+      <file leaf-file-name="memoriz.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/memoriz/model/memoriz.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="248" column="24" selection-start="16216" selection-end="16216" vertical-scroll-proportion="-21.791666" vertical-offset="3197" max-vertical-offset="3900">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="app.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="748" column="28" selection-start="37524" selection-end="37524" vertical-scroll-proportion="15.91703" vertical-offset="0" max-vertical-offset="16380">
+            <state line="50" column="28" selection-start="1534" selection-end="1534" vertical-scroll-proportion="0.0" vertical-offset="492" max-vertical-offset="7815">
               <folding />
             </state>
           </provider>
@@ -78,22 +122,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/editor.html" />
-        <option value="$PROJECT_DIR$/pub/products/memoriz/descriptor.js" />
-        <option value="$PROJECT_DIR$/pub/js/util/previewService.js" />
-        <option value="$PROJECT_DIR$/pub/js/util/queue.js" />
-        <option value="$PROJECT_DIR$/pub/products/common/css/tstx_cmn_products.css" />
-        <option value="$PROJECT_DIR$/pub/js/util/shareImagesService.js" />
-        <option value="$PROJECT_DIR$/pub/js/view/modals/previewShareImageModal.js" />
         <option value="$PROJECT_DIR$/pub/js/config.js" />
         <option value="$PROJECT_DIR$/pub/js/editorui/editor.js" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/descriptor.js" />
         <option value="$PROJECT_DIR$/pub/products/common/js/mutapp.js" />
         <option value="$PROJECT_DIR$/pub/js/model/app.js" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/fbPanoramaPublisher.js" />
-        <option value="$PROJECT_DIR$/pub/products/memoriz/view/gamescreen.js" />
         <option value="$PROJECT_DIR$/pub/products/memoriz/css/style.css" />
         <option value="$PROJECT_DIR$/pub/index.html" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/index.html" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/view/welcome.js" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/view/openedscreen.js" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/view/result.js" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/view/gamescreen.js" />
+        <option value="$PROJECT_DIR$/pub/js/util/publisher.js" />
+        <option value="$PROJECT_DIR$/pub/js/loader.js" />
+        <option value="$PROJECT_DIR$/pub/test_index.html" />
       </list>
     </option>
   </component>
@@ -174,7 +218,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="products" />
+              <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -192,11 +236,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="products" />
+              <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="fbPanorama" />
+              <option name="myItemId" value="util" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -209,12 +253,12 @@
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="web-ide.project.structure" />
+    <property name="recentsLimit" value="5" />
     <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PublishConfig">
     <servers>
@@ -249,14 +293,6 @@
       <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
       <method />
     </configuration>
-    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
-      <option name="VMOptions" />
-      <option name="arguments" />
-      <option name="filePath" />
-      <option name="scope" value="ALL" />
-      <option name="testName" />
-      <method />
-    </configuration>
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -265,6 +301,14 @@
       <option name="saveOutputToFile" value="false" />
       <option name="showConsoleOnStdErr" value="false" />
       <option name="showConsoleOnStdOut" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
+      <option name="VMOptions" />
+      <option name="arguments" />
+      <option name="filePath" />
+      <option name="scope" value="ALL" />
+      <option name="testName" />
       <method />
     </configuration>
     <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" singleton="true" config-file="">
@@ -322,7 +366,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2159254" sideWeight="0.8552457" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21879484" sideWeight="0.8552457" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20549928" sideWeight="0.4555113" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32802126" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -351,89 +395,9 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/editor.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="112" column="39" selection-start="7131" selection-end="7131" vertical-scroll-proportion="0.0" vertical-offset="1680" max-vertical-offset="6225">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/util/publisher.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="478" column="40" selection-start="18816" selection-end="18816" vertical-scroll-proportion="0.0" vertical-offset="6761" max-vertical-offset="8670">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/util/shareImagesService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="10" selection-start="3222" selection-end="3222" vertical-scroll-proportion="0.0" vertical-offset="1192" max-vertical-offset="4935">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/view/modals/previewShareImageModal.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="0" selection-start="2898" selection-end="2898" vertical-scroll-proportion="0.0" vertical-offset="680" max-vertical-offset="1605">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test/descriptor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="35" selection-start="221" selection-end="221" vertical-scroll-proportion="-5.0" vertical-offset="25" max-vertical-offset="9015" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="269" column="0" selection-start="9302" selection-end="9302" vertical-scroll-proportion="0.0" vertical-offset="3761" max-vertical-offset="27735">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/descriptor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="5" selection-start="2016" selection-end="2016" vertical-scroll-proportion="0.72780204" vertical-offset="475" max-vertical-offset="9150">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/test_new/descriptor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="282" column="37" selection-start="10661" selection-end="10661" vertical-scroll-proportion="-16.36" vertical-offset="3821" max-vertical-offset="14595" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="522" column="22" selection-start="16670" selection-end="16681" vertical-scroll-proportion="0.0" vertical-offset="7651" max-vertical-offset="22020">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/fbPanoramaPublisher.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="109" column="51" selection-start="3756" selection-end="3756" vertical-scroll-proportion="0.0" vertical-offset="1635" max-vertical-offset="6000">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/view/gamescreen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="121" column="29" selection-start="3899" selection-end="3899" vertical-scroll-proportion="-14.72" vertical-offset="1447" max-vertical-offset="2730">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="230" column="29" selection-start="4589" selection-end="4589" vertical-scroll-proportion="-11.8" vertical-offset="3155" max-vertical-offset="3855">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="72" column="11" selection-start="2885" selection-end="2885" vertical-scroll-proportion="0.0" vertical-offset="776" max-vertical-offset="13935">
           <folding />
         </state>
       </provider>
@@ -445,17 +409,109 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/index.html">
+    <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="248" column="24" selection-start="16216" selection-end="16216" vertical-scroll-proportion="-21.791666" vertical-offset="3197" max-vertical-offset="3900">
+        <state line="790" column="17" selection-start="38784" selection-end="38784" vertical-scroll-proportion="0.48455057" vertical-offset="11220" max-vertical-offset="16380">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
+    <entry file="file://$PROJECT_DIR$/pub/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="748" column="28" selection-start="37524" selection-end="37524" vertical-scroll-proportion="15.91703" vertical-offset="0" max-vertical-offset="16380">
+        <state line="248" column="24" selection-start="16216" selection-end="16216" vertical-scroll-proportion="0.7383721" vertical-offset="3212" max-vertical-offset="3900">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="230" column="29" selection-start="4589" selection-end="4589" vertical-scroll-proportion="0.0" vertical-offset="3450" max-vertical-offset="3855">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/model/memoriz.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="28" selection-start="1534" selection-end="1534" vertical-scroll-proportion="0.0" vertical-offset="492" max-vertical-offset="7815">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="40" selection-start="641" selection-end="641" vertical-scroll-proportion="-6.875" vertical-offset="120" max-vertical-offset="1950">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="291" column="24" selection-start="9347" selection-end="9354" vertical-scroll-proportion="-8.84" vertical-offset="4144" max-vertical-offset="22020">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/view/welcome.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="28" selection-start="1530" selection-end="1530" vertical-scroll-proportion="-9.6" vertical-offset="690" max-vertical-offset="1875">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/view/result.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="102" column="27" selection-start="2775" selection-end="2775" vertical-scroll-proportion="0.7692308" vertical-offset="990" max-vertical-offset="2925">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/view/openedscreen.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="27" selection-start="1799" selection-end="1799" vertical-scroll-proportion="0.491453" vertical-offset="705" max-vertical-offset="2175">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/view/gamescreen.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="172" column="41" selection-start="5713" selection-end="5713" vertical-scroll-proportion="-12.68" vertical-offset="2263" max-vertical-offset="3150">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="378" column="20" selection-start="16357" selection-end="16365" vertical-scroll-proportion="-8.84" vertical-offset="5449" max-vertical-offset="13935">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/util/publisher.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="222" column="37" selection-start="7954" selection-end="7954" vertical-scroll-proportion="-11.84" vertical-offset="3034" max-vertical-offset="8685">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/loader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="159" column="42" selection-start="12542" selection-end="12542" vertical-scroll-proportion="-14.24" vertical-offset="2029" max-vertical-offset="9375">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/test_index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="144" selection-start="3079" selection-end="3079" vertical-scroll-proportion="1.3828125" vertical-offset="90" max-vertical-offset="1425">
+          <folding>
+            <marker date="1510653947000" expanded="true" signature="2023:2277" placeholder="..." />
+            <marker date="1510653947000" expanded="true" signature="2077:2089" placeholder="..." />
+            <marker date="1510653947000" expanded="true" signature="2090:2194" placeholder="..." />
+            <marker date="1510653947000" expanded="true" signature="2236:2259" placeholder="..." />
+            <marker date="1510653947000" expanded="true" signature="5273:5543" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>

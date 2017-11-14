@@ -98,6 +98,9 @@ var ResultScreen = MutApp.Screen.extend({
     initialize: function (param) {
         this.super.initialize.call(this, param);
         this.setElement($('<div></div>')
+            .css('position','absolute')
+            .css('left','0')
+            .css('top','0')
             .attr('id',this.id)
             .css('width','100%')
             .css('min-height','100%'));

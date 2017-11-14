@@ -43,6 +43,9 @@ var GameScreen = MutApp.Screen.extend({
     initialize: function (param) {
         this.super.initialize.call(this, param);
         this.setElement($('<div></div>')
+            .css('position','absolute')
+            .css('left','0')
+            .css('top','0')
             .attr('id',this.id)
             .css('width','100%')
             .css('height','100%'));
@@ -53,6 +56,12 @@ var GameScreen = MutApp.Screen.extend({
                 this.canTouch = true;
                 this.render();
                 this.model.application.showScreen(this);
+            }
+            if ('welcome' === this.model.get('state')) {
+                // запускаем рендер в этом стейте чтобы померить высоту
+                this.canTouch = true;
+                this.render();
+                this.model.application.showScreen(this, false);
             }
         }, this);
 
@@ -161,8 +170,27 @@ var GameScreen = MutApp.Screen.extend({
             this.$el.find('.js-back_shadow').css('background-color','');
         }
 
+        // loaderWindow will be set later
+        if (this.heightSet === false) {
+            this.heightSet = true;
+            setTimeout((function() {
+                var h = $('.js-card-field').height()+20;
+                if (h < 600) {
+                    h = 600;
+                }
+                console.log('App height: ' + h);
+                $('#id-mutapp_screens').height(h);
+                if (this.model.application.loaderWindow) {
+                    this.model.application.loaderWindow.postMessage({
+                        method: 'appSizeChanged',
+                        height: h
+                    }, '*');
+                }
+            }).bind(this), 1111);
+        }
         return this;
     },
+    heightSet: false,
 
     openCard: function(card) {
         $('[data-card-id='+card.id+']').addClass('__opened');

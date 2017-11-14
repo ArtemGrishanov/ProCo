@@ -160,6 +160,7 @@ if (window.textix === undefined) {
                 e.style.margin = '0 auto';
                 if (e.innerHTML.indexOf('<iframe') < 0) {
                     // еще не инитили надо создать iframe
+                    var ah = (e.getAttribute('data-height') === 'auto') || e.getAttribute('data-published') === '10210715624867761/56ac2f1fe8';
                     var w = parseInt(e.getAttribute('data-width')) || '800';
                     var h = parseInt(e.getAttribute('data-height')) || '600';
                     var p = normalizeDataPublished(e.getAttribute('data-published'));
@@ -168,7 +169,7 @@ if (window.textix === undefined) {
                     e.style.maxWidth = w+'px';
                     e.style.height = h+'px';
 
-                    createIframe(p, e, w, h);
+                    createIframe(p, e, w, h, ah);
                     // sperbank july 2017
                     if (lp !== 'no' && p.indexOf('37a6197612') < 0 && p.indexOf('db2ea526ed') < 0) {
                         createPoweredLabel(e, l);
@@ -280,10 +281,10 @@ if (window.textix === undefined) {
          * @param parentNode
          * @param width
          * @param height
-         * @param recomWrapper
+         * @param isAutoHeight
          * @returns {HTMLElement}
          */
-        function createIframe(url, parentNode, width, height, recomWrapper) {
+        function createIframe(url, parentNode, width, height, isAutoHeight) {
             var panelElems = createRecommendationPanel(parentNode, width);
             var iframe = document.createElement('iframe');
             iframe.setAttribute('allowFullScreen', '');
@@ -297,6 +298,7 @@ if (window.textix === undefined) {
                 //var appId = iframe.contentWindow.app.id;
                 iframe.contentWindow.postMessage({method:'init'}, '*');
                 testixApps.push({
+                    autoHeight: isAutoHeight,
                     width: width,
                     height: height,
                     parentNode: parentNode,
@@ -464,7 +466,7 @@ if (window.textix === undefined) {
             deleteTestixAppInfo(appWindow);
             info.parentNode.removeChild(info.iframe);
             info.parentNode.removeChild(info.recomPanel);
-            createIframe(recommendationUrl, info.parentNode, info.width, info.height);
+            createIframe(recommendationUrl, info.parentNode, info.width, info.height, false);
             stat('TestixLoader','Open_Recommendation');
         }
 
@@ -584,6 +586,20 @@ if (window.textix === undefined) {
             }
             if (event.data.method === 'shareDialog') {
                 stat('TestixLoader','Share_Dialog_Open', event.data.provider);
+            }
+            if (event.data.method === 'appSizeChanged') {
+                setContainerSize(event.source, event.data.width, event.data.height);
+            }
+        }
+
+        function setContainerSize(appWindow, w, h) {
+            var info = getTestixAppInfo(appWindow);
+            if (info) {
+                if (info.autoHeight === true) {
+                    info.parentNode.style.maxHeight = h+'px';
+                    info.parentNode.style.height = h+'px';
+                    info.iframe.style.maxHeight = h+'px';
+                }
             }
         }
 

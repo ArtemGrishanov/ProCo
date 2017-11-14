@@ -12,6 +12,7 @@ var StartScreen = MutApp.Screen.extend({
      * @see MutApp
      */
     group: 'start',
+    __zIndex: '4', // выше чем игровое поле должен быть
 
     /**
      * Метка которая показывается в редакторе, рядом с превью экрана
@@ -58,6 +59,9 @@ var StartScreen = MutApp.Screen.extend({
     initialize: function (param) {
         this.super.initialize.call(this, param);
         this.setElement($('<div></div>')
+            .css('position','absolute')
+            .css('left','0')
+            .css('top','0')
             .attr('id',this.id)
             .css('width','100%')
             .css('min-height','100%'));

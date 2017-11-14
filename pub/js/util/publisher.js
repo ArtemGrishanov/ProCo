@@ -218,8 +218,9 @@ var Publisher = {};
     function getEmbedCode() {
         var projectCustomAttr = config.products[appName].customEmbedCodeAttributes;
         var embedCode = config.common.embedCodeTemplate;
+        var hh = (appName === 'memoriz') ? 'auto': appHeight+'px';
         embedCode = embedCode.replace('{{width}}', appWidth+'px')
-            .replace('{{height}}', appHeight+'px')
+            .replace('{{height}}', hh)
             .replace('{{published}}', App.getUserData().id+'/'+publishedAppId)
             .replace('{{custom_attributes}}', ' '+(projectCustomAttr)?projectCustomAttr:'')
             .replace('{{logo_policy}}', (tariffIsBasic===true)?' data-l="no"':''); // space before 'data-l' is needed
