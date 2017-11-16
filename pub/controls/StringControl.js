@@ -16,9 +16,12 @@ function StringControl(param) {
     this._isFocus = false;
 
     this.$input = this.$directive.find('input');
-    this.$input.keyup(this.onInputKeyUp.bind(this));
-    this.$input.focusout(this.onInputFocusOut.bind(this));
-    this.$input.focusin(this.onInputFocusIn.bind(this));
+    this._onInputKeyUpHandler = this.onInputKeyUp.bind(this);
+    this.$input.keyup(this._onInputKeyUpHandler);
+    this._onInputFocusOut = this.onInputFocusOut.bind(this);
+    this.$input.focusout(this._onInputFocusOut);
+    this._onInputFocusIn = this.onInputFocusIn.bind(this)
+    this.$input.focusin(this._onInputFocusIn);
     if (this.$directive.hasClass('js-colorpicker') === true && window.jscolor) {
         // подключаем компонент выбора цвета
         this.colorpicker = new jscolor(this.$input[0]);
@@ -60,7 +63,9 @@ StringControl.prototype.setValue = function(value) {
 
 StringControl.prototype.destroy = function() {
     this.colorpicker = null;
-    this.$input.off();
+    this.$input.off('keyup', this._onInputKeyUpHandler);
+    this.$input.off('focusout', this._onInputFocusOut);
+    this.$input.off('focusin', this._onInputFocusIn);
     this.$directive.remove();
 };
 

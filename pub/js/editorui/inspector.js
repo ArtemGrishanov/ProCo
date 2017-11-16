@@ -51,8 +51,9 @@ var inspector = {};
 
         // фильтр по propertyString соответствует выделенному элементу
         var se = Workspace.getSelectedElement();
-        if (se) {
-            assert.ok(se.attr('data-app-property') === ControlManager.getFilter().propertyStrings.join(','), 'ControlManager propertyString filter is ok');
+        if (se && ControlManager.getFilter()) {
+            // удалть возможные пробелы между свойствами в атрибуте
+            assert.ok(se.attr('data-app-property').replace(/, /g,',') === ControlManager.getFilter().propertyStrings.join(','), 'ControlManager propertyString filter is ok');
         }
 
         // проверить что фильтрованные контролы действительно видны, а другие скрыты
@@ -137,6 +138,26 @@ var inspector = {};
                 assert.ok(app.getScreenById(key), 'Screen from Workspace._registeredElements: \'' + key + '\' exist in app');
             }
         }
+
+        // проверим что для всех data-app-property на экране существуют MutAppProperty и контролы
+        // еще один вид проверки консистентности
+        // код во многом заимствован из mutapp.js -> _findAndAttachAppProperties
+        var dataElems = scr.$el.find('[data-app-property]');
+        if (dataElems.length > 0) {
+            for (var j = 0; j < dataElems.length; j++) {
+                var atr = $(dataElems[j]).attr('data-app-property');
+                var psArr = atr.split(',');
+                for (var k = 0; k < psArr.length; k++) {
+                    var tspAtr = psArr[k].trim();
+                    var ap = app.getProperty(tspAtr);
+                    assert.ok(ap, 'This mutAppProperty is not exist \''+tspAtr+'\' (but it was found on active screen)');
+                }
+            }
+        }
+        else {
+            assert.ok(false, 'No data-app-property attributes on active screen \''+scr.id+'\'');
+        }
+
 
 
 

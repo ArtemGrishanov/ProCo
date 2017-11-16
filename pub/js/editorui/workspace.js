@@ -145,7 +145,7 @@ var Workspace = {
             }
         }
         else {
-            $productCnt.css('overflow-x', 'auto');
+            $productCnt.css('overflow-x', 'visible');
             $('#id-hor_scroll_left, #id-hor_scroll_right').hide();
         }
     }
@@ -181,7 +181,7 @@ var Workspace = {
             var $e = null;
             for (var i = 0; i < _registeredElements[screenId].length; i++) {
                 $e = $(_registeredElements[screenId][i]);
-                $e.off();
+                $e.off('click', _onRegisteredElementClick);
             }
             delete _registeredElements[screenId];
         }
@@ -224,6 +224,10 @@ var Workspace = {
 
                     var linkedElements = ap.getLinkedElementsOnScreen(param.screen.id);
                     for (var n = 0; n < linkedElements.length; n++) {
+//                        if (ap.propertyString === 'id=mm pins') {
+//                            window.pinsLinkedElem = linkedElements[0];
+//                            $(window.pinsLinkedElem).click(function(){console.log('clk')});
+//                        }
                         // проверка что к этому элемент уже привязан клик, так как на одном элементе много свойств может быть завязано
                         if (regElems.indexOf(linkedElements[n]) < 0) {
                             $(linkedElements[n]).click(_onRegisteredElementClick);
@@ -260,6 +264,7 @@ var Workspace = {
         };
         $productCnt.height(appSize.height + config.editor.ui.scrollBarHeight); // задача сделать по вертикали видимым всё приложение без прокрутки и т.п.
         $productIframeCnt.width(appSize.width).height(appSize.height);
+        $productIframeCnt.find('iframe').css('max-width', appSize.width+'px'); // изначально стили этого iframe ставятся в editorLoader.startApp()
         $('#id-control_cnt').width(appSize.width).height(appSize.height);
         _updateProductCntScroll();
     }

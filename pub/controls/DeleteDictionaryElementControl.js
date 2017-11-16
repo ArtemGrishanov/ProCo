@@ -7,16 +7,8 @@
 function DeleteDictionaryElementControl(param) {
     this.init(param);
     this._arrayValue = null;
-    /**
-     * индекс опции, к которой привязан этот контрол
-     * этот индекс неявно находится в propertyString, например, quiz.1.answer.options.0.img (нолик в данном случае)
-     * но узнать его наверняка можно только с помощью доп атрибута для контрола
-     *
-     * @type {number}
-     * @private
-     */
-//    this._optionIndex = undefined;
-    this.$directive.on('click', this.onDeleteButtonClick.bind(this));
+    this._onDeleteButtonClickHandler = this.onDeleteButtonClick.bind(this);
+    this.$directive.on('click', this._onDeleteButtonClickHandler);
 }
 _.extend(DeleteDictionaryElementControl.prototype, AbstractControl);
 
@@ -38,10 +30,12 @@ DeleteDictionaryElementControl.prototype.setValue = function(value) {
 };
 
 DeleteDictionaryElementControl.prototype.destroy = function() {
-    this.$directive.off('click');
+    this.$directive.off('click', this._onDeleteButtonClickHandler);
     this.$directive.remove();
 };
 
 DeleteDictionaryElementControl.prototype.onDeleteButtonClick = function() {
-    this.controlEventCallback(ControlManager.EVENT_DICTIONARY_DELETING_REQUESTED, this, {optionIndex: this._optionIndex});
+    // выбор элемента который удалить в dictionary будет произведен в editor в обработчике
+    // будет проанализирован атрибут data-dictionary-id
+    this.controlEventCallback(ControlManager.EVENT_DICTIONARY_DELETING_REQUESTED, this, {});
 };

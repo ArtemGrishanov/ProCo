@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['test'], //dev test prod
+        configurationSetsOnStart: ['dev','offline'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -796,29 +796,26 @@ var config = {
             parentId: 'id-control_cnt',
             type: 'workspace' // контрол появляется на поле для редактиования, когда показывается экран приложения
         },
-        CustomQuickPanelControl: {
-            defaultDirectiveIndex: 0,
-            directives: ['customquickpanelcontrol'],
-            parentId: 'id-control_cnt',
-            type: 'quickcontrolpanel' // контрол появляется на всплывающей панельке рядом с элементом
-        },
-        CustomQControl: {
-            defaultDirectiveIndex: 0,
-            directives: ['customqcontrol'],
-            parentId: 'id-control_cnt',
-            type: 'workspace'
-        },
+        // custom control
         PersonalityResultLinking: {
             defaultDirectiveIndex: 0,
             directives: ['personalityresultlinking'],
             parentId: 'id-popup_controls_cnt',
             type: 'popup'
         },
+        // custom control
         TriviaOptionPoints: {
             defaultDirectiveIndex: 0,
             directives: ['triviaoptionpoints'],
             parentId: 'id-popup_controls_cnt',
             type: 'quickcontrolpanel'
+        },
+        // custom control
+        PanoramaAddSticker: {
+            defaultDirectiveIndex: 0,
+            directives: ['panoramaaddsticker'],
+            parentId: 'id-control_cnt',
+            type: 'workspace'
         }
     },
     editor: {

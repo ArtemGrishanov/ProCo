@@ -12,7 +12,8 @@ function OnOff(param) {
     this.$directive.find('input').attr('id',switcherId);
     this.$directive.find('label').attr('for',switcherId);
     this.$checkbox = this.$directive.find('[type="checkbox"]');
-    this.$checkbox.on('change', this.onCheckboxChange.bind(this));
+    this._onCheckboxChangeHandler = this.onCheckboxChange.bind(this);
+    this.$checkbox.on('change', this._onCheckboxChangeHandler);
     this.label = (this.additionalParam.label) ? this.additionalParam.label: 'Off/On';
     if (this.label) {
         this.$directive.find('.js-label').text(this.label);
@@ -41,6 +42,6 @@ OnOff.prototype.setValue = function(value) {
 };
 
 OnOff.prototype.destroy = function() {
-    this.$checkbox.off();
+    this.$checkbox.off('change', this._onCheckboxChangeHandler);
     this.$directive.remove();
 };

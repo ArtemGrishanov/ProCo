@@ -24,16 +24,18 @@ _.extend(TextQuickInput.prototype, AbstractControl);
 TextQuickInput.prototype.setProductDomElement = function(elem) {
     if (this.$productDomElement) {
         // отписываться только от тех событий, на которые подписался
-        this.$productDomElement.off('input');
-        this.$productDomElement.off('keypress');
+        this.$productDomElement.off('input', this._onProductElementInputHandler);
+        this.$productDomElement.off('keypress', this._onKeyPressHandler);
         this.$productDomElement = null;
     }
     if (elem) {
         this.$productDomElement = $(elem);
         this.$productDomElement.attr('contenteditable','true');
         this.$productDomElement.css('outline','none');
-        this.$productDomElement.on('input', this.onProductElementInput.bind(this));
-        this.$productDomElement.on('keypress', this.onKeyPress.bind(this));
+        this._onProductElementInputHandler = this.onProductElementInput.bind(this);
+        this.$productDomElement.on('input', this._onProductElementInputHandler);
+        this._onKeyPressHandler = this.onKeyPress.bind(this);
+        this.$productDomElement.on('keypress', this._onKeyPressHandler);
     }
 };
 
@@ -60,8 +62,8 @@ TextQuickInput.prototype.setValue = function(value) {
 
 TextQuickInput.prototype.destroy = function() {
     if (this.$productDomElement) {
-        this.$productDomElement.off('input');
-        this.$productDomElement.off('keypress');
+        this.$productDomElement.off('input', this._onProductElementInputHandler);
+        this.$productDomElement.off('keypress', this._onKeyPressHandler);
     }
     // this.$directive.remove(); у TextQuickInput нет директивы
 };

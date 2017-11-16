@@ -19,7 +19,7 @@
     <script id="id-panorama_edit_template" type="text/template">
         <div class="modal __active js-back_color js-back_img">
             <div class="modal_cnt info js-back_shadow">
-                <div class="pano_cnt js-pano js-pins_cnt" data-app-property="id=mm pins">
+                <div class="pano_cnt js-pano js-pins_cnt js-panoramaaddsticker" data-app-property="id=mm pins">
                     <div class="pano_img js-pano_image" style="background-image:url(<%=backgroundImage%>)"></div>
                 </div>
                 <!--<div class="logo js-logo js-start_logo" data-app-property="id=startScr logoPosition, id=startScr showLogo, id=mm logoUrl"></div>-->
@@ -40,7 +40,7 @@
     </script>
 
     <script id="id-text_pin_template" type="text/template">
-        <div class="pin_wr" data-option-index="<%=pinDictionaryId%>" data-app-property="id=mm pins.<%=pinDictionaryId%>.fontColor, id=mm pins.<%=pinDictionaryId%>.backgroundColor, id=mm pins.<%=pinDictionaryId%>.position, id=mm pins.<%=pinDictionaryId%>.data.text, id=mm pins, id=mm pins.<%=pinDictionaryId%>.modArrow"><%=text%></div>
+        <div class="pin_wr" data-dictionary-id="<%=pinDictionaryId%>" data-option-index="<%=pinDictionaryId%>" data-app-property="id=mm pins, id=mm pins.<%=pinDictionaryId%>.position, id=mm pins.<%=pinDictionaryId%>.data.text, id=mm pins.<%=pinDictionaryId%>.modArrow"><%=text%></div>
     </script>
 
     <!-- build:js index.min.js -->
@@ -62,7 +62,6 @@
     <script type="text/javascript" src="drawing.js"></script>
     <script type="text/javascript" src="panoconfig.js"></script>
     <script type="text/javascript" src="app.js"></script>
-    <script type="text/javascript" src="descriptor.js"></script>
     <!-- endbuild -->
     <script>
         /*start_code

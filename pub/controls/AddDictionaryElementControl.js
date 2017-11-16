@@ -6,7 +6,8 @@
 function AddDictionaryElementControl(param) {
     this.init(param);
     this._arrayValue = null;
-    this.$directive.click(this.onAddQuickButtonClick.bind(this));
+    this._onAddQuickButtonClickHandler = this.onAddQuickButtonClick.bind(this);
+    this.$directive.click(this._onAddQuickButtonClickHandler);
 }
 _.extend(AddDictionaryElementControl.prototype, AbstractControl);
 
@@ -19,7 +20,7 @@ AddDictionaryElementControl.prototype.setValue = function(value) {
 };
 
 AddDictionaryElementControl.prototype.destroy = function() {
-    this.$directive.off('click');
+    this.$directive.off('click', this._onAddQuickButtonClickHandler);
     this.$directive.remove();
 };
 

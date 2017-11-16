@@ -32,8 +32,12 @@ function Alternative(param) {
                 $newElem.css('backgroundImage', 'url('+pv.icon.normal+')');
             }
         }
-        $newElem.click(this.onItemClick.bind(this));
-        this.possibleValuesElements.push($newElem);
+        var onItemClickHandler = this.onItemClick.bind(this);
+        $newElem.click(onItemClickHandler);
+        this.possibleValuesElements.push({
+            clickHandler: onItemClickHandler,
+            element: $newElem
+        });
     }
 
     /**
@@ -58,7 +62,7 @@ function Alternative(param) {
         for (var i = 0; i < this.additionalParam.possibleValues.length; i++) {
             var pv = this.additionalParam.possibleValues[i];
             if (pv.icon && typeof pv.icon.normal === 'string') {
-                this.possibleValuesElements[i].css('backgroundImage', 'url('+pv.icon.normal+')');;
+                this.possibleValuesElements[i].element.css('backgroundImage', 'url('+pv.icon.normal+')');;
             }
         }
     };
@@ -98,7 +102,7 @@ Alternative.prototype.setValue = function(value) {
 
 Alternative.prototype.destroy = function() {
     this.possibleValuesElements.forEach(function(elem) {
-        $(elem).off();
+        $(elem.element).off('click', elem.handler);
     });
     this.$directive.remove();
 };

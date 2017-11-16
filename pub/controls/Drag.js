@@ -44,17 +44,22 @@ function Drag(param) {
 //            }
 //        }
     }
+
+    this._mouseDownHandler = null;
+    this._draggableParentMousemoveHandler = null;
+    this._draggableParentMouseupHandler = null;
 }
 _.extend(Drag.prototype, AbstractControl);
 
 Drag.prototype.setProductDomElement = function(elem) {
     if (this.$productDomElement) {
-        this.$productDomElement.off('mousedown');
+        this.$productDomElement.off('mousedown', this._mouseDownHandler);
         this.$productDomElement = null;
     }
     if (elem) {
         this.$productDomElement = $(elem);
-        this.$productDomElement.mousedown(this.onMouseDown.bind(this));
+        this._mouseDownHandler = this.onMouseDown.bind(this);
+        this.$productDomElement.mousedown(this._mouseDownHandler);
         this.setDraggableParent();
     }
 };
@@ -88,8 +93,9 @@ Drag.prototype.setValue = function(value) {
 };
 
 Drag.prototype.destroy = function() {
-    this.$productDomElement.off('mousedown');
-    this.$draggableParent.off();
+    this.$productDomElement.off('mousedown', this._mouseDownHandler);
+    this.$draggableParent.off('mousemove', this._draggableParentMousemoveHandler);
+    this.$draggableParent.off('mouseup', this._draggableParentMouseupHandler);
     this.$directive.remove();
 };
 
@@ -99,7 +105,8 @@ Drag.prototype.destroy = function() {
  */
 Drag.prototype.setDraggableParent = function() {
     if (this.$draggableParent) {
-        this.$draggableParent.off();
+        this.$draggableParent.off('mousemove', this._draggableParentMousemoveHandler);
+        this.$draggableParent.off('mouseup', this._draggableParentMouseupHandler);
     }
     var cls = this.additionalParam.draggableParentSelector;
     if (cls[0]==='.') {
@@ -113,8 +120,10 @@ Drag.prototype.setDraggableParent = function() {
     }
     if (p && p.hasClass(cls)===true) {
         this.$draggableParent = p;
-        this.$draggableParent.mousemove(this.onDraggableParentMouseMove.bind(this));
-        this.$draggableParent.mouseup(this.onDraggableParentMouseUp.bind(this));
+        this._draggableParentMousemoveHandler = this.onDraggableParentMouseMove.bind(this);
+        this._draggableParentMouseupHandler = this.onDraggableParentMouseUp.bind(this);
+        this.$draggableParent.mousemove(this._draggableParentMousemoveHandler);
+        this.$draggableParent.mouseup(this._draggableParentMouseupHandler);
     }
     else {
         throw new Error('Drag.findDraggableParent: cannot find parent with selector \''+this.additionalParam.draggableParentSelector+'\'. Property=\''+this.propertyString+'\'');
@@ -196,7 +205,7 @@ Drag.prototype.onDraggableParentMouseMove = function(e) {
  * @param e
  */
 Drag.prototype.onDraggableParentMouseUp = function(e) {
-    // console.log('Drag.onMouseUp');
+    console.log('Drag.onMouseUp');
     if (this.isDragging === true && this.prodElemPositionCached) {
         this.position = this.prodElemPositionCached;
         this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);

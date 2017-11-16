@@ -35,7 +35,7 @@ var FbPanoramaApp = MutApp.extend({
         },
         "id=mm pins": {
             label: {RU:'Метки на панораме',EN:'Panorama pins'},
-            controls: ["AddDictionaryElementControl","DeleteDictionaryElementControl"],
+            controls: ["PanoramaAddSticker", "DeleteDictionaryElementControl"],
             prototypes: [{
                 protoFunction:'id=mm pinProto1',
                 label: {RU:'Метка',EN:'Pin'},
@@ -72,24 +72,24 @@ var FbPanoramaApp = MutApp.extend({
                         }
                     },
                     controlFilter: 'onclick'
-                },
-                "id=mm pins.{{id}}.backgroundColor": {
-                    label: {RU:'Цвет стикера',EN:'Background color'},
-                    controls: {
-                        name: "StringControl",
-                        view: 'ColorPicker'
-                    },
-                    controlFilter: 'onclick'
-                },
-                "id=mm pins.{{id}}.fontColor": {
-                    label: {RU:'Цвет шрифта',EN:'Font color'},
-                    controls: {
-                        name: "StringControl",
-                        view: 'ColorPicker'
-                    },
-                    controlFilter: 'onclick'
                 }
             }
+        },
+        "id=mm pinsBackgroundColor": {
+            label: {RU:'Цвет стикера',EN:'Background color'},
+            controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            },
+            controlFilter: 'screen(id=panoramaEditScr)'
+        },
+        "id=mm pinsFontColor": {
+            label: {RU:'Цвет шрифта',EN:'Font color'},
+            controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            },
+            controlFilter: 'screen(id=panoramaEditScr)'
         },
         "id=mm panoramaImgSrc": {
             label: {

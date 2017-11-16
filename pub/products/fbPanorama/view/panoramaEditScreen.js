@@ -47,9 +47,12 @@ var PanoramaEditScreen = MutApp.Screen.extend({
      */
     canvasForEditing: null,
     /**
-     * Сохраненные пины, чтобы их потом проще удалить
+     * Сохраненная информация о пинах, чтобы с ними потом работать
      */
-    $pins: [],
+    pinInfo: [
+        // $view
+        // id
+    ],
 
     template: {
         "default": _.template($('#id-panorama_edit_template').html()),
@@ -67,6 +70,21 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             win.focus();
             this.model.application.stat(this.model.application.type, 'logoclick');
         }
+    },
+
+    /**
+     * Получить информацию о отрендеренном ранее пине
+     *
+     * @param {string} pinId
+     * @returns {*}
+     */
+    getPinInfo: function(pinId) {
+        for (var i = 0; i < this.pinInfo.length; i++) {
+            if (this.pinInfo[i].id === pinId) {
+                return this.pinInfo[i];
+            }
+        }
+        return null;
     },
 
     initialize: function (param) {
@@ -105,6 +123,14 @@ var PanoramaEditScreen = MutApp.Screen.extend({
                 this.render();
             }, this);
 
+            this.model.bind("change:pinsFontColor", function () {
+                this.render();
+            }, this);
+
+            this.model.bind("change:pinsBackgroundColor", function () {
+                this.render();
+            }, this);
+
             this.model.bind("change:previewScale", function () {
                 this.canvasForEditing = null;
             }, this);
@@ -120,12 +146,8 @@ var PanoramaEditScreen = MutApp.Screen.extend({
      * Если это случается, то подвинуть пин к краю
      *
      * @param $view
-     * @param {number} pinIndex - индекс в массиве pins в модели
      */
-    normalizePinPosition: function($view, pinIndex) {
-        // в модели хранятся орригинальные координаты в реальном масштабе
-        var p = this.model.attributes.pins[pinIndex];
-
+    normalizePinPosition: function($view) {
         var ep = {
             top: parseInt($view.css('top')),
             left: parseInt($view.css('left')),
@@ -150,12 +172,12 @@ var PanoramaEditScreen = MutApp.Screen.extend({
     /**
      * Установка произвольного цвета для after элемента пина .pin_wr
      */
-    setPinAfterColor: function($pin, pinIndex, mod, backgroundColor, stylesContainer) {
+    setPinAfterColor: function($pin, pinDictionaryId, mod, backgroundColor, stylesContainer) {
         stylesContainer = stylesContainer || this.$el;
-        if (this.customPinColorStyles[pinIndex]) {
-            this.customPinColorStyles[pinIndex].remove();
+        if (this.customPinColorStyles[pinDictionaryId]) {
+            this.customPinColorStyles[pinDictionaryId].remove();
         }
-        var customMod = 'customAfterClass'+pinIndex;
+        var customMod = 'customAfterClass'+pinDictionaryId;
         if ($pin.hasClass(customMod) !== true) {
             $pin.addClass(customMod);
         }
@@ -174,7 +196,7 @@ var PanoramaEditScreen = MutApp.Screen.extend({
                     break;
             }
             // https://stackoverflow.com/questions/5041494/selecting-and-manipulating-css-pseudo-elements-such-as-before-and-after-usin
-            this.customPinColorStyles[pinIndex] = $('<style id="id-pin_custom_style">.pin_wr.'+mod+'.'+customMod+':after{'+cssStr+'}</style>').appendTo(stylesContainer);
+            this.customPinColorStyles[pinDictionaryId] = $('<style id="id-pin_custom_style">.pin_wr.'+mod+'.'+customMod+':after{'+cssStr+'}</style>').appendTo(stylesContainer);
             // document.styleSheets[0].addRule('.pin_wr.'+mod+'.special:after',cssStr);
         }
     },
@@ -218,50 +240,15 @@ var PanoramaEditScreen = MutApp.Screen.extend({
             }
 
             // удаляем предыдущие пины
-            for (var i = 0; i < this.$pins.length; i++) {
-                this.$pins[i].remove();
+            for (var i = 0; i < this.pinInfo.length; i++) {
+                this.pinInfo[i].$view.remove();
             }
-            this.$pins = [];
-            // отрисовка пинов
-            var $pinsCnt = this.$el.find('.js-pins_cnt');
+            this.pinInfo = [];
 
             var pinsArr = this.model.attributes.pins.toArray();
             for (var i = 0; i < pinsArr.length; i++) {
                 var p = pinsArr[i];
-                p.data.pinDictionaryId = this.model.attributes.pins.getIdFromPosition(i);
-                var $pel = $(this.template[p.uiTemplate](MutApp.Util.getObjectForRender(p.data)));
-                // класс стрелки
-                $pel.addClass(p.modArrow.getValue());
-                // цвет фона
-                if (p.backgroundColor.getValue()) {
-                    $pel.css('background-color', p.backgroundColor.getValue());
-                    this.setPinAfterColor($pel, i, p.modArrow.getValue(), p.backgroundColor.getValue());
-                }
-                // цвет текста
-                if (p.fontColor.getValue()) {
-                    $pel.css('color', p.fontColor.getValue());
-                }
-                var top = Math.round(p.position.getValue().top*ps);
-                var left = Math.round(p.position.getValue().left*ps);
-                $pel.css('top',top).css('left',left);
-                var textAlign = 'left';
-                switch(p.modArrow) {
-                    case 'ar_top':
-                    case 'ar_bottom': {
-                        textAlign = 'center';
-                        break;
-                    }
-                    case 'ar_top_right':
-                    case 'ar_bottom_right': {
-                        textAlign = 'right';
-                        break;
-                    }
-                }
-                $pel.css('textAlign',textAlign);
-                $pinsCnt.append($pel);
-                this.$pins.push($pel);
-                // нормализовать положение пина, чтобы он не вышел за границы картинки
-                this.normalizePinPosition($pel, i);
+                this.renderPin(p, ps);
             }
         }
         else {
@@ -284,5 +271,102 @@ var PanoramaEditScreen = MutApp.Screen.extend({
 
         this.renderCompleted();
         return this;
+    },
+
+    /**
+     * Сохранить вью пина и подписать на обновления свойств пина в модели
+     */
+    cachePin: function(pinId, $view) {
+        var inf = {
+            $view: $view,
+            id: pinId
+        };
+        this.pinInfo.push(inf);
+        var pin = this.model.getPin(pinId);
+        pin.modArrow.bind('change', this.onModArrowChange.bind(this, pinId));
+    },
+
+    /**
+     * Изменение одного конкретного пина
+     */
+    onModArrowChange: function(pinId) {
+        // форма стрелки: индивидуальный атрибут для каждого пина.
+        // Важно: стикер не рендерится, а только меняются классы
+        // Иначе слетят все привязки в редакторе
+        var inf = this.getPinInfo(pinId);
+        if (inf) {
+            var pin = this.model.getPin(pinId);
+            if (pin) {
+                inf.$view.attr('class','').attr('class','pin_wr '+pin.modArrow.getValue());
+                var pinDictionaryId = this.model.getPinDictionaryId(pinId);
+                this.setPinAfterColor(inf.$view, pinDictionaryId, pin.modArrow.getValue(), this.model.get('pinsBackgroundColor').getValue());
+            }
+            else {
+                throw new Error('PanoramaEditScreen.onPinChange: pin \''+pinData.id+'\' not found in model');
+            }
+        }
+        else {
+            throw new Error('PanoramaEditScreen.onPinChange: no cache info about pin \''+pinData.id+'\'');
+        }
+    },
+
+    /**
+     * отрисовать один стикер на панораме
+     * также используется для обновления отдельно взятого пина
+     *
+     * @param pinData
+     * @param {Number} previewScale
+     */
+    renderPin: function(pinData, previewScale) {
+        console.log('renderPin: ' + pinData.id);
+        // обязательно надо дописать параметр pinDictionaryId
+        pinData.data.pinDictionaryId = this.model.getPinDictionaryId(pinData.id);
+        // отрисовка пинов
+        var $pinsCnt = this.$el.find('.js-pins_cnt');
+        var $pel = $(this.template[pinData.uiTemplate](MutApp.Util.getObjectForRender(pinData.data)));
+        var inf = this.getPinInfo(pinData.id);
+        if (inf === null) {
+            // сохраняем в кеше
+            this.cachePin(pinData.id, $pel);
+        }
+        else {
+            // поменять вью на новый, старый вью удалить
+            inf.$view.remove();
+            inf.$view = $pel;
+        }
+        $pinsCnt.append($pel);
+        // класс стрелки
+        $pel.addClass(pinData.modArrow.getValue());
+        // цвет фона
+        if (this.model.get('pinsBackgroundColor').getValue()) {
+            $pel.css('background-color', this.model.get('pinsBackgroundColor').getValue());
+            this.setPinAfterColor($pel, pinData.data.pinDictionaryId, pinData.modArrow.getValue(), this.model.get('pinsBackgroundColor').getValue());
+        }
+        // цвет текста
+        if (this.model.get('pinsFontColor').getValue()) {
+            $pel.css('color', this.model.get('pinsFontColor').getValue());
+        }
+        var top = Math.round(pinData.position.getValue().top * previewScale);
+        var left = Math.round(pinData.position.getValue().left * previewScale);
+        $pel.css('top',top).css('left',left);
+        var textAlign = 'left';
+        switch(pinData.modArrow) {
+            case 'ar_top':
+            case 'ar_bottom': {
+                textAlign = 'center';
+                break;
+            }
+            case 'ar_top_right':
+            case 'ar_bottom_right': {
+                textAlign = 'right';
+                break;
+            }
+        }
+        $pel.css('textAlign',textAlign);
+
+        // нормализовать положение пина, чтобы он не вышел за границы картинки
+        this.normalizePinPosition($pel, i);
+
+        return $pel;
     }
 });

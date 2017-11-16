@@ -54,7 +54,15 @@ var FbPanoramaModel = MutApp.Model.extend({
         /**
          * Объект photo-sphere-viewer.js
          */
-        viewer: null
+        viewer: null,
+        /**
+         * @type {MutAppProperty}
+         */
+        pinsBackgroundColor: null,
+        /**
+         * @type {MutAppProperty}
+         */
+        pinsFontColor: null
     },
 
     initialize: function(param) {
@@ -66,7 +74,8 @@ var FbPanoramaModel = MutApp.Model.extend({
             application: this.application,
             model: this,
             propertyString: 'id=mm panoramaImgSrc',
-            value: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/rome1200x600.png'
+            //value: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/rome1200x600.png'
+            value: 'http://localhost:63342/ProCo/pub/i/samples/rome1200x600.png'
         });
 
         this.attributes.pins = new MutAppPropertyDictionary({
@@ -83,17 +92,44 @@ var FbPanoramaModel = MutApp.Model.extend({
             value: false
         });
 
-        this.attributes.panoCompiledImage = new MutAppProperty({
+        this.attributes.pinsBackgroundColor = new MutAppProperty({
             application: this.application,
             model: this,
-            propertyString: 'id=mm panoCompiledImage',
-            value: null
+            propertyString: 'id=mm pinsBackgroundColor',
+            value: '#33bbed'
+        });
+
+        this.attributes.pinsFontColor = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=mm pinsFontColor',
+            value: '#fff'
         });
     },
 
     start: function() {
         this.extendImageClass();
         this.setPanoramaImage(this.attributes.panoramaImgSrc.getValue());
+    },
+
+    getPin: function(pinId) {
+        var pinArr = this.attributes.pins.toArray();
+        for (var i = 0; i < pinArr.length; i++) {
+            if (pinArr[i].id === pinId) {
+                return pinArr[i];
+            }
+        }
+        return null;
+    },
+
+    getPinDictionaryId: function(pinId) {
+        var pinArr = this.attributes.pins.toArray();
+        for (var i = 0; i < pinArr.length; i++) {
+            if (pinArr[i].id === pinId) {
+                return this.attributes.pins.getIdFromPosition(i);
+            }
+        }
+        return null;
     },
 
     setPanoramaImage: function(url, callback) {
@@ -243,8 +279,14 @@ var FbPanoramaModel = MutApp.Model.extend({
     /**
      * Функция прототип для создания нового пина на панораме
      *
+     * @param {Number} param.left - опционально
+     * @param {Number} param.top - опционально
      */
     pinProto1: function(param) {
+        param = param || {};
+        var left = param.left || this.getRandomArbitrary(50, 500);
+        var top = param.top || this.getRandomArbitrary(50, 300);
+
         var pinDictionaryId = MutApp.Util.getUniqId(6);
 
         var pinText = new MutAppProperty({
@@ -258,22 +300,8 @@ var FbPanoramaModel = MutApp.Model.extend({
             propertyString: 'id=mm pins.'+pinDictionaryId+'.position',
             model: this,
             application: this.application,
-            value: {left: 200, top: 200}
+            value: {left: left, top: top}
         })
-
-        var pinBackColor = new MutAppProperty({
-            propertyString: 'id=mm pins.'+pinDictionaryId+'.backgroundColor',
-            model: this,
-            application: this.application,
-            value: '#33bbed'
-        });
-
-        var pinFontColor = new MutAppProperty({
-            propertyString: 'id=mm pins.'+pinDictionaryId+'.fontColor',
-            model: this,
-            application: this.application,
-            value: '#fff'
-        });
 
         var pinModArrow = new MutAppProperty({
             propertyString: 'id=mm pins.'+pinDictionaryId+'.modArrow',
@@ -288,8 +316,9 @@ var FbPanoramaModel = MutApp.Model.extend({
                 text: pinText
             },
             position: pinPosition,
-            backgroundColor: pinBackColor,
-            fontColor: pinFontColor,
+            // Решили делать общий цвет для всех пинов
+            // backgroundColor: pinBackColor,
+            // fontColor: pinFontColor,
             modArrow: pinModArrow,
             uiTemplate: 'id-text_pin_template'
         };
@@ -310,6 +339,10 @@ var FbPanoramaModel = MutApp.Model.extend({
         assert = assert || MutApp.Util.getMockAssert();
 
         console.log('FbPanoramaModel.isOK: Checking finished. See qunit log or console for details.');
+    },
+
+    getRandomArbitrary: function(min, max) {
+        return Math.round(Math.random() * (max - min) + min);
     }
 
 });
