@@ -283,6 +283,9 @@ var Editor = {};
         if (config.products[appName].hideScreenControls === true) {
             $('#id-screen_controls_cnt').hide();
         }
+        if (config.products[appName].mobPreviewEnabled === false) {
+            $('#id-to_mob_preview').hide();
+        }
         ScreenManager.init({
             onScreenEvents: onScreenEvents,
             appType: appName
@@ -304,12 +307,6 @@ var Editor = {};
 //            .height(appContainerSize.height+2*config.editor.ui.screen_blocks_border_width+config.editor.ui.id_product_cnt_additional_height);
         // в поле для редактирования подтягиваем стили продукта
 
-//        var $h = $("#id-product_screens_cnt").contents().find('head');
-//        $h.append(config.products.common.styles);
-//        $h.append(config.products[editedApp.type].stylesForEmbed);
-//        $h = $(editorLoader.getIframe()).contents().find('head');
-//        $h.append(config.products.common.styles);
-
         if (config.common.editorUiEnable === true) {
             restartEditedApp();
             showEditor();
@@ -319,7 +316,6 @@ var Editor = {};
             checkEditorIsReady();
 
             // для установки ссылки шаринга требуются данные пользователя, ответ от апи возможно надо подождать
-//            if (App.getUserData()) {
             if (cloneTemplate) {
                 // при клонировании сменить ссылку на проект и версию публикаиции обнулить
                 trySetDefaultShareLink(true);
@@ -330,16 +326,6 @@ var Editor = {};
                 $('#id-app_prevew_img_wr').show();
             }
             setTariffPolicy();
-//            }
-//            else {
-//                App.on(USER_DATA_RECEIVED, function() {
-//                    trySetDefaultShareLink(cloneTemplate === true);
-//                    // показ кнопки загрузки превью картинки для проекта. Только для админов
-//                    if (App.getUserData() && config.common.excludeUsersFromStatistic.indexOf(App.getUserData().id) >= 0) {
-//                        $('#id-app_prevew_img_wr').show();
-//                    }
-//                });
-//            }
         }
         else {
             // не грузить контролы в этом режиме. Сразу колбек на старт
@@ -939,8 +925,27 @@ var Editor = {};
         previewApp = editorLoader.startApp({
             containerId: 'id-app_preview',
             mode: 'preview',
-            defaults: editedApp.serialize() // передача значений mutappproperty в от редактируемого приложения
+            defaults: editedApp.serialize(), // передача значений mutappproperty в от редактируемого приложения
+            appChangeCallbacks: [onPreviewAppChanged]
         });
+    }
+
+    /**
+     * Обработчик событий в превью-приложении
+     *
+     * @param {string} event
+     * @param {object} data
+     */
+    function onPreviewAppChanged(event, data) {
+        var app = data.application;
+        var MutApp = editorLoader.getIframe('id-product_iframe_cnt').contentWindow.MutApp;
+        switch (event) {
+            case MutApp.EVENT_APP_SIZE_CHANGED: {
+                log('Editor.onPreviewAppChanged: MutApp.EVENT_APP_SIZE_CHANGED \''+data.width+'x'+data.height+'\'');
+                $('#id-app_preview').find('iframe').css('max-width', app.getSize().width);
+                break;
+            }
+        }
     }
 
     /**
@@ -1553,6 +1558,24 @@ var Editor = {};
         }
     }
 
+    /**
+     * В редактируемом приложении получить значение по селектору, например 'id=mm previewScale'
+     * Использование:
+     *  - В контролах, которым нужны данные из приложения (например Drag запрашивает масштаб)
+     *
+     */
+    function getEditedAppValueBySelector(selector) {
+        var MutApp = editorLoader.getIframe('id-product_iframe_cnt').contentWindow.MutApp;
+        if (editedApp && MutApp.Util.isMutAppPropertySelector(selector) === true) {
+            // нашйли в параметрах контрола селектор, получить по нему значение и переписать параметр
+            var v = editedApp.getPropertiesBySelector(selector);
+            if (v && v.length > 0) {
+                return v[0].value;
+            }
+        }
+        return null;
+    }
+
     // public methods
     global.start = start;
     global.showScreen = showScreen;
@@ -1569,5 +1592,6 @@ var Editor = {};
     global.showEditor = showEditor;
     global.getActiveScreen = function() { return activeScreen; }
     global.openTemplate = openTemplate;
+    global.getEditedAppValueBySelector = getEditedAppValueBySelector;
 
 })(Editor);

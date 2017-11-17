@@ -27,22 +27,18 @@ function Drag(param) {
     this.onMouseDownStopPropagation = true;
 
     // возможность задать масштаб. Действия контрола будут учитывать этот масштаб
-    this.scale = 1;
+    this._scale = 1;
     if (this.additionalParam.scale) {
         if (isNumeric(this.additionalParam.scale) === true) {
-            this.scale = parseFloat(this.additionalParam.scale);
+            this._scale = this.additionalParam.scale;
         }
-//        todo with panorama
-//        else if (Engine.parseSelector(params.scale) !== null) {
-//            var s = undefined;
-//            try {
-//                s = Engine.getApp().getPropertiesBySelector(params.scale)[0].value;
-//            }
-//            catch (err) {}
-//            if (s !== undefined) {
-//                this.scale = s;
-//            }
-//        }
+        else if (typeof this.additionalParam.scale === 'string') {
+            // запросить по селектору значение попробовать
+            this._scale = Editor.getEditedAppValueBySelector(this.additionalParam.scale);
+            if (isNumeric(this._scale) !== true) {
+                this._scale = 1;
+            }
+        }
     }
 
     this._mouseDownHandler = null;
@@ -65,9 +61,10 @@ Drag.prototype.setProductDomElement = function(elem) {
 };
 
 Drag.prototype.getValue = function() {
+    this.updateScale();
     return {
-        left: this.position.left / this.scale,
-        top: this.position.top / this.scale
+        left: this.position.left / this._scale,
+        top: this.position.top / this._scale
     };
 };
 
@@ -75,8 +72,9 @@ Drag.prototype.setValue = function(value) {
     value.top = parseInt(value.top); // '20px' string is ok
     value.left = parseInt(value.left);
     if (isNumeric(value.top) === true && isNumeric(value.left) === true) {
-        var l = Math.round(value.left * this.scale);
-        var t = Math.round(value.top * this.scale);
+        this.updateScale();
+        var l = Math.round(value.left * this._scale);
+        var t = Math.round(value.top * this._scale);
         // проверка что хотя бы одна из координат изменилась, тогда обновить
         if (this.position.left !== l || this.position.top !== t) {
             this.position.left = l;
@@ -153,7 +151,6 @@ Drag.prototype.normalizeElementPosition = function() {
  * @param e
  */
 Drag.prototype.onMouseDown = function(e) {
-    // console.log('Drag.onMouseDown');
     this.productDOMElementSize = {
         width: this.$productDomElement.outerWidth(false),
         height: this.$productDomElement.outerHeight(false)
@@ -211,4 +208,17 @@ Drag.prototype.onDraggableParentMouseUp = function(e) {
         this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
     }
     this.isDragging = false;
+};
+
+/**
+ * Обновить масштаб
+ */
+Drag.prototype.updateScale = function() {
+    if (this.additionalParam.scale && typeof this.additionalParam.scale === 'string') {
+        // запросить по селектору значение попробовать
+        this._scale = Editor.getEditedAppValueBySelector(this.additionalParam.scale);
+        if (isNumeric(this._scale) !== true) {
+            this._scale = 1;
+        }
+    }
 };

@@ -158,6 +158,8 @@ var panoDrawing = {};
      * @param {number} param.srcHeight
      * @param {number} param.pinScale
      * @param {Image} param.logo
+     * @param {string} param.pinsBackgroundColor
+     * @param {string} param.pinsFontColor
      */
     function createPanoCanvas(param) {
         // размер картинки может оказаться больше чем srcWidth srcHeight, так как конфигурация берется из расчета максимальной ширины 6000px
@@ -198,12 +200,17 @@ var panoDrawing = {};
         if (param.logo) {
             var lh = panoCanvas.height * LOGO_HEIGHT_PERCENT_FROM_PANO_HEIGHT;
             var lw = lh / (param.logo.height/param.logo.width);
-            ctx.drawImage(param.logo,
-                panoCanvas.width - lw - LOGO_RIGHT,
-                panoCanvas.height - lh - LOGO_BOTTOM,
-                lw,
-                lh
-            );
+            try {
+                ctx.drawImage(param.logo,
+                    panoCanvas.width - lw - LOGO_RIGHT,
+                    panoCanvas.height - lh - LOGO_BOTTOM,
+                    lw,
+                    lh
+                );
+            }
+            catch(e) {
+                // image broken state exception in autotests
+            }
         }
 
         if (param.pins) {
@@ -212,13 +219,13 @@ var panoDrawing = {};
                 p = param.pins[i];
                 addPin({
                     context: ctx,
-                    text: p.data.text,
-                    left: p.position.left,
-                    top: p.position.top,
+                    text: p.data.text.getValue(),
+                    left: p.position.getValue().left,
+                    top: p.position.getValue().top,
                     pinScale: param.pinScale,
-                    modArrow: p.modArrow,
-                    backgroundColor: p.backgroundColor,
-                    color: p.color
+                    modArrow: p.modArrow.getValue(),
+                    backgroundColor: param.pinsBackgroundColor,
+                    color: param.pinsFontColor
                 });
             }
         }

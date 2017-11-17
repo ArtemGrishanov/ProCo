@@ -32,6 +32,8 @@ TextQuickInput.prototype.setProductDomElement = function(elem) {
         this.$productDomElement = $(elem);
         this.$productDomElement.attr('contenteditable','true');
         this.$productDomElement.css('outline','none');
+        this._onProductElementClickHandler = this.onProductElementClick.bind(this);
+        this.$productDomElement.click(this._onProductElementClickHandler);
         this._onProductElementInputHandler = this.onProductElementInput.bind(this);
         this.$productDomElement.on('input', this._onProductElementInputHandler);
         this._onKeyPressHandler = this.onKeyPress.bind(this);
@@ -62,6 +64,7 @@ TextQuickInput.prototype.setValue = function(value) {
 
 TextQuickInput.prototype.destroy = function() {
     if (this.$productDomElement) {
+        this.$productDomElement.off('click', this._onProductElementClickHandler);
         this.$productDomElement.off('input', this._onProductElementInputHandler);
         this.$productDomElement.off('keypress', this._onKeyPressHandler);
     }
@@ -107,4 +110,10 @@ TextQuickInput.prototype.onPaste = function() {
 
 TextQuickInput.prototype.onProductElementInput = function() {
     this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
+};
+
+TextQuickInput.prototype.onProductElementClick = function(e) {
+    // когда у этого же $productDomElement есть контрол Drag, то есть проблемы с фокусом
+    // Drag.onMouseDown сбивает обработку событий
+    $(e.currentTarget).focus();
 };

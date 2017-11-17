@@ -35,7 +35,12 @@ var FbPanoramaApp = MutApp.extend({
         },
         "id=mm pins": {
             label: {RU:'Метки на панораме',EN:'Panorama pins'},
-            controls: ["PanoramaAddSticker", "DeleteDictionaryElementControl"],
+            controls: [{
+                name: "PanoramaAddSticker",
+                param: {
+                    scale: 'id=mm previewScale'
+                }
+            }, "DeleteDictionaryElementControl"],
             prototypes: [{
                 protoFunction:'id=mm pinProto1',
                 label: {RU:'Метка',EN:'Pin'},
@@ -124,6 +129,9 @@ var FbPanoramaApp = MutApp.extend({
             screenRoot: this.screenRoot
         });
         this.addScreen(this.panoViewerScr);
+
+        this.title = 'Facebook Panorama';
+        this.description = 'Create Facebook panorama on Testix.me';
     },
 
     start: function() {
@@ -144,7 +152,6 @@ var FbPanoramaApp = MutApp.extend({
      * @returns {*}
      */
     getAutoPreviewHtml: function() {
-        // TODO
-        return '';
+        return '<img src="' + this.model.attributes.panoramaImgSrc.getValue() + '" width="400px"/>';
     }
 });

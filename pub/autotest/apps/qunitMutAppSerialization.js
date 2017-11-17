@@ -119,6 +119,36 @@ QUnit.test("MutApp test: MutApp serialization. PersonalityTest was taken for tes
 });
 
 /**
+ * Тест сериализации приложения целиком
+ */
+QUnit.test("MutApp test: MutApp serialization. FbPanorama was taken for test.", function( assert ) {
+    // создать приложение
+    var originApp = new FbPanoramaApp({
+        defaults: null // no defaults
+    });
+    originApp.start();
+
+    originApp.model.attributes.pins.addElementByPrototype('id=mm pinProto1');
+    originApp.model.attributes.pins.addElementByPrototype('id=mm pinProto1');
+    originApp.model.attributes.pins.addElementByPrototype('id=mm pinProto1');
+
+    // сериализовать приложение
+    var str = originApp.serialize();
+
+    // создать новое приложение
+    var app2 = new FbPanoramaApp({
+        defaults: null // no defaults
+    });
+    app2.start();
+
+    // десериализовать в новом приложении
+    app2.deserialize(str);
+
+    // сравнить приложения 1 и 2 compare
+    assert.ok(originApp.compare(app2), originApp.compareDetails.message);
+});
+
+/**
  * Тест сериализации приложения целиком с удалением элементов массива
  */
 QUnit.test("MutApp test: MutApp serialization with array element delete. (PersonalityTest)", function( assert ) {

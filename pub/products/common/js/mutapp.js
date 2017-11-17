@@ -241,6 +241,10 @@ var MutApp = function(param) {
 
         // размеры устанавливаем после установки appChangeCallbacks, чтобы уже в данный момент могли вызваться события об изменении размера
         //TODO mob 'auto'
+        if (this.screenRoot) {
+            // при старте приложения надо обязательно очищать контейнер, Возможно, от результатов предыдущего запуска этого-ж самого приложения
+            this.screenRoot.empty();
+        }
         this.setSize({
             width: (param && param.width > 0) ? param.width: 800,
             height: (param && param.height > 0) ? param.height: 600
@@ -3541,4 +3545,23 @@ _.extend(MutAppPropertyPosition.prototype, MutAppProperty.prototype);
  */
 MutAppPropertyPosition.prototype._validateDataType = function(value) {
     return MutApp.Util.isNumeric(value.top)===true && MutApp.Util.isNumeric(value.left)===true;
+};
+/**
+ * Переписанный метод с указанием конструктора подкласса
+ *
+ * @override
+ * @returns {*}
+ * @private
+ */
+MutAppPropertyPosition.prototype._prepareSerializedObject = function() {
+    var data = {
+        // special mark for deserialization
+        _mutAppConstructor: 'MutAppPropertyPosition',
+        id: this.id,
+        propertyString: this.propertyString,
+        value: this._value, // имя именно публичного параметра "value", который передается в конструктор. Не приватного "_value"
+        _getValueTimestamp: this._getValueTimestamp,
+        _setValueTimestamp: this._setValueTimestamp
+    };
+    return data;
 };

@@ -31,7 +31,7 @@ var FbPanoramaModel = MutApp.Model.extend({
          * @type {MutAppProperty}
          */
         pins: null,
-        logoImgSrc: '../../i/logo_big.png',
+        logoImgSrc: 'i/logo_big.png',
         logoImg: null,
         /**
          * Режим просмотра панорамы с помощью проигрывателя http://photo-sphere-viewer.js.org/
@@ -74,9 +74,11 @@ var FbPanoramaModel = MutApp.Model.extend({
             application: this.application,
             model: this,
             propertyString: 'id=mm panoramaImgSrc',
-            //value: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/rome1200x600.png'
-            value: 'http://localhost:63342/ProCo/pub/i/samples/rome1200x600.png'
+            value: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/rome1200x600.png'
+            // value: 'http://localhost:63342/ProCo/pub/i/samples/rome1200x600.png'
+            // value: 'http://localhost:63342/ProCo/pub/i/samples/6000x3562.jpg'
         });
+        this.attributes.panoramaImgSrc.bind('change', this.onPanoramaImgSrcChange, this);
 
         this.attributes.pins = new MutAppPropertyDictionary({
             application: this.application,
@@ -132,8 +134,13 @@ var FbPanoramaModel = MutApp.Model.extend({
         return null;
     },
 
+    onPanoramaImgSrcChange: function() {
+        this.setPanoramaImage(this.attributes.panoramaImgSrc.getValue());
+    },
+
     setPanoramaImage: function(url, callback) {
         this.set({
+            panoConfig: null,
             panoramaImage: null,
             imageProgress: 0
         });
@@ -233,8 +240,10 @@ var FbPanoramaModel = MutApp.Model.extend({
         config = config || this.attributes.panoConfig;
         image = image || this.attributes.panoramaImage;
         scale = scale || this.attributes.previewScale;
-        pins = pins || this.attributes.pins;
+        pins = pins || this.attributes.pins.toArray();
         var logoImg = this.attributes.logoImg;
+        var pinsBackgroundColor = this.attributes.pinsBackgroundColor.getValue();
+        var pinsFontColor = this.attributes.pinsFontColor.getValue();
         return panoDrawing.createPanoCanvas({
             img: image,
             pins: pins,
@@ -243,7 +252,9 @@ var FbPanoramaModel = MutApp.Model.extend({
             panoWidth: config.panoWidth,
             panoHeight: config.panoHeight,
             pinScale: 1/scale,
-            logo: logoImg
+            logo: logoImg,
+            pinsBackgroundColor: pinsBackgroundColor,
+            pinsFontColor: pinsFontColor
         });
     },
 

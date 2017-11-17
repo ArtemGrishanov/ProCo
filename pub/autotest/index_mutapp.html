@@ -102,6 +102,33 @@
     <script id="id-explanation_text_template" type="text/template"></script>
     <script id="id-result_template" type="text/template"></script>
 
+    <script id="id-panorama_edit_template" type="text/template">
+        <div class="modal __active js-back_color js-back_img">
+            <div class="modal_cnt info js-back_shadow">
+                <div class="pano_cnt js-pano js-pins_cnt js-panoramaaddsticker" data-app-property="id=mm pins">
+                    <div class="pano_img js-pano_image" style="background-image:url(<%=backgroundImage%>)"></div>
+                </div>
+                <!--<div class="logo js-logo js-start_logo" data-app-property="id=startScr logoPosition, id=startScr showLogo, id=mm logoUrl"></div>-->
+                <p class="img_progress js-image_progress">
+                    Loading...<br><br>
+                    <span class="spinner"></span>
+                </p>
+            </div>
+        </div>
+    </script>
+
+    <script id="id-panorama_viewer_template" type="text/template">
+        <div id="id-photosphere" class="photosphere_cnt"></div>
+        <div class="photosphere_scroll_bar js-photosphere_scrollbar" style="display:none">
+            <div class="photosphere_scrollbar_arr"></div>
+            <div class="photosphere_fullscreen js-fullscreen"></div>
+        </div>
+    </script>
+
+    <script id="id-text_pin_template" type="text/template">
+        <div class="pin_wr" data-dictionary-id="<%=pinDictionaryId%>" data-option-index="<%=pinDictionaryId%>" data-app-property="id=mm pins, id=mm pins.<%=pinDictionaryId%>.position, id=mm pins.<%=pinDictionaryId%>.data.text, id=mm pins.<%=pinDictionaryId%>.modArrow"><%=text%></div>
+    </script>
+
     <!--<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.12.min.js"></script>-->
     <script type="text/javascript" src="../lib/jquery.js"></script>
     <script type="text/javascript" src="../lib/underscore.js"></script>
@@ -124,6 +151,14 @@
     <script type="text/javascript" src="../products/personality/view/question.js"></script>
     <script type="text/javascript" src="../products/personality/view/result.js"></script>
     <script type="text/javascript" src="../products/personality/app.js"></script>
+
+    <script type="text/javascript" src="../products/fbPanorama/model/m.js"></script>
+    <script type="text/javascript" src="../products/fbPanorama/view/canvasScreen.js"></script>
+    <script type="text/javascript" src="../products/fbPanorama/view/panoramaEditScreen.js"></script>
+    <script type="text/javascript" src="../products/fbPanorama/view/panoViewer.js"></script>
+    <script type="text/javascript" src="../products/fbPanorama/drawing.js"></script>
+    <script type="text/javascript" src="../products/fbPanorama/panoconfig.js"></script>
+    <script type="text/javascript" src="../products/fbPanorama/app.js"></script>
 
     <!--<script type="text/javascript" src="testQueue.js"></script>-->
     <!--<script type="text/javascript" src="testMutAppEngine.js"></script>-->

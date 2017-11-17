@@ -63,6 +63,7 @@ var CanvasScreen = MutApp.Screen.extend({
         if (pImg) {
             var c = this.model.createPanoCanvas();
             $(c).height(this.model.get('DEF_PANORAMA_PREVIEW_HEIGHT'));
+            this.$el.height(this.model.get('DEF_PANORAMA_PREVIEW_HEIGHT')); // так как иначе высота контейнера почему-то на 4 пикселя больше чем канвас получается. Специально делаем одинаковыми
             this.$el.append(c);
         }
 

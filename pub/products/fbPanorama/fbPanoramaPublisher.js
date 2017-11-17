@@ -81,7 +81,7 @@ var fbPanoramaPublisher = {};
      * @params.baseProductUrl {string} - базовый каталог спецпроекта для работы с ресурсами, например 'products/test'
      */
     function publish(params) {
-        if (App.getUserData() !== null) {
+        if (Auth.getUser() !== null) {
             isPublishing = true;
             App.stat('Testix.me', 'Publish_started');
             if (config.products.fbPanorama.enableCustomStatistics === true) {
@@ -97,57 +97,126 @@ var fbPanoramaPublisher = {};
             errorInPublish = false;
             facebookPostId = null;
 
-            var appModel = promoIframe.contentWindow.app.model;
-            photoViewerMode = appModel.attributes.photoViewerMode;
-            setupJPEGEncoder(appModel.attributes.panoConfig.xmp);
-            var panoCanvas = appModel.createPanoCanvas();
-            uploadPanoCanvas(panoCanvas, function(result) {
-                if (result === 'ok') {
-                    var uploadedPanoUrl = 'https:' + config.common.publishedProjectsHostName + awsImageUrl; // "http:" - обязателен в урле для АПИ FB
-                    if (config.products.fbPanorama.enableCustomStatistics === true) {
-                        App.stat('fbPanorama', 'Canvas_uploaded');
-                    }
-                    if (photoViewerMode !== true) {
-                        // публикация в facebook
-                        checkPermissions(uploadedPanoUrl, (config.products.fbPanorama.addDebugCaption === true) ? appModel.attributes.panoConfig.id: null);
-                    }
-                    else {
-                        // установить зааплоденную картинку в пирложение
-                        var apPanoImg = Engine.getAppProperty('id=mm panoCompiledImage');
-                        Engine.setValue(apPanoImg, uploadedPanoUrl, {
-                            updateAppProperties: false,
-                            updateScreens: false
-                        });
-                        // после установки картинки приложение становится в режим плеера с другой шириной
-                        appWidth = Engine.getApp().width;
-                        appHeight = Engine.getApp().height;
-                        // далее как публикация обычного самостоятельного проекта
-                        Publisher.publish({
-                            appId: publishedAppId,
-                            appName: appName,
-                            width: appWidth,
-                            height: appHeight,
-                            appStr: Engine.serializeAppValues({addIsPublishedParam:true}),
-                            cssStr: Engine.getCustomStylesString(),
-                            promoIframe: promoIframe,
-                            baseProductUrl: baseProductUrl,
-                            callback: callback
-                        });
-                        isPublishing = false
-                        setupJPEGEncoder(null);
-                    }
+            initFB();
+        }
+    }
+
+    function initFB() {
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : config.common.facebookAppId,
+                cookie     : true,  // enable cookies to allow the server to access
+                // the session
+                xfbml      : true,  // parse social plugins on this page
+                version    : 'v2.5' // use graph api version 2.5
+            });
+
+            // Now that we've initialized the JavaScript SDK, we call
+            // FB.getLoginStatus().  This function gets the state of the
+            // person visiting this page and can return one of three states to
+            // the callback you provide.  They can be:
+            //
+            // 1. Logged into your app ('connected')
+            // 2. Logged into Facebook, but not your app ('not_authorized')
+            // 3. Not logged into Facebook and can't tell if they are logged into
+            //    your app or not.
+            //
+            // These three cases are handled in the callback function.
+            FB.getLoginStatus(function(response) {
+                // если приложение в тестовом режиме, то пользователь должен быть добавлен в приложение руками
+                // иначе никакого колбека не будет, ни с каким статусом
+                if (response.status === 'connected') {
+                    App.stat('fbPanorama', 'FB_auth_connected');
+                    startUpload();
                 }
                 else {
-                    if (config.products.fbPanorama.enableCustomStatistics === true) {
-                        App.stat('fbPanorama', 'Error_canvas_upload');
-                    }
-                    errorInPublish = true;
-                    isPublishing = false
-                    setupJPEGEncoder(null);
-                    callback('error', null);
+                    // первый раз если не удалось подключиться
+                    // то запрашиваем логин, это не ошибка
+                    FB.login(function(response) {
+                        if (response.status === 'connected') {
+                            App.stat('fbPanorama', 'FB_auth_connected');
+                            startUpload();
+                        }
+                        else {
+                            // второй раз если не удалось подключиться
+                            // считаем за ошибку о выходим
+                            if (config.products.fbPanorama.enableCustomStatistics === true) {
+                                App.stat('fbPanorama', 'FB_auth_not_connected');
+                            }
+                            errorInPublish = true;
+                            isPublishing = false
+                            setupJPEGEncoder(null);
+                            callback('error', null);
+                        }
+                    }, {scope:'user_friends,email'});
+
                 }
             });
-        }
+        };
+        // Load the SDK asynchronously
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    }
+
+    /**
+     * После коннекта с Fb-api можно запустить этот метод: начало аплоада
+     */
+    function startUpload() {
+        var appModel = Editor.getEditedApp().model;
+        photoViewerMode = appModel.attributes.photoViewerMode;
+        setupJPEGEncoder(appModel.attributes.panoConfig.xmp);
+        var panoCanvas = appModel.createPanoCanvas();
+        uploadPanoCanvas(panoCanvas, function(result) {
+            if (result === 'ok') {
+                var uploadedPanoUrl = 'https:' + config.common.publishedProjectsHostName + awsImageUrl; // "http:" - обязателен в урле для АПИ FB
+                if (config.products.fbPanorama.enableCustomStatistics === true) {
+                    App.stat('fbPanorama', 'Canvas_uploaded');
+                }
+                if (photoViewerMode !== true) {
+                    // публикация в facebook
+                    checkPermissions(uploadedPanoUrl, (config.products.fbPanorama.addDebugCaption === true) ? appModel.attributes.panoConfig.id: null);
+                }
+                else {
+                    // установить зааплоденную картинку в пирложение
+                    var apPanoImg = Engine.getAppProperty('id=mm panoCompiledImage');
+                    Engine.setValue(apPanoImg, uploadedPanoUrl, {
+                        updateAppProperties: false,
+                        updateScreens: false
+                    });
+                    // после установки картинки приложение становится в режим плеера с другой шириной
+                    appWidth = Engine.getApp().width;
+                    appHeight = Engine.getApp().height;
+                    // далее как публикация обычного самостоятельного проекта
+                    Publisher.publish({
+                        appId: publishedAppId,
+                        appName: appName,
+                        width: appWidth,
+                        height: appHeight,
+                        appStr: Engine.serializeAppValues({addIsPublishedParam:true}),
+                        cssStr: Engine.getCustomStylesString(),
+                        promoIframe: promoIframe,
+                        baseProductUrl: baseProductUrl,
+                        callback: callback
+                    });
+                    isPublishing = false
+                    setupJPEGEncoder(null);
+                }
+            }
+            else {
+                if (config.products.fbPanorama.enableCustomStatistics === true) {
+                    App.stat('fbPanorama', 'Error_canvas_upload');
+                }
+                errorInPublish = true;
+                isPublishing = false
+                setupJPEGEncoder(null);
+                callback('error', null);
+            }
+        });
     }
 
     function setupJPEGEncoder(xmpString) {
@@ -164,7 +233,7 @@ var fbPanoramaPublisher = {};
     }
 
     function uploadPanoCanvas(panoCanvas,callback) {
-        awsImageUrl = App.getUserData().id+'/'+publishedAppId+'/forFBUpload.jpg';
+        awsImageUrl = Auth.getUser().id+'/'+publishedAppId+'/forFBUpload.jpg';
         console.log('Start uploading to: ' + awsImageUrl);
         // method from s3util
         s3util.uploadCanvas(App.getAWSBucketForPublishedProjects(), callback, awsImageUrl, panoCanvas);

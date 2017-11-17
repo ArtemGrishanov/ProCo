@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev','offline'], //dev test prod
+        configurationSetsOnStart: ['dev'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -709,7 +709,12 @@ var config = {
             /**
              * Скрыть верхнюю панель с экранами
              */
-            hideScreenControls: true
+            hideScreenControls: true,
+            /**
+             * Скрыть превью с помощью эмулятора телефона
+             * Для FB пано нет смысла в этом. Выглядеть будет все равно не так как в Fb
+             */
+            mobPreviewEnabled: false
         },
         timeline: {
             stylesForEmbed: '<link href="{{config.common.home}}products/timeline/style.css" rel="stylesheet"/>'
