@@ -264,7 +264,10 @@ var App = App || {};
             error_restore_password: 'Не удалется восстановить пароль',
             enter_code_and_password: 'Введите код подтверждения и новый пароль',
             make_correct: 'Назначить верным',
-            is_correct: 'Это верный ответ'
+            is_correct: 'Это верный ответ',
+            upload_res_error: 'Не удалось загрузить ресурс. Попробуйте еще раз.',
+            select_img_error: 'Не удается выбрать картинку',
+            that_is_not_image: 'Выберите картинку'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -457,7 +460,10 @@ var App = App || {};
             enter_code_and_password: 'Input verification code and new password',
 
             make_correct: 'Mark as correct',
-            is_correct: 'Correct option'
+            is_correct: 'Correct option',
+            upload_res_error: 'Can not upload file. Try again',
+            select_img_error: 'Can not select image',
+            that_is_not_image: 'Select image'
         }
     },
     /**

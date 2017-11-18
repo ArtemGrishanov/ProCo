@@ -36,28 +36,30 @@ function ResourceManager(params) {
                     log('ResourceManager: ' + err, true);
                 } else {
                     data.Contents.forEach((function (obj) {
-                        //TODO Файл с точками в имени тоже бывают и они не отображаются
-                        var id = obj.Key.replace(Auth.getUser().id+'\/res\/','');
-                        //var reg = new RegExp('(Auth.getUser().id+'\/res\/)([^\.]+\.[A-z]+)','g');
-                        //var match = reg.exec(obj.Key);
                         this.resourcesList = this.resourcesList || [];
-                        var time = new Date(obj.LastModified);
-                        var newItem = {
-                            // key example 0235e985-8b92-4666-83fa-25fd85ee1072/app/abc123.txt
-                            key: obj.Key,
-                            id: id,
-                            lastModified: obj.LastModified,
-                            time: time
-                        };
-                        for (var i = 0; i < this.resourcesList.length; i++) {
-                            if (time > this.resourcesList[i].time) {
-                                this.resourcesList.splice(i,-1,newItem);
-                                newItem = null;
-                                break;
+                        // показываем только превьюшки в интерфейсе
+                        if (obj.Key.indexOf('res/'+config.editor.resourceManager.thumbPrefix) >= 0) {
+                            // по имени файла определили, что файл это превьюшка
+                            //TODO Файл с точками в имени тоже бывают и они не отображаются
+                            var id = obj.Key.replace(Auth.getUser().id+'\/res\/','');
+                            var time = new Date(obj.LastModified);
+                            var newItem = {
+                                // key example 0235e985-8b92-4666-83fa-25fd85ee1072/res/abc123.jpg
+                                key: obj.Key,
+                                id: id,
+                                lastModified: obj.LastModified,
+                                time: time
+                            };
+                            for (var i = 0; i < this.resourcesList.length; i++) {
+                                if (time > this.resourcesList[i].time) {
+                                    this.resourcesList.splice(i,-1,newItem);
+                                    newItem = null;
+                                    break;
+                                }
                             }
-                        }
-                        if (newItem) {
-                            this.resourcesList.push(newItem);
+                            if (newItem) {
+                                this.resourcesList.push(newItem);
+                            }
                         }
                     }).bind(this));
                 }
@@ -76,14 +78,18 @@ function ResourceManager(params) {
     /**
      * Аплоад файла на сервер
      * Окно будет автоматически перерисовано с обновленным списком ресурсов
+     *
+     * @param {File} file
+     * @param {Canvas} thumbCanvas
      */
-    this.uploadResource = function() {
+    this.uploadResource = function(file, thumbCanvas) {
         if (App.getAWSBucket() !== null) {
-            var file = this.fileChooseOption.find('input[type=\'file\']')[0].files[0];
-            if (file) {
+            // var file = this.fileChooseOption.find('input[type=\'file\']')[0].files[0];
+            //if (file) {
                 // очищаем диалог от элементов на время аплоада, потом будет заново загрузка всех элементов
                 this.dialog.setOptions(null);
                 var objKey = Auth.getUser().id + '/res/' + file.name;
+                var objKeyThumb = Auth.getUser().id + '/res/' + config.editor.resourceManager.thumbPrefix + file.name;
                 var params = {
                     Key: objKey,
                     ContentType: file.type,
@@ -93,13 +99,18 @@ function ResourceManager(params) {
                 s3util.requestStorage('putObject', params, (function (err, data) {
                     if (err) {
                         log('ResourceManager: ' + err, true);
-                        Modal.showMessage({text:'Не удалось загрузить ресурс. Попробуйте еще раз.'});
+                        Modal.showMessage({text: App.getText('upload_res_error')});
                     }
-                    // запросить заново и перестроить диалог
-                    this.resourcesList = null;
-                    this.show(this.selectCallback, {zIndex:this.zIndex});
+                    else {
+                        //TODO почему расширение файла thumbCanvas получается такое же как у оригинального, например png ? А не всегда jpg
+                        s3util.uploadCanvas(App.getAWSBucket(), (function() {
+                            // запросить заново и перестроить диалог
+                            this.resourcesList = null;
+                            this.show(this.selectCallback, {zIndex:this.zIndex});
+                        }).bind(this), objKeyThumb, thumbCanvas);
+                    }
                 }).bind(this), config.storage.putNewResourceMaxDelay);
-            }
+            //}
         }
         else {
             Modal.showSignin();
@@ -170,6 +181,42 @@ function ResourceManager(params) {
     };
 
     /**
+     * Колбек на выбор файла с диска
+     *
+     * @param evt
+     */
+    this.onLocalFileSelected = function(evt) {
+        var files = FileAPI.getFiles(evt);
+        FileAPI.filterFiles(files, function (file, info/**Object*/) {
+            if( /^image/.test(file.type) ) {
+                return true;
+            }
+            return false;
+
+        }, (function (files/**Array*/, rejected/**Array*/){
+            if (rejected.length > 0) {
+                if (!fileApiErrorOccured) {
+                    Modal.showMessage({text: App.getText('that_is_not_image')});
+                }
+            }
+            else if (files.length){
+                FileAPI.Image(files[0]).preview(config.editor.resourceManager.thumbWidth, config.editor.resourceManager.thumbHeight).get((function(err, cnv) {
+                    if (!err) {
+                        // начать аплоад превью cnv
+                        // и файла files[0]
+                        this.uploadResource(files[0], cnv);
+                    }
+                    else {
+                        Modal.showMessage({text: App.getText('select_img_error')});
+                    }
+                    $('#id-resource_manager_file_upload').val('');
+                }).bind(this));
+            }
+            $('#id-resource_manager_file_upload').val('');
+        }).bind(this));
+    };
+
+    /**
      * Устанавливает уже подготовленный this.resourcesList внутрь вью (this.dialog)
      */
     this.setDialogOptions = function() {
@@ -191,16 +238,19 @@ function ResourceManager(params) {
         if (this.resourcesList) {
             for (var i = 0; i < this.resourcesList.length; i++) {
                 selectOptions.push({
-                    id: encodeURIComponent(this.resourcesList[i].key),
-                    label: this.resourcesList[i].id,
+                    id: encodeURIComponent(this.resourcesList[i].key.replace(config.editor.resourceManager.thumbPrefix, '')), // убираем префикс, получает имя большого, оригинального файла
+                    label: this.resourcesList[i].id.replace(config.editor.resourceManager.thumbPrefix, ''), // убираем из видимого пользователю имени префикс '__thumb'
                     icon: this.getUserResourceBaseUrl()+this.resourcesList[i].key,
                 });
             }
         }
         this.dialog.setOptions(selectOptions);
-        this.fileChooseOption.find('input[type=\'file\']').change((function() {
-            // сразу без превью - аплоад
-            this.uploadResource()
-        }).bind(this));
+        //        this.fileChooseOption.find('input[type=\'file\']').change((function() {
+        //            // сразу без превью - аплоад
+        //            this.uploadResource()
+        //        }).bind(this));
+
+        // инициализация обработчика выбора файла с диска
+        FileAPI.event.on(document.getElementById('id-resource_manager_file_upload'), 'change', this.onLocalFileSelected.bind(this));
     };
 }

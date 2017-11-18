@@ -925,6 +925,20 @@ var config = {
              * Используется в shareImageService
              */
             appAutoPreviewImageExpirationTimeMillis: 3000
+        },
+        resourceManager: {
+            /**
+             * Для превьюшек используется такой префикс в имени файла
+             */
+            thumbPrefix: 'thumb__',
+            /**
+             * Ширина превьюшки для леера resourceManager
+             */
+            thumbWidth: 210,
+            /**
+             * Высота превьюшки для леера resourceManager
+             */
+            thumbHeight: 130
         }
     },
     ui: {

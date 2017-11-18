@@ -258,6 +258,7 @@
     background-position: center;
     background-size: contain;
     border: #bfbfbf solid 2px;
+    box-sizing: border-box;
 }
 .select_dialog_option_thumb_cnt.__upload {
     background: url(../i/upload-photo.png);
