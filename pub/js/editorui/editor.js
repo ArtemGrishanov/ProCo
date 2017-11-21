@@ -746,6 +746,10 @@ var Editor = {};
                         alert('Сохранено');
                     }
                     App.stat('Testix.me', 'Template_saved');
+                    // Важно: если проект клонирован с витрины, надо заменить ссылку на шаблон после сохранении
+                    // теперь templateUrl будет ссылаться на сохраненный и открытый шаблон пользователя
+                    // пользователь дальше может смело делать рефреш
+                    _updateEditorUrl();
                 }
                 else {
                     if (param.showResultMessage === true) {
@@ -766,6 +770,18 @@ var Editor = {};
         else {
             Modal.showSignin();
         }
+    }
+
+    /**
+     * Обновить урл редактора
+     * После перехода с витрины урл надо заменить при первом же сохранении (убрать id клонируемого проекта и параметр clone)
+     *
+     * @private
+     */
+    function _updateEditorUrl() {
+        var baseEditorUrl = window.location.href.substr(0, window.location.href.indexOf('?'));
+        var newParamString = baseEditorUrl+'?'+config.common.templateUrlParamName+'='+config.common.awsHostName+'/'+config.common.awsBucketName+'/'+Auth.getUser().id+'/app/'+Editor.getAppId()+'.txt';
+        window.history.replaceState(Editor.getAppId(), "Title", newParamString);
     }
 
     function uploadUserCustomTemplatePreview() {
