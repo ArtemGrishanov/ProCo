@@ -410,6 +410,7 @@ var fbPanoramaPublisher = {};
     }
 
     function deletePermissions() {
+
         FB.api(
             "/me/permissions/",
             "DELETE",

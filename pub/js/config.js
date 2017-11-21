@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev', 'offline'], //dev test prod
+        configurationSetsOnStart: ['test'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -470,11 +470,10 @@ var config = {
                 entities: [
                     {
                         name: {RU:'Римские руины',EN:'Roman ruins'},
-                        img: 'http://p.testix.me/storefront/fbPanorama/fa724312dd.jpg',
+                        img: 'http://p.testix.me/storefront/fbPano/46f459ce11.jpg',
                         published: null,
                         externalLink: 'https://www.facebook.com/photo.php?fbid=266745550421515&set=a.256225194806884.1073741833.100012582155261&type=3&theater',
-                        // in proconstructor/storefront/fbPanorama
-                        template: 'storefront/fbPanorama/fa724312dd.txt',
+                        template: 'http://p.testix.me/storefront/fbPano/46f459ce11.txt',
                         width: '800px',
                         height: '600px',
                         getParams: 'appStorage=ref:strf',
