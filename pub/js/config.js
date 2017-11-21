@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev'], //dev test prod
+        configurationSetsOnStart: ['dev', 'offline'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -812,8 +812,16 @@ var config = {
         TriviaOptionPoints: {
             defaultDirectiveIndex: 0,
             directives: ['triviaoptionpoints'],
-            parentId: 'id-popup_controls_cnt',
+            parentId: null,//'id-popup_controls_cnt',
             type: 'quickcontrolpanel'
+        },
+        // custom control
+        TriviaTextFeedback: {
+            defaultDirectiveIndex: 0,
+            directives: ['triviatextfeedback'],
+            parentId: 'id-popup_controls_cnt',
+            type: 'popup',
+            quickControlPanelBtn: true // значит что перед тем как показать popup, у элемента всплывет quick-панелька с опцией, кликнув на кнопку в панельке уже откроется popup
         },
         // custom control
         PanoramaAddSticker: {

@@ -242,7 +242,7 @@ PersonalityResultLinking.prototype.selectOption = function(optionId) {
     optionId = optionId || this.valueToArray()[0].optionId;
     this._selectedOptionId = optionId;
     if (this.getOptionValue(this._selectedOptionId) === null) {
-        throw new Error('PersonalityResultLinking.deleteResultLinksForOption: option \''+this._selectedOptionId+'\' does not exist');
+        throw new Error('PersonalityResultLinking.selectOption: option \''+this._selectedOptionId+'\' does not exist');
     }
     // убрать со всех опций селект
     this.$directive.find('[data-option-id]').removeClass('__selected');

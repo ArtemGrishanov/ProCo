@@ -134,15 +134,16 @@ var TriviaModel = MutApp.Model.extend({
             value: [],
             propertyString: 'id=tm optionPoints'
         });
-        
-        this.normalizeResults(); // проверить что всех атрибутов результата хватает, если что дописать новые
-
         this.attributes.quiz = new MutAppPropertyDictionary({
             application: this.application,
             model: this,
             propertyString: 'id=tm quiz',
             value: []
         });
+
+        // проверить что всех атрибутов модели хватает, если что дописать новые
+        this.normalizeModel();
+
         this.attributes.startScreenBackgroundImg = new MutAppProperty({
             application: this.application,
             model: this,
@@ -642,12 +643,13 @@ var TriviaModel = MutApp.Model.extend({
 
     /**
      * Проверить что у всех результатов имеются необходимые атрибуты
+     * Проверить что есть свойство фибдека у всех опций
      *
      * Решает такие проблемы как:
      * - Шаблон был сохранен. А после добавили новое mutAppProperty titleColor в элемент результата. При открытии шаблона надо добавить свойство, если не существует
      *
      */
-    normalizeResults: function() {
+    normalizeModel: function() {
         var results = this.attributes.results.toArray();
         for (var i = 0; i < results.length; i++) {
             var r = results[i];
@@ -667,6 +669,25 @@ var TriviaModel = MutApp.Model.extend({
                     application: this.application,
                     value: null
                 });
+            }
+        }
+
+        // добавить свойства фидбека если их нет
+        var quizValue = this.attributes.quiz.toArray();
+        for (var i = 0; i < quizValue.length; i++) {
+            var questionDictionatyId = this.attributes.quiz.getIdFromPosition(i);
+            var options = quizValue[i].answer.options.toArray();
+            for (var n = 0; n < options.length; n++) {
+                var o = options[n];
+                var optionDictionaryId = quizValue[i].answer.options.getIdFromPosition(n);
+                if (!o.feedbackText) {
+                    o.feedbackText = new MutAppProperty({
+                        propertyString: 'id=tm quiz.'+questionDictionatyId+'.answer.options.'+optionDictionaryId+'.feedbackText',
+                        model: this,
+                        application: this.application,
+                        value: null
+                    });
+                }
             }
         }
     },
@@ -1013,11 +1034,21 @@ var TriviaModel = MutApp.Model.extend({
             value: 'New option'
         });
 
+        // Фидбек, который видит пользователь в отдельной всплывашке при выборе этой опции
+        // по умолчанию его нет
+        var optionFeedbackText = new MutAppProperty({
+            propertyString: 'id=tm quiz.'+param.questionDictionaryId+'.answer.options.'+optionId+'.feedbackText',
+            model: this,
+            application: this.application,
+            value: null
+        });
+
         var option = {
             id: 'option_' + MutApp.Util.getUniqId(6),
             type: 'text',
             uiTemplate: 'id-option_text_template',
             text: optionText,
+            feedbackText: optionFeedbackText,
             prototypeName: 'id=tm proto_optionText'
         };
         return {
@@ -1058,11 +1089,21 @@ var TriviaModel = MutApp.Model.extend({
             value: '//p.testix.me/images/products/common/i/image-sample1.jpg'
         });
 
+        // Фидбек, который видит пользователь в отдельной всплывашке при выборе этой опции
+        // по умолчанию его нет
+        var optionFeedbackText = new MutAppProperty({
+            propertyString: 'id=tm quiz.'+param.questionDictionaryId+'.answer.options.'+optionId+'.feedbackText',
+            model: this,
+            application: this.application,
+            value: null
+        });
+
         var option = {
             id: 'option_' + MutApp.Util.getUniqId(6),
             type: 'img',
             uiTemplate: 'id-option_img_template',
             img: optionImg,
+            feedbackText: optionFeedbackText,
             prototypeName: 'id=tm proto_optionPhoto'
         };
         return {
@@ -1091,6 +1132,7 @@ var TriviaModel = MutApp.Model.extend({
             var oneCorrectOptionFound = false;
             var options = quizValue[i].answer.options.toArray();
             for (var n = 0; n < options.length; n++) {
+                assert.ok(options[n].feedbackText, 'TriviaModel.isOK: feedbackText exist in option');
                 var oInfo = this.getOptionPointsInfo(options[n].id);
                 if (oInfo.points > 0) {
                     if (oneCorrectOptionFound === true) {

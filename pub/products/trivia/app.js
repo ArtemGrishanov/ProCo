@@ -101,6 +101,10 @@ var TriviaApp = MutApp.extend({
                     label: {RU:'Картинка вопроса',EN:'Question image'},
                     controls: 'ChooseImage',
                     controlFilter: "onclick"
+                },
+                "id=tm quiz.{{id}}.answer.options.{{id}}.feedbackText": {
+                    // в отличие от PersonalityResultLinking (custom popup) это разные свойства, а не одно, но визуально леер popup один и тот же
+                    controls: "TriviaTextFeedback"
                 }
             }
         },

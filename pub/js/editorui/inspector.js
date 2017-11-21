@@ -62,20 +62,21 @@ var inspector = {};
         var quickControlsFiltered = false; // признак того, что контролы из quick panel попали в фильтр и их надо показывать
         for (var i = 0; i < ctrls.length; i++) {
             var c = ctrls[i];
+
             if (c.controlFilter === 'always' ||
                 (c.controlFilter === 'screen' && c.controlFilterScreenCriteria && filter.screen && filter.screen[c.controlFilterScreenCriteria.key] === c.controlFilterScreenCriteria.value) ||
-                (filter.propertyStrings && filter.propertyStrings.indexOf(c.propertyString) >= 0) ||
+                (filter.propertyStrings && filter.propertyStrings.indexOf(c.propertyString) >= 0 && (!_thisPopupControlHasQuickControlButton(c) || filter._forceShowPopupControl===true)) ||
                 (c.controlFilter === 'screenPropertyString' && ControlManager._screenHasDataFilter(filter.screen, c.propertyString) === true)
                 ) {
                 // в фильтре - должен быть показан
-                assert.ok(c.isShown() === true, 'control \''+c.propertyString+'\' is shown');
+                assert.ok(c.isShown() === true, 'control \''+c.propertyString+'\' must be shown, but not');
                 if (config.controls[c.controlName].type === 'quickcontrolpanel') {
                     quickControlsFiltered = true;
                 }
             }
             else {
                 // не в фильре - должен быть скрыт
-                assert.ok(c.isShown() === false, 'control \''+c.propertyString+'\' is hidden');
+                assert.ok(c.isShown() === false, 'control \''+c.propertyString+'\' must be hidden, but not');
             }
         }
         if (quickControlsFiltered === true) {
@@ -172,6 +173,11 @@ var inspector = {};
         app.isOK(assert);
 
         console.log('Inspector.isOK: checking finished. See qunit log or console for details.');
+    }
+
+    function _thisPopupControlHasQuickControlButton(control) {
+        var ctrlInfo = config.controls[control.controlName];
+        return ctrlInfo.type === 'popup' && ctrlInfo.quickControlPanelBtn === true && !!control.getQuickPanelView;
     }
 
     /**

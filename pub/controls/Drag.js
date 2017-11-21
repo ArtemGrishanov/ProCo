@@ -202,7 +202,6 @@ Drag.prototype.onDraggableParentMouseMove = function(e) {
  * @param e
  */
 Drag.prototype.onDraggableParentMouseUp = function(e) {
-    console.log('Drag.onMouseUp');
     if (this.isDragging === true && this.prodElemPositionCached) {
         this.position = this.prodElemPositionCached;
         this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);

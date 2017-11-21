@@ -267,7 +267,17 @@ var App = App || {};
             is_correct: 'Это верный ответ',
             upload_res_error: 'Не удалось загрузить ресурс. Попробуйте еще раз.',
             select_img_error: 'Не удается выбрать картинку',
-            that_is_not_image: 'Выберите картинку'
+            that_is_not_image: 'Выберите картинку',
+
+            option_feedback: 'Комментарии к ответу',
+            you_might_specify_feedback: 'Пользователи увидят их после ответа на вопрос',
+            result_linking: 'Привязка к результату',
+            result_linking_desc: 'Отметьте, на какие результаты повлияет каждый ответ',
+            linking_type: 'Выберите тип привязки',
+            linking_weak: 'Слабая',
+            linking_strong: 'Сильная',
+            linking_no: 'Нет',
+            comment: 'Комментарий'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -463,7 +473,18 @@ var App = App || {};
             is_correct: 'Correct option',
             upload_res_error: 'Can not upload file. Try again',
             select_img_error: 'Can not select image',
-            that_is_not_image: 'Select image'
+            that_is_not_image: 'Select image',
+
+            option_feedback: 'Set comments',
+            you_might_specify_feedback: 'Users will see them after answering the question',
+            result_linking: 'Binding options to results',
+            result_linking_desc: 'Specify which results each option will affect',
+            linking_type: 'Select binding type',
+            linking_weak: 'Weak',
+            linking_strong: 'Strong',
+            linking_no: 'No',
+
+            comment: 'Comment'
         }
     },
     /**

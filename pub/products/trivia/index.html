@@ -39,11 +39,16 @@
                 </div>
                 <div class="logo js-logo js-question_logo" data-app-property="id=tm logoPositionInQuestions"></div>
                 <div class="js-explain explain_modal" style="display:none;">
-                    <div class="explain_blk">
+                    <div class="explain_blk js-explain_block" style="display:none">
                         <!--<div class="explain_title js-explanation_text"></div>-->
                         <!--<div class="туду js- jsbtn_wr">-->
                         <!--<span class="button туду js- jstest_btn js-next">Далее</span>-->
                         <!--</div>-->
+                    </div>
+                    <div class="js-feedback explain_blk_feedback" style="display:none">
+                        <div class="feedback_icon js-feedback_icon"></div>
+                        <p class="feedback_txt js-feedback_text"></p>
+                        <div class="feedback_next js-next"></div>
                     </div>
                 </div>
             </div>
@@ -83,14 +88,22 @@
     </script>
 
     <script id="id-option_text_template" type="text/template">
-        <div class="question_i js-a_wr" data-question-index="<%=currentQuestionIndex%>" data-id="<%=id%>" data-dictionary-id="<%=currentOptionIndex%>" data-prototype-name="<%=prototypeName%>" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options, id=tm optionPoints">
+        <div class="question_i js-a_wr" data-question-index="<%=currentQuestionIndex%>" data-id="<%=id%>" data-dictionary-id="<%=currentOptionIndex%>" data-prototype-name="<%=prototypeName%>" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options, id=tm optionPoints, id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.feedbackText">
             <div class="bullit" style="display:none"></div>
             <span class="js-option_text" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.text"><%=text%></span>
+            <div class="qitem_icons js-item_icons">
+                <div class="qitem_icon_correct js-icon_correct" style="display:none"></div>
+                <div class="qitem_icon_feedback js-icon_feedback" style="display:none"></div>
+            </div>
         </div>
     </script>
     <script id="id-option_img_template" type="text/template">
         <div class="question_grid-i" data-id="<%=id%>">
-            <img data-id="<%=id%>" data-question-index="<%=currentQuestionIndex%>" data-dictionary-id="<%=currentOptionIndex%>" data-prototype-name="<%=prototypeName%>" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options, id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.img, id=tm optionPoints" class="question_img" src="<%=img%>" />
+            <img data-id="<%=id%>" data-question-index="<%=currentQuestionIndex%>" data-dictionary-id="<%=currentOptionIndex%>" data-prototype-name="<%=prototypeName%>" data-app-property="id=tm quiz.<%=currentQuestionIndex%>.answer.options, id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.img, id=tm optionPoints, id=tm quiz.<%=currentQuestionIndex%>.answer.options.<%=currentOptionIndex%>.feedbackText" class="question_img" src="<%=img%>" />
+            <div class="qitem_icons js-item_icons">
+                <div class="qitem_icon_correct js-icon_correct" style="display:none"></div>
+                <div class="qitem_icon_feedback js-icon_feedback" style="display:none"></div>
+            </div>
         </div>
     </script>
 
@@ -143,7 +156,7 @@
     <script type="text/javascript" src="app.js"></script>
     <!-- endbuild -->
     <script>
-        /*start_code
+//        /*start_code
         var app = null;
         $(document).ready(function() {
             var DEFAULT_PARAMS = {};
@@ -152,7 +165,7 @@
             });
             app.start();
         });
-        start_code*/
+//        start_code*/
     </script>
 </body>
 </html>

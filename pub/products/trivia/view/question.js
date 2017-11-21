@@ -124,7 +124,7 @@ var QuestionScreen = MutApp.Screen.extend({
         this.model.bind("change:logoUrl", this.onMutAppPropertyChanged, this);
         this.quizElement.question.backgroundImage.bind('change', this.onMutAppPropertyChanged, this);
         this.quizElement.question.backgroundColor.bind('change', this.onMutAppPropertyChanged, this);
-        this.quizElement.answer.options.bind('change', this.onMutAppPropertyChanged, this); // нужно делать полный рендер, потому что в конце renderCompleted()
+        this.quizElement.answer.options.bind('change', this.onOptionsChanged, this); // нужно делать полный рендер, потому что в конце renderCompleted()
 
         // обновление галочек верных ответов
         this.model.bind("change:optionPoints", this.updateCorrectOptionsLabels, this);
@@ -134,6 +134,9 @@ var QuestionScreen = MutApp.Screen.extend({
         for (var i = 0; i < optionsArr.length; i++) {
             if (optionsArr[i].img) {
                 optionsArr[i].img.bind('change', this.onMutAppPropertyChanged, this);
+            }
+            if (optionsArr[i].feedbackText) {
+                optionsArr[i].feedbackText.bind('change', this.updateFeedbackLabels, this);
             }
         }
     },
@@ -148,6 +151,21 @@ var QuestionScreen = MutApp.Screen.extend({
 
     onMutAppPropertyChanged: function() {
         this.render();
+    },
+
+    onOptionsChanged: function() {
+        // в новых (возможно добавленных) опциях подписаться на свойства
+        var optionsArr = this.quizElement.answer.options.toArray();
+        for (var i = 0; i < optionsArr.length; i++) {
+            if (optionsArr[i].img) {
+                optionsArr[i].img.bind('change', this.onMutAppPropertyChanged, this);
+            }
+            if (optionsArr[i].feedbackText) {
+                optionsArr[i].feedbackText.bind('change', this.updateFeedbackLabels, this);
+            }
+        }
+        // нужно делать полный рендер, потому что в конце renderCompleted()
+        this.onMutAppPropertyChanged();
     },
 
     render: function() {
@@ -218,6 +236,8 @@ var QuestionScreen = MutApp.Screen.extend({
         // установка атрибута для фильтрации
         this.$el.attr('data-filter', q.question.backgroundImage.propertyString+','+q.question.backgroundColor.propertyString);
 
+        this.updateFeedbackLabels();
+
         this.renderCompleted();
         return this;
     },
@@ -248,20 +268,32 @@ var QuestionScreen = MutApp.Screen.extend({
                             if (this.model.application.mode !== 'edit') {
                                 var oId = $(e.currentTarget).attr('data-id');
                                 var success = this.model.answer(oId);
-                                if (this.model.get('showExplanation').getValue() === true) {
-                                    this.renderExplanation(
+                                var option = this.model.getOptionById(oId);
+                                var feedbackText = option.feedbackText.getValue();
+
+                                if (feedbackText) {
+                                    this.renderFeedback(
                                         success,
-                                        this.model.get('quiz').toArray()[this.model.get('currentQuestionIndex')].explanation
+                                        feedbackText
                                     );
-                                    // автоматически скрываем explanation блок через пару секунд
-                                    setTimeout((function(){
-                                        this.model.next();
-                                    }).bind(this), this.explanationPauseDelay);
                                 }
                                 else {
-                                    // не показывать объяснение верного-неверного ответа, сразу к следующему вопросу
-                                    this.model.next();
+                                    // текст не задан: показ обычных галочек верно/неверно
+                                    if (this.model.get('showExplanation').getValue() === true) {
+                                        this.renderExplanation(
+                                            success
+                                        );
+                                        // автоматически скрываем explanation блок через пару секунд
+                                        setTimeout((function(){
+                                            this.model.next();
+                                        }).bind(this), this.explanationPauseDelay);
+                                    }
+                                    else {
+                                        // не показывать объяснение верного-неверного ответа, сразу к следующему вопросу
+                                        this.model.next();
+                                    }
                                 }
+
                             }
                         }).bind(this));
                         $ea.append($e); // ea is js-options_cnt
@@ -290,21 +322,36 @@ var QuestionScreen = MutApp.Screen.extend({
      * Показать верен ли был ответ или нет
      * Также появляется кнопка Далее, чтобы перейти к следующему вопросу
      *
-     * @param success - верно ли ответил пользователь
-     * @param {object} explanationData
+     * @param {boolean} success - верно ли ответил пользователь
      */
-    renderExplanation: function(success, explanationData) {
-        // var $e = $(this.template[explanationData.uiTemplate](explanationData));
-        // this.$el.find('.js-explain').append($e).show();
+    renderExplanation: function(success) {
         this.$el.find('.js-explain').show();
+        this.$el.find('.js-explain_block').show();
         // обработчик на js-next уже установлен через backbone events
         if (success === true) {
-//            this.$el.find('.js-explanation_text').text('Верно');
             this.$el.find('.explain_blk').removeClass('__err');
         }
         else {
-//            this.$el.find('.js-explanation_text').text('Неверно');
             this.$el.find('.explain_blk').addClass('__err');
+        }
+    },
+
+    /**
+     * Отрендерить леер с текстом-комментарием к выбранной опции
+     *
+     * @param {boolean} success
+     * @param {strinf} feedbackText
+     */
+    renderFeedback: function(success, feedbackText) {
+        // обработчик на js-next уже установлен через backbone events
+        this.$el.find('.js-explain').show();
+        this.$el.find('.js-feedback').show();
+        this.$el.find('.js-feedback_text').html(feedbackText);
+        if (success === true) {
+            this.$el.find('.js-feedback_icon').removeClass('__wrong');
+        }
+        else {
+            this.$el.find('.js-feedback_icon').addClass('__wrong');
         }
     },
 
@@ -327,10 +374,36 @@ var QuestionScreen = MutApp.Screen.extend({
                 // в режиме редактирования показывать если ответ является верным (голубую галочку в углу показывать)
                 var oInfo = this.model.getOptionPointsInfo(o.id);
                 if (oInfo && oInfo.points > 0) {
-                    $e.addClass('right_answer');
+                    $e.find('.js-icon_correct').show();
                 }
                 else {
-                    $e.removeClass('right_answer');
+                    $e.find('.js-icon_correct').hide();
+                }
+                if (o.feedbackText.getValue()) {
+                    $e.find('.js-icon_feedback').show();
+                }
+                else {
+                    $e.find('.js-icon_feedback').hide();
+                }
+            }
+        }
+    },
+
+    /**
+     * Обновить показать или скрыть иконки опций у которых есть комментарий фидбека
+     */
+    updateFeedbackLabels: function() {
+        if (this.model.application.mode === 'edit') {
+            var q = this.model.getQuestionById(this.questionId);
+            var optionsArr = q.answer.options.toArray();
+            for (var i = 0; i < optionsArr.length; i++) {
+                var o = optionsArr[i];
+                var $e = $('[data-id="'+o.id+'"]');
+                if (o.feedbackText.getValue()) {
+                    $e.find('.js-icon_feedback').show();
+                }
+                else {
+                    $e.find('.js-icon_feedback').hide();
                 }
             }
         }
@@ -353,13 +426,16 @@ var QuestionScreen = MutApp.Screen.extend({
         this.model.off("change:logoUrl", this.onMutAppPropertyChanged, this);
         this.quizElement.question.backgroundImage.unbind('change', this.onMutAppPropertyChanged, this);
         this.quizElement.question.backgroundColor.unbind('change', this.onMutAppPropertyChanged, this);
-        this.quizElement.answer.options.unbind('change', this.onMutAppPropertyChanged, this); // нужно делать полный рендер, потому что в конце renderCompleted()
+        this.quizElement.answer.options.unbind('change', this.onMutAppPropertyChanged, this);
 
         // на изменение опций картинок надо подписаться
         var optionsArr = this.quizElement.answer.options.toArray();
         for (var i = 0; i < optionsArr.length; i++) {
             if (optionsArr[i].img) {
                 optionsArr[i].img.unbind('change', this.onMutAppPropertyChanged, this);
+            }
+            if (optionsArr[i].feedbackText) {
+                optionsArr[i].feedbackText.unbind('change', this.updateFeedbackLabels, this);
             }
         }
     }

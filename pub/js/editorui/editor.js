@@ -959,7 +959,7 @@ var Editor = {};
         var MutApp = editorLoader.getIframe('id-product_iframe_cnt').contentWindow.MutApp;
         switch (event) {
             case MutApp.EVENT_APP_SIZE_CHANGED: {
-                log('Editor.onAppChanged: MutApp.EVENT_APP_SIZE_CHANGED \''+data.width+'x'+data.height+'\'');
+                // log('Editor.onAppChanged: MutApp.EVENT_APP_SIZE_CHANGED \''+data.width+'x'+data.height+'\'');
                 appContainerSize = {
                     width: data.width,
                     height: data.height
@@ -971,7 +971,7 @@ var Editor = {};
                 break;
             }
             case MutApp.EVENT_SCREEN_CREATED: {
-                log('Editor.onAppChanged: MutApp.EVENT_SCREEN_CREATED \''+data.screenId+'\'');
+                // log('Editor.onAppChanged: MutApp.EVENT_SCREEN_CREATED \''+data.screenId+'\'');
                 if (activeScreen === data.screenId) {
 
                 }
@@ -982,7 +982,7 @@ var Editor = {};
                 break;
             }
             case MutApp.EVENT_SCREEN_RENDERED: {
-                log('Editor.onAppChanged: MutApp.EVENT_SCREEN_RENDERED \''+data.screenId+'\'');
+                // log('Editor.onAppChanged: MutApp.EVENT_SCREEN_RENDERED \''+data.screenId+'\'');
                 Workspace.handleRenderScreen({
                     screen: data.screen
                 });
@@ -1010,7 +1010,7 @@ var Editor = {};
                 break;
             }
             case MutApp.EVENT_SCREEN_DELETED: {
-                log('Editor.onAppChanged: MutApp.EVENT_SCREEN_DELETED \''+data.screenId+'\'');
+                // log('Editor.onAppChanged: MutApp.EVENT_SCREEN_DELETED \''+data.screenId+'\'');
                 ScreenManager.update({
                     deleted: data.screen
                 });
@@ -1067,8 +1067,12 @@ var Editor = {};
      * @param {object} data.dataAppPropertyString (can be null to reset selection)
      */
     function onWorkspaceEvents(event, data) {
-        console.log('onWorkspaceEvents: event=' + event + ' dataAppPropertyString=' + data.dataAppPropertyString);
+        // console.log('onWorkspaceEvents: event=' + event + ' dataAppPropertyString=' + data.dataAppPropertyString);
         switch (event) {
+            case Workspace.EVENET_CONTROL_POPUP_HIDED:
+                // Так как EVENET_CONTROL_POPUP_HIDED - это событие о скрытии панели popupControlPanel.js внутри Workspace
+                // а нам теперь нужно сделать логическое действие - скрыть контрол по правилам. Для этого надо обновить фильтр.
+                // надо ту же логику запустить что и в Workspace.EVENET_SELECT_ELEMENT.
             case Workspace.EVENET_SELECT_ELEMENT: {
                 var ps = data.dataAppPropertyString ? data.dataAppPropertyString.split(',') : null;
                 if (ps) {
@@ -1087,16 +1091,12 @@ var Editor = {};
 
                 break;
             }
-            case Workspace.EVENET_CONTROL_POPUP_HIDED: {
-
-                break;
-            }
             case Workspace.EVENET_QUICK_PANEL_SHOWED: {
-
+                // do nothing
                 break;
             }
             case Workspace.EVENET_QUICK_PANEL_HIDED: {
-
+                // do nothing
                 break;
             }
         }

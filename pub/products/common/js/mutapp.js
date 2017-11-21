@@ -3087,9 +3087,10 @@ MutAppProperty.prototype.unbind = function(eventType, callback) {
                     break;
                 }
             }
-            if (wasUnbinded !== true) {
-                throw new Error('MutAppProperty.unbind: event \'' + eventType + '\' is not binded to this property \''+this.propertyString+'\'');
-            }
+//            по-моему не надо кидать еррор если событие уже было отвязано, слишком жестко как-то
+//            if (wasUnbinded !== true) {
+//                throw new Error('MutAppProperty.unbind: event \'' + eventType + '\' is not binded to this property \''+this.propertyString+'\'');
+//            }
         }
     }
     else {

@@ -20,7 +20,23 @@ var ControlManager = {
 (function(global) {
     var _controls = [];
     var _onControlEvents = null;
+    /**
+     * Текущее значение фильтра, которое установлено в данный момент
+     *
+     * @type {{}}
+     * @private
+     */
     var _filterValue = {};
+    /**
+     * Мапа обработчиков кликов кнопок для popup контролов
+     *
+     * @type {Array}
+     * @private
+     */
+    var _quickPanelButtonForPopupControls = [
+        // {propertyString, handler, $view}
+        // ...
+    ];
 
     /**
      * Создать контрол для свойства MutApp приложения или его экрана
@@ -271,6 +287,9 @@ var ControlManager = {
      * @param {MutApp.Screen} param.screen
      * @param {Array<string>} param.propertyStrings
      * @param {DomElement} [param.selectedElement] - опционально, элемент выделенный на экране в данный момент. Передается дальше внутрь конрола в onShow()
+     * @param {boolean} [_forceShowPopupControl] - если в фильтре будет popup контрол, то обязательно показать его.
+     * Такой параметр ставится при клике с quickcontrolpanel, с кнопки которая связана в popup контролом
+     *
      */
     function filter(param) {
         var filterChanged = false; // определять что значение фильтра реально изменилось
@@ -284,6 +303,11 @@ var ControlManager = {
             _filterValue.propertyStrings = param.propertyStrings;
             filterChanged = true;
         }
+
+        // запомнить текущее значение этого параметра надо для inspector.isOK
+        _filterValue._forceShowPopupControl = param._forceShowPopupControl;
+
+        _hideQuickPanelOfPopupControl();
         // признак того, что контролы из quick panel попали в фильтр и их надо показывать
         var quickControlsFiltered = false;
         // признак того, что контролы popup типа попали в фильтр и их надо показывать
@@ -304,21 +328,66 @@ var ControlManager = {
             else if (c.controlFilter === 'screenPropertyString' && _screenHasDataFilter(_filterValue.screen, c.propertyString) === true) {
                 needShow = true;
             }
+
+            // это правило в конце и без else, так как оно более приоритетное
+            if (_thisPopupControlHasQuickControlButton(c) === true && param._forceShowPopupControl !== true &&
+                _filterValue.propertyStrings && _filterValue.propertyStrings.indexOf(c.propertyString) >= 0) {
+                // не надо показывать контрол типа popup+qpButton, пока не придет явный флаг _forceShowPopupControl=true (клик по его кнопке qpButton)
+                needShow = false;
+                _addQuickPanelButtonForPopupControl(c);
+            }
+
             if (needShow === true) {
                 if (config.controls[c.controlName].type === 'quickcontrolpanel') {
+                    // обычный контрол типа quickcontrolpanel зафильтрован, а значит надо показать панель
                     quickControlsFiltered = true;
                 }
-                if (config.controls[c.controlName].type === 'popup') {
+                if (_thisPopupControlHasQuickControlButton(c) === true) {
+                    // контрол типа popup может предоставить кнопку для показа в quickpanel, это значит что надо показать панельку quickpanel
+                    quickControlsFiltered = true;
+                    //_addQuickPanelButtonForPopupControl(c);
+                }
+                if (config.controls[c.controlName].type === 'popup' && _thisPopupControlHasQuickControlButton(c) === false) {
+                    // контрол типа popup может предоставить кнопку для показа в quickpanel, это значит что не надо сразу показывать popup, а сначала кнопку на панели quickpanel
                     controlPopupFiltered = true;
+                }
+                if (config.controls[c.controlName].type === 'popup' && param._forceShowPopupControl === true) {
+                    // Такой параметр ставится при клике с quickcontrolpanel связанной с popup контролом
+                    // см. ControlManager._quickPanelButtonOfPopupControlClick()
+                    controlPopupFiltered = true;
+                }
+                if (c.controlName === 'TriviaTextFeedback') {
+                    var stop = 9;
+                    //кучу отладки сюда
+                    console.log('ControlManager.filter.show: '+c.propertyString);
+                    window.CC = c;
                 }
                 c.show({
                     selectedElement: param.selectedElement
-                })
+                });
             }
             else {
-                c.hide();
+                if (c.isShown() === true) {
+                    if (c.controlName === 'TriviaTextFeedback') {
+                        var stop = 9;
+                        console.log('ControlManager.filter.hide: '+c.propertyString);
+                        window.CC = c;
+                    }
+                    c.hide();
+                }
             }
         }
+
+        // изменение в признаках quickControlsFiltered controlPopupFiltered тоже считается за изменение фильтра
+        if (_filterValue.quickControlsFiltered !== quickControlsFiltered) {
+            filterChanged = true;
+        }
+        if (_filterValue.controlPopupFiltered !== controlPopupFiltered) {
+            filterChanged = true;
+        }
+        _filterValue.quickControlsFiltered = quickControlsFiltered;
+        _filterValue.controlPopupFiltered = controlPopupFiltered;
+
         if (_onControlEvents && filterChanged === true) {
             // только если значение фильтра реально изменилось
             _onControlEvents(ControlManager.EVENT_FILTER_CHANGED, {
@@ -328,6 +397,105 @@ var ControlManager = {
                 controlPopupFiltered: controlPopupFiltered
             });
         }
+    }
+
+    /**
+     * Отвечает на вопрос: это popup контрол и он имеет для показа кнопочку в quickpanel
+     *
+     * @param {AbstractControl} control
+     * @returns {boolean}
+     * @private
+     */
+    function _thisPopupControlHasQuickControlButton(control) {
+        var ctrlInfo = config.controls[control.controlName];
+        return ctrlInfo.type === 'popup' && ctrlInfo.quickControlPanelBtn === true && !!control.getQuickPanelView;
+    }
+
+    /**
+     * Получить информацию об уже созданной кнопочке для popup контрола
+     *
+     * @private
+     */
+    function _hideQuickPanelOfPopupControl() {
+        for (var i = 0; i < _quickPanelButtonForPopupControls.length; i++) {
+            _quickPanelButtonForPopupControls[i].$wrapper.hide();
+        }
+    }
+
+    /**
+     * 1) Взять кнопочку от popup контрола и вставить ее в quickcontrolpanel
+     * 2) Удалить предыдущий обработчик если он есть
+     * 3) Установить обработчики
+     *
+     * @param {AbstractControl} control
+     * @private
+     */
+    function _addQuickPanelButtonForPopupControl(control) {
+        // удалить предыдущий обработчик от этого контрола
+        var btnInfo = _getQuickPanelOfPopupControlInfo(control.propertyString);
+        if (btnInfo === null) {
+            // ранее не создавали кнопочку
+            btnInfo = {
+                propertyString: control.propertyString
+            };
+            _quickPanelButtonForPopupControls.push(btnInfo);
+        }
+        else {
+            if (btnInfo.$view) {
+                // старую кнопку удаляем
+                btnInfo.$view.off('click', _quickPanelButtonOfPopupControlClick);
+                btnInfo.$view.remove();
+                btnInfo.$wrapper.remove();
+                btnInfo.$view = null;
+            }
+        }
+        var $view = control.getQuickPanelView();
+        if ($view instanceof jQuery) {
+            // insert button in qp and attach listener
+            App.localize($view);
+            btnInfo.$view = $view;
+            btnInfo.$view.attr('data-app-property', control.propertyString);
+            // как и происходит вставка контролов типа quickcontrolpanel в createControl()
+            var $directiveContainer = $('#id-control_cnt').find('.js-quick_panel .js-items');
+            btnInfo.$wrapper = $('<div class="qp_item"></div>');
+            btnInfo.$wrapper.append(btnInfo.$view).appendTo($directiveContainer);
+            btnInfo.$view.click(_quickPanelButtonOfPopupControlClick);
+        }
+        else {
+            throw new Error('ControlManager._addQuickPanelButtonForPopupControl: control.getQuickPanelView in control ' + control.controlName + ' returns not jQuery object. Only jQuery objects is supported now.');
+        }
+    }
+
+    /**
+     * Обработчик кликов на дополнительные кнопки в quickpanel созданные для контролов типа popup
+     *
+     * @private
+     */
+    function _quickPanelButtonOfPopupControlClick(e) {
+        var ps = $(e.currentTarget).attr('data-app-property');
+        filter({
+            // propertyStrings: keep the same if no specified
+            // screen: keep the same if no specified
+            _forceShowPopupControl: true // зафильтровать точно с применением popup контрола
+        });
+        // dont allow Workspace.init() -> $('#id-workspace').click handle click, and then reset the filter
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    /**
+     * Получить информацию об уже созданной кнопочке для popup контрола
+     *
+     * @param {string} propertyString
+     * @private
+     */
+    function _getQuickPanelOfPopupControlInfo(propertyString) {
+        for (var i = 0; i < _quickPanelButtonForPopupControls.length; i++) {
+            if (_quickPanelButtonForPopupControls[i].propertyString === propertyString) {
+                return _quickPanelButtonForPopupControls[i];
+            }
+        }
+        return null;
     }
 
     /**
