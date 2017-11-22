@@ -33,8 +33,9 @@ var Editor = {};
      */
     var openedTemplateCollection = new TemplateCollection();
     /**
-     * Сериализованные значени mutappproeprty свойств в приложении
-     * Сначала получаются из шаблона
+     * Сериализованные свойства приложения.
+     * При старте получаем из шаблона или из localStorage
+     *
      * @type {string}
      */
     var serializedProperties = null;
@@ -114,7 +115,14 @@ var Editor = {};
      * если этот четчик меньше чем в MutApp.getOperationsCount() то будет блокировка при закрытии страницы
      * @type {number}
      */
-    var operationsCount = 0;
+    var operationsCountForWindowExit = 0;
+    /**
+     * У автосейвера свой счетчик операций, он его обновляет по таймеру во время сохранения
+     * Если MutApp.getOperationsCount() больше чем operationCountForAutosaver то надо сделать автосохранение
+     *
+     * @type {number}
+     */
+    var operationCountForAutosaver = 0;
     /**
      * Функция колбек на запуск редактора
      * @type {function}
@@ -136,6 +144,13 @@ var Editor = {};
      * @type {null}
      */
     var activePublisher = null;
+    /**
+     * Ид таймера, который используется для автосохранения
+     * Раз в несколько секунд срабатывает таймер, который сериализует текущий editedApp в localStorage
+     *
+     * @type {null}
+     */
+    var autoSaverTimerId = null;
 
     /**
      * Функция запуска редактора
@@ -207,6 +222,7 @@ var Editor = {};
                 }
             }
         });
+        autoSaverTimerId = setInterval(autoSaverTick, config.editor.ui.autoSaverTimerInterval);
     }
 
     /**
@@ -269,11 +285,42 @@ var Editor = {};
      * @returns {string}
      */
     function confirmExit() {
-        if (config.common.awsEnabled === true && editedApp.getOperationsCount() > operationsCount) {
+        if (config.common.awsEnabled === true && editedApp.getOperationsCount() > operationsCountForWindowExit) {
             return App.getText('unsaved_changes');
         }
     }
 
+    /**
+     * Вызывается раз в несколько секунд
+     * Проверяет, если есть несохраненные операции, то делает сериализацию editedApp в localStorage
+     */
+    function autoSaverTick() {
+        // автосохранение работает в открытыми шаблонами, а в нормальной ситуации пользователь всегда работает с шаблоном
+        if (appTemplate && editedApp.getOperationsCount() > operationCountForAutosaver) {
+            var appState = null;
+            try {
+                appState = editedApp.serialize();
+                // при сохранении ключом является урл шаблона
+                window.localStorage.setItem(appTemplate.url, editedApp.serialize());
+                window.localStorage.setItem('status__' + appTemplate.url, 'unsaved');
+                operationCountForAutosaver = editedApp.getOperationsCount();
+                console.log('Template saved: '+appTemplate.url);
+            }
+            catch(e) {
+                console.error('Editor.autoSaverTick: Could not save app state. Details: ' + e.message);
+            }
+        }
+    }
+
+    /**
+     * Проверить локально в localStorage, есть ли несохраненное состояние у шаблона
+     *
+     * @param {string} templateUrl - ссылка на шаблон (это может быть витринный шаблон или пользовательский)
+     * @return {boolean}
+     */
+    function templateHasUnsavedLocalStorageState(templateUrl) {
+        return window.localStorage.getItem('status__'+templateUrl) === 'unsaved' && !!window.localStorage.getItem(templateUrl);
+    }
 
     /**
      * iFrame промо проекта был загружен. Получаем из него document и window
@@ -340,6 +387,11 @@ var Editor = {};
                 $('.js-app_publish').text(App.getText('publish_to_fb'));
             }
         }
+
+        // в начале работы редактора запоминаем начальное количество операций/действий
+        // затем, если оно будет увеличено, будем определять несохраненные изменения
+        operationsCountForWindowExit = editedApp.getOperationsCount();
+        operationCountForAutosaver = editedApp.getOperationsCount();
     }
 
     /**
@@ -706,7 +758,8 @@ var Editor = {};
                 id: appId,
                 appName: appName,
                 propertyValues: editedApp.serialize(),
-                title: $('.js-proj_name').val()
+                title: $('.js-proj_name').val(),
+                url: config.common.awsHostName+'/'+config.common.awsBucketName+'/'+Auth.getUser().id+'/app/'+Editor.getAppId()+'.txt'
             };
             if (sessionPublishDate) {
                 // если в процессе сессии была сделана публикация, то сохраняем дату
@@ -733,15 +786,23 @@ var Editor = {};
             }
             var storingTempl = openedTemplateCollection.getById(appId);
             if (storingTempl === null) {
-                // это новый шаблон
+                // это новый шаблон (даже и в том случае когда из витрины склонировали, ведь appId новый)
                 // мы не открывали из своих шаблонов что-то, и не сохранили ранее ничего
                 storingTempl = new Template(templParam);
                 openedTemplateCollection.add(storingTempl);
+                // создали новый объект Template для нового appId, так как проект быо клонирован
+                appTemplate = storingTempl;
             }
             storingTempl.set(templParam);
-            openedTemplateCollection.saveTemplate(function(result){
+            openedTemplateCollection.saveTemplate(function(result) {
                 if (result === 'ok') {
-                    operationsCount = editedApp.getOperationsCount();
+                    if (appTemplate) {
+                        // поставить статус что шаблон сохранен
+                        // templateHasUnsavedLocalStorageState начнет возвращать false
+                        window.localStorage.setItem('status__' + appTemplate.url, 'saved');
+                    }
+                    operationsCountForWindowExit = editedApp.getOperationsCount();
+
                     if (param.showResultMessage === true) {
                         alert('Сохранено');
                     }
@@ -906,7 +967,22 @@ var Editor = {};
                     // title не указываем, это новый проект-клон
                     appTemplate.title = null;
                 }
-                serializedProperties = appTemplate.propertyValues;
+
+                var openLocalState = false;
+                if (templateHasUnsavedLocalStorageState(appTemplate.url) === true) {
+                    if (window.confirm(App.getText('do_you_want_restore_tempate')) === true) {
+                        openLocalState = true;
+                        // Переменная serializedProperties затем передается в restartEditApp() при старте приложения
+                        serializedProperties = window.localStorage.getItem(appTemplate.url);
+                        appTemplate.propertyValues = serializedProperties;
+                    }
+                }
+
+                // нет локально сохраненного шаблона, открывает с шаблона с сервера
+                if (openLocalState === false) {
+                    serializedProperties = appTemplate.propertyValues;
+                }
+
                 // после загрузки шаблона надо загрузить код самого промо проекта
                 if (param.callback) {
                     // можем передавать в колбек все загруженные свойства для консистентности. Автотесты используют это
@@ -1609,5 +1685,6 @@ var Editor = {};
     global.getActiveScreen = function() { return activeScreen; }
     global.openTemplate = openTemplate;
     global.getEditedAppValueBySelector = getEditedAppValueBySelector;
+    global.getAppTemplate = function() { return appTemplate; }
 
 })(Editor);

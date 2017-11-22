@@ -277,7 +277,8 @@ var App = App || {};
             linking_weak: 'Слабая',
             linking_strong: 'Сильная',
             linking_no: 'Нет',
-            comment: 'Комментарий'
+            comment: 'Комментарий',
+            do_you_want_restore_tempate: 'Вы редактировали этот шаблон и не сохранили. Продолжить работу?'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -475,7 +476,7 @@ var App = App || {};
             select_img_error: 'Can not select image',
             that_is_not_image: 'Select image',
 
-            option_feedback: 'Set comments',
+            option_feedback: 'Set feedback',
             you_might_specify_feedback: 'Users will see them after answering the question',
             result_linking: 'Binding options to results',
             result_linking_desc: 'Specify which results each option will affect',
@@ -484,7 +485,8 @@ var App = App || {};
             linking_strong: 'Strong',
             linking_no: 'No',
 
-            comment: 'Comment'
+            comment: 'Comment',
+            do_you_want_restore_tempate: 'You have edited this template and have not saved it. Continue work?'
         }
     },
     /**
@@ -1187,7 +1189,7 @@ var App = App || {};
             var s = {
                 lang: language
             };
-            var cookie = 'appState='+JSON.stringify(s)+'; expires=Fri, 31 Dec 2020 23:59:59 GMT';
+            var cookie = 'appState='+JSON.stringify(s)+'; expires=Fri, 31 Dec 2021 23:59:59 GMT';
             document.cookie = cookie;
         }
         catch(e) {

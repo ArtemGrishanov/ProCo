@@ -913,7 +913,11 @@ var config = {
              * Чтобы влазили: screen_blocks_padding (см выше), editor.css->.workspace_screens_iframe:top=20px, высота горизонтального системного скрол бара 20px примерно
              * который появляется если нужна горизонтальная прокрутка
              */
-            id_product_cnt_additional_height: 60
+            id_product_cnt_additional_height: 60,
+            /**
+             * Длительность интервала для вызова автосохранения
+             */
+            autoSaverTimerInterval: 10000 // ms
         },
         hooks: {
             /**
