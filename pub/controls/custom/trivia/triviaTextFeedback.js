@@ -47,7 +47,6 @@ TriviaTextFeedback.prototype.destroy = function() {
 };
 
 TriviaTextFeedback.prototype.onShow = function(param) {
-    console.log('TriviaTextFeedback.onShow: '+this.propertyString);
     param = param || {};
     // нормального решения не придумал как пробрасывать getSelectedElement, но всё же это кастомный контрол
     this._selectedOptionId = Workspace.getSelectedElement().attr('data-id') || null;
@@ -55,7 +54,6 @@ TriviaTextFeedback.prototype.onShow = function(param) {
 };
 
 TriviaTextFeedback.prototype.onHide = function(param) {
-    console.log('TriviaTextFeedback.onHide: '+this.propertyString);
     // при закрытии окна сохранить значение для выделенной опции
     if (this._selectedOptionId) {
         this.saveFeedbackText();
@@ -71,7 +69,6 @@ TriviaTextFeedback.prototype.getQuickPanelView = function() {
  * В конце делается выделение опции по умолчанию.
  */
 TriviaTextFeedback.prototype.render = function() {
-    console.log('TriviaTextFeedback.render');
     var app = Editor.getEditedApp();
     // приходится получить доступ к приложению напрямую, непридумал как передать данные
     if (app) {

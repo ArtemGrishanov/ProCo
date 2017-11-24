@@ -74,12 +74,12 @@ function SelectDialog(params) {
     this.view.find('.js-caption').text(params.caption);
     this.view.find('.js-confirm').click((function(e) {
         params.callback(this.selectedOptionId);
-        $('#id-dialogs_view').css('zIndex', 'auto'); // из-за хака в previewShareImageModal (два диалога поверх друг друга)
+        $('#id-dialogs_view').css('zIndex', '0'); // из-за хака в previewShareImageModal (два диалога поверх друг друга)
         $('#id-dialogs_view').empty().hide();
     }).bind(this));
     this.view.find('.js-cancel').click((function(e) {
         params.callback(null);
-        $('#id-dialogs_view').css('zIndex', 'auto'); // из-за хака в previewShareImageModal (два диалога поверх друг друга)
+        $('#id-dialogs_view').css('zIndex', '0'); // из-за хака в previewShareImageModal (два диалога поверх друг друга)
         $('#id-dialogs_view').empty().hide();
     }).bind(this));
     if (params.options) {

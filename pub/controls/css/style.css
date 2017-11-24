@@ -191,7 +191,7 @@ Personality custom control
     background-repeat: no-repeat;
 }
 .pers_opt_item.__feedback::before {
-    background-image: url('../i/feedback-icon.jpg');
+    background-image: url('../i/feedback-indicator@3x.svg');
 }
 .pers_opt_item.__linked::before {
     display: block;

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>comment-indicator@3x</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="comment-indicator">
+            <g id="Group-3" transform="translate(1.000000, 1.000000)">
+                <path d="M3.6,0 L14.4,0 L14.4,-8.8817842e-16 C16.3882251,-1.25340945e-15 18,1.6117749 18,3.6 L18,18 L3.6,18 L3.6,18 C1.6117749,18 1.12120756e-15,16.3882251 -8.8817842e-16,14.4 L0,3.6 L-8.8817842e-16,3.6 C-1.13166577e-15,1.6117749 1.6117749,3.65231026e-16 3.6,0 Z" id="Rectangle" fill="#4C99F7"></path>
+                <path d="M5,7 L14,7" id="Line-2" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"></path>
+                <path d="M5,11 L11,11" id="Line-2" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"></path>
+            </g>
+        </g>
+    </g>
+</svg>

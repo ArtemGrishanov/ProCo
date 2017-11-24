@@ -103,7 +103,8 @@ var AbstractControl = {
         this.$productDomElements = Array.isArray(elements) ? elements: [elements];
         for (var n = 0; n < this.$productDomElements.length; n++) {
             this.$productDomElements[n] = $(this.$productDomElements[n]);
-            this.$productDomElements[n].on('paste', this.handlePaste.bind(this));
+            // обработка копипасты переехади в TextQuickInput и поддерживается только там
+            // this.$productDomElements[n].on('paste', this.handlePaste.bind(this));
         }
     },
 
@@ -152,33 +153,6 @@ var AbstractControl = {
         if (this.onHide) {
             // можно определить функцию которая будет вызываться при скрытии контрола
             this.onHide();
-        }
-    },
-
-    /**
-     * Фильтрация html, чтобы вставить только текст
-     *
-     * http://stackoverflow.com/questions/2176861/javascript-get-clipboard-data-on-paste-event-cross-browser
-     *
-     * @param {event} e
-     */
-    handlePaste: function(e) {
-        var clipboardData, pastedData;
-        // Stop data actually being pasted into div
-        e.originalEvent.stopPropagation();
-        e.originalEvent.preventDefault();
-        // Get pasted data via clipboard API
-        clipboardData = e.originalEvent.clipboardData || window.clipboardData;
-        pastedData = clipboardData.getData('Text');
-        // Do whatever with pasteddata
-        if (this.$productDomElements) {
-            for (var n = 0; n < this.$productDomElements.length; n++) {
-                this.$productDomElements[n].text(pastedData);
-            }
-        }
-        if (this.onPaste) {
-            // дать возможность наследникам сделать собственную обработку вставки, например сохранить в appProperty значение
-            this.onPaste();
         }
     },
 

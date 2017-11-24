@@ -356,23 +356,23 @@ var ControlManager = {
                     // см. ControlManager._quickPanelButtonOfPopupControlClick()
                     controlPopupFiltered = true;
                 }
-                if (c.controlName === 'TriviaTextFeedback') {
-                    var stop = 9;
-                    //кучу отладки сюда
-                    console.log('ControlManager.filter.show: '+c.propertyString);
-                    window.CC = c;
-                }
+//                if (c.controlName === 'TriviaTextFeedback') {
+//                    var stop = 9;
+//                    //кучу отладки сюда
+//                    console.log('ControlManager.filter.show: '+c.propertyString);
+//                    window.CC = c;
+//                }
                 c.show({
                     selectedElement: param.selectedElement
                 });
             }
             else {
                 if (c.isShown() === true) {
-                    if (c.controlName === 'TriviaTextFeedback') {
-                        var stop = 9;
-                        console.log('ControlManager.filter.hide: '+c.propertyString);
-                        window.CC = c;
-                    }
+//                    if (c.controlName === 'TriviaTextFeedback') {
+//                        var stop = 9;
+//                        console.log('ControlManager.filter.hide: '+c.propertyString);
+//                        window.CC = c;
+//                    }
                     c.hide();
                 }
             }

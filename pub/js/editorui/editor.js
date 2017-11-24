@@ -1110,7 +1110,7 @@ var Editor = {};
                     screen: data.screen
                 });
                 if (activeScreen === data.screenId) {
-                    // если экран activeScreen был удален, то вмето него надо показать другой, "ближайший" по индексу
+                    // если экран activeScreen был удален, то вместо него надо показать другой, "ближайший" по индексу
                     var newActiveScreenIndex = data.screenIndex;
                     if (newActiveScreenIndex >= app._screens.length) {
                         //data.screenIndex - это индекс удаленного экрана
@@ -1118,6 +1118,11 @@ var Editor = {};
                     }
                     showScreen(app._screens[newActiveScreenIndex].id);
                 }
+                break;
+            }
+            case MutApp.EVENT_SCREEN_SELECTION_REQUESTED: {
+                // приложение попросило выделить в редакторе нужный скрин
+
                 break;
             }
             case MutApp.EVENT_PROPERTY_CREATED: {
@@ -1161,10 +1166,14 @@ var Editor = {};
     function onWorkspaceEvents(event, data) {
         // console.log('onWorkspaceEvents: event=' + event + ' dataAppPropertyString=' + data.dataAppPropertyString);
         switch (event) {
-            case Workspace.EVENET_CONTROL_POPUP_HIDED:
+            case Workspace.EVENET_CONTROL_POPUP_HIDED: {
                 // Так как EVENET_CONTROL_POPUP_HIDED - это событие о скрытии панели popupControlPanel.js внутри Workspace
                 // а нам теперь нужно сделать логическое действие - скрыть контрол по правилам. Для этого надо обновить фильтр.
-                // надо ту же логику запустить что и в Workspace.EVENET_SELECT_ELEMENT.
+                ControlManager.filter({
+                    propertyStrings: null
+                });
+                break;
+            }
             case Workspace.EVENET_SELECT_ELEMENT: {
                 var ps = data.dataAppPropertyString ? data.dataAppPropertyString.split(',') : null;
                 if (ps) {

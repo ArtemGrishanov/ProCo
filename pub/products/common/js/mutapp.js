@@ -317,6 +317,7 @@ var MutApp = function(param) {
 MutApp.EVENT_SCREEN_CREATED = 'mutapp_event_screen_created';
 MutApp.EVENT_SCREEN_RENDERED = 'mutapp_event_screen_rendered';
 MutApp.EVENT_SCREEN_DELETED = 'mutapp_event_screen_deleted';
+MutApp.EVENT_SCREEN_SELECTION_REQUESTED = 'mutapp_event_screen_selection_requested';
 MutApp.EVENT_APP_SIZE_CHANGED = 'mutapp_event_app_size_changed';
 MutApp.EVENT_PROPERTY_CREATED = 'mutapp_event_property_created';
 MutApp.EVENT_PROPERTY_VALUE_CHANGED = 'mutapp_event_property_value_changed';
@@ -457,6 +458,27 @@ MutApp.prototype.deleteScreen = function(v) {
     }
     else {
         console.error('MutApp.deleteScreen: This view not found');
+    }
+};
+/**
+ * Запросить выделение экрана в редакторе
+ * При перестройка экранов (добавлении нового вопроса в тест например) редактор не может отследить новый экран и установить на нем выделение
+ * Возможны и другие случаи
+ *
+ * @param {string} screenId
+ */
+MutApp.prototype.requestScreenSelection = function(screenId) {
+    var v = this.getScreenById(screenId);
+    if (v !== null) {
+        var index = this._screens.indexOf(v);
+        this.trigger(MutApp.EVENT_SCREEN_SELECTION_REQUESTED, {
+            screenId: screenId,
+            screenIndex: index,
+            screen: v // скрин передаем в колюек, так как в приложении его уже нельзя будет получить
+        });
+    }
+    else {
+        console.error('MutApp.requestScreenSelection: This screen \''+screenId+'\' not found');
     }
 };
 /**
@@ -1610,19 +1632,24 @@ MutApp.Screen = Backbone.View.extend({
      * После каждого рендера движок должен произвести необходимые операции
      */
     renderCompleted: function() {
-        if (this.model.application.mode === 'edit') {
-            this._linkedMutAppProperties = [];
-            this._clearUiElementsForThisScreen();
-            this._findAndAttachAppProperties();
-            this._findAndAttachCssAppProperties();
-            // обновить значения css свойств - что-то могло измениться согласно логике render() экрана
-            this.model.application.updateCssMutAppPropertiesValues(this);
+        if (this.model.application._screens.indexOf(this) >= 0) {
+            if (this.model.application.mode === 'edit') {
+                this._linkedMutAppProperties = [];
+                this._clearUiElementsForThisScreen();
+                this._findAndAttachAppProperties();
+                this._findAndAttachCssAppProperties();
+                // обновить значения css свойств - что-то могло измениться согласно логике render() экрана
+                this.model.application.updateCssMutAppPropertiesValues(this);
+            }
+            // вызвать события о рендере экрана
+            this.model.application.trigger(MutApp.EVENT_SCREEN_RENDERED, {
+                screenId: this.id,
+                screen: this
+            });
         }
-        // вызвать события о рендере экрана
-        this.model.application.trigger(MutApp.EVENT_SCREEN_RENDERED, {
-            screenId: this.id,
-            screen: this
-        });
+        else {
+            throw new Error('MutApp.Screen.renderCompleted: screen \'' + this.id + '\' is not in app screen list. Perhaps, screen was deleted but one listener is still active.');
+        }
     },
 
     /**

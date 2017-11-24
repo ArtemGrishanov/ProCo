@@ -337,6 +337,13 @@ var TriviaApp = MutApp.extend({
             controlFilter: 'onclick',
             valuePattern: '{{number}}px'
         },
+        ".js-photo padding-bottom": {
+            label: {RU:'Отступ сверху',EN:'Padding top'},
+            controls: "StringControl",
+            controlFilter: 'onclick',
+            valuePattern: '{{number}}px',
+            applyCssTo: '.js-photo_cnt' // применить к другому элементу
+        },
         ".js-start_header text-align, .js-start_description text-align, .js-question_text text-align, .js-result_title text-align, .js-result_description text-align": {
             label: {RU:'Выравнивание текста',EN:'Text-align'},
             controlFilter: 'onclick',

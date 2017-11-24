@@ -13,10 +13,6 @@ function TextQuickInput(param) {
     }
     this.screenWindow = this.additionalParam.appIframe.contentWindow;
     this.screenDocument = this.additionalParam.appIframe.contentDocument;
-
-    this.onProductElementInput = function() {
-        this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
-    };
 }
 
 _.extend(TextQuickInput.prototype, AbstractControl);
@@ -38,6 +34,8 @@ TextQuickInput.prototype.setProductDomElement = function(elem) {
         this.$productDomElement.on('input', this._onProductElementInputHandler);
         this._onKeyPressHandler = this.onKeyPress.bind(this);
         this.$productDomElement.on('keypress', this._onKeyPressHandler);
+        this._onHandlePasteHandler = this.handlePaste.bind(this);
+        this.$productDomElement.on('paste', this.handlePaste.bind(this));
     }
 };
 
@@ -67,6 +65,7 @@ TextQuickInput.prototype.destroy = function() {
         this.$productDomElement.off('click', this._onProductElementClickHandler);
         this.$productDomElement.off('input', this._onProductElementInputHandler);
         this.$productDomElement.off('keypress', this._onKeyPressHandler);
+        this.$productDomElement.off('paste', this._onHandlePasteHandler);
     }
     // this.$directive.remove(); у TextQuickInput нет директивы
 };
@@ -104,9 +103,30 @@ TextQuickInput.prototype.onKeyPress = function(e) {
     }
 };
 
-TextQuickInput.prototype.onPaste = function() {
-    this.onProductElementInput();
-};
+/**
+ * Фильтрация html, чтобы вставить только текст
+ *
+ * http://stackoverflow.com/questions/2176861/javascript-get-clipboard-data-on-paste-event-cross-browser
+ *
+ * @param {event} e
+ */
+TextQuickInput.prototype.handlePaste = function(e) {
+    var clipboardData, pastedData;
+    // Stop data actually being pasted into div
+    e.originalEvent.stopPropagation();
+    e.originalEvent.preventDefault();
+    // Get pasted data via clipboard API
+    clipboardData = e.originalEvent.clipboardData || window.clipboardData;
+    pastedData = clipboardData.getData('Text');
+    // Do whatever with pasteddata
+    if (this.$productDomElement) {
+        this.$productDomElement.text(pastedData);
+    }
+    if (this.onProductElementInput) {
+        // дать возможность наследникам сделать собственную обработку вставки, например сохранить в appProperty значение
+        this.onProductElementInput();
+    }
+},
 
 TextQuickInput.prototype.onProductElementInput = function() {
     this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);

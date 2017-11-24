@@ -124,6 +124,9 @@ var QuestionScreen = MutApp.Screen.extend({
         this.model.bind("change:logoUrl", this.onMutAppPropertyChanged, this);
         this.quizElement.question.backgroundImage.bind('change', this.onMutAppPropertyChanged, this);
         this.quizElement.question.backgroundColor.bind('change', this.onMutAppPropertyChanged, this);
+        if (this.quizElement.question.questionImage) {
+            this.quizElement.question.questionImage.bind('change', this.onMutAppPropertyChanged, this);
+        }
         this.quizElement.answer.options.bind('change', this.onOptionsChanged, this); // нужно делать полный рендер, потому что в конце renderCompleted()
 
         // обновление галочек верных ответов
@@ -236,6 +239,7 @@ var QuestionScreen = MutApp.Screen.extend({
         // установка атрибута для фильтрации
         this.$el.attr('data-filter', q.question.backgroundImage.propertyString+','+q.question.backgroundColor.propertyString);
 
+        this.updateCorrectOptionsLabels();
         this.updateFeedbackLabels();
 
         this.renderCompleted();
@@ -426,7 +430,12 @@ var QuestionScreen = MutApp.Screen.extend({
         this.model.off("change:logoUrl", this.onMutAppPropertyChanged, this);
         this.quizElement.question.backgroundImage.unbind('change', this.onMutAppPropertyChanged, this);
         this.quizElement.question.backgroundColor.unbind('change', this.onMutAppPropertyChanged, this);
-        this.quizElement.answer.options.unbind('change', this.onMutAppPropertyChanged, this);
+        if (this.quizElement.question.questionImage) {
+            this.quizElement.question.questionImage.unbind('change', this.onMutAppPropertyChanged, this);
+        }
+        this.quizElement.answer.options.unbind('change', this.onOptionsChanged, this);
+
+        this.model.off("change:optionPoints", this.updateCorrectOptionsLabels, this);
 
         // на изменение опций картинок надо подписаться
         var optionsArr = this.quizElement.answer.options.toArray();
