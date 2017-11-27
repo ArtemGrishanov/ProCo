@@ -44,7 +44,10 @@ var QuestionScreen = MutApp.Screen.extend({
      * Id вопроса, за показ которого отвечает этот экран
      */
     questionId: null,
-
+    /**
+     * Ид таймера для отложенного рендера
+     */
+    delayedRenderTimerId: null,
     /**
      * Контейнер в котором будет происходить рендер этого вью
      */
@@ -116,6 +119,8 @@ var QuestionScreen = MutApp.Screen.extend({
         this.model.bind("change:shadowEnableInQuestions", this.onMutAppPropertyChanged, this);
         this.model.bind("change:showQuestionProgress", this.onMutAppPropertyChanged, this);
         this.model.bind("change:logoUrl", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:logoPositionInQuestions", this.onMutAppPropertyChangedDelayed, this);
+        this.model.bind("change:questionProgressPosition", this.onMutAppPropertyChangedDelayed, this);
         this.quizElement.question.backgroundImage.bind('change', this.onMutAppPropertyChanged, this);
         this.quizElement.question.backgroundColor.bind('change', this.onMutAppPropertyChanged, this);
         if (this.quizElement.question.questionImage) {
@@ -142,6 +147,21 @@ var QuestionScreen = MutApp.Screen.extend({
 
     onMutAppPropertyChanged: function() {
         this.render();
+    },
+
+    /**
+     * Запланировать рендер через какое то время
+     * Применяется когда как например при перетаскивании свойтво изменяется слишком часто
+     * И нужно сделать рендер только в конце перемещения
+     */
+    onMutAppPropertyChangedDelayed: function() {
+        if (this.delayedRenderTimerId) {
+            clearTimeout(this.delayedRenderTimerId);
+            this.delayedRenderTimerId = null;
+        }
+        this.delayedRenderTimerId = setTimeout((function() {
+            this.render();
+        }).bind(this), 999);
     },
 
     render: function() {
@@ -293,6 +313,8 @@ var QuestionScreen = MutApp.Screen.extend({
         this.model.off("change:shadowEnableInQuestions", this.onMutAppPropertyChanged, this);
         this.model.off("change:showQuestionProgress", this.onMutAppPropertyChanged, this);
         this.model.off("change:logoUrl", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:logoPositionInQuestions", this.onMutAppPropertyChangedDelayed, this);
+        this.model.bind("change:questionProgressPosition", this.onMutAppPropertyChangedDelayed, this);
         this.quizElement.question.backgroundImage.unbind('change', this.onMutAppPropertyChanged, this);
         this.quizElement.question.backgroundColor.unbind('change', this.onMutAppPropertyChanged, this);
         if (this.quizElement.question.questionImage) {

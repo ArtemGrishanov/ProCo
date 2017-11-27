@@ -82,7 +82,15 @@ var PersonalityModel = MutApp.Model.extend({
          *  ...
          * ]
          */
-        resultLinking: null
+        resultLinking: null,
+        /**
+         * DictionaryId последнего добавленного вопроса
+         */
+        lastAddedResultDictinatyId: null,
+        /**
+         * DictionaryId последнего добавленного результата
+         */
+        lastAddedQuestionDictinatyId: null
     },
 
     initialize: function(param) {
@@ -272,7 +280,7 @@ var PersonalityModel = MutApp.Model.extend({
             var entDictId = this.application.shareEntities.getIdFromPosition(i);
             if (this.attributes.results.getPosition(entDictId) >= 0) {
                 // результат такой есть, ентити актуальна
-                i++;
+
             }
             else {
                 idsToDelete.push(entDictId);
@@ -626,6 +634,9 @@ var PersonalityModel = MutApp.Model.extend({
     quizProto1: function() {
 
         var questionDictionaryId = MutApp.Util.getUniqId(6);
+        this.set({
+            lastAddedQuestionDictinatyId: questionDictionaryId
+        });
 
         var qText = new MutAppProperty({
             propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.text',
@@ -690,6 +701,9 @@ var PersonalityModel = MutApp.Model.extend({
     quizProto2: function() {
 
         var questionDictionaryId = MutApp.Util.getUniqId(6);
+        this.set({
+            lastAddedQuestionDictinatyId: questionDictionaryId
+        });
 
         var qText = new MutAppProperty({
             propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.text',
@@ -761,6 +775,9 @@ var PersonalityModel = MutApp.Model.extend({
     quizProto3: function() {
 
         var questionDictionaryId = MutApp.Util.getUniqId(6);
+        this.set({
+            lastAddedQuestionDictinatyId: questionDictionaryId
+        });
 
         var qText = new MutAppProperty({
             propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.text',
@@ -822,6 +839,9 @@ var PersonalityModel = MutApp.Model.extend({
      */
     resultProto1: function() {
         var resultDictionaryId = MutApp.Util.getUniqId(6);
+        this.set({
+            lastAddedResultDictinatyId: resultDictionaryId
+        });
 
         var resultTitle = new MutAppProperty({
             propertyString: 'id=pm results.'+resultDictionaryId+'.title',
@@ -1076,8 +1096,8 @@ var PersonalityModel = MutApp.Model.extend({
             }
         }
 
-        var resultsArr = this.attributes.results.toArray();
         // проверка, что количество результатов и shareEntites совпадает (а выше в цикле проверяли наличие всех идишек)
+        var resultsArr = this.attributes.results.toArray();
         assert.ok(this.application.shareEntities.toArray().length === resultsArr.length, 'shareEntities and results have the same length');
         for (var i = 0; i < resultsArr.length; i++) {
             // проверка что существует элемент shareEntity для такоо результата

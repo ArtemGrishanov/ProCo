@@ -28,6 +28,14 @@ var ResultScreen = MutApp.Screen.extend({
     canDelete: true,
     canClone: true,
     /**
+     * Уникальный id этого результата в dictionary results
+     */
+    dictionaryId: undefined,
+    /**
+     * Ид таймера для отложенного рендера
+     */
+    delayedRenderTimerId: null,
+    /**
      * Контейнер в котором будет происходить рендер этого вью
      */
     el: $('#id-result_scr_cnt').hide(),
@@ -96,6 +104,8 @@ var ResultScreen = MutApp.Screen.extend({
             .css('min-height','100%'));
         this.resultId = param.resultId;
         this.result = this.model.getResultById(this.resultId);
+        var resIndex = this.model.get('results').toArray().indexOf(this.result);
+        this.dictionaryId = this.model.get('results').getIdFromPosition(resIndex);
 
         param.screenRoot.append(this.$el);
         this.model.bind("change:state", function () {
@@ -115,6 +125,9 @@ var ResultScreen = MutApp.Screen.extend({
         this.model.bind("change:showDownload", this.onMutAppPropertyChanged, this);
         this.model.bind("change:fbSharingEnabled", this.onMutAppPropertyChanged, this);
         this.model.bind("change:vkSharingEnabled", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:fbSharingPosition", this.onMutAppPropertyChangedDelayed, this);
+        this.model.bind("change:vkSharingPosition", this.onMutAppPropertyChangedDelayed, this);
+        this.model.bind("change:logoPositionInResults", this.onMutAppPropertyChangedDelayed, this);
         this.model.bind("change:restartButtonText", function() {
             //this.onMutAppPropertyChanged
             // чтобы другие экраны результата обновлялись. Но текущий экран не надо рефрешить так как это ломает ввод пользователя
@@ -141,12 +154,25 @@ var ResultScreen = MutApp.Screen.extend({
         this.render();
     },
 
+    /**
+     * Запланировать рендер через какое то время
+     * Применяется когда как например при перетаскивании свойтво изменяется слишком часто
+     * И нужно сделать рендер только в конце перемещения
+     */
+    onMutAppPropertyChangedDelayed: function() {
+        if (this.delayedRenderTimerId) {
+            clearTimeout(this.delayedRenderTimerId);
+            this.delayedRenderTimerId = null;
+        }
+        this.delayedRenderTimerId = setTimeout((function() {
+            this.render();
+        }).bind(this), 999);
+    },
+
     render: function() {
         var r = this.result;
-        var resIndex = this.model.get('results').toArray().indexOf(r);
-        var dictionaryId = this.model.get('results').getIdFromPosition(resIndex);
         var renderObject = MutApp.Util.getObjectForRender(r);
-        renderObject.currentResultIndex = dictionaryId;
+        renderObject.currentResultIndex = this.dictionaryId;
         if (this.model.application.isSmallWidth() === true) {
             if (renderObject.title) renderObject.title = renderObject.title.replace(/<br>/g,' ');
             if (renderObject.description) renderObject.description = renderObject.description.replace(/<br>/g,' ');
@@ -224,7 +250,7 @@ var ResultScreen = MutApp.Screen.extend({
             this.$el.find('.js-back_shadow').css('background-color','');
         }
 
-        this.$el.attr('data-filter', r.backgroundImage.propertyString+','+r.backgroundColor.propertyString+',appConstructor=mutapp shareEntities.'+dictionaryId+'.imgUrl');
+        this.$el.attr('data-filter', r.backgroundImage.propertyString+','+r.backgroundColor.propertyString+',appConstructor=mutapp shareEntities.'+this.dictionaryId+'.imgUrl');
 
         this.renderCompleted();
         return this;
@@ -250,6 +276,9 @@ var ResultScreen = MutApp.Screen.extend({
         this.model.off("change:showDownload", this.onMutAppPropertyChanged, this);
         this.model.off("change:fbSharingEnabled", this.onMutAppPropertyChanged, this);
         this.model.off("change:vkSharingEnabled", this.onMutAppPropertyChanged, this);
+        this.model.off("change:fbSharingPosition", this.onMutAppPropertyChangedDelayed, this);
+        this.model.off("change:vkSharingPosition", this.onMutAppPropertyChangedDelayed, this);
+        this.model.off("change:logoPositionInResults", this.onMutAppPropertyChangedDelayed, this);
         this.model.off("change:restartButtonText", this.onMutAppPropertyChanged, this);
         this.model.off("change:downloadButtonText", this.onMutAppPropertyChanged, this);
         this.model.off("change:logoUrl", this.onMutAppPropertyChanged, this);

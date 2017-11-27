@@ -102,7 +102,15 @@ var TriviaModel = MutApp.Model.extend({
          * [ {optionId: optionId1, points: 1} , {optionId: optionId2, points: 0}, {optionId: optionId3, points: 0} .... ]
          * @type {MutAppPropertyDictionary}
          */
-        optionPoints: null
+        optionPoints: null,
+        /**
+         * DictionaryId последнего добавленного вопроса
+         */
+        lastAddedResultDictinatyId: null,
+        /**
+         * DictionaryId последнего добавленного результата
+         */
+        lastAddedQuestionDictinatyId: null
     },
 
     initialize: function(param) {
@@ -705,7 +713,7 @@ var TriviaModel = MutApp.Model.extend({
             var entDictId = this.application.shareEntities.getIdFromPosition(i);
             if (this.attributes.results.getPosition(entDictId) >= 0) {
                 // результат такой есть, ентити актуальна
-                i++;
+
             }
             else {
                 idsToDelete.push(entDictId);
@@ -752,6 +760,9 @@ var TriviaModel = MutApp.Model.extend({
     quizProto1: function() {
 
         var questionDictionaryId = MutApp.Util.getUniqId(6);
+        this.set({
+            lastAddedQuestionDictinatyId: questionDictionaryId
+        });
 
         var qText = new MutAppProperty({
             propertyString: 'id=tm quiz.'+questionDictionaryId+'.question.text',
@@ -816,6 +827,9 @@ var TriviaModel = MutApp.Model.extend({
     quizProto2: function() {
 
         var questionDictionaryId = MutApp.Util.getUniqId(6);
+        this.set({
+            lastAddedQuestionDictinatyId: questionDictionaryId
+        });
 
         var qText = new MutAppProperty({
             propertyString: 'id=tm quiz.'+questionDictionaryId+'.question.text',
@@ -887,6 +901,9 @@ var TriviaModel = MutApp.Model.extend({
     quizProto3: function() {
 
         var questionDictionaryId = MutApp.Util.getUniqId(6);
+        this.set({
+            lastAddedQuestionDictinatyId: questionDictionaryId
+        });
 
         var qText = new MutAppProperty({
             propertyString: 'id=tm quiz.'+questionDictionaryId+'.question.text',
@@ -948,6 +965,9 @@ var TriviaModel = MutApp.Model.extend({
      */
     resultProto1: function() {
         var resultDictionaryId = MutApp.Util.getUniqId(6);
+        this.set({
+            lastAddedResultDictinatyId: resultDictionaryId
+        });
 
         var resultTitle = new MutAppProperty({
             propertyString: 'id=tm results.'+resultDictionaryId+'.title',
@@ -1170,6 +1190,15 @@ var TriviaModel = MutApp.Model.extend({
         }
         else {
             // todo ?
+        }
+
+        // проверка, что количество результатов и shareEntites совпадает (а выше в цикле проверяли наличие всех идишек)
+        var resultsArr = this.attributes.results.toArray();
+        assert.ok(this.application.shareEntities.toArray().length === resultsArr.length, 'shareEntities and results have the same length');
+        for (var i = 0; i < resultsArr.length; i++) {
+            // проверка что существует элемент shareEntity для такоо результата
+            var resDictId = this.attributes.results.getIdFromPosition(i);
+            assert.ok(this.application.shareEntities.getPosition(resDictId) >= 0, 'Share entity exists for result \''+resDictId+'\'');
         }
 
         // проверить что стейт валидный и атрибуты соответствуют стейту

@@ -461,6 +461,9 @@ var TriviaApp = MutApp.extend({
      * Создать экраны вопросов на основе this.model.get('quiz')
      */
     updateQuestionScreens: function() {
+        // до пересборки экранов запоминаем ид показанного экрана, чтобы потом его восстановить
+        var shownScreenId = this.getShownScreenId();
+
         for (var i = 0; i < this.questionScreens.length; i++) {
             this.deleteScreen(this.questionScreens[i]);
         }
@@ -480,12 +483,31 @@ var TriviaApp = MutApp.extend({
             this.hideScreen(qs);
             this.questionScreens.push(qs);
         }
+
+        if (this.model.attributes.lastAddedQuestionDictinatyId) {
+            var scrId = this.getScreenIdByDictionaryId(this.model.attributes.lastAddedQuestionDictinatyId);
+            if (scrId) {
+                this.requestScreenSelection(scrId);
+                this.model.set({
+                    lastAddedQuestionDictinatyId: null
+                });
+            }
+            else {
+                throw new Error('TriviaApp.updateQuestionScreens: can not find screen with dictionaryId \''+this.model.attributes.lastAddedQuestionDictinatyId+'\'');
+            }
+        }
+        else if (shownScreenId) {
+            this.requestScreenSelection(shownScreenId);
+        }
     },
 
     /**
      * Создать экраны вопросов на основе this.model.get('results')
      */
     updateResultsScreens: function() {
+        // до пересборки экранов запоминаем ид показанного экрана, чтобы потом его восстановить
+        var shownScreenId = this.getShownScreenId();
+
         for (var i = 0; i < this.resultsScreens.length; i++) {
             this.deleteScreen(this.resultsScreens[i]);
         }
@@ -507,6 +529,22 @@ var TriviaApp = MutApp.extend({
             this.addScreen(rs);
             this.hideScreen(rs);
             this.resultsScreens.push(rs);
+        }
+
+        if (this.model.attributes.lastAddedResultDictinatyId) {
+            var scrId = this.getScreenIdByDictionaryId(this.model.attributes.lastAddedResultDictinatyId);
+            if (scrId) {
+                this.requestScreenSelection(scrId);
+                this.model.set({
+                    lastAddedResultDictinatyId: null
+                });
+            }
+            else {
+                throw new Error('TriviaApp.updateResultsScreens: can not find screen with dictionaryId \''+this.model.attributes.lastAddedResultDictinatyId+'\'');
+            }
+        }
+        else if (shownScreenId) {
+            this.requestScreenSelection(shownScreenId);
         }
     },
 
@@ -551,6 +589,39 @@ var TriviaApp = MutApp.extend({
                 break;
             }
         }
+    },
+
+    /**
+     * Вернуть ид экрана который показан в данный момент
+     * Будет возвращен первый найденный показанный экран
+     *
+     * @returns {string}
+     */
+    getShownScreenId: function() {
+        for (var i = 0; i < this._screens.length; i++) {
+            var scr = this._screens[i];
+            if (scr.isShowed === true) {
+                return scr.id;
+            }
+        }
+        return null;
+    },
+
+    /**
+     * Найти экран по dictionaryId
+     * Можно и типа question и result
+     *
+     * @param dictionaryId
+     * @returns {*}
+     */
+    getScreenIdByDictionaryId: function(dictionaryId) {
+        for (var i = 0; i < this._screens.length; i++) {
+            var scr = this._screens[i];
+            if (scr.dictionaryId === dictionaryId) {
+                return scr.id;
+            }
+        }
+        return null;
     },
 
     /**

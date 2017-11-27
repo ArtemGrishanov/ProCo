@@ -278,7 +278,9 @@ var App = App || {};
             linking_strong: 'Сильная',
             linking_no: 'Нет',
             comment: 'Комментарий',
-            do_you_want_restore_tempate: 'Вы редактировали этот шаблон и не сохранили. Продолжить работу?'
+            do_you_want_restore_tempate: 'Вы редактировали этот шаблон и не сохранили. Продолжить работу?',
+            terms: 'Пользовательское соглашение',
+            privacy_policy: 'Политика конфиденциальности'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -486,7 +488,9 @@ var App = App || {};
             linking_no: 'No',
 
             comment: 'Comment',
-            do_you_want_restore_tempate: 'You have edited this template and have not saved it. Continue work?'
+            do_you_want_restore_tempate: 'You have edited this template and have not saved it. Continue work?',
+            terms: 'Terms of use',
+            privacy_policy: 'Privacy policy'
         }
     },
     /**

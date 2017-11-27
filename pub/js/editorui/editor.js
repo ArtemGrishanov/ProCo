@@ -281,7 +281,7 @@ var Editor = {};
      */
     function autoSaverTick() {
         // автосохранение работает в открытыми шаблонами, а в нормальной ситуации пользователь всегда работает с шаблоном
-        if (appTemplate && editedApp.getOperationsCount() > operationCountForAutosaver) {
+        if (appTemplate && editedApp && editedApp.getOperationsCount() > operationCountForAutosaver) {
             var appState = null;
             try {
                 appState = editedApp.serialize();
@@ -1109,7 +1109,7 @@ var Editor = {};
             }
             case MutApp.EVENT_SCREEN_SELECTION_REQUESTED: {
                 // приложение попросило выделить в редакторе нужный скрин
-
+                showScreen(data.screenId);
                 break;
             }
             case MutApp.EVENT_PROPERTY_CREATED: {

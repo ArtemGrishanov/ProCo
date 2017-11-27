@@ -1015,7 +1015,7 @@ input:focus {
 
 .footer {
     position:relative;
-    height: 22px;
+    min-height: 22px;
     background-color: #000;
     padding: 16px 24px;
     text-align: right;
@@ -1029,6 +1029,12 @@ input:focus {
     position: absolute;
     right: 24px;
     top: 12px;
+}
+.footer_left_item {
+
+}
+.footer_left_item + .footer_left_item {
+    margin-left: 16px;
 }
 .icon_fb {
     display: inline-block;
@@ -1676,6 +1682,19 @@ input:focus {
     }
     .paper_block {
         padding: 20px 5px;
+    }
+
+    .footer_left {
+        position: relative;
+        top: 0;
+        left: 0;
+        text-align: left;
+    }
+    .footer_left_item {
+        display: block;
+    }
+    .footer_left_item + .footer_left_item {
+        margin-left: 0px;
     }
 }
 /* Small width screens */
