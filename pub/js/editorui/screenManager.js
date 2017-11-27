@@ -29,6 +29,13 @@ var ScreenManager = {
      * @private
      */
     var _onScreenEventsCallback = null;
+    /**
+     * Таймер для запуска проверки на показ стрелок прокрутки при изменении размеров окна
+     * @type {null}
+     */
+    var _resizeWindowTimerId = null;
+    var _$slidesCnt = null;
+    var _slidesCntSpeed = 0;
 
     /**
      * Создать новую группу SlideGroupControl на основе экрана
@@ -148,6 +155,9 @@ var ScreenManager = {
                 screen: param.deleted
             });
         }
+
+        // запланировать на будущее проверки ширины контрола
+        _scheduleScreenGroupsArrowStateCheck();
     }
 
     /**
@@ -180,6 +190,50 @@ var ScreenManager = {
     }
 
     /**
+     * Изменение окна браузера
+     */
+    function _onWindowResize() {
+        _scheduleScreenGroupsArrowStateCheck();
+    }
+
+    /**
+     * Запланировать проверку по проверке ширины контрола экранов, для показа или непоказа стрелок
+     *
+     * @private
+     */
+    function _scheduleScreenGroupsArrowStateCheck() {
+        if (_resizeWindowTimerId) {
+            clearTimeout(_resizeWindowTimerId);
+            _resizeWindowTimerId = null;
+        }
+        // при изменении размеров окна не надо делать проверку слишком часто
+        _resizeWindowTimerId = setTimeout(function() {
+            _checkScreenGroupsArrowsState();
+            _resizeWindowTimerId = null;
+        }, 1000);
+    }
+
+    function _slidesArrowControlInterval() {
+        if (_slidesCntSpeed > 0) {
+            // левая стрелка
+            _$slidesCnt.scrollLeft(_$slidesCnt.scrollLeft()+_slidesCntSpeed);
+            --_slidesCntSpeed;
+        } else if (_slidesCntSpeed < 0) {
+            // правая стрелка
+            _$slidesCnt.scrollLeft(_$slidesCnt.scrollLeft()+_slidesCntSpeed);
+            ++_slidesCntSpeed;
+        }
+    }
+
+    function _toLeftArrSlideClick() {
+        _slidesCntSpeed = -config.editor.ui.slidesScrollSpeed;
+    }
+
+    function _toRightArrSlideClick() {
+        _slidesCntSpeed = config.editor.ui.slidesScrollSpeed;
+    }
+
+    /**
      * Для автотестирования.
      */
     function _test_getSlideGroupControl(groupName) {
@@ -208,7 +262,12 @@ var ScreenManager = {
         _slideGroupControls = [];
         _appType = param.appType;
         _onScreenEventsCallback = param.onScreenEvents;
-        $('#id-slides_cnt').empty();
+        _$slidesCnt = $('#id-slides_cnt');
+        _$slidesCnt.empty();
+        $(window).resize(_onWindowResize);
+        $('.js-slide_arr_left').mousedown(_toLeftArrSlideClick);
+        $('.js-slide_arr_right').mousedown(_toRightArrSlideClick);
+        setInterval(_slidesArrowControlInterval, 30);
     }
 
     global.init = init;

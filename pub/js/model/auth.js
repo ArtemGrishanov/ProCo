@@ -77,6 +77,20 @@ var Auth = {
      * @private
      */
     var _user = null;
+    /**
+     * Id таймера который проверяет сессию пользователя
+     *
+     * @type {null}
+     * @private
+     */
+    var _checkSessionTimerId = null;
+    /**
+     * время запуска цикла на обновление сессии
+     *
+     * @type {number}
+     * @private
+     */
+    var _checkSessionTimerStartInterval = null;
 
     /**
      * Запрос на регистрацию нового пользователя
@@ -335,12 +349,12 @@ var Auth = {
             onSuccess: function (result) {
                 //console.log('access token + ' + result.getAccessToken().getJwtToken());
                 var key = 'cognito-idp.'+config.common.awsRegion+'.amazonaws.com/'+config.common.awsUserPoolId;
+                var logins = {};
+                logins[key] = result.getIdToken().getJwtToken();
                 AWS.config.region = config.common.awsRegion;
                 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
                     IdentityPoolId: config.common.awsIdentityPoolId,
-                    Logins: {
-                        [key]: result.getIdToken().getJwtToken()
-                    }
+                    Logins: logins
                 });
                 cognitoUser.getUserAttributes(function(err, attributes) {
                     if (err) {
@@ -541,12 +555,12 @@ var Auth = {
                 });
 
                 var key = 'cognito-idp.'+config.common.awsRegion+'.amazonaws.com/'+config.common.awsUserPoolId;
+                var logins = {};
+                logins[key] = session.getIdToken().getJwtToken();
                 AWS.config.region = config.common.awsRegion;
                 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
                     IdentityPoolId: config.common.awsIdentityPoolId,
-                    Logins: {
-                        [key]: session.getIdToken().getJwtToken()
-                    }
+                    Logins: logins
                 });
             });
         }
@@ -607,7 +621,7 @@ var Auth = {
         for (var j = 0; j < _eventCallbacks.length; j++) {
             _eventCallbacks[j](eventType, data);
         }
-    };
+    }
 
     /**
      * Может использоваться как признак успешной авторизации
@@ -670,6 +684,37 @@ var Auth = {
         return false;
     }
 
+    /**
+     * Отправить запрос на обновление сессии
+     */
+    function refreshSession() {
+        if (AWS) {
+            // AWS.config.credentials.expireTime - апдейтится при рефреше в будущее. Это ожидаемое время истечения сессии
+            AWS.config.credentials.refresh(function(e) {
+                if (e) {
+                    console.error('error');
+                    console.dir(e);
+                } else {
+                    console.log('Session successfully refreshed. Expiration time: ' + AWS.config.credentials.expireTime);
+                }
+            });
+        }
+    }
+
+    function _checkSessionTimer() {
+        if (_sessionToken && AWS && AWS.config.credentials) {
+            // проверяем что сессия существует в принципе
+            var now = new Date().getTime();
+            if (AWS.config.credentials.needsRefresh() === true || (now - _checkSessionTimerStartInterval) > config.common.awsSessionUpdatePeriod) {
+                _checkSessionTimerStartInterval = now;
+                refreshSession();
+            }
+        }
+    }
+
+    _checkSessionTimerId = setInterval(_checkSessionTimer, config.common.awsSessionCheckTimout);
+    _checkSessionTimerStartInterval = new Date().getTime();
+
     // public methods
     global.addEventCallback = addEventCallback;
     global.getAuthToken = getAuthToken;
@@ -682,6 +727,7 @@ var Auth = {
     global.restorePassword = restorePassword;
     global.confirmCodeAndEnterPassword = confirmCodeAndEnterPassword;
     global.isTariff = isTariff;
+    global.refreshSession = refreshSession;
 
     // for debug
     global._getCredentials = function() {

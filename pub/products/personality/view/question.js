@@ -230,15 +230,6 @@ var QuestionScreen = MutApp.Screen.extend({
                 var optionsArr = answerData.options.toArray();
                 for (var i = 0; i < optionsArr.length; i++) {
 
-//                    if (!optionsArr[i].prototypeName) {
-//                        if (optionsArr[i].text) {
-//                            optionsArr[i].prototypeName = 'id=pm proto_optionText';
-//                        }
-//                        if (optionsArr[i].img) {
-//                            optionsArr[i].prototypeName = 'id=pm proto_optionPhoto';
-//                        }
-//                    }
-
                     var o = MutApp.Util.getObjectForRender(optionsArr[i]);
                     if (o.uiTemplate) {
                         o.currentQuestionIndex = this.dictionaryId;
@@ -264,6 +255,12 @@ var QuestionScreen = MutApp.Screen.extend({
                     else {
                         throw new Error('Option does not have uiTemplate attribute');
                     }
+                }
+
+                if (optionsArr.length > 3) {
+                    // когда опций много начинаем компоновать их в табличку в 2 колонки
+                    // модификатор на элемент js-options_cnt вешается
+                    $ea.addClass('__2');
                 }
 
 //                if (this.model.get('showBullits') === true) {

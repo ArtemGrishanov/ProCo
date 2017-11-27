@@ -67,6 +67,7 @@ function SelectDialog(params) {
     // init section
     var html = $('#id-select_dialog_template').html();
     this.view = $(html);
+    $('#id-dialogs_view').css('z-index',config.editor.ui.selectDialogZIndex); // у самого контейнера тоже надо ставить, потом вернется значение при закрытии (см ниже)
     this.view.css('z-index',config.editor.ui.selectDialogZIndex);
     App.localize(this.view);
     this.loader = this.view.find('.js-loader');

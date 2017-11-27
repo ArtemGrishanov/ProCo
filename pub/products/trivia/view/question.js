@@ -307,6 +307,12 @@ var QuestionScreen = MutApp.Screen.extend({
                     }
                 }
 
+                if (optionsArr.length > 3) {
+                    // когда опций много начинаем компоновать их в табличку в 2 колонки
+                    // модификатор на элемент js-options_cnt вешается
+                    $ea.addClass('__2');
+                }
+
                 break;
             }
             case 'input': {

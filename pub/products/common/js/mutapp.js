@@ -386,7 +386,8 @@ MutApp.prototype._appEventHandler = function(event, data) {
             if (MutApp.Util.isCssMutAppProperty(data.property) === true) {
                 //if (typeof data.property.getValue() === 'string') {
                     this._saveCssRule({
-                        cssSelector: data.property.cssSelector,
+                        // селектор applyCssToSelector приоритетнее
+                        cssSelector: data.property.applyCssToSelector || data.property.cssSelector,
                         cssPropertyName: data.property.cssPropertyName,
                         cssValue: data.property.getValue()
                     });
@@ -891,7 +892,8 @@ MutApp.prototype.updateCssMutAppPropertiesValues = function(screen) {
     //TODO идет по всем свойствам а надо только по привязанным к экрану свойствам
     for (var i = 0; i < props.length; i++) {
         if (props[i] instanceof CssMutAppProperty) {
-            var $elms = screen.$el.find(props[i].cssSelector);
+            var sel = props[i].applyCssToSelector || props[i].cssSelector;
+            var $elms = screen.$el.find(sel);
             if ($elms.length > 0) {
                 // если только на этом экране есть такие элементы
                 var cssv = $elms.css(props[i].cssPropertyName);
@@ -1718,7 +1720,7 @@ MutApp.Screen = Backbone.View.extend({
         for (var i = 0; i < this.model.application._mutappProperties.length; i++) {
             var ap = this.model.application._mutappProperties[i];
             if (MutApp.Util.isCssMutAppProperty(ap) === true) {
-                var elemsOnView = this.$el.find(ap.cssSelector);
+                var elemsOnView = this.$el.find(ap.cssSelector); // важно: используется именно cssSelector, а не applyCssToSelector
                 for (var k = 0; k < elemsOnView.length; k++) {
                     // добавить проперти в data-app-property атрибут, так как css свойств там возможно нет
                     this._addDataAttribute(elemsOnView[k], ap.propertyString);
@@ -3155,6 +3157,7 @@ var CssMutAppProperty = function(param) {
     else {
         throw new Error('CssMutAppProperty constructor: invalid selector \'' + param.propertyString + '\'');
     }
+    this.applyCssToSelector = param.applyCssToSelector || null;
     // initialize в конце метода - так как this.cssSelector и this.cssPropertyName уже должны быть установлены
     // внутри initialize будет linkApp, вызовы событий и уже заполненные свойства cssSelector cssPropertyName нужны в обработчиках
     this.initialize(param);

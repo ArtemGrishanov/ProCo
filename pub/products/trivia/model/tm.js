@@ -757,7 +757,7 @@ var TriviaModel = MutApp.Model.extend({
             propertyString: 'id=tm quiz.'+questionDictionaryId+'.question.text',
             model: this,
             application: this.application,
-            value: 'Your favourite music?'
+            value: 'Input question text here'
         });
         var qBackgroundImage = new MutAppProperty({
             propertyString: 'id=tm quiz.'+questionDictionaryId+'.question.backgroundImage',
@@ -821,7 +821,7 @@ var TriviaModel = MutApp.Model.extend({
             propertyString: 'id=tm quiz.'+questionDictionaryId+'.question.text',
             model: this,
             application: this.application,
-            value: 'Your favourite music?'
+            value: 'Input question text here'
         });
         var qImage = new MutAppProperty({
             propertyString: 'id=tm quiz.'+questionDictionaryId+'.question.questionImage',
@@ -892,7 +892,7 @@ var TriviaModel = MutApp.Model.extend({
             propertyString: 'id=tm quiz.'+questionDictionaryId+'.question.text',
             model: this,
             application: this.application,
-            value: 'Your favourite picture?'
+            value: 'Input question text here'
         });
         var qBackgroundImage = new MutAppProperty({
             propertyString: 'id=tm quiz.'+questionDictionaryId+'.question.backgroundImage',
@@ -1031,7 +1031,7 @@ var TriviaModel = MutApp.Model.extend({
             propertyString: 'id=tm quiz.'+param.questionDictionaryId+'.answer.options.'+optionId+'.text',
             model: this,
             application: this.application,
-            value: 'New option'
+            value: 'Edit option text'
         });
 
         // Фидбек, который видит пользователь в отдельной всплывашке при выборе этой опции

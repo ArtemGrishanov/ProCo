@@ -631,7 +631,7 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.text',
             model: this,
             application: this.application,
-            value: 'Your favourite music?'
+            value: 'Input question text here'
         });
         var qBackgroundImage = new MutAppProperty({
             propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.backgroundImage',
@@ -695,7 +695,7 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.text',
             model: this,
             application: this.application,
-            value: 'Your favourite music?'
+            value: 'Input question text here'
         });
         var qImage = new MutAppProperty({
             propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.questionImage',
@@ -766,7 +766,7 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.text',
             model: this,
             application: this.application,
-            value: 'Your favourite picture?'
+            value: 'Input question text here'
         });
         var qBackgroundImage = new MutAppProperty({
             propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.backgroundImage',
@@ -905,7 +905,7 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm quiz.'+param.questionDictionaryId+'.answer.options.'+optionId+'.text',
             model: this,
             application: this.application,
-            value: 'New option'
+            value: 'Input option text'
         });
 
         var option = {

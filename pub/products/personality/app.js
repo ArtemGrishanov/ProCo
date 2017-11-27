@@ -329,6 +329,20 @@ var PersonalityApp = MutApp.extend({
             controlFilter: 'onclick',
             valuePattern: '{{number}}px'
         },
+        ".js-photo padding-top": {
+            label: {RU:'Отступ сверху',EN:'Padding top'},
+            controls: "StringControl",
+            controlFilter: 'onclick',
+            valuePattern: '{{number}}px',
+            applyCssToSelector: '.js-photo_cnt' // опционально: применить стиль padding-top к другому элементу, в данном случае к родителю
+        },
+        ".js-photo padding-bottom": {
+            label: {RU:'Отступ снизу',EN:'Padding bottom'},
+            controls: "StringControl",
+            controlFilter: 'onclick',
+            valuePattern: '{{number}}px',
+            applyCssToSelector: '.js-photo_cnt' // опционально: применить стиль padding-bottom к другому элементу, в данном случае к родителю
+        },
         ".js-start_header text-align, .js-start_description text-align, .js-question_text text-align, .js-result_title text-align, .js-result_description text-align": {
             label: {RU:'Выравнивание текста',EN:'Text-align'},
             controlFilter: 'onclick',

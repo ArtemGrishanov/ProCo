@@ -86,12 +86,6 @@ var Editor = {};
      */
     var WorkspaceOffset = null;
     /**
-     * Один контрол для управления экранами промо приложения
-     * превью, управления порядком, добавление и удаление
-     * @type {Array.<SlideGroupControl>}
-     */
-    var slideGroupControls = null;
-    /**
      * При показе экрана инициализируется набор триггеров.
      * В массиве собраны триггеры, активные на данный момент.
      * Триггеры могут быть в нескольких состояниях.
@@ -128,11 +122,6 @@ var Editor = {};
      * @type {function}
      */
     var startCallback = null;
-    /**
-     * Таймер для запуска проверки на показ стрелок прокрутки при изменении размеров окна
-     * @type {null}
-     */
-    var resizeWindowTimerId = null;
     /**
      * Признак того, что вошли в редактор с указанием клонировать шаблон
      * @type {boolean}
@@ -191,10 +180,6 @@ var Editor = {};
         $('.js-back_to_editor').click(onBackToEditorClick);
         $('#id-to_mob_preview').click(toMobPreview);
         $('#id-to_desktop_preview').click(toDesktopPreview);
-        $(window).resize(onWindowResize);
-        $('.js-slide_arr_left').mousedown(toLeftArrSlideClick);
-        $('.js-slide_arr_right').mousedown(toRightArrSlideClick);
-        setInterval(slidesArrowControlInterval, 30);
         // установка placeholder по особому, так как это атрибут
         $('.js-proj_name').attr('placeholder', App.getText('enter_project_name'));
 
@@ -359,8 +344,6 @@ var Editor = {};
             showEditor();
             showScreen();
             WorkspaceOffset = $('#id-product_iframe_cnt').offset();
-            // проверить что редактор готов, и вызвать колбек
-            checkEditorIsReady();
 
             // для установки ссылки шаринга требуются данные пользователя, ответ от апи возможно надо подождать
             if (cloneTemplate) {
@@ -373,6 +356,11 @@ var Editor = {};
                 $('#id-app_prevew_img_wr').show();
             }
             setTariffPolicy();
+
+            if (typeof startCallback === 'function') {
+                startCallback();
+            }
+            Modal.hideLoading();
         }
         else {
             // не грузить контролы в этом режиме. Сразу колбек на старт
@@ -394,17 +382,16 @@ var Editor = {};
         operationCountForAutosaver = editedApp.getOperationsCount();
     }
 
-    /**
-     * Сделать последние проверки
-     * Например, дождаться загрузки критичных контролов управления экранами
-     */
-    function checkEditorIsReady() {
-        checkScreenGroupsArrowsState();
-        Modal.hideLoading();
-        if (typeof startCallback === 'function') {
-            startCallback();
-        }
-
+//    /**
+//     * Сделать последние проверки
+//     * Например, дождаться загрузки критичных контролов управления экранами
+//     */
+//    function checkEditorIsReady() {
+//        checkScreenGroupsArrowsState();
+//        Modal.hideLoading();
+//        if (typeof startCallback === 'function') {
+//            startCallback();
+//        }
 //        var intervalId = setInterval(function() {
 //            // дожидаемся загрузки контролов управления экранами
 //            // так как они управляют апдейтом экрана
@@ -442,7 +429,7 @@ var Editor = {};
 //                }
 //            }
 //        }, 200);
-    }
+//    }
 
 //    /**
 //     * Показать экран(ы) промо приложения в редакторе.
@@ -1469,21 +1456,6 @@ var Editor = {};
     }
 
     /**
-     * Изменение окна браузера
-     */
-    function onWindowResize() {
-        if (resizeWindowTimerId) {
-            clearTimeout(resizeWindowTimerId);
-            resizeWindowTimerId = null;
-        }
-        // при изменении размеров окна не надо делать проверку слишком часто
-        resizeWindowTimerId = setTimeout(function() {
-            checkScreenGroupsArrowsState();
-            resizeWindowTimerId = null;
-        }, 1000)
-    }
-
-    /**
      * Запустить промо приложение в iframe
      */
     function onPreviewClick() {
@@ -1521,35 +1493,6 @@ var Editor = {};
 //            .css('maxHeight',appContainerSize.height);
         // нужно перезапустить приложение чтобы оно корректно обработало свой новый размер
         restartPreviewApp();
-    }
-
-    var $slidesCnt = null;
-    var slidesCntSpeed = 0;
-    function slidesArrowControlInterval() {
-        if ($slidesCnt === null) {
-            $slidesCnt = $('#id-slides_cnt');
-        }
-        if (slidesCntSpeed > 0) {
-            // левая стрелка
-            $slidesCnt.scrollLeft($slidesCnt.scrollLeft()+slidesCntSpeed);
-            --slidesCntSpeed;
-        } else if (slidesCntSpeed < 0) {
-            // правая стрелка
-            $slidesCnt.scrollLeft($slidesCnt.scrollLeft()+slidesCntSpeed);
-            ++slidesCntSpeed;
-        }
-    }
-
-    function toLeftArrSlideClick() {
-        slidesCntSpeed = -config.editor.ui.slidesScrollSpeed;
-//        var sc = $('#id-slides_cnt');
-//        sc.scrollLeft(sc.scrollLeft()-config.editor.ui.slidesScrollStep);
-    }
-
-    function toRightArrSlideClick() {
-        slidesCntSpeed = config.editor.ui.slidesScrollSpeed;
-//        var sc = $('#id-slides_cnt');
-//        sc.scrollLeft(sc.scrollLeft()+config.editor.ui.slidesScrollStep);
     }
 
     function showSelectDialog(params) {
@@ -1596,32 +1539,6 @@ var Editor = {};
             }
         }
         return results1.concat(results2).concat(results3);
-    }
-
-    /**
-     * Сделать проверку на показ стрелок прокрутки панели экранов
-     */
-    function checkScreenGroupsArrowsState() {
-        if (slideGroupControls) {
-            var sumW = 0;
-            for (var i = 0; i < slideGroupControls.length; i++) {
-                if (slideGroupControls[i].$directive) {
-                    sumW += slideGroupControls[i].$directive.width();
-                }
-                else {
-                    // директивы слайдов могут быть еще не загружены
-                    return;
-                }
-            }
-            if ($('#id-slides_cnt').width() < sumW) {
-                $('.js-slide_arr_left').show();
-                $('.js-slide_arr_right').show();
-            }
-            else {
-                $('.js-slide_arr_left').hide();
-                $('.js-slide_arr_right').hide();
-            }
-        }
     }
 
     /**
@@ -1681,7 +1598,6 @@ var Editor = {};
     global.start = start;
     global.showScreen = showScreen;
     global.getAppContainerSize = function() { return appContainerSize; };
-    global.getSlideGroupControls = function() { return slideGroupControls; };
     //global.createPreviewsForShare = createPreviewsForShare;
     global.testPreviewsForShare = testPreviewsForShare;
     global.hideWorkspaceHints = hideWorkspaceHints;

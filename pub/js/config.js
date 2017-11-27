@@ -89,6 +89,15 @@ var config = {
         awsIdentityPoolId: 'eu-central-1:c84ab2e1-6dc2-4362-8320-e438773c41db',
         awsUserPoolClientId: '7e0ml3f1ienelt84691dmsgpij', // client 'Testix Localhost' in region eu-central-1
         /**
+         * Период таймера с которым проверяется что надобы обновить сессию
+         * Сессию мы обновляем 'in advance' - не ждем наступления еррора
+         */
+        awsSessionCheckTimout: 300000, // 5 min
+        /**
+         * Принудительное обновление сессии наступает через этот период по таймеру
+         */
+        awsSessionUpdatePeriod: 1800000, // 30 min
+        /**
          * Задержка перед возможностью релогина
          * Применяется когда сессия устаревает
          */

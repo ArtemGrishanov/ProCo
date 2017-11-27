@@ -45,20 +45,21 @@ var s3util = {};
             log('onRequest: ' + err, true);
             if (err.code === 'CredentialsError') {
                 // пытаемся обновить устаревшую сессию
-                var canRelogin = App.relogin();
-                if (canRelogin) {
-                    // повторно выполнить этот запрос
-                    activeRequest.performed = false;
-                    pool.unshift(activeRequest);
-                    activeRequest = null;
-                }
-                else {
-                    if (activeRequest) activeRequest.callback('error', data);
-                }
+                Auth.refreshSession();
+//                var canRelogin = App.relogin();
+//                if (canRelogin) {
+//                    // повторно выполнить этот запрос
+//                    activeRequest.performed = false;
+//                    pool.unshift(activeRequest);
+//                    activeRequest = null;
+//                }
+//                else {
+//                    if (activeRequest) activeRequest.callback('error', data);
+//                }
             }
-            else {
+//            else {
                 if (activeRequest) activeRequest.callback('error', data);
-            }
+//            }
         }
         else {
             if (activeRequest) activeRequest.callback(null, data);
