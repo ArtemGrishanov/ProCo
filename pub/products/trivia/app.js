@@ -14,7 +14,7 @@ var TriviaApp = MutApp.extend({
      */
     mutAppSchema: new MutAppSchema({
         "appConstructor=mutapp shareEntities.{{id}}.imgUrl": {
-            // это свойство описано в клиентской части а не в mutapp.js так как фильтр по экрану может указать только клиент
+            // Важно: это свойство описано в клиентской части а не в mutapp.js так как фильтр по экрану может указать только клиент
             label: {RU: 'Картинка для шаринга', EN: 'Sharing image'},
             controls: 'ChooseSharingImage',
             controlFilter: 'screenPropertyString' // клиент знает какие экраны есть в приложении

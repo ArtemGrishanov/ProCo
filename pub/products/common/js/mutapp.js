@@ -2722,6 +2722,9 @@ MutAppSchema.prototype.initialize = function(clientSchema) {
         "appConstructor=mutapp shareEntities": {
             // скрытое свойство MutApppropertyDictionary
         },
+        //"appConstructor=mutapp shareEntities.{{id}}.imgUrl": {
+            // Важно: это свойство описано в клиентской части а не в mutapp.js так как фильтр по экрану может указать только клиент
+        //},
         "appConstructor=mutapp shareLink": {
             label: {RU: 'Ссылка для поста в соц сети', EN: 'Post link in social network'},
             controls: 'StringControl',

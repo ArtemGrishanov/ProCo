@@ -485,6 +485,11 @@ var Publisher = {};
                 indexResource.data = indexResource.data.replace('<!--og:description-->', '<meta property="og:description" content="'+ogDescription+'" />');
                 indexResource.data = indexResource.data.replace('<!--og:image-->', '<meta property="og:image" content="'+ogImage+'" />');
 
+                // Это картинка главной проекта типа (p.testix.me/127867420975996/4b48efef0f), нет возможности установить кастомную картинку
+                // Сейчас допущение: она всегда автогенерированная и равна размерам приложения
+                indexResource.data = indexResource.data.replace('<!--og:image:width-->', '<meta property="og:image:width" content="'+appWidth+'" />');
+                indexResource.data = indexResource.data.replace('<!--og:image:height-->', '<meta property="og:image:height" content="'+appHeight+'" />');
+
                 // todo move somewhere
                 writeShareEntities();
 
@@ -515,9 +520,27 @@ var Publisher = {};
     function writeShareEntities() {
         for (var i = 0; i < shareEntities.length; i++) {
             var res = getResourceByUrl('share/'+shareEntities[i].id+'.html');
+            var imageUrl = shareEntities[i].imgUrl.getValue();
             res.data = res.data.replace('{{og:title}}', clearHtmlSymbols(shareEntities[i].title)); // util.js
             res.data = res.data.replace('{{og:description}}', clearHtmlSymbols(shareEntities[i].description));
-            res.data = res.data.replace('{{og:image}}', shareEntities[i].imgUrl.getValue());
+            res.data = res.data.replace('{{og:image}}', imageUrl);
+
+            if (shareEntities[i].imageWidth) {
+                // при установке кастомной картинки были вычислены и сохранены ее размеры
+                res.data = res.data.replace('{{og:image:width}}', shareEntities[i].imageWidth);
+            }
+            else {
+                // если картинка автогенерированная, то ее размер равен размеру приложения
+                // сейчас для автогенерированных не вычисляются размеры
+                res.data = res.data.replace('{{og:image:width}}', appWidth);
+            }
+            if (shareEntities[i].imageHeight) {
+                res.data = res.data.replace('{{og:image:height}}', shareEntities[i].imageHeight);
+            }
+            else {
+                res.data = res.data.replace('{{og:image:height}}', appHeight);
+            }
+
             res.data = res.data.replace('{{og:url}}', getAnonymLink() + 'share/' + shareEntities[i].id+'.html');
             res.data = res.data.replace('{{share_link}}', shareLink);
         }

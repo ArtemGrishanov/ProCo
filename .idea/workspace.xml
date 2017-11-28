@@ -22,74 +22,55 @@
     <favorites_list name="ProCo" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.45624104">
-      <split-first>
-        <leaf>
-          <file leaf-file-name="tm.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/products/trivia/model/tm.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="221" column="59" selection-start="7394" selection-end="7418" vertical-scroll-proportion="-11.56" vertical-offset="3026" max-vertical-offset="18540">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="question.js" pinned="false" current="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/pub/products/trivia/view/question.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="51" column="38" selection-start="1291" selection-end="1291" vertical-scroll-proportion="0.37700146" vertical-offset="506" max-vertical-offset="7275">
-                  <folding>
-                    <element signature="n#!!doc" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="result.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/products/trivia/view/result.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="167" column="26" selection-start="6711" selection-end="6711" vertical-scroll-proportion="0.0" vertical-offset="2078" max-vertical-offset="4440">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="result.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/products/personality/view/result.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="36" column="31" selection-start="766" selection-end="851" vertical-scroll-proportion="-9.16" vertical-offset="311" max-vertical-offset="4305">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="question.js" pinned="false" current="true" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/pub/products/personality/view/question.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="50" column="7" selection-start="1252" selection-end="1252" vertical-scroll-proportion="0.3551674" vertical-offset="506" max-vertical-offset="5070">
-                  <folding>
-                    <element signature="n#!!doc" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="pm.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/products/personality/model/pm.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="189" column="48" selection-start="6278" selection-end="6302" vertical-scroll-proportion="-9.16" vertical-offset="2606" max-vertical-offset="17235">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf>
+      <file leaf-file-name="editor.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="685" column="20" selection-start="26869" selection-end="26873" vertical-scroll-proportion="0.46023688" vertical-offset="10003" max-vertical-offset="24990">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pm.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/personality/model/pm.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="302" column="26" selection-start="10711" selection-end="10717" vertical-scroll-proportion="-9.16" vertical-offset="4301" max-vertical-offset="17235">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/templates/anonymPage/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="23" selection-start="697" selection-end="697" vertical-scroll-proportion="-10.625" vertical-offset="0" max-vertical-offset="1095">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="publisher.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/util/publisher.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="579" column="56" selection-start="23156" selection-end="23179" vertical-scroll-proportion="-7.88" vertical-offset="8488" max-vertical-offset="9330">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="shareImagesService.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/util/shareImagesService.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="104" column="50" selection-start="3309" selection-end="3309" vertical-scroll-proportion="0.0" vertical-offset="1338" max-vertical-offset="4755">
+              <folding>
+                <marker date="1511869691000" expanded="true" signature="4383:4616" placeholder="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -99,15 +80,7 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/faq.html" />
-        <option value="$PROJECT_DIR$/pub/contact.html" />
-        <option value="$PROJECT_DIR$/pub/howitworks.html" />
-        <option value="$PROJECT_DIR$/pub/index.html" />
-        <option value="$PROJECT_DIR$/pub/privacy_policy.html" />
-        <option value="$PROJECT_DIR$/pub/terms.html" />
-        <option value="$PROJECT_DIR$/pub/products/trivia/app.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/app.js" />
-        <option value="$PROJECT_DIR$/pub/js/editorui/editor.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/model/pm.js" />
         <option value="$PROJECT_DIR$/pub/products/trivia/model/tm.js" />
         <option value="$PROJECT_DIR$/pub/js/config.js" />
@@ -115,6 +88,14 @@
         <option value="$PROJECT_DIR$/pub/products/trivia/view/result.js" />
         <option value="$PROJECT_DIR$/pub/products/trivia/view/question.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/view/question.js" />
+        <option value="$PROJECT_DIR$/pub/templates/anonymPage/index.html" />
+        <option value="$PROJECT_DIR$/pub/templates/anonymPage/share_result.html" />
+        <option value="$PROJECT_DIR$/pub/products/trivia/app.js" />
+        <option value="$PROJECT_DIR$/pub/controls/ChooseSharingImage.js" />
+        <option value="$PROJECT_DIR$/pub/products/common/js/mutapp.js" />
+        <option value="$PROJECT_DIR$/pub/js/util/publisher.js" />
+        <option value="$PROJECT_DIR$/pub/js/editorui/editor.js" />
+        <option value="$PROJECT_DIR$/pub/js/util/shareImagesService.js" />
       </list>
     </option>
   </component>
@@ -179,6 +160,64 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="anonymPage" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controls" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -321,10 +360,10 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12350598" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12749004" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19296987" sideWeight="0.87649405" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18651363" sideWeight="0.87250996" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20549928" sideWeight="0.4555113" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32802126" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -337,26 +376,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12350598" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20549928" sideWeight="0.4555113" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32802126" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19296987" sideWeight="0.87649405" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -372,86 +391,9 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/terms.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="199" column="14" selection-start="23014" selection-end="23014" vertical-scroll-proportion="0.69186044" vertical-offset="2509" max-vertical-offset="3960">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/Slide.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="73" selection-start="1372" selection-end="1391" vertical-scroll-proportion="-18.6" vertical-offset="0" max-vertical-offset="1920">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/SlideGroupControl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="7" selection-start="2124" selection-end="2124" vertical-scroll-proportion="-3.76" vertical-offset="851" max-vertical-offset="10635">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="516" column="21" selection-start="31563" selection-end="31563" vertical-scroll-proportion="0.35674158" vertical-offset="7486" max-vertical-offset="18510">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="472" column="21" selection-start="16078" selection-end="16078" vertical-scroll-proportion="0.0" vertical-offset="6881" max-vertical-offset="54045">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/trivia/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="448" column="48" selection-start="18516" selection-end="18516" vertical-scroll-proportion="0.0" vertical-offset="6083" max-vertical-offset="11190">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="442" column="24" selection-start="18187" selection-end="18187" vertical-scroll-proportion="0.0" vertical-offset="6308" max-vertical-offset="10755">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="283" column="40" selection-start="9792" selection-end="9792" vertical-scroll-proportion="-10.36" vertical-offset="3986" max-vertical-offset="24300">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="104" column="11" selection-start="4254" selection-end="4254" vertical-scroll-proportion="-14.84" vertical-offset="1189" max-vertical-offset="6900">
-          <folding>
-            <element signature="e#10516#23248#0" expanded="false" />
-            <element signature="e#17679#21043#0" expanded="false" />
-            <element signature="e#21067#22108#0" expanded="false" />
-            <element signature="e#23264#32954#0" expanded="false" />
-            <element signature="e#32970#37221#0" expanded="false" />
-            <element signature="e#42579#43830#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/editorui/screenManager.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="201" column="15" selection-start="6601" selection-end="6601" vertical-scroll-proportion="-6.44" vertical-offset="2854" max-vertical-offset="4305">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/trivia/view/result.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="167" column="26" selection-start="6711" selection-end="6711" vertical-scroll-proportion="0.0" vertical-offset="2078" max-vertical-offset="4440">
           <folding />
         </state>
       </provider>
@@ -463,16 +405,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/trivia/model/tm.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/personality/view/question.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="221" column="59" selection-start="7394" selection-end="7418" vertical-scroll-proportion="-11.56" vertical-offset="3026" max-vertical-offset="18540">
-          <folding />
+        <state line="50" column="7" selection-start="1252" selection-end="1252" vertical-scroll-proportion="0.3551674" vertical-offset="506" max-vertical-offset="5070">
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/model/pm.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/trivia/model/tm.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="189" column="48" selection-start="6278" selection-end="6302" vertical-scroll-proportion="-9.16" vertical-offset="2606" max-vertical-offset="17235">
+        <state line="220" column="40" selection-start="7358" selection-end="7358" vertical-scroll-proportion="0.3988355" vertical-offset="3026" max-vertical-offset="18540">
           <folding />
         </state>
       </provider>
@@ -481,17 +425,87 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="51" column="38" selection-start="1291" selection-end="1291" vertical-scroll-proportion="0.37700146" vertical-offset="506" max-vertical-offset="7275">
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/view/question.js">
+    <entry file="file://$PROJECT_DIR$/pub/products/trivia/view/result.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="7" selection-start="1252" selection-end="1252" vertical-scroll-proportion="0.3551674" vertical-offset="506" max-vertical-offset="5070">
+        <state line="167" column="26" selection-start="6711" selection-end="6711" vertical-scroll-proportion="0.5997191" vertical-offset="2078" max-vertical-offset="4440">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/view/modals/previewShareImageModal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="9" selection-start="2151" selection-end="2151" vertical-scroll-proportion="0.6699438" vertical-offset="228" max-vertical-offset="1560">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/templates/anonymPage/share_result.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="7" selection-start="726" selection-end="726" vertical-scroll-proportion="0.38516405" vertical-offset="0" max-vertical-offset="701">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/ChooseSharingImage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="111" column="2" selection-start="3811" selection-end="3811" vertical-scroll-proportion="0.7261236" vertical-offset="1148" max-vertical-offset="1860">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/templates/anonymPage/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="23" selection-start="697" selection-end="697" vertical-scroll-proportion="-10.625" vertical-offset="0" max-vertical-offset="1095">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/personality/model/pm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="302" column="26" selection-start="10711" selection-end="10717" vertical-scroll-proportion="-9.16" vertical-offset="4301" max-vertical-offset="17235">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2727" column="0" selection-start="99215" selection-end="99215" vertical-scroll-proportion="0.44250363" vertical-offset="40601" max-vertical-offset="54090">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/trivia/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="43" selection-start="630" selection-end="630" vertical-scroll-proportion="0.3930131" vertical-offset="0" max-vertical-offset="11190">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/util/publisher.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="579" column="56" selection-start="23156" selection-end="23179" vertical-scroll-proportion="-7.88" vertical-offset="8488" max-vertical-offset="9330">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/util/shareImagesService.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="104" column="50" selection-start="3309" selection-end="3309" vertical-scroll-proportion="0.0" vertical-offset="1338" max-vertical-offset="4755">
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <marker date="1511869691000" expanded="true" signature="4383:4616" placeholder="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="685" column="20" selection-start="26869" selection-end="26873" vertical-scroll-proportion="0.46023688" vertical-offset="10003" max-vertical-offset="24990">
+          <folding />
         </state>
       </provider>
     </entry>

@@ -3,6 +3,7 @@
  *
  * Выбор картинки.
  * Кнопка сбоку на панели контролов, которая открывает окно resourceManager
+ *
  */
 function ChooseSharingImage(param) {
     this.init(param);
@@ -116,4 +117,3 @@ ChooseSharingImage.prototype.showPreviewShareImageCallback = function(url) {
     this.updatePreview();
     this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
 };
-
