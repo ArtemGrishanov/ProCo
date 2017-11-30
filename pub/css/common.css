@@ -126,9 +126,14 @@ input:focus {
     width: 100%;
 }
 .su-divider {
+    margin: 0 auto;
     width: 100%;
     height: 1px;
     border-bottom: 1px solid #d6d6d6;
+}
+.su-divider.__short {
+    max-width: 100%;
+    width: 300px;
 }
 .su-reg_label {
     background-color: #fff;
@@ -371,6 +376,9 @@ input:focus {
 }
 .mt6 {
     margin-top: 6px;
+}
+.mt10 {
+    margin-top: 10px;
 }
 .mt20 {
     margin-top: 20px;
@@ -1409,6 +1417,36 @@ input:focus {
     color: #499cf3;
     text-decoration: none;
     cursor: pointer;
+}
+
+.help_notification {
+    position: absolute;
+    top: 56px;
+    left: 0;
+    width: 100%;
+    background-color: #2990fb;
+    text-align: center;
+    font-size: 14px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    color: #fff;
+}
+.help_notification a {
+    color: #fff;
+    text-decoration: underline;
+}
+.help_notif_h {
+    color: #545454;
+    font-size: 24px;
+}
+.help_notif_text {
+    margin: 0 auto;
+    color: #7c7c7c;
+    font-size: 14px;
+    padding: 0 10px;
+}
+.help_notif_text.__small {
+    font-size: 12px;
 }
 
 /* ============= */

@@ -679,17 +679,27 @@ var TriviaApp = MutApp.extend({
 //                type: visualizationType
 //            }
 //        });
-        // пока текстовая подсказка про распределение правильых ответов и результатов
-        var text = '';
+        var visualizationData = [
+            // [points, resultId]
+        ];
+        var visualizationType = 'TriviaChart';
         for (var points in this.model.attributes.resultPointsAllocation) {
             var resultId = this.model.attributes.resultPointsAllocation[points];
             var result = this.model.getResultById(resultId);
-            text += 'Points: '+points+', Result: "'+result.title.getValue()+'"';
-            text += '<br>';
+            visualizationData.push([
+                points,
+                result.title.getValue()
+            ]);
         }
         res.push({
             type: 'info',
-            message: text
+            message: 'Number of correct answers and results matching',
+            html: null,
+            visualization: {
+                data: visualizationData,
+                title: 'title',
+                type: visualizationType
+            }
         });
 
         // ==========================================

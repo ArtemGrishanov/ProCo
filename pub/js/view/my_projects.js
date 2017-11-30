@@ -12,15 +12,18 @@ var myProjectsView = {};
     var userTemplateViews = {};
 
     function initUIHandlers() {
-        $('.js-create_blank').click(function(e){
-            var d = $(e.currentTarget).attr('data-template-url');
-            if (d) {
-                App.openEditor({
-                    templateUrl: d,
-                    clone:true
-                });
+
+    }
+
+    function init() {
+        if (config.common.showHelpNotificationInMyProjects_12_2017 === true) {
+            $('#id-helpNotification_12_2017').show();
+            if (window.localStorage.getItem('notif_12_2017_status') != 'applied') {
+                setTimeout(function() {
+                    Modal.showHelpNotificationInMyProjects_12_2017Modal({canClose: false});
+                }, 1333);
             }
-        });
+        }
     }
 
     function onEditClick(e) {
@@ -164,6 +167,7 @@ var myProjectsView = {};
     };
 
     // авто инициализация
+    init();
     initUIHandlers();
     // автоматический запрос сохраненных темплейтов пользователя как только это становится возможным
     Auth.addEventCallback(onAuthEvent);

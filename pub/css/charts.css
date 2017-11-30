@@ -1,0 +1,95 @@
+.rd {
+    /* result diagram */
+    padding: 10px;
+    position: relative;
+    width: 400px; /* can set programmatically */
+    font-family: Arial;
+    margin: 0 auto;
+}
+.rd_notation_cnt {
+    display: block;
+    width: 100%;
+
+}
+.rd_notation_item {
+    display: inline-block;
+    vertical-align: top;
+    height: 56px;
+    width: 100px; /* Sets programmatically */
+    text-align: center;
+}
+.rd_notation_lbl {
+    position: relative;
+    display: inline-block;
+    max-width: 95px;
+    width: 100%;
+    height: 34px;
+    background-color: #ccc;
+    border: 1px solid #979797;
+    border-radius: 4px;
+    color: #6d6d6d;
+    font-size: 12px;
+    overflow: hidden; /* it hides after element */
+    line-height: 17px;
+}
+.rd_notation_lbl:after {
+    position: absolute;
+    content: '';
+    width: 0px;
+    height: 0px;
+    bottom: -10px;
+    left: 50%;
+    margin-left: -10px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #6d6d6d;
+}
+
+
+.rd_line_cnt {
+    /* линия в которой размещаются кружочки и штрихи */
+    display: block;
+    width: 100%;
+    padding-left: 30px;
+}
+.rd_line_item {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    height: 56px;
+}
+.rd_gap {
+    display: inline-block;
+    vertical-align: top;
+    height: 1px;
+    width: 33px; /* by default, as in design. Sets programmatically */
+    border-bottom: 1px solid #979797;
+    margin-top: 11px;
+}
+.rd_gap.__blue {
+    border-color: #5498f8;
+}
+.rd_circle {
+    display: inline-block;
+    border-radius: 999px;
+    background-color: #979797;
+    margin-top: 7px;
+    width: 10px;
+    height: 10px;
+}
+.rd_circle.__big {
+    margin-top: 7; /* was 0 */
+    width: 10px; /* was 24px */
+    height: 10px;
+}
+.rd_circle.__blue {
+    background-color: #5498f8;
+}
+.rd_n {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #979797;
+    font-size: 14px;
+}

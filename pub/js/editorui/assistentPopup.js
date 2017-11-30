@@ -15,7 +15,12 @@ var AssistentPopup = {};
      * See more types https://developers.google.com/chart/interactive/docs/gallery/piechart
      * @type {Array}
      */
-    var SUPPORTED_VISUALIZATION_TYPES = ['PieChart'];
+    var GOOGLE_SUPPORTED_VISUALIZATION_TYPES = ['PieChart'];
+    /**
+     * Собственные разработанные чарты которые находятся в pub/charts
+     * @type {Array}
+     */
+    var CUSTOM_VISUALIZATION_TYPES = ['TriviaChart'];
 
     function init(param) {
         param = param || {};
@@ -50,7 +55,7 @@ var AssistentPopup = {};
                 $('<p></p>').html(m.html).appendTo(_$messagesCnt);
             }
             if (m.visualization && m.visualization.type && m.visualization.data) {
-                if (SUPPORTED_VISUALIZATION_TYPES.indexOf(m.visualization.type) >= 0) {
+                if (GOOGLE_SUPPORTED_VISUALIZATION_TYPES.indexOf(m.visualization.type) >= 0) {
                     var data = google.visualization.arrayToDataTable(m.visualization.data);
                     var options = {
                         title: m.visualization.title || ''
@@ -59,6 +64,12 @@ var AssistentPopup = {};
                     $('<div id="'+chartid+'"></div>').appendTo(_$messagesCnt);
                     var chart = new google.visualization[m.visualization.type](document.getElementById(chartid));
                     chart.draw(data, options);
+                }
+                else if (CUSTOM_VISUALIZATION_TYPES.indexOf(m.visualization.type) >= 0) {
+                    var chartid = m.visualization.type+'_'+getUniqId();
+                    $('<div id="'+chartid+'"></div>').appendTo(_$messagesCnt);
+                    var chart = new TriviaChart(document.getElementById(chartid));
+                    chart.draw(m.visualization.data);
                 }
                 else {
                     throw new Error('AssistentPopup.setMessages: unsupported visualization type \''+ m.visualization.type+'\'');

@@ -226,7 +226,12 @@ var config = {
         /**
          * Шаблон для кода встраивания
          */
-        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"{{custom_attributes}}><script src="//s3.eu-central-1.amazonaws.com/testix.me/js/loader.js" async></script></div>'
+        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"{{custom_attributes}}><script src="//s3.eu-central-1.amazonaws.com/testix.me/js/loader.js" async></script></div>',
+        /**
+         * Показывать нотификацию о помощи в моих проектах
+         * Во время перехода с одной версии на другую
+         */
+        showHelpNotificationInMyProjects_12_2017: true
     },
     tariff: {
         /**
@@ -1023,6 +1028,14 @@ var config = {
         },
         restorePasswordModal: {
             templateUrl: 'templates/restorePasswordModal.html',
+            defZIndex: 95
+        },
+        notificationInMyProjects12_2017Modal: {
+            templateUrl: 'templates/my_projects_notif_12_2017.html',
+            defZIndex: 95
+        },
+        signup12_2017Modal: {
+            templateUrl: 'templates/signup_12_2017.html',
             defZIndex: 95
         }
     },

@@ -270,7 +270,7 @@ var Editor = {};
      * @returns {string}
      */
     function confirmExit() {
-        if (config.common.awsEnabled === true && editedApp.getOperationsCount() > operationsCountForWindowExit) {
+        if (config.common.awsEnabled === true && editedApp && editedApp.getOperationsCount() > operationsCountForWindowExit) {
             return App.getText('unsaved_changes');
         }
     }

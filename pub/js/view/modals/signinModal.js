@@ -113,6 +113,14 @@ SigninModal.prototype.render = function() {
     else {
         this.$ui.find('.js-close').hide();
     }
+
+    if (window.localStorage.getItem('signup12_2017_status') != 'shown') {
+        window.localStorage.setItem('signup12_2017_status', 'shown');
+        Modal.showSignup12_2017Modal();
+        setTimeout(function(){
+            Modal.hideSignin();
+        }, 999);
+    }
 };
 
 /**
