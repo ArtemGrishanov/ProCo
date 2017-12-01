@@ -293,11 +293,11 @@ var config = {
             trivia: {
                 // шаблоны встроены прямо в верстку, НЕ создаются программно
                 enabled: true,
-                typeLabel: {EN:'Trivia',RU:'Тривиа'},
+                typeLabel: {EN:'Trivia',RU:'Тесты «Проверь себя»'},
                 entities: [
                     {
                         // стандартный тест: http://p.testix.me/1045302892173346/7e7fef7bcf
-                        name: {EN:'Default tutorial Trivia',RU:'Мой первый тест Trivia'},
+                        name: {EN:'Default tutorial Trivia',RU:'Мой первый тест «Проверь себя»'},
                         img: 'http://p.testix.me/storefront/trivia/4acc02fb1f.jpg',
                         published: 'http://p.testix.me/storefront/trivia/4acc02fb1f/p_index.html',
                         template: 'http://p.testix.me/storefront/trivia/4acc02fb1f.txt',
@@ -390,16 +390,25 @@ var config = {
             personality: {
                 // шаблоны встроены прямо в верстку, НЕ создаются программно
                 enabled: true,
-                typeLabel: {EN:'Personality',RU:'Тесты "Personality"'},
+                typeLabel: {EN:'Personality',RU:'Тесты «Узнай себя»'},
                 entities: [
                     {
-                        name: {EN:'Default tutorial Personality',RU:'Мой первый тест Personality'},
+                        name: {EN:'Default tutorial Personality',RU:'Мой первый тест «Узнай себя»'},
                         img: 'http://p.testix.me/storefront/personality/f0ce5473dc.jpg',
                         published: 'http://p.testix.me/storefront/personality/f0ce5473dc/p_index.html',
                         template: 'http://p.testix.me/storefront/personality/f0ce5473dc.txt',
                         width: '800px',
                         height: '600px'
+                    },
+                    {
+                        name: {EN:'Your favourite country',RU:'Какая страна вам подходит?'},
+                        img: 'http://p.testix.me/storefront/personality/8a2e558523.jpg',
+                        published: 'http://p.testix.me/storefront/personality/8a2e558523/p_index.html',
+                        template: 'http://p.testix.me/storefront/personality/8a2e558523.txt',
+                        width: '800px',
+                        height: '600px'
                     }
+                    //https://p.testix.me/f02d37a76f/e9dad5f64f/
                 ]
             },
             memoriz: {

@@ -116,9 +116,11 @@ var App = App || {};
             login_explanation: 'Войдите, чтобы получить больше возможностей',
             cat_all: 'Все',
             cat_quizes: 'Тесты',
-            cat_trivia: 'Тесты Trivia',
-            cat_personality: 'Тест Personality',
+            cat_trivia: 'Тесты «Проверь себя»',
+            cat_personality: 'Тесты «Узнай себя»',
             cat_quiz_desc: 'Тесты – один из самых распространенных видов игровых механик и выгодная альтернатива стандартным рекламным форматам. Создавайте красивые тесты, которыми люди будут делиться в социальных сетях.',
+            cat_trivia_desc: 'Тесты – один из самых распространенных видов игровых механик. При помощи тестов «Проверь себя» можно проверить знания. Например, хорошо ли вы знаете русский язык?',
+            cat_personality_desc: 'В тестах «Узнай себя» нет правильных и неправильных ответов. Этот тест помогает пользователям узнавать интересные факты о самих себе. Например, вы зануда или душа компании?',
             cat_memory: 'Мемори',
             cat_memory_desc: 'Покажите связь предметов или явлений при помощи механики «Мемори». Каждая карточка имеет свою пару. Позвольте вашим читателям найти соответствие.',
             cat_pano: 'Панорамы',
@@ -268,7 +270,7 @@ var App = App || {};
             is_correct: 'Это верный ответ',
             upload_res_error: 'Не удалось загрузить ресурс. Попробуйте еще раз.',
             select_img_error: 'Не удается выбрать картинку',
-            that_is_not_image: 'Выберите картинку',
+            that_is_not_image: 'Выбранный файл не является картинкой или картинка повреждена',
 
             option_feedback: 'Комментарии к ответу',
             you_might_specify_feedback: 'Пользователи увидят их после ответа на вопрос',
@@ -327,8 +329,10 @@ var App = App || {};
             cat_all: 'All',
             cat_quizes: 'Quizes',
             cat_trivia: 'Trivia',
-            cat_personality: 'Personality',
+            cat_personality: 'Personality quiz',
             cat_quiz_desc: 'Tests - one of the most common types of game mechanics and a excellent alternative to standard advertising formats. Create beautiful tests that people will share in social networks.',
+            cat_trivia_desc: 'Trivia is one of the most common types of game mechanics. Users can check their knowledge, for example, doy you know math well?',
+            cat_personality_desc: 'There is no correct or wrong answers. Personality quiz helps users to find interesting facts about themselves. For example, What type of temper do you have?',
             cat_memory: 'Memory games',
             cat_memory_desc: 'Show the connection of objects or phenomena with the help of Memory game. Each card has its own pair. Let your readers find a match.',
             cat_pano: 'Panoramas',
@@ -478,7 +482,7 @@ var App = App || {};
             is_correct: 'Correct option',
             upload_res_error: 'Can not upload file. Try again',
             select_img_error: 'Can not select image',
-            that_is_not_image: 'Select image',
+            that_is_not_image: 'Selected file is not image or image is corrupted',
 
             option_feedback: 'Set feedback',
             you_might_specify_feedback: 'Users will see them after answering the question',
@@ -663,6 +667,10 @@ var App = App || {};
             }
             case Auth.EVENT_SIGNOUT: {
                 updateUI();
+                if (window.location.href.indexOf('editor.html') >= 0) {
+                    // мы находимся в редакторе, при разлогине надо выкинуть на главную
+                    window.location.href = 'index.html';
+                }
                 break;
             }
         }

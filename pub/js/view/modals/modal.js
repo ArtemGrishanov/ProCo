@@ -39,6 +39,14 @@ var Modal = {};
             constructor: constructor,
             modal: modal
         });
+        if (modal.zIndex) {
+            // Дело в том что id-dialogs_view ставит z-index не только в дочерние view, но и на себя самого (это перекроет модалку со сколько угодно высоким индексом)
+            // здесь поступаем так же, на контейнер модалок ставим zindex
+            $modalCnt.css('z-index', modal.zIndex);
+        }
+        else {
+            $modalCnt.css('z-index', 'auto');
+        }
         return modal;
     }
 

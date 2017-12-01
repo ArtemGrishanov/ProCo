@@ -188,16 +188,16 @@ function ResourceManager(params) {
     this.onLocalFileSelected = function(evt) {
         var files = FileAPI.getFiles(evt);
         FileAPI.filterFiles(files, function (file, info/**Object*/) {
-            if( /^image/.test(file.type) ) {
-                return true;
-            }
-            return false;
+//            if( /^image/.test(file.type) ) {
+//                return true;
+//            }
+//            return false;
+            // однако некоторые файлы не имеют mime типа, то есть file.type === '', решил игнорировать эту провверку
+            return true;
 
         }, (function (files/**Array*/, rejected/**Array*/){
             if (rejected.length > 0) {
-                if (!fileApiErrorOccured) {
-                    Modal.showMessage({text: App.getText('that_is_not_image')});
-                }
+                Modal.showMessage({text: App.getText('that_is_not_image')});
             }
             else if (files.length){
                 FileAPI.Image(files[0]).preview(config.editor.resourceManager.thumbWidth, config.editor.resourceManager.thumbHeight).get((function(err, cnv) {
