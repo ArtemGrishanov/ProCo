@@ -89,6 +89,10 @@ var config = {
         awsIdentityPoolId: 'eu-central-1:c84ab2e1-6dc2-4362-8320-e438773c41db',
         awsUserPoolClientId: '7e0ml3f1ienelt84691dmsgpij', // client 'Testix Localhost' in region eu-central-1
         /**
+         * Включить таймер который периодически рефрешит сессию
+         */
+        awsSessionRefreshTimerEnabled: false,
+        /**
          * Период таймера с которым проверяется что надобы обновить сессию
          * Сессию мы обновляем 'in advance' - не ждем наступления еррора
          */

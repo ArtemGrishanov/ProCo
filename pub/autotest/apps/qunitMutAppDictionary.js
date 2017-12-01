@@ -430,7 +430,7 @@ QUnit.test("MutAppPropertyDictionary: dictionary operations in personality model
 
 });
 
-QUnit.test("MutAppPropertyDictionary: dictionary getElementCopy", function( assert ) {
+QUnit.test("MutAppPropertyDictionary: dictionary getElementCopy for cloning", function( assert ) {
 
     var app = new PersonalityApp({
         mode: 'edit',

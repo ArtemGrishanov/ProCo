@@ -686,18 +686,51 @@ var Auth = {
 
     /**
      * Отправить запрос на обновление сессии
+     *
+     * @param {function} callback
      */
-    function refreshSession() {
+    function refreshSession(callback) {
         if (AWS) {
             // AWS.config.credentials.expireTime - апдейтится при рефреше в будущее. Это ожидаемое время истечения сессии
-            AWS.config.credentials.refresh(function(e) {
-                if (e) {
-                    console.error('error');
-                    console.dir(e);
-                } else {
-                    console.log('Session successfully refreshed. Expiration time: ' + AWS.config.credentials.expireTime);
+            // https://github.com/aws/amazon-cognito-identity-js "use case 17"
+            var poolData = {
+                UserPoolId : config.common.awsUserPoolId,
+                ClientId : config.common.awsUserPoolClientId
+            };
+            var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+            var cognitoUser = userPool.getCurrentUser();
+            if (cognitoUser != null) {
+                cognitoUser.getSession(function(err, session) {
+                    var key = 'cognito-idp.'+config.common.awsRegion+'.amazonaws.com/'+config.common.awsUserPoolId;
+                    var logins = {};
+                    logins[key] = session.getIdToken().getJwtToken();
+                    AWS.config.region = config.common.awsRegion;
+                    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                        IdentityPoolId: config.common.awsIdentityPoolId,
+                        Logins: logins
+                    });
+                    AWS.config.credentials.refresh(function(e) {
+                        if (e) {
+                            if (callback) {
+                                callback('error');
+                            }
+                            console.dir(e);
+                        } else {
+                            console.log('Session successfully refreshed. Expiration time: ' + AWS.config.credentials.expireTime);
+                            // пересоздать обязательно: внутри у bucket свои настройки: bucket.credentials
+                            App.initAwsBuckets();
+                            if (callback) {
+                                callback('success');
+                            }
+                        }
+                    });
+                });
+            }
+            else {
+                if (callback) {
+                    callback('error');
                 }
-            });
+            }
         }
     }
 
@@ -712,8 +745,10 @@ var Auth = {
         }
     }
 
-    _checkSessionTimerId = setInterval(_checkSessionTimer, config.common.awsSessionCheckTimout);
-    _checkSessionTimerStartInterval = new Date().getTime();
+    if (config.common.awsSessionRefreshTimerEnabled === true) {
+        _checkSessionTimerId = setInterval(_checkSessionTimer, config.common.awsSessionCheckTimout);
+        _checkSessionTimerStartInterval = new Date().getTime();
+    }
 
     // public methods
     global.addEventCallback = addEventCallback;

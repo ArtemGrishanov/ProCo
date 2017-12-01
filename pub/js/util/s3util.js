@@ -7,12 +7,18 @@
 var s3util = {};
 (function(global) {
 
+    var MAX_REQUEST_ATTEMPT_COUNT = 5;
     var pool = [];
     var activeRequest = null;
 
     function timer() {
         if (activeRequest === null && pool.length > 0) {
             activeRequest = pool.shift();
+            if (activeRequest.attemptsCount >= MAX_REQUEST_ATTEMPT_COUNT) {
+                // реквест испробовал все свои попытки, удаляем его
+                activeRequest.callback('error', null);
+                activeRequest = null;
+            }
         }
         if (activeRequest && activeRequest.performed!==true) {
             // надо убедиться что для этого запроса есть bucket
@@ -41,11 +47,25 @@ var s3util = {};
     }
 
     function onRequest(err, data) {
+        activeRequest.attemptsCount = activeRequest.attemptsCount || 0;
+        activeRequest.attemptsCount++;
+        // for tests if (activeRequest.attemptsCount < 2) err = {code:'CredentialsError'};
         if (err) {
             log('onRequest: ' + err, true);
             if (err.code === 'CredentialsError') {
                 // пытаемся обновить устаревшую сессию
-                Auth.refreshSession();
+                Auth.refreshSession(function(result) {
+                    if (result === 'success') {
+                        //повторно выполнить этот запрос
+                        activeRequest.performed = false;
+                        pool.unshift(activeRequest);
+                        activeRequest = null;
+                    }
+                    else {
+                        if (activeRequest) activeRequest.callback('error', data);
+                        activeRequest = null;
+                    }
+                });
 //                var canRelogin = App.relogin();
 //                if (canRelogin) {
 //                    // повторно выполнить этот запрос
@@ -57,14 +77,16 @@ var s3util = {};
 //                    if (activeRequest) activeRequest.callback('error', data);
 //                }
             }
-//            else {
+            else {
                 if (activeRequest) activeRequest.callback('error', data);
-//            }
+                activeRequest = null;
+            }
         }
         else {
             if (activeRequest) activeRequest.callback(null, data);
+            activeRequest = null;
         }
-        activeRequest = null;
+//        activeRequest = null;
     }
 
     function requestStorage(method, params, callback, maxDuration) {
@@ -73,7 +95,8 @@ var s3util = {};
             method: method,
             params: params,
             callback: callback,
-            maxDuration: maxDuration || config.storage.responseMaxDuration
+            maxDuration: maxDuration || config.storage.responseMaxDuration,
+            attemptsCount: 0
         });
     }
 
@@ -83,7 +106,8 @@ var s3util = {};
             method: method,
             params: params,
             callback: callback,
-            maxDuration: maxDuration || config.storage.responseMaxDuration
+            maxDuration: maxDuration || config.storage.responseMaxDuration,
+            attemptsCount: 0
         });
     }
 

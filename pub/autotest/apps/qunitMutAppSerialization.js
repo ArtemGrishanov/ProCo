@@ -1,13 +1,14 @@
 /**
  * Created by alex on 10.08.17.
  */
-var EXPECTED_MUTAPP_PROPERTIES_COUNT = 76;
+var EXPECTED_MUTAPP_PROPERTIES_COUNT = 83;
 var PROPETIES_IN_ONE_QUIZ_ELEM = 7;
-var PROPETIES_IN_ONE_RESULT_ELEM = 4;
+var PROPETIES_IN_ONE_RESULT_ELEM = 6+1; // 6 - это свойства в элементе результата + 1-shareImage создается
 
 QUnit.test("MutApp test: MutAppProperties array serialization (PersonalityTest)", function( assert ) {
 
     var app = new PersonalityApp({
+        autotesting: true,
         defaults: null // no defaults
     });
     app.start();
@@ -41,6 +42,7 @@ QUnit.test("MutApp test: MutAppProperties array serialization (PersonalityTest)"
 QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityTest was taken for test.", function( assert ) {
 
     var app = new PersonalityApp({
+        autotesting: true,
         defaults: null // no defaults
     });
     app.start();
@@ -62,6 +64,7 @@ QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityT
 
     // запустим новое приложение
     var app = new PersonalityApp({
+        autotesting: true,
         defaults: null // no defaults
     });
     app.start();
@@ -73,7 +76,9 @@ QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityT
     checkResult(app, 1);
     app.model.attributes.showLogoOnStartScreen.deserialize(serShowBackgroundImage);
 
-    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + PROPETIES_IN_ONE_RESULT_ELEM); // 3 sub property in result elem
+    // должны быть создана одна шара-картинка для одного результата. Но мы вроде договорились что десериалайз не вызывает события изменения свойства?
+    var SHARE_IMAGE_COUNT_WHICH_MUST_BE_CREAETED = 1;
+    assert.ok(app._mutappProperties.length === EXPECTED_MUTAPP_PROPERTIES_COUNT + PROPETIES_IN_ONE_RESULT_ELEM - SHARE_IMAGE_COUNT_WHICH_MUST_BE_CREAETED);
     // сравниваем свойства по одному
     assert.ok(app.model.attributes.results.compare(savedResults1));
     assert.ok(app.model.attributes.showLogoOnStartScreen.compare(showBackgroundImage1));
@@ -95,6 +100,7 @@ QUnit.test("MutApp test: MutAppProperties serialization operations. PersonalityT
 QUnit.test("MutApp test: MutApp serialization. PersonalityTest was taken for test.", function( assert ) {
     // создать приложение
     var originApp = new PersonalityApp({
+        autotesting: true,
         defaults: null // no defaults
     });
     originApp.start();
@@ -107,6 +113,7 @@ QUnit.test("MutApp test: MutApp serialization. PersonalityTest was taken for tes
 
     // создать новое приложение
     var app2 = new PersonalityApp({
+        autotesting: true,
         defaults: null // no defaults
     });
     app2.start();
@@ -124,6 +131,7 @@ QUnit.test("MutApp test: MutApp serialization. PersonalityTest was taken for tes
 QUnit.test("MutApp test: MutApp serialization. FbPanorama was taken for test.", function( assert ) {
     // создать приложение
     var originApp = new FbPanoramaApp({
+        autotesting: true,
         defaults: null // no defaults
     });
     originApp.start();
@@ -137,6 +145,7 @@ QUnit.test("MutApp test: MutApp serialization. FbPanorama was taken for test.", 
 
     // создать новое приложение
     var app2 = new FbPanoramaApp({
+        autotesting: true,
         defaults: null // no defaults
     });
     app2.start();
@@ -154,6 +163,7 @@ QUnit.test("MutApp test: MutApp serialization. FbPanorama was taken for test.", 
 QUnit.test("MutApp test: MutApp serialization with array element delete. (PersonalityTest)", function( assert ) {
     // создать приложение
     var originApp = new PersonalityApp({
+        autotesting: true,
         defaults: null // no defaults
     });
     originApp.start();
@@ -169,6 +179,7 @@ QUnit.test("MutApp test: MutApp serialization with array element delete. (Person
 
     // создать новое приложение
     var app2 = new PersonalityApp({
+        autotesting: true,
         defaults: null // no defaults
     });
     app2.start();
@@ -186,6 +197,7 @@ QUnit.test("MutApp test: MutApp serialization with array element delete. (Person
 
     // создать новое приложение
     var app3 = new PersonalityApp({
+        autotesting: true,
         defaults: str2
     });
     app3.start();
@@ -226,11 +238,13 @@ QUnit.test("MutApp test: MutApp deserialization in start. (PersonalityTest)", fu
  */
 QUnit.test("MutApp test: deserialization of existed property", function( assert ) {
     var app1 = new PersonalityApp({
+        autotesting: true
     });
     app1.start();
     app1.model.attributes.results.addElementByPrototype('id=pm resultProto1');
 
     var app2 = new PersonalityApp({
+        autotesting: true
     });
     app2.model.attributes.results.addElementByPrototype('id=pm resultProto1');
     var serStr = app2.model.attributes.results.serialize();

@@ -53,7 +53,7 @@ var App = App || {};
      * Был получен при авторизации в ФБ
      * @type {null}
      */
-    var accessToken = null;
+    // var accessToken = null;
     /**
      * Время последнего создания бакета
      * Нужно для контроля при пересоздании бакетов, если сессия устарела
@@ -809,12 +809,10 @@ var App = App || {};
     /**
      * Инициализация апи для работы с хранилищем Amazon
      * Должна проходить после успешной авторизации через фб, так как нужен user_id
-     *
-     * @param {string} token - fb access token, that was got after authorization
      */
-    function initAwsBuckets(token) {
+    function initAwsBuckets() {
         if (config.common.awsEnabled === true) {
-            AWS.config.region = config.common.awsRegion;
+//            AWS.config.region = config.common.awsRegion;
             bucket = new AWS.S3({
                 params: {
                     Bucket: config.common.awsBucketName,
@@ -1220,6 +1218,7 @@ var App = App || {};
 //    global.requestLogin = requestLogin;
     global.openEditor = openEditor;
     global.openUrl = openUrl;
+    global.initAwsBuckets = initAwsBuckets;
 //    global.relogin = relogin;
     global.isMobile = isMobile;
     global.isTouchMobile = isTouchMobile;
