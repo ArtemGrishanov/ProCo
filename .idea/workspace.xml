@@ -23,10 +23,46 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="config.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pub/js/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="82" column="16" selection-start="3163" selection-end="3163" vertical-scroll-proportion="0.0" vertical-offset="1172" max-vertical-offset="16365">
+            <state line="59" column="40" selection-start="2400" selection-end="2400" vertical-scroll-proportion="0.2838428" vertical-offset="690" max-vertical-offset="16080">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="storefront.css" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/css/storefront.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="111" column="13" selection-start="2348" selection-end="2348" vertical-scroll-proportion="-12.32" vertical-offset="1357" max-vertical-offset="6945">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="storefront.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/view/storefront.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="137" column="51" selection-start="5388" selection-end="5388" vertical-scroll-proportion="0.0" vertical-offset="1681" max-vertical-offset="3840">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="storefront.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/storefront.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="79" column="76" selection-start="5197" selection-end="5197" vertical-scroll-proportion="-4.5102043" vertical-offset="964" max-vertical-offset="4530">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="143" column="64" selection-start="10157" selection-end="10157" vertical-scroll-proportion="-3.8979592" vertical-offset="1954" max-vertical-offset="4245">
               <folding />
             </state>
           </provider>
@@ -41,10 +77,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="s3util.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="s3util.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/util/s3util.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="62" column="21" selection-start="2344" selection-end="2344" vertical-scroll-proportion="0.47142857" vertical-offset="600" max-vertical-offset="2955">
+            <state line="62" column="8" selection-start="2331" selection-end="2331" vertical-scroll-proportion="-13.2" vertical-offset="600" max-vertical-offset="2955">
               <folding />
             </state>
           </provider>
@@ -53,8 +89,11 @@
       <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="861" column="40" selection-start="44901" selection-end="44908" vertical-scroll-proportion="-9.16" vertical-offset="12686" max-vertical-offset="18645">
-              <folding />
+            <state line="687" column="38" selection-start="38210" selection-end="38210" vertical-scroll-proportion="-13.36" vertical-offset="4046" max-vertical-offset="12660">
+              <folding>
+                <element signature="e#2255#31773#0" expanded="false" />
+                <marker date="1512293191000" expanded="true" signature="37804:38503" placeholder="//..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -69,22 +108,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/editor.html" />
-        <option value="$PROJECT_DIR$/pub/js/charts/TriviaResultChart.js" />
         <option value="$PROJECT_DIR$/pub/css/charts.css" />
-        <option value="$PROJECT_DIR$/pub/storefront.html" />
-        <option value="$PROJECT_DIR$/pub/css/storefront.css" />
         <option value="$PROJECT_DIR$/pub/my_templates.html" />
         <option value="$PROJECT_DIR$/pub/js/view/modals/modal.js" />
         <option value="$PROJECT_DIR$/pub/js/editorui/resourceManager.js" />
-        <option value="$PROJECT_DIR$/pub/js/config.js" />
         <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppDictionary.js" />
         <option value="$PROJECT_DIR$/pub/autotest/index_mutapp.html" />
         <option value="$PROJECT_DIR$/pub/products/personality/view/question.js" />
         <option value="$PROJECT_DIR$/pub/autotest/apps/qunitMutAppSerialization.js" />
-        <option value="$PROJECT_DIR$/pub/js/model/app.js" />
         <option value="$PROJECT_DIR$/pub/js/model/auth.js" />
         <option value="$PROJECT_DIR$/pub/js/util/s3util.js" />
+        <option value="$PROJECT_DIR$/pub/storefront.html" />
+        <option value="$PROJECT_DIR$/pub/js/view/storefront.js" />
+        <option value="$PROJECT_DIR$/pub/css/storefront.css" />
+        <option value="$PROJECT_DIR$/pub/index.html" />
+        <option value="$PROJECT_DIR$/pub/js/model/app.js" />
+        <option value="$PROJECT_DIR$/pub/js/config.js" />
       </list>
     </option>
   </component>
@@ -386,7 +425,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12350598" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964131" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.205165" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19153515" sideWeight="0.87649405" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -416,34 +455,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="261" column="80" selection-start="17556" selection-end="17713" vertical-scroll-proportion="0.5842105" vertical-offset="3582" max-vertical-offset="4245">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/my_templates.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="158" column="10" selection-start="9263" selection-end="9263" vertical-scroll-proportion="0.52605045" vertical-offset="2057" max-vertical-offset="2775">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/view/modals/abstractModal.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="19" selection-start="448" selection-end="454" vertical-scroll-proportion="0.0" vertical-offset="109" max-vertical-offset="1200">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/view/modals/modal.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="51" selection-start="1758" selection-end="1758" vertical-scroll-proportion="-12.72" vertical-offset="342" max-vertical-offset="2190">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/editorui/resourceManager.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="206" column="59" selection-start="8968" selection-end="8968" vertical-scroll-proportion="0.6042003" vertical-offset="2716" max-vertical-offset="3930">
@@ -488,7 +499,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="239" column="70" selection-start="9493" selection-end="9493" vertical-scroll-proportion="0.0" vertical-offset="3390" max-vertical-offset="5070">
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -509,20 +520,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="16" selection-start="3163" selection-end="3163" vertical-scroll-proportion="0.0" vertical-offset="1172" max-vertical-offset="16365">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="861" column="40" selection-start="44901" selection-end="44908" vertical-scroll-proportion="-9.16" vertical-offset="12686" max-vertical-offset="18645">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/model/auth.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="711" column="49" selection-start="28355" selection-end="28361" vertical-scroll-proportion="-14.56" vertical-offset="10301" max-vertical-offset="11700">
@@ -532,7 +529,52 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/util/s3util.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="62" column="21" selection-start="2344" selection-end="2344" vertical-scroll-proportion="0.47142857" vertical-offset="600" max-vertical-offset="2955">
+        <state line="62" column="8" selection-start="2331" selection-end="2331" vertical-scroll-proportion="-13.2" vertical-offset="600" max-vertical-offset="2955">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/storefront.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="79" column="76" selection-start="5197" selection-end="5197" vertical-scroll-proportion="-4.5102043" vertical-offset="964" max-vertical-offset="4530">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/view/storefront.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="137" column="51" selection-start="5388" selection-end="5388" vertical-scroll-proportion="0.0" vertical-offset="1681" max-vertical-offset="3840">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/css/storefront.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="111" column="13" selection-start="2348" selection-end="2348" vertical-scroll-proportion="-12.32" vertical-offset="1357" max-vertical-offset="6945">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="143" column="64" selection-start="10157" selection-end="10157" vertical-scroll-proportion="-3.8979592" vertical-offset="1954" max-vertical-offset="4245">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="687" column="38" selection-start="38210" selection-end="38210" vertical-scroll-proportion="-13.36" vertical-offset="4046" max-vertical-offset="12660">
+          <folding>
+            <element signature="e#2255#31773#0" expanded="false" />
+            <marker date="1512293191000" expanded="true" signature="37804:38503" placeholder="//..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="59" column="40" selection-start="2400" selection-end="2400" vertical-scroll-proportion="0.2838428" vertical-offset="690" max-vertical-offset="16080">
           <folding />
         </state>
       </provider>

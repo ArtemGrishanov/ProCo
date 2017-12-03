@@ -107,7 +107,7 @@ html, body {
 .st_items_cnt {
     margin: 0 auto;
     text-align: left;
-    width: 912px;
+    width: 920px; /* (28+400+28)*2 +8px запас */
 }
 .st_rows_wr {
     width: 100%;

@@ -90,11 +90,6 @@ var App = App || {};
      */
     var scriptsWereInited = false;
     /**
-     * Признак того, что пользователь исключается из статистики, не грузятся скрипты для этого пользователя
-     * @type {boolean}
-     */
-    var userExcludedFromStatistics = false;
-    /**
      * Запрошен логин, пользователь кликнул на кнопку ФБ чтобы войти
      * @type {boolean}
      */
@@ -638,6 +633,7 @@ var App = App || {};
         // атоматически при старте пытаемся возобновить предыдущую сессию
         Auth.addEventCallback(onAuthEvent);
         Auth.tryRestoreSession();
+        initScripts();
     }
 
     /**
@@ -678,28 +674,29 @@ var App = App || {};
 
     /**
      * В зависимости от конфига добавить на страницу доп скрипты типа GA или плагинов для обратной связи
+     * Но: скрипты для статистики надо вставлять сразу, иначе она считается с ошибками или не считается вовсе
+     *
+     * Поэтому остался только скрипт мессенджера jivosite на данный омент
      */
-    // deprecated
-    // Скрипты для статистики надо вставлять сразу, иначе она считается с ошибками или не считается вовсе
-    //    function initScripts(userId) {
-    //        if (scriptsWereInited !== true) {
-    //            // undefined or null returns '-1'
-    //            if (config.common.excludeUsersFromStatistic.indexOf(userId)<0) {
-    //                for (var key in config.scripts) {
-    //                    if (config.scripts.hasOwnProperty(key)) {
-    //                        var sc = config.scripts[key];
-    //                        if (sc.enable === true) {
-    //                            $('body').append(sc.code);
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //            else {
-    //                userExcludedFromStatistics = true;
-    //            }
-    //            scriptsWereInited = true;
-    //        }
-    //    }
+    function initScripts(userId) {
+        if (scriptsWereInited !== true) {
+            // undefined or null returns '-1'
+//            if (config.common.excludeUsersFromStatistic.indexOf(userId)<0) {
+                for (var key in config.scripts) {
+                    if (config.scripts.hasOwnProperty(key)) {
+                        var sc = config.scripts[key];
+                        if (sc.enabled === true) {
+                            $('body').append(sc.code);
+                        }
+                    }
+                }
+//            }
+//            else {
+//                userExcludedFromStatistics = true;
+//            }
+            scriptsWereInited = true;
+        }
+    }
 
     /**
      * Привязать стандартные обработчики событий в интерфейсе
@@ -1233,6 +1230,5 @@ var App = App || {};
     // шаблоны. Запросить с колбеком
     global.requestUserTemplates = requestUserTemplates;
     global.deleteTemplate = deleteTemplate;
-    global.isUserExcludedFromStatistics = function() { return userExcludedFromStatistics; }
 
 })(App);

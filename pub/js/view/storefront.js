@@ -148,6 +148,9 @@ var storefrontView = {};
                 App.openUrl(info.externalLink);
             }
         }
+        else {
+            throw new Error('Storefront.showPreview: template no found in config \''+templateUrl);
+        }
     }
 
     /**

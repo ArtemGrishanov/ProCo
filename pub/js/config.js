@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev'], //dev test prod
+        configurationSetsOnStart: ['prod'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -300,95 +300,61 @@ var config = {
                 typeLabel: {EN:'Trivia',RU:'Тесты «Проверь себя»'},
                 entities: [
                     {
-                        // стандартный тест: http://p.testix.me/1045302892173346/7e7fef7bcf
-                        name: {EN:'Default tutorial Trivia',RU:'Мой первый тест «Проверь себя»'},
-                        img: 'http://p.testix.me/storefront/trivia/4acc02fb1f.jpg',
-                        published: 'http://p.testix.me/storefront/trivia/4acc02fb1f/p_index.html',
-                        template: 'http://p.testix.me/storefront/trivia/4acc02fb1f.txt',
+                        name: {EN:'Simple Trivia',RU:'Простой Тривиа'},
+                        img: 'http://p.testix.me/storefront/trivia/Cover-Trivia-Simple.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/5cf03a1d61/p_index.html',
+                        template: 'http://p.testix.me/storefront/trivia/5cf03a1d61.txt',
                         width: '800px',
                         height: '600px'
                     },
-//                    {
-//                        // президенты США тест: http://p.testix.me/1045302892173346/02f9e0d7c7/
-//                        name: {EN:'American presidents',RU:'Президенты США'},
-//                        img: 'http://p.testix.me/storefront/trivia/02f9e0d7c7.jpg',
-//                        published: 'http://p.testix.me/storefront/trivia/02f9e0d7c7/p_index.html',
-//                        template: 'storefront/trivia/02f9e0d7c7.txt',
-//                        width: '800px',
-//                        height: '600px'
-//                    },
-//                    {
-//                        // угадайте книгу по цитате: http://p.testix.me/1045302892173346/e33f556579
-//                        name: {EN:'Independent Media',RU:'Независимое издание'},
-//                        img: 'http://p.testix.me/storefront/trivia/e33f556579.jpg',
-//                        published: 'http://p.testix.me/storefront/trivia/e33f556579/p_index.html',
-//                        template: 'storefront/trivia/e33f556579.txt',
-//                        width: '800px',
-//                        height: '600px'
-//                    },
-//                    {
-//                        // любят ли вас деньги: http://p.testix.me/1045302892173346/85c20b7628
-//                        name: {EN:'Financial Media',RU:'Финансовое издание'},
-//                        img: 'http://p.testix.me/storefront/trivia/85c20b7628.jpg',
-//                        published: 'http://p.testix.me/storefront/trivia/85c20b7628/p_index.html',
-//                        template: 'storefront/trivia/85c20b7628.txt',
-//                        width: '800px',
-//                        height: '600px'
-//                    },
-//                    {
-//                        // тест по психологии "Ты душа компании или зануда": http://p.testix.me/1045302892173346/1059f38c8b
-//                        name: {EN:'Psychology and Relationships',RU:'Психология и отношения'},
-//                        img: 'http://p.testix.me/storefront/trivia/1059f38c8b.jpg',
-//                        published: 'http://p.testix.me/storefront/trivia/1059f38c8b/p_index.html',
-//                        template: 'storefront/trivia/1059f38c8b.txt',
-//                        width: '800px',
-//                        height: '600px'
-//                    },
-//                    {
-//                        // тест для художников: http://p.testix.me/1045302892173346/9000e567da
-//                        name: {EN:'Paintings',RU:'Картины'},
-//                        img: 'http://p.testix.me/storefront/trivia/9000e567da.jpg',
-//                        published: 'http://p.testix.me/storefront/trivia/9000e567da/p_index.html',
-//                        template: 'storefront/trivia/9000e567da.txt',
-//                        width: '800px',
-//                        height: '600px'
-//                    },
-//                    {
-//                        //  Киев: http://p.testix.me/1045302892173346/870dcd0a6b
-//                        name: 'Знаешь ли ты Киев?',
-//                        img: 'http://p.testix.me/storefront/trivia/870dcd0a6b.jpg',
-//                        published: 'http://p.testix.me/storefront/trivia/870dcd0a6b/p_index.html',
-//                        template: 'storefront/trivia/870dcd0a6b.txt',
-//                        width: '800px',
-//                        height: '600px'
-//                    }
-//                    {
-//                        // тест по географии "Пенза или Пиза": http://p.testix.me/1045302892173346/d61333fd5e
-//                        name: {EN:'Geography quiz',RU:'Тест по географии'},
-//                        img: 'http://p.testix.me/storefront/trivia/d61333fd5e.jpg',
-//                        published: 'http://p.testix.me/storefront/trivia/d61333fd5e/p_index.html',
-//                        template: 'storefront/trivia/d61333fd5e.txt',
-//                        width: '800px',
-//                        height: '600px'
-//                    },
-//                    {
-//                        // тест по русскому языку: http://p.testix.me/1045302892173346/e4d58cd89b
-//                        name: {EN:'Test of Russian language',RU:'Тест по русскому языку'},
-//                        img: 'http://p.testix.me/storefront/trivia/e4d58cd89b.jpg',
-//                        published: 'http://p.testix.me/storefront/trivia/e4d58cd89b/p_index.html',
-//                        template: 'storefront/trivia/e4d58cd89b.txt',
-//                        width: '800px',
-//                        height: '600px'
-//                    },
-//                    {
-//                        // тест "Какой вы инвестор": http://p.testix.me/1045302892173346/39d1a71943
-//                        name: {EN:'What kind of investor are you?',RU:'Какой вы инвестор?'},
-//                        img: 'http://p.testix.me/storefront/trivia/39d1a71943.jpg',
-//                        published: 'http://p.testix.me/storefront/trivia/39d1a71943/p_index.html',
-//                        template: 'storefront/trivia/39d1a71943.txt',
-//                        width: '800px',
-//                        height: '600px'
-//                    }
+                    {
+                        name: {EN:'Simple Trivia with picture',RU:'Простой Тривиа с картинкой'},
+                        img: 'http://p.testix.me/storefront/trivia/Cover-Trivia-Simple-Black.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/0c5710c9a5/p_index.html',
+                        template: 'http://p.testix.me/storefront/trivia/0c5710c9a5.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        name: {EN:'Books',RU:'Книга по цитате'},
+                        img: 'http://p.testix.me/storefront/trivia/Trivia-Books.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/2dc078e94e/p_index.html',
+                        template: 'http://p.testix.me/storefront/trivia/2dc078e94e.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        name: {EN:'Geography',RU:'География'},
+                        img: 'http://p.testix.me/storefront/trivia/Trivia-Geography.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/b2c0c99dbc/p_index.html',
+                        template: 'http://p.testix.me/storefront/trivia/b2c0c99dbc.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        name: {EN:'Russian',RU:'Русский язык'},
+                        img: 'http://p.testix.me/storefront/trivia/Trivia-Russian.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/9c0691210a/p_index.html',
+                        template: 'http://p.testix.me/storefront/trivia/9c0691210a.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        name: {EN:'Artists',RU:'Художники'},
+                        img: 'http://p.testix.me/storefront/trivia/Trivia-Artists.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/a280eed0ab/p_index.html',
+                        template: 'http://p.testix.me/storefront/trivia/a280eed0ab.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        name: {EN:'Presidents',RU:'Президенты'},
+                        img: 'http://p.testix.me/storefront/trivia/Trivia-Presidents.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/289066a120/p_index.html',
+                        template: 'http://p.testix.me/storefront/trivia/289066a120.txt',
+                        width: '800px',
+                        height: '600px'
+                    }
                 ]
             },
             personality: {
@@ -397,26 +363,41 @@ var config = {
                 typeLabel: {EN:'Personality',RU:'Тесты «Узнай себя»'},
                 entities: [
                     {
-                        name: {EN:'Default tutorial Personality',RU:'Мой первый тест «Узнай себя»'},
-                        img: 'http://p.testix.me/storefront/personality/f0ce5473dc.jpg',
-                        published: 'http://p.testix.me/storefront/personality/f0ce5473dc/p_index.html',
-                        template: 'http://p.testix.me/storefront/personality/f0ce5473dc.txt',
+                        name: {EN:'First Personality',RU:'Мой первый тест «Узнай себя»'},
+                        img: 'http://p.testix.me/storefront/personality/Cover-Personality-Simple.jpg',
+                        published: 'http://p.testix.me/storefront/personality/7782ade9f9/p_index.html',
+                        template: 'http://p.testix.me/storefront/personality/7782ade9f9.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
-                        name: {EN:'Your favourite country',RU:'Какая страна вам подходит?'},
-                        img: 'http://p.testix.me/storefront/personality/8a2e558523.jpg',
+                        name: {EN:'Travel',RU:'Путешествия'},
+                        img: 'http://p.testix.me/storefront/personality/Personality-Travel.jpg',
                         published: 'http://p.testix.me/storefront/personality/8a2e558523/p_index.html',
                         template: 'http://p.testix.me/storefront/personality/8a2e558523.txt',
                         width: '800px',
                         height: '600px'
+                    },
+                    {
+                        name: {EN:'Money',RU:'Любят ли вас деньги'},
+                        img: 'http://p.testix.me/storefront/personality/Personality-Money.jpg',
+                        published: 'http://p.testix.me/storefront/personality/e9dad5f64f/p_index.html',
+                        template: 'http://p.testix.me/storefront/personality/e9dad5f64f.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        name: {EN:'Friends',RU:'Душа компании'},
+                        img: 'http://p.testix.me/storefront/personality/Personality-Friends.jpg',
+                        published: 'http://p.testix.me/storefront/personality/1b640802c6/p_index.html',
+                        template: 'http://p.testix.me/storefront/personality/1b640802c6.txt',
+                        width: '800px',
+                        height: '600px'
                     }
-                    //https://p.testix.me/f02d37a76f/e9dad5f64f/
                 ]
             },
             memoriz: {
-                enabled: true,
+                enabled: false,
                 typeLabel: {EN:'Memory Game',RU:'Игра мемори'},
                 entities: [
                     {
@@ -475,7 +456,7 @@ var config = {
             },
             panorama: {
                 typeLabel: {EN:'Panoramas',RU:'Панорамы'},
-                enabled: true,
+                enabled: false,
                 entities: [
                     {
                         //Сингапур http://p.testix.me/121947341568004/3396d27281/               deprecated: http://p.testix.me/121947341568004/1d1f4f3236/
@@ -1064,7 +1045,7 @@ var config = {
         //            code: '<!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) {(w[c] = w[c] || []).push(function() {try {w.yaCounter37720792 = new Ya.Metrika({id:37720792,clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});} catch(e) { }});var n = d.getElementsByTagName("script")[0],s = d.createElement("script"),f = function () { n.parentNode.insertBefore(s, n); };s.type = "text/javascript";s.async = true;s.src = "https://mc.yandex.ru/metrika/watch.js";if (w.opera == "[object Opera]") {d.addEventListener("DOMContentLoaded", f, false);} else { f(); }})(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="https://mc.yandex.ru/watch/37720792" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->'
         //        },
         jivoSite: {
-            enabled: false,
+            enabled: true,
             code: '<!-- BEGIN JIVOSITE CODE {literal} --><script type=\'text/javascript\'>(function(){ var widget_id = \'45oOHsZGmj\';var d=document;var w=window;function l(){var s = document.createElement(\'script\'); s.type = \'text/javascript\'; s.async = true; s.src = \'//code.jivosite.com/script/widget/\'+widget_id; var ss = document.getElementsByTagName(\'script\')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState==\'complete\'){l();}else{if(w.attachEvent){w.attachEvent(\'onload\',l);}else{w.addEventListener(\'load\',l,false);}}})();</script><!-- {/literal} END JIVOSITE CODE -->'
         }
     }
