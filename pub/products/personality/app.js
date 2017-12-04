@@ -500,7 +500,6 @@ var PersonalityApp = MutApp.extend({
         for (var i = 0; i < this.resultsScreens.length; i++) {
             this.deleteScreen(this.resultsScreens[i]);
         }
-        var sEntities = [];
         this.resultsScreens = [];
         var resultsValue = this.model.get('results').toArray();
         var rs = null;

@@ -795,7 +795,7 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
         // проверить, что такое mutAppProperty свойство существует в схеме.
         var prInfo = this.mutAppSchema.getPropertyDescription(mutAppProperty.propertyString);
         if (!prInfo) {
-            throw new Error('MutApp.linkMutAppProperty: mutAppProperty not finded in app by schema=\''+mutAppProperty.propertyString+'\'');
+            throw new Error('MutApp.linkMutAppProperty: property description did not find in schema=\''+mutAppProperty.propertyString+'\'');
         }
         if (prInfo.label) {
             mutAppProperty.label = prInfo.label;
@@ -3206,7 +3206,7 @@ var MutAppPropertyDictionary = function(param) {
             this._value = param.value;
         }
         else {
-            throw new Error('MutAppPropertyDictionary.initialize: unsupported value type.');
+            throw new Error('MutAppPropertyDictionary.initialize: unsupported value type. Property string=\''+param.propertyString+'\'');
         }
     }
     this.initialize(param);

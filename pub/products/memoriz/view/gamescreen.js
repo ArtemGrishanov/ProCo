@@ -34,9 +34,11 @@ var GameScreen = MutApp.Screen.extend({
     },
 
     onCardClick: function(e) {
-        if (this.canTouch === true) {
-            var cardId = $(e.currentTarget).attr('data-card-id');
-            this.model.touchCard(cardId);
+        if (this.model.application.mode !== 'edit') {
+            if (this.canTouch === true) {
+                var cardId = $(e.currentTarget).attr('data-card-id');
+                this.model.touchCard(cardId);
+            }
         }
     },
 
@@ -54,6 +56,10 @@ var GameScreen = MutApp.Screen.extend({
                 this.render();
                 this.model.application.showScreen(this);
             }
+        }, this);
+
+        this.model.bind("change:gameCards", function() {
+            this.render();
         }, this);
 
         this.model.bind("change:openedCard1", function() {
@@ -104,50 +110,33 @@ var GameScreen = MutApp.Screen.extend({
             $cardField.append(this.template[c.uiTemplate](c));
         }
 
-        if (this.model.get('showBackCardTexture')===true) {
-            var textureUrl = this.model.get('backCardTexture');
+        if (this.model.get('showBackCardTexture').getValue() === true) {
+            var textureUrl = this.model.get('backCardTexture').getValue();
             if (textureUrl) {
                 $cardField.find('.js-card_front').css('backgroundImage','url('+textureUrl+')');
             }
         }
-        //this.attributes.pairs[i].guessed
-
-        if (this.showTopColontitle === true) {
-            var $c = this.$el.find('.js-topColontitleText').show();
-            if (this.topColontitleText) {
-                $c.text(this.topColontitleText);
-            }
-        }
-        else {
-            this.$el.find('.js-topColontitleText').hide();
-        }
 
         // установка свойств логотипа
         var $l = this.$el.find('.js-gamescreen_logo');
-        if (this.showLogo === true) {
-            $l.css('backgroundImage','url('+this.model.get('logoUrl')+')');
-            $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
+        if (this.model.get('showLogoOnGamescreen') === true) {
+            var pos = this.model.get('logoPositionInGamescreen').getValue();
+            $l.css('backgroundImage','url('+this.model.get('logoUrl').getValue()+')');
+            $l.css('top', pos.top+'px').css('left', pos.left+'px');
         }
         else {
             $l.hide();
         }
 
-        if (this.model.get('showBackgroundImage')===true) {
-            if (this.backgroundImg) {
-                this.$el.find('.js-back_img').css('backgroundImage','url('+this.backgroundImg+')');
-            }
+        var bImg = this.model.get('gamescreenBackgroundImg');
+        if (bImg) {
+            this.$el.find('.js-back_img').css('backgroundImage','url('+bImg+')');
         }
         else {
             this.$el.find('.js-back_img').css('backgroundImage','none');
         }
 
-        if (this.shadowEnable === true) {
-            this.$el.find('.js-back_shadow').css('background-color','rgba(0,0,0,0.4)');
-        }
-        else {
-            this.$el.find('.js-back_shadow').css('background-color','');
-        }
-
+        this.renderCompleted();
         return this;
     },
 

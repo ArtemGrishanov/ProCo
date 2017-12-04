@@ -693,7 +693,7 @@ var TriviaApp = MutApp.extend({
         }
         res.push({
             type: 'info',
-            message: 'Number of correct answers and results matching',
+            message: 'umber of correct answers and results',
             html: null,
             visualization: {
                 data: visualizationData,

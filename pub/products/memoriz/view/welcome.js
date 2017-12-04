@@ -43,15 +43,19 @@ var StartScreen = MutApp.Screen.extend({
     },
 
     onNextClick: function(e) {
-        this.model.next();
+        if (this.model.application.mode !== 'edit') {
+            this.model.next();
+        }
     },
 
     onLogoClick: function(e) {
-        var ll = this.model.get('logoLink');
-        if (ll) {
-            var win = window.open(ll, '_blank');
-            win.focus();
-            this.model.application.stat(this.model.application.type, 'logoclick');
+        if (this.model.application.mode !== 'edit') {
+            var ll = this.model.get('logoLink');
+            if (ll) {
+                var win = window.open(ll, '_blank');
+                win.focus();
+                this.model.application.stat(this.model.application.type, 'logoclick');
+            }
         }
     },
 
@@ -110,6 +114,8 @@ var StartScreen = MutApp.Screen.extend({
         else {
             this.$el.find('.js-back_shadow').css('background-color','');
         }
+
+        this.renderCompleted();
 
         return this;
     }

@@ -62,37 +62,47 @@ var ResultScreen = MutApp.Screen.extend({
     },
 
     onNextClick: function(e) {
-        this.model.next();
+        if (this.model.application.mode !== 'edit') {
+            this.model.next();
+        }
     },
 
     onLogoClick: function(e) {
-        var ll = this.model.get('logoLink');
-        if (ll) {
-            var win = window.open(ll, '_blank');
-            win.focus();
-            this.model.application.stat(this.model.application.type, 'logoclick');
+        if (this.model.application.mode !== 'edit') {
+            var ll = this.model.get('logoLink');
+            if (ll) {
+                var win = window.open(ll, '_blank');
+                win.focus();
+                this.model.application.stat(this.model.application.type, 'logoclick');
+            }
         }
     },
 
     onDownloadClick: function(e) {
-        var dl = this.model.get('downloadLink');
-        if (dl) {
-            var win = window.open(dl, '_blank');
-            win.focus();
-            this.model.application.stat('Test', 'downloadclick');
+        if (this.model.application.mode !== 'edit') {
+            var dl = this.model.get('downloadLink');
+            if (dl) {
+                var win = window.open(dl, '_blank');
+                win.focus();
+                this.model.application.stat('Test', 'downloadclick');
+            }
         }
     },
 
     onFBShareClick: function(e) {
-        // ид экрана выступает также и в роли идентификатора для постинга
-        // это определили при создании приложения в app.js
-        this.model.application.share(this.id);
+        if (this.model.application.mode !== 'edit') {
+            // ид экрана выступает также и в роли идентификатора для постинга
+            // это определили при создании приложения в app.js
+            this.model.application.share(this.id);
+        }
     },
 
     onVKShareClick: function(e) {
-        // ид экрана выступает также и в роли идентификатора для постинга
-        // это определили при создании приложения в app.js
-        this.model.application.share(this.id, 'vk');
+        if (this.model.application.mode !== 'edit') {
+            // ид экрана выступает также и в роли идентификатора для постинга
+            // это определили при создании приложения в app.js
+            this.model.application.share(this.id, 'vk');
+        }
     },
 
     initialize: function (param) {
@@ -113,8 +123,10 @@ var ResultScreen = MutApp.Screen.extend({
     },
 
     render: function() {
-        var r = this.model.getResultById(this.resultId);
-        r.currentResultIndex = this.model.get('results').indexOf(r);
+        var r = {
+            title: this.model.get('resultTitle').getValue(),
+            description: this.model.get('resultDescription').getValue()
+        };
         if (this.model.application.isSmallWidth() === true) {
             //description title
             r = JSON.parse(JSON.stringify(r));
@@ -125,7 +137,7 @@ var ResultScreen = MutApp.Screen.extend({
 
         // установка свойств логотипа
         var $l = this.$el.find('.js-result_logo');
-        if (this.showLogo === true) {
+        if (this.model.get('showLogoInResults') === true) {
             $l.css('backgroundImage','url('+this.model.get('logoUrl')+')');
             $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
         }
@@ -181,6 +193,8 @@ var ResultScreen = MutApp.Screen.extend({
         else {
             this.$el.find('.js-back_shadow').css('background-color','');
         }
+
+        this.renderCompleted();
 
         return this;
     }
