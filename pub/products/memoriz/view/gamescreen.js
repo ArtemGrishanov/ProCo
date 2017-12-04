@@ -107,7 +107,7 @@ var GameScreen = MutApp.Screen.extend({
             }
             c.pairIndex = '-';
             c.cardIndex = '-';
-            $cardField.append(this.template[c.uiTemplate](c));
+            $cardField.append(this.template[c.uiTemplate](MutApp.Util.getObjectForRender(c)));
         }
 
         if (this.model.get('showBackCardTexture').getValue() === true) {

@@ -87,8 +87,11 @@ var OpenedScreen = MutApp.Screen.extend({
         this.$el.html(this.template['default'](pair.explanation));
 
         var $cc = this.$el.find('.js-opened_cards');
-        $cc.append(this.template[pair.card1.uiTemplate](pair.card1));
-        $cc.append(this.template[pair.card2.uiTemplate](pair.card2));
+        var gameCard1 = this.model.getGameCardById(pair.card1.id);
+        var gameCard2 = this.model.getGameCardById(pair.card2.id);
+        $cc.append(this.template[gameCard1.uiTemplate](MutApp.Util.getObjectForRender(gameCard1)));
+        $cc.append(this.template[gameCard2.uiTemplate](MutApp.Util.getObjectForRender(gameCard2)));
+        // надо добавить атрибут data-app-property="id=mm pairs.<%=dictionaryId%>.card1.img" вручную, так как разне значения: "card1" и "card2"
         $cc.find('.js-card').addClass('__opened');
 
         this.$el.find('.js-close_opened_layer').html(this.model.get('nextButtonText').getValue());

@@ -687,13 +687,13 @@ var MemorizModel = MutApp.Model.extend({
             propertyString: 'id=mm pairs.'+pairDictionaryId+'.card1.img',
             model: this,
             application: this.application,
-            value: null
+            value: '//p.testix.me/images/products/memoriz/memoriz_card_sample.jpg'
         });
         var img2 = new MutAppProperty({
             propertyString: 'id=mm pairs.'+pairDictionaryId+'.card2.img',
             model: this,
             application: this.application,
-            value: null
+            value: '//p.testix.me/images/products/memoriz/memoriz_card_sample.jpg'
         });
         var element = {
             card1: {

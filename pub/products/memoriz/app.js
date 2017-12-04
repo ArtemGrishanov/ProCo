@@ -204,7 +204,7 @@ var MemorizApp = MutApp.extend({
             controlFilter: 'screen(type=results)'
         },
         "id=mm backCardTexture": {
-            label: {RU:'Тектура карточки',EN:'Card texture image'},
+            label: {RU:'Текстура карточки',EN:'Card texture image'},
             controls: 'ChooseImage',
             controlFilter: 'screen(type=gamescreen)'
         },
@@ -239,9 +239,10 @@ var MemorizApp = MutApp.extend({
         });
         this.addScreen(gs);
 
-        this.model.bind('change:pairs', function() {
-            this.updateOpenedScreens();
-        }, this);
+        //        апдейт делаем в onAppEvent чтобы сделать сначала апдейты в модели
+        //        this.model.bind('change:pairs', function() {
+        //            this.updateOpenedScreens();
+        //        }, this);
 
         this.updateOpenedScreens();
 
@@ -346,6 +347,7 @@ var MemorizApp = MutApp.extend({
                 if (MutApp.Util.matchPropertyString(data.propertyString, 'id=mm pairs') === true) {
                     if (this.model) {
                         this.model.updateGameCards();
+                        this.updateOpenedScreens();
                     }
                 }
                 if (data.propertyString == 'id=mm resultTitle' || data.propertyString == 'id=mm resultDescription') {

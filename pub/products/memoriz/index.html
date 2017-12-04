@@ -59,14 +59,13 @@
     <!-- Шаблон карточки, по умолчанию закрыт -->
     <!-- В карточку может быть вставлено несколько видов контента -->
     <script id="id-card_text_template" type="text/template">
-        <div data-card-id="<%=id%>" class="flip-container js-card <%=mod%>" data-app-property="id=mm pairs.<%=pairIndex%>.cards.<%=cardIndex%>.img">
+        <div data-card-id="<%=id%>" class="flip-container js-card <%=mod%>">
             <div class="flipper hover">
                 <div class="front js-card_front" data-app-property="id=mm backCardTexture">
-                    <!--<p>Front content</p>-->
+
                 </div>
                 <div class="back" style="background-image:url(<%=img%>)">
-                    <!--<p><%=text%></p>-->
-                    <!--<img class="back_img" src="i/ocean.jpg"/>-->
+                    
                 </div>
             </div>
         </div>
