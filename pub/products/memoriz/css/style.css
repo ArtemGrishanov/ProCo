@@ -117,6 +117,10 @@ img {
     height: 140px;
     border-radius: 10px;
 }
+.flip-container.__horizontal, .front.__horizontal, .back.__horizontal {
+    width: 140px;
+    height: 90px;
+}
 
 /* flip speed goes here */
 .flipper {
@@ -141,14 +145,15 @@ img {
     /* for firefox 31 */
     -webkit-transform: rotateY(0deg);
     transform: rotateY(0deg);
-    background: lightgreen;
+    background: #ccc;
+    background: cover;
 }
 
 /* back, initially hidden pane */
 .back {
     -webkit-transform: rotateY(180deg);
     transform: rotateY(180deg);
-    background: lightblue;
+    background: #666;
     background-size: cover;
     background-position: center;
 }
@@ -208,18 +213,30 @@ img {
         top:0 !important;
         left:0 !important;
     }
-
-    body .card_field {
-        padding: 6px;
-    }
 }
-@media (max-width:320px)  {
+@media (max-width:400px)  {
     body .flip-container,
     body .front,
     body .back {
         width: 78px;
         height: 116px;
         border-radius: 8px;
+    }
+    body .flip-container.__horizontal,
+    body .front.__horizontal,
+    body .back.__horizontal {
+        width: 78px;
+        height: 50px;
+        border-radius: 5px;
+    }
+    /* Когда экран рендерится первый раз, то this.$el.width()===0 и срабатывает это правило например, Которое сбивает сохраненные стили */
+    /*body .card_field {*/
+        /*padding: 6px;*/
+    /*}*/
+
+    body .card_field {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }
 @media (max-width:310px)  {
@@ -229,5 +246,12 @@ img {
         width: 68px;
         height: 110px;
         border-radius: 8px;
+    }
+    body .flip-container.__horizontal,
+    body .front.__horizontal,
+    body .back.__horizontal {
+        width: 68px;
+        height: 44px;
+        border-radius: 5px;
     }
 }

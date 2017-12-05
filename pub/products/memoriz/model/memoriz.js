@@ -18,17 +18,11 @@ var MemorizModel = MutApp.Model.extend({
     defaults: {
         id: 'mm',
         state: null,
-        currentResult: null,
         resultPoints: 0,
-        /**
-         * Показывать ли экран пояснения или нет при отгадывании каждой пары
-         */
-        showExplanation: true,
         logoUrl: null,
         logoLink: null,
         downloadLink: null,
         backCardTexture: null,
-        showBackCardTexture: true,
         showTopColontitle: true,
         fbShareEnabled: true,
         vkShareEnabled: true,
@@ -151,6 +145,7 @@ var MemorizModel = MutApp.Model.extend({
 
         startScreenBackgroundImg: null,
         gamescreenBackgroundImg: null,
+        openedBackgroundImg: null,
         resultsBackgroundImg: null,
         restartButtonText: null,
         downloadButtonText: null,
@@ -167,11 +162,12 @@ var MemorizModel = MutApp.Model.extend({
         logoPositionInResults: null,
         logoPositionInOpened: null,
         showLogoOnStartScreen: null,
-        showLogoOnGameScreen: null,
+        showLogoOnGamescreen: null,
         showLogoInOpened: null,
         showLogoInResults: null,
-        showBackCardTexture: null,
-        showExplanation: null
+        showExplanation: null,
+        cardsInRow: null,
+        isHorizontalCards: null
 
     },
 
@@ -203,6 +199,12 @@ var MemorizModel = MutApp.Model.extend({
             model: this,
             propertyString: 'id=mm backCardTexture',
             value: null
+        });
+        this.attributes.cardsInRow = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=mm cardsInRow',
+            value: '5' // ha, number is not supported now
         });
 
         // ===================================================
@@ -331,17 +333,17 @@ var MemorizModel = MutApp.Model.extend({
             propertyString: 'id=mm showLogoInOpened',
             value: true
         });
-        this.attributes.showBackCardTexture = new MutAppProperty({
-            application: this.application,
-            model: this,
-            propertyString: 'id=mm showBackCardTexture',
-            value: true
-        });
         this.attributes.showExplanation = new MutAppProperty({
             application: this.application,
             model: this,
             propertyString: 'id=mm showExplanation',
             value: true
+        });
+        this.attributes.isHorizontalCards = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=mm isHorizontalCards',
+            value: false
         });
 
 
@@ -422,7 +424,7 @@ var MemorizModel = MutApp.Model.extend({
                     application: this.application,
                     value: null
                 })
-            });
+            }, 0, dictId);
         }
         else {
             var oneEntity = shareEntitiesArr[0];
@@ -457,7 +459,7 @@ var MemorizModel = MutApp.Model.extend({
                 // угадал
                 this.set({'guessed':true});
                 p1.guessed = true;
-                if (this.attributes.showExplanation === true) {
+                if (this.attributes.showExplanation.getValue() === true) {
                     this.set({
                         state: 'opened',
                         lastOpenedPair: p1
@@ -492,7 +494,6 @@ var MemorizModel = MutApp.Model.extend({
                 this.updateGameCards();
                 this.set({
                     resultPoints: 0,
-                    currentResult: null,
                     state: 'game'
                 });
                 break;
@@ -501,10 +502,8 @@ var MemorizModel = MutApp.Model.extend({
                 var upc = this.getUnguessedPairsCount();
                 if (upc === 0) {
                     // показать объяснение, а дальше конец
-                    console.log('Конец игры из game');
+                    console.log('Game over. State=game');
                     this.set({
-                        //TODO select res from timer
-                        currentResult: this.attributes.results[0],
                         state: 'result'
                     });
                 }
@@ -518,10 +517,8 @@ var MemorizModel = MutApp.Model.extend({
                 var upc = this.getUnguessedPairsCount();
                 if (upc === 0) {
                     // показать объяснение, а дальше конец
-                    console.log('Конец игры с opened');
+                    console.log('Game over. State=opened');
                     this.set({
-                        //TODO select res from timer
-                        currentResult: this.attributes.results[0],
                         state: 'result'
                     });
                 }
@@ -536,16 +533,14 @@ var MemorizModel = MutApp.Model.extend({
             case 'result': {
                 this.set({
                     state: 'welcome',
-                    resultPoints: 0,
-                    currentResult: null
+                    resultPoints: 0
                 });
                 break;
             }
             default: {
                 this.set({
                     state: 'welcome',
-                    resultPoints: 0,
-                    currentResult: null
+                    resultPoints: 0
                 });
             }
         }
@@ -606,8 +601,9 @@ var MemorizModel = MutApp.Model.extend({
      */
     getUnguessedPairsCount: function() {
         var result = 0;
-        for (var i = 0; i < this.attributes.pairs.length; i++) {
-            if (this.attributes.pairs[i].guessed === false) {
+        var pairsArr = this.attributes.pairs.toArray();
+        for (var i = 0; i < pairsArr.length; i++) {
+            if (pairsArr[i].guessed === false) {
                 result++;
             }
         }
@@ -621,9 +617,16 @@ var MemorizModel = MutApp.Model.extend({
         var pairsArr = this.attributes.pairs.toArray();
         for (var j = 0; j < pairsArr.length; j++) {
             var p = pairsArr[j];
-            p.id = 'pair_' + MutApp.Util.getUniqId(6);
-            p.card1.id = 'card_' + MutApp.Util.getUniqId(6);
-            p.card2.id = 'card_' + MutApp.Util.getUniqId(6);
+            if (!p.id) {
+                // задаем только один раз - это важно. Так как экран opened был создан по этому id, его не надо пересоздавать
+                p.id = 'pair_' + MutApp.Util.getUniqId(6);
+            }
+            if (!p.card1.id) {
+                p.card1.id = 'card_' + MutApp.Util.getUniqId(6);
+            }
+            if (!p.card2.id) {
+                p.card2.id = 'card_' + MutApp.Util.getUniqId(6);
+            }
         }
     },
 
@@ -695,6 +698,18 @@ var MemorizModel = MutApp.Model.extend({
             application: this.application,
             value: '//p.testix.me/images/products/memoriz/memoriz_card_sample.jpg'
         });
+        var title = new MutAppProperty({
+            propertyString: 'id=mm pairs.'+pairDictionaryId+'.explanation.title',
+            model: this,
+            application: this.application,
+            value: 'Title'
+        });
+        var text = new MutAppProperty({
+            propertyString: 'id=mm pairs.'+pairDictionaryId+'.explanation.text',
+            model: this,
+            application: this.application,
+            value: 'Feedback text'
+        });
         var element = {
             card1: {
                 uiTemplate: 'id-card_text_template',
@@ -705,8 +720,8 @@ var MemorizModel = MutApp.Model.extend({
                 img: img2
             },
             explanation: {
-                title: 'Title',
-                text: 'Feedback text'
+                title: title,
+                text: text
             }
         };
 

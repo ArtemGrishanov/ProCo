@@ -1446,7 +1446,7 @@ MutApp.prototype.isOK = function(param) {
         var ap = this._mutappProperties[i];
         var props = this.getPropertiesBySelector(ap.propertyString);
         if (!props || props.length !== 1) {
-            assert.ok(false, ap.propertyString + ' not found');
+            assert.ok(false, 'MutAppProperty \'' + ap.propertyString + '\' exist in _mutappProperties, but not found in app by this propertyString');
         }
 
     }
