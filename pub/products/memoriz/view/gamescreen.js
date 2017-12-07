@@ -34,9 +34,11 @@ var GameScreen = MutApp.Screen.extend({
     },
 
     onCardClick: function(e) {
-        if (this.canTouch === true) {
-            var cardId = $(e.currentTarget).attr('data-card-id');
-            this.model.touchCard(cardId);
+        if (this.model.application.mode !== 'edit') {
+            if (this.canTouch === true) {
+                var cardId = $(e.currentTarget).attr('data-card-id');
+                this.model.touchCard(cardId);
+            }
         }
     },
 
@@ -54,6 +56,10 @@ var GameScreen = MutApp.Screen.extend({
                 this.render();
                 this.model.application.showScreen(this);
             }
+        }, this);
+
+        this.model.bind("change:gameCards", function() {
+            this.render();
         }, this);
 
         this.model.bind("change:openedCard1", function() {
@@ -82,6 +88,17 @@ var GameScreen = MutApp.Screen.extend({
                 }
             }
         }, this);
+
+        this.model.bind("change:logoUrl", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:showLogoOnGamescreen", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:gamescreenBackgroundImg", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:isHorizontalCards", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:cardsInRow", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:backCardTexture", this.onMutAppPropertyChanged, this);
+    },
+
+    onMutAppPropertyChanged: function() {
+        this.render();
     },
 
     render: function() {
@@ -89,6 +106,7 @@ var GameScreen = MutApp.Screen.extend({
 
         var $cardField = this.$el.find('.js-card-field');
         var cards = this.model.get('gameCards');
+        var cardsInRow = parseInt(this.model.get('cardsInRow').getValue()) || 5;
         for (var i = 0; i < cards.length; i++) {
             var c = cards[i];
             // проверить открыта ли уже эта карта или нет. Если открыта, ставим класс открытия
@@ -99,55 +117,48 @@ var GameScreen = MutApp.Screen.extend({
             else {
                 c.mod = '';
             }
-            c.pairIndex = '-';
-            c.cardIndex = '-';
-            $cardField.append(this.template[c.uiTemplate](c));
-        }
+            c.card_index = '-';
+            if (this.model.get('isHorizontalCards').getValue() === true) {
+                c.orientationMod = '__horizontal';
+            }
+            else {
+                c.orientationMod = '';
+            }
+            $cardField.append(this.template[c.uiTemplate](MutApp.Util.getObjectForRender(c)));
 
-        if (this.model.get('showBackCardTexture')===true) {
-            var textureUrl = this.model.get('backCardTexture');
-            if (textureUrl) {
-                $cardField.find('.js-card_front').css('backgroundImage','url('+textureUrl+')');
+
+            if (this.model.application.isSmallWidth() !== true && ((i+1) % cardsInRow === 0)) {
+                // соблюдаем количество карточек в одном ряду согласно настройке
+                // но на мобе не соблюдаем
+                $cardField.append('<br/>');
             }
         }
-        //this.attributes.pairs[i].guessed
 
-        if (this.showTopColontitle === true) {
-            var $c = this.$el.find('.js-topColontitleText').show();
-            if (this.topColontitleText) {
-                $c.text(this.topColontitleText);
-            }
-        }
-        else {
-            this.$el.find('.js-topColontitleText').hide();
+        var textureUrl = this.model.get('backCardTexture').getValue();
+        if (textureUrl) {
+            $cardField.find('.js-card_front').css('backgroundImage','url('+textureUrl+')');
         }
 
         // установка свойств логотипа
         var $l = this.$el.find('.js-gamescreen_logo');
-        if (this.showLogo === true) {
-            $l.css('backgroundImage','url('+this.model.get('logoUrl')+')');
-            $l.css('top',this.logoPosition.top+'px').css('left',this.logoPosition.left+'px');
+        if (this.model.get('showLogoOnGamescreen').getValue() === true) {
+            var pos = this.model.get('logoPositionInGamescreen').getValue();
+            $l.css('backgroundImage','url('+this.model.get('logoUrl').getValue()+')');
+            $l.css('top', pos.top+'px').css('left', pos.left+'px');
         }
         else {
             $l.hide();
         }
 
-        if (this.model.get('showBackgroundImage')===true) {
-            if (this.backgroundImg) {
-                this.$el.find('.js-back_img').css('backgroundImage','url('+this.backgroundImg+')');
-            }
+        var bImg = this.model.get('gamescreenBackgroundImg').getValue();
+        if (bImg) {
+            this.$el.find('.js-back_img').css('backgroundImage','url('+bImg+')');
         }
         else {
             this.$el.find('.js-back_img').css('backgroundImage','none');
         }
 
-        if (this.shadowEnable === true) {
-            this.$el.find('.js-back_shadow').css('background-color','rgba(0,0,0,0.4)');
-        }
-        else {
-            this.$el.find('.js-back_shadow').css('background-color','');
-        }
-
+        this.renderCompleted();
         return this;
     },
 
@@ -160,5 +171,14 @@ var GameScreen = MutApp.Screen.extend({
             this.canTouch = true;
             $('[data-card-id='+card.id+']').removeClass('__opened');
         }).bind(this), 1000);
+    },
+
+    destroy: function() {
+        this.model.off("change:logoUrl", this.onMutAppPropertyChanged, this);
+        this.model.off("change:showLogoOnGamescreen", this.onMutAppPropertyChanged, this);
+        this.model.off("change:gamescreenBackgroundImg", this.onMutAppPropertyChanged, this);
+        this.model.off("change:isHorizontalCards", this.onMutAppPropertyChanged, this);
+        this.model.off("change:cardsInRow", this.onMutAppPropertyChanged, this);
+        this.model.off("change:backCardTexture", this.onMutAppPropertyChanged, this);
     }
 });

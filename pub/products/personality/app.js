@@ -500,7 +500,6 @@ var PersonalityApp = MutApp.extend({
         for (var i = 0; i < this.resultsScreens.length; i++) {
             this.deleteScreen(this.resultsScreens[i]);
         }
-        var sEntities = [];
         this.resultsScreens = [];
         var resultsValue = this.model.get('results').toArray();
         var rs = null;
@@ -564,6 +563,13 @@ var PersonalityApp = MutApp.extend({
                 }
                 if (data.propertyString === 'id=pm results') {
                     if (this.model) this.model.updateShareEntities();
+                }
+                if (MutApp.Util.matchPropertyString(data.propertyString, 'id=pm results.{{id}}.title') === true ||
+                    MutApp.Util.matchPropertyString(data.propertyString, 'id=pm results.{{id}}.description') === true) {
+                    // при изменении текстов результата обновляем тексты в словаре shareEntity
+                    if (this.model) {
+                        this.model.updateShareEntities();
+                    }
                 }
                 break;
             }

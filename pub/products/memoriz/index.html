@@ -17,41 +17,41 @@
 
     <!-- Стартовый экран -->
     <script id="id-welcome_template" type="text/template">
-        <div class="modal __active js-back_color js-back_img" data-app-property="id=startScr backgroundImg, id=startScr shadowEnable">
-            <div class="modal_cnt info js-back_shadow">
-                <div class="info_title js-start_header" data-app-property="id=startScr startHeaderText"><b>Дзюдо: </b>иппон или вазаари</div>
-                <div class="info_tx js-start_description" data-app-property="id=startScr startDescription">Пройдите тест и узнайте, как хорошо вы разбираетесь в этом виде восточных единоборств</div>
+        <div class="modal __active js-start_back_color js-back_img" data-app-property="id=mm startScreenBackgroundImg">
+            <div class="modal_cnt info js-back_shadow js-logo_cnt">
+                <div class="info_title js-start_header" data-app-property="id=mm startHeaderText"><b>Дзюдо: </b>иппон или вазаари</div>
+                <div class="info_tx js-start_description" data-app-property="id=mm startDescription">Пройдите тест и узнайте, как хорошо вы разбираетесь в этом виде восточных единоборств</div>
                 <div class="js-btn_wr">
-                    <div class="button js-test_btn js-next js-start_btn" data-app-property="id=startScr startButtonText">Пройти тест</div>
+                    <div class="button js-test_btn js-next js-start_btn" data-app-property="id=mm startButtonText">Пройти тест</div>
                 </div>
-                <div class="logo js-logo js-start_logo" data-app-property="id=startScr logoPosition, id=startScr showLogo, id=mm logoUrl"></div>
+                <div class="logo js-logo js-start_logo" data-app-property="id=mm logoPositionInStartScreen, id=mm showLogoOnStartScreen, id=mm logoUrl"></div>
             </div>
         </div>
     </script>
 
     <!-- Игровое поле -->
     <script id="id-game_screen_template" type="text/template">
-        <div class="modal __active js-back_color js-back_img" data-app-property="id=gamescreen backgroundImg, id=gamescreen shadowEnable">
-            <div class="modal_cnt info js-back_shadow">
+        <div class="modal __active js-game_screen_back_color js-back_img" data-app-property="id=mm gamescreenBackgroundImg">
+            <div class="modal_cnt info js-back_shadow js-logo_cnt">
                 <div class="card_field js-card-field">
 
                 </div>
-                <div class="logo js-logo js-gamescreen_logo" data-app-property="id=gamescreen logoPosition, id=gamescreen showLogo, id=mm logoUrl"></div>
+                <div class="logo js-logo js-gamescreen_logo" data-app-property="id=mm logoPositionInGamescreen, id=mm showLogoOnGamescreen, id=mm logoUrl"></div>
             </div>
         </div>
     </script>
 
     <!-- Экран пояснения -->
     <script id="id-opened_screen_template" type="text/template">
-        <div class="modal __active js-back_color js-back_img" data-app-property="type=opened backgroundImg, type=opened shadowEnable">
-            <div class="modal_cnt info js-back_shadow">
-                <div class="info_title js-explanation_title" data-app-property="id=mm pairs.<%=pairIndex%>.explanation.title"><%=title%></div>
+        <div class="modal __active js-opened_back_color js-back_img" data-app-property="id=mm openedBackgroundImg">
+            <div class="modal_cnt info js-back_shadow js-logo_cnt">
+                <div class="info_title js-explanation_title" data-app-property="id=mm pairs.<%=dictionaryId%>.explanation.title"><%=title%></div>
                 <div class="js-opened_cards"></div>
-                <div data-app-property="id=mm pairs.<%=pairIndex%>.explanation.text" class="explanation js-explanation_text"><%=text%></div>
+                <div data-app-property="id=mm pairs.<%=dictionaryId%>.explanation.text" class="explanation js-explanation_text"><%=text%></div>
                 <div class="js-btn_wr">
-                    <div class="button js-test_btn js-close_opened_layer" data-app-property="type=opened nextButtonText">Далее</div>
+                    <div class="button js-test_btn js-close_opened_layer" data-app-property="id=mm nextButtonText">Далее</div>
                 </div>
-                <div class="logo js-logo js-opened_logo" data-app-property="type=opened logoPosition, type=opened showLogo, id=mm logoUrl"></div>
+                <div class="logo js-logo js-opened_logo" data-app-property="id=mm logoPositionInOpened, id=mm showLogoInOpened, id=mm logoUrl"></div>
             </div>
         </div>
     </script>
@@ -59,14 +59,13 @@
     <!-- Шаблон карточки, по умолчанию закрыт -->
     <!-- В карточку может быть вставлено несколько видов контента -->
     <script id="id-card_text_template" type="text/template">
-        <div data-card-id="<%=id%>" class="flip-container js-card <%=mod%>" data-app-property="id=mm pairs.<%=pairIndex%>.cards.<%=cardIndex%>.img">
+        <div data-card-id="<%=id%>" class="flip-container js-card <%=mod%> <%=orientationMod%>">
             <div class="flipper hover">
-                <div class="front js-card_front" data-app-property="id=mm backCardTexture">
-                    <!--<p>Front content</p>-->
+                <div class="front js-card_front <%=orientationMod%>" data-app-property="id=mm backCardTexture">
+
                 </div>
-                <div class="back" style="background-image:url(<%=img%>)">
-                    <!--<p><%=text%></p>-->
-                    <!--<img class="back_img" src="i/ocean.jpg"/>-->
+                <div class="back <%=orientationMod%>" data-index="<%=card_index%>" style="background-image:url(<%=img%>)">
+
                 </div>
             </div>
         </div>
@@ -74,25 +73,25 @@
 
     <!-- экран результата -->
     <script id="id-result_template" type="text/template">
-        <div class="modal __active js-back_color js-back_img" data-app-property="type=result backgroundImg, type=result shadowEnable">
-            <div class="modal_cnt info js-back_shadow">
-                <div class="info_title js-result_title" data-app-property="id=mm results.<%=currentResultIndex%>.title"><%=title%></div>
-                <div class="info_tx js-result_description" data-app-property="id=mm results.<%=currentResultIndex%>.description"><%=description%></div>
-                <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="type=result fbSharePosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
+        <div class="modal __active js-result_back_color js-back_img" data-app-property="id=mm resultsBackgroundImg">
+            <div class="modal_cnt info js-back_shadow js-logo_cnt">
+                <div class="info_title js-result_title" data-app-property="id=mm resultTitle"><%=title%></div>
+                <div class="info_tx js-result_description" data-app-property="id=mm resultDescription"><%=description%></div>
+                <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="id=mm fbSharingPosition">
                     <span class="tstx_share_i"></span>
                     Поделиться
                 </div>
-                <div class="tstx_share_btn __vk js-mutapp_share_vk" data-app-property="type=result vkSharePosition, appConstructor=mutapp _shareEntities.<%=currentResultIndex%>.imgUrl">
+                <div class="tstx_share_btn __vk js-mutapp_share_vk" data-app-property="id=mm vkSharingPosition">
                     <span class="tstx_share_i __vk"></span>
                     Поделиться
                 </div>
                 <div class="js-btn_wr js-restart_btn_wr">
-                    <div class="button js-next js-restart js-test_btn" data-app-property="type=result restartButtonText">Пройти тест еще раз</div>
+                    <div class="button js-next js-restart js-test_btn" data-app-property="id=mm restartButtonText">Пройти тест еще раз</div>
                 </div>
                 <div class="js-download_btn_wr">
-                    <div class="button js-download_btn" data-app-property="type=result downloadButtonText, type=result showDownload">Скачать</div>
+                    <div class="button js-download_btn" data-app-property="id=mm downloadButtonText, id=mm showDownload">Скачать</div>
                 </div>
-                <div class="logo js-logo js-result_logo" data-app-property="type=result logoPosition, type=result showLogo, id=mm logoUrl"></div>
+                <div class="logo js-logo js-result_logo" data-app-property="id=mm logoPositionInResults, id=mm showLogoInResults, id=mm logoUrl"></div>
             </div>
         </div>
     </script>
@@ -111,15 +110,17 @@
     <script type="text/javascript" src="descriptor.js"></script>
     <!-- endbuild -->
     <script>
+        /*start_code
         var app = null;
-        var tests = {};
         $(document).ready(function() {
             var DEFAULT_PARAMS = {};
             app = new MemorizApp({
-                defaults: DEFAULT_PARAMS
+                defaults: DEFAULT_PARAMS,
+                mode: 'published'
             });
             app.start();
         });
+        start_code*/
     </script>
 </body>
 </html>
