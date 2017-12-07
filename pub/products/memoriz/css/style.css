@@ -146,7 +146,8 @@ img {
     -webkit-transform: rotateY(0deg);
     transform: rotateY(0deg);
     background: #ccc;
-    background: cover;
+    background-size: cover;
+    background-position: center;
 }
 
 /* back, initially hidden pane */
@@ -171,7 +172,7 @@ img {
     margin: 20px auto;
 }
 
-@media (max-width:600px)  {
+@media (max-width: 600px) and (min-width: 1px) {
     /* using body for making this rules more important then 'js-*' rules from engine.js */
     body .info_title {
         padding: 60px 0 16px;
@@ -214,7 +215,7 @@ img {
         left:0 !important;
     }
 }
-@media (max-width:400px)  {
+@media (max-width:400px) and (min-width: 1px) {
     body .flip-container,
     body .front,
     body .back {
@@ -229,17 +230,17 @@ img {
         height: 50px;
         border-radius: 5px;
     }
-    /* Когда экран рендерится первый раз, то this.$el.width()===0 и срабатывает это правило например, Которое сбивает сохраненные стили */
-    /*body .card_field {*/
-        /*padding: 6px;*/
-    /*}*/
+
+    body .card_field {
+        padding: 6px;
+    }
 
     body .card_field {
         padding-left: 10px;
         padding-right: 10px;
     }
 }
-@media (max-width:310px)  {
+@media (max-width:310px) and (min-width: 1px) {
     body .flip-container,
     body .front,
     body .back {

@@ -94,6 +94,7 @@ var GameScreen = MutApp.Screen.extend({
         this.model.bind("change:gamescreenBackgroundImg", this.onMutAppPropertyChanged, this);
         this.model.bind("change:isHorizontalCards", this.onMutAppPropertyChanged, this);
         this.model.bind("change:cardsInRow", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:backCardTexture", this.onMutAppPropertyChanged, this);
     },
 
     onMutAppPropertyChanged: function() {
@@ -178,5 +179,6 @@ var GameScreen = MutApp.Screen.extend({
         this.model.off("change:gamescreenBackgroundImg", this.onMutAppPropertyChanged, this);
         this.model.off("change:isHorizontalCards", this.onMutAppPropertyChanged, this);
         this.model.off("change:cardsInRow", this.onMutAppPropertyChanged, this);
+        this.model.off("change:backCardTexture", this.onMutAppPropertyChanged, this);
     }
 });

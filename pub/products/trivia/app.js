@@ -586,6 +586,13 @@ var TriviaApp = MutApp.extend({
                     // перенес рядом с вызовом updateResultScreens
                     // if (this.model) this.model.updateShareEntities();
                 }
+                if (MutApp.Util.matchPropertyString(data.propertyString, 'id=tm results.{{id}}.title') === true ||
+                    MutApp.Util.matchPropertyString(data.propertyString, 'id=tm results.{{id}}.description') === true) {
+                    // при изменении текстов результата обновляем тексты в словаре shareEntity
+                    if (this.model) {
+                        this.model.updateShareEntities();
+                    }
+                }
                 break;
             }
         }

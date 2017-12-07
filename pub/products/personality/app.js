@@ -564,6 +564,13 @@ var PersonalityApp = MutApp.extend({
                 if (data.propertyString === 'id=pm results') {
                     if (this.model) this.model.updateShareEntities();
                 }
+                if (MutApp.Util.matchPropertyString(data.propertyString, 'id=pm results.{{id}}.title') === true ||
+                    MutApp.Util.matchPropertyString(data.propertyString, 'id=pm results.{{id}}.description') === true) {
+                    // при изменении текстов результата обновляем тексты в словаре shareEntity
+                    if (this.model) {
+                        this.model.updateShareEntities();
+                    }
+                }
                 break;
             }
         }

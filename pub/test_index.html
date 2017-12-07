@@ -76,76 +76,102 @@
         }
         foo();
 
-        var data = [
-            // [points, resultId]
-            [0, 'Плохо'],
-            [1, 'Плохо'],
-            [2, 'Нормик'],
-            [3, 'Отлично']
-        ];
-        var chart = new TriviaChart(document.getElementById('id-chart1'));
-        chart.draw(data);
+        const first = 'Anton';
+        const last = 'Brown';
+        const id = 'aws233';
+        var name = `Your name is ${first} ${last}.`;
+        var url = `http://localhost:3000/api/messages/${id}`;
+        console.log(name);
+        console.log(url);
 
-        var data = [
-            // [points, resultId]
-            [0, 'Результат 1'],
-            [1, 'Результат 2'],
-            [2, 'Результат 3'],
-            [3, 'Результат 4'],
-            [4, 'Результат 5'],
-            [5, 'Результат 6'],
-            [6, 'Результат 7'],
-            [7, 'Результат 8'],
-            [8, 'Результат 9'],
-            [9, 'Результат 10']
-        ];
-        var chart = new TriviaChart(document.getElementById('id-chart2'));
-        chart.draw(data);
+        const poem = `я помню чудное многновв
+        перевод мной чявиллоата
+        каукшщп шукплуклд `;
 
-        var data = [
-            // [points, resultId]
-            [0, 'Результат 1'],
-            [1, 'Результат 1'],
-            [2, 'Результат 1'],
-            [3, 'Результат 1'],
-            [4, 'Результат 2'],
-            [5, 'Результат 2'],
-            [6, 'Результат 2'],
-            [7, 'Результат 3 Результат 3 Результат 3 Результат 3 Результат 3 Результат 3'],
-            [8, 'Результат 3 Результат 3 Результат 3 Результат 3 Результат 3 Результат 3'],
-            [9, 'Результат 3 Результат 3 Результат 3 Результат 3 Результат 3 Результат 3']
-        ];
-        var chart = new TriviaChart(document.getElementById('id-chart3'));
-        chart.draw(data);
-
-        var data = [
-            // [points, resultId]
-            [0, 'Результат 1'],
-            [1, 'Результат 1']
-        ];
-        var chart = new TriviaChart(document.getElementById('id-chart4'));
-        chart.draw(data);
+        document.getElementById('id-chart1').innerHTML = poem;
 
 
-        var data = [
-            // [points, resultId]
-            [0, 'Результат 1'],
-            [1, 'Результат с длинный текстом енгуушушущушушушщцщц хцхцз ущцузщцузщзщ зщцу 2'],
-            [2, 'Результат 2']
-        ];
-        var chart = new TriviaChart(document.getElementById('id-chart5'));
-        chart.draw(data);
+        var obj = {
+            val1: 22,
+            val2: 'val2',
+            val3: 'val3'
+        };
 
-        var data = [
-            // [points, resultId]
-            [0, 'Результат 1'],
-            [1, 'Результат 1'],
-            [2, 'Результат 2'],
-            [3, 'Результат 2'],
-            [4, 'Результат 3']
-        ];
-        var chart = new TriviaChart(document.getElementById('id-chart5'));
-        chart.draw(data);
+        const val1 = 1, val4 = 3;
+        //({val1} = obj);
+
+        val1 = 32;
+
+//        var data = [
+//            // [points, resultId]
+//            [0, 'Плохо'],
+//            [1, 'Плохо'],
+//            [2, 'Нормик'],
+//            [3, 'Отлично']
+//        ];
+//        var chart = new TriviaChart(document.getElementById('id-chart1'));
+//        chart.draw(data);
+//
+//        var data = [
+//            // [points, resultId]
+//            [0, 'Результат 1'],
+//            [1, 'Результат 2'],
+//            [2, 'Результат 3'],
+//            [3, 'Результат 4'],
+//            [4, 'Результат 5'],
+//            [5, 'Результат 6'],
+//            [6, 'Результат 7'],
+//            [7, 'Результат 8'],
+//            [8, 'Результат 9'],
+//            [9, 'Результат 10']
+//        ];
+//        var chart = new TriviaChart(document.getElementById('id-chart2'));
+//        chart.draw(data);
+//
+//        var data = [
+//            // [points, resultId]
+//            [0, 'Результат 1'],
+//            [1, 'Результат 1'],
+//            [2, 'Результат 1'],
+//            [3, 'Результат 1'],
+//            [4, 'Результат 2'],
+//            [5, 'Результат 2'],
+//            [6, 'Результат 2'],
+//            [7, 'Результат 3 Результат 3 Результат 3 Результат 3 Результат 3 Результат 3'],
+//            [8, 'Результат 3 Результат 3 Результат 3 Результат 3 Результат 3 Результат 3'],
+//            [9, 'Результат 3 Результат 3 Результат 3 Результат 3 Результат 3 Результат 3']
+//        ];
+//        var chart = new TriviaChart(document.getElementById('id-chart3'));
+//        chart.draw(data);
+//
+//        var data = [
+//            // [points, resultId]
+//            [0, 'Результат 1'],
+//            [1, 'Результат 1']
+//        ];
+//        var chart = new TriviaChart(document.getElementById('id-chart4'));
+//        chart.draw(data);
+//
+//
+//        var data = [
+//            // [points, resultId]
+//            [0, 'Результат 1'],
+//            [1, 'Результат с длинный текстом енгуушушущушушушщцщц хцхцз ущцузщцузщзщ зщцу 2'],
+//            [2, 'Результат 2']
+//        ];
+//        var chart = new TriviaChart(document.getElementById('id-chart5'));
+//        chart.draw(data);
+//
+//        var data = [
+//            // [points, resultId]
+//            [0, 'Результат 1'],
+//            [1, 'Результат 1'],
+//            [2, 'Результат 2'],
+//            [3, 'Результат 2'],
+//            [4, 'Результат 3']
+//        ];
+//        var chart = new TriviaChart(document.getElementById('id-chart5'));
+//        chart.draw(data);
 
 
     </script>
