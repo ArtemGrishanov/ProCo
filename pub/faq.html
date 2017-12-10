@@ -6,7 +6,9 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
     <meta name='viewport' content='width=device-width,initial-scale=1,user-scalable=no'>
-    <!--build:css css/info.min.css-->
+    <!-- style:css -->
+    <!-- endinject -->
+    <!--build:remove-->
     <link href="css/common.css" rel="stylesheet"/>
     <!--endbuild-->
     <meta property="og:url" content="http://testix.me" />
@@ -150,10 +152,14 @@
     </div>
 
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.139.0.min.js"></script>
+    <!-- commonlib:js -->
+    <!-- endinject -->
+    <!-- common:js -->
+    <!-- endinject -->
+    <!-- build:remove -->
     <script type="text/javascript" src="lib/aws-cognito-sdk.min.js"></script>
     <script type="text/javascript" src="lib/amazon-cognito-identity.min.js"></script>
     <script type="text/javascript" src="lib/jquery.js"></script>
-    <!-- build:js info.min.js -->
     <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/view/modals/abstractModal.js"></script>
     <script type="text/javascript" src="js/view/modals/loadingModal.js"></script>

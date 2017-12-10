@@ -10,7 +10,7 @@ var config = {
      */
     congigurationSet: {
         dev: function() {
-            config.common.home = 'http://localhost:63342/ProCo/pub/';
+            config.common.home = 'http://localhost:63342/ProCo/build/';
             config.common.facebookAppId = '518819781624579';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['test'], //dev test prod
+        configurationSetsOnStart: ['dev'], //dev test prod
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error

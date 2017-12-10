@@ -24,6 +24,9 @@ var myProjectsView = {};
                 }, 1333);
             }
         }
+        initUIHandlers();
+        // автоматический запрос сохраненных темплейтов пользователя как только это становится возможным
+        Auth.addEventCallback(onAuthEvent);
     }
 
     function onEditClick(e) {
@@ -166,10 +169,7 @@ var myProjectsView = {};
         }
     };
 
-    // авто инициализация
-    init();
-    initUIHandlers();
-    // автоматический запрос сохраненных темплейтов пользователя как только это становится возможным
-    Auth.addEventCallback(onAuthEvent);
+    // public
+    global.init = init;
 
 })(myProjectsView);
