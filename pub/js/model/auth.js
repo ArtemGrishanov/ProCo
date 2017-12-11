@@ -587,7 +587,7 @@ var Auth = {
                 var atr = param.cognitoAttributes[i];
                 if (atr.Name === 'sub') {
                     // меняем название UID на 'sub' -> 'id'
-                    _user['id'] = atr.Value;
+                    _user['id'] = atr.Value;//'ad96fa85-6737-40e1-bf30-5eb016393af9';
                 }
                 else {
                     _user[atr.Name] = atr.Value;

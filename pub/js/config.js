@@ -397,58 +397,52 @@ var config = {
                 ]
             },
             memoriz: {
-                enabled: false,
+                enabled: true,
                 typeLabel: {EN:'Memory Game',RU:'Игра мемори'},
                 entities: [
-                    {
-                        //Интернет мемы http://p.testix.me/1045302892173346/13e4d14521/
-                        name: {RU:'Интернет-мемы',EN:'Online memes'},
-                        img: 'http://p.testix.me/storefront/memoriz/13e4d14521.jpg',
-                        published: 'http://p.testix.me/storefront/memoriz/13e4d14521/p_index.html',
-                        // in proconstructor/storefront/memoriz
-                        template: 'storefront/memoriz/13e4d14521.txt',
-                        width: '800px',
-                        height: '600px'
-                    },
+//                    {
+//                        //Интернет мемы http://p.testix.me/1045302892173346/13e4d14521/
+//                        name: {RU:'Интернет-мемы',EN:'Online memes'},
+//                        img: 'http://p.testix.me/storefront/memoriz/13e4d14521.jpg',
+//                        published: 'http://p.testix.me/storefront/memoriz/13e4d14521/p_index.html',
+//                        template: 'storefront/memoriz/13e4d14521.txt',
+//                        width: '800px',
+//                        height: '600px'
+//                    },
                     {
                         //Футболисты http://p.testix.me/1045302892173346/53b37bf1e9
                         name: {RU:'Футболисты',EN:'Soccer players'},
-                        img: 'http://p.testix.me/storefront/memoriz/53b37bf1e9.jpg',
-                        published: 'http://p.testix.me/storefront/memoriz/53b37bf1e9/p_index.html',
-                        // in proconstructor/storefront/memoriz
-                        template: 'storefront/memoriz/53b37bf1e9.txt',
+                        img: 'http://p.testix.me/storefront/memoriz/Memori-Football-18.jpg',
+                        published: 'http://p.testix.me/storefront/memoriz/f720897024/p_index.html',
+                        template: 'http://p.testix.me/storefront/memoriz/f720897024.txt',
                         width: '800px',
                         height: '600px'
                     },
+//                    {
+//                        //Фильмы и режиссеры  http://p.testix.me/121947341568004/6842f5cd6d/
+//                        name: {RU:'Кино и режиссеры',EN:'Movies and directors'},
+//                        img: 'http://p.testix.me/storefront/memoriz/6842f5cd6d.jpg',
+//                        published: 'http://p.testix.me/storefront/memoriz/6842f5cd6d/p_index.html',
+//                        // in proconstructor/storefront/memoriz
+//                        template: 'storefront/memoriz/6842f5cd6d.txt',
+//                        width: '800px',
+//                        height: '600px'
+//                    },
                     {
-                        //Фильмы и режиссеры  http://p.testix.me/121947341568004/6842f5cd6d/
-                        name: {RU:'Кино и режиссеры',EN:'Movies and directors'},
-                        img: 'http://p.testix.me/storefront/memoriz/6842f5cd6d.jpg',
-                        published: 'http://p.testix.me/storefront/memoriz/6842f5cd6d/p_index.html',
-                        // in proconstructor/storefront/memoriz
-                        template: 'storefront/memoriz/6842f5cd6d.txt',
-                        width: '800px',
-                        height: '600px'
-                    },
-                    {
-                        //Автомобили http://p.testix.me/121947341568004/06cc56a6dc/ republished by bot
-                        // http://p.testix.me/1045302892173346/06cc56a6dc (Oleg origin)
+                        //Автомобили
                         name: {RU:'Автомобили',EN:'Cars'},
-                        img: 'http://p.testix.me/storefront/memoriz/06cc56a6dc.jpg',
-                        published: 'http://p.testix.me/storefront/memoriz/06cc56a6dc/p_index.html',
-                        // in proconstructor/storefront/memoriz
-                        template: 'storefront/memoriz/06cc56a6dc.txt',
+                        img: 'http://p.testix.me/storefront/memoriz/Memori-Cars-12.jpg',
+                        published: 'http://p.testix.me/storefront/memoriz/5ae1ea7514/p_index.html',
+                        template: 'http://p.testix.me/storefront/memoriz/5ae1ea7514.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
-                        //Красотки http://p.testix.me/121947341568004/e78a9cd599/ republished by bot
-                        // http://p.testix.me/1045302892173346/e78a9cd599/ (Oleg origin)
+                        //Красотки
                         name: {RU:'Красотки',EN:'Beauty'},
-                        img: 'http://p.testix.me/storefront/memoriz/e78a9cd599.jpg',
-                        published: 'http://p.testix.me/storefront/memoriz/e78a9cd599/p_index.html',
-                        // in proconstructor/storefront/memoriz
-                        template: 'storefront/memoriz/e78a9cd599.txt',
+                        img: 'http://p.testix.me/storefront/memoriz/Memori-Girls-10.jpg',
+                        published: 'http://p.testix.me/storefront/memoriz/47ccfd9ec8/p_index.html',
+                        template: 'http://p.testix.me/storefront/memoriz/47ccfd9ec8.txt',
                         width: '800px',
                         height: '600px'
                     }
