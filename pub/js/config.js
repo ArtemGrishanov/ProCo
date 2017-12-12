@@ -509,8 +509,6 @@ var config = {
              * Там например содержаться кнопки для шаринга
              */
             styles: '<link href="{{config.common.home}}products/common/css/tstx_cmn_products.css" rel="stylesheet"/>',
-//            stylesForPublishing: '',
-//            stylesFileName: 'tstx_cmn_products.css',
             defaultShareImageRecommendedSize: '1200x620',
             publishResources: [
                 {

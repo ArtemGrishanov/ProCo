@@ -2,6 +2,24 @@
  * Created by artyom.grishanov on 02.08.16.
  *
  * Ideas: https://css-tricks.com/gulp-for-beginners/
+ *
+ * - переключение для локальной среды {{config.common.home}}  pub <-> build
+ * - backbone, underscore - положить уже минимиированные файлы от производителей
+ *
+ * Product build:
+ *      - common libs for products
+ *      - delete libs from product folders: memori, panoramas
+ *      - tstx_cmn_products.css - concat with product styles
+ *      - remove and inject
+ *
+ * - как на публикации проекта это отразится
+ *      - config.products.common.publishresources.replace - убрать совсем попробовать
+ *      - config.products.common.publishresources оставить только templates/anonymPage/index.html остальные убрать
+ * - как на редактировании проекта это отразится
+ *      - config.products.trivia.stylesForEmbed - здесь всё остается как есть
+ *      - config.products.common.styles посмотреть где используется
+ *          если я планирую склеить этот файл с общие стили style.css то по идее ссылка не нужна эта
+ *
  */
 var gulp = require('gulp');
 var browserSync = require('browser-sync').create();
@@ -18,8 +36,6 @@ var inject = require('gulp-inject');
 var concat = require('gulp-concat');
 var version = require('gulp-version-number');
 
-var buildTimeStart = 0;
-
 var buildConfig = {
     uglifyJs: true,
     names: {
@@ -29,6 +45,10 @@ var buildConfig = {
         editorFileName: 'editor.js',
         commonLibFileName: 'commonlib.js',
         editorLibFileName: 'editorlib.js'
+    },
+    products: {
+        commonJsFileName: 'app.js',
+        libJsFileName: 'lib.js',
     },
     src: {
         html: {
@@ -83,84 +103,131 @@ var buildConfig = {
     }
 };
 
-gulp.task('products', function(){
-    gulp.src('pub/products/*')
-        .pipe(gulp.dest('build/products'));
+var versionConfig = {
+    /**
+     * Global version value
+     * default: %MDS%
+     */
+    'value' : '%MDS%',
+    /**
+     * MODE: APPEND
+     * Can coexist and replace, after execution to replace
+     */
+    'append' : {
+
+        /**
+         * Parameter
+         */
+        'key' : '_v',
+
+        /**
+         * Whether to overwrite the existing parameters
+         * default: 0 (don't overwrite)
+         * If the parameter already exists, as a "custom", covering not executed.
+         * If you need to cover, please set to 1
+         */
+        'cover' : 0,
+
+        /**
+         * Appended to the position (specify type)
+         * {String|Array|Object}
+         * If you set to 'all', will apply to all type, rules will use the global setting.
+         * If an array or object, will use your custom rules.
+         * others will passing.
+         *
+         * eg:
+         *     'js'
+         *     ['js']
+         *     {type:'js'}
+         *     ['css', '%DATE%']
+         */
+        'to' : [
+        /**
+         * {String} Specify type, the value is the global value
+         */
+            'css',
+        /**
+         * {Array}
+         * Specify type, keyword and cover rules will use the global
+         * setting, If you need more details, please use the object
+         * configure.
+         *
+         * argument 0 necessary, otherwise passing.
+         * argument 1 optional, the value will use the global value
+         */
+            ['image', '%TS%'],
+        /**
+         * {Object}
+         * Use detailed custom rules to replace, missing items will
+         * be taken in setting the global completion
+         * type is necessary, otherwise passing.
+         */
+            {
+                'type' : 'js',
+                'key' : '_v',
+                'value' : '%DATE%',
+                'cover' : 1
+            }
+        ]
+    }
+};
+
+var productsConfig = [
+    {
+        productName: 'trivia',
+        src: {
+            js: ['./pub/products/trivia/**/*.js'],
+            html: ['./pub/products/trivia/*.html'],
+            css: ['./pub/products/trivia/**/*.css'],
+            i: ['./pub/products/trivia/i/**/*.+(png|jpg|jpeg|gif|svg)']
+        }
+    },
+    {
+        productName: 'personality',
+        src: {
+            js: ['./pub/products/personality/**/*.js'],
+            html: ['./pub/products/personality/*.html'],
+            css: ['./pub/products/personality/**/*.css'],
+            i: ['./pub/products/personality/i/**/*.+(png|jpg|jpeg|gif|svg)']
+        }
+    }
+];
+
+/**
+ * Список динамически созданных тасков, которые будут использованы как зависимости для таска 'products'
+ *
+ * Пример: ['trivia', 'personality']
+ * @type {Array}
+ */
+var productTasks = [];
+
+
+productsConfig.forEach(function (e) {
+    console.log('Creating task for build product: ' + e.productName);
+    productTasks.push(e.productName);
+    gulp.task(e.productName, function() {
+        console.log('Building product: ' + e.productName + ', src: ' + e.src.js);
+        return gulp.src(e.src.js)
+            .pipe(concat(buildConfig.products.commonJsFileName))
+            .pipe(gulpIf(buildConfig.uglifyJs, uglify()))
+            .pipe(gulp.dest('./build/products/'+ e.productName));
+    });
 });
+
+
+gulp.task('products', productTasks);
+//gulp.task('products', function() {
+//    productsConfig.forEach(function (e) {
+//        gulp.start(e.productName);
+//    });
+//});
 
 gulp.task('version', function() {
     /**
      * By tutorial https://www.npmjs.com/package/gulp-version-number
      */
     return gulp.src('build/**/**/*.html')
-        .pipe(version({
-            /**
-             * Global version value
-             * default: %MDS%
-             */
-            'value' : '%MDS%',
-            /**
-             * MODE: APPEND
-             * Can coexist and replace, after execution to replace
-             */
-            'append' : {
-
-                /**
-                 * Parameter
-                 */
-                'key' : '_v',
-
-                /**
-                 * Whether to overwrite the existing parameters
-                 * default: 0 (don't overwrite)
-                 * If the parameter already exists, as a "custom", covering not executed.
-                 * If you need to cover, please set to 1
-                 */
-                'cover' : 0,
-
-                /**
-                 * Appended to the position (specify type)
-                 * {String|Array|Object}
-                 * If you set to 'all', will apply to all type, rules will use the global setting.
-                 * If an array or object, will use your custom rules.
-                 * others will passing.
-                 *
-                 * eg:
-                 *     'js'
-                 *     ['js']
-                 *     {type:'js'}
-                 *     ['css', '%DATE%']
-                 */
-                'to' : [
-                    /**
-                     * {String} Specify type, the value is the global value
-                     */
-                    'css',
-                    /**
-                     * {Array}
-                     * Specify type, keyword and cover rules will use the global
-                     * setting, If you need more details, please use the object
-                     * configure.
-                     *
-                     * argument 0 necessary, otherwise passing.
-                     * argument 1 optional, the value will use the global value
-                     */
-                    ['image', '%TS%'],
-                    /**
-                     * {Object}
-                     * Use detailed custom rules to replace, missing items will
-                     * be taken in setting the global completion
-                     * type is necessary, otherwise passing.
-                     */
-                    {
-                        'type' : 'js',
-                        'key' : '_v',
-                        'value' : '%DATE%',
-                        'cover' : 1
-                    }
-                ]
-            }
-        }))
+        .pipe(version(versionConfig))
         .pipe(gulp.dest('build'));
 });
 
@@ -288,20 +355,20 @@ gulp.task('inject', function () {
 
 
 // <test_new>
-gulp.task('useref:test_new', function(){
-    return gulp.src('pub/products/test_new/index.html')
-        .pipe(useref())
-        .pipe(gulpIf('*.js', uglify()))
-        .pipe(gulpIf('*.css', cssnano()))
-        .pipe(gulp.dest('build/products/test_new'))
-});
-gulp.task('images:test_new', function(){
-    return gulp.src('pub/products/test_new/i/**/*.+(png|jpg|jpeg|gif|svg)')
-        .pipe(cache(imagemin({
-            interlaced: true
-        })))
-        .pipe(gulp.dest('build/products/test_new/i'))
-});
+//gulp.task('useref:test_new', function(){
+//    return gulp.src('pub/products/test_new/index.html')
+//        .pipe(useref())
+//        .pipe(gulpIf('*.js', uglify()))
+//        .pipe(gulpIf('*.css', cssnano()))
+//        .pipe(gulp.dest('build/products/test_new'))
+//});
+//gulp.task('images:test_new', function(){
+//    return gulp.src('pub/products/test_new/i/**/*.+(png|jpg|jpeg|gif|svg)')
+//        .pipe(cache(imagemin({
+//            interlaced: true
+//        })))
+//        .pipe(gulp.dest('build/products/test_new/i'))
+//});
 // </test_new>
 
 // <root>
