@@ -10,7 +10,7 @@ var config = {
      */
     congigurationSet: {
         dev: function() {
-            config.common.home = 'http://localhost:63342/ProCo/build/';
+            config.common.home = 'http://localhost:63342/ProCo/pub/'; // меняется на 'http://localhost:63342/ProCo/build/' при сборке
             config.common.facebookAppId = '518819781624579';
             config.common.awsEnabled = true;
             config.common.facebookAuthEnabled = true;
@@ -58,6 +58,11 @@ var config = {
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
         configurationSetsOnStart: ['dev'], //dev test prod
+        /**
+         * Признак того, что проект собран gulp-ом
+         * 'production'
+         */
+        buildStatus: "development", // ! Значение меняется при сборке gulp
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -520,11 +525,33 @@ var config = {
                     type: 'text/html',
                     // замена подстроки в этом файле при публикации
                     replace: [{
+                        // только для публикации с dev+pub, иначе замены просто не будет
+                        from: '<script type="text/javascript" src="../common/js/jquery.js"></script>',
+                        to: '<script type="text/javascript" src="jquery.js"></script>'
+                    },
+                    {
+                        // только для публикации с dev+pub, иначе замены просто не будет
+                        from: '<script type="text/javascript" src="../common/js/underscore.js"></script>',
+                        to: '<script type="text/javascript" src="underscore.js"></script>'
+                    },
+                    {
+                        // только для публикации с dev+pub, иначе замены просто не будет
+                        from: '<script type="text/javascript" src="../common/js/backbone.js"></script>',
+                        to: '<script type="text/javascript" src="backbone.js"></script>'
+                    },
+                    {
+                        // только для публикации с dev+pub, иначе замены просто не будет
                         from: '<script type="text/javascript" src="../common/js/mutapp.js"></script>',
                         to: '<script type="text/javascript" src="mutapp.js"></script>'
-                    },{
+                    },
+                    {
+                        // только для публикации с dev+pub, иначе замены просто не будет
                         from: '<link href="../common/css/tstx_cmn_products.css" rel="stylesheet">',
                         to: '<link href="tstx_cmn_products.css" rel="stylesheet">'
+                    },
+                    {
+                        from: '../common/js/lib.js',
+                        to: 'lib.js'
                     }]
                 },
                 {
@@ -535,22 +562,41 @@ var config = {
                     type: 'text/html'
                 },
                 {
+                    // стили сайта для анонимной страницы
                     baseUrl: '', // not needed
-                    url: 'css/common.css',
+                    // url: 'css/common.css', for pub
+                    url: 'css/style.css', // for build
                     destUrl: 'common.css',
                     type: 'text/css'
                 },
+//                dont need for build
+//                {
+//                    baseUrl: '', // not needed
+//                    url: 'products/common/css/tstx_cmn_products.css',
+//                    destUrl: 'tstx_cmn_products.css',
+//                    type: 'text/css'
+//                },
                 {
-                    baseUrl: '', // not needed
-                    url: 'products/common/css/tstx_cmn_products.css',
-                    destUrl: 'tstx_cmn_products.css',
-                    type: 'text/css'
+                    baseUrl: '',
+//                    url: 'products/common/js/mutapp.js', for pub
+                    url: 'products/common/js/lib.js',
+//                    destUrl: 'mutapp.js',
+                    destUrl: 'lib.js',
+                    type: 'text/javascript'
                 },
                 {
-                    baseUrl: '', // not needed
-                    url: 'products/common/js/mutapp.js',
-                    destUrl: 'mutapp.js',
+                    // Для публикации: основной код продукта
+                    baseUrl: undefined, // in that case 'baseProductUrl' will be set in publisher.js
+                    url: 'app.js',
+                    destUrl: 'app.js',
                     type: 'text/javascript'
+                },
+                {
+                    // Для публикации: основные стили продукта
+                    baseUrl: undefined, // in that case 'baseProductUrl' will be set in publisher.js
+                    url: 'style.css',
+                    destUrl: 'style.css',
+                    type: 'text/css'
                 }
             ]
         },
@@ -653,7 +699,7 @@ var config = {
              * В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae
              * Нужно для превью в контроле Slide
              */
-            stylesForEmbed: '<link href="{{config.common.home}}products/memoriz/css/style.css" rel="stylesheet"/>',
+            stylesForEmbed: '<link href="{{config.common.home}}products/memoriz/style.css" rel="stylesheet"/>',
             /**
              * каталог откуда publisher будет брать все ресурсы для публикации проекта
              */
@@ -680,7 +726,7 @@ var config = {
              * В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae
              * Нужно для превью в контроле Slide
              */
-            stylesForEmbed: '<link href="{{config.common.home}}products/fbPanorama/css/style.css" rel="stylesheet"/>',
+            stylesForEmbed: '<link href="{{config.common.home}}products/fbPanorama/style.css" rel="stylesheet"/>',
             /**
              * каталог откуда publisher будет брать все ресурсы для публикации проекта
              */

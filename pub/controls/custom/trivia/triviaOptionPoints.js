@@ -33,6 +33,7 @@ function TriviaOptionPoints(param) {
     this._$makeCorrect = this.$directive.find('.js-make_correct').hide();
     this._$makeCorrect.click(this.onMakeCorrectClick.bind(this));
 }
+//console.log('>>>>>>>>>>> TriviaOptionPoints.prototype init: ' + typeof _ + ' '+typeof TriviaOptionPoints.prototype+ ' '+typeof AbstractControl);
 _.extend(TriviaOptionPoints.prototype, AbstractControl);
 
 TriviaOptionPoints.prototype.getValue = function() {

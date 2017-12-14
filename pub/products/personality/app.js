@@ -45,17 +45,17 @@ var PersonalityApp = MutApp.extend({
                 {
                     protoFunction: 'id=pm quizProto1', // функция в приложении, которая вернет новый объект
                     label: {RU:'Текстовый вопрос',EN:'Text question'},
-                    img: 'products/personality/i/editor/Icon-text-vopros.png'
+                    img: '//p.testix.me/images/products/personality/editor/Icon-text-vopros.png'
                 },
                 {
                     protoFunction: 'id=pm quizProto2', // функция в приложении, которая вернет новый объект
                     label: {RU:'Фото вопрос',EN:'Photo question'},
-                    img: 'products/personality/i/editor/Icon-fotovopros.png'
+                    img: '//p.testix.me/images/products/personality/editor/Icon-fotovopros.png'
                 },
                 {
                     protoFunction: 'id=pm quizProto3', // функция в приложении, которая вернет новый объект
                     label: {RU:'Фото ответы',EN:'Photo answers'},
-                    img: 'products/personality/i/editor/Icon-fotootvet.png'
+                    img: '//p.testix.me/images/products/personality/editor/Icon-fotootvet.png'
                 }
             ],
             children: {

@@ -98,8 +98,8 @@ var FbPanoramaApp = MutApp.extend({
         },
         "id=mm panoramaImgSrc": {
             label: {
-                RU:'<div style="margin-top:30px;text-align:center;"><img src="controls/i/icon-picture.png"/><p style="padding-left: 11px;margin-top: 20px;font-size: 14px;text-align: left;line-height: 1.2em;">Загрузить другое изображение</p><p style="padding-left: 11px;text-align: left;line-height: 1.2em;">Рекомендуемый размер - более 1600x1200 px</p></div>',
-                EN:'<div style="margin-top:30px;text-align:center;"><img src="controls/i/icon-picture.png"/><p style="padding-left: 11px;margin-top: 20px;font-size: 14px;text-align: left;line-height: 1.2em;">Load panorama image</p><p style="padding-left: 11px;text-align: left;line-height: 1.2em;">Recommended size - more then 1600x1200 px</p></div>'
+                RU:'<div style="margin-top:30px;text-align:center;"><img src="//p.testix.me/images/products/fbPanorama/icon-picture.png"/><p style="padding-left: 11px;margin-top: 20px;font-size: 14px;text-align: left;line-height: 1.2em;">Загрузить другое изображение</p><p style="padding-left: 11px;text-align: left;line-height: 1.2em;">Рекомендуемый размер - более 1600x1200 px</p></div>',
+                EN:'<div style="margin-top:30px;text-align:center;"><img src="//p.testix.me/images/products/fbPanorama/icon-picture.png"/><p style="padding-left: 11px;margin-top: 20px;font-size: 14px;text-align: left;line-height: 1.2em;">Load panorama image</p><p style="padding-left: 11px;text-align: left;line-height: 1.2em;">Recommended size - more then 1600x1200 px</p></div>'
             },
             controls: 'ChooseImage',
             controlFilter: "always"

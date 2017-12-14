@@ -44,17 +44,17 @@ var TriviaApp = MutApp.extend({
                 {
                     protoFunction: 'id=tm quizProto1', // функция в приложении, которая вернет новый объект
                     label: {RU:'Текстовый вопрос',EN:'Text question'},
-                    img: 'products/trivia/i/editor/Icon-text-vopros.png'
+                    img: '//p.testix.me/images/products/trivia/editor/Icon-text-vopros.png'
                 },
                 {
                     protoFunction: 'id=tm quizProto2', // функция в приложении, которая вернет новый объект
                     label: {RU:'Фото вопрос',EN:'Photo question'},
-                    img: 'products/trivia/i/editor/Icon-fotovopros.png'
+                    img: '//p.testix.me/images/products/trivia/editor/Icon-fotovopros.png'
                 },
                 {
                     protoFunction: 'id=tm quizProto3', // функция в приложении, которая вернет новый объект
                     label: {RU:'Фото ответы',EN:'Photo answers'},
-                    img: 'products/trivia/i/editor/Icon-fotootvet.png'
+                    img: '//p.testix.me/images/products/trivia/editor/Icon-fotootvet.png'
                 }
             ],
             children: {

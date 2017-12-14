@@ -68,10 +68,7 @@ var QuestionScreen = MutApp.Screen.extend({
         "id-answer_question_grid_3": _.template($('#id-answer_question_grid_3').html()),
 
         "id-option_text_template": _.template($('#id-option_text_template').html()),
-        "id-option_img_template": _.template($('#id-option_img_template').html()),
-//        "id-answer_input_btn_template": _.template($('#id-answer_input_btn_template').html()),
-
-        "id-explanation_text_template": _.template($('#id-explanation_text_template').html())
+        "id-option_img_template": _.template($('#id-option_img_template').html())
     },
 
     events: {

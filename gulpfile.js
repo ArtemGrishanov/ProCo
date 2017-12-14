@@ -1,16 +1,8 @@
 /**
  * Created by artyom.grishanov on 02.08.16.
  *
- * Ideas: https://css-tricks.com/gulp-for-beginners/
- *
- * - переключение для локальной среды {{config.common.home}}  pub <-> build
- * - backbone, underscore - положить уже минимиированные файлы от производителей
- *
  * Product build:
- *      - common libs for products
  *      - delete libs from product folders: memori, panoramas
- *      - tstx_cmn_products.css - concat with product styles
- *      - remove and inject
  *
  * - как на публикации проекта это отразится
  *      - config.products.common.publishresources.replace - убрать совсем попробовать
@@ -35,6 +27,8 @@ var changed = require('gulp-changed');
 var inject = require('gulp-inject');
 var concat = require('gulp-concat');
 var version = require('gulp-version-number');
+var injectString = require('gulp-inject-string');
+var replace = require('gulp-string-replace');
 
 var buildConfig = {
     uglifyJs: true,
@@ -48,12 +42,21 @@ var buildConfig = {
     },
     products: {
         commonJsFileName: 'app.js',
+        libJsSrc: [
+            './pub/products/common/js/jquery.js',
+            './pub/products/common/js/underscore-min.js',
+            './pub/products/common/js/backbone-min.js',
+            './pub/products/common/js/mutapp.js'
+        ],
         libJsFileName: 'lib.js',
+        libDest: './build/products/common/js',
+        commonCss: ['./pub/products/common/css/tstx_cmn_products.css'], // must be array
+        commonCssFileName: 'style.css'
     },
     src: {
         html: {
             site: {
-                src: ['./pub/*.html'],
+                src: ['./pub/*.html','./pub/favicon.ico'],
                 dist: './build'
             },
             controls: {
@@ -114,60 +117,10 @@ var versionConfig = {
      * Can coexist and replace, after execution to replace
      */
     'append' : {
-
-        /**
-         * Parameter
-         */
         'key' : '_v',
-
-        /**
-         * Whether to overwrite the existing parameters
-         * default: 0 (don't overwrite)
-         * If the parameter already exists, as a "custom", covering not executed.
-         * If you need to cover, please set to 1
-         */
         'cover' : 0,
-
-        /**
-         * Appended to the position (specify type)
-         * {String|Array|Object}
-         * If you set to 'all', will apply to all type, rules will use the global setting.
-         * If an array or object, will use your custom rules.
-         * others will passing.
-         *
-         * eg:
-         *     'js'
-         *     ['js']
-         *     {type:'js'}
-         *     ['css', '%DATE%']
-         */
         'to' : [
-        /**
-         * {String} Specify type, the value is the global value
-         */
-            'css',
-        /**
-         * {Array}
-         * Specify type, keyword and cover rules will use the global
-         * setting, If you need more details, please use the object
-         * configure.
-         *
-         * argument 0 necessary, otherwise passing.
-         * argument 1 optional, the value will use the global value
-         */
-            ['image', '%TS%'],
-        /**
-         * {Object}
-         * Use detailed custom rules to replace, missing items will
-         * be taken in setting the global completion
-         * type is necessary, otherwise passing.
-         */
-            {
-                'type' : 'js',
-                'key' : '_v',
-                'value' : '%DATE%',
-                'cover' : 1
-            }
+            'css', 'js'
         ]
     }
 };
@@ -178,8 +131,7 @@ var productsConfig = [
         src: {
             js: ['./pub/products/trivia/**/*.js'],
             html: ['./pub/products/trivia/*.html'],
-            css: ['./pub/products/trivia/**/*.css'],
-            i: ['./pub/products/trivia/i/**/*.+(png|jpg|jpeg|gif|svg)']
+            css: ['./pub/products/trivia/**/*.css']
         }
     },
     {
@@ -187,8 +139,35 @@ var productsConfig = [
         src: {
             js: ['./pub/products/personality/**/*.js'],
             html: ['./pub/products/personality/*.html'],
-            css: ['./pub/products/personality/**/*.css'],
-            i: ['./pub/products/personality/i/**/*.+(png|jpg|jpeg|gif|svg)']
+            css: ['./pub/products/personality/**/*.css']
+        }
+    },
+    {
+        productName: 'memoriz',
+        src: {
+            js: ['./pub/products/memoriz/**/*.js'],
+            html: ['./pub/products/memoriz/*.html'],
+            css: ['./pub/products/memoriz/**/*.css']
+        }
+    },
+    {
+        productName: 'fbPanorama',
+        src: {
+            js: [
+                './pub/products/fbPanorama/three.min.js',
+                './pub/products/fbPanorama/D.min.js',
+                './pub/products/fbPanorama/uevent.min.js',
+                './pub/products/fbPanorama/doT.min.js',
+                './pub/products/fbPanorama/photo-sphere-viewer.min.js',
+                './pub/products/fbPanorama/model/*.js',
+                './pub/products/fbPanorama/view/*.js',
+                './pub/products/fbPanorama/drawing.js',
+                './pub/products/fbPanorama/panoconfig.js',
+                './pub/products/fbPanorama/app.js'
+            ],
+            html: ['./pub/products/fbPanorama/*.html'],
+            css: ['./pub/products/fbPanorama/**/*.css'],
+            i: ['./pub/products/fbPanorama/**/*.+(png|jpg|jpeg|gif|svg)']
         }
     }
 ];
@@ -196,31 +175,80 @@ var productsConfig = [
 /**
  * Список динамически созданных тасков, которые будут использованы как зависимости для таска 'products'
  *
- * Пример: ['trivia', 'personality']
+ * Пример: ['trivia:js', 'trivia:html', 'personality:js', 'personality:html'...]
  * @type {Array}
  */
 var productTasks = [];
 
-
+// создать динамис=чески таски для сборки MutApp приложений
 productsConfig.forEach(function (e) {
     console.log('Creating task for build product: ' + e.productName);
-    productTasks.push(e.productName);
-    gulp.task(e.productName, function() {
-        console.log('Building product: ' + e.productName + ', src: ' + e.src.js);
+
+    var productJsTaskName = e.productName+':js';
+    productTasks.push(productJsTaskName);
+    gulp.task(productJsTaskName, function() {
+        console.log('Building product js: ' + e.productName + ', src: ' + e.src.js);
         return gulp.src(e.src.js)
             .pipe(concat(buildConfig.products.commonJsFileName))
             .pipe(gulpIf(buildConfig.uglifyJs, uglify()))
             .pipe(gulp.dest('./build/products/'+ e.productName));
     });
+
+    var productJsTaskName = e.productName+':css';
+    productTasks.push(productJsTaskName);
+    gulp.task(productJsTaskName, function() {
+        console.log('Building product css: ' + e.productName + ', src: ' + e.src.css);
+        return gulp.src(buildConfig.products.commonCss.concat(e.src.css)) // два массива склеиваются
+            .pipe(concat(buildConfig.products.commonCssFileName))
+            .pipe(gulpIf('*.css', cssnano()))
+            .pipe(gulp.dest('./build/products/'+ e.productName));
+    });
+
+    var productHtmlTaskName = e.productName+':html';
+    productTasks.push(productHtmlTaskName);
+    gulp.task(productHtmlTaskName, function() {
+        console.log('Building product html: ' + e.productName + ', src: ' + e.src.html);
+        var srclib = gulp.src(['./build/products/common/js/lib.js'], {read: false});
+        var srcapp = gulp.src(['./build/products/'+ e.productName + 'app.js'], {read: false});
+        return gulp.src(e.src.html)
+            .pipe(useref())
+            // выбрал gulp-inject-string вместо gulp-inject, так как в последнем получаются громадные относительные пути
+            .pipe(injectString.replace('<!-- build:lib:js -->', '<script type="text/javascript" src="../common/js/lib.js"></script>'))
+            .pipe(injectString.replace('<!-- build:app:js -->', '<script type="text/javascript" src="app.js"></script>'))
+            //.pipe(inject(srclib, {name: 'lib', relative: true, ignorePath: '../../build/products/'}))
+            //.pipe(inject(srcapp, {name: 'app', relative: true, ignorePath: '../../../build/products/'+ e.productName+'/'}))
+            .pipe(version(versionConfig))
+            .pipe(gulp.dest('./build/products/'+ e.productName));
+    });
+
+    if (e.src.i) {
+        var productImgTaskName = e.productName+':i';
+        productTasks.push(productImgTaskName);
+        gulp.task(productImgTaskName, function() {
+            console.log('Building product img: ' + e.productName + ', src: ' + e.src.i);
+            return gulp.src(e.src.i)
+                .pipe(cache(imagemin({
+                    interlaced: true
+                })))
+                .pipe(gulp.dest('./build/products/'+ e.productName));
+        });
+    }
 });
 
+/**
+ *
+ */
+gulp.task('products:lib', function() {
+    return gulp.src(buildConfig.products.libJsSrc)
+        .pipe(concat(buildConfig.products.libJsFileName))
+        .pipe(gulpIf(buildConfig.uglifyJs, uglify()))
+        .pipe(gulp.dest(buildConfig.products.libDest));
+});
 
+/**
+ *
+ */
 gulp.task('products', productTasks);
-//gulp.task('products', function() {
-//    productsConfig.forEach(function (e) {
-//        gulp.start(e.productName);
-//    });
-//});
 
 gulp.task('version', function() {
     /**
@@ -253,8 +281,11 @@ gulp.task('concat:editorlib', function() {
 });
 
 gulp.task('concat:common', function() {
+    // в рамках сборки основного js, заменим путь для локальной сборки
     return gulp.src(buildConfig.src.js.srcCommon)
         .pipe(concat(buildConfig.names.commonFileName))
+        .pipe(replace('http://localhost:63342/ProCo/pub/', 'http://localhost:63342/ProCo/build/'))
+        .pipe(replace('buildStatus: "development"', 'buildStatus: "production"'))
         .pipe(gulpIf(buildConfig.uglifyJs, uglify()))
         .pipe(gulp.dest(buildConfig.names.distFolder));
 });
@@ -342,45 +373,6 @@ gulp.task('inject', function () {
 //    });
 //});
 
-// <autotest>
-//gulp.task('useref:autotest', function(){
-//    return gulp.src('pub/autotest/index.html')
-//        .pipe(useref())
-//        //не надо минимизировать автотесты
-//        //.pipe(gulpIf('*.js', uglify()))
-//        .pipe(gulpIf('*.css', cssnano()))
-//        .pipe(gulp.dest('build/autotest'));
-//});
-// </autotest>
-
-
-// <test_new>
-//gulp.task('useref:test_new', function(){
-//    return gulp.src('pub/products/test_new/index.html')
-//        .pipe(useref())
-//        .pipe(gulpIf('*.js', uglify()))
-//        .pipe(gulpIf('*.css', cssnano()))
-//        .pipe(gulp.dest('build/products/test_new'))
-//});
-//gulp.task('images:test_new', function(){
-//    return gulp.src('pub/products/test_new/i/**/*.+(png|jpg|jpeg|gif|svg)')
-//        .pipe(cache(imagemin({
-//            interlaced: true
-//        })))
-//        .pipe(gulp.dest('build/products/test_new/i'))
-//});
-// </test_new>
-
-// <root>
-gulp.task('useref:root', function(){
-    return gulp.src('pub/*.html')
-        // пытался оптимизировать
-        // .pipe(changed('build'))
-        .pipe(useref())
-        .pipe(gulpIf('*.js', uglify()))
-        .pipe(gulpIf('*.css', cssnano()))
-        .pipe(gulp.dest('build'))
-});
 gulp.task('images:root', function(){
     return gulp.src('pub/i/**/*.+(png|jpg|jpeg|gif|svg)')
         // Caching images that ran through imagemin
@@ -434,6 +426,8 @@ gulp.task('build', function (callback) {
         'concat:editor',
         'inject',
         'version',
+        'products:lib',
+        'products',
         callback
     )
 });
