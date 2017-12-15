@@ -63,7 +63,7 @@ var MemorizApp = MutApp.extend({
             controlFilter: 'screen(id=gamescreen)'
         },
         "id=mm showLogoInOpened": {
-            label: {RU:'Показывать лого в результатах',EN:'Show logo on result screens'},
+            label: {RU:'Показывать лого',EN:'Show logo'},
             controls: 'OnOff',
             controlFilter: 'screen(type=opened)'
         },

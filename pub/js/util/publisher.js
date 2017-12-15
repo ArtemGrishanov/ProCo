@@ -301,30 +301,30 @@ var Publisher = {};
 
 
         //TODO поиск предполагает что ресурсы находятся рядом с html в baseUrl
-        var scriptExp = /src=(?:\"|\')([^\.](?:\w|\/|\.|\-|\_)+\.js)(?:\"|\')/ig;
-        var jsMatch = null;
-        while ( (jsMatch = scriptExp.exec(codeStr)) !== null) {
-            // если этот ресурс не был отдельно записан в config.products.common.publishResources
-            if (getResourceByUrl(jsMatch[1]) === null) {
-                productResources.push({
-                    baseUrl: baseProductUrl,
-                    type: 'text/javascript',
-                    url: jsMatch[1]
-                });
-            }
-        }
-        var cssExp = /href=(?:\"|')([^\.](?:\w|\/|\.|\-|\_)+.css)(?:\"|')/ig;
-        var cssMatch = null;
-        while ( (cssMatch = cssExp.exec(codeStr)) !== null) {
-            // если этот ресурс не был отдельно записан в config.products.common.publishResources
-            if (getResourceByUrl(cssMatch[1]) === null) {
-                productResources.push({
-                    baseUrl: baseProductUrl,
-                    type: 'text/css',
-                    url: cssMatch[1]
-                });
-            }
-        }
+//        var scriptExp = /src=(?:\"|\')([^\.](?:\w|\/|\.|\-|\_)+\.js)(?:\"|\')/ig;
+//        var jsMatch = null;
+//        while ( (jsMatch = scriptExp.exec(codeStr)) !== null) {
+//            // если этот ресурс не был отдельно записан в config.products.common.publishResources
+//            if (getResourceByUrl(jsMatch[1]) === null) {
+//                productResources.push({
+//                    baseUrl: baseProductUrl,
+//                    type: 'text/javascript',
+//                    url: jsMatch[1]
+//                });
+//            }
+//        }
+//        var cssExp = /href=(?:\"|')([^\.](?:\w|\/|\.|\-|\_)+.css)(?:\"|')/ig;
+//        var cssMatch = null;
+//        while ( (cssMatch = cssExp.exec(codeStr)) !== null) {
+//            // если этот ресурс не был отдельно записан в config.products.common.publishResources
+//            if (getResourceByUrl(cssMatch[1]) === null) {
+//                productResources.push({
+//                    baseUrl: baseProductUrl,
+//                    type: 'text/css',
+//                    url: cssMatch[1]
+//                });
+//            }
+//        }
     }
 
     /**
@@ -363,7 +363,7 @@ var Publisher = {};
                     // клонируем данные для задачи, так как иначе индекс i сбиндится, будет браться последний из цикла
                     data: JSON.parse(JSON.stringify(productResources[i])),
                     run: function() {
-                        log('Grab task run:' + this.data.baseUrl + this.data.url);
+                        // log('Grab task run:' + this.data.baseUrl + this.data.url);
                         var client = new XMLHttpRequest();
                         client.open('GET', this.data.baseUrl + this.data.url);
                         client.onreadystatechange = (function(e) {

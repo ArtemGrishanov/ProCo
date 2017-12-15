@@ -46,7 +46,7 @@ html, body {
 }
 .spinner {
     display: inline-block;
-    background: url(../i/loader.gif);
+    background: url(//p.testix.me/images/products/fbPanorama/loader.gif);
     width: 48px;
     height: 48px;
 }
@@ -106,7 +106,7 @@ html, body {
     border-bottom: 10px solid #33bbed;
 }
 .photo_viewer_testix_link {
-    background: url(//testix.me/i/icons/testix-fav-32.png) no-repeat center !important;
+    background: url(//p.testix.me/images/products/fbPanorama/testix-fav-32.png) no-repeat center !important;
     font-family: Arial, sans-serif;
 }
 .photo_viewer_space {
@@ -131,7 +131,7 @@ html, body {
     background-color: rgba(32,32,32,0.32);
 }
 .photosphere_scrollbar_arr {
-    background: url(//testix.me/i/products/fbPanorama/Arrow-vertical.png) no-repeat;
+    background: url(//p.testix.me/images/products/fbPanorama/Arrow-vertical.png) no-repeat;
     background-position-x: center;
     background-position-y: 14px;
     width: 100%;
@@ -140,7 +140,7 @@ html, body {
 }
 @media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
     .photosphere_scrollbar_arr {
-        background-image: url(//testix.me/i/products/fbPanorama/Arrow-vertical@2x.png);
+        background-image: url(//p.testix.me/images/products/fbPanorama/Arrow-vertical@2x.png);
         background-size: 12px 120px;
     }
 }
@@ -151,11 +151,11 @@ html, body {
     width: 40px;
     height: 40px;
     background-size: 20px 20px;
-    background: url(//testix.me/i/products/fbPanorama/Icon-fullscreen.png) no-repeat center;
+    background: url(//p.testix.me/images/products/fbPanorama/Icon-fullscreen.png) no-repeat center;
 }
 @media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
     .photosphere_fullscreen {
-        background-image: url(//testix.me/i/products/fbPanorama/Icon-fullscreen@2x.png);
+        background-image: url(//p.testix.me/images/products/fbPanorama/Icon-fullscreen@2x.png);
         background-size: 20px 20px;
     }
 }

@@ -6,7 +6,9 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
     <meta name='viewport' content='width=device-width,initial-scale=1,user-scalable=no'>
-    <!--build:css css/info.min.css-->
+    <!-- style:css -->
+    <!-- endinject -->
+    <!--build:remove-->
     <link href="css/common.css" rel="stylesheet"/>
     <!--endbuild-->
     <meta property="og:url" content="http://testix.me" />
@@ -111,9 +113,12 @@
             </div>
         </div>
     </div>
-
+    <!-- commonlib:js -->
+    <!-- endinject -->
+    <!-- common:js -->
+    <!-- endinject -->
+    <!-- build:remove -->
     <script type="text/javascript" src="lib/jquery.js"></script>
-    <!-- build:js info.min.js -->
     <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/model/app.js"></script>
     <script type="text/javascript" src="js/model/auth.js"></script>

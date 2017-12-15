@@ -168,7 +168,10 @@ var shareImageService = {};
             _canvasGenerationTimestamp = now;
             previewService.createInIframe({
                 html: param.app.getAutoPreviewHtml(),
-                stylesToEmbed: [config.products.common.styles, config.products[param.app.type].stylesForEmbed],
+                stylesToEmbed: [
+                    (config.common.buildStatus === 'development') ? config.products.common.styles: '',
+                    config.products[param.app.type].stylesForEmbed
+                ],
                 cssString: param.app.getCssRulesString(),
                 width: param.app.getSize().width,
                 height: param.app.getSize().height,

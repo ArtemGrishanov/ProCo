@@ -4,12 +4,11 @@
     <title>Panorama</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-    <!--build:css style.css-->
-    <!-- этот файл кладется при публикации из products/common/css/tstx_cmn_products.css -->
+    <!--build:remove-->
     <link href="../common/css/tstx_cmn_products.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/photo-sphere-viewer.min.css" rel="stylesheet">
+    <link href="photo-sphere-viewer.min.css" rel="stylesheet">
     <!--endbuild-->
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
     <div id="id-mutapp_screens">
@@ -43,10 +42,12 @@
         <div class="pin_wr" data-dictionary-id="<%=pinDictionaryId%>" data-option-index="<%=pinDictionaryId%>" data-app-property="id=mm pins, id=mm pins.<%=pinDictionaryId%>.position, id=mm pins.<%=pinDictionaryId%>.data.text, id=mm pins.<%=pinDictionaryId%>.modArrow"><%=text%></div>
     </script>
 
-    <!-- build:js index.min.js -->
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" src="underscore.js"></script>
-    <script type="text/javascript" src="backbone.js"></script>
+    <!-- build:lib:js -->
+    <!-- build:app:js -->
+    <!--build:remove-->
+    <script type="text/javascript" src="../common/js/jquery.js"></script>
+    <script type="text/javascript" src="../common/js/underscore.js"></script>
+    <script type="text/javascript" src="../common/js/backbone.js"></script>
     <script type="text/javascript" src="../common/js/mutapp.js"></script>
 
     <script type="text/javascript" src="three.min.js"></script>
@@ -67,12 +68,12 @@
         /*start_code
          var app = null;
          $(document).ready(function() {
-         var DEFAULT_PARAMS = {};
-         app = new FbPanoramaApp({
-         defaults: DEFAULT_PARAMS,
-         mode: 'published'
-         });
-         app.start();
+            var DEFAULT_PARAMS = {};
+            app = new FbPanoramaApp({
+                defaults: DEFAULT_PARAMS,
+                mode: 'published'
+            });
+            app.start();
          });
          start_code*/
     </script>
