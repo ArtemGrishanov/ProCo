@@ -115,11 +115,15 @@ SignupModal.prototype.onSignupClick = function() {
         var email = this.$ui.find('.js-email').val().trim();
         var password = this.$ui.find('.js-password').val().trim();
         var newsOK = (this.$ui.find('.js-reg_attr_news').prop('checked') === true) ? '1': '0';
+        var firstName = this.$ui.find('.js-first_name').val().trim();
+        var lastName = this.$ui.find('.js-last_name').val().trim();
         // отправить запрос на регистрацию
         Auth.signUp({
             email: email,
             password: password,
-            news_subscription: newsOK
+            news_subscription: newsOK,
+            firstName: firstName,
+            lastName: lastName
         });
     }
 };

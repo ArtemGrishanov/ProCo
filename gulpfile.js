@@ -29,6 +29,11 @@ var concat = require('gulp-concat');
 var version = require('gulp-version-number');
 var injectString = require('gulp-inject-string');
 var replace = require('gulp-string-replace');
+var uniqid = require('uniqid');
+
+var productVersion = 'v2.0.1';
+var buildUniqId = uniqid();
+buildUniqId = buildUniqId.substring(buildUniqId.length-6,buildUniqId.length);
 
 var buildConfig = {
     uglifyJs: true,
@@ -245,6 +250,14 @@ gulp.task('products:lib', function() {
         .pipe(gulp.dest(buildConfig.products.libDest));
 });
 
+gulp.task('uniq', function() {
+    console.log(uniqid('html_'));
+    console.log(uniqid('html_'));
+    console.log(uniqid('html_'));
+    console.log(uniqid('html_'));
+    console.log(uniqid('html_'));
+});
+
 /**
  *
  */
@@ -286,6 +299,7 @@ gulp.task('concat:common', function() {
         .pipe(concat(buildConfig.names.commonFileName))
         .pipe(replace('http://localhost:63342/ProCo/pub/', 'http://localhost:63342/ProCo/build/'))
         .pipe(replace('buildStatus: "development"', 'buildStatus: "production"'))
+        .pipe(replace('{{js_product_version}}', productVersion))
         .pipe(gulpIf(buildConfig.uglifyJs, uglify()))
         .pipe(gulp.dest(buildConfig.names.distFolder));
 });
@@ -304,6 +318,7 @@ gulp.task('concat:editor', function() {
 gulp.task('useref:remove', function() {
     return gulp.src(buildConfig.src.html.site.src)
         .pipe(useref())
+        .pipe(injectString.replace('<!--product_version-->', productVersion))
         .pipe(gulp.dest(buildConfig.src.html.site.dist));
 });
 

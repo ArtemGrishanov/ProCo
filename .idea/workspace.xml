@@ -26,7 +26,61 @@
       <file leaf-file-name="gulpfile.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gulpfile.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="169" column="45" selection-start="5536" selection-end="5536" vertical-scroll-proportion="0.24714285" vertical-offset="2362" max-vertical-offset="6570">
+            <state line="324" column="3" selection-start="11551" selection-end="11551" vertical-scroll-proportion="0.46142858" vertical-offset="4537" max-vertical-offset="6795">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="59" column="40" selection-start="2464" selection-end="2464" vertical-scroll-proportion="0.0" vertical-offset="706" max-vertical-offset="16725">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.txt" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/photostory/README.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="19" column="27" selection-start="2265" selection-end="2265" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="signup.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/templates/signup.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="20" column="50" selection-start="1274" selection-end="1274" vertical-scroll-proportion="-12.5" vertical-offset="0" max-vertical-offset="555">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="signupModal.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/view/modals/signupModal.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="120" column="16" selection-start="4069" selection-end="4069" vertical-scroll-proportion="-12.92" vertical-offset="1477" max-vertical-offset="2475">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="auth.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/model/auth.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="613" column="13" selection-start="25615" selection-end="25615" vertical-scroll-proportion="-12.16" vertical-offset="8891" max-vertical-offset="11985">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="182" column="78" selection-start="13358" selection-end="13373" vertical-scroll-proportion="-9.833333" vertical-offset="2494" max-vertical-offset="4335">
               <folding />
             </state>
           </provider>
@@ -42,13 +96,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/rasterization_cnt.html" />
-        <option value="$PROJECT_DIR$/pub/js/editorui/editor.js" />
-        <option value="$PROJECT_DIR$/build/products/trivia/index.html" />
-        <option value="$PROJECT_DIR$/pub/js/util/publisher.js" />
-        <option value="$PROJECT_DIR$/pub/controls/custom/trivia/triviaOptionPoints.js" />
-        <option value="$PROJECT_DIR$/build/templates/anonymPage/index.html" />
-        <option value="$PROJECT_DIR$/pub/products/personality/index.html" />
         <option value="$PROJECT_DIR$/pub/products/trivia/index.html" />
         <option value="$PROJECT_DIR$/pub/products/memoriz/index.html" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/css/style.css" />
@@ -56,12 +103,20 @@
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/index.html" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/app.js" />
         <option value="$PROJECT_DIR$/pub/products/fbPanorama/model/m.js" />
+        <option value="$PROJECT_DIR$/pub/templates/signup.html" />
+        <option value="$PROJECT_DIR$/pub/css/common.css" />
+        <option value="$PROJECT_DIR$/pub/js/view/modals/signupModal.js" />
+        <option value="$PROJECT_DIR$/pub/index.html" />
         <option value="$PROJECT_DIR$/gulpfile.js" />
         <option value="$PROJECT_DIR$/pub/js/config.js" />
+        <option value="$PROJECT_DIR$/pub/products/photostory/README.txt" />
+        <option value="$PROJECT_DIR$/pub/js/model/auth.js" />
+        <option value="$PROJECT_DIR$/pub/products/trivia/app.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="-1" />
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="873" />
@@ -122,6 +177,46 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="products" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="products" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="photostory" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -258,8 +353,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
-    <editor active="false" />
+    <frame x="-1" y="23" width="1440" height="873" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -267,7 +362,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22841966" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.205165" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22094691" sideWeight="0.77158034" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22094691" sideWeight="0.77158034" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20549928" sideWeight="0.4555113" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32669324" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -295,55 +390,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/products/trivia/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="59" selection-start="364" selection-end="364" vertical-scroll-proportion="-5.625" vertical-offset="0" max-vertical-offset="2400">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="231" column="5" selection-start="4661" selection-end="4661" vertical-scroll-proportion="0.37241378" vertical-offset="3195" max-vertical-offset="3945">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/fbPanorama.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="29" selection-start="379" selection-end="379" vertical-scroll-proportion="-0.28511235" vertical-offset="458" max-vertical-offset="1170">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="108" column="36" selection-start="5977" selection-end="5977" vertical-scroll-proportion="0.52034885" vertical-offset="1262" max-vertical-offset="1980">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/Review instructions.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="0" selection-start="1069" selection-end="1069" vertical-scroll-proportion="0.22050563" vertical-offset="128" max-vertical-offset="840">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/personality/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="126" column="73" selection-start="7090" selection-end="7387" vertical-scroll-proportion="0.4113372" vertical-offset="1607" max-vertical-offset="2295">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="133" column="79" selection-start="3131" selection-end="3190" vertical-scroll-proportion="0.29285714" vertical-offset="1790" max-vertical-offset="2490">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="64" column="43" selection-start="3174" selection-end="3177" vertical-scroll-proportion="0.52034885" vertical-offset="602" max-vertical-offset="1290">
@@ -365,21 +411,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="435" column="21" selection-start="19187" selection-end="19187" vertical-scroll-proportion="0.83551675" vertical-offset="5951" max-vertical-offset="16650">
-          <folding>
-            <marker date="1513327260000" expanded="true" signature="-1:-1" placeholder="[...]" />
-            <marker date="1513327260000" expanded="true" signature="-1:-1" placeholder="{&quot;img&quot;: 'http://p.testix.me/storefront/memoriz/13e4d14521.jpg'...}" />
-            <marker date="1513327260000" expanded="true" signature="-1:-1" placeholder="{&quot;img&quot;: 'http://p.testix.me/storefront/memoriz/53b37bf1e9.jpg'...}" />
-            <marker date="1513327260000" expanded="true" signature="-1:-1" placeholder="{&quot;img&quot;: 'http://p.testix.me/storefront/memoriz/6842f5cd6d.jpg'...}" />
-            <marker date="1513327260000" expanded="true" signature="-1:-1" placeholder="{&quot;img&quot;: 'http://p.testix.me/storefront/memoriz/06cc56a6dc.jpg'...}" />
-            <marker date="1513327260000" expanded="true" signature="-1:-1" placeholder="{&quot;img&quot;: 'http://p.testix.me/storefront/memoriz/e78a9cd599.jpg'...}" />
-            <marker date="1513327260000" expanded="true" signature="-1:-1" placeholder="{&quot;baseUrl&quot;: ''...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/fbPanorama/model/m.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="41" column="28" selection-start="1749" selection-end="1749" vertical-scroll-proportion="0.5674157" vertical-offset="211" max-vertical-offset="5460">
@@ -387,9 +418,84 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/build/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="180" column="72" selection-start="13343" selection-end="13343" vertical-scroll-proportion="-5.428571" vertical-offset="2434" max-vertical-offset="4035">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/favicon.ico">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/css/common.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="78" column="0" selection-start="1272" selection-end="1272" vertical-scroll-proportion="0.48285714" vertical-offset="832" max-vertical-offset="26160">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/templates/signup.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="50" selection-start="1274" selection-end="1274" vertical-scroll-proportion="-12.5" vertical-offset="0" max-vertical-offset="555">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/view/modals/signupModal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="120" column="16" selection-start="4069" selection-end="4069" vertical-scroll-proportion="-12.92" vertical-offset="1477" max-vertical-offset="2475">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="182" column="78" selection-start="13358" selection-end="13373" vertical-scroll-proportion="-9.833333" vertical-offset="2494" max-vertical-offset="4335">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/view/modals/modal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="113" column="59" selection-start="4135" selection-end="4163" vertical-scroll-proportion="0.33333334" vertical-offset="1466" max-vertical-offset="2190">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="59" column="40" selection-start="2464" selection-end="2464" vertical-scroll-proportion="0.0" vertical-offset="706" max-vertical-offset="16725">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/photostory/README.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="27" selection-start="2265" selection-end="2265" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/model/auth.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="613" column="13" selection-start="25615" selection-end="25615" vertical-scroll-proportion="-12.16" vertical-offset="8891" max-vertical-offset="11985">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/trivia/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="696" column="23" selection-start="27923" selection-end="27923" vertical-scroll-proportion="0.36681223" vertical-offset="10188" max-vertical-offset="11445">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/gulpfile.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="169" column="45" selection-start="5536" selection-end="5536" vertical-scroll-proportion="0.24714285" vertical-offset="2362" max-vertical-offset="6570">
+        <state line="324" column="3" selection-start="11551" selection-end="11551" vertical-scroll-proportion="0.46142858" vertical-offset="4537" max-vertical-offset="6795">
           <folding />
         </state>
       </provider>

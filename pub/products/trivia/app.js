@@ -700,7 +700,7 @@ var TriviaApp = MutApp.extend({
         }
         res.push({
             type: 'info',
-            message: 'umber of correct answers and results',
+            message: 'Number of correct answers and results',
             html: null,
             visualization: {
                 data: visualizationData,

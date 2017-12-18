@@ -57,12 +57,16 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['dev'], //dev test prod
+        configurationSetsOnStart: ['prod'], //dev test prod
         /**
          * Признак того, что проект собран gulp-ом
          * 'production'
          */
         buildStatus: "development", // ! Значение меняется при сборке gulp
+        /**
+         * Версия сборки, указывается в gulp файле вручную
+         */
+        jsBuildHash: "{{js_product_version}}",
         /**
          * хост для загрузки прототипов на редактирование
          * используется для локальной разрботки, чтобы получить достйп к iframe и не вызвать sequrity error
@@ -1103,3 +1107,4 @@ for (var key in config.products) {
         config.products[key].stylesForEmbed = config.products[key].stylesForEmbed.replace('{{config.common.home}}',config.common.home);
     }
 }
+$('.js-version_hash').text(config.common.jsBuildHash);

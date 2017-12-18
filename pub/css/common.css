@@ -137,6 +137,7 @@ input:focus {
 }
 .su-reg_label {
     background-color: #fff;
+    margin: 8px;
 }
 .su-reg_label.__error {
     color: #ff515b;
@@ -150,7 +151,7 @@ input:focus {
     color: #7d7d7d;
     padding: 10px 12px;
     font-size: 14px;
-    margin: 12px;
+    margin: 8px;
 }
 .su-reg_btn {
     display: inline-block;
@@ -197,7 +198,7 @@ input:focus {
     cursor: pointer;
 }
 .su-attr_cnt {
-    margin: 6px 0 10px;
+    margin: 6px 0;
 }
 .su-arr {
     display: inline-block;

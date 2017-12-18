@@ -97,6 +97,8 @@ var Auth = {
      *
      * @param {string} param.email
      * @param {string} param.password
+     * @param {string} [param.firstName] optional
+     * @param {string} [param.lastName] optional
      * @param {number} param.news_subscription - 0 | 1 - разрешается ли присылать новости. По умолчанию '1'
      */
     function signUp(param) {
@@ -139,12 +141,29 @@ var Auth = {
         //        var attributeNickname = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataEmail);
         //        attributeList.push(attributeNickname);
 
-        var attribute = {
+        var attributeData = {
             Name : 'custom:news_subscription',
             Value : param.news_subscription
         };
-        var attribute = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(attribute);
+        var attribute = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(attributeData);
         attributeList.push(attribute);
+
+        if (param.firstName) {
+            var nameAttrData = {
+                Name : 'custom:first_name',
+                Value : param.firstName
+            };
+            var attr = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(nameAttrData);
+            attributeList.push(attr);
+        }
+        if (param.lastName) {
+            var lastnameAttrData = {
+                Name : 'custom:last_name',
+                Value : param.lastName
+            };
+            var attr = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(lastnameAttrData);
+            attributeList.push(attr);
+        }
 
         userPool.signUp(param.username, param.password, attributeList, null, function(err, result) {
             if (err) {
@@ -587,7 +606,7 @@ var Auth = {
                 var atr = param.cognitoAttributes[i];
                 if (atr.Name === 'sub') {
                     // меняем название UID на 'sub' -> 'id'
-                    _user['id'] = 'ad96fa85-6737-40e1-bf30-5eb016393af9';//atr.Value;//
+                    _user['id'] = atr.Value; //'ad96fa85-6737-40e1-bf30-5eb016393af9';
                 }
                 else {
                     _user[atr.Name] = atr.Value;
