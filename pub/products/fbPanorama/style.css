@@ -29,7 +29,7 @@ html, body {
     background-color: #33bbed;
     color: #ffffff;
     white-space: nowrap;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
     font-size: 12px;
 }
 .img_progress {
@@ -107,7 +107,7 @@ html, body {
 }
 .photo_viewer_testix_link {
     background: url(//p.testix.me/images/products/fbPanorama/testix-fav-32.png) no-repeat center !important;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
 }
 .photo_viewer_space {
     width: 32px;

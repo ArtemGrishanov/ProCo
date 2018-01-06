@@ -326,6 +326,8 @@ MutApp.ENGINE_STORAGE_VALUE_CHANGED = 'mutapp_storage_value_changed';
 MutApp.ENGINE_SET_PROPERTY_VALUE = 'mutapp_set_property_value';
 
 
+MutApp.PATTERN_TYPE_NUMBER = 'mutapp_pattern_number';
+
 /**
  * Установить новый размер приложения
  * Если размер новый, будет вызвано событие MutApp.EVENT_APP_SIZE_CHANGED
@@ -839,6 +841,15 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
         else {
             mutAppProperty.controls = [];
         }
+        if (prInfo.valuePattern) {
+            mutAppProperty._valuePattern = prInfo.valuePattern;
+        }
+        if (MutApp.Util.isNumeric(prInfo.minValue) === true) {
+            mutAppProperty._minValue = prInfo.minValue;
+        }
+        if (MutApp.Util.isNumeric(prInfo.maxValue) === true) {
+            mutAppProperty._maxValue = prInfo.maxValue;
+        }
 
         if (MutApp.Util.isMutAppPropertyDictionary(mutAppProperty) === true) {
             mutAppProperty.prototypes = prInfo.prototypes;
@@ -850,6 +861,12 @@ MutApp.prototype.linkMutAppProperty = function(mutAppProperty) {
         // если в приложении есть сохраненные десериализованные свойства, то приложение должно получить их
         if (this._parsedDefaults[mutAppProperty.propertyString]) {
             mutAppProperty.deserialize(this._parsedDefaults[mutAppProperty.propertyString]);
+        }
+
+        // здесь впервые появляется информация о нормализации свойств (из схемы)
+        // поэтому можно сделать нормализацию
+        if (mutAppProperty._value !== undefined) {
+            mutAppProperty._value = mutAppProperty._normalizeValue(mutAppProperty._value);
         }
 
         this._mutappProperties.push(mutAppProperty);
@@ -2505,21 +2522,35 @@ MutApp.Util = {
             // не пытаемся ничего устанавливать
             return value;
         }
-        var numCount = (pattern.match(/{{number}}/g) || []).length;
-        if (numCount === 1) {
-            var s = value.toString().replace(/\s/g,'');
-            if (s === '') {
-                s = '0';
+        var patternType = MutApp.Util.getPatternType(pattern);
+        switch (patternType) {
+            case MutApp.PATTERN_TYPE_NUMBER: {
+                var s = value.toString().replace(/\s/g,'');
+                if (s === '') {
+                    s = '0';
+                }
+                var num = parseInt(s);
+                if (isNaN(num) === true) {
+                    num = 0;
+                }
+                return pattern.replace('{{number}}', num);
             }
-            var num = parseInt(s);
-            if (isNaN(num) === true) {
-                num = 0;
-            }
-            return pattern.replace('{{number}}', num);
         }
-        else {
-            throw new Error('MutApp.Util.applyPattern: this pattern \''+pattern+'\' is not supported');
+        throw new Error('MutApp.Util.applyPattern: this pattern \''+pattern+'\' is not supported');
+    },
+
+    /**
+     * Проверяет паттерн на валидность, что такой поддерживается.
+     * В случае успеха возвращает его id
+     *
+     * @param {string} pattern
+     * @return {string}
+     */
+    getPatternType: function(pattern) {
+        if ((pattern.match(/{{number}}/g) || []).length === 1) {
+            return MutApp.PATTERN_TYPE_NUMBER;
         }
+        return null;
     }
 };
 
@@ -2829,6 +2860,8 @@ MutAppProperty.prototype.initialize = function(param) {
     this._getValueTimestamp = param._getValueTimestamp || undefined;
     this._setValueTimestamp = param._setValueTimestamp || undefined;
     this._valuePattern = param.valuePattern || null;
+    this._minValue = param.minValue || undefined;
+    this._maxValue = param.maxValue || undefined;
     this._bindedEvents = {};
     // выделим из propertyString имя свойства. Потребуется в дальнейшем для генерации событий об изменении свойства (только для свойств в MutAppModel)
     var pr = MutApp.Util.parseSelector(param.propertyString);
@@ -2837,6 +2870,8 @@ MutAppProperty.prototype.initialize = function(param) {
     }
     if (param.hasOwnProperty('value') === true) {
         if (this._validateDataType(param.value) === true) {
+            // здесь не вызываем _normalizeValue() так как связи с приложением еще нет
+            // она появится позже в linkMutAppProperty, там и делаем нормализацию
             this._value = param.value;
         }
         else {
@@ -3011,7 +3046,7 @@ MutAppProperty.prototype.deserialize = function(data) {
         data = JSON.parse(data);
     }
     this.id = data.id;
-    this._value = data.value;
+    this._value = this._normalizeValue(data.value);
     this._getValueTimestamp = data._getValueTimestamp;
     this._setValueTimestamp = data._setValueTimestamp;
     if (this._application) {
@@ -3032,8 +3067,9 @@ MutAppProperty.prototype.setValue = function(newValue) {
         // например: newValue="20", надо сделать "20px" (по паттерну {{number}}px)
         newValue = MutApp.Util.applyPattern(newValue, this._valuePattern);
     }
-    if (this._value !== newValue) {
-        this._value = newValue;
+    var normalized = this._normalizeValue(newValue);
+    if (this._value !== normalized) {
+        this._value = normalized;
         this._setValueTimestamp = new Date().getTime();
         // событие об изменении значения от имени свойства
         this.trigger('change');
@@ -3051,6 +3087,77 @@ MutAppProperty.prototype.setValue = function(newValue) {
         }
     }
 };
+
+/**
+ * Определить, является ли значение допустимым для этого проперти.
+ * Если заданы в MutAppSchema для свойства controls.param.possibleValues - по ним происходит поиск
+ * иначе true
+ *
+ * @param {*} value
+ * @return {boolean}
+ */
+MutAppProperty.prototype._isPossibleValue = function(value) {
+    return this._normalizeValue(value) !== value;
+};
+
+/**
+ * Нормализовать значение свойства по критериям, указанным в MutAppSchema
+ * 1) Выбор из предложенных альтернатив
+ * 2) Выбор по minValue, maxValue - для number значений
+ *
+ * @param {*} value
+ *
+ * @return {*} normalized value
+ * @private
+ */
+MutAppProperty.prototype._normalizeValue = function(value) {
+    if (MutApp.Util.isPrimitive(value) === true) {
+        // check for primitives only
+        var result = value;
+        var alternativeFound = false;
+        // немного коряво. Controls - массив. Надо обратиться к первому элементу массива. По идее у нескольких контролов не может быть разных допустимых значений.
+        var control = (this.controls && this.controls.length > 0) ? this.controls[0]: null;
+        if (control && control.param && control.param.possibleValues && control.param.possibleValues.length > 0) {
+            // поиск среди объявленных альтернатив
+            for (var i = 0; i < control.param.possibleValues.length; i++) {
+                var pv = control.param.possibleValues[i];
+                if (pv === value || (pv && pv.hasOwnProperty('value') === true && pv.value === value)) {
+                    alternativeFound = true;
+                    break;
+                }
+            }
+            if (alternativeFound === false) {
+                // если значение не совпало ни с одним из альтернативных, то нормализуем к первому возможному значению
+                result = control.param.possibleValues[0].value || control.param.possibleValues[0];
+                // это не критический еррор, но надо бросить ворнинг, чтобы дать понять пользователю, что исправить
+                var msg = 'MutAppProperty._normalizeValue: value=\''+value+'\' is not valid for '+
+                    (MutApp.Util.isCssMutAppProperty(this)===true ? 'CssMutAppProperty \''+this.propertyString+'\' cssSelector=\''+this.cssSelector+'\'':
+                        '\''+this.propertyString+'\'');
+                console.warn(msg);
+            }
+        }
+        // ниже обработка мин и макс границ числового значения
+        if (MutApp.Util.isNumeric(this._minValue) || MutApp.Util.isNumeric(this._maxValue)) {
+            // если заданы мин и макс границы, то ожидается числовое значение, возможно, с паттерном.
+            var result = parseInt(result);
+            if (MutApp.Util.isNumeric(this._minValue) && this._minValue > result) {
+                result = this._minValue;
+            }
+            else if (MutApp.Util.isNumeric(this._maxValue) && this._maxValue < result) {
+                result = this._maxValue;
+            }
+            if (this._valuePattern && MutApp.Util.getPatternType(this._valuePattern) !== null) {
+                // поработали с числовым значением, надо обратно применить паттерн
+                result = MutApp.Util.applyPattern(result, this._valuePattern);
+            }
+        }
+        return result;
+    }
+    // для сложных типов данных ничего не делаем
+    // типы данных не валидируем (если например текущее значение number, а передаем Object): это делает другая функция _validateDataType
+    return value;
+};
+
 /**
  * Получить значение mutAppProperty
  * Причем делает отметка времени, когда было получено значение последний раз
@@ -3203,7 +3310,7 @@ var MutAppPropertyDictionary = function(param) {
         else if (this._validateDataType(param.value) && Array.isArray(param._orderedIds) === true) {
             // это десериализация
             this._orderedIds = param._orderedIds;
-            this._value = param.value;
+            this._value = this._normalizeValue(param.value);
         }
         else {
             throw new Error('MutAppPropertyDictionary.initialize: unsupported value type. Property string=\''+param.propertyString+'\'');
@@ -3511,7 +3618,7 @@ MutAppPropertyDictionary.prototype.deserialize = function(data) {
     // предполагается, что в data только валидные значения. Проверки не делаются
     this.id = data.id;
     this._deserializeSubProperty(data.value); // значение массива это сложный объект, внутри могут быть другие MutAppProperty
-    this._value = data.value;
+    this._value = this._normalizeValue(data.value);
     this._orderedIds = data._orderedIds;
     this._getValueTimestamp = data._getValueTimestamp;
     this._setValueTimestamp = data._setValueTimestamp;

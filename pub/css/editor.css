@@ -203,6 +203,9 @@
 .settings_panel input{
     width: 160px
 }
+.settings_panel select{
+    width: 166px
+}
 .settings_panel .colorpicker input{
     width: 129px
 }
@@ -219,7 +222,7 @@
     color: #545454;
 }
 .select_dialog_caption {
-    font-family: Roboto-Regular, Arial, san-serif;
+    font-family: Roboto-Regular, Arial;
     font-size: 32px;
     text-align: center;
 }
@@ -335,7 +338,7 @@ input[type="radio"], input[type="checkbox"] {
     display: inline-block;
     margin: 0;
     font-size: 12px;
-    font-family: Roboto-Regular, Arial, san-serif;
+    font-family: Roboto-Regular, Arial;
     color: #636363;
 }
 .control_label.__checkbox {

@@ -533,6 +533,7 @@ var Auth = {
         _sessionToken = null;
         AWS.config.credentials.clearCachedId();
         _trigger(Auth.EVENT_SIGNOUT);
+        window.localStorage.removeItem('suid');
     }
 
     /**
@@ -605,8 +606,15 @@ var Auth = {
             for (var i = 0; i < param.cognitoAttributes.length; i++) {
                 var atr = param.cognitoAttributes[i];
                 if (atr.Name === 'sub') {
-                    // меняем название UID на 'sub' -> 'id'
-                    _user['id'] = atr.Value; //'ad96fa85-6737-40e1-bf30-5eb016393af9';
+                    var suid = _surrogateUid(atr.Value);
+                    if (suid) {
+                        // подмена id пользователя. Для отладки
+                        _user['id'] = suid;
+                    }
+                    else {
+                        // меняем название UID на 'sub' -> 'id'
+                        _user['id'] = atr.Value;
+                    }
                 }
                 else {
                     _user[atr.Name] = atr.Value;
@@ -616,6 +624,42 @@ var Auth = {
         if (param.cognitoUser) {
             _user.cognitoUser = param.cognitoUser;
         }
+    }
+
+    /**
+     * Получить подмененный Uid
+     * Он может быть установлен через query-параметр 'suid'
+     *
+     * @param {string} realUid
+     * @return {string} подмененный uid
+     *
+     * @private
+     */
+    function _surrogateUid(realUid) {
+        /**
+         * Список разработчиков приложения
+         * Которым доступны особые опции, например заход под другим пользователем и др.
+         */
+        var developers = [
+            '43d927ad-17a1-4d07-84c2-c273dff1a831', // grishanov.artem@gmail.com
+            '0235e985-8b92-4666-83fa-25fd85ee1072' // 1@testix.me
+        ];
+        if (developers.indexOf(realUid) >= 0) {
+            var qParam = getQueryParams(window.location.search);
+            if (qParam && qParam.suid) {
+                // передаи через query параметры - записываем этот suid, в последующем сеансе до разлогина он будет использоваться
+                window.localStorage.setItem('suid', qParam.suid);
+                return qParam.suid;
+            }
+            else {
+                // пытаемся получить surrogate uid из локального хранилища
+                var suid = window.localStorage.getItem('suid');
+                if (suid) {
+                    return suid;
+                }
+            }
+        }
+        return null;
     }
 
     /**

@@ -10,7 +10,11 @@ function Alternative(param) {
 
     var templateHtml = this.$directive.find('.js-option_template').html();
     this.$optionsCnt = this.$directive.find('.js-options');
-    this.$dropDownValue = this.$directive.find('.js-value');
+
+    // в директиве может выпадашка-select, у него свое событие о смене значения
+    this.$dropDownValue = this.$directive.find('.js-options'); // html select element
+    this.dropDownChangedHandler = this.onDropDownChanged.bind(this);
+    this.$dropDownValue.on('change', this.dropDownChangedHandler);
     // dom-элементы соответствующие возможным значениям, сохраняем для последующей работы с иконками
     this.possibleValuesElements = [];
 
@@ -92,7 +96,15 @@ Alternative.prototype.setValue = function(value) {
                 $se.css('backgroundImage', 'url('+pv.icon.selected+')');
             }
         }
-        this.$dropDownValue.text(value);
+
+        //value может быть таким "Arial, sans-serif" что неверно, раз альтернатива, надо чтобы мутапп контролировало эти значения
+        //и нормализовало както? иначе как быть с уже сохраненными проектами
+
+        this.$dropDownValue.val(value); // html select element
+        if (this.directiveName === 'dropdown') {
+            // значение устанавливается в html-select элемент стандартными средствами
+            this.$optionsCnt.val(value);
+        }
         this.value = value;
     }
     else {
@@ -104,11 +116,17 @@ Alternative.prototype.destroy = function() {
     this.possibleValuesElements.forEach(function(elem) {
         $(elem.element).off('click', elem.handler);
     });
+    this.$dropDownValue.off('change', this.dropDownChangedHandler);
     this.$directive.remove();
 };
 
 Alternative.prototype.onItemClick = function(e) {
     var v = $(e.currentTarget).attr('data-value');
     this.setValue(v);
+    this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
+};
+
+Alternative.prototype.onDropDownChanged = function(e) {
+    this.setValue(this.$dropDownValue.val());
     this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
 };

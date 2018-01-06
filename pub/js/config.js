@@ -57,7 +57,7 @@ var config = {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
          */
-        configurationSetsOnStart: ['prod'], //dev test prod
+        configurationSetsOnStart: ['dev'], //dev test prod
         /**
          * Признак того, что проект собран gulp-ом
          * 'production'
@@ -261,12 +261,12 @@ var config = {
         /**
          * Максимальное время которое может занять аплоад нового ресурса, картинки
          */
-        putNewResourceMaxDelay: 12000,
+        putNewResourceMaxDelay: 24000,
         /**
          * Сколько по времени можем ждать ответа от сервисов типа aws
          * для аплоада оно может быть увеличено, так как там большие файлы могут быть
          */
-        responseMaxDuration: 6000
+        responseMaxDuration: 8000
     },
     jpegEncoder: {
         /**

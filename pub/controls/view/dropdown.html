@@ -1,16 +1,18 @@
-<div ng-controller="Alternative" class="dropdown">
-    <button class="btn btn-default dropdown-toggle" type="button" id="{{controlId}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        <span class="js-value"></span>
-        <span class="caret"></span>
-    </button>
-    <ul class="js-options dropdown-menu" aria-labelledby="{{controlId}}">
-        <!--<li><a href="#">Action</a></li>-->
-        <!--<li><a href="#">Another action</a></li>-->
-        <!--<li><a href="#">Something else here</a></li>-->
-        <!--<li role="separator" class="divider"></li>-->
-        <!--<li><a href="#">Separated link</a></li>-->
-    </ul>
+<div class="dropdown">
+    <select class="js-options">
+    </select>
+    <!--<button class="btn btn-default dropdown-toggle" type="button" id="{{controlId}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+        <!--<span class="js-value"></span>-->
+        <!--<span class="caret"></span>-->
+    <!--</button>-->
+    <!--<ul class="js-options dropdown-menu" aria-labelledby="{{controlId}}">-->
+        <!--&lt;!&ndash;<li><a href="#">Action</a></li>&ndash;&gt;-->
+        <!--&lt;!&ndash;<li><a href="#">Another action</a></li>&ndash;&gt;-->
+        <!--&lt;!&ndash;<li><a href="#">Something else here</a></li>&ndash;&gt;-->
+        <!--&lt;!&ndash;<li role="separator" class="divider"></li>&ndash;&gt;-->
+        <!--&lt;!&ndash;<li><a href="#">Separated link</a></li>&ndash;&gt;-->
+    <!--</ul>-->
     <div class="js-option_template" style="display:none;">
-        <li data-value="{{value}}"><a>{{option}}</a></li>
+        <option value="{{value}}">{{option}}</option>
     </div>
 </div>

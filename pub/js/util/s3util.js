@@ -47,46 +47,49 @@ var s3util = {};
     }
 
     function onRequest(err, data) {
-        activeRequest.attemptsCount = activeRequest.attemptsCount || 0;
-        activeRequest.attemptsCount++;
-        // for tests if (activeRequest.attemptsCount < 2) err = {code:'CredentialsError'};
-        if (err) {
-            log('onRequest: ' + err, true);
-            if (err.code === 'CredentialsError') {
-                // пытаемся обновить устаревшую сессию
-                Auth.refreshSession(function(result) {
-                    if (result === 'success') {
-                        //повторно выполнить этот запрос
-                        activeRequest.performed = false;
-                        pool.unshift(activeRequest);
-                        activeRequest = null;
-                    }
-                    else {
-                        if (activeRequest) activeRequest.callback('error', data);
-                        activeRequest = null;
-                    }
-                });
-//                var canRelogin = App.relogin();
-//                if (canRelogin) {
-//                    // повторно выполнить этот запрос
-//                    activeRequest.performed = false;
-//                    pool.unshift(activeRequest);
-//                    activeRequest = null;
-//                }
-//                else {
-//                    if (activeRequest) activeRequest.callback('error', data);
-//                }
+        // необходимо делать проверку на наличие activeRequest, так как он может уже истечь (просрочиться по времени выполнения)
+        if (activeRequest) {
+            activeRequest.attemptsCount = activeRequest.attemptsCount || 0;
+            activeRequest.attemptsCount++;
+            // for tests if (activeRequest.attemptsCount < 2) err = {code:'CredentialsError'};
+            if (err) {
+                log('onRequest: ' + err, true);
+                if (err.code === 'CredentialsError') {
+                    // пытаемся обновить устаревшую сессию
+                    Auth.refreshSession(function(result) {
+                        if (result === 'success') {
+                            //повторно выполнить этот запрос
+                            activeRequest.performed = false;
+                            pool.unshift(activeRequest);
+                            activeRequest = null;
+                        }
+                        else {
+                            if (activeRequest) activeRequest.callback('error', data);
+                            activeRequest = null;
+                        }
+                    });
+    //                var canRelogin = App.relogin();
+    //                if (canRelogin) {
+    //                    // повторно выполнить этот запрос
+    //                    activeRequest.performed = false;
+    //                    pool.unshift(activeRequest);
+    //                    activeRequest = null;
+    //                }
+    //                else {
+    //                    if (activeRequest) activeRequest.callback('error', data);
+    //                }
+                }
+                else {
+                    if (activeRequest) activeRequest.callback('error', data);
+                    activeRequest = null;
+                }
             }
             else {
-                if (activeRequest) activeRequest.callback('error', data);
+                if (activeRequest) activeRequest.callback(null, data);
                 activeRequest = null;
             }
-        }
-        else {
-            if (activeRequest) activeRequest.callback(null, data);
-            activeRequest = null;
-        }
 //        activeRequest = null;
+        }
     }
 
     function requestStorage(method, params, callback, maxDuration) {
@@ -114,6 +117,7 @@ var s3util = {};
     /**
      * Зааплоадить канвас по урлу
      * Будет произведена конвертация в jpg
+     * Широко используется в проекте
      *
      * @param bucket
      * @param callback (ok || error)

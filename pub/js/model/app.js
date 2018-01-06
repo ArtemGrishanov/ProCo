@@ -620,19 +620,15 @@ var App = App || {};
         else {
             document.documentElement.className += " no-touch";
         }
-//        if (config.common.facebookAuthEnabled === true) {
-//            initFB();
-//        }
-//        else {
-            // если отключена авторизация через фб то пытаемся сразу встроить скрипты
-            // иначе там будет проверка по ИД пользователя: нужно ли подключать статистику или нет
-//        }
+
         initUIHandlers();
         initLang();
 
         // атоматически при старте пытаемся возобновить предыдущую сессию
-        Auth.addEventCallback(onAuthEvent);
-        Auth.tryRestoreSession();
+        if (config.common.awsEnabled === true) {
+            Auth.addEventCallback(onAuthEvent);
+            Auth.tryRestoreSession();
+        }
         initScripts();
     }
 

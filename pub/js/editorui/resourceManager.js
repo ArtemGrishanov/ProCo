@@ -35,8 +35,9 @@ function ResourceManager(params) {
                 if (err) {
                     log('ResourceManager: ' + err, true);
                 } else {
+                    this.resourcesList = [];
                     data.Contents.forEach((function (obj) {
-                        this.resourcesList = this.resourcesList || [];
+                        //this.resourcesList = this.resourcesList || [];
                         // показываем только превьюшки в интерфейсе
                         if (obj.Key.indexOf('res/'+config.editor.resourceManager.thumbPrefix) >= 0) {
                             // по имени файла определили, что файл это превьюшка
@@ -63,7 +64,9 @@ function ResourceManager(params) {
                         }
                     }).bind(this));
                 }
-                callback();
+                if (callback) {
+                    callback();
+                }
             }).bind(this));
         }
         else {
@@ -96,13 +99,15 @@ function ResourceManager(params) {
                     Body: file,
                     ACL: 'public-read'
                 };
+                // сначала аплоадим файл, выбранный с диска
                 s3util.requestStorage('putObject', params, (function (err, data) {
                     if (err) {
                         log('ResourceManager: ' + err, true);
                         Modal.showMessage({text: App.getText('upload_res_error')});
                     }
                     else {
-                        //TODO почему расширение файла thumbCanvas получается такое же как у оригинального, например png ? А не всегда jpg
+                        // далее аплоадим превьюшку уменьшенную и сгенерированную
+                        // TODO почему расширение файла thumbCanvas получается такое же как у оригинального, например png ? А не всегда jpg
                         s3util.uploadCanvas(App.getAWSBucket(), (function() {
                             // запросить заново и перестроить диалог
                             this.resourcesList = null;

@@ -422,4 +422,12 @@ QUnit.test('MutApp test: value patterns ("{{number}}px", etc)', function( assert
     assert.ok(p.getValue() === '0px');
     p.setValue('em');
     assert.ok(p.getValue() === '0px');
+    p.setValue('-1');
+    assert.ok(p.getValue() === '-1px'); // wow, but you need to set min max value
+    p.setValue('-');
+    assert.ok(p.getValue() === '0px');
+    p.setValue('...');
+    assert.ok(p.getValue() === '0px');
+    p.setValue('ывлоцои');
+    assert.ok(p.getValue() === '0px');
 });

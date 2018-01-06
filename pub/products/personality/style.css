@@ -8,7 +8,7 @@
     height: 100%;
     overflow: hidden;
     position: relative;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
     color: #fff;
     margin: 0;
     padding: 0;
@@ -169,7 +169,7 @@ body {
     height: 100%;
     padding: 0;
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
 }
 img {
     border: 0 none;

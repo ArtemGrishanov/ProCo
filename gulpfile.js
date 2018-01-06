@@ -13,7 +13,11 @@
  *          если я планирую склеить этот файл с общие стили style.css то по идее ссылка не нужна эта
  *
  */
+var productVersion = 'v2.0.4';
+
+
 var gulp = require('gulp');
+var gutil = require('gulp-util');
 var browserSync = require('browser-sync').create();
 var useref = require('gulp-useref');
 var uglify = require('gulp-uglify');
@@ -31,7 +35,6 @@ var injectString = require('gulp-inject-string');
 var replace = require('gulp-string-replace');
 var uniqid = require('uniqid');
 
-var productVersion = 'v2.0.1';
 var buildUniqId = uniqid();
 buildUniqId = buildUniqId.substring(buildUniqId.length-6,buildUniqId.length);
 
@@ -61,7 +64,7 @@ var buildConfig = {
     src: {
         html: {
             site: {
-                src: ['./pub/*.html','./pub/favicon.ico'],
+                src: ['./pub/*.html'],
                 dist: './build'
             },
             controls: {
@@ -72,7 +75,6 @@ var buildConfig = {
                 src: ['./pub/templates/**/*.html'],
                 dist: './build/templates'
             }
-
         },
         css: {
             srcSite: [
@@ -247,6 +249,7 @@ gulp.task('products:lib', function() {
     return gulp.src(buildConfig.products.libJsSrc)
         .pipe(concat(buildConfig.products.libJsFileName))
         .pipe(gulpIf(buildConfig.uglifyJs, uglify()))
+        .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
         .pipe(gulp.dest(buildConfig.products.libDest));
 });
 
@@ -283,6 +286,7 @@ gulp.task('concat:commonlib', function() {
     return gulp.src(buildConfig.src.js.srcCommonLibs)
         .pipe(concat(buildConfig.names.commonLibFileName))
         .pipe(gulpIf(buildConfig.uglifyJs, uglify()))
+        .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
         .pipe(gulp.dest(buildConfig.names.distFolder));
 });
 
@@ -290,6 +294,7 @@ gulp.task('concat:editorlib', function() {
     return gulp.src(buildConfig.src.js.srcEditorLibs)
         .pipe(concat(buildConfig.names.editorLibFileName))
         .pipe(gulpIf(buildConfig.uglifyJs, uglify()))
+        .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
         .pipe(gulp.dest(buildConfig.names.distFolder));
 });
 
@@ -301,6 +306,7 @@ gulp.task('concat:common', function() {
         .pipe(replace('buildStatus: "development"', 'buildStatus: "production"'))
         .pipe(replace('{{js_product_version}}', productVersion))
         .pipe(gulpIf(buildConfig.uglifyJs, uglify()))
+        .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
         .pipe(gulp.dest(buildConfig.names.distFolder));
 });
 
@@ -308,6 +314,7 @@ gulp.task('concat:editor', function() {
     return gulp.src(buildConfig.src.js.srcEditor)
         .pipe(concat(buildConfig.names.editorFileName))
         .pipe(gulpIf(buildConfig.uglifyJs, uglify()))
+        .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
         .pipe(gulp.dest(buildConfig.names.distFolder));
 });
 
@@ -336,6 +343,22 @@ gulp.task('copy:templates', function() {
 gulp.task('copy:controlviews', function() {
     return gulp.src(buildConfig.src.html.controls.src)
         .pipe(gulp.dest(buildConfig.src.html.controls.dist));
+});
+
+/**
+ * Просто копирование
+ */
+gulp.task('copy:prices', function() {
+    return gulp.src('./pub/prices/**/*')
+        .pipe(gulp.dest('./build/prices'));
+});
+
+/**
+ * Просто копирование
+ */
+gulp.task('copy:favicon', function() {
+    return gulp.src('./pub/favicon.ico')
+        .pipe(gulp.dest('./build'));
 });
 
 gulp.task('inject', function () {
@@ -432,6 +455,8 @@ gulp.task('build', function (callback) {
     runSequence('clean:build',
         'images:root',
         'useref:remove',
+        'copy:prices',
+        'copy:favicon',
         'copy:templates',
         'copy:controlviews',
         'concat:css',

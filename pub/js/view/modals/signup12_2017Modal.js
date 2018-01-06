@@ -33,6 +33,8 @@ Signup12_2017Modal.prototype.render = function() {
  * Клик по кнопке регистрации
  */
 Signup12_2017Modal.prototype.onApplyClick = function() {
-    Modal.showSignup();
+    Modal.showSignup({
+        canClose: this.canClose
+    });
     Modal.hideSignup12_2017Modal();
 };

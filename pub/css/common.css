@@ -1,5 +1,5 @@
 html, body {
-    font-family: 'Roboto-Medium', sans-serif;
+    font-family: 'Roboto-Medium', Arial;
     font-size: 16px;
     font-weight: 300;
     color: #fff;
@@ -14,8 +14,15 @@ img {
     vertical-align: middle;
     border: 0;
 }
+input {
+    height: 20px;
+    font-size: 12px;
+}
 input:focus {
     outline:none;
+}
+select {
+    height: 20px;
 }
 .narrow_width {
     display: none;
@@ -318,7 +325,7 @@ input:focus {
     cursor: pointer;
 }
 .tx {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', Arial;
     font-size: 16px;
     color: #979797;
     font-weight: 400;

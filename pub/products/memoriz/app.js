@@ -236,19 +236,25 @@ var MemorizApp = MutApp.extend({
             label: {RU:'Размер шрифта',EN:'Font size'},
             controls: "StringControl",
             controlFilter: 'onclick',
-            valuePattern: '{{number}}px'
+            valuePattern: '{{number}}px',
+            minValue: 8,
+            maxValue: 80
         },
         ".js-card-field padding-top, .js-start_header padding-top, .js-start_description padding-top, .js-start_btn padding-top, .js-download_btn padding-top, .js-restart padding-top, .js-explanation_title padding-top, .js-explanation_text padding-top, .js-close_opened_layer padding-top, .js-result_title padding-top, .js-result_description padding-top": {
             label: {RU:'Отступ сверху',EN:'Padding top'},
             controls: "StringControl",
             controlFilter: 'onclick',
-            valuePattern: '{{number}}px'
+            valuePattern: '{{number}}px',
+            minValue: 0,
+            maxValue: 500
         },
         ".js-start_header padding-bottom, .js-start_description padding-bottom, .js-explanation_title padding-bottom, .js-explanation_text padding-bottom, .js-result_title padding-bottom, .js-result_description padding-bottom": {
             label: {RU:'Отступ снизу',EN:'Padding bottom'},
             controls: "StringControl",
             controlFilter: 'onclick',
-            valuePattern: '{{number}}px'
+            valuePattern: '{{number}}px',
+            minValue: 0,
+            maxValue: 500
         },
         ".js-start_back_color background-color": {
             label: {RU:'Цвет фона экрана',EN:'Screen background color'},

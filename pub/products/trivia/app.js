@@ -323,33 +323,42 @@ var TriviaApp = MutApp.extend({
             label: {RU:'Размер шрифта',EN:'Font size'},
             controls: "StringControl",
             controlFilter: 'onclick',
-            valuePattern: '{{number}}px'
+            valuePattern: '{{number}}px',
+            minValue: 8,
+            maxValue: 80
         },
         ".js-start_header padding-top, .js-start_description padding-top, .js-question_text padding-top, .js-result_title padding-top, .js-result_description padding-top, .js-btn_wr padding-top": {
             label: {RU:'Отступ сверху',EN:'Padding top'},
             controls: "StringControl",
             controlFilter: 'onclick',
-            valuePattern: '{{number}}px'
+            valuePattern: '{{number}}px',
+            minValue: 0,
+            maxValue: 500
         },
         ".js-start_header padding-bottom, .js-start_description padding-bottom, .js-question_text padding-bottom, .js-result_title padding-bottom, .js-result_description padding-bottom": {
             label: {RU:'Отступ снизу',EN:'Padding bottom'},
             controls: "StringControl",
             controlFilter: 'onclick',
-            valuePattern: '{{number}}px'
+            valuePattern: '{{number}}px',
+            minValue: 0,
+            maxValue: 500
         },
         ".js-photo padding-top": {
             label: {RU:'Отступ сверху',EN:'Padding top'},
             controls: "StringControl",
             controlFilter: 'onclick',
             valuePattern: '{{number}}px',
-            applyCssToSelector: '.js-photo_cnt' // опционально: применить стиль padding-top к другому элементу, в данном случае к родителю
+            applyCssToSelector: '.js-photo_cnt', // опционально: применить стиль padding-top к другому элементу, в данном случае к родителю
+            minValue: 0,
+            maxValue: 500
         },
         ".js-photo padding-bottom": {
             label: {RU:'Отступ снизу',EN:'Padding bottom'},
             controls: "StringControl",
             controlFilter: 'onclick',
             valuePattern: '{{number}}px',
-            applyCssToSelector: '.js-photo_cnt' // опционально: применить стиль padding-bottom к другому элементу, в данном случае к родителю
+            applyCssToSelector: '.js-photo_cnt', // опционально: применить стиль padding-bottom к другому элементу, в данном случае к родителю
+
         },
         ".js-start_header text-align, .js-start_description text-align, .js-question_text text-align, .js-result_title text-align, .js-result_description text-align": {
             label: {RU:'Выравнивание текста',EN:'Text-align'},
