@@ -10,6 +10,18 @@
  *
  */
 var ControlManager = {
+    EVENT_CONTROL_CREATED: 'ControlManager.EVENT_CONTROL_CREATED',
+    EVENT_CONTROL_DELETED: 'ControlManager.EVENT_CONTROL_DELETED',
+    /**
+     * Изменились один или несколько свойств контрола (например, sortIndex или типа того)
+     * Контрол уведомляет об этом, чтобы меры были приняты
+     */
+    EVENT_CONTROL_PROPERTIES_CHANGED: 'ControlManager.EVENT_CONTROL_PROPERTIES_CHANGED',
+    /**
+     * Для контролов типа popup могут быть определены кнопки в quick панели
+     * Событие о создании такой кнопки
+     */
+    EVENT_QUICK_PANEL_BUTTON_FOR_POPUP_CONTROL_ADDED: 'ControlManager.EVENT_QUICK_PANEL_BUTTON_FOR_POPUP_CONTROL_ADDED',
     EVENT_CHANGE_VALUE: 'ControlManager.EVENT_CHANGE_VALUE',
     EVENT_FILTER_CHANGED: 'ControlManager.EVENT_FILTER_CHANGED',
     EVENT_DICTIONARY_ADD_REQUESTED: 'ControlManager.EVENT_DICTIONARY_ADD_REQUESTED',
@@ -148,9 +160,20 @@ var ControlManager = {
                 additionalParam: controlAdditionalParam,
                 controlFilter: param.mutAppProperty._controlFilter,
                 controlFilterScreenCriteria: param.mutAppProperty._controlFilterScreenCriteria,
-                controlEventCallback: _controlsValueUpdateCallback
+                controlEventCallback: _controlsValueUpdateCallback,
+                type: cfg.type,
+                sortIndex: isNumeric(cfg.sortIndex) === true ? cfg.sortIndex: undefined
             });
             _controls.push(ctrl);
+
+            // на враппер вешаем идишку контрола
+            $directiveWrapper.attr('data-cid', ctrl.id);
+
+            // событие о создании контрола отсылается вовне
+            _onControlEvents(ControlManager.EVENT_CONTROL_CREATED, {
+                control: ctrl
+            });
+
             filter({
                 // применить фильтр для созданного контрола, будут использованы те настройки фильтра (propertyString + screen) которые выставлены в данный момент
                 controls: [ctrl]
@@ -180,6 +203,10 @@ var ControlManager = {
             ctrls[i].destroy();
             ctrls[i].$wrapper.remove();
             result.push(ctrls[i]);
+
+            // событие об удалении контрола отсылается вовне
+            _onControlEvents(ControlManager.EVENT_CONTROL_DELETED, {
+            });
         }
         return result;
     }
@@ -203,7 +230,8 @@ var ControlManager = {
                 if (_onControlEvents) {
                     var controlEventData = {
                         propertyString: control.propertyString,
-                        value: control.getValue()
+                        value: control.getValue(),
+                        control: control
                     };
                     if (data) {
                         // если контрол прислал дополнительные данные, передаем из дальше в editor
@@ -458,8 +486,13 @@ var ControlManager = {
             // как и происходит вставка контролов типа quickcontrolpanel в createControl()
             var $directiveContainer = $('#id-control_cnt').find('.js-quick_panel .js-items');
             btnInfo.$wrapper = $('<div class="qp_item"></div>');
+            btnInfo.$wrapper.attr('data-cid', control.id);
             btnInfo.$wrapper.append(btnInfo.$view).appendTo($directiveContainer);
             btnInfo.$view.click(_quickPanelButtonOfPopupControlClick);
+
+            _onControlEvents(ControlManager.EVENT_QUICK_PANEL_BUTTON_FOR_POPUP_CONTROL_ADDED, {
+                control: control
+            });
         }
         else {
             throw new Error('ControlManager._addQuickPanelButtonForPopupControl: control.getQuickPanelView in control ' + control.controlName + ' returns not jQuery object. Only jQuery objects is supported now.');

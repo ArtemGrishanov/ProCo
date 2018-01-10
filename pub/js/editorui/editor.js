@@ -431,78 +431,6 @@ var Editor = {};
 //        }, 200);
 //    }
 
-//    /**
-//     * Показать экран(ы) промо приложения в редакторе.
-//     * На экране нужно элементы с атрибутами data-app-property и проинициализировать контролы
-//     *
-//     * @param {Array.<string>} ids - массив ид экранов
-//     */
-//    function showScreen(ids) {
-//        if (Array.isArray(ids) === false) {
-//            ids = [ids];
-//        }
-//        // запоминаем, если потребуется восстановление показа экранов.
-//        // Например, произойдет пересборка экранов и надо будет вернуться к показу последних активных
-//        activeScreens = ids;
-//        registeredElements = [];
-//        // надо скрыть все активные подсказки, если таковые есть. На новом экране будут новые подсказки
-//        hideWorkspaceHints();
-//        updateAppContainerSize();
-//        activeScreenHints = [];
-//        activeTriggers = [];
-//        // каждый раз удаляем quick-контролы и создаем их заново. Не слишком эффективно, но просто и надежно
-//        // то что контролы привязаны к одному экрану определяется только на основании контейнера, в который они помещены
-//        var $controlCnt = $('#id-control_cnt').empty();
-//        for (var i = 0; i < uiControlsInfo.length;) {
-//            var c = uiControlsInfo[i].control;
-//            if (c.$parent.selector === $controlCnt.selector) {
-//                uiControlsInfo.splice(i,1);
-//            }
-//            else {
-//                i++;
-//            }
-//        }
-//
-//        $(previewScreensIframeBody).empty();
-//        // в превью контейнер дописать кастомные стили, которые получились в результате редактирования css appProperties
-//        //Engine.writeCssRulesTo(previewScreensIframeBody);
-//        var appScreen = null;
-//        var previewHeight = 0;
-//        for (var i = 0; i < ids.length; i++) {
-//            appScreen = editedApp.getScreenById(ids[i]);
-//            if (appScreen) {
-//                var b = createPreviewScreenBlock(appScreen.$el)
-//                $(previewScreensIframeBody).append(b);
-//                previewHeight += appContainerSize.height;
-//                previewHeight += config.editor.ui.screen_blocks_padding+2*config.editor.ui.screen_blocks_border_width; // 20 - паддинг в стиле product_cnt.css/screen_block
-//                bindControlsForAppPropertiesOnScreen(appScreen.view, ids[i]);
-//                applyTriggers('screen_show');
-//            }
-//            else {
-//                log('Editor.showScreen: appScreen not found '+ids[i]);
-//            }
-//        }
-//        //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
-//        // высота нужна для задания размеров id-Workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
-//        $('#id-product_cnt, #id-product_wr').height(previewHeight + config.editor.ui.id_product_cnt_additional_height);
-//        // надо выставить вручную высоту для айфрема. Сам он не может установить свой размер, это будет только overflow с прокруткой
-//        $('#id-product_iframe_cnt, #id-control_cnt').width(appContainerSize.width + 2*config.editor.ui.screen_blocks_border_width).height(previewHeight);
-//        // боковые панели вытягиваем также вслед за экранами
-//        $('.js-setting_panel').height(previewHeight);
-//        $('#id-Workspace').height(previewHeight);
-//
-//        //TODO отложенная инициализация, так как директивы контролов загружаются не сразу
-//        // подсветка контрола Slide по которому кликнули
-////        setActiveScreen(activeScreens.join(','));
-//        // восстановление фильтрации элементов, которые были выделены до этого
-////        selectElementOnAppScreen({dataAppPropertyString: selectedDataAppProperty});
-//
-////        $($("#id-product_screens_cnt").contents()).click(function(){
-////            // любой клик по промо-проекту сбрасывает подсказки
-////            hideWorkspaceHints();
-////        });
-//    }
-
     /**
      * Применение политик тарифа к текущему пользователю
      */
@@ -517,53 +445,6 @@ var Editor = {};
             }
         }
     }
-
-    /**
-     * В зависимости от режиме превью: моб или веб а также истинного размера приложения
-     * выставляется размер iframe в котором загружено приложение
-     */
-//    function updateAppContainerSize() {
-//        // выставляем первоначальный размер приложения, возможно, оно будет меняться
-//        appContainerSize = {
-//            width: editedApp.width,
-//            height: editedApp.height
-//        };
-//        var appIframe = editorLoader.getIframe('');
-//        if (previewMode === 'mobile') {
-//            $(appIframe).css('border','0')
-//                .css('width','100%')
-//                .css('height','100%')
-//                .css('maxWidth',appContainerSize.width)
-//                .css('maxHeight',appContainerSize.height);
-//        }
-//        else if (previewMode === 'desktop') {
-//            $(appIframe).css('border','0')
-//                .css('width',appContainerSize.width+'px')
-//                .css('height',appContainerSize.height+'px') //так как у панорам гориз скролл и не умещается по высоте он
-//                //.css('maxWidth',appContainerSize.width)
-//                .css('maxWidth','100%')
-//                .css('maxHeight',appContainerSize.height+'px') //так как у панорам гориз скролл и не умещается по высоте он
-//        }
-//    }
-
-//    function createPreviewScreenBlock(view) {
-//        var d = $('<div></div>')
-//            .css('width',appContainerSize.width)
-//            .css('height',appContainerSize.height)
-//            .addClass('screen_block'); // product_cnt.css
-//        d.append(view);
-//        return d;
-//    }
-
-//    /**
-//     * Выделить активный экран в контроле с экранами
-//     *
-//     * @param
-//     */
-//    function setActiveScreen(dataAppProperty) {
-//        $('#id-slides_cnt').find('.slide_selection').removeClass('__active');
-//        $('#id-slides_cnt').find('[data-app-property=\"'+dataAppProperty+'\"]').find('.slide_selection').addClass('__active');
-//    }
 
     /**
      * Запустить триггеры для определенного события
@@ -591,21 +472,6 @@ var Editor = {};
             }
         }
     }
-
-//    /**
-//     * Перебрать все элементы на активном экране
-//     * Нужно для автотестирования в TProduct
-//     *
-//     * @param {function} iterator
-//     */
-//    function forEachElementOnScreen(iterator) {
-//        for (var i = 0; i < activeScreens.length; i++) {
-//            var appScreen = Engine.getAppScreen(activeScreens[i]);
-//            for (var k = 0; k < appScreen.appPropertyElements.length; k++) {
-//                iterator(appScreen.appPropertyElements[k]);
-//            }
-//        }
-//    }
 
     ///**
     // * Показать подсказки для экрана
@@ -1252,6 +1118,29 @@ var Editor = {};
     function onControlEvents(event, data) {
         data = data || {};
         switch (event) {
+            case ControlManager.EVENT_CONTROL_CREATED: {
+                // панелька не имеет своего списка контролов и не имеет кобеков на изменения свойств контролов
+                // но quickpanel в своем отображении учитывает некоторые свойства контролов. Поэтому передаем ей информацию о создании и изменении
+                if (data.control.type === 'quickcontrolpanel') {
+                    Workspace.handleQuickControlPropertiesChanged(data.control);
+                }
+                break;
+            }
+            case ControlManager.EVENT_CONTROL_DELETED: {
+
+                break;
+            }
+            case ControlManager.EVENT_CONTROL_PROPERTIES_CHANGED: {
+                if (data.control.type === 'quickcontrolpanel') {
+                    Workspace.handleQuickControlPropertiesChanged(data.control);
+                }
+                break;
+            }
+            case ControlManager.EVENT_QUICK_PANEL_BUTTON_FOR_POPUP_CONTROL_ADDED: {
+                // тип data.control.type === popup в данном случае, просто он создал для себя кнопку в quickpanel
+                Workspace.handleQuickControlPropertiesChanged(data.control);
+                break;
+            }
             case ControlManager.EVENT_CHANGE_VALUE: {
                 editedApp.getProperty(data.propertyString).setValue(data.value);
                 Workspace.updateSelection();

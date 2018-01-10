@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>сomment icon@3x</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="сomment-icon" stroke="#FFFFFF" stroke-width="1.4">
+            <g id="Group-3" transform="translate(1.000000, 1.000000)">
+                <path d="M2.8,0 L11.2,0 L11.2,-4.4408921e-16 C12.7463973,-7.28157785e-16 14,1.2536027 14,2.8 L14,14 L2.8,14 L2.8,14 C1.2536027,14 -1.20610145e-17,12.7463973 -8.8817842e-16,11.2 L0,2.8 L-4.4408921e-16,2.8 C-6.3346826e-16,1.2536027 1.2536027,-6.04109844e-16 2.8,-8.8817842e-16 Z" id="Rectangle"></path>
+                <path d="M4,5.6 L11,5.6" id="Line-2" stroke-linecap="round"></path>
+                <path d="M4,8.75 L8.75,8.75" id="Line-2" stroke-linecap="round"></path>
+            </g>
+        </g>
+    </g>
+</svg>

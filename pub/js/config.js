@@ -800,7 +800,8 @@ var config = {
             defaultDirectiveIndex: 0,
             directives: ['deletequickbutton'],
             parentId: 'id-control_cnt',
-            type: 'quickcontrolpanel' // контрол появляется на всплывающей панельке рядом с элементом
+            type: 'quickcontrolpanel', // контрол появляется на всплывающей панельке рядом с элементом
+            sortIndex: 8 // индекс сортировки по умолчанию, чем больше значение, тем ниже будет располагаться в списке контрол
         },
         OnOff: {
             defaultDirectiveIndex: 0,
@@ -967,7 +968,11 @@ var config = {
             /**
              * Длительность интервала для вызова автосохранения
              */
-            autoSaverTimerInterval: 10000 // ms
+            autoSaverTimerInterval: 10000, // ms
+            /**
+             * Индекс группы по умолчанию, применяется для сортировки и упорядочивания элементов меню quickpanel
+             */
+            quickPanelDefaultSortIndex: 0
         },
         hooks: {
             /**

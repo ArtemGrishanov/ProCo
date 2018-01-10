@@ -270,6 +270,16 @@ var Workspace = {
     }
 
     /**
+     * Атрибуты квик контрола были изменены, сообщаем об этом квик панели, чтобы она, возможно,
+     * произвела какие-то действия (сортировка и т.п.)
+     *
+     * @param control
+     */
+    function handleQuickControlPropertiesChanged(control) {
+        quickControlPanel.updateControl(control);
+    }
+
+    /**
      * Показать панельку с быстрыми контролами
      */
     function showQuickControlPanel() {
@@ -370,6 +380,7 @@ var Workspace = {
     global.handleShowScreen = handleShowScreen;
     global.handleRenderScreen = handleRenderScreen;
     global.handleDeleteScreen = handleDeleteScreen;
+    global.handleQuickControlPropertiesChanged = handleQuickControlPropertiesChanged;
 
     global.setAppSize = setAppSize;
     global.selectElementOnAppScreen = selectElementOnAppScreen;
@@ -379,6 +390,7 @@ var Workspace = {
     global.getSelectedElement = function() { return $selectedElementOnAppScreen; }
     global.showPopupControlsContainer = showPopupControlsContainer;
     global.hidePopupControlsContainer = hidePopupControlsContainer;
+    global.getQuickControlPanel = function() { return quickControlPanel; }
 
     global._registeredElements = _registeredElements; // for autotests, inspector
 

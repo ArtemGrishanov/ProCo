@@ -57,13 +57,19 @@ TriviaOptionPoints.prototype.onShow = function(param) {
     this.render({
         selectedElement: param.selectedElement
     });
-}
+};
 
 /**
  * Отрисовать актуальный вид контрола на основе данных приложения и привязок
  * В конце делается выделение опции по умолчанию.
  */
 TriviaOptionPoints.prototype.render = function() {
+    // Контрол может поменять сортировку своего представления в списке в любой момент
+    if (this.sortIndex !== -1) {
+        this.sortIndex = -1;
+        this.controlEventCallback(ControlManager.EVENT_CONTROL_PROPERTIES_CHANGED, this);
+    }
+
     var app = Editor.getEditedApp();
     // приходится получить доступ к приложению напрямую, непридумал как передать данные
     if (app && this._selectedOptionId) {
@@ -74,11 +80,16 @@ TriviaOptionPoints.prototype.render = function() {
             if (oInfo.points > 0) {
                 this._$thisIsRight.show();
                 this._$makeCorrect.hide();
+                this.enabled = false;
+                this.delimeterAfter = true;
             }
             else {
                 this._$thisIsRight.hide();
                 this._$makeCorrect.show();
+                this.enabled = true;
+                this.delimeterAfter = false;
             }
+            this.controlEventCallback(ControlManager.EVENT_CONTROL_PROPERTIES_CHANGED, this);
         }
     }
 };
@@ -94,6 +105,9 @@ TriviaOptionPoints.prototype.onMakeCorrectClick = function() {
             app.model.setCorrectAnswer(this._selectedOptionId);
             this._$thisIsRight.show();
             this._$makeCorrect.hide();
+            this.enabled = false;
+            this.delimeterAfter = true;
+            this.controlEventCallback(ControlManager.EVENT_CONTROL_PROPERTIES_CHANGED, this);
         }
     }
 };

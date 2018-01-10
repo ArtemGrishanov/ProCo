@@ -23,10 +23,14 @@ var AbstractControl = {
      * @param {string} controlFilter
      * @param {string} controlFilterScreenCriteria
      * @param {Function} controlEventCallback - ссылка на функцию куда надо отправлять уведомление об изменении
+     * @param {string} type - тип, например 'controlpanel' или 'workspace', тот что описан в config.js
      */
     init: function(param) {
         this.self = this;
         this.id = getUniqId().substr(22);
+        if (param.type) {
+            this.type = param.type;
+        }
         if (param.propertyString) {
             this.propertyString = param.propertyString;
         }
@@ -76,6 +80,18 @@ var AbstractControl = {
             this.$productDomElements = null;
         }
         this.controlEventCallback = param.controlEventCallback;
+
+        // параметр отвечающий за сортировку контролов в их контейнерах
+        this.sortIndex = 0;
+        if (isNumeric(param.sortIndex) === true) {
+            this.sortIndex = param.sortIndex;
+        }
+
+        // экспериментальное свойство, применяется только для quickpanelcontrols
+        this.enabled = true;
+
+        // экспериментальное свойство, применяется только для quickpanelcontrols
+        this.delimeterAfter = false;
     },
 
     /**

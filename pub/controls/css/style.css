@@ -10,19 +10,41 @@ form {
 form input {
     width: auto;
 }
+
+/* ================================ */
+/* Иконки для контролов quick panel */
+/* ================================ */
 .add_quick_btn {
-    background-image: url(../i/i-add.png);
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
+    display: inline-block;
+    background-image: url(../i/icon-add-answer-white.png);
+    width: 16px;
+    height: 16px;
 }
 .delete_quick_btn {
-    background: url(../i/Panel-delete.png) center no-repeat;
-    background-size: 24px 24px;
-    width: 30px;
-    height: 30px;
+    display: inline-block;
+    background: url(../i/icon-trash.png) center no-repeat;
+    background-size: 16px 16px;
+    width: 16px;
+    height: 16px;
     cursor: pointer;
 }
+.trivia_set_correct {
+    display: inline-block;
+    background-image: url(../i/make_correct.png);
+    width: 16px;
+    height: 16px;
+}
+.trivia_set_correct.__blue {
+    background-image: url(../i/make_correct_blue.png);
+}
+.trivia_feedback {
+    display: inline-block;
+    background-image: url(../i/icon_feedback@3x.svg);
+    width: 16px;
+    height: 16px;
+}
+
+
 .add_screen_btn {
 
 }
@@ -80,12 +102,17 @@ form input {
 }
 .qp_back {
     min-width: 38px;
-    height: 38px;
-    text-align: center;
-    margin: 0;
-    padding: 2px;
+    min-height: 38px; /* вычисляется динамически в зависимоти от количества пунктов по высоте */
+    text-align: left;
     background-color: #000;
     border-radius: 6px;
+    font-size: 14px;
+    margin: 0;
+    padding: 8px 0;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 .qp_triangle {
     margin: 0 auto;
@@ -95,23 +122,39 @@ form input {
     background-image: url(../i/Triangle-black.png);
 }
 .qp_item {
-    display: inline-block;
+    display: block;
     position: relative;
-    padding: 4px;
     margin: 0;
+    padding: 0 16px;
     min-width: 30px;
     min-height: 30px;
     line-height: 30px;
     vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
 }
-.qp_item+.qp_item::before {
-    top: 4px;
-    left: 0;
-    content: '';
-    position: absolute;
-    width: 1px;
-    height: 30px;
-    background-color: #fff;
+.qp_item:hover {
+    background-color: #333;
+}
+.qp_item.__disabled {
+    cursor: auto;
+}
+.qp_item.__disabled:hover {
+    background-color: transparent;
+}
+.qp_item.__delimeter_bottom {
+    border-bottom: 1px solid #555;
+    padding-bottom: 2px;
+}
+
+.qp_item_icon {
+    margin-right: 8px;
+}
+.qp_item_icon,
+.qp_item_label {
+    display: inline-block;
+    line-height: 30px;
+    vertical-align: middle;
 }
 .choose_image_wr {
     text-align: center;
@@ -307,4 +350,26 @@ Personality custom control
 }
 .popup_textarea:focus {
     outline:none;
+}
+
+/* ============= */
+/* retina styles */
+/* ============= */
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .delete_quick_btn {
+        background-image: url(../i/icon-trash@2x.png);
+        background-size: 16px 16px;
+    }
+    .add_quick_btn {
+        background-image: url(../i/icon-add-answer-white@2x.png);
+        background-size: 16px 16px;
+    }
+    .trivia_set_correct {
+        background-image: url(../i/make_correct@2x.png);
+        background-size: 16px 16px;
+    }
+    .trivia_set_correct.__blue {
+        background-image: url(../i/make_correct_blue@2x.png);
+        background-size: 16px 16px;
+    }
 }

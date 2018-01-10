@@ -60,8 +60,14 @@ TriviaTextFeedback.prototype.onHide = function(param) {
     }
 };
 
+/**
+ *
+ * @returns {*|jQuery|HTMLElement}
+ */
 TriviaTextFeedback.prototype.getQuickPanelView = function() {
-    return $('<div class="btn"><div class="js-open_feedback_popup pts_string pts_option_feedback">Комментарий к ответу</div></div>');
+    return $('<div style="white-space: nowrap;"><div class="trivia_feedback qp_item_icon"></div>' +
+        '\n\r<div class="js-open_feedback_popup qp_item_label pts_string pts_option_feedback">Комментарий к ответу</div>' +
+        '\n\r</div>');
 };
 
 /**

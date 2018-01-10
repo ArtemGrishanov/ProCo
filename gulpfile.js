@@ -13,7 +13,7 @@
  *          если я планирую склеить этот файл с общие стили style.css то по идее ссылка не нужна эта
  *
  */
-var productVersion = 'v2.0.4';
+var productVersion = 'v2.0.7';
 
 
 var gulp = require('gulp');
@@ -412,31 +412,31 @@ gulp.task('inject', function () {
 //});
 
 gulp.task('images:root', function(){
-    return gulp.src('pub/i/**/*.+(png|jpg|jpeg|gif|svg)')
+    return gulp.src(['pub/i/**/*.+(png|jpg|jpeg|gif|svg)', 'pub/controls/i/**/*.+(png|jpg|jpeg|gif|svg)'])
         // Caching images that ran through imagemin
         .pipe(cache(imagemin({
             interlaced: true
         })))
         .pipe(gulp.dest('build/i'))
 });
-gulp.task('controls', function() {
-    return gulp.src('pub/controls/**/*')
-        .pipe(gulp.dest('build/controls'))
-});
-gulp.task('templates', function() {
-    return gulp.src('pub/templates/**/*')
-        .pipe(gulp.dest('build/templates'))
-});
-gulp.task('fonts', function() {
-    return gulp.src('pub/fonts/**/*')
-        .pipe(gulp.dest('build/fonts'))
-});
-gulp.task('lib', function() {
-    return gulp.src('pub/lib/**/*.js')
-        .pipe(gulp.dest('build/lib'))
-});
-// </root>
 
+//gulp.task('controls', function() {
+//    return gulp.src('pub/controls/**/*')
+//        .pipe(gulp.dest('build/controls'))
+//});
+//gulp.task('templates', function() {
+//    return gulp.src('pub/templates/**/*')
+//        .pipe(gulp.dest('build/templates'))
+//});
+//gulp.task('fonts', function() {
+//    return gulp.src('pub/fonts/**/*')
+//        .pipe(gulp.dest('build/fonts'))
+//});
+//gulp.task('lib', function() {
+//    return gulp.src('pub/lib/**/*.js')
+//        .pipe(gulp.dest('build/lib'))
+//});
+// </root>
 
 gulp.task('clean:build', function() {
     return del.sync('build');
