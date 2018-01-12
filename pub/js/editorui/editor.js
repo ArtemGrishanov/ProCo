@@ -441,7 +441,10 @@ var Editor = {};
         else {
             var cntr = ControlManager.getControls({propertyString:'appConstructor=mutapp projectPageBackgroundImageUrl'})[0];
             if (cntr) {
-                cntr.hide();
+                cntr.disable();
+            }
+            else {
+                console.error('Editor.setTariffPolicy: Control not created yet for \'appConstructor=mutapp projectPageBackgroundImageUrl\'');
             }
         }
     }

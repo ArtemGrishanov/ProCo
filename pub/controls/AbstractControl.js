@@ -87,8 +87,11 @@ var AbstractControl = {
             this.sortIndex = param.sortIndex;
         }
 
+        // Возможность скрыть и деактивировать контрол полностью, он не фильтруется
+        this.disabled = false;
+
         // экспериментальное свойство, применяется только для quickpanelcontrols
-        this.enabled = true;
+        this.cursorEnabled = true;
 
         // экспериментальное свойство, применяется только для quickpanelcontrols
         this.delimeterAfter = false;
@@ -170,6 +173,15 @@ var AbstractControl = {
             // можно определить функцию которая будет вызываться при скрытии контрола
             this.onHide();
         }
+    },
+
+    /**
+     * Отключить контрол
+     * Фильтроваться он не будет, ControlManaget это учитывает
+     */
+    disable: function() {
+        this.disabled = true;
+        this.hide();
     },
 
     /**

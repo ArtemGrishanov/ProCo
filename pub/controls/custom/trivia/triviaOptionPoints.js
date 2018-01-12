@@ -80,13 +80,13 @@ TriviaOptionPoints.prototype.render = function() {
             if (oInfo.points > 0) {
                 this._$thisIsRight.show();
                 this._$makeCorrect.hide();
-                this.enabled = false;
+                this.cursorEnabled = false;
                 this.delimeterAfter = true;
             }
             else {
                 this._$thisIsRight.hide();
                 this._$makeCorrect.show();
-                this.enabled = true;
+                this.cursorEnabled = true;
                 this.delimeterAfter = false;
             }
             this.controlEventCallback(ControlManager.EVENT_CONTROL_PROPERTIES_CHANGED, this);
@@ -105,7 +105,7 @@ TriviaOptionPoints.prototype.onMakeCorrectClick = function() {
             app.model.setCorrectAnswer(this._selectedOptionId);
             this._$thisIsRight.show();
             this._$makeCorrect.hide();
-            this.enabled = false;
+            this.cursorEnabled = false;
             this.delimeterAfter = true;
             this.controlEventCallback(ControlManager.EVENT_CONTROL_PROPERTIES_CHANGED, this);
         }

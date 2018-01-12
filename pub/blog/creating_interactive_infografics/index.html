@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Testix - Блог</title>
+    <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <meta name='viewport' content='width=device-width,initial-scale=1,user-scalable=no'>
+    <!-- style:css -->
+    <!-- endinject -->
+    <!--build:remove-->
+    <link href="../../css/common.css" rel="stylesheet"/>
+    <link href="../../css/blog.css" rel="stylesheet"/>
+    <!--endbuild-->
+    <meta property="fb:app_id" content="1734391910154130" />
+    <meta property="og:url" content="http://testix.me/blog/creating_interactive_infografics/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Как создать интерактивную инфографику (6 пунктов)" />
+    <meta property="og:description" content="Testix публикует перевод статьи Робби Ричардса. Оригинал: How to Make an Interactive Infographic (a 6-Point Guide)" />
+    <meta property="og:image" content="http://testix.me/blog/creating_interactive_infografics/i/share-issue.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <script>(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create", "UA-88595022-1", "auto");ga("send", "pageview");</script>
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+            n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+                        document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1456263851069324'); // Insert your pixel ID here.
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=1456263851069324&ev=PageView&noscript=1"
+            /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+</head>
+<body class="blog">
+
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.11&appId=1734391910154130';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+    <div class="top">
+        <div class="top_toolbar">
+            <div class="toolbar_left">
+                <a class="logo ml24" href="http://testix.me"></a>
+                <span class="logo_beta"></span>
+            </div>
+            <div class="toolbar_right">
+                <div id="id-user_toolbar" class="toolbar_user ml12">
+                    <!-- in app.js $('#id-user_toolbar').off('click')... -->
+                    <!--<a href="http://testix.me" target="_blank" class="pbtn __red js-blog_create_new_top">Создать проект</a>-->
+                </div>
+                <a href="http://testix.me" target="_blank" class="pbtn __red js-blog_create_new_top" style="padding: 10px 7px 10px 7px;">Создать проект</a>
+            </div>
+        </div>
+    </div>
+    <div class="scr_wr">
+        <div class="blog_content">
+            <h1>
+                Как создать интерактивную инфографику (6 пунктов)
+            </h1>
+            <p class="blog_t __first __italic">
+                <em>Testix публикует перевод статьи <a href="https://www.snapapp.com/author/robbie-richards" target="_blank">Робби Ричардса</a>. Оригинал: <a href="https://www.snapapp.com/blog/how-to-make-an-interactive-infographic" target="_blank">How to Make an Interactive Infographic (a 6-Point Guide)</a></em>
+            </p>
+            <p class="blog_t">
+                Одна из самых больших проблем, с которой сталкиваются сегодня маркетологи, — это <a href="https://coschedule.com/blog/data-driven-content-marketing-strategy/" target="_blank">борьба за создание вовлекающего контента</a>.
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_1.png"/>
+            </figure>
+            <p class="blog_t">
+                Алгоритмы поиска постоянно изменяются в попытках отфильтровать контент низкого качества. С учетом вышеперечисленного это приводит к масштабным изменениям в стратегиях создания контента.
+            </p>
+            <p class="blog_t">
+                Некоторые брэнды перешли на лонгриды…
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_2.png"/>
+                <figcaption>
+                    <a href="https://www.wordstream.com/blog/ws/2014/05/05/longform-content" target="_blank">Источник</a>
+                </figcaption>
+            </figure>
+            <p class="blog_t">
+                …или тот тип контента, который Брайен Дин продвигает при помощи своей <a href="https://backlinko.com/skyscraper-technique" target="_blank">«техники Небоскрёба»</a>.
+            </p>
+            <p class="blog_t">
+                Результат — взрыв контента, заполнившего Интернет. Сегодня только в блогах каждый день публикуется более 2 миллионов статей.
+            </p>
+            <p class="blog_t">
+                Этот уровень насыщенности контента вызвал резкую смену стратегий компаний.
+            </p>
+            <p class="blog_t">
+                В последние годы, многие работали над тем, чтобы разнообразить свой контент, добавляя другие форматы — например, <a href="https://www.snapapp.com/blog/75-interactive-infographic-examples-inspire-2017" target="_blank">инфографику</a>. Факт: инфографика в течение 2016 года пережила бурный рост: <a href="http://contentmarketinginstitute.com/wp-content/uploads/2016/09/2017_B2B_Research_FINAL.pdf" target="_blank">58% маркетологов</a> отметили ее среди главных тактик, которые они используют для вовлечения аудитории.
+            </p>
+            <p class="blog_t">
+                Неудивительно, что <a href="https://blog.hubspot.com/marketing/visual-content-marketing-strategy" target="_blank">данные, предоставленные HubSpot</a>, показывают, что инфографика получает лайки и репосты в социальных сетях в 3 раза больше, чем любой другой контент.
+            </p>
+            <p class="blog_t">
+                Но затем исследования CMI (скорее всего имеется ввиду <a href="http://contentmarketinginstitute.com/" target="_blank">Content Marketing Institute</a> — комментарий Testix) вскрыли ряд других проблем: маркетологи также испытывают трудности с созданием разнообразного контента, а также с <a href="https://www.snapapp.com/blog/marketing-technology-stack" target="_blank">пониманием и выбором технологий для контент-маркетинга</a>.
+            </p>
+            <p class="blog_t">
+                Например, некоторые маркетологи считают, что создание инфографики требует определённых профессиональных навыков или дорогостоящего графического дизайнера. Но это не так.
+            </p>
+            <p class="blog_t">
+                Вам не нужна специальная команда разработчиков, если у вас есть <a href="https://www.snapapp.com/platform" target="_blank">платформы*</a>, предлагающие набор инструментов, ускоряющих и упрощающих процесс создания <a href="https://www.snapapp.com/platform/interactive-content-types/interactive-infographics" target="_blank">интерактивного</a> контента.
+            </p>
+            <p class="blog_t">
+                В этой статье Вы увидите, что интерактивную инфографику не только легко создавать — она еще более эффективна для вовлечения аудитории, чем статичная инфографика, и превращает ваших читателей в потенциальных клиентов.
+            </p>
+            <h4>
+                Почему интерактивная инфографика побеждает своего статичного двойника.
+            </h4>
+            <p class="blog_t __first">
+                Концепция инфографики проста: вложи как можно больше ценного для читателей в часть контента и визуализируй, чтобы лучше вовлечь их.
+            </p>
+            <p class="blog_t">
+                И это работает.
+            </p>
+            <p class="blog_t">
+                Исследования <a href="https://www.nngroup.com/articles/photos-as-web-content/" target="_blank">Nielsen Norman</a> показывают, что читатели уделяют больше внимания изображениям, которые несут информацию. В действительности, пользователи тратят больше времени на разглядывание изображений, чем на чтение текста на странице.
+            </p>
+            <p class="blog_t">
+                По правде говоря, я мог бы привести в пример миллион и одну статистику, подтверждающую, как важно использовать визуальные носители в вашей стратегии контент-маркетинга. Но это и так очевидно. На самом деле это знает практически каждый контент-маркетолог на планете.
+            </p>
+            <p class="blog_t">
+                Уже сейчас Сеть наводняют миллионы примеров инфографики.
+            </p>
+            <p class="blog_t">
+                Но как только мы находим что-то, что работает, мы повторяем это снова и снова, пока оно не перестает быть эффективным.
+            </p>
+            <h4>
+                Таким образом…
+            </h4>
+            <p class="blog_t __first">
+                Есть смыл подняться на новый уровень. И самый простой способ прорваться через шум и вовлечь аудиторию — это адаптировать статичный контент для каждого индивидуума, сделав инфографику интерактивной.
+            </p>
+            <p class="blog_t">
+                Не верите мне? <a href="https://www.snapapp.com/blog/interactive-content-statistics" target="_blank">88% маркетологов<a/> говорят, что <strong>интерактивный контент отличает их от конкурентов</strong>.
+            </p>
+            <p class="blog_t">
+                <a href="https://www.demandgenreport.com/industry-resources/research/3141-2015-content-preferences-survey-buyers-value-content-packages-interactive-content-.html#.VQLy4fnF-Sp" target="_blank">91% покупателей</a> ищут более наглядный и <a href="https://www.snapapp.com/interactive-content" target="_blank">интерактивный контент</a>.
+            </p>
+            <p class="blog_t">
+                Именно для этого и создана интерактивная инфографика.
+            </p>
+            <p class="blog_t">
+                <a href="https://www.dragonsearch.com/blog/digital-content-marketing-strategy/" target="_blank">Более половины покупателей</a> находятся под сильным влиянием персонализированного контента. В этом случае интерактивная инфографика поможет ужать объемные массивы данных до формата, который будет наиболее релевантным и представит информацию в том виде, который соответствует интересам вашей аудитории и с учетом того, как она кликают или взаимодействует с контентом.
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_3.png"/>
+            </figure>
+            <p class="blog_t">
+                Это способ предоставить тонны ценной информации, ответов и решений, не заставляя читателей продираться сквозь нелепое количество текста.
+            </p>
+            <p class="blog_t">
+                В конечном итоге, чтобы вы предпочли:
+            </p>
+            <ol>
+                <li>
+                    Интерактивный ресурс, который предоставляет ценный <a href="https://www.snapapp.com/blog/why-personalization-future-b2b-marketing" target="_blank">персонализированный</a> контент за секунды.
+                </li>
+                <li>
+                    Поиск по статье 30+ страниц со статичным контентом.
+                </li>
+                <li>
+                    Прокрутка на 20 дюймах (скорее всего, имеется ввиду 20-дюймовый монитор — примечание Testix) нескольких экранов «формуляра», заполненного статистикой.
+                </li>
+            </ol>
+            <p class="blog_t">
+                Вариант 1 побеждает!
+            </p>
+            <p class="blog_t">
+                И вот как это сделать…
+            </p>
+            <h3>
+                Как сделать интерактивную инфографику: простой чек-лист из 6 пунктов.
+            </h3>
+            <p class="blog_t __first">
+                Существует несчетное количество способов сделать интерактивную инфографику.
+            </p>
+            <p class="blog_t">
+                Независимо от того, каким будет итоговый проект, есть основы и последовательность действий, которые помогут убедиться, что инфографика привлекает вашу аудиторию и вдохновляет на правильный тип взаимодействия.
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_4.png"/>
+            </figure>
+            <h4>
+                Начните с идеи и сбора данных
+            </h4>
+            <p class="blog_t __first">
+                Создать инфографику не сложно. Реальная проблема заключается в том, чтобы сделать ее вовлекающей.
+            </p>
+            <p class="blog_t">
+                Вот почему вы начинаете с <a href="https://www.smashingmagazine.com/2011/10/the-dos-and-donts-of-infographic-design/" target="_blank">раскадровки</a> и определяете, какие данные вы хотите использовать.
+            </p>
+            <p class="blog_t">
+                Существует несколько различных типов источников данных, которые вы можете использовать для быстрого создания инфографики:
+            </p>
+            <ol>
+                <li>
+                    Собственные данные из внутренних опросов, профилей клиентов, данных покупателей, опросов и другие внутренние наборы данных.
+                </li>
+                <li>
+                    Отчеты, исследования и отраслевые данные третьих лиц.
+                </li>
+                <li>
+                    Публичные данные и отраслевые исследования.
+                </li>
+            </ol>
+            <p class="blog_t">
+                <strong>Важно</strong>: перед публикацией убедитесь, что все данные аккуратно подписаны, а все соответствующие разрешения получены.
+            </p>
+            <h4>
+                Теперь …
+            </h4>
+            <p class="blog_t __first">
+                Если все, что вы включаете, это данные и графика, вы создаете контент, навевающий скуку.
+            </p>
+            <p class="blog_t">
+                Привяжите его к истории — и у вас получится нечто гораздо более привлекательное.
+            </p>
+            <p class="blog_t">
+                В истории есть разделы и части, которые преднамеренно перемещают читателя от одной точки к другой через логическую последовательность к финалу. Это отличный способ убедиться, что ваша аудитория не только заинтересована, но и с увлечением продолжает погружаться в инфографику.
+            </p>
+            <p class="blog_t">
+                Эта <a href="https://mahifx.com/mfxtrade/john-paulson/" target="_blank">инфографика MahiFX</a> — отличный пример построения истории на основе данных:
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_5.png"/>
+            </figure>
+            <p class="blog_t">
+                Когда пользователь вводит свою зарплату и взаимодействует с инфографикой, она шаг за шагом рассказывает ему:
+            </p>
+            <ul>
+                <li>
+                    как быстро Джон Полсон зарабатывает свою годовую зарплату
+                </li>
+                <li>
+                    сколько он зарабатывает на торговле
+                </li>
+                <li>
+                    чтобы вы могли купить, если бы проворачивали такие сделки
+                </li>
+                <li>
+                    каковы его расходы по сравнению с вашими.
+                </li>
+            </ul>
+            <p class="blog_t">
+                Это не связано только с историей Джона, это становится личным — поэтому инфографика становится историей пользователя.
+            </p>
+            <p class="blog_t">
+                <strong>Примечание</strong>. Если Джонну Полсону понадобилось более пяти секунд, чтобы заработать ваш годовой оклад, Вы опережаете кривую :)
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_6.png"/>
+            </figure>
+            <h4>
+                Выберите наглядную тему, которая соответствует истории.
+            </h4>
+            <p class="blog_t __first">
+                С помощью интерактивной инфографики вы не просто делитесь данными. Вы создаете визуальный объект, специально предназначенный для захвата и удержания внимания аудитории. Но вы не просто хотите, чтобы они запомнили данные, вы хотите также, чтобы они запомнили опыт, полученный благодаря вашему бренду.
+            </p>
+            <p class="blog_t">
+                Как в этой инфографике, опубликованной <a href="https://cewe-photoworld.com/photos-on-the-web/" target="_blank">CEWE Photoworld</a>:
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_7.png"/>
+                <figcaption>
+                    <a href="https://cewe-photoworld.com/photos-on-the-web/" target="_blank">Оригинал</a>
+                </figcaption>
+            </figure>
+            <p class="blog_t">
+                Дизайн графики идеально сочетается как с сюжетом истории, так и с набором данных. Вы обнаруживаете себя путешествующим со скоростью 3000 километров в час, летящим мимо Международной космической станции на самую вершину ленты, составленной из 21,9 миллиарда фотографий, выложенных в Инстаграм за год.
+            </p>
+            <p class="blog_t">
+                Вот что нужно держать в уме, когда вы выбираете визуальную тему для интерактивной инфографики:
+            </p>
+            <ul>
+                <li>
+                    Помогают ли изображения и интерактивные элементы помогают оживить данные?
+                </li>
+                <li>
+                    Насколько хорошо изображения, анимация и элементы дизайна отражают ваш бренд, равно как и любые другие бренды, которые выступили в роли партнеров при создании контента?
+                </li>
+                <li>
+                    Где будет жить интерактивная графика? Если она будет размещена на вашем веб-сайте, возможно вы захотите, чтобы дизайн соответствовал теме или шаблонам вашего сайта.
+                </li>
+                <li>
+                    Убедитесь, что идея визуализации соответствует интересам вашей аудитории, индустрии и истории в целом. Инфографика о курортном отдыхе будет иметь совершенно иной визуальный стиль, чем промо мероприятия для топ-менеджеров.
+                </li>
+            </ul>
+            <p class="blog_t">
+                Еще один замечательный пример — это <a href="http://johos.at/#/en/1/2" target="_blank">инфографика Joho Bean</a>:
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_8.png"/>
+            </figure>
+            <p class="blog_t">
+                Она увлекает пользователя в необычное мультимедийное приключение, используя сочные кадры, рассказывает о путешествии кофейного зерна от места созревания к потребителю.
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_9.png"/>
+            </figure>
+            <h4>
+                Действия пользователя должны создавать ответную реакцию
+            </h4>
+            <p class="blog_t __first">
+                Интерактивная инфографика должна быть интерактивной, но это не значит, что она должна быть ограничена отдельными кликабельными элементами.
+            </p>
+            <p class="blog_t">
+                Каждое действие пользователя должно создавать какой-то отклик внутри контента, чтобы все в целом создавало по-настоящему персональный опыт — даже если это всего лишь обычная прокрутка страницы.
+            </p>
+            <p class="blog_t">
+                <a href="https://www.theatlantic.com/sponsored/athenahealth/population-health-in-rural-maine/723/" target="_blank">Population Healthier</a> отлично прорабатывает такого рода взаимодействие.
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_10.png"/>
+                <figcaption>
+                    <a href="https://www.theatlantic.com/sponsored/athenahealth/population-health-in-rural-maine/723/" target="_blank">Оригинал</a>
+                </figcaption>
+            </figure>
+            <p class="blog_t">
+                По мере того, как пользователь проскролливает контент, плавно возникают заголовки и изображения, на увеличивающихся иллюстрациях появляются буллиты и подписи.
+            </p>
+            <p class="blog_t">
+                Фон следует за содержанием и также меняется по мере прокрутки, например плоская карта штата превращается в 3D-карту. Это отличный перенести читателя в центр истории. Визуальная стимуляция вовлекает и удерживает внимание.
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_11.png"/>
+            </figure>
+            <h4>
+                Скрывайте контент, чтобы завлечь и вдохновить на действие
+            </h4>
+            <p class="blog_t __first">
+                Вы также можете вовлечь аудиторию, создавая инфографику со скрытыми элементами, на которые нужно кликнуть. Это может спровоцировать пользователей на действие — ведь они заинтересованы в получении информации.
+            </p>
+            <p class="blog_t">
+                Как на примере <a href="http://futureofcarsharing.com/" target="_blank">Future of Car Sharing</a>.
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_12.png"/>
+                <figcaption>
+                    <a href="http://futureofcarsharing.com/" target="_blank">Оригинал</a>
+                </figcaption>
+            </figure>
+            <p class="blog_t">
+                Скрытый контент не только <strong>заставляет читателя активно участвовать в изучении контента</strong>, он поощряет любопытство, а также позволяет читателям пропустить разделы, которые им мало интересны.
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_13.png"/>
+            </figure>
+            <h4>
+                Персонализируйте контент при помощи информации от пользователя
+            </h4>
+            <p class="blog_t __first">
+                Вы можете гарантировать гораздо более сильное вовлечение, если предложите пользователям данные на основе введенной ими информации. Это соответствует желаниям пользователей: они хотят больше интерактивного контента и <a href="https://blog.hubspot.com/marketing/psychology-personalization" target="_blank">больше персонализации</a>.
+            </p>
+            <p class="blog_t">
+                Потрясающий пример этого — персонализированная инфографика, которая дает представление о том, может ли Ваша работа подвергаться риску быть автоматизированной роботами:
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_14.png"/>
+                <figcaption>
+                    <a href="http://www.bbc.com/news/technology-34066941" target="_blank">Оригинал</a>
+                </figcaption>
+            </figure>
+            <p class="blog_t">
+                Пользователям нужно выбрать профессию, которая их интересует, чтобы получить релевантную информацию.
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_20.png"/>
+            </figure>
+            <h4>
+                Включите графические формы для сбора информации
+            </h4>
+            <p class="blog_t __first">
+                Около <a href="http://contentmarketinginstitute.com/wp-content/uploads/2016/09/2017_B2B_Research_FINAL.pdf" target="_blank">80% В2В маркетологов</a> в 2017 году определили главной целью создания контента <a href="https://www.snapapp.com/blog/lead-generation-funnel" target="_blank">лидогенерацию</a> — привлечение потенциальных клиентов.
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_15.jpeg"/>
+            </figure>
+            <p class="blog_t">
+                Благодаря инфографике, которая предлагает персонализированные результаты или любые данные, адаптированные к вводимой пользователем информации, у вас есть возможность завладеть вниманием и создать еще более невероятный пользовательский опыт.
+            </p>
+            <p class="blog_t">
+                Вы можете не только фиксировать релевантную информацию о вашей аудитории, но и собирать контактную информацию, предлагая <strong>персонализированную версию инфографики на основе их введенной информации</strong>.
+            </p>
+            <p class="blog_t">
+                Либо вы можете предложить им возможность загрузить полную версию инфографики, указав необходимую информацию <span class="blog_i">(например ваш email — комментарий Testix)</span>.
+            </p>
+            <p class="blog_t">
+                <strong>Интерактивный контент был создан, чтобы генерировать <a href="https://www.snapapp.com/blog/interactive-content-statistics" target="_blank">в 2 раза больше конверсий</a>, чем пассивный контент.</strong>
+            </p>
+            <p class="blog_t">
+                У BBC это получилось благодаря инфографике <a href="http://www.bbc.com/earth/story/20141016-your-life-on-earth" target="_blank">Your Life on Earth</a>.
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_16.png"/>
+                <figcaption>
+                    <a href="http://www.bbc.com/earth/story/20141016-your-life-on-earth" target="_blank">Оригинал</a>
+                </figcaption>
+            </figure>
+            <p class="blog_t">
+                Другой пример лидогенерации — инфографика Content Land, получившая награду <a href="https://www.contentmarketingawards.com/2017-winners/" target="_blank">за лучшее использование интерактивной инфографики</a> на Content Marketing World 2017.
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_17.png"/>
+                <figcaption>
+                    <a href="http://info.snapapp.com/SA-Content-Land-LP.html" target="_blank">Оригинал</a>
+                </figcaption>
+            </figure>
+            <p class="blog_t">
+                По мере того, как пользователи продвигаются через игровое поле, им попадаются фрагменты исследования, нарезанного на удобные кусочки. Кроме того им нужно отвечать на квалификационные вопросы о выбранной стратегии контент-маркетинга:
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_18.png"/>
+            </figure>
+            <p class="blog_t">
+                В конце инфографики пользователю предлагается ввести свою контактную информацию, чтобы получить доступ к пункту назначения — персонализированной странице, которая основана на ответах пользователя, и которая рекомендует дополнительный контент или демо-версию регистрации:
+            </p>
+            <figure>
+                <img class="blog_i" src="i/creating_infographics_19.png"/>
+            </figure>
+            <p class="blog_t">
+                В этом случае потребители получают гораздо больше информации, но они сами также становятся источниками информации, и таким образом маркетинговые команды могут узнать больше о том, кто на самом деле взаимодействует с ними.
+            </p>
+            <h4>
+                Быстрый старт: превратите статичную инфографику в интерактивную за минуты
+            </h4>
+            <p class="blog_t __first">
+                Нет необходимости создавать <a href="https://www.snapapp.com/platform/interactive-content-types/interactive-infographics" target="_blank">интерактивную инфографику</a> с нуля. Одна из умнейших тактик для экономии ресурсов в контент-маркетинге — <a href="https://www.snapapp.com/blog/6-steps-repurposing-your-static-content-interactive-marketing" target="_blank">переиспользовать контент, который у вас уже есть</a>.
+            </p>
+            <p class="blog_t">
+                Если у вас уже есть инфографика, посмотрите, как вы можете превратить ее в интерактивный опыт.
+            </p>
+            <p class="blog_t">
+                Рассмотрите следующие варианты:
+            </p>
+            <ul>
+                <li>
+                    Где вы можете добавить анимацию, чтобы сделать акцент на определенных данных?
+                </li>
+                <li>
+                    Какую историю вы можете добавить к данным, чтобы сделать ее более вовлекающей?
+                </li>
+                <li>
+                    Может ли спрятать какую-то часть информации, чтобы показать после ввода данных пользователем?
+                </li>
+                <li>
+                    Какие данные можно скрыть до взаимодействия, например, до наведения курсора или клика?
+                </li>
+                <li>
+                    Можно ли уменьшить визуальный шум, заменив различные пояснения и подсказки анимацией, которая появляется при прокрутке или других действиях пользователя?
+                </li>
+                <li>
+                    Можете ли вы добавить дополнительную глубину в инфографику, включив звуковое сопровождение и голосовые фрагменты?
+                </li>
+                <li>
+                    Как нарезать или сегментировать ультра-длинную инфографику, чтобы уменьшить прокрутку?
+                </li>
+                <li>
+                    Как вы можете сделать данные динамическими, чтобы они сохранялись актуальными в реальном времени?
+                </li>
+                <li>
+                    Какую информацию вы можете получить от аудитории, чтобы создать более персонализированный опыт?
+                </li>
+                <li>
+                    Как с помощью графики вы можете «закрыть» контент для получения лидов?
+                </li>
+            </ul>
+            <h3>
+                Подводим итоги
+            </h3>
+            <p class="blog_t __first">
+                Все это поначалу может напугать, но это всего лишь «движущиеся части» интерактивной инфографики, из-за которой она выглядит сложной. По правде говоря, разработка интерактивной инфографики очень похожа на создание любых других статичных визуальных объектов — тех, которые вы уже много раз создавали ранее.
+            </p>
+            <p class="blog_t">
+                Самая сложная часть процесса — это создание истории вокруг данных и понимание того, как вы хотите все это представить.
+            </p>
+            <p class="blog_t">
+                Любую часть статичного визуального контента можно оживить при помощи анимации, <a href="https://www.snapapp.com/platform/interactive-content-types/interactive-video" target="_blank">видео</a>, иллюстраций, анимированного и многоуровневого текста.
+            </p>
+            <p class="blog_t">
+                Следуйте 6-ти пунктам, которые описаны выше, а для вдохновения — вот вам <a href="https://www.snapapp.com/blog/75-interactive-infographic-examples-inspire-2017" target="_blank">75 примеров интерактивной инфографики</a>.
+            </p>
+            <hr class="blog_section_divider">
+
+            </hr>
+            <p class="blog_t __italic">
+                Оригинал: <a href="https://www.snapapp.com/blog/how-to-make-an-interactive-infographic" target="_blank">How to Make an Interactive Infographic (a 6-Point Guide)</a>. Автор статьи— <a href="https://www.snapapp.com/author/robbie-richards" target="_blank">Робби Ричардс</a> — диджитал маркетинг директор в Royal Jay. Он также представляет команду контент-маркетинга SnapApp. Перевод — <a href="http://testix.me" target="_blank">Testix</a>
+            </p>
+            <hr class="blog_section_divider">
+
+            </hr>
+            <h3>
+                * Бонус
+            </h3>
+            <p class="blog_t">
+                В тексте упоминаются платформы для создания инфографики. Автор по понятным причинам подразумевает <a href="https://www.snapapp.com/platform" target="_blank">собственную платформу SnapApp</a>. Тем не менее существует множество других платформ, которые могут быть полезны для создания интерактивной инфографики. Ниже мы привели лишь некоторые из них. <span class="blog_t __italic">(Примечание — Testix)</span>
+            </p>
+            <ul>
+                <li>
+                    <a href="https://infogram.com/" target="_blank">https://infogram.com/</a>
+                </li>
+                <li>
+                    <a href="https://www.visme.co/index2/" target="_blank">https://www.visme.co/index2/</a>
+                </li>
+                <li>
+                    <a href="https://prezi.com/" target="_blank">https://prezi.com/</a>
+                </li>
+                <li>
+                    <a href="https://www.thinglink.com/" target="_blank">https://www.thinglink.com/</a>
+                </li>
+                <li>
+                    <a href="https://mapme.com/" target="_blank">https://mapme.com/</a>
+                </li>
+                <li>
+                    <a href="https://www.ceros.com/" target="_blank">https://www.ceros.com/</a>
+                </li>
+            </ul>
+            <div class="blog_footer_divider">
+                <div class="blog_footer_divider_left">
+                    <p class="blog_t __gray">
+                        9 января 2018
+                    </p>
+                </div>
+                <div class="blog_footer_divider_right">
+                    <p class="blog_footer_divider_i blog_t __gray pts_string pts_do_you_like_article">
+                        Понравилась статья?
+                    </p>
+                    <div class="blog_footer_divider_i share_block">
+                        <div class="fb-share-button" data-href="http://testix.me/blog/creating_interactive_infografics/" data-layout="button_count" data-size="large" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Ftestix.me%2Fblog%2Fcreating_interactive_infografics%2F&amp;src=sdkpreparse">Share</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="blog_footer">
+        <div class="blog_footer_content">
+            <a href="https://facebook.com/testix.me" target="_blank" class="blog_news js-blog_more_news">
+                <div class="blog_news_icon"></div>
+                <p class="blog_news_text pts_string pts_more_news">Больше интересных и актуальных новостей из мира интерактивного контента</p>
+                <div class="blog_news_arrow"></div>
+            </a>
+            <h3 class="blog_footer_h pts_string pts_create_content_no_profi">Создайте свой интерактивный проект<br>без программиста и дизайнера на Testix.me</h3>
+            <a href="http://testix.me" target="_blank" class="pbtn __red __long pts_string pts_create_spec js-blog_create_new_footer">Создать проект бесплатно</a>
+
+            <div class="main_format_cards">
+                <div class="content_wr">
+                    <div class="format_cards_cnt">
+                        <a href="http://testix.me/storefront.html?app=trivia" target="_blank" class="format_card js-card_quiz">
+                            <h3 class="format_card_h tx __light __graphite __28 pts_string pts_tests">Тесты</h3>
+                            <div class="format_preview __test"></div>
+                            <p class="format_card_t tx __black __18 pts_string pts_design_your_test">Сделайте свой красивый тест  из готовых шаблонов</p>
+                            <p class="format_card_d tx __grey __16 pts_string pts_format_card_test">Добавьте ваш контент – и тест готов. Настраивайте постинг в соцсети и добавляйте ссылки на статистику.</p>
+                            <div class="format_card_icon_down __1"></div>
+                        </a>
+                        <a href="http://testix.me/storefront.html?app=memoriz" target="_blank" class="format_card js-card_minigames">
+                            <h3 class="format_card_h tx __light __graphite __28 pts_string pts_mini_games">Мини игры</h3>
+                            <div class="format_preview __memoriz"></div>
+                            <p class="format_card_t tx __black __18 pts_string pts_design_your_minigame">Создавайте собственные игры прямо в браузере</p>
+                            <p class="format_card_d tx __grey __16 pts_string pts_format_card_minigame">Просто подберите нужные изображения – и у вас готовая игра «Мемори»!</p>
+                            <div class="format_card_icon_down __2"></div>
+                        </a>
+                        <a href="http://testix.me/storefront.html?app=fbPanorama" target="_blank" class="format_card js-card_pano">
+                            <h3 class="format_card_h tx __light __graphite __28 pts_string pts_fbPanorama">Панорамы</h3>
+                            <div class="format_preview __fbPano"></div>
+                            <p class="format_card_t tx __black __18 design_your_pano pts_string pts_design_your_pano">Удивляйте уникальными форматами</p>
+                            <p class="format_card_d tx __grey __16 pts_string pts_format_card_fbpano">Загрузите фотографию, добавьте подписи и опубликуйте в вашем facebook в виде панорамы 360°!</p>
+                            <div class="format_card_icon_down __3"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="blog_footer_2">
+
+    </div>
+
+    <div class="scr_wr">
+        <div class="footer">
+            <div class="footer_left">
+                <span class="tx __white __16 footer_left_item">© Testix 2016</span>
+                <span class="tx __12 footer_left_item"><!--product_version--></span>
+                <span class="tx __12 footer_left_item js-version_hash"></span>
+                <a href="terms.html" class="tx __white __12 footer_left_item pts_string pts_terms">Пользовательское соглашение</a>
+                <a href="privacy_policy.html" class="tx __white __12 footer_left_item pts_string pts_privacy_policy">Политика Конфиденциальности</a>
+            </div>
+            <div class="footer_right">
+                <a href="https://facebook.com/testix.me" target="_blank" class="icon_fb"></a>
+                <a href="https://vk.com/testixme" target="_blank" class="icon_vk ml16"></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- common:js -->
+    <!-- endinject -->
+    <!-- build:remove -->
+    <script type="text/javascript" src="../../lib/jquery.js"></script>
+    <script type="text/javascript" src="../../js/config.js"></script>
+    <script type="text/javascript" src="../../js/model/app.js"></script>
+    <script type="text/javascript" src="../../js/util/utils.js"></script>
+    <!-- endbuild -->
+    <script>
+        $(document).ready(function() {
+            App.start();
+        });
+    </script>
+    <!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) {(w[c] = w[c] || []).push(function() {try {w.yaCounter37720792 = new Ya.Metrika({id:37720792,clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});} catch(e) { }});var n = d.getElementsByTagName("script")[0],s = d.createElement("script"),f = function () { n.parentNode.insertBefore(s, n); };s.type = "text/javascript";s.async = true;s.src = "https://mc.yandex.ru/metrika/watch.js";if (w.opera == "[object Opera]") {d.addEventListener("DOMContentLoaded", f, false);} else { f(); }})(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="https://mc.yandex.ru/watch/37720792" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
+</body>
+</html>

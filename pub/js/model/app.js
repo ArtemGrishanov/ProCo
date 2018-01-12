@@ -279,7 +279,10 @@ var App = App || {};
             comment: 'Комментарий',
             do_you_want_restore_tempate: 'Вы редактировали этот шаблон и не сохранили. Продолжить работу?',
             terms: 'Пользовательское соглашение',
-            privacy_policy: 'Политика конфиденциальности'
+            privacy_policy: 'Политика конфиденциальности',
+            more_news: 'Больше интересных и актуальных новостей из мира интерактивного контента',
+            create_content_no_profi: 'Создайте свой интерактивный проект<br>без программиста и дизайнера на Testix.me',
+            do_you_like_article: 'Понравилась статья?'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -493,7 +496,10 @@ var App = App || {};
             comment: 'Comment',
             do_you_want_restore_tempate: 'You have edited this template and have not saved it. Continue work?',
             terms: 'Terms of use',
-            privacy_policy: 'Privacy policy'
+            privacy_policy: 'Privacy policy',
+            more_news: 'More hot news and cases from the interactive content world',
+            create_content_no_profi: 'Create your interactive project <br> without a programmer and designer on Testix.me',
+            do_you_like_article: 'Good article?'
         }
     },
     /**
@@ -624,10 +630,11 @@ var App = App || {};
         }
 
         initUIHandlers();
+        initBlogUIHandlers();
         initLang();
 
         // атоматически при старте пытаемся возобновить предыдущую сессию
-        if (config.common.awsEnabled === true) {
+        if (config.common.awsEnabled === true && window.Auth) {
             Auth.addEventCallback(onAuthEvent);
             Auth.tryRestoreSession();
         }
@@ -745,6 +752,65 @@ var App = App || {};
         });
         $('.js-mob_menu_switcher').click(function(e) {
             toggleMobileMenu();
+        });
+    }
+
+    /**
+     *
+     */
+    function initBlogUIHandlers() {
+        $('.js-blog_create_new_top').click(function() {
+            var statData = {
+                hitType: 'event',
+                eventCategory: 'Testix.me/blog',
+                eventAction: 'Blog_create_project_top_click'
+            };
+            window.ga('send', statData);
+        });
+
+        $('.js-blog_create_new_footer').click(function() {
+            var statData = {
+                hitType: 'event',
+                eventCategory: 'Testix.me/blog',
+                eventAction: 'Blog_create_project_footer_click'
+            };
+            window.ga('send', statData);
+        });
+
+        $('.js-blog_more_news').click(function() {
+            var statData = {
+                hitType: 'event',
+                eventCategory: 'Testix.me/blog',
+                eventAction: 'Blog_more_news_click'
+            };
+            window.ga('send', statData);
+        });
+
+        $('.js-card_quiz').click(function() {
+            var statData = {
+                hitType: 'event',
+                eventCategory: 'Testix.me/blog',
+                eventAction: 'Blog_card_quiz_click'
+            };
+            window.ga('send', statData);
+        });
+
+        $('.js-card_minigames').click(function() {
+            var statData = {
+                hitType: 'event',
+                eventCategory: 'Testix.me/blog',
+                eventAction: 'Blog_card_minigame_click'
+            };
+            window.ga('send', statData);
+        });
+
+        $('.js-card_pano').click(function() {
+            var statData = {
+                hitType: 'event',
+                eventCategory: 'Testix.me/blog',
+                eventAction: 'Blog_card_pano_click'
+            };
+            window.ga('send', statData);
         });
     }
 
@@ -967,7 +1033,7 @@ var App = App || {};
      * Кликнули на кнопку разлогина
      */
     function onLogoutClick() {
-        if (window.confirm(App.getText('confirm_signout'))) {
+        if (window.confirm(App.getText('confirm_signout')) && window.Auth) {
             Auth.signOut();
         }
 //        if (FB) {
@@ -994,7 +1060,7 @@ var App = App || {};
      * .js-authorization_status
      */
     function updateUI() {
-        if (Auth.getUser()) {
+        if (window.Auth && Auth.getUser()) {
             Modal.hideLogin();
             $('.js-show_login').hide();
             $('.js-user_ctx_menu').show().find('#id-user_ctx_menu').hide();
@@ -1029,7 +1095,7 @@ var App = App || {};
      * @param {function} onTemplateInfoLoaded
      */
     function requestUserTemplates(onTemplateListLoaded, onTemplateInfoLoaded) {
-        if (Auth.getUser() !== null) {
+        if (window.Auth && Auth.getUser() !== null) {
             userTemplateCollection = new TemplateCollection({
                 // каталог с шаблонами который надо загружать
                 folder: Auth.getUser().id+'/app'
@@ -1081,7 +1147,7 @@ var App = App || {};
     function openEditor(param) {
         // доступен ли редактор для запуска или только по прямой ссылке
         if (config.common.editorIsUnderConstruction === false ||
-            (Auth.getUser() !== null && config.common.editorIsUnderConstructionWhitelist.indexOf(Auth.getUser().id) >= 0)) {
+            (window.Auth && Auth.getUser() !== null && config.common.editorIsUnderConstructionWhitelist.indexOf(Auth.getUser().id) >= 0)) {
             if (isMobile() !== true) {
                 var url = 'editor.html?';
                 if (param.appName) {
@@ -1145,7 +1211,7 @@ var App = App || {};
     }
 
     /**
-     * Отправить событие в систему сбора статистики
+     * Отправить событие в систему сбора статистики Google Analitycs
      * В html уже включен код инициализации
      *
      * @param {string} category, например Videos
@@ -1154,7 +1220,7 @@ var App = App || {};
      * @param {number} [value], например 10 - длительность
      */
     function stat(category, action, label, value) {
-        var userId = (Auth.getUser()) ? Auth.getUser().id: null;
+        var userId = (window.Auth && Auth.getUser()) ? Auth.getUser().id: null;
         if (window.ga && config.common.excludeUsersFromStatistic.indexOf(userId)<0) {
             var statData = {
                 hitType: 'event',

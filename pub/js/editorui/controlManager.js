@@ -365,6 +365,11 @@ var ControlManager = {
                 _addQuickPanelButtonForPopupControl(c);
             }
 
+            if (c.disabled === true) {
+                // контрол отключен, не показываем его
+                needShow = false;
+            }
+
             if (needShow === true) {
                 if (config.controls[c.controlName].type === 'quickcontrolpanel') {
                     // обычный контрол типа quickcontrolpanel зафильтрован, а значит надо показать панель

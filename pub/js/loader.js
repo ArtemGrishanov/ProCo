@@ -254,7 +254,7 @@ if (window.textix === undefined) {
          */
         function createPoweredLabel(cnt, labelMod) {
             labelMod = labelMod || '';
-            var s = '<a href="//testix.me" target="_blank" class="tstx_pwrd '+labelMod+'" onclick="testix.onLabelClick()"></a>';
+            var s = '<a href="http://testix.me" target="_blank" class="tstx_pwrd '+labelMod+'" onclick="testix.onLabelClick()"></a>';
             var div = document.createElement('div');
             div.innerHTML = s;
             cnt.appendChild(div.firstChild);

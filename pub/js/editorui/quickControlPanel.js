@@ -65,7 +65,7 @@ QuickControlPanel.prototype.updateControl = function(control) {
             $(qpItem).attr('data-sort-index', control.sortIndex);
             this._sortControlViews();
         }
-        if (control.enabled === false) {
+        if (control.cursorEnabled === false) {
             $(qpItem).addClass('__disabled');
         }
         else {

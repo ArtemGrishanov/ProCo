@@ -13,7 +13,7 @@
  *          если я планирую склеить этот файл с общие стили style.css то по идее ссылка не нужна эта
  *
  */
-var productVersion = 'v2.0.7';
+var productVersion = 'v2.0.8';
 
 
 var gulp = require('gulp');
@@ -322,11 +322,18 @@ gulp.task('concat:editor', function() {
  * Delete all development scripts
  * and copy html sources to dist folder
  */
-gulp.task('useref:remove', function() {
+gulp.task('useref:site', function() {
     return gulp.src(buildConfig.src.html.site.src)
         .pipe(useref())
         .pipe(injectString.replace('<!--product_version-->', productVersion))
         .pipe(gulp.dest(buildConfig.src.html.site.dist));
+});
+
+gulp.task('useref:blog', function() {
+    return gulp.src('./pub/blog/**/*.html')
+        .pipe(useref())
+        .pipe(injectString.replace('<!--product_version-->', productVersion))
+        .pipe(gulp.dest('./build/blog'));
 });
 
 /**
@@ -420,6 +427,15 @@ gulp.task('images:root', function(){
         .pipe(gulp.dest('build/i'))
 });
 
+gulp.task('images:blog', function(){
+    return gulp.src(['pub/blog/**/*.+(png|jpg|jpeg|gif|svg)'])
+        // Caching images that ran through imagemin
+        .pipe(cache(imagemin({
+            interlaced: true
+        })))
+        .pipe(gulp.dest('build/blog'))
+});
+
 //gulp.task('controls', function() {
 //    return gulp.src('pub/controls/**/*')
 //        .pipe(gulp.dest('build/controls'))
@@ -454,7 +470,9 @@ gulp.task('clean:build', function() {
 gulp.task('build', function (callback) {
     runSequence('clean:build',
         'images:root',
-        'useref:remove',
+        'images:blog',
+        'useref:site',
+        'useref:blog',
         'copy:prices',
         'copy:favicon',
         'copy:templates',

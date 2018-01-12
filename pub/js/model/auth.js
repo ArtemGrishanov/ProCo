@@ -541,51 +541,53 @@ var Auth = {
      *
      */
     function tryRestoreSession() {
-        var poolData = {
-            UserPoolId : config.common.awsUserPoolId,
-            ClientId : config.common.awsUserPoolClientId
-        };
-        var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
-        var cognitoUser = userPool.getCurrentUser();
+        if (window.AWSCognito) {
+            var poolData = {
+                UserPoolId : config.common.awsUserPoolId,
+                ClientId : config.common.awsUserPoolClientId
+            };
+            var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+            var cognitoUser = userPool.getCurrentUser();
 
-        if (cognitoUser != null) {
-            cognitoUser.getSession(function(err, session) {
-                if (err) {
-                    _trigger(Auth.EVENT_AUTO_SIGNIN_FAILED);
-                    return;
-                }
-                //console.log('session validity: ' + session.isValid());
-                // NOTE: getSession must be called to authenticate user before calling getUserAttributes
-                cognitoUser.getUserAttributes(function(err, attributes) {
+            if (cognitoUser != null) {
+                cognitoUser.getSession(function(err, session) {
                     if (err) {
-                        // Handle error
                         _trigger(Auth.EVENT_AUTO_SIGNIN_FAILED);
                         return;
-                    } else {
-                        // Создать авторизованного пользователя
-                        _createAuthenticatedUser({
-                            cognitoAttributes: attributes,
-                            cognitoUser: cognitoUser
-                        });
-                        _sessionToken = session.getIdToken().getJwtToken();
-                        _trigger(Auth.EVENT_SIGNIN_SUCCESS);
-
-                        _updateShortUserId();
                     }
-                });
+                    //console.log('session validity: ' + session.isValid());
+                    // NOTE: getSession must be called to authenticate user before calling getUserAttributes
+                    cognitoUser.getUserAttributes(function(err, attributes) {
+                        if (err) {
+                            // Handle error
+                            _trigger(Auth.EVENT_AUTO_SIGNIN_FAILED);
+                            return;
+                        } else {
+                            // Создать авторизованного пользователя
+                            _createAuthenticatedUser({
+                                cognitoAttributes: attributes,
+                                cognitoUser: cognitoUser
+                            });
+                            _sessionToken = session.getIdToken().getJwtToken();
+                            _trigger(Auth.EVENT_SIGNIN_SUCCESS);
 
-                var key = 'cognito-idp.'+config.common.awsRegion+'.amazonaws.com/'+config.common.awsUserPoolId;
-                var logins = {};
-                logins[key] = session.getIdToken().getJwtToken();
-                AWS.config.region = config.common.awsRegion;
-                AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-                    IdentityPoolId: config.common.awsIdentityPoolId,
-                    Logins: logins
+                            _updateShortUserId();
+                        }
+                    });
+
+                    var key = 'cognito-idp.'+config.common.awsRegion+'.amazonaws.com/'+config.common.awsUserPoolId;
+                    var logins = {};
+                    logins[key] = session.getIdToken().getJwtToken();
+                    AWS.config.region = config.common.awsRegion;
+                    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                        IdentityPoolId: config.common.awsIdentityPoolId,
+                        Logins: logins
+                    });
                 });
-            });
-        }
-        else {
-            _trigger(Auth.EVENT_AUTO_SIGNIN_FAILED);
+            }
+            else {
+                _trigger(Auth.EVENT_AUTO_SIGNIN_FAILED);
+            }
         }
     }
 

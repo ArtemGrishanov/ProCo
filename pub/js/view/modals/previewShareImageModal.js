@@ -33,12 +33,12 @@ function PreviewShareImageModal(param) {
      * Показать диалог выбора ресурсов с колбеком
      */
     this.showResourceDialog = function() {
-        //TODO хак. Чтобы показать ресурсманагер выше надо его тоже сделать модалкой, чтобы они были в одном контейнере
-        $('#id-dialogs_view').css('zIndex', config.modals.previewShareImageModal.defZIndex+1);
         Editor.getResourceManager().show(this.onImageSelected.bind(this), {
             // хотим показать чуть выше чем это окно с превью
             // zIndex: config.modals.previewShareImageModal.defZIndex+1
         });
+        //TODO хак. Чтобы показать ресурсманагер выше надо его тоже сделать модалкой, чтобы они были в одном контейнере
+        $('#id-dialogs_view').css('zIndex', config.modals.previewShareImageModal.defZIndex+1);
     };
 
     /**
