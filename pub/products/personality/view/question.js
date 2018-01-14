@@ -277,18 +277,25 @@ var QuestionScreen = MutApp.Screen.extend({
                     }
                 }
 
-                if (optionsArr.length > 3) {
-                    // когда опций много начинаем компоновать их в табличку в 2 колонки
-                    // модификатор на элемент js-options_cnt вешается
-                    $ea.addClass('__2');
+                // id-answer_question_grid_2 - двойка в имени устаревшее обозначение, этот контейнер используется для любого количества ответов
+                if (answerData.uiTemplate === 'id-answer_question_grid_2') {
+                    if (optionsArr.length <= 2) {
+                        $ea.removeClass('__3').removeClass('__4').addClass('__2');
+                    }
+                    if (optionsArr.length === 3) {
+                        $ea.removeClass('__2').removeClass('__4').addClass('__3');
+                    }
+                    if (optionsArr.length >= 4) {
+                        $ea.removeClass('__2').removeClass('__3').addClass('__4');
+                    }
                 }
-
-//                if (this.model.get('showBullits') === true) {
-//                    this.$el.find('.bullit').show();
-//                }
-//                else {
-//                    this.$el.find('.bullit').hide();
-//                }
+                else {
+                    if (optionsArr.length > 3) {
+                        // когда опций много начинаем компоновать их в табличку в 2 колонки
+                        // модификатор на элемент js-options_cnt вешается
+                        $ea.addClass('__2');
+                    }
+                }
 
                 break;
             }
