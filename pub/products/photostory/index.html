@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Photostory</title>
+    <meta charset="UTF-8">
+    <!--build:remove-->
+    <link href="../common/css/tstx_cmn_products.css" rel="stylesheet">
+    <!--endbuild-->
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body class="photostory">
+    <div id="id-mutapp_screens">
+    </div>
+
+    <script id="id-slider_template" type="text/template">
+        <div class="modal __active js-question_back_color js-question_back_img">
+            <div class="modal_cnt js-back_shadow js-logo_cnt">
+                <p>контент сверху</p>
+                <ul class="slides_cnt js-slides_cnt">
+
+                </ul>
+                <p>контент какой-то снизу</p>
+            </div>
+        </div>
+    </script>
+
+    <script id="id-slider_item" type="text/template">
+        <li class="slider_item js-slider_item animate" style="display:<%=display%>">
+            <!-- notice: on one line to remove margin between inline-clock -->
+            <span class="slider_item_centerer"></span><img class="slider_img" src="<%=img%>"/>
+        </li>
+    </script>
+
+    <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
+    <!-- build:lib:js -->
+    <!-- build:app:js -->
+    <!--build:remove-->
+    <script type="text/javascript" src="../common/js/jquery.js"></script>
+    <script type="text/javascript" src="../common/js/underscore.js"></script>
+    <script type="text/javascript" src="../common/js/backbone.js"></script>
+    <script type="text/javascript" src="../common/js/mutapp.js"></script>
+    <script type="text/javascript" src="model/psm.js"></script>
+    <script type="text/javascript" src="view/slider.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <!-- endbuild -->
+    <script>
+//        /*start_code
+        var app = null;
+        $(document).ready(function() {
+            var DEFAULT_PARAMS = {};
+            app = new PhotostoryApp({
+                defaults: DEFAULT_PARAMS,
+                mode: 'published'
+            });
+            app.start();
+        });
+//        start_code*/
+    </script>
+</body>
+</html>
