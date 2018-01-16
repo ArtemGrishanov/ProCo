@@ -84,26 +84,29 @@ var PhotostoryModel = MutApp.Model.extend({
 
     /**
      * Вернуть следующий индекс слайда
+     * Без закольцовки логика
+     *
      * @return {Number}
      */
     getNextSlideIndex: function() {
         var slidesCount = this.attributes.slides.toArray().length;
         var result = this.attributes.slideIndex + 1;
         if (result >= slidesCount) {
-            result = 0;
+            result = slidesCount-1;
         }
         return result;
     },
 
     /**
      * Вернуть следующий индекс слайда
+     * Без закольцовки логика
+     *
      * @return {Number}
      */
     getPrevSlideIndex: function() {
         var result = this.attributes.slideIndex - 1;
         if (result < 0) {
-            var slidesCount = this.attributes.slides.toArray().length;
-            result = slidesCount - 1;
+            result = 0;
         }
         return result;
     },

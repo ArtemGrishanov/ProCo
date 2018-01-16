@@ -4,29 +4,33 @@
     <title>Photostory</title>
     <meta charset="UTF-8">
     <!--build:remove-->
-    <link href="../common/css/tstx_cmn_products.css" rel="stylesheet">
+    <link href="tstx_cmn_products.css" rel="stylesheet">
     <!--endbuild-->
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body class="photostory">
+    <p>Online advertising, also called online marketing or Internet advertising or web advertising, is a form of marketing and advertising which uses the Internet to deliver promotional marketing messages to consumers. Consumers view online advertising as an unwanted distraction with few benefits and have increasingly turned to ad blocking for a variety of reasons.</p>
     <div id="id-mutapp_screens">
     </div>
+    <p>Many common online advertising practices are controversial and increasingly subject to regulation. Online ad revenues may not adequately replace other publishers' revenue streams. Declining ad revenue has led some publishers to hide their content behind paywalls.[4]</p>
 
     <script id="id-slider_template" type="text/template">
         <div class="modal __active js-question_back_color js-question_back_img">
             <div class="modal_cnt js-back_shadow js-logo_cnt">
-                <p>контент сверху</p>
-                <ul class="slides_cnt js-slides_cnt">
+                <p class="text">Before Google Tag Manager (GTM) existed, webmasters had to insert code on their pages for every tracking and advertising service they wanted to use. They also had to insert code into elements like links and buttons to track user behavior. However, with GTM the only code you have to add to your pages is GTM code.</p>
+                <div class="slider_wr">
+                    <ul class="animate slides_cnt js-slides_cnt">
 
-                </ul>
-                <p>контент какой-то снизу</p>
+                    </ul>
+                </div>
+                <p class="text">GTM enables you to add tags. Tags can be as simple as Google Analytics tracking code or they can contain multiple variables and triggers that record or affect more complex visitor behavior. For example, you can add event tracking with GTM without having to add any onclick code to your page.</p>
             </div>
         </div>
     </script>
 
     <script id="id-slider_item" type="text/template">
-        <li class="slider_item js-slider_item animate" style="display:<%=display%>">
+        <li class="slider_item js-slider_item" style="display:<%=display%>">
             <!-- notice: on one line to remove margin between inline-clock -->
             <span class="slider_item_centerer"></span><img class="slider_img" src="<%=img%>"/>
         </li>
@@ -36,10 +40,10 @@
     <!-- build:lib:js -->
     <!-- build:app:js -->
     <!--build:remove-->
-    <script type="text/javascript" src="../common/js/jquery.js"></script>
-    <script type="text/javascript" src="../common/js/underscore.js"></script>
-    <script type="text/javascript" src="../common/js/backbone.js"></script>
-    <script type="text/javascript" src="../common/js/mutapp.js"></script>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="underscore.js"></script>
+    <script type="text/javascript" src="backbone.js"></script>
+    <script type="text/javascript" src="mutapp.js"></script>
     <script type="text/javascript" src="model/psm.js"></script>
     <script type="text/javascript" src="view/slider.js"></script>
     <script type="text/javascript" src="app.js"></script>
@@ -51,7 +55,8 @@
             var DEFAULT_PARAMS = {};
             app = new PhotostoryApp({
                 defaults: DEFAULT_PARAMS,
-                mode: 'published'
+                mode: 'published',
+                height: 700 //TODO dynamic height
             });
             app.start();
         });

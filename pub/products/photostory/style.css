@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 .wrapper {
     /* приложение должно растягиваться в рамках контейнера приложения */
     width: 100%;
@@ -90,8 +95,8 @@ img {
     width: 100%;
     min-height: 100%;
     text-align: center;
-    white-space: nowrap;
-    background-color: #eee;
+    /*white-space: nowrap;*/
+    background-color: #888;
     background-size: cover;
     background-position: center;
 }
@@ -118,11 +123,29 @@ img {
     white-space: normal;
 }
 
-.slides_cnt {
+.slider_wr {
+    padding: 0;
+    margin: 0;
     position: relative;
     width: 100%;
     height: 375px;
+    overflow: hidden;
+}
+
+.slides_cnt {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
     padding: 0;
+    user-select: none;
+    -ms-touch-action: none;
+    touch-action: none;
+}
+.slides_cnt img {
+    user-select: none;
 }
 .slider_item {
     list-style: none;
@@ -150,7 +173,11 @@ img {
 }
 
 .animate {
-    transition: transform 0.3s ease-out;
+    transition: transform 0.26s ease-out;
+}
+
+.text {
+    width: 100%;
 }
 
 /**

@@ -735,7 +735,7 @@ var TriviaApp = MutApp.extend({
             if (correctOptionFound === false) {
                 res.push({
                     type: 'warning',
-                    message: 'No correct options in question "' + quizValue[i].text.getValue().substr(0, 15) + '"'
+                    message: 'No correct options in question "' + quizValue[i].question.text.getValue().substr(0, 15) + '"'
                 });
             }
         }
