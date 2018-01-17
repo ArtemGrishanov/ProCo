@@ -16,14 +16,14 @@ var myProjectsView = {};
     }
 
     function init() {
-        if (config.common.showHelpNotificationInMyProjects_12_2017 === true) {
-            $('#id-helpNotification_12_2017').show();
-            if (window.localStorage.getItem('notif_12_2017_status') != 'applied') {
-                setTimeout(function() {
-                    Modal.showHelpNotificationInMyProjects_12_2017Modal({canClose: false});
-                }, 1333);
-            }
-        }
+//        if (config.common.showHelpNotificationInMyProjects_12_2017 === true) {
+//            $('#id-helpNotification_12_2017').show();
+//            if (window.localStorage.getItem('notif_12_2017_status') != 'applied') {
+//                setTimeout(function() {
+//                    Modal.showHelpNotificationInMyProjects_12_2017Modal({canClose: false});
+//                }, 1333);
+//            }
+//        }
         initUIHandlers();
         // автоматический запрос сохраненных темплейтов пользователя как только это становится возможным
         Auth.addEventCallback(onAuthEvent);

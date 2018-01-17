@@ -127,14 +127,14 @@ var Modal = {};
     };
     global.hideRestorePassword = function () { _hide(RestorePasswordModal) };
 
-    global.showHelpNotificationInMyProjects_12_2017Modal = function (data) {
-        _show(NotificationInMyProjects12_2017Modal, data);
-    };
-    global.hideHelpNotificationInMyProjects_12_2017Modal = function () { _hide(NotificationInMyProjects12_2017Modal) };
+//    global.showHelpNotificationInMyProjects_12_2017Modal = function (data) {
+//        _show(NotificationInMyProjects12_2017Modal, data);
+//    };
+//    global.hideHelpNotificationInMyProjects_12_2017Modal = function () { _hide(NotificationInMyProjects12_2017Modal) };
 
-    global.showSignup12_2017Modal = function (data) {
-        _show(Signup12_2017Modal, data);
-    };
-    global.hideSignup12_2017Modal = function () { _hide(Signup12_2017Modal) };
+//    global.showSignup12_2017Modal = function (data) {
+//        _show(Signup12_2017Modal, data);
+//    };
+//    global.hideSignup12_2017Modal = function () { _hide(Signup12_2017Modal) };
 
 })(Modal);

@@ -115,20 +115,20 @@ SigninModal.prototype.render = function() {
     }
 
     // <TODO remove
-    if (window.localStorage.getItem('signup12_2017_status') != 'shown') {
-        var cc = true;
-        if (window.location && window.location.pathname.indexOf('editor.html') >= 0) {
-            // в редакторе нельзя давать закрывать
-            cc = false;
-        }
-        window.localStorage.setItem('signup12_2017_status', 'shown');
-        Modal.showSignup12_2017Modal({
-            canClose: cc
-        });
-        setTimeout(function(){
-            Modal.hideSignin();
-        }, 999);
-    }
+//    if (window.localStorage.getItem('signup12_2017_status') != 'shown') {
+//        var cc = true;
+//        if (window.location && window.location.pathname.indexOf('editor.html') >= 0) {
+//            // в редакторе нельзя давать закрывать
+//            cc = false;
+//        }
+//        window.localStorage.setItem('signup12_2017_status', 'shown');
+//        Modal.showSignup12_2017Modal({
+//            canClose: cc
+//        });
+//        setTimeout(function(){
+//            Modal.hideSignin();
+//        }, 999);
+//    }
     // <TODO remove
 };
 
