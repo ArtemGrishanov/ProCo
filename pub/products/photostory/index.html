@@ -30,9 +30,9 @@
     </script>
 
     <script id="id-slider_item" type="text/template">
-        <li class="slider_item js-slider_item" style="display:<%=display%>">
+        <li class="slider_item js-slider_item progressive replace" style="display:<%=display%>" data-img-src="<%=img%>" data-slide_index="<%=slide_index%>">
             <!-- notice: on one line to remove margin between inline-clock -->
-            <span class="slider_item_centerer"></span><img class="slider_img" src="<%=img%>"/>
+            <span class="slider_item_centerer"></span><img class="slider_img preview" src="<%=img_thumb%>"/>
         </li>
     </script>
 

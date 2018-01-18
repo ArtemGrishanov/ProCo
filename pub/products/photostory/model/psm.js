@@ -28,6 +28,7 @@ var PhotostoryModel = MutApp.Model.extend({
         this.super.initialize.call(this, param);
 
         this.bind('change:slides', function() {
+            this._onSlidesUpdate();
             this.start();
         });
 
@@ -38,26 +39,47 @@ var PhotostoryModel = MutApp.Model.extend({
             value: [
                 {
                     text: '',
-                    imgSrc: 'http://p.testix.me/images/products/photostory/img7.jpeg'
+                    imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/6000x3562.jpg'
+                    // preview: https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/thumb__6000x3562.jpg
                 },
                 {
                     text: '',
-                    imgSrc: 'http://p.testix.me/images/products/photostory/img5.jpeg'
+                    imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/1.jpeg'
                 },
                 {
                     text: '',
-                    imgSrc: 'http://p.testix.me/images/products/photostory/3.jpeg'
+                    imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/IMG_2352.JPG'
+                    // preview: https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/thumb__IMG_2352.JPG
                 },
                 {
                     text: '',
-                    imgSrc: 'http://p.testix.me/images/products/photostory/img11.webp'
-                },
-                {
-                    text: '',
-                    imgSrc: 'http://p.testix.me/images/products/photostory/img10.jpg'
+                    imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/IMG_2304.JPG'
+                    // preview: https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/thumb__IMG_2304.JPG
                 }
+//                {
+//                    text: '',
+//                    imgSrc: 'http://p.testix.me/images/products/photostory/img7.jpeg'
+//                },
+//                {
+//                    text: '',
+//                    imgSrc: 'http://p.testix.me/images/products/photostory/img5.jpeg'
+//                },
+//                {
+//                    text: '',
+//                    imgSrc: 'http://p.testix.me/images/products/photostory/3.jpeg'
+//                },
+//                {
+//                    text: '',
+//                    imgSrc: 'http://p.testix.me/images/products/photostory/img11.webp'
+//                },
+//                {
+//                    text: '',
+//                    imgSrc: 'http://p.testix.me/images/products/photostory/img10.jpg'
+//                }
             ]
         });
+
+        this._onSlidesUpdate();
     },
 
     /**
@@ -79,6 +101,19 @@ var PhotostoryModel = MutApp.Model.extend({
     prevSlide: function() {
         this.set({
             slideIndex: this.getPrevSlideIndex()
+        });
+    },
+
+    setSlideIndex: function(value) {
+        var slidesCount = this.attributes.slides.toArray().length;
+        if (value >= slidesCount) {
+            value = slidesCount-1;
+        }
+        if (value < 0) {
+            value = 0;
+        }
+        this.set({
+            slideIndex: value
         });
     },
 
@@ -113,5 +148,18 @@ var PhotostoryModel = MutApp.Model.extend({
 
     getSlideInfo: function(index) {
         return this.attributes.slides.toArray()[index];
+    },
+
+    /**
+     *
+     * @private
+     */
+    _onSlidesUpdate: function() {
+        var slidesArr = this.attributes.slides.toArray();
+        for (var i = 0; i < slidesArr.length; i++) {
+            var imgSrc = slidesArr[i].imgSrc;
+            // .../res/IMG_2304.JPG -> ...res/thumb__6000x3562.jpg
+            slidesArr[i].imgThumbSrc = imgSrc.replace('/res/','/res/thumb20__');
+        }
     }
 });

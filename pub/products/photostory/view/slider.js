@@ -28,6 +28,11 @@ var SliderScreen = MutApp.Screen.extend({
      */
     sliderItemsMap: {},
     /**
+     * полные загруженные Image объекты хранятся в мапе
+     * для повторного использования, например рендера
+     */
+    fullImagesMap: {},
+    /**
      *
      */
     slideWidth: undefined,
@@ -41,6 +46,10 @@ var SliderScreen = MutApp.Screen.extend({
     touchmovey: undefined,
     movex: undefined,
     movey: undefined,
+    /**
+     *
+     */
+    slideCntTranslateX: 0,
     /**
      * Определение долгого "уверенного" свайпа, а не легкого короткого
      */
@@ -106,16 +115,21 @@ var SliderScreen = MutApp.Screen.extend({
             this.longTouch = true;
             // здесь мы решаем начинать или нет горизонтальный скрол
             // является ли свайп вертикальным или горизонтальным
-            if (Math.abs(this.touchmovey - this.touchstarty) > Math.abs(this.touchmovex - this.touchstartx)) {
-                this.verticalSwipe = true;
-                return;
-            }
-            this.$slidesCnt.removeClass('animate');
-            this.touchSlideIndex = this.model.get('slideIndex');
-            this.isRightEdge = this.touchSlideIndex >= this.model.get('slides').toArray().length-1;
-            this.isLeftEdge = this.touchSlideIndex <= 0
+//            if (Math.abs(this.touchmovey - this.touchstarty) > Math.abs(this.touchmovex - this.touchstartx)) {
+//                this.verticalSwipe = true;
+//                return;
+//            }
+
             // ширину слайда при первом таче определяем
             this.slideWidth = this.$slidesCnt.width();
+            this.$slidesCnt.removeClass('animate');
+//            this.touchSlideIndex = this.model.get('slideIndex');
+        //Важный момент: выбрал вычисление индекса при начале перетаскивания не по модели а по положению контейнера
+        //так как бывает рассинхрон
+            this.touchSlideIndex = Math.round(-this.slideCntTranslateX / this.slideWidth);
+            this.isRightEdge = this.touchSlideIndex >= this.model.get('slides').toArray().length-1;
+            this.isLeftEdge = this.touchSlideIndex <= 0
+
 
 //            this.touchSlide = this.model.getSlideInfo(this.touchSlideIndex);
 //            this.$touchSlideView = $(this.sliderItemsMap[this.touchSlide.imgSrc]).show();
@@ -166,20 +180,23 @@ var SliderScreen = MutApp.Screen.extend({
         if ((this.touchstartx - this.touchmovex) > distanceToChange) {
             // переход вправо, movex отрицительный
             //this.nextSlide();
-            this.model.nextSlide();
+            //this.model.nextSlide();
+            this.model.setSlideIndex(this.touchSlideIndex+1);
         }
         else if (-(this.touchstartx - this.touchmovex) > distanceToChange) {
             // переход влево
             //this.prevSlide();
-            this.model.prevSlide();
+            //this.model.prevSlide();
+            this.model.setSlideIndex(this.touchSlideIndex-1);
         }
         else {
             // вернуть в исходное состояние
 
         }
         var si = this.model.get('slideIndex');
+        this.slideCntTranslateX = (-si*this.slideWidth);
         this.$slidesCnt.addClass('animate');
-        this.$slidesCnt.css('transform','translate3d(' + (-si*this.slideWidth) + 'px,0,0)');
+        this.$slidesCnt.css('transform','translate3d(' + this.slideCntTranslateX + 'px,0,0)');
     },
 
     initialize: function (param) {
@@ -190,9 +207,12 @@ var SliderScreen = MutApp.Screen.extend({
             .css('min-height','100%'));
         param.screenRoot.append(this.$el);
 
-        // listener on changing window size to measure slide width
-        // TODO add listener, not override this function
-        window.onresize = this.onWindowResize.bind(this);
+        this.fullImagesMap = {};
+
+        if (window.addEventListener) {
+            // listener on changing window size to measure slide width
+            window.addEventListener('resize', this.onWindowResize.bind(this), false);
+        }
 
         this.model.bind("change:state", function() {
             if (this.model.get('state') === 'slider') {
@@ -202,6 +222,65 @@ var SliderScreen = MutApp.Screen.extend({
         }, this);
 
         this.model.bind("change:slides", this.onMutAppPropertyChanged, this);
+
+        if (window.addEventListener && window.requestAnimationFrame && document.getElementsByClassName) {
+            window.addEventListener('load', this.onWindowLoaded.bind(this));
+        }
+    },
+
+    /**
+     *
+     */
+    onWindowLoaded: function() {
+        console.log('onWindowLoaded');
+        var items = document.getElementsByClassName('progressive replace');
+        for (var i = 0; i < items.length; i++) {
+            this.loadFullImage(items[i]);
+        }
+    },
+
+    // replace with full image
+    loadFullImage: function(item) {
+
+        if (!item || !item.attributes['data-img-src']) return;
+
+        // load image
+        var img = new Image();
+        if (item.dataset) {
+            img.srcset = item.dataset.srcset || '';
+            img.sizes = item.dataset.sizes || '';
+        }
+        img.src = item.attributes['data-img-src'].value;
+        // сохраняем картинку для повторного использования при дальнейших рендерах
+        this.fullImagesMap[img.src] = img;
+//        img.className = 'reveal';
+        img.className = 'slider_img';
+        if (img.complete) {
+            addImg();
+        }
+        else {
+            img.onload = addImg;
+        }
+
+        // replace image
+        function addImg() {
+
+            // disable click
+            //item.addEventListener('click', function(e) { e.preventDefault(); }, false);
+
+            // add full image
+            item.appendChild(img);
+// .addEventListener('animationend', function(e) {
+
+                // remove preview image
+                var pImg = item.querySelector && item.querySelector('img.preview');
+                if (pImg) {
+//                    e.target.alt = pImg.alt || '';
+                    item.removeChild(pImg);
+//                    e.target.classList.remove('reveal');
+                }
+//            });
+        }
     },
 
     /**
@@ -249,12 +328,24 @@ var SliderScreen = MutApp.Screen.extend({
 
         for (var i = 0; i < slides.length; i++) {
             var sl = slides[i];
-//            var display = (slideIndex === i) ? 'block': 'none';
-            var display = 'block';
+
             var $sliderItem = $(this.template['sliderItem']({
                 img: sl.imgSrc,
-                display: display
+                img_thumb: sl.imgThumbSrc,
+                display: 'block',
+                slide_index: i
             }));
+
+            if (this.fullImagesMap[sl.imgSrc]) {
+                // для этой картинки уже создан объект Image
+                // Возможно, даже загружен полностью, надо использовать его
+                $sliderItem.find('img').remove();
+                $sliderItem.append(this.fullImagesMap[sl.imgSrc]);
+            }
+            else {
+
+            }
+
             var transform = 'translate3d('+(i*this.slideWidth)+'px,0,0)';
             $sliderItem.css('transform', transform);
             // сохраняем все вью в мапу
@@ -262,19 +353,20 @@ var SliderScreen = MutApp.Screen.extend({
             $slc.append($sliderItem);
         }
 
-        this.$slidesCnt.css('transform','translate3d(' + (-slideIndex*this.slideWidth) + 'px,0,0)');
+        this.slideCntTranslateX = (-slideIndex*this.slideWidth);
+        this.$slidesCnt.css('transform','translate3d(' + this.slideCntTranslateX + 'px,0,0)');
         this.$sliderItems = $('js-slider_item');
     },
 
     /**
      * Прокрутить слайд на следующий
      */
-    nextSlide: function() {
-
-        this.model.nextSlide();
-        var si = this.model.get('slideIndex');
-        this.$slidesCnt.addClass('animate');
-        this.$slidesCnt.css('transform','translate3d(' + (-si*this.slideWidth) + 'px,0,0)');
+//    nextSlide: function() {
+//
+//        this.model.nextSlide();
+//        var si = this.model.get('slideIndex');
+//        this.$slidesCnt.addClass('animate');
+//        this.$slidesCnt.css('transform','translate3d(' + (-si*this.slideWidth) + 'px,0,0)');
 
 //        var slideIndex = this.model.get('slideIndex');
 //        var slide = this.model.getSlideInfo(slideIndex);
@@ -299,17 +391,17 @@ var SliderScreen = MutApp.Screen.extend({
 //                .css('transform','translate3d(0,0,0)');
 //        }, 0);
 
-    },
+//    },
 
     /**
      * Прокрутить слайд на предыдущий
      */
-    prevSlide: function() {
-
-        this.model.prevSlide();
-        var si = this.model.get('slideIndex');
-        this.$slidesCnt.addClass('animate');
-        this.$slidesCnt.css('transform','translate3d(' + (-si*this.slideWidth) + 'px,0,0)');
+//    prevSlide: function() {
+//
+//        this.model.prevSlide();
+//        var si = this.model.get('slideIndex');
+//        this.$slidesCnt.addClass('animate');
+//        this.$slidesCnt.css('transform','translate3d(' + (-si*this.slideWidth) + 'px,0,0)');
 
 //        var slideIndex = this.model.get('slideIndex');
 //        var slide = this.model.getSlideInfo(slideIndex);
@@ -333,5 +425,5 @@ var SliderScreen = MutApp.Screen.extend({
 //            $prevSlideView.addClass('animate')
 //                .css('transform','translate3d(0,0,0)');
 //        }, 0);
-    }
+//    }
 });
