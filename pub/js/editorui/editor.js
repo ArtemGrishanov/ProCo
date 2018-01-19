@@ -1079,7 +1079,8 @@ var Editor = {};
                 // Так как EVENET_CONTROL_POPUP_HIDED - это событие о скрытии панели popupControlPanel.js внутри Workspace
                 // а нам теперь нужно сделать логическое действие - скрыть контрол по правилам. Для этого надо обновить фильтр.
                 ControlManager.filter({
-                    propertyStrings: null
+                    propertyStrings: null,
+                    screen: editedApp.getScreenById(activeScreen)
                 });
                 break;
             }
@@ -1093,7 +1094,10 @@ var Editor = {};
                 }
                 ControlManager.filter({
                     propertyStrings: ps,
-                    selectedElement: Workspace.getSelectedElement()
+                    selectedElement: Workspace.getSelectedElement(),
+                    // если есть propertyStrings для фильтрации то ставим их, элемент выделен
+                    // если их нет, значит элемент никакой не выделен и фильтруем по экрану текущему
+                    screen: (ps === null) ? editedApp.getScreenById(activeScreen): null
                 });
                 break;
             }

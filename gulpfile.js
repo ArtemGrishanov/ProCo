@@ -13,7 +13,7 @@
  *          если я планирую склеить этот файл с общие стили style.css то по идее ссылка не нужна эта
  *
  */
-var productVersion = 'v2.0.9';
+var productVersion = 'v2.0.10';
 
 
 var gulp = require('gulp');
@@ -207,7 +207,7 @@ productsConfig.forEach(function (e) {
         console.log('Building product css: ' + e.productName + ', src: ' + e.src.css);
         return gulp.src(buildConfig.products.commonCss.concat(e.src.css)) // два массива склеиваются
             .pipe(concat(buildConfig.products.commonCssFileName))
-            .pipe(gulpIf('*.css', cssnano()))
+            .pipe(gulpIf('*.css', cssnano({zindex: false})))
             .pipe(gulp.dest('./build/products/'+ e.productName));
     });
 
@@ -278,7 +278,7 @@ gulp.task('version', function() {
 gulp.task('concat:css', function() {
     return gulp.src(buildConfig.src.css.srcSite)
         .pipe(concat(buildConfig.names.styleFileName))
-        .pipe(gulpIf('*.css', cssnano()))
+        .pipe(gulpIf('*.css', cssnano({zindex: false})))
         .pipe(gulp.dest(buildConfig.names.distFolder));
 });
 
@@ -366,6 +366,16 @@ gulp.task('copy:prices', function() {
 gulp.task('copy:favicon', function() {
     return gulp.src('./pub/favicon.ico')
         .pipe(gulp.dest('./build'));
+});
+
+/**
+ * loader.js собирается отдельно
+ * Он должен остаться отдельным минифицированным файлом
+ */
+gulp.task('build:loader', function() {
+    return gulp.src('./pub/js/loader.js')
+        .pipe(gulpIf(buildConfig.uglifyJs, uglify()))
+        .pipe(gulp.dest('./build/js'));
 });
 
 gulp.task('inject', function () {
@@ -477,6 +487,7 @@ gulp.task('build', function (callback) {
         'copy:favicon',
         'copy:templates',
         'copy:controlviews',
+        'build:loader',
         'concat:css',
         'concat:commonlib',
         'concat:editorlib',

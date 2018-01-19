@@ -140,11 +140,15 @@ img {
     bottom: 0;
     width: 100%;
     padding: 0;
+    -webkit-user-select: none;
     user-select: none;
     /*-ms-touch-action: none;*/
     /*touch-action: none;*/
-    -ms-touch-action: pan-y;
-    touch-action: pan-y;
+    /* do nothing */
+    /*-ms-touch-action: pan-y;*/
+    /*touch-action: pan-y;*/
+    /*-webkit-touch-callout: none;*/
+    -webkit-tap-highlight-color: transparent;
 }
 .slides_cnt img {
     user-select: none;
@@ -176,7 +180,7 @@ img {
 }
 
 .animate {
-    transition: transform 0.26s ease-out;
+    transition: transform 0.46s ease-out;
 }
 
 .text {
