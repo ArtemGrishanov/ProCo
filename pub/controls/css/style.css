@@ -76,24 +76,31 @@ form input {
     border: 5px solid #1cbf61;
     box-sizing: border-box;
 }
+.onoffswitch {
+    line-height: 16px;
+}
 .alt_cnt {
     padding-left: 4px;
 }
 .alt_item {
     display: inline-block;
-    width: 57px;
+    width: 59px;
     height: 28px;
     background-color: #fff;
     background-repeat: no-repeat;
     background-position: center;
-    margin-left: -4px;
     border: 1px solid #979797;
     cursor: pointer;
+    margin-left: -4px;
 }
 .alt_item.__selected {
     background-color: #499CF3;
     border-color: #499CF3;
 }
+/* такая техника не работает так как есть перенос на новую строку в случае 6 альтернатив например в панорамах */
+/*.alt_item+.alt_item {*/
+    /*margin-left: -4px;*/
+/*}*/
 .qp {
     position: absolute;
     top: 0;
@@ -172,10 +179,11 @@ form input {
     width: 20px;
     height: 20px;
     vertical-align: top;
+    margin: 0 0 0 -2px;
 }
 .contr_btn {
     display: inline-block;
-    min-width: 130px;
+    width: 151px;
     padding: 7px 12px;
     margin-bottom: 0;
     font-size: 16px;
