@@ -13,7 +13,7 @@
  *          если я планирую склеить этот файл с общие стили style.css то по идее ссылка не нужна эта
  *
  */
-var productVersion = 'v2.0.10';
+var productVersion = 'v2.1.0';
 
 
 var gulp = require('gulp');
@@ -34,6 +34,14 @@ var version = require('gulp-version-number');
 var injectString = require('gulp-inject-string');
 var replace = require('gulp-string-replace');
 var uniqid = require('uniqid');
+var argv = require('yargs').argv;
+
+/**
+ * Pass environment into this script: 'gulp build --prod'
+ */
+var environment = 'dev';
+if (argv.prod === true) environment = 'prod';
+if (argv.test === true) environment = 'test';
 
 var buildUniqId = uniqid();
 buildUniqId = buildUniqId.substring(buildUniqId.length-6,buildUniqId.length);
@@ -110,6 +118,38 @@ var buildConfig = {
                 './pub/controls/**/**/*.js',
             ]
         }
+    }
+};
+
+/**
+ * Скрипты (например статистика) которые надо вставить в продакшн версию
+ * @type {{ga: string, yaMetrika: string}}
+ */
+var scriptsToEmbed = {
+    ga: {
+        environments: ['prod'],
+        anchor: '<!--ga-->',
+        code: '<script>(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create", "UA-88595022-1", "auto");ga("send", "pageview");</script>'
+    },
+    yaMetrika: {
+        environments: ['prod'],
+        anchor: '<!--yametrika-->',
+        code: '<!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) {(w[c] = w[c] || []).push(function() {try {w.yaCounter37720792 = new Ya.Metrika({id:37720792,clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});} catch(e) { }});var n = d.getElementsByTagName("script")[0],s = d.createElement("script"),f = function () { n.parentNode.insertBefore(s, n); };s.type = "text/javascript";s.async = true;s.src = "https://mc.yandex.ru/metrika/watch.js";if (w.opera == "[object Opera]") {d.addEventListener("DOMContentLoaded", f, false);} else { f(); }})(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="https://mc.yandex.ru/watch/37720792" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->'
+    },
+    fbPixel: {
+        environments: ['prod'],
+        anchor: '<!--fbpixel-->',
+        code: '<!-- Facebook Pixel Code --><script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init", "1456263851069324");fbq("track", "PageView");</script><noscript><img height="1" width="1" style="display:none"src="https://www.facebook.com/tr?id=1456263851069324&ev=PageView&noscript=1"/></noscript><!-- DO NOT MODIFY --><!-- End Facebook Pixel Code -->'
+    },
+    fbTrackEditor: {
+        environments: ['prod'],
+        anchor: '<!--fbtrackeditor-->',
+        code: '<script>fbq("track", "editor.html");</script>'
+    },
+    fbViewContent: {
+        environments: ['prod'],
+        anchor: '<!--fbviewcontent-->',
+        code: '<script>fbq("track", "ViewContent", {value: 1.0,currency: "USD"});</script>'
     }
 };
 
@@ -303,7 +343,8 @@ gulp.task('concat:common', function() {
     return gulp.src(buildConfig.src.js.srcCommon)
         .pipe(concat(buildConfig.names.commonFileName))
         .pipe(replace('http://localhost:63342/ProCo/pub/', 'http://localhost:63342/ProCo/build/'))
-        .pipe(replace('buildStatus: "development"', 'buildStatus: "production"'))
+        //.pipe(replace('buildStatus: "development"', 'buildStatus: "production"'))
+        .pipe(replace('{{js_product_environment}}', environment))
         .pipe(replace('{{js_product_version}}', productVersion))
         .pipe(gulpIf(buildConfig.uglifyJs, uglify()))
         .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
@@ -326,6 +367,12 @@ gulp.task('useref:site', function() {
     return gulp.src(buildConfig.src.html.site.src)
         .pipe(useref())
         .pipe(injectString.replace('<!--product_version-->', productVersion))
+        // Скрипты вставляем только пр и сборке нужной среды: например статистика будет считаться только на проде
+        .pipe(gulpIf(scriptsToEmbed.ga.environments.indexOf(environment) >= 0, injectString.replace(scriptsToEmbed.ga.anchor, scriptsToEmbed.ga.code)))
+        .pipe(gulpIf(scriptsToEmbed.ga.environments.indexOf(environment) >= 0, injectString.replace(scriptsToEmbed.yaMetrika.anchor, scriptsToEmbed.yaMetrika.code)))
+        .pipe(gulpIf(scriptsToEmbed.ga.environments.indexOf(environment) >= 0, injectString.replace(scriptsToEmbed.fbPixel.anchor, scriptsToEmbed.fbPixel.code)))
+        .pipe(gulpIf(scriptsToEmbed.ga.environments.indexOf(environment) >= 0, injectString.replace(scriptsToEmbed.fbTrackEditor.anchor, scriptsToEmbed.fbTrackEditor.code)))
+        .pipe(gulpIf(scriptsToEmbed.ga.environments.indexOf(environment) >= 0, injectString.replace(scriptsToEmbed.fbViewContent.anchor, scriptsToEmbed.fbViewContent.code)))
         .pipe(gulp.dest(buildConfig.src.html.site.dist));
 });
 

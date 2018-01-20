@@ -352,9 +352,9 @@ var Editor = {};
                 bumpAppVersion(true);
             }
             // показ кнопки загрузки превью картинки для проекта. Только для админов
-            if (Auth.getUser() && config.common.excludeUsersFromStatistic.indexOf(Auth.getUser().id) >= 0) {
-                $('#id-app_prevew_img_wr').show();
-            }
+//            if (Auth.getUser() && config.common.excludeUsersFromStatistic.indexOf(Auth.getUser().id) >= 0) {
+//                $('#id-app_prevew_img_wr').show();
+//            }
             setTariffPolicy();
 
             if (typeof startCallback === 'function') {
@@ -528,7 +528,7 @@ var Editor = {};
     }
 
     function publish() {
-        if (config.common.buildStatus === 'development') {
+        if (config.common.buildStatus === 'dev') {
             // только сбилденный проект может публиковать
             // так как стилшком сложно поддерживать публикацию из каталога /pub, где структура проекта другая
             Modal.showMessage({text: 'Publishing is only available in production mode'});

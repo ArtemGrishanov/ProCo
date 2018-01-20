@@ -151,7 +151,7 @@ var App = App || {};
             new_slide: 'Новый слайд',
             please_wait: 'Пожалуйста, подождите...',
             ok: 'Ok',
-            block_editor_on_mob: 'Вы находитесь на ознакомительной мобильной версии Testix.me.<br><br>Чтобы использовать конструктор Testix, перейдите на полную версию сайта.',
+            block_editor_on_mob: 'На мобильном устройстве работать в редакторе неудобно.<br><br>Для создания проектов, пожалуйста, откройте наш сайт на компьютере.',
             choose_quiz_template: 'Выберите шаблон теста',
             mini_games_memory: 'Мини игры. Мемори',
             choose_pano_template: 'Выберите шаблон панорам',
@@ -686,6 +686,9 @@ var App = App || {};
     function initScripts(userId) {
         if (scriptsWereInited !== true) {
             // undefined or null returns '-1'
+
+//            Скрипты - это не статистика. Скрипты инициализируются для всех пользователей
+//            А статистика собирается только для среды 'prod'
 //            if (config.common.excludeUsersFromStatistic.indexOf(userId)<0) {
                 for (var key in config.scripts) {
                     if (config.scripts.hasOwnProperty(key)) {
@@ -695,9 +698,6 @@ var App = App || {};
                         }
                     }
                 }
-//            }
-//            else {
-//                userExcludedFromStatistics = true;
 //            }
             scriptsWereInited = true;
         }
@@ -760,57 +760,27 @@ var App = App || {};
      */
     function initBlogUIHandlers() {
         $('.js-blog_create_new_top').click(function() {
-            var statData = {
-                hitType: 'event',
-                eventCategory: 'Testix.me/blog',
-                eventAction: 'Blog_create_project_top_click'
-            };
-            window.ga('send', statData);
+            stat('Testix.me/blog', 'Blog_create_project_top_click');
         });
 
         $('.js-blog_create_new_footer').click(function() {
-            var statData = {
-                hitType: 'event',
-                eventCategory: 'Testix.me/blog',
-                eventAction: 'Blog_create_project_footer_click'
-            };
-            window.ga('send', statData);
+            stat('Testix.me/blog', 'Blog_create_project_footer_click');
         });
 
         $('.js-blog_more_news').click(function() {
-            var statData = {
-                hitType: 'event',
-                eventCategory: 'Testix.me/blog',
-                eventAction: 'Blog_more_news_click'
-            };
-            window.ga('send', statData);
+            stat('Testix.me/blog', 'Blog_more_news_click');
         });
 
         $('.js-card_quiz').click(function() {
-            var statData = {
-                hitType: 'event',
-                eventCategory: 'Testix.me/blog',
-                eventAction: 'Blog_card_quiz_click'
-            };
-            window.ga('send', statData);
+            stat('Testix.me/blog', 'Blog_card_quiz_click');
         });
 
         $('.js-card_minigames').click(function() {
-            var statData = {
-                hitType: 'event',
-                eventCategory: 'Testix.me/blog',
-                eventAction: 'Blog_card_minigame_click'
-            };
-            window.ga('send', statData);
+            stat('Testix.me/blog', 'Blog_card_minigame_click');
         });
 
         $('.js-card_pano').click(function() {
-            var statData = {
-                hitType: 'event',
-                eventCategory: 'Testix.me/blog',
-                eventAction: 'Blog_card_pano_click'
-            };
-            window.ga('send', statData);
+            stat('Testix.me/blog', 'Blog_card_pano_click');
         });
     }
 
@@ -1275,12 +1245,9 @@ var App = App || {};
     global.getAWSBucket = function() { return bucket; };
     global.getAWSBucketForPublishedProjects = function() { return bucketForPublishedProjects; };
     global.getDict = function() { return dict; };
-//    global.on = on;
-//    global.requestLogin = requestLogin;
     global.openEditor = openEditor;
     global.openUrl = openUrl;
     global.initAwsBuckets = initAwsBuckets;
-//    global.relogin = relogin;
     global.isMobile = isMobile;
     global.isTouchMobile = isTouchMobile;
     global.stat = stat;

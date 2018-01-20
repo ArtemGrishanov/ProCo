@@ -13,38 +13,22 @@ var config = {
             config.common.home = 'http://localhost:63342/ProCo/pub/'; // меняется на 'http://localhost:63342/ProCo/build/' при сборке
             config.common.facebookAppId = '518819781624579';
             config.common.awsEnabled = true;
-            config.common.facebookAuthEnabled = true;
-//            config.scripts.ga.enable = false;
-//            config.scripts.yaMetrika.enable = true;
-            config.scripts.jivoSite.enable = false;
             return this;
         },
         test: function() {
             config.common.home = 'http://test.testix.me/';
             config.common.facebookAppId = '515132035326687';
             config.common.awsEnabled = true;
-            config.common.facebookAuthEnabled = true;
-//            config.scripts.ga.enable = false;
-//            config.scripts.yaMetrika.enable = false;
-            config.scripts.jivoSite.enable = false;
             return this;
         },
         prod: function () {
             config.common.home = 'http://testix.me/';
             config.common.facebookAppId = '1734391910154130';
             config.common.awsEnabled = true;
-            config.common.facebookAuthEnabled = true;
-//            config.scripts.ga.enable = true;
-//            config.scripts.yaMetrika.enable = true;
-            config.scripts.jivoSite.enable = true;
             return this;
         },
         offline: function() {
             config.common.awsEnabled = false;
-            config.common.facebookAuthEnabled = false;
-//            config.scripts.ga.enable = false;
-//            config.scripts.yaMetrika.enable = false;
-            config.scripts.jivoSite.enable = false;
             return this;
         },
         online: function() {
@@ -56,13 +40,14 @@ var config = {
     common: {
         /**
          * Перечисляет какие наборы свойств будут применены при старте приложения по умолчанию
+         * {{js_product_environment}} заменяется при билде в gulpfile
          */
-        configurationSetsOnStart: ['dev'], //dev test prod
+        configurationSetsOnStart: ["{{js_product_environment}}"], //dev test prod
         /**
          * Признак того, что проект собран gulp-ом
          * 'production'
          */
-        buildStatus: "development", // ! Значение меняется при сборке gulp
+        buildStatus: "{{js_product_environment}}", // ! Значение меняется при сборке gulp
         /**
          * Версия сборки, указывается в gulp файле вручную
          */
@@ -76,11 +61,7 @@ var config = {
         /**
          * Проводить ли при старте инициализацию для работы с хранилищем амазона
          */
-        awsEnabled: false,
-        /**
-         * Разрешать вход через FB
-         */
-        facebookAuthEnabled: false,
+        awsEnabled: true,
         /**
          * Id приложения в facebook для логина
          */
@@ -137,7 +118,11 @@ var config = {
          * В разных приложениях/доменах ид пользователя может быть разный
          */
         excludeUsersFromStatistic: [
-            //'43d927ad-17a1-4d07-84c2-c273dff1a831' // grishanov.artem@gmail.com
+            '43d927ad-17a1-4d07-84c2-c273dff1a831', // grishanov.artem@gmail.com
+            '188fd3ea-3387-4a49-b98b-4272f47178d5', // 2@testix.me
+            '0235e985-8b92-4666-83fa-25fd85ee1072', // 1@testix.me
+            'cd811f5b-78b5-447c-955f-f08846862693', // txy@yandex.ru
+            '895e73f9-e078-453e-a4f9-8a6b349091b1' // chemodanov2003@mail.ru
         ],
         /**
          * Хост для опубликованных проектов
@@ -1081,19 +1066,26 @@ var config = {
         }
     },
     scripts: {
-        //        '22.03.2017' - при быстром закрытии страницы такой "умный" способ вставки кода не успевает работать и конверсия не считается.
-        //        ga: {
-        //            enabled: false,
-        //            code: '<script>(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create", "UA-88595022-1", "auto");ga("send", "pageview");</script>'
-        //        },
-        //        '12.03.2017' - начало эксперимента по статичной вставке кода. Так как веб-визор иногда отказывается работать.
-        //        yaMetrika: {
-        //            enabled: false,
-        //            code: '<!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) {(w[c] = w[c] || []).push(function() {try {w.yaCounter37720792 = new Ya.Metrika({id:37720792,clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});} catch(e) { }});var n = d.getElementsByTagName("script")[0],s = d.createElement("script"),f = function () { n.parentNode.insertBefore(s, n); };s.type = "text/javascript";s.async = true;s.src = "https://mc.yandex.ru/metrika/watch.js";if (w.opera == "[object Opera]") {d.addEventListener("DOMContentLoaded", f, false);} else { f(); }})(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="https://mc.yandex.ru/watch/37720792" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->'
-        //        },
+        // '22.03.2017' - при быстром закрытии страницы такой "умный" способ вставки кода не успевает работать и конверсия не считается.
+        ga: {
+            enabled: false,
+            code: '<script>(function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga");ga("create", "UA-88595022-1", "auto");ga("send", "pageview");</script>'
+        },
+        // '12.03.2017' - начало эксперимента по статичной вставке кода. Так как веб-визор иногда отказывается работать.
+        yaMetrika: {
+            enabled: false,
+            code: '<!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) {(w[c] = w[c] || []).push(function() {try {w.yaCounter37720792 = new Ya.Metrika({id:37720792,clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});} catch(e) { }});var n = d.getElementsByTagName("script")[0],s = d.createElement("script"),f = function () { n.parentNode.insertBefore(s, n); };s.type = "text/javascript";s.async = true;s.src = "https://mc.yandex.ru/metrika/watch.js";if (w.opera == "[object Opera]") {d.addEventListener("DOMContentLoaded", f, false);} else { f(); }})(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="https://mc.yandex.ru/watch/37720792" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->'
+        },
+        /**
+         * Сервис плохо себя показал, отключаем
+         */
         jivoSite: {
-            enabled: true,
+            enabled: false,
             code: '<!-- BEGIN JIVOSITE CODE {literal} --><script type=\'text/javascript\'>(function(){ var widget_id = \'45oOHsZGmj\';var d=document;var w=window;function l(){var s = document.createElement(\'script\'); s.type = \'text/javascript\'; s.async = true; s.src = \'//code.jivosite.com/script/widget/\'+widget_id; var ss = document.getElementsByTagName(\'script\')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState==\'complete\'){l();}else{if(w.attachEvent){w.attachEvent(\'onload\',l);}else{w.addEventListener(\'load\',l,false);}}})();</script><!-- {/literal} END JIVOSITE CODE -->'
+        },
+        facebook_chat_widget: {
+            enabled: true,
+            code: '<!-- facebook messenger widget --><style>.fb-livechat,.fb-widget{display:none}.ctrlq.fb-button,.ctrlq.fb-close{position:fixed;right:24px;cursor:pointer}.ctrlq.fb-button{z-index:1;background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDEyOCAxMjgiIGhlaWdodD0iMTI4cHgiIGlkPSJMYXllcl8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB3aWR0aD0iMTI4cHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxnPjxyZWN0IGZpbGw9IiMwMDg0RkYiIGhlaWdodD0iMTI4IiB3aWR0aD0iMTI4Ii8+PC9nPjxwYXRoIGQ9Ik02NCwxNy41MzFjLTI1LjQwNSwwLTQ2LDE5LjI1OS00Niw0My4wMTVjMCwxMy41MTUsNi42NjUsMjUuNTc0LDE3LjA4OSwzMy40NnYxNi40NjIgIGwxNS42OTgtOC43MDdjNC4xODYsMS4xNzEsOC42MjEsMS44LDEzLjIxMywxLjhjMjUuNDA1LDAsNDYtMTkuMjU4LDQ2LTQzLjAxNUMxMTAsMzYuNzksODkuNDA1LDE3LjUzMSw2NCwxNy41MzF6IE02OC44NDUsNzUuMjE0ICBMNTYuOTQ3LDYyLjg1NUwzNC4wMzUsNzUuNTI0bDI1LjEyLTI2LjY1N2wxMS44OTgsMTIuMzU5bDIyLjkxLTEyLjY3TDY4Ljg0NSw3NS4yMTR6IiBmaWxsPSIjRkZGRkZGIiBpZD0iQnViYmxlX1NoYXBlIi8+PC9zdmc+) center no-repeat #0084ff;width:60px;height:60px;text-align:center;bottom:24px;border:0;outline:0;border-radius:60px;-webkit-border-radius:60px;-moz-border-radius:60px;-ms-border-radius:60px;-o-border-radius:60px;box-shadow:0 1px 6px rgba(0,0,0,.06),0 2px 32px rgba(0,0,0,.16);-webkit-transition:box-shadow .2s ease;background-size:80%;transition:all .2s ease-in-out}.ctrlq.fb-button:focus,.ctrlq.fb-button:hover{transform:scale(1.1);box-shadow:0 2px 8px rgba(0,0,0,.09),0 4px 40px rgba(0,0,0,.24)}.fb-widget{background:#fff;z-index:2;position:fixed;width:360px;height:435px;overflow:hidden;opacity:0;bottom:0;right:24px;border-radius:6px;-o-border-radius:6px;-webkit-border-radius:6px;box-shadow:0 5px 40px rgba(0,0,0,.16);-webkit-box-shadow:0 5px 40px rgba(0,0,0,.16);-moz-box-shadow:0 5px 40px rgba(0,0,0,.16);-o-box-shadow:0 5px 40px rgba(0,0,0,.16)}.fb-credit{text-align:center;margin-top:8px}.fb-credit a{transition:none;color:#bec2c9;font-family:Helvetica,Arial,sans-serif;font-size:12px;text-decoration:none;border:0;font-weight:400}.ctrlq.fb-overlay{z-index:0;position:fixed;height:100vh;width:100vw;-webkit-transition:opacity .4s,visibility .4s;transition:opacity .4s,visibility .4s;top:0;left:0;background:rgba(0,0,0,.05);display:none}.ctrlq.fb-close{z-index:4;padding:0 6px;background:#365899;font-weight:700;font-size:11px;color:#fff;margin:8px;border-radius:3px}.ctrlq.fb-close::after{content:\'x\';font-family:sans-serif}</style><div class="fb-livechat"><div class="ctrlq fb-overlay"></div><div class="fb-widget"><div class="ctrlq fb-close"></div><div class="fb-page" data-href="https://www.facebook.com/testixme/" data-tabs="messages" data-width="360" data-height="400" data-small-header="true" data-hide-cover="true" data-show-facepile="false"><blockquote cite="https://www.facebook.com/testix.me/" class="fb-xfbml-parse-ignore"> </blockquote></div><div class="fb-credit"><a href="http://testix.me" target="_blank">Facebook Chat Widget by Testix</a></div><div id="fb-root"></div></div><a href="https://m.me/testix.me" title="Send us a message on Facebook" class="ctrlq fb-button"></a></div><script src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script><script>$(document).ready(function(){var t={delay:125,overlay:$(".fb-overlay"),widget:$(".fb-widget"),button:$(".fb-button")};setTimeout(function(){$("div.fb-livechat").fadeIn()},8*t.delay),$(".ctrlq").on("click",function(e){e.preventDefault(),t.overlay.is(":visible")?(t.overlay.fadeOut(t.delay),t.widget.stop().animate({bottom:0,opacity:0},2*t.delay,function(){$(this).hide("slow"),t.button.show()})):t.button.fadeOut("medium",function(){t.widget.stop().show().animate({bottom:"30px",opacity:1},2*t.delay),t.overlay.fadeIn(t.delay)})})});</script><!-- facebook messenger widget -->'
         }
     }
 };
@@ -1102,6 +1094,10 @@ var config = {
 if (config.common.configurationSetsOnStart && config.common.configurationSetsOnStart.length > 0) {
     for (var i = 0; i < config.common.configurationSetsOnStart.length; i++) {
         var setName = config.common.configurationSetsOnStart[i];
+        // Нормализуем значение environment, возможно мы запускаем не сбилденный проект и там стоит {{js product environment}}
+        if (setName !== 'dev' && setName !== 'test' && setName !== 'prod') {
+            setName = 'dev';
+        }
         config.congigurationSet[setName].call(this);
     }
 }

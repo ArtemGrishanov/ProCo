@@ -169,7 +169,7 @@ var shareImageService = {};
             previewService.createInIframe({
                 html: param.app.getAutoPreviewHtml(),
                 stylesToEmbed: [
-                    (config.common.buildStatus === 'development') ? config.products.common.styles: '',
+                    (config.common.buildStatus === 'dev') ? config.products.common.styles: '',
                     config.products[param.app.type].stylesForEmbed
                 ],
                 cssString: param.app.getCssRulesString(),

@@ -1785,5 +1785,35 @@ select {
     .published_proj_back.__anonympage .proto_wr {
         height: auto;
     }
+
+    .modal.__signup {
+        /* на мобилке растягиваем модальное окно по всему размеру экрана */
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-size: 18px;
+    }
+    .su-input,
+    .su-reg_btn
+    {
+        width: 70%;
+        max-width: 360px;
+        font-size: 18px;
+    }
+    .su-link {
+        font-size: 18px;
+    }
+    .su-bottom {
+        position: relative;
+    }
+    .modal.__signup .close_dialog_btn {
+        /* очень важно поменять стиль кнопки, а менять классы существующие не хочется, sorry */
+        top: 24px !important;
+        right: 24px !important;
+        width: 32px !important;
+        height: 32px !important;
+        background-size: 32px 32px !important;
+        background-image: url(../i/Krestik-dark.png) !important;
+    }
 }
 /* Small width screens */

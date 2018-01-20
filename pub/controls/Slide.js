@@ -69,7 +69,7 @@ Slide.prototype.onPreviewIFrameLoaded = function() {
     var productConfig = config.products[this.additionalParam.appType];
     if (productConfig) {
         var $h = $previewDocument.find('head');
-        if (config.common.buildStatus === 'development') {
+        if (config.common.buildStatus === 'dev') {
             $h.append(config.products.common.styles);
         }
         $h.append(productConfig.stylesForEmbed);
