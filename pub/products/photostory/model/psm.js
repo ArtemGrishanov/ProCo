@@ -38,21 +38,21 @@ var PhotostoryModel = MutApp.Model.extend({
             propertyString: 'id=psm slides',
             value: [
                 {
-                    text: '',
+                    text: 'Победительницей 66-го конкурса красоты «Мисс Вселенная», финал которого прошел 26 ноября в Лас-Вегасе, стала 22-летняя представительница ЮАР Деми-Леи Нель-Петерс. Девушка получила корону из рук прошлогодней финалистки – француженки Ирис Миттенар.',
                     imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/6000x3562.jpg'
                     // preview: https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/thumb__6000x3562.jpg
                 },
                 {
-                    text: '',
+                    text: 'Второй слад вот',
                     imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/1.jpeg'
                 },
                 {
-                    text: '',
+                    text: 'Третий слайдик',
                     imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/IMG_2352.JPG'
                     // preview: https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/thumb__IMG_2352.JPG
                 },
                 {
-                    text: '',
+                    text: 'Четвертый слайдддддд',
                     imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/IMG_2304.JPG'
                     // preview: https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/thumb__IMG_2304.JPG
                 }
@@ -146,6 +146,11 @@ var PhotostoryModel = MutApp.Model.extend({
         return result;
     },
 
+    /**
+     *
+     * @param index
+     * @returns {*}
+     */
     getSlideInfo: function(index) {
         return this.attributes.slides.toArray()[index];
     },

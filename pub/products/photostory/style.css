@@ -1,6 +1,8 @@
 * {
     margin: 0;
     padding: 0;
+    font-family: Arial;
+    color: #464646;
 }
 
 .wrapper {
@@ -96,9 +98,12 @@ img {
     min-height: 100%;
     text-align: center;
     /*white-space: nowrap;*/
-    background-color: #888;
+    /*background-color: #888;*/
     background-size: cover;
     background-position: center;
+    box-sizing: border-box;
+    border-top: 1px solid #e7e7e7;
+    border-bottom: 1px solid #e7e7e7;
 }
 .modal.__active {
     display: block;
@@ -221,6 +226,41 @@ li.progressive img.reveal {
     /*0% {transform: scale(1.05); opacity: 0;}*/
     /*100% {transform: scale(1); opacity: 1;}*/
 /*}*/
+
+.slide_counter {
+    position: relative;
+    margin: 0 auto;
+    line-height: 28px;
+}
+
+.slide_counter_num {
+    position: absolute;
+    top: 0;
+    left: 16px;
+    color: #b1b1b1;
+    font-size: 14px;
+}
+
+.slide_counter_i {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: #d1d1d1;
+    border-radius: 999px;
+}
+.slide_counter_i + .slide_counter_i {
+    margin-left: 4px;
+}
+.slide_counter_i.__active {
+    background-color: #3897f0;
+}
+
+.slide_text {
+    padding: 16px;
+    text-align: left;
+    font-size: 14px;
+    box-sizing: border-box;
+}
 
 /**
  Важное замечание про: min-width:1px

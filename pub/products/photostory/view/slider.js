@@ -77,10 +77,15 @@ var SliderScreen = MutApp.Screen.extend({
      * Признак того что слайдер находится в левом крайнем положении (в начале)
      */
     isLeftEdge: false,
+    /**
+     * View маркеры прогресса
+     */
+    $counters: [],
 
     template: {
         "default": _.template($('#id-slider_template').html()),
-        "sliderItem": _.template($('#id-slider_item').html())
+        "sliderItem": _.template($('#id-slider_item').html()),
+        "counterItem": _.template($('#id-counter_item').html())
     },
 
     events: {
@@ -211,6 +216,8 @@ var SliderScreen = MutApp.Screen.extend({
 
         this.model.bind("change:slides", this.onMutAppPropertyChanged, this);
 
+        this.model.bind("change:slideIndex", this.onSlideIndexChanged, this);
+
         if (window.addEventListener && window.requestAnimationFrame && document.getElementsByClassName) {
             window.addEventListener('load', this.onWindowLoaded.bind(this));
         }
@@ -280,6 +287,33 @@ var SliderScreen = MutApp.Screen.extend({
         this.render();
     },
 
+    /**
+     * Произошло обновление текущего слайда
+     * Нужно обновить текст подписи, прогресс бар и т.п.
+     */
+    onSlideIndexChanged: function() {
+        var slides = this.model.get('slides').toArray();
+        var slideIndex = this.model.get('slideIndex');
+        var currentSlider = this.model.getSlideInfo(slideIndex);
+
+        // текст для текущего слайда установить в интерфейс
+        this.$el.find('.js-slide_text').text(currentSlider.text);
+
+        // числовой индекс слайда обновить
+        this.$el.find('.js-slide_num').text((slideIndex+1)+'/'+slides.length);
+
+        // обновить маркеры прогресса
+        for (var i = 0; i < this.$counters.length; i++) {
+            var $c = this.$counters[i];
+            if (slideIndex === i) {
+                $c.addClass('__active');
+            }
+            else {
+                $c.removeClass('__active');
+            }
+        }
+    },
+
     //TODO в http://photoswipe.com/ идет подмена картинок, то есть после прокрутки три новые (ближайшие) становятся в слайдер, остальные удаляются
     render: function() {
         this.sliderItemsMap = {};
@@ -306,6 +340,9 @@ var SliderScreen = MutApp.Screen.extend({
         var $slc = this.$slidesCnt.empty();
         var slides = this.model.get('slides').toArray();
         var slideIndex = this.model.get('slideIndex');
+        var currentSlider = this.model.getSlideInfo(slideIndex);
+        var $counterCnt = this.$el.find('.js-slide_counter_cnt').empty();
+        this.$counters = [];
 
         for (var i = 0; i < slides.length; i++) {
             var sl = slides[i];
@@ -332,7 +369,19 @@ var SliderScreen = MutApp.Screen.extend({
             // сохраняем все вью в мапу
             this.sliderItemsMap[sl.imgSrc] = $sliderItem;
             $slc.append($sliderItem);
+
+            var $counterItem = $(this.template['counterItem']({
+                active: i === slideIndex ? '__active': '',
+                slide_index: i
+            }));
+            $counterCnt.append($counterItem);
+            this.$counters.push($counterItem);
         }
+
+        // текст текущего слайда поставить
+        this.$el.find('.js-slide_text').text(currentSlider.text);
+        // числовой индекс слайда обновить
+        this.$el.find('.js-slide_num').text((slideIndex+1)+'/'+slides.length);
 
         this.slideCntTranslateX = (-slideIndex*this.slideWidth);
         this.$slidesCnt.css('transform','translate3d(' + this.slideCntTranslateX + 'px,0,0)');

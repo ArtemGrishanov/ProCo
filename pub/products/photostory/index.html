@@ -18,13 +18,18 @@
     <script id="id-slider_template" type="text/template">
         <div class="modal __active js-question_back_color js-question_back_img">
             <div class="modal_cnt js-back_shadow js-logo_cnt">
-                <p class="text">Before Google Tag Manager (GTM) existed, webmasters had to insert code on their pages for every tracking and advertising service they wanted to use. They also had to insert code into elements like links and buttons to track user behavior. However, with GTM the only code you have to add to your pages is GTM code.</p>
                 <div class="slider_wr">
                     <ul class="animate slides_cnt js-slides_cnt">
-
+                        <!--template id-slider_item-->
                     </ul>
                 </div>
-                <p class="text">GTM enables you to add tags. Tags can be as simple as Google Analytics tracking code or they can contain multiple variables and triggers that record or affect more complex visitor behavior. For example, you can add event tracking with GTM without having to add any onclick code to your page.</p>
+                <div class="slide_counter">
+                    <span class="slide_counter_num js-slide_num">1/10</span>
+                    <div class="js-slide_counter_cnt">
+                        <!--template id-counter_item-->
+                    </div>
+                </div>
+                <p class="text slide_text js-slide_text"></p>
             </div>
         </div>
     </script>
@@ -34,6 +39,10 @@
             <!-- notice: on one line to remove margin between inline-clock -->
             <span class="slider_item_centerer"></span><img class="slider_img preview" src="<%=img_thumb%>"/>
         </li>
+    </script>
+
+    <script id="id-counter_item" type="text/template">
+        <span class="slide_counter_i <%=active%> js-slide_counter" data-slide-index="<%=slide_index%>"></span>
     </script>
 
     <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>

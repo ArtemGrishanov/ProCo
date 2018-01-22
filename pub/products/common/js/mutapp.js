@@ -2506,8 +2506,11 @@ MutApp.Util = {
      * @return {boolean}
      */
     isRgb: function(str) {
-        str = str.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
-        return !!str && !!str[1] && !!str[2] && !!str[3];
+        if (str) {
+            str = str.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
+            return !!str && !!str[1] && !!str[2] && !!str[3];
+        }
+        return false;
     },
 
     /**
