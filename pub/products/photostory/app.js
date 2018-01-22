@@ -16,33 +16,23 @@ var PhotostoryApp = MutApp.extend({
             // это свойство описано в клиентской части а не в mutapp.js так как фильтр по экрану может указать только клиент
             label: {RU: 'Картинка для шаринга', EN: 'Sharing image'},
             controls: 'ChooseSharingImage',
-            controlFilter: 'screenPropertyString' // клиент знает какие экраны есть в приложении
-        },
-        "id=psm logoLink": {
-            label: {RU: 'Ссылка по клику на лого', EN: 'Logo click link'},
-            controls: 'StringControl',
-            controlFilter: 'always'
-        },
-        "id=psm downloadLink": {
-            label: {RU: 'Ссылка по кнопке "Скачать"', EN: 'Download button link'},
-            controls: 'StringControl',
-            controlFilter: 'always'
+            controlFilter: 'screen(type=result)' // клиент знает какие экраны есть в приложении. А в мемори только один экран результата
         },
         "id=psm slides": {
             label: {RU:'Вопросы теста',EN:'Photostory quiz'},
             prototypes: [
                 {
-                    protoFunction: 'id=pm quizProto1', // функция в приложении, которая вернет новый объект
+                    protoFunction: 'id=psm quizProto1', // функция в приложении, которая вернет новый объект
                     label: {RU:'Текстовый вопрос',EN:'Text question'},
                     img: '//p.testix.me/images/products/photostory/editor/Icon-text-vopros.png'
                 },
                 {
-                    protoFunction: 'id=pm quizProto2', // функция в приложении, которая вернет новый объект
+                    protoFunction: 'id=psm quizProto2', // функция в приложении, которая вернет новый объект
                     label: {RU:'Фото вопрос',EN:'Photo question'},
                     img: '//p.testix.me/images/products/photostory/editor/Icon-fotovopros.png'
                 },
                 {
-                    protoFunction: 'id=pm quizProto3', // функция в приложении, которая вернет новый объект
+                    protoFunction: 'id=psm quizProto3', // функция в приложении, которая вернет новый объект
                     label: {RU:'Фото ответы',EN:'Photo answers'},
                     img: '//p.testix.me/images/products/photostory/editor/Icon-fotootvet.png'
                 }
@@ -58,17 +48,54 @@ var PhotostoryApp = MutApp.extend({
                 }
             }
         },
-        "id=pm fbSharingEnabled": {
+        "id=psm resultTitle": {
+            controls: "TextQuickInput"
+        },
+        "id=psm resultDescription": {
+            controls: "TextQuickInput"
+        },
+        "id=psm restartButtonText": {
+            controls: "TextQuickInput"
+        },
+        "id=psm downloadButtonText": {
+            controls: "TextQuickInput"
+        },
+        "id=psm showDownload": {
+            label: {RU:'Кнопка "Скачать"', EN:'Download button'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)'
+        },
+        "id=psm shadowEnableInResults": {
+            label: {RU:'Включить тень', EN:'Shadow enable'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)' // 'always', 'screen(startScr)', 'onclick', 'hidden'
+        },
+        "id=psm logoPositionInResults": {
+            label: {},
+            controls: {
+                name: 'Drag',
+                param: {
+                    // контейнер в котором будет происходить перетаскивание
+                    draggableParentSelector: '.js-logo_cnt'
+                }
+            }
+        },
+        "id=psm showLogoInResults": {
+            label: {RU:'Показывать лого в результатах',EN:'Show logo on result screens'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)'
+        },
+        "id=psm fbSharingEnabled": {
             label: {RU:'Шаринг в Facebook',EN:'Facebook sharing'},
             controls: 'OnOff',
             controlFilter: 'screen(type=results)'
         },
-        "id=pm vkSharingEnabled": {
+        "id=psm vkSharingEnabled": {
             label: {RU:'Шаринг во ВКонтакте',EN:'Vk.com sharing'},
             controls: 'OnOff',
             controlFilter: 'screen(type=results)'
         },
-        "id=pm fbSharingPosition": {
+        "id=psm fbSharingPosition": {
             label: {},
             controls: {
                 name: 'Drag',
@@ -78,7 +105,7 @@ var PhotostoryApp = MutApp.extend({
                 }
             }
         },
-        "id=pm vkSharingPosition": {
+        "id=psm vkSharingPosition": {
             label: {},
             controls: {
                 name: 'Drag',
@@ -88,11 +115,28 @@ var PhotostoryApp = MutApp.extend({
                 }
             }
         },
-        "id=pm logoUrl": {
+        "id=psm logoUrl": {
             label: {RU: 'Логотип', EN: 'Logo'},
             controls: 'ChooseImage',
             controlFilter: 'always'
+        },
+        "id=psm logoLink": {
+            label: {RU: 'Ссылка по клику на лого', EN: 'Logo click link'},
+            controls: 'StringControl',
+            controlFilter: 'always'
+        },
+        "id=psm downloadLink": {
+            label: {RU: 'Ссылка по кнопке "Скачать"', EN: 'Download button link'},
+            controls: 'StringControl',
+            controlFilter: 'always'
+        },
+        "id=psm resultBackgroundImage": {
+            label: {RU: 'Фоновая картинка', EN: 'Background image'},
+            controls: 'ChooseImage',
+            controlFilter: 'screen(type=results)'
         }
+
+        //.js-result_title .js-result_description .js-result_back_color
     }),
     /**
      * Конструктор приложения: создание моделей и экранов
@@ -109,6 +153,12 @@ var PhotostoryApp = MutApp.extend({
             screenRoot: this.screenRoot
         });
         this.addScreen(this.slider);
+
+        this.result = new ResultScreen({
+            model: psm,
+            screenRoot: this.screenRoot
+        });
+        this.addScreen(this.result);
 
         this.model.bind('change:slides', function() {
             this.updateEditSlideScreens();
@@ -187,7 +237,11 @@ var PhotostoryApp = MutApp.extend({
             case MutApp.EVENT_PROPERTY_CREATED:
             case MutApp.EVENT_PROPERTY_VALUE_CHANGED:
             case MutApp.EVENT_PROPERTY_DELETED: {
-
+                if (data.propertyString == 'id=psm resultTitle' || data.propertyString == 'id=psm resultDescription') {
+                    if (this.model) {
+                        this.model.updateShareEntities();
+                    }
+                }
                 break;
             }
         }

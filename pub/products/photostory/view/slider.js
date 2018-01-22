@@ -125,6 +125,15 @@ var SliderScreen = MutApp.Screen.extend({
         this.touchSlideIndex = Math.round(-this.slideCntTranslateX / this.slideWidth);
         this.isRightEdge = this.touchSlideIndex >= this.model.get('slides').toArray().length-1;
         this.isLeftEdge = this.touchSlideIndex <= 0
+        if (this.isRightEdge === true) {
+            // предварительно показать вью экрана с результатами
+            app.result.$el
+                .css('position','absolute')
+                .show()
+                .removeClass('animate')
+                .css('transform','translate3d(' + (this.slideWidth) + 'px,0,0)');
+            this.$el.removeClass('animate');
+        }
 
         this.touchstartx =  event.originalEvent.touches[0].pageX;
         this.touchstarty =  event.originalEvent.touches[0].pageY;
@@ -141,10 +150,20 @@ var SliderScreen = MutApp.Screen.extend({
                 if (this.isLeftEdge === true && this.movex > edgeWidth) {
                     this.movex = edgeWidth;
                 }
-                if (this.isRightEdge === true && this.movex < (-this.touchSlideIndex*this.slideWidth-edgeWidth)) {
-                    this.movex = -this.touchSlideIndex*this.slideWidth-edgeWidth;
+                if (this.isRightEdge === true && this.touchstartx-this.touchmovex > 0) {
+                    // с правого края начинает постепенно выезжать экран результата
+                    app.result.$el.css('transform','translate3d(' + ((this.touchmovex-this.touchstartx)+this.slideWidth) + 'px,0,0)');
+                    this.$el.css('position','absolute').css('transform','translate3d(' + (this.touchmovex-this.touchstartx) + 'px,0,0)');
+
+                    //if (this.movex < (-this.touchSlideIndex*this.slideWidth-edgeWidth)) {
+                        // перемещение справа большое: раньше этот код блокировал дальнейшее перемещение вправо
+                        //this.movex = -this.touchSlideIndex*this.slideWidth-edgeWidth;
+                    //}
                 }
-                this.$slidesCnt.css('transform','translate3d(' + this.movex + 'px,0,0)');
+                else {
+                    // обычное листание
+                    this.$slidesCnt.css('transform','translate3d(' + this.movex + 'px,0,0)');
+                }
 
                 // для горизонтального свайпа запретить поведение по умолчанию: прокрутку страницы вертикально
                 event.originalEvent.preventDefault();
@@ -175,8 +194,22 @@ var SliderScreen = MutApp.Screen.extend({
         // дистанция на которую надо сделать тач, чтобы начался переход к другому слайду
         var distanceToChange = this.slideWidth / 6;
         if ((this.touchstartx - this.touchmovex) > distanceToChange) {
-            // переход вправо, movex отрицительный
-            this.model.setSlideIndex(this.touchSlideIndex+1);
+            if (this.isRightEdge === true) {
+                // окончательный переход к экрану результата
+                app.result.$el
+                    .addClass('animate')
+                    .css('transform','translate3d(0,0,0)');
+                this.$el
+                    .addClass('animate')
+                    .css('transform','translate3d(' + (-this.slideWidth) + 'px,0,0)');
+                this.model.set({
+                    state: 'result'
+                });
+            }
+            else {
+                // переход вправо, movex отрицительный
+                this.model.setSlideIndex(this.touchSlideIndex+1);
+            }
         }
         else if (-(this.touchstartx - this.touchmovex) > distanceToChange) {
             // переход влево
@@ -184,12 +217,21 @@ var SliderScreen = MutApp.Screen.extend({
         }
         else {
             // вернуть в исходное состояние
-
+            if (this.isRightEdge === true) {
+                app.result.$el
+                    .addClass('animate')
+                    .css('transform','translate3d(' + (this.slideWidth) + 'px,0,0)');
+                this.$el
+                    .addClass('animate')
+                    .css('transform','translate3d(0px,0,0)');
+            }
         }
         var si = this.model.get('slideIndex');
         this.slideCntTranslateX = (-si*this.slideWidth);
         this.$slidesCnt.addClass('animate');
         this.$slidesCnt.css('transform','translate3d(' + this.slideCntTranslateX + 'px,0,0)');
+
+
     },
 
     initialize: function (param) {
@@ -319,6 +361,7 @@ var SliderScreen = MutApp.Screen.extend({
         this.sliderItemsMap = {};
 
         this.$el.html(this.template['default']());
+        this.$el.css('position','absolute').css('transform','translate3d(0,0,0)');
 
         setTimeout((function(){
             this.slideWidth = this.$slidesCnt.width();
@@ -337,6 +380,7 @@ var SliderScreen = MutApp.Screen.extend({
      * 4) Далее двигаться будет контейнер трансформом, а не слайды
      */
     renderSlides: function() {
+        console.log('renderSlides()');
         var $slc = this.$slidesCnt.empty();
         var slides = this.model.get('slides').toArray();
         var slideIndex = this.model.get('slideIndex');

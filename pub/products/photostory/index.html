@@ -45,6 +45,30 @@
         <span class="slide_counter_i <%=active%> js-slide_counter" data-slide-index="<%=slide_index%>"></span>
     </script>
 
+    <script id="id-result_template" type="text/template">
+        <div class="modal __active js-result_back_color js-result_back_img" data-app-property="id=psm resultBackgroundImage, id=psm resultBackgroundColor, id=psm shadowEnableInResults">
+            <div class="modal_cnt info js-back_shadow js-logo_cnt">
+                <div class="info_title js-result_title" data-app-property="id=psm resultTitle, id=psm resultTitleColor"><%=title%></div>
+                <div class="info_tx js-result_description" data-app-property="id=psm resultDescription, id=psm resultDescriptionColor"><%=description%></div>
+                <div class="info_f js-download_btn_wr">
+                    <div class="button js-download_btn" data-app-property="id=psm downloadButtonText">Скачать</div>
+                </div>
+                <div class="info_f js-btn_wr js-restart_btn_wr">
+                    <div class="button js-next js-restart js-test_btn" data-app-property="id=psm restartButtonText">Пройти тест еще раз</div>
+                </div>
+                <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="id=psm fbSharingPosition">
+                    <span class="tstx_share_i"></span>
+                    Поделиться
+                </div>
+                <div class="tstx_share_btn __vk js-mutapp_share_vk" data-app-property="id=psm vkSharingPosition">
+                    <span class="tstx_share_i __vk"></span>
+                    Поделиться
+                </div>
+                <div class="logo js-logo js-result_logo" data-app-property="id=psm logoPositionInResults"></div>
+            </div>
+        </div>
+    </script>
+
     <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
     <!-- build:lib:js -->
     <!-- build:app:js -->
@@ -55,6 +79,7 @@
     <script type="text/javascript" src="mutapp.js"></script>
     <script type="text/javascript" src="model/psm.js"></script>
     <script type="text/javascript" src="view/slider.js"></script>
+    <script type="text/javascript" src="view/result.js"></script>
     <script type="text/javascript" src="app.js"></script>
     <!-- endbuild -->
     <script>

@@ -79,6 +79,104 @@ var PhotostoryModel = MutApp.Model.extend({
             ]
         });
 
+        this.attributes.showLogoInResults = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=psm showLogoInResults',
+            value: true
+        });
+        this.attributes.shadowEnableInResults = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=psm shadowEnableInResults',
+            value: true
+        });
+        this.attributes.logoLink = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=psm logoLink',
+            value: 'http://testix.me'
+        });
+        this.attributes.downloadLink = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=psm downloadLink',
+            value: 'http://testix.me'
+        });
+        this.attributes.resultTitle = new MutAppProperty({
+            application: this.application,
+            model: this,
+            value: 'Result title',
+            propertyString: 'id=psm resultTitle'
+        });
+        this.attributes.resultDescription = new MutAppProperty({
+            application: this.application,
+            model: this,
+            value: 'Result description',
+            propertyString: 'id=psm resultDescription'
+        });
+        this.attributes.restartButtonText = new MutAppProperty({
+            application: this.application,
+            model: this,
+            value: 'Заново',
+            propertyString: 'id=psm restartButtonText'
+        });
+        this.attributes.downloadButtonText = new MutAppProperty({
+            application: this.application,
+            model: this,
+            value: 'Download',
+            propertyString: 'id=psm downloadButtonText'
+        });
+        this.attributes.logoPositionInResults = new MutAppPropertyPosition({
+            application: this.application,
+            model: this,
+            value: {top: 300, left: 20},
+            propertyString: 'id=psm logoPositionInResults'
+        });
+        this.attributes.fbSharingEnabled = new MutAppProperty({
+            application: this.application,
+            model: this,
+            value: true,
+            propertyString: 'id=psm fbSharingEnabled'
+        });
+        this.attributes.vkSharingEnabled = new MutAppProperty({
+            application: this.application,
+            model: this,
+            value: true,
+            propertyString: 'id=psm vkSharingEnabled'
+        });
+        this.attributes.fbSharingPosition = new MutAppPropertyPosition({
+            application: this.application,
+            model: this,
+            value: {top: 219, left: 294},
+            propertyString: 'id=psm fbSharingPosition'
+        });
+        this.attributes.vkSharingPosition = new MutAppPropertyPosition({
+            application: this.application,
+            model: this,
+            value: {top: 270, left: 294},
+            propertyString: 'id=psm vkSharingPosition'
+        });
+        this.attributes.showDownload = new MutAppProperty({
+            application: this.application,
+            model: this,
+            value: false,
+            propertyString: 'id=psm showDownload'
+        });
+        this.attributes.logoUrl = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=psm logoUrl',
+            value: '//s3.eu-central-1.amazonaws.com/proconstructor/res/thumb_logo.jpg'
+        });
+        this.attributes.resultBackgroundImage = new MutAppProperty({
+            application: this.application,
+            model: this,
+            propertyString: 'id=psm resultBackgroundImage',
+            value: ''
+        });
+
+        this.updateShareEntities();
         this._onSlidesUpdate();
     },
 
@@ -92,17 +190,17 @@ var PhotostoryModel = MutApp.Model.extend({
         });
     },
 
-    nextSlide: function() {
-        this.set({
-            slideIndex: this.getNextSlideIndex()
-        });
-    },
-
-    prevSlide: function() {
-        this.set({
-            slideIndex: this.getPrevSlideIndex()
-        });
-    },
+//    nextSlide: function() {
+//        this.set({
+//            slideIndex: this.getNextSlideIndex()
+//        });
+//    },
+//
+//    prevSlide: function() {
+//        this.set({
+//            slideIndex: this.getPrevSlideIndex()
+//        });
+//    },
 
     setSlideIndex: function(value) {
         var slidesCount = this.attributes.slides.toArray().length;
@@ -165,6 +263,46 @@ var PhotostoryModel = MutApp.Model.extend({
             var imgSrc = slidesArr[i].imgSrc;
             // .../res/IMG_2304.JPG -> ...res/thumb__6000x3562.jpg
             slidesArr[i].imgThumbSrc = imgSrc.replace('/res/','/res/thumb20__');
+        }
+    },
+
+    /**
+     * Начать просмотр слайдов с начала
+     */
+    restart: function() {
+        this.set({
+            state: 'slider',
+            slideIndex: 0
+        });
+    },
+
+    /**
+     * Обновить ентити для шаринга
+     * Создать или обновить тексты
+     */
+    updateShareEntities: function() {
+        var shareEntitiesArr = this.application.shareEntities.toArray();
+
+        var titleText = this.attributes.resultTitle.getValue() || '';
+        var descriptionText = this.attributes.resultDescription.getValue() || '';
+        if (!shareEntitiesArr || shareEntitiesArr.length === 0) {
+            var dictId = MutApp.Util.getUniqId(6);
+            this.application.shareEntities.addElement({
+                id: 'result0',
+                title: titleText,
+                description: descriptionText,
+                imgUrl: new MutAppProperty({
+                    propertyString: 'appConstructor=mutapp shareEntities.'+dictId+'.imgUrl',
+                    model: this,
+                    application: this.application,
+                    value: null
+                })
+            }, 0, dictId);
+        }
+        else {
+            var oneEntity = shareEntitiesArr[0];
+            oneEntity.title = titleText;
+            oneEntity.description = descriptionText;
         }
     }
 });
