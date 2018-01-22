@@ -445,7 +445,12 @@
                 Editor.start();
             }
             if (App.isMobile() === true) {
-                Modal.showMessage({text:App.getText('editor_mob_expl')});
+                // на мобе не запускаем редактор а показываем отдельный экран
+                window.location.href = 'blockeditor.html';
+            }
+            else if (App.isEditorSupportedInBrowser() === false) {
+                // проверяем что браузер поддерживает редактор
+                window.location.href = 'browsernotsupported.html';
             }
         })
     </script>
