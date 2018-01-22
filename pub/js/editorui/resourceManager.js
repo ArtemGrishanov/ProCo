@@ -22,6 +22,8 @@ function ResourceManager(params) {
     this.selectCallback = null;
     // z-index который получит это окно
     this.zIndex = null;
+    // флаг на привязку события "change" к FileAPI, чтобы оно происходило один раз
+    this._fileApiChangeListenerWasSet = false;
 
     /**
      * Загрузить список ресурсов пользователя в this.resourcesList
@@ -256,6 +258,9 @@ function ResourceManager(params) {
         //        }).bind(this));
 
         // инициализация обработчика выбора файла с диска
-        FileAPI.event.on(document.getElementById('id-resource_manager_file_upload'), 'change', this.onLocalFileSelected.bind(this));
+        if (this._fileApiChangeListenerWasSet === false) {
+            FileAPI.event.on(document.getElementById('id-resource_manager_file_upload'), 'change', this.onLocalFileSelected.bind(this));
+            this._fileApiChangeListenerWasSet = true;
+        }
     };
 }
