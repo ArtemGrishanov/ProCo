@@ -32,6 +32,13 @@ var ResultScreen = MutApp.Screen.extend({
      */
     el: null,
 
+    movex: undefined,
+    verticalSwipe: undefined,
+    touchmovex: undefined,
+    touchmovey: undefined,
+    longTouch: undefined,
+    longTouchTimeoutId: null,
+
     template: {
         "default": _.template($('#id-result_template').html())
     },
@@ -41,7 +48,103 @@ var ResultScreen = MutApp.Screen.extend({
         "click .js-mutapp_share_fb": "onFBShareClick",
         "click .js-mutapp_share_vk": "onVKShareClick",
         "click .js-logo": "onLogoClick",
-        "click .js-download_btn": "onDownloadClick"
+        "click .js-download_btn": "onDownloadClick",
+        "touchstart .js-logo_cnt": "onSlidesCntTouchStart",
+        "touchmove .js-logo_cnt": "onSlidesCntTouchMove",
+        "touchend .js-logo_cnt": "onSlidesCntTouchEnd",
+    },
+
+    onSlidesCntTouchStart: function(event) {
+        this.longTouch = false;
+        this.verticalSwipe = false;
+        this.movex = 0;
+        if (this.longTouchTimeoutId) {
+            clearTimeout(this.longTouchTimeoutId);
+        }
+        this.longTouchTimeoutId = setTimeout((function() {
+            // определяем долгий "уверенный" тач, исключая случайные касания
+            // в нативном исполнении это тоже так: легкие краткие касания не работают
+            this.longTouch = true;
+            // здесь мы решаем начинать или нет горизонтальный скрол
+            // является ли свайп вертикальным или горизонтальным
+            if (Math.abs(this.touchmovey - this.touchstarty) > Math.abs(this.touchmovex - this.touchstartx)) {
+                this.verticalSwipe = true;
+                console.log('onSlidesCntTouchStart: Vertical swipe detected');
+            }
+            this.longTouchTimeoutId = null;
+        }).bind(this), 10);
+
+        // ширину слайда при первом таче определяем
+        this.resultBackWidth = this.$resultScreenBack.width();
+        this.$resultScreenBack.removeClass('animate');
+        this.touchstartx =  event.originalEvent.touches[0].pageX;
+        this.touchstarty =  event.originalEvent.touches[0].pageY;
+
+        // начальная позиция экранов
+        this.move({
+            animation: false,
+            action: 'show'
+        });
+        app.slider.move({
+            animation: false,
+            action: 'hide'
+        });
+    },
+
+    onSlidesCntTouchMove: function(event) {
+        this.touchmovex = event.originalEvent.touches[0].pageX;
+        this.touchmovey = event.originalEvent.touches[0].pageY;
+        if (this.longTouch === true) {
+            if (this.verticalSwipe === false) {
+                this.movex = this.touchmovex-this.touchstartx;
+                if (this.movex > 0) {
+                    // с левого края начинает постепенно выезжать экран slider
+                    app.result.$el.css('transform','translate3d(' + this.movex + 'px,0,0)');
+                    app.slider.$el.css('position','absolute').css('transform','translate3d(' + (this.movex-this.resultBackWidth) + 'px,0,0)');
+                }
+                // для горизонтального свайпа запретить поведение по умолчанию: прокрутку страницы вертикально
+                event.originalEvent.preventDefault();
+                event.originalEvent.stopPropagation();
+                event.originalEvent.stopImmediatePropagation();
+                console.log('onSlidesCntTouchMove: preventDefault');
+            }
+            else {
+                // vertical page scrolling enabled
+                console.log('onSlidesCntTouchMove: return true');
+                this.movex = 0;
+                return true;
+            }
+        }
+        else {
+            this.movex = 0;
+        }
+    },
+
+    onSlidesCntTouchEnd: function(event) {
+        console.log('onSlidesCntTouchEnd. movex='+this.movex);
+        // дистанция на которую надо сделать тач, чтобы начался переход к другому слайду
+        var distanceToChange = this.resultBackWidth / 6;
+        if (this.movex > distanceToChange) {
+            // окончательный переход к экрану slider
+            this.move({
+                action: 'hide'
+            });
+            app.slider.move({
+                action: 'show'
+            });
+            this.model.set({
+                state: 'slider'
+            });
+        }
+        else {
+            // вернуть в исходное состояние
+            this.move({
+                action: 'show'
+            });
+            app.slider.move({
+                action: 'hide'
+            });
+        }
     },
 
     onRestartClick: function(e) {
@@ -97,17 +200,13 @@ var ResultScreen = MutApp.Screen.extend({
 
         param.screenRoot.append(this.$el);
         this.model.bind("change:state", function () {
-            if ('slider'===this.model.get('state')) {
+            if (this.model.get('state') === 'slider' && this.model.previous('state') === null) {
                 // подготовить экран к анимации, отрендерить его заранее
                 this.render();
-                // TODO
-//                var transform = 'translate3d('+(i*this.slideWidth)+'px,0,0)';
-//                this.$el.css('transform', transform);
-            }
-            if ('result'===this.model.get('state')) {
-                this.render();
-                // 2: false - не скрывать slider, он участвует в анимации
-                this.model.application.showScreen(this, false);
+                this.move({
+                    animation: false,
+                    action: 'hide'
+                });
             }
         }, this);
 
@@ -139,6 +238,35 @@ var ResultScreen = MutApp.Screen.extend({
             }
         }, this);
         this.model.bind("change:logoUrl", this.onMutAppPropertyChanged, this);
+    },
+
+    /**
+     * Кастомная функция показа/скрытия экрана через transform
+     *
+     * @param param.animation
+     * @param param.action
+     */
+    move: function(param) {
+        param = param || {};
+        param.animation = (typeof param.animation === 'boolean') ? param.animation: true;
+        param.action = param.action || 'hide';
+
+        if (param.animation === true) {
+            this.$el.addClass('animate');
+        }
+        else {
+            this.$el.removeClass('animate');
+        }
+
+        //TODO перейти на app.getSize().width
+        this.$el.show().css('position','absolute');
+        this.resultBackWidth = this.$resultScreenBack.width();
+        if (param.action === 'show') {
+            this.$el.css('transform','translate3d(0,0,0)');
+        }
+        else if (param.action === 'hide') {
+            this.$el.css('position','absolute').css('transform','translate3d(' + (this.resultBackWidth) + 'px,0,0)');
+        }
     },
 
     onMutAppPropertyChanged: function() {
@@ -231,6 +359,10 @@ var ResultScreen = MutApp.Screen.extend({
         else {
             this.$el.find('.js-back_shadow').css('background-color','');
         }
+
+        // ширину слайда при первом таче определяем
+        this.$resultScreenBack = this.$el.find('.js-logo_cnt')
+            .css('transform','translate3d(0,0,0)');
 
         this.renderCompleted();
         return this;
