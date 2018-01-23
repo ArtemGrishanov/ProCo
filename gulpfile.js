@@ -43,6 +43,8 @@ var environment = 'dev';
 if (argv.prod === true) environment = 'prod';
 if (argv.test === true) environment = 'test';
 
+var robotsFolder = (environment === 'prod') ? '/robots/testix.me/*': '/robots/test.testix.me/*';
+
 var buildUniqId = uniqid();
 buildUniqId = buildUniqId.substring(buildUniqId.length-6,buildUniqId.length);
 
@@ -410,6 +412,14 @@ gulp.task('copy:prices', function() {
 /**
  * Просто копирование
  */
+gulp.task('copy:robots', function() {
+    return gulp.src('./pub'+robotsFolder)
+        .pipe(gulp.dest('./build'));
+});
+
+/**
+ * Просто копирование
+ */
 gulp.task('copy:favicon', function() {
     return gulp.src('./pub/favicon.ico')
         .pipe(gulp.dest('./build'));
@@ -530,6 +540,7 @@ gulp.task('build', function (callback) {
         'images:blog',
         'useref:site',
         'useref:blog',
+        'copy:robots',
         'copy:prices',
         'copy:favicon',
         'copy:templates',
