@@ -97,7 +97,7 @@ var SliderScreen = MutApp.Screen.extend({
     },
 
     onSlidesCntTouchStart: function(event) {
-        console.log('onSlidesCntTouchStart');
+        //console.log('onSlidesCntTouchStart');
         this.longTouch = false;
         this.verticalSwipe = false;
         this.movex = 0;
@@ -112,7 +112,7 @@ var SliderScreen = MutApp.Screen.extend({
             // является ли свайп вертикальным или горизонтальным
             if (Math.abs(this.touchmovey - this.touchstarty) > Math.abs(this.touchmovex - this.touchstartx)) {
                 this.verticalSwipe = true;
-                console.log('onSlidesCntTouchStart: Vertical swipe detected');
+                //console.log('onSlidesCntTouchStart: Vertical swipe detected');
             }
             this.longTouchTimeoutId = null;
         }).bind(this), 10);
@@ -169,11 +169,11 @@ var SliderScreen = MutApp.Screen.extend({
                 event.originalEvent.preventDefault();
                 event.originalEvent.stopPropagation();
                 event.originalEvent.stopImmediatePropagation();
-                console.log('onSlidesCntTouchMove: preventDefault');
+                //console.log('onSlidesCntTouchMove: preventDefault');
             }
             else {
                 // vertical page scrolling enabled
-                console.log('onSlidesCntTouchMove: return true');
+                //console.log('onSlidesCntTouchMove: return true');
                 return true;
             }
         }
@@ -190,7 +190,7 @@ var SliderScreen = MutApp.Screen.extend({
     },
 
     onSlidesCntTouchEnd: function(event) {
-        console.log('onSlidesCntTouchEnd. movex='+this.movex);
+        //console.log('onSlidesCntTouchEnd. movex='+this.movex);
         // дистанция на которую надо сделать тач, чтобы начался переход к другому слайду
         var distanceToChange = this.slideWidth / 6;
         if ((this.touchstartx - this.touchmovex) > distanceToChange) {
@@ -367,6 +367,12 @@ var SliderScreen = MutApp.Screen.extend({
         setTimeout((function(){
             this.slideWidth = this.$slidesCnt.width();
             this.renderSlides();
+            if (this.model.get('state') !== 'slider') {
+                this.move({
+                    animation: false,
+                    action: 'hide'
+                });
+            }
         }).bind(this),0);
     },
 
@@ -415,6 +421,7 @@ var SliderScreen = MutApp.Screen.extend({
 
         this.$slidesCnt = $('.js-slides_cnt');
         this.renderCompleted();
+
         return this;
     },
 
@@ -475,5 +482,42 @@ var SliderScreen = MutApp.Screen.extend({
         this.slideCntTranslateX = (-slideIndex*this.slideWidth);
         this.$slidesCnt.css('transform','translate3d(' + this.slideCntTranslateX + 'px,0,0)');
         this.$sliderItems = $('js-slider_item');
+    },
+
+    /**
+     * Измерить максимальную высоту этого экрана и сделать ее высотой приложения
+     * Только экран может сам измерить свою высоту корректно
+     *
+     * Нужно пересчитывать при изменении размеров приложения, например, смене ориентации экрана устройства.
+     */
+    measureHeight: function() {
+        // метка которая показывается на контейнере внизу проекта
+        var testixLabel = 30;
+        var scrHeight = 0;
+        // высота этого экрана складывается из нескольких частей
+        //.js-slider_wr
+        //.js-slider_counter
+        //.js-slide_text (с максимальным текстом)
+        scrHeight += $('.js-slider_wr').outerHeight();
+        scrHeight += $('.js-slider_counter').outerHeight();
+        // Надо учесть максимальный размер текста, которые встретится на этом экране
+        var maxTextHeight = 0;
+        var $testDiv = $('<div class="text slide_text js-slide_text"></div>');
+        $('body').append($testDiv);
+        var slides = this.model.get('slides').toArray();
+        for (var i = 0; i < slides.length; i++) {
+            if (slides[i].text) {
+                $testDiv.html(slides[i].text);
+                var th = $testDiv.outerHeight();
+                if (th > maxTextHeight) {
+                    maxTextHeight = th;
+                }
+            }
+        }
+        $testDiv.remove();
+        scrHeight += maxTextHeight;
+        scrHeight += testixLabel;
+
+        return scrHeight;
     }
 });

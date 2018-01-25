@@ -224,7 +224,7 @@ var config = {
         /**
          * Шаблон для кода встраивания
          */
-        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"{{custom_attributes}}><script src="//s3.eu-central-1.amazonaws.com/testix.me/js/loader.js" async></script></div>'
+        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"{{custom_attributes}}><script src="//testix.me/js/loader.js" async></script></div>'
         /**
          * Показывать нотификацию о помощи в моих проектах
          * Во время перехода с одной версии на другую

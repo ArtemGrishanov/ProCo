@@ -324,6 +324,7 @@ MutApp.EVENT_PROPERTY_VALUE_CHANGED = 'mutapp_event_property_value_changed';
 MutApp.EVENT_PROPERTY_DELETED = 'mutapp_event_property_deleted';
 MutApp.ENGINE_STORAGE_VALUE_CHANGED = 'mutapp_storage_value_changed';
 MutApp.ENGINE_SET_PROPERTY_VALUE = 'mutapp_set_property_value';
+MutApp.EVENT_LOADER_INITED = 'mutapp_loader_inited';
 
 
 MutApp.PATTERN_TYPE_NUMBER = 'mutapp_pattern_number';
@@ -339,11 +340,11 @@ MutApp.prototype.setSize = function(param) {
     var w = parseInt(param.width);
     var h = parseInt(param.height);
     var sizeChanged = false;
-    if (w !== this._width) {
+    if (MutApp.Util.isNumeric(w) === true && w !== this._width) {
         this._width = w;
         sizeChanged = true;
     }
-    if (h !== this._height) {
+    if (MutApp.Util.isNumeric(h) === true && h !== this._height) {
         this._height = h;
         sizeChanged = true;
     }
@@ -359,6 +360,15 @@ MutApp.prototype.setSize = function(param) {
             width: this._width,
             height: this._height
         });
+        if (this.loaderWindow) {
+            this.loaderWindow.postMessage({
+                method: 'setSize',
+                size: {
+                    width: this._width,
+                    height: this._height
+                }
+            }, '*');
+        }
     }
 };
 
@@ -1216,6 +1226,9 @@ MutApp.prototype.receiveMessage = function(event) {
     // надо запомнить его, чтобы потом можно было отослать какое-то сообщение
     if (event.data && event.data.method === 'init') {
         this.loaderWindow = event.source;
+        this.trigger(MutApp.EVENT_LOADER_INITED, {
+            // no data
+        });
     }
 };
 

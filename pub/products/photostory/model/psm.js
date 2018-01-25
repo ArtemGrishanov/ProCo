@@ -55,19 +55,19 @@ var PhotostoryModel = MutApp.Model.extend({
                     text: 'Четвертый слайдддддд',
                     imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/IMG_2304.JPG'
                     // preview: https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/thumb__IMG_2304.JPG
+                },
+                {
+                    text: '',
+                    imgSrc: 'http://p.testix.me/images/products/photostory/img7.jpeg'
+                },
+                {
+                    text: '',
+                    imgSrc: 'http://p.testix.me/images/products/photostory/img5.jpeg'
+                },
+                {
+                    text: '',
+                    imgSrc: 'http://p.testix.me/images/products/photostory/3.jpeg'
                 }
-//                {
-//                    text: '',
-//                    imgSrc: 'http://p.testix.me/images/products/photostory/img7.jpeg'
-//                },
-//                {
-//                    text: '',
-//                    imgSrc: 'http://p.testix.me/images/products/photostory/img5.jpeg'
-//                },
-//                {
-//                    text: '',
-//                    imgSrc: 'http://p.testix.me/images/products/photostory/3.jpeg'
-//                },
 //                {
 //                    text: '',
 //                    imgSrc: 'http://p.testix.me/images/products/photostory/img11.webp'

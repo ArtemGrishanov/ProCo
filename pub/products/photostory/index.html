@@ -10,20 +10,18 @@
     <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body class="photostory">
-    <p>ver 3. Online advertising, also called online marketing or Internet advertising or web advertising, is a form of marketing and advertising which uses the Internet to deliver promotional marketing messages to consumers. Consumers view online advertising as an unwanted distraction with few benefits and have increasingly turned to ad blocking for a variety of reasons.</p>
     <div id="id-mutapp_screens">
     </div>
-    <p>Many common online advertising practices are controversial and increasingly subject to regulation. Online ad revenues may not adequately replace other publishers' revenue streams. Declining ad revenue has led some publishers to hide their content behind paywalls.[4]</p>
 
     <script id="id-slider_template" type="text/template">
         <div class="modal __active js-question_back_color js-question_back_img">
             <div class="modal_cnt js-back_shadow js-logo_cnt">
-                <div class="slider_wr">
+                <div class="slider_wr js-slider_wr">
                     <ul class="animate slides_cnt js-slides_cnt">
                         <!--template id-slider_item-->
                     </ul>
                 </div>
-                <div class="slide_counter">
+                <div class="slide_counter js-slider_counter">
                     <span class="slide_counter_num js-slide_num">1/10</span>
                     <div class="js-slide_counter_cnt">
                         <!--template id-counter_item-->
@@ -50,6 +48,11 @@
             <div class="modal_cnt info js-back_shadow js-logo_cnt">
                 <div class="info_title js-result_title" data-app-property="id=psm resultTitle, id=psm resultTitleColor"><%=title%></div>
                 <div class="info_tx js-result_description" data-app-property="id=psm resultDescription, id=psm resultDescriptionColor"><%=description%></div>
+                <div class="result_collage_wr js-result_collage_wr">
+                    <div class="result_collage_cnt js-collage_cnt">
+
+                    </div>
+                </div>
                 <div class="info_f js-download_btn_wr">
                     <div class="button js-download_btn" data-app-property="id=psm downloadButtonText">Скачать</div>
                 </div>
@@ -69,6 +72,12 @@
         </div>
     </script>
 
+    <script id="id-result_collage_item_template" type="text/template">
+        <div class="result_collage_i_wr">
+            <div class="result_collage_i" style="background-image:url(<%=image%>)"></div>
+        </div>
+    </script>
+
     <script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
     <!-- build:lib:js -->
     <!-- build:app:js -->
@@ -76,7 +85,8 @@
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="underscore.js"></script>
     <script type="text/javascript" src="backbone.js"></script>
-    <script type="text/javascript" src="mutapp.js"></script>
+    <!--<script type="text/javascript" src="mutapp.js"></script>-->
+    <script type="text/javascript" src="../common/js/mutapp.js"></script>
     <script type="text/javascript" src="model/psm.js"></script>
     <script type="text/javascript" src="view/slider.js"></script>
     <script type="text/javascript" src="view/result.js"></script>

@@ -40,7 +40,8 @@ var ResultScreen = MutApp.Screen.extend({
     longTouchTimeoutId: null,
 
     template: {
-        "default": _.template($('#id-result_template').html())
+        "default": _.template($('#id-result_template').html()),
+        "id-result_collage_item_template": _.template($('#id-result_collage_item_template').html())
     },
 
     events: {
@@ -69,7 +70,7 @@ var ResultScreen = MutApp.Screen.extend({
             // является ли свайп вертикальным или горизонтальным
             if (Math.abs(this.touchmovey - this.touchstarty) > Math.abs(this.touchmovex - this.touchstartx)) {
                 this.verticalSwipe = true;
-                console.log('onSlidesCntTouchStart: Vertical swipe detected');
+//                console.log('onSlidesCntTouchStart: Vertical swipe detected');
             }
             this.longTouchTimeoutId = null;
         }).bind(this), 10);
@@ -106,11 +107,11 @@ var ResultScreen = MutApp.Screen.extend({
                 event.originalEvent.preventDefault();
                 event.originalEvent.stopPropagation();
                 event.originalEvent.stopImmediatePropagation();
-                console.log('onSlidesCntTouchMove: preventDefault');
+//                console.log('onSlidesCntTouchMove: preventDefault');
             }
             else {
                 // vertical page scrolling enabled
-                console.log('onSlidesCntTouchMove: return true');
+//                console.log('onSlidesCntTouchMove: return true');
                 this.movex = 0;
                 return true;
             }
@@ -121,7 +122,7 @@ var ResultScreen = MutApp.Screen.extend({
     },
 
     onSlidesCntTouchEnd: function(event) {
-        console.log('onSlidesCntTouchEnd. movex='+this.movex);
+//        console.log('onSlidesCntTouchEnd. movex='+this.movex);
         // дистанция на которую надо сделать тач, чтобы начался переход к другому слайду
         var distanceToChange = this.resultBackWidth / 6;
         if (this.movex > distanceToChange) {
@@ -199,6 +200,12 @@ var ResultScreen = MutApp.Screen.extend({
             .css('min-height','100%'));
 
         param.screenRoot.append(this.$el);
+
+        if (window.addEventListener) {
+            // listener on changing window size to measure slide width
+            window.addEventListener('resize', this.onWindowResize.bind(this), false);
+        }
+
         this.model.bind("change:state", function () {
             if (this.model.get('state') === 'slider' && this.model.previous('state') === null) {
                 // подготовить экран к анимации, отрендерить его заранее
@@ -210,6 +217,7 @@ var ResultScreen = MutApp.Screen.extend({
             }
         }, this);
 
+        this.model.bind('change:slides', this.onMutAppPropertyChanged, this);
         this.model.bind('change:resultBackgroundImage', this.onMutAppPropertyChanged, this);
         this.model.bind("change:showLogoInResults", this.onMutAppPropertyChanged, this);
         this.model.bind("change:shadowEnableInResults", this.onMutAppPropertyChanged, this);
@@ -238,6 +246,21 @@ var ResultScreen = MutApp.Screen.extend({
             }
         }, this);
         this.model.bind("change:logoUrl", this.onMutAppPropertyChanged, this);
+    },
+
+    /**
+     * При изменении размера окна
+     */
+    onWindowResize: function() {
+        setTimeout((function(){
+            this.render();
+            if (this.model.get('state') !== 'result') {
+                this.move({
+                    animation: false,
+                    action: 'hide'
+                });
+            }
+        }).bind(this),0);
     },
 
     /**
@@ -364,8 +387,76 @@ var ResultScreen = MutApp.Screen.extend({
         this.$resultScreenBack = this.$el.find('.js-logo_cnt')
             .css('transform','translate3d(0,0,0)');
 
+        //
+        this.renderCollage();
+
         this.renderCompleted();
         return this;
+    },
+
+    /**
+     * Отрендирить коллаж на экране результата
+     * Допустимо только определенное количество фото
+     */
+    renderCollage: function() {
+        var slides = this.model.get('slides').toArray();
+        var $collageCnt = this.$el.find('.js-collage_cnt').empty();
+
+        // коллаж рассчитан на 1 4 7 картинок, остальные варианты сводятся к этим наборам
+        // css стили также рассчитаны только на это количество
+        var possiblePhotoCounts = [1,4,7];
+        var photosInCollage = 0;
+        for (var i = possiblePhotoCounts.length-1; i >= 0; i--) {
+            if (slides.length >= possiblePhotoCounts[i]) {
+                photosInCollage = possiblePhotoCounts[i];
+                break;
+            }
+        }
+
+        if (photosInCollage > 0) {
+            for (var i = 0; i < photosInCollage; i++) {
+                var $item = this.template['id-result_collage_item_template']({
+                    image: slides[i].imgSrc
+                });
+                $collageCnt.append($item);
+            }
+            if (photosInCollage === 7) {
+                $collageCnt.addClass('__wide');
+            }
+            else {
+                $collageCnt.removeClass('__wide');
+            }
+        }
+    },
+
+    /**
+     * Измерить максимальную высоту этого экрана и сделать ее высотой приложения
+     * Только экран может сам измерить свою высоту корректно
+     *
+     * Нужно пересчитывать при изменении размеров приложения, например, смене ориентации экрана устройства.
+     */
+    measureHeight: function() {
+        // метка которая показывается на контейнере внизу проекта
+        var testixLabel = 30;
+        var scrHeight = 0;
+        scrHeight += this.$el.find('.js-result_title').outerHeight();
+        scrHeight += this.$el.find('.js-result_description').outerHeight();
+        scrHeight += this.$el.find('.js-result_collage_wr').outerHeight();
+        if (this.model.get('showDownload').getValue() === true) {
+            scrHeight += this.$el.find('.js-download_btn_wr').outerHeight();
+        }
+        scrHeight += this.$el.find('.js-restart_btn_wr').outerHeight();
+        if (this.model.get('vkSharingEnabled').getValue()===true) {
+            scrHeight += this.$el.find('.js-mutapp_share_vk').outerHeight();
+        }
+        if (this.model.get('fbSharingEnabled').getValue()===true) {
+            scrHeight += this.$el.find('.js-mutapp_share_fb').outerHeight();
+        }
+        if (this.model.get('showLogoInResults').getValue() === true) {
+            scrHeight += this.$el.find('.js-result_logo').outerHeight();
+        }
+        scrHeight += testixLabel;
+        return scrHeight;
     },
 
     /**
@@ -374,6 +465,7 @@ var ResultScreen = MutApp.Screen.extend({
      *
      */
     destroy: function() {
+        this.model.off("change:slides", this.onMutAppPropertyChanged, this);
         this.model.off("change:showLogoInResults", this.onMutAppPropertyChanged, this);
         this.model.off("change:shadowEnableInResults", this.onMutAppPropertyChanged, this);
         this.model.off("change:showDownload", this.onMutAppPropertyChanged, this);

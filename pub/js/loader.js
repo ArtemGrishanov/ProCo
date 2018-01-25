@@ -183,8 +183,8 @@ if (window.textix === undefined) {
          * Нормальный урл проекта выглядит так: "http://p.testix.me/121947341568004/27e77fae5b/p_index.html"
          *
          * Версия от 26.04.2017:
-         * Можно ожидать такой: "121947341568004/27e77fae5b"
-         * Тогда его надо превратить в: "//s3.eu-central-1.amazonaws.com/p.testix.me/121947341568004/27e77fae5b/p_index.html"
+         * Можно ожидать такой: "c7bd829c54/27e77fae5b"
+         * Тогда его надо превратить в: "//p.testix.me/c7bd829c54/27e77fae5b/p_index.html"
          *
          * @param {string} dataPublishedAttr
          */
@@ -269,7 +269,6 @@ if (window.textix === undefined) {
         function onLabelClick(e) {
             stat('TestixLoader','Label_click');
         }
-
 
         /**
          * Создать iframe для mutapp приложения
@@ -566,9 +565,34 @@ if (window.textix === undefined) {
             }
         }
 
-        function receiveMessage(event)
-        {
-            console.log('loader.receiveMesage');
+        /**
+         * Установить размеры приложения.
+         * Можнопередать только один размер на выбор
+         *
+         * @param {window} appWindow - window приложения которое отправило запрос на показ
+         * @param {Number} size.width
+         * @param {Number} size.height
+         */
+        function setSize(appWindow, size) {
+            var info = getTestixAppInfo(appWindow);
+            if (info) {
+                size = size || {};
+                if (size.height > 0) {
+                    info.height = size.height;
+                    info.parentNode.style.height = size.height+'px';
+                    //info.iframe.style.height = '100%'; was set in createIframe and it's OK
+                    info.iframe.style.maxHeight = size.height+'px';
+                }
+                if (size.width > 0) {
+                    info.width = size.width;
+                    info.parentNode.style.maxWidth = size.width+'px';
+                    //info.iframe.style.width = '100%'; was set in createIframe and it's OK
+                    info.iframe.style.maxWidth = size.width+'px';
+                }
+            }
+        }
+
+        function receiveMessage(event) {
             var reg = new RegExp(/^(http|https):\/\/p\.testix\.me/ig);
             if (reg.test(event.origin) !== true) {
                 return;
@@ -582,6 +606,9 @@ if (window.textix === undefined) {
             }
             if (event.data.method === 'shareDialog') {
                 stat('TestixLoader','Share_Dialog_Open', event.data.provider);
+            }
+            if (event.data.method === 'setSize') {
+                setSize(event.source, event.data.size);
             }
         }
 

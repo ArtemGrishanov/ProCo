@@ -234,6 +234,16 @@ var PhotostoryApp = MutApp.extend({
      */
     onAppEvent: function(event, data) {
         switch(event) {
+            case MutApp.EVENT_LOADER_INITED: {
+                // когда происходит связь с контейнером loader.js
+                // приложение просит его установить нужный размер по высоте
+                var sliderScrHeight = app.slider.measureHeight();
+                var resultScrHeight = app.result.measureHeight();
+                app.setSize({
+                    height: Math.max(sliderScrHeight, resultScrHeight)
+                });
+                break;
+            }
             case MutApp.EVENT_PROPERTY_CREATED:
             case MutApp.EVENT_PROPERTY_VALUE_CHANGED:
             case MutApp.EVENT_PROPERTY_DELETED: {

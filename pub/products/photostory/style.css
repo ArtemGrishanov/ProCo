@@ -89,6 +89,30 @@ img {
     overflow: hidden;
 }
 
+.button {
+    display: inline-block;
+    border: 0px solid;
+    border-radius: 4px;
+    background-color: #024889;
+    color: #fff;
+    min-width: 195px;
+    min-height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+.button.__small {
+    padding: 0 16px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+}
+
+.button + .button {
+    margin-left: 12px;
+}
+
 .modal {
     display: none;
     position: absolute;
@@ -116,7 +140,7 @@ img {
     display: block;
     width: 100%;
     min-height: 100%;
-    border-radius: 4px;
+    border-radius: 0;
 }
 
 .modal_hld {
@@ -262,6 +286,46 @@ li.progressive img.reveal {
     box-sizing: border-box;
 }
 
+.result_collage_wr {
+    margin: 0 auto;
+}
+
+.result_collage_cnt {
+    width: 284px; /* for 1 and 4 items in collage */
+    height: 220px;
+    margin: 0 auto;
+    padding: 0;
+}
+.result_collage_cnt.__wide {
+    width: 354px; /* for 7 items in collage */
+}
+
+.result_collage_i_wr {
+    width: 210px;
+    height: 210px;
+    float: left;
+    overflow: hidden;
+}
+
+.result_collage_i_wr + .result_collage_i_wr {
+    width: 68px;
+    height: 68px;
+    margin: 0 0 3px 3px;
+}
+
+.result_collage_i {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    /* background-image from js */
+    -webkit-filter: blur(1.5px);
+    -moz-filter: blur(1.5px);
+    -o-filter: blur(1.5px);
+    -ms-filter: blur(1.5px);
+    filter: blur(1.5px);
+}
+
 /**
  Важное замечание про: min-width:1px
  Стили вычисляются renderCompleted() -> updateCssMutAppPropertiesValues() когда экран имеет width=0
@@ -312,5 +376,25 @@ li.progressive img.reveal {
     .modal_hld {
         width: 100%;
         min-width: 250px;
+    }
+}
+
+
+@media (min-width:1px) and (max-width:400px)  {
+    /* рассчитано на ширину 320 - 400px */
+    .result_collage_i_wr {
+        width: 169px;
+        height: 169px;
+    }
+    .result_collage_i_wr + .result_collage_i_wr {
+        width: 55px;
+        height: 55px;
+        margin: 0 0 2px 2px;
+    }
+    .result_collage_cnt {
+        width: 227px;
+    }
+    .result_collage_cnt.__wide {
+        width: 284px;
     }
 }
