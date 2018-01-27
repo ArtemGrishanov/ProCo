@@ -201,19 +201,26 @@ var ResultScreen = MutApp.Screen.extend({
 
         param.screenRoot.append(this.$el);
 
-        if (window.addEventListener) {
-            // listener on changing window size to measure slide width
-            window.addEventListener('resize', this.onWindowResize.bind(this), false);
+        if (this.model.application.mode !== 'edit') {
+            if (window.addEventListener) {
+                // listener on changing window size to measure slide width
+                window.addEventListener('resize', this.onWindowResize.bind(this), false);
+            }
         }
 
         this.model.bind("change:state", function () {
-            if (this.model.get('state') === 'slider' && this.model.previous('state') === null) {
-                // подготовить экран к анимации, отрендерить его заранее
+            if (this.model.application.mode === 'edit') {
                 this.render();
-                this.move({
-                    animation: false,
-                    action: 'hide'
-                });
+            }
+            else {
+                if (this.model.get('state') === 'slider' && this.model.previous('state') === null) {
+                    // подготовить экран к анимации, отрендерить его заранее
+                    this.render();
+                    this.move({
+                        animation: false,
+                        action: 'hide'
+                    });
+                }
             }
         }, this);
 
@@ -416,7 +423,7 @@ var ResultScreen = MutApp.Screen.extend({
         if (photosInCollage > 0) {
             for (var i = 0; i < photosInCollage; i++) {
                 var $item = this.template['id-result_collage_item_template']({
-                    image: slides[i].imgSrc
+                    image: slides[i].imgSrc.getValue()
                 });
                 $collageCnt.append($item);
             }
@@ -425,6 +432,12 @@ var ResultScreen = MutApp.Screen.extend({
             }
             else {
                 $collageCnt.removeClass('__wide');
+            }
+            if (photosInCollage === 1) {
+                $collageCnt.addClass('__one');
+            }
+            else {
+                $collageCnt.removeClass('__one');
             }
         }
     },

@@ -755,6 +755,34 @@ var config = {
         },
         smartimage: {
             stylesForEmbed: '<link href="{{config.common.home}}products/smartimage/style.css" rel="stylesheet"/>'
+        },
+        photostory: {
+            prototypeId: 'photostory_v1.0',
+            /**
+             * Имя функции с помощью которой создается приложение этого типа
+             */
+            constructorName: 'PhotostoryApp',
+            /**
+             * Само приложение для загрузки через iframe
+             */
+            src: 'products/photostory/index.html',
+            /**
+             * В зависимости от открытого промо проекта надо уметь вот так возвращать ссылку на его стили, чтобы встроить их в ifrmae
+             * Нужно для превью в контроле Slide
+             */
+            stylesForEmbed: '<link href="{{config.common.home}}products/photostory/style.css" rel="stylesheet"/>',
+            /**
+             * каталог откуда publisher будет брать все ресурсы для публикации проекта
+             */
+            baseProductUrl: 'products/photostory/',
+            /**
+             * Ширина по умолчанию, если не задана
+             */
+            defaultWidth: 600,
+            /**
+             * Высота по умолчанию, если не задана
+             */
+            defaultHeight: 600
         }
     },
     controls: {

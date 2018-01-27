@@ -443,13 +443,15 @@ SlideGroupControl.prototype.useSlide = function(param) {
 };
 
 /**
+ * Получить информацию по экрану в группе
  *
- * @param dataId
+ * @param {string} screenId
  */
-SlideGroupControl.prototype.getSlideInfo = function(dataId) {
+SlideGroupControl.prototype.getSlideInfo = function(screenId) {
     for (var i = 0; i < this._slidesInfo.length; i++) {
         var si = this._slidesInfo[i];
-        if (si.dataId === dataId) {
+        // при создании ид экрана становится главным идентификатором Slide
+        if (si.slide.propertyString === screenId) {
             return si;
         }
     }

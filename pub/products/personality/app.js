@@ -165,6 +165,14 @@ var PersonalityApp = MutApp.extend({
         "id=pm restartButtonText": {
             controls: "TextQuickInput"
         },
+        "id=pm downloadButtonText": {
+            controls: "TextQuickInput"
+        },
+        "id=pm showDownload": {
+            label: {RU:'Кнопка "Скачать"', EN:'Download button'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)'
+        },
         "id=startScr shadowEnable": {
             label: {RU:'Включить тень', EN:'Shadow enable'},
             controls: 'OnOff',
@@ -175,7 +183,11 @@ var PersonalityApp = MutApp.extend({
             controls: 'OnOff',
             controlFilter: 'screen(type=questions)' // 'always', 'screen(startScr)', 'onclick', 'hidden'
         },
-
+        "id=pm shadowEnableInResults": {
+            label: {RU:'Включить тень', EN:'Shadow enable'},
+            controls: 'OnOff',
+            controlFilter: 'screen(type=results)' // 'always', 'screen(startScr)', 'onclick', 'hidden'
+        },
         "id=pm startScreenBackgroundImg": {
             label: {RU:'Фоновая картинка стартового экрана',EN:'Start screen background image'},
             controls: 'ChooseImage',

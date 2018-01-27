@@ -6,18 +6,20 @@ var SliderScreen = MutApp.Screen.extend({
      * @see MutApp
      */
     id: 'sliderScr',
-
     /**
      * Тег для группировки экранов в редакторе
      * @see MutApp
      */
     group: 'slider',
-
     /**
      * Метка которая показывается в редакторе, рядом с превью экрана
      * @see MutApp
      */
     name: {EN:'Slider screen',RU:'Слайдер'},
+    /**
+     * Не показывать экран при редактировании
+     */
+    hideScreen: true,
     /**
      * Контейнер в котором будет происходить рендер этого вью
      * Создается динамически
@@ -81,6 +83,12 @@ var SliderScreen = MutApp.Screen.extend({
      * View маркеры прогресса
      */
     $counters: [],
+    /**
+     * Флаг что запрошены загрузка полных картинок
+     * Ее запрос может случиться при разных условиях (см по коду)
+     * но сделать это надо единожды
+     */
+    fullImageLoadingRequested: false,
 
     template: {
         "default": _.template($('#id-slider_template').html()),
@@ -244,35 +252,52 @@ var SliderScreen = MutApp.Screen.extend({
 
         this.fullImagesMap = {};
 
-        if (window.addEventListener) {
-            // listener on changing window size to measure slide width
-            window.addEventListener('resize', this.onWindowResize.bind(this), false);
-        }
-
-        this.model.bind("change:state", function() {
-            if (this.model.get('state') === 'slider' && this.model.previous('state') === null) {
-                // проверяем предыдущее значение стейта: чтобы только в первый раз при старте приложение сделать этот рендер
-                this.model.application.showScreen(this);
-                this.render();
+        if (this.model.application.mode !== 'edit') {
+            if (window.addEventListener) {
+                // listener on changing window size to measure slide width
+                window.addEventListener('resize', this.onWindowResize.bind(this), false);
             }
 
-            if (this.model.get('state') === 'slider' && this.model.previous('state') === 'result') {
-                // переход 'result' -> 'slider' путем сдвига экрана
-                this.move({
-                    action: 'show'
-                });
-                app.result.move({
-                    action: 'hide'
-                });
+            this.model.bind("change:state", function() {
+
+                if (this.model.application.mode === 'edit') {
+                    this.render();
+                }
+                else {
+                    if (this.model.get('state') === 'slider' && this.model.previous('state') === null) {
+                        // проверяем предыдущее значение стейта: чтобы только в первый раз при старте приложение сделать этот рендер
+                        this.model.application.showScreen(this);
+                        this.render();
+                    }
+
+                    if (this.model.get('state') === 'slider' && this.model.previous('state') === 'result') {
+                        // переход 'result' -> 'slider' путем сдвига экрана
+                        this.move({
+                            action: 'show'
+                        });
+                        app.result.move({
+                            action: 'hide'
+                        });
+                    }
+                }
+
+            }, this);
+
+            this.model.bind("change:slides", this.onMutAppPropertyChanged, this);
+            this.model.bind("change:slideIndex", this.onSlideIndexChanged, this);
+
+            if (document.readyState === "complete" || document.readyState === "interactive") {
+                // если документ уже успел загрузиться к этому времени, то сразу вызвать обработчик с началом загрузки полных картинок
+                this.requestFullImageLoading();
             }
-        }, this);
-
-        this.model.bind("change:slides", this.onMutAppPropertyChanged, this);
-
-        this.model.bind("change:slideIndex", this.onSlideIndexChanged, this);
-
-        if (window.addEventListener && window.requestAnimationFrame && document.getElementsByClassName) {
-            window.addEventListener('load', this.onWindowLoaded.bind(this));
+            else {
+                if (window.addEventListener && window.requestAnimationFrame && document.getElementsByClassName) {
+                    window.addEventListener('load', this.requestFullImageLoading.bind(this));
+                }
+                else {
+                    this.requestFullImageLoading();
+                }
+            }
         }
     },
 
@@ -313,11 +338,18 @@ var SliderScreen = MutApp.Screen.extend({
     /**
      *
      */
-    onWindowLoaded: function() {
-        console.log('onWindowLoaded');
+    requestFullImageLoading: function() {
+        // проверяем что экран уже отрендерен
         var items = document.getElementsByClassName('progressive replace');
-        for (var i = 0; i < items.length; i++) {
-            this.loadFullImage(items[i]);
+        if (this.fullImageLoadingRequested === false && items.length > 0) {
+            this.fullImageLoadingRequested = true;
+            var slides = this.model.get('slides').toArray();
+            for (var i = 0; i < slides.length; i++) {
+                this.loadFullImage(slides[i].imgSrc.getValue());
+            }
+//            for (var i = 0; i < items.length; i++) {
+//                this.loadFullImage(items[i]);
+//            }
         }
     },
 
@@ -328,33 +360,39 @@ var SliderScreen = MutApp.Screen.extend({
      *
      * @param item
      */
-    loadFullImage: function(item) {
-        if (!item || !item.attributes['data-img-src']) return;
+    loadFullImage: function(imgSrc) {
+        console.log('Slider.loadFullImage');
+//        if (!item || !item.attributes['data-img-src']) return;
         // load image
+        var $item = $('.js-slides_cnt').find('[data-img-src="'+imgSrc+'"]');
         var img = new Image();
-        if (item.dataset) {
-            img.srcset = item.dataset.srcset || '';
-            img.sizes = item.dataset.sizes || '';
-        }
-        img.src = item.attributes['data-img-src'].value;
-        // сохраняем картинку для повторного использования при дальнейших рендерах
-        this.fullImagesMap[img.src] = img;
+//        if (item.dataset) {
+//            img.srcset = item.dataset.srcset || '';
+//            img.sizes = item.dataset.sizes || '';
+//        }
+//        var imgSrcAttr = item.attributes['data-img-src'].value;
+        img.src = imgSrc; // важно использовать эту переменную для установки ниже в addImg(), так как в img.src путь потом будет уже с протоколом 'http'
         img.className = 'slider_img';
         if (img.complete) {
-            addImg();
+            addImg.call(this);
         }
         else {
-            img.onload = addImg;
+            img.onload = addImg.bind(this);
         }
         // replace image
         function addImg() {
+            // Важный момент: во время загрузки картинки может произойти render() и дом-элементы изменятся. Поэтому поиск надо производить заново по атрибуту
             // add full image
-            item.appendChild(img);
-                // remove preview image
-            var pImg = item.querySelector && item.querySelector('img.preview');
-            if (pImg) {
-                item.removeChild(pImg);
-            }
+            var $item = $('.js-slides_cnt').find('[data-img-src="'+imgSrc+'"]');
+            $item.append(img);
+            // сохраняем картинку для повторного использования при дальнейших рендерах
+            this.fullImagesMap[imgSrc] = img;
+            // remove preview image
+            //var pImg = item.querySelector && item.querySelector('img.preview');
+            $item.find('img.preview').remove();
+//            if (pImg) {
+//                $item.remove(pImg);
+//            }
         }
     },
 
@@ -364,6 +402,7 @@ var SliderScreen = MutApp.Screen.extend({
      * Нужно пересчитать
      */
     onWindowResize: function() {
+        console.log('Slider.onWindowResize');
         setTimeout((function(){
             this.slideWidth = this.$slidesCnt.width();
             this.renderSlides();
@@ -390,7 +429,7 @@ var SliderScreen = MutApp.Screen.extend({
         var currentSlider = this.model.getSlideInfo(slideIndex);
 
         // текст для текущего слайда установить в интерфейс
-        this.$el.find('.js-slide_text').text(currentSlider.text);
+        this.$el.find('.js-slide_text').text(currentSlider.text.getValue());
 
         // числовой индекс слайда обновить
         this.$el.find('.js-slide_num').text((slideIndex+1)+'/'+slides.length);
@@ -413,15 +452,20 @@ var SliderScreen = MutApp.Screen.extend({
 
         this.$el.html(this.template['default']());
         this.$el.css('position','absolute').css('transform','translate3d(0,0,0)');
+        this.$slidesCnt = $('.js-slides_cnt');
 
-        setTimeout((function(){
+        // зачем я тут использовал setTimeout интересно?
+//        setTimeout((function(){
             this.slideWidth = this.$slidesCnt.width();
             this.renderSlides();
-        }).bind(this),0);
 
-        this.$slidesCnt = $('.js-slides_cnt');
+            if (document.readyState === "complete" || document.readyState === "interactive") {
+                // если документ уже успел загрузиться к этому времени, то сразу вызвать обработчик с началом загрузки полных картинок
+                this.requestFullImageLoading();
+            }
+//        }).bind(this),0);
+
         this.renderCompleted();
-
         return this;
     },
 
@@ -432,7 +476,7 @@ var SliderScreen = MutApp.Screen.extend({
      * 4) Далее двигаться будет контейнер трансформом, а не слайды
      */
     renderSlides: function() {
-        console.log('renderSlides()');
+        console.log('Slider.renderSlides()');
         var $slc = this.$slidesCnt.empty();
         var slides = this.model.get('slides').toArray();
         var slideIndex = this.model.get('slideIndex');
@@ -444,17 +488,18 @@ var SliderScreen = MutApp.Screen.extend({
             var sl = slides[i];
 
             var $sliderItem = $(this.template['sliderItem']({
-                img: sl.imgSrc,
+                img: sl.imgSrc.getValue(),
                 img_thumb: sl.imgThumbSrc,
                 display: 'block',
-                slide_index: i
+                slide_index: i,
+                dictionaryId: this.model.get('slides').getIdFromPosition(i)
             }));
 
-            if (this.fullImagesMap[sl.imgSrc]) {
+            if (this.fullImagesMap[sl.imgSrc.getValue()]) {
                 // для этой картинки уже создан объект Image
                 // Возможно, даже загружен полностью, надо использовать его
                 $sliderItem.find('img').remove();
-                $sliderItem.append(this.fullImagesMap[sl.imgSrc]);
+                $sliderItem.append(this.fullImagesMap[sl.imgSrc.getValue()]);
             }
             else {
 
@@ -463,7 +508,7 @@ var SliderScreen = MutApp.Screen.extend({
             var transform = 'translate3d('+(i*this.slideWidth)+'px,0,0)';
             $sliderItem.css('transform', transform);
             // сохраняем все вью в мапу
-            this.sliderItemsMap[sl.imgSrc] = $sliderItem;
+            this.sliderItemsMap[sl.imgSrc.getValue()] = $sliderItem;
             $slc.append($sliderItem);
 
             var $counterItem = $(this.template['counterItem']({
@@ -475,7 +520,7 @@ var SliderScreen = MutApp.Screen.extend({
         }
 
         // текст текущего слайда поставить
-        this.$el.find('.js-slide_text').text(currentSlider.text);
+        this.$el.find('.js-slide_text').text(currentSlider.text.getValue());
         // числовой индекс слайда обновить
         this.$el.find('.js-slide_num').text((slideIndex+1)+'/'+slides.length);
 
@@ -506,8 +551,8 @@ var SliderScreen = MutApp.Screen.extend({
         $('body').append($testDiv);
         var slides = this.model.get('slides').toArray();
         for (var i = 0; i < slides.length; i++) {
-            if (slides[i].text) {
-                $testDiv.html(slides[i].text);
+            if (slides[i].text.getValue()) {
+                $testDiv.html(slides[i].text.getValue());
                 var th = $testDiv.outerHeight();
                 if (th > maxTextHeight) {
                     maxTextHeight = th;

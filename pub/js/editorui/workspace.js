@@ -262,6 +262,7 @@ var Workspace = {
             width: param.width,
             height: param.height
         };
+        $productCnt.width(appSize.width);
         $productCnt.height(appSize.height + config.editor.ui.scrollBarHeight); // задача сделать по вертикали видимым всё приложение без прокрутки и т.п.
         $productIframeCnt.width(appSize.width).height(appSize.height);
         $productIframeCnt.find('iframe').css('max-width', appSize.width+'px'); // изначально стили этого iframe ставятся в editorLoader.startApp()

@@ -8,6 +8,7 @@ var PhotostoryApp = MutApp.extend({
     model: null,
     slider: null,
     screenRoot: $('#id-mutapp_screens'),
+    slidesEditScreens: [],
     /**
      * Схема свойств MutAppProperty в этом приложении
      */
@@ -22,26 +23,21 @@ var PhotostoryApp = MutApp.extend({
             label: {RU:'Вопросы теста',EN:'Photostory quiz'},
             prototypes: [
                 {
-                    protoFunction: 'id=psm quizProto1', // функция в приложении, которая вернет новый объект
-                    label: {RU:'Текстовый вопрос',EN:'Text question'},
-                    img: '//p.testix.me/images/products/photostory/editor/Icon-text-vopros.png'
-                },
-                {
-                    protoFunction: 'id=psm quizProto2', // функция в приложении, которая вернет новый объект
-                    label: {RU:'Фото вопрос',EN:'Photo question'},
-                    img: '//p.testix.me/images/products/photostory/editor/Icon-fotovopros.png'
-                },
-                {
-                    protoFunction: 'id=psm quizProto3', // функция в приложении, которая вернет новый объект
-                    label: {RU:'Фото ответы',EN:'Photo answers'},
-                    img: '//p.testix.me/images/products/photostory/editor/Icon-fotootvet.png'
+                    protoFunction: 'id=psm slideProto1', // функция в приложении, которая вернет новый объект
+                    label: {RU:'Слайд 1',EN:'Slide 1'},
+                    imgSrc: '//p.testix.me/images/products/photostory/editor/Icon-text-vopros.png'
                 }
+//                {
+//                    protoFunction: 'id=psm slideProto2', // функция в приложении, которая вернет новый объект
+//                    label: {RU:'Фото вопрос',EN:'Photo question'},
+//                    img: '//p.testix.me/images/products/photostory/editor/Icon-fotovopros.png'
+//                }
             ],
             children: {
                 "id=psm slides.{{id}}.text": {
                     controls: "TextQuickInput"
                 },
-                "id=psm slides.{{id}}.img": {
+                "id=psm slides.{{id}}.imgSrc": {
                     label: {RU:'Картинка вопроса',EN:'Question image'},
                     controls: 'ChooseImage',
                     controlFilter: 'screenPropertyString'
@@ -148,11 +144,13 @@ var PhotostoryApp = MutApp.extend({
         }));
         this.model = psm;
 
-        this.slider = new SliderScreen({
-            model: psm,
-            screenRoot: this.screenRoot
-        });
-        this.addScreen(this.slider);
+        if (this.model.application.mode !== 'edit') {
+            this.slider = new SliderScreen({
+                model: psm,
+                screenRoot: this.screenRoot
+            });
+            this.addScreen(this.slider);
+        }
 
         this.result = new ResultScreen({
             model: psm,
@@ -164,9 +162,11 @@ var PhotostoryApp = MutApp.extend({
             this.updateEditSlideScreens();
         }, this);
 
-        // начальное создание экранов.
-        // при десериализации нет событий change
-        this.updateEditSlideScreens();
+        if (this.mode === 'edit') {
+            // начальное создание экранов.
+            // при десериализации нет событий change
+            this.updateEditSlideScreens();
+        }
 
         // способ указания этих атрибутов уникален для каждого проекта
 //        this.title = this.getPropertiesBySelector('id=startScr startHeaderText')[0].value.getValue();
@@ -178,28 +178,28 @@ var PhotostoryApp = MutApp.extend({
      * Создать экраны слайдов для редактирования
      */
     updateEditSlideScreens: function() {
-//        // до пересборки экранов запоминаем ид показанного экрана, чтобы потом его восстановить
-//        var shownScreenId = this.getShownScreenId();
+        // до пересборки экранов запоминаем ид показанного экрана, чтобы потом его восстановить
+        var shownScreenId = this.getShownScreenId();
 //
-//        for (var i = 0; i < this.questionScreens.length; i++) {
-//            this.deleteScreen(this.questionScreens[i]);
-//        }
-//        this.questionScreens = [];
-//        var quizValue = this.model.get('quiz').toArray();
-//        var qs = null;
-//        var id = null;
-//        for (var i = 0; i < quizValue.length; i++) {
-//            id = 'questionScreen'+i;
-//            qs = new QuestionScreen({
-//                id: id,
-//                model: this.model,
-//                questionId: quizValue[i].id,
-//                screenRoot: this.screenRoot
-//            });
-//            this.addScreen(qs);
-//            this.hideScreen(qs);
-//            this.questionScreens.push(qs);
-//        }
+        for (var i = 0; i < this.slidesEditScreens.length; i++) {
+            this.deleteScreen(this.slidesEditScreens[i]);
+        }
+        this.slidesEditScreens = [];
+        var slidesValue = this.model.get('slides').toArray();
+        var qs = null;
+        var id = null;
+        for (var i = 0; i < slidesValue.length; i++) {
+            id = 'slideEditScreen'+i;
+            qs = new SlideEditScreen({
+                id: id,
+                model: this.model,
+                slideDictionaryId: this.model.get('slides').getIdFromPosition(i),
+                screenRoot: this.screenRoot
+            });
+            this.addScreen(qs);
+            this.hideScreen(qs);
+            this.slidesEditScreens.push(qs);
+        }
 //
 //        if (this.model.attributes.lastAddedQuestionDictinatyId) {
 //            var scrId = this.getScreenIdByDictionaryId(this.model.attributes.lastAddedQuestionDictinatyId);
@@ -237,7 +237,7 @@ var PhotostoryApp = MutApp.extend({
             case MutApp.EVENT_LOADER_INITED: {
                 // когда происходит связь с контейнером loader.js
                 // приложение просит его установить нужный размер по высоте
-                var sliderScrHeight = app.slider.measureHeight();
+                var sliderScrHeight = app.slider ? app.slider.measureHeight(): 0;
                 var resultScrHeight = app.result.measureHeight();
                 app.setSize({
                     height: Math.max(sliderScrHeight, resultScrHeight)

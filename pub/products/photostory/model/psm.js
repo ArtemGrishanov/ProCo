@@ -36,48 +36,51 @@ var PhotostoryModel = MutApp.Model.extend({
             application: this.application,
             model: this,
             propertyString: 'id=psm slides',
-            value: [
-                {
-                    text: 'Победительницей 66-го конкурса красоты «Мисс Вселенная», финал которого прошел 26 ноября в Лас-Вегасе, стала 22-летняя представительница ЮАР Деми-Леи Нель-Петерс. Девушка получила корону из рук прошлогодней финалистки – француженки Ирис Миттенар.',
-                    imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/6000x3562.jpg'
-                    // preview: https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/thumb__6000x3562.jpg
-                },
-                {
-                    text: 'Второй слад вот',
-                    imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/1.jpeg'
-                },
-                {
-                    text: 'Третий слайдик',
-                    imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/IMG_2352.JPG'
-                    // preview: https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/thumb__IMG_2352.JPG
-                },
-                {
-                    text: 'Четвертый слайдддддд',
-                    imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/IMG_2304.JPG'
-                    // preview: https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/thumb__IMG_2304.JPG
-                },
-                {
-                    text: '',
-                    imgSrc: 'http://p.testix.me/images/products/photostory/img7.jpeg'
-                },
-                {
-                    text: '',
-                    imgSrc: 'http://p.testix.me/images/products/photostory/img5.jpeg'
-                },
-                {
-                    text: '',
-                    imgSrc: 'http://p.testix.me/images/products/photostory/3.jpeg'
-                }
+            value: []
+//            value: [
 //                {
-//                    text: '',
-//                    imgSrc: 'http://p.testix.me/images/products/photostory/img11.webp'
+//                    text: 'Победительницей 66-го конкурса красоты «Мисс Вселенная», финал которого прошел 26 ноября в Лас-Вегасе, стала 22-летняя представительница ЮАР Деми-Леи Нель-Петерс. Девушка получила корону из рук прошлогодней финалистки – француженки Ирис Миттенар.',
+//                    imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/6000x3562.jpg'
+//                    // preview: https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/thumb__6000x3562.jpg
+//                },
+//                {
+//                    text: 'Второй слад вот',
+//                    imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/1.jpeg'
+//                },
+//                {
+//                    text: 'Третий слайдик',
+//                    imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/IMG_2352.JPG'
+//                    // preview: https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/thumb__IMG_2352.JPG
+//                },
+//                {
+//                    text: 'Четвертый слайдддддд',
+//                    imgSrc: 'https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/IMG_2304.JPG'
+//                    // preview: https://s3.eu-central-1.amazonaws.com/proconstructor/43d927ad-17a1-4d07-84c2-c273dff1a831/res/thumb__IMG_2304.JPG
 //                },
 //                {
 //                    text: '',
-//                    imgSrc: 'http://p.testix.me/images/products/photostory/img10.jpg'
+//                    imgSrc: 'http://p.testix.me/images/products/photostory/img7.jpeg'
+//                },
+//                {
+//                    text: '',
+//                    imgSrc: 'http://p.testix.me/images/products/photostory/img5.jpeg'
+//                },
+//                {
+//                    text: '',
+//                    imgSrc: 'http://p.testix.me/images/products/photostory/3.jpeg'
 //                }
-            ]
+////                {
+////                    text: '',
+////                    imgSrc: 'http://p.testix.me/images/products/photostory/img11.webp'
+////                },
+////                {
+////                    text: '',
+////                    imgSrc: 'http://p.testix.me/images/products/photostory/img10.jpg'
+////                }
+//            ]
         });
+
+
 
         this.attributes.showLogoInResults = new MutAppProperty({
             application: this.application,
@@ -260,9 +263,9 @@ var PhotostoryModel = MutApp.Model.extend({
     _onSlidesUpdate: function() {
         var slidesArr = this.attributes.slides.toArray();
         for (var i = 0; i < slidesArr.length; i++) {
-            var imgSrc = slidesArr[i].imgSrc;
+            var src = slidesArr[i].imgSrc.getValue();
             // .../res/IMG_2304.JPG -> ...res/thumb__6000x3562.jpg
-            slidesArr[i].imgThumbSrc = imgSrc.replace('/res/','/res/thumb20__');
+            slidesArr[i].imgThumbSrc = src.replace('/res/','/res/thumb20__');
         }
     },
 
@@ -304,5 +307,40 @@ var PhotostoryModel = MutApp.Model.extend({
             oneEntity.title = titleText;
             oneEntity.description = descriptionText;
         }
+    },
+
+    /**
+     * Объект-Прототип для добавления в массив
+     */
+    slideProto1: function() {
+
+        var slideDictionaryId = MutApp.Util.getUniqId(6);
+        this.set({
+            lastAddedSlideDictinatyId: slideDictionaryId
+        });
+
+        var text = new MutAppProperty({
+            propertyString: 'id=psm slides.'+slideDictionaryId+'.text',
+            model: this,
+            application: this.application,
+            value: 'Input text here'
+        });
+        var imgSrc = new MutAppProperty({
+            propertyString: 'id=psm slides.'+slideDictionaryId+'.imgSrc',
+            model: this,
+            application: this.application,
+            value: '//p.testix.me/images/products/common/i/Placeholder.png'
+        });
+
+        // теперь из подготовленных объектов собираем целый объект-слайд
+        var element = {
+            text: text,
+            imgSrc: imgSrc
+        };
+
+        return {
+            id: slideDictionaryId,
+            element: element
+        };
     }
 });

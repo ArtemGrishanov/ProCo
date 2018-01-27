@@ -33,7 +33,7 @@
     </script>
 
     <script id="id-slider_item" type="text/template">
-        <li class="slider_item js-slider_item progressive replace" style="display:<%=display%>" data-img-src="<%=img%>" data-slide_index="<%=slide_index%>">
+        <li class="slider_item js-slider_item progressive replace" style="display:<%=display%>" data-img-src="<%=img%>" data-slide_index="<%=slide_index%>" data-app-property="id=psm slides.<%=dictionaryId%>.imgSrc">
             <!-- notice: on one line to remove margin between inline-clock -->
             <span class="slider_item_centerer"></span><img class="slider_img preview" src="<%=img_thumb%>"/>
         </li>
@@ -90,21 +90,22 @@
     <script type="text/javascript" src="model/psm.js"></script>
     <script type="text/javascript" src="view/slider.js"></script>
     <script type="text/javascript" src="view/result.js"></script>
+    <script type="text/javascript" src="view/sliderEdit.js"></script>
     <script type="text/javascript" src="app.js"></script>
     <!-- endbuild -->
     <script>
-//        /*start_code
+        /*start_code
         var app = null;
         $(document).ready(function() {
             var DEFAULT_PARAMS = {};
             app = new PhotostoryApp({
                 defaults: DEFAULT_PARAMS,
                 mode: 'published',
-                height: 700 //TODO dynamic height
+                height: 600
             });
             app.start();
         });
-//        start_code*/
+        start_code*/
     </script>
 </body>
 </html>

@@ -47,8 +47,18 @@ var ScreenManager = {
     function _createScreenGroup(screen) {
         var $cnt = $('#id-slides_cnt');
         var $w = $('<div style="display:inline-block"></div>');
+        var sgPropertyString = screen.arrayAppPropertyString || ('__slideGroup__'+screen.id);
+        if (_findSlideGroupByPropertyString(sgPropertyString) === true) {
+            throw new Error('ScreenManager._createScreenGroup: ScreenGroupControl with propertyString \''+sgPropertyString+' already exists. Can not create ScreenGroupControl with the same name');
+        }
+        if (_findSlideGroupByGroupName(screen.group) === true) {
+            throw new Error('ScreenManager._createScreenGroup: ScreenGroupControl with groupName \''+screen.group+' already exists. Can not create ScreenGroupControl with the same name');
+        }
+        if (_findSlideByScreenName(sgPropertyString) === true) {
+            throw new Error('ScreenManager._createScreenGroup: Slide with name \''+sgPropertyString+' exists. Can not create ScreenGroupControl with the same name');
+        }
         var sgc = new SlideGroupControl({
-            propertyString: screen.arrayAppPropertyString || screen.id,
+            propertyString: sgPropertyString,
             controlName: 'SlideGroupControl',
             directiveName: 'slidegroupcontrol',
             wrapper: $w,
@@ -76,6 +86,43 @@ var ScreenManager = {
             for (var i = 0; i < _slideGroupControls.length; i++) {
                 if (_slideGroupControls[i].groupName == groupName) {
                     return _slideGroupControls[i];
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     *
+     *
+     * @param {string} propertyString
+     * @returns {*}
+     * @private
+     */
+    function _findSlideGroupByPropertyString(propertyString) {
+        if (_slideGroupControls !== null && propertyString) {
+            for (var i = 0; i < _slideGroupControls.length; i++) {
+                if (_slideGroupControls[i].propertyString == propertyString) {
+                    return _slideGroupControls[i];
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Найти Slide по всем группам _slideGroupControls
+     *
+     * @param {string} screenName
+     * @returns {*}
+     * @private
+     */
+    function _findSlideByScreenName(screenName) {
+        if (_slideGroupControls !== null && screenName) {
+            for (var i = 0; i < _slideGroupControls.length; i++) {
+                var screen = _slideGroupControls[i].getSlideInfo(screenName)
+                if (screen) {
+                    return screen;
                 }
             }
         }
@@ -124,6 +171,10 @@ var ScreenManager = {
             var gc = _findSlideGroupByGroupName(param.created.group);
             if (!gc) {
                 gc = _createScreenGroup(param.created);
+            }
+            // далее будем добавлять экран и надо проверить что не существует экранов
+            if (_findSlideGroupByPropertyString(param.created.id) !== null) {
+                throw new Error('ScreenManager.update(created): SlideGroupControl with propertyString \''+param.created.id+'\' already exists. Can not add screen with the same name');
             }
             gc.addScreen({
                 screen: param.created,
@@ -253,6 +304,15 @@ var ScreenManager = {
     }
 
     /**
+     * Для тестирования
+     *
+     * @private
+     */
+    function _test_getSlideByScreenName(screenName) {
+        return _findSlideByScreenName(screenName);
+    }
+
+    /**
      *
      * @param {string} param.appType
      * @param {function} onScreenSelect
@@ -278,5 +338,6 @@ var ScreenManager = {
     global._test_getSlideGroupControl = _test_getSlideGroupControl;
     global._test_getSlideGroupControlsCount = _test_getSlideGroupControlsCount;
     global._test_getScreens = _test_getScreens;
+    global._test_getSlideByScreenName = _test_getSlideByScreenName;
 
 })(ScreenManager);

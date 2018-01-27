@@ -7,9 +7,14 @@ var Editor = {};
 (function(global) {
     /**
      * Приложение MutApp которое редактируется в редакторе
-     * @type {null}
+     * @type {MutApp}
      */
     var editedApp = null;
+    /**
+     * Приложение для предпросмотра
+     * @type {MutApp}
+     */
+    var previewApp = null;
     /**
      * Уникальный ид проекта
      * Также это имя файла, которое будет использовано при сохранении
@@ -330,14 +335,6 @@ var Editor = {};
 
         // установить хуки которые есть в дескрипторе. Может не быть вовсе
         //hookRunner.setHooks(iframeWindow.descriptor.hooks);
-
-        // нужна ширина для горизонтального выравнивания
-//        $('#id-product_cnt')
-//            //ширина по умолчанию всегда 800 (стили editor.css->.proto_cnt) содержимое если больше то будет прокручиваться
-//            //.width(appContainerSize.width+2*config.editor.ui.screen_blocks_border_width)
-//            // высота нужна для задания размеров id-Workspace чтобы он был "кликабелен". Сбрасывание фильтра контролов при клике на него
-//            .height(appContainerSize.height+2*config.editor.ui.screen_blocks_border_width+config.editor.ui.id_product_cnt_additional_height);
-        // в поле для редактирования подтягиваем стили продукта
 
         if (config.common.editorUiEnable === true) {
             restartEditedApp();
@@ -1555,6 +1552,7 @@ var Editor = {};
     global.getAppId = function() { return appId; };
     global.getEditorEnvironment = getEditorEnvironment;
     global.getEditedApp = function() { return editedApp; }
+    global.getPreviewApp = function() { return previewApp; }
     global.showEditor = showEditor;
     global.getActiveScreen = function() { return activeScreen; }
     global.openTemplate = openTemplate;
