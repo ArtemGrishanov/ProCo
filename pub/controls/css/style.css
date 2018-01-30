@@ -196,6 +196,8 @@ form input {
     border-radius: 4px;
 }
 
+
+
 /*
 Personality custom control
 */
@@ -212,16 +214,16 @@ Personality custom control
 }
 .pers_opt_item {
     position: relative;
-    width: 188px;
-    height: 18px;
-    padding: 14px;
+    width: 178px;
+    height: 16px;
+    padding: 10px 12px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     background-color: #fff;
-    border: 2px solid #979797;
+    border: 1px solid #979797;
     border-radius: 4px;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     cursor: pointer;
 }
 .pers_opt_item.__img {
@@ -256,10 +258,10 @@ Personality custom control
     height: 426px;
     overflow-x: hidden;
     overflow-y: scroll;
-    background-color: #eeeeee;
+    background-color: #fff;
 }
 .pers_res_list {
-    padding: 12px 20px;
+    padding: 12px 20px 12px 32px;
     text-align: left;
 }
 .pers_res_item {
@@ -358,6 +360,24 @@ Personality custom control
 }
 .popup_textarea:focus {
     outline:none;
+}
+.popup_ctrl_header {
+    font-size: 28px;
+    margin: 0 0 8px;
+    padding: 0;
+}
+.popup_ctrl_desc {
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+}
+.popup_cnt .modal {
+    padding: 0;
+}
+.popup_header_cnt {
+    width: 100%;
+    padding: 36px 0 19px;
+    border-bottom: 1px solid #979797;
 }
 
 /* ============= */

@@ -2567,6 +2567,16 @@ MutApp.Util = {
             return MutApp.PATTERN_TYPE_NUMBER;
         }
         return null;
+    },
+
+    /**
+     * Очистить подстроки <br> &nbsp; из введенной строки
+     * @param {string} str
+     * @return {string}
+     */
+    clearHtmlSymbols: function(str) {
+        // два пробела заменить на один пробел в итоге
+        return str.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, ' ').replace('  ', ' ');
     }
 };
 

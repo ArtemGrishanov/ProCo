@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     font-family: Arial;
-    color: #464646;
 }
 
 .wrapper {
@@ -126,7 +125,7 @@ img {
     background-size: cover;
     background-position: center;
     box-sizing: border-box;
-    border-top: 1px solid #e7e7e7;
+    /*border-top: 1px solid #e7e7e7;*/
     border-bottom: 1px solid #e7e7e7;
 }
 .modal.__active {
@@ -206,6 +205,7 @@ img {
     max-width: 100%;
     max-height: 100%;
     margin-left: -4px; /* появляется отступ между span и img */
+    pointer-events: none;
 }
 
 .animate {

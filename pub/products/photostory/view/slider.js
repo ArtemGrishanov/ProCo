@@ -89,6 +89,10 @@ var SliderScreen = MutApp.Screen.extend({
      * но сделать это надо единожды
      */
     fullImageLoadingRequested: false,
+    /**
+     * Признак "нажатости" кнопки мыши либо тача
+     */
+    pressed: false,
 
     template: {
         "default": _.template($('#id-slider_template').html()),
@@ -102,10 +106,31 @@ var SliderScreen = MutApp.Screen.extend({
         "touchstart .js-slides_cnt": "onSlidesCntTouchStart",
         "touchmove .js-slides_cnt": "onSlidesCntTouchMove",
         "touchend .js-slides_cnt": "onSlidesCntTouchEnd",
+        "mousedown .js-slides_cnt": "onMouseDown",
+        "mousemove .js-slides_cnt": "onMouseMove",
+        "mouseup .js-slides_cnt": "onMouseUp",
+        "mouseleave .js-slides_cnt": "onMouseLeave"
+    },
+
+    onMouseDown: function(event) {
+        this.onSlidesCntTouchStart(event);
+    },
+
+    onMouseMove: function(event) {
+        this.onSlidesCntTouchMove(event);
+    },
+
+    onMouseUp: function(event) {
+        this.onSlidesCntTouchEnd(event);
+    },
+
+    onMouseLeave: function(event) {
+        console.log('mouseleave');
+        this.onSlidesCntTouchEnd(event);
     },
 
     onSlidesCntTouchStart: function(event) {
-        //console.log('onSlidesCntTouchStart');
+        console.log('onSlidesCntTouchStart');
         this.longTouch = false;
         this.verticalSwipe = false;
         this.movex = 0;
@@ -113,17 +138,22 @@ var SliderScreen = MutApp.Screen.extend({
             clearTimeout(this.longTouchTimeoutId);
         }
         this.longTouchTimeoutId = setTimeout((function() {
-            // определяем долгий "уверенный" тач, исключая случайные касания
-            // в нативном исполнении это тоже так: легкие краткие касания не работают
-            this.longTouch = true;
-            // здесь мы решаем начинать или нет горизонтальный скрол
-            // является ли свайп вертикальным или горизонтальным
-            if (Math.abs(this.touchmovey - this.touchstarty) > Math.abs(this.touchmovex - this.touchstartx)) {
-                this.verticalSwipe = true;
-                //console.log('onSlidesCntTouchStart: Vertical swipe detected');
+            if (this.pressed === true) {
+                // определяем долгий "уверенный" тач, исключая случайные касания
+                // в нативном исполнении это тоже так: легкие краткие касания не работают
+                this.longTouch = true;
+                // здесь мы решаем начинать или нет горизонтальный скрол
+                // является ли свайп вертикальным или горизонтальным
+                if (Math.abs(this.touchmovey - this.touchstarty) > Math.abs(this.touchmovex - this.touchstartx)) {
+                    this.verticalSwipe = true;
+                    //console.log('onSlidesCntTouchStart: Vertical swipe detected');
+                }
             }
             this.longTouchTimeoutId = null;
-        }).bind(this), 10);
+        }).bind(this), 10
+            // для десктопа когда перетаскиваем мышкой задержка гораздо больше
+            //(this.model.application.isMobile() === true) ? 10: 200
+        );
 
         // ширину слайда при первом таче определяем
         this.slideWidth = this.$slidesCnt.width();
@@ -136,20 +166,22 @@ var SliderScreen = MutApp.Screen.extend({
         this.isLeftEdge = this.touchSlideIndex <= 0
         if (this.isRightEdge === true) {
             // предварительно показать/подготовить вью экрана с результатами
-            app.result.move({
+            this.model.application.result.move({
                 animation: false,
                 action: 'hide'
             });
             this.$el.removeClass('animate');
         }
 
-        this.touchstartx = event.originalEvent.touches[0].pageX;
-        this.touchstarty = event.originalEvent.touches[0].pageY;
+        this.touchstartx = (event.originalEvent.touches) ? event.originalEvent.touches[0].pageX: event.originalEvent.clientX;
+        this.touchstarty = (event.originalEvent.touches) ? event.originalEvent.touches[0].pageY: event.originalEvent.clientY;
+
+        this.pressed = true;
     },
 
     onSlidesCntTouchMove: function(event) {
-        this.touchmovex = event.originalEvent.touches[0].pageX;
-        this.touchmovey = event.originalEvent.touches[0].pageY;
+        this.touchmovex = (event.originalEvent.touches) ? event.originalEvent.touches[0].pageX: event.originalEvent.clientX;
+        this.touchmovey = (event.originalEvent.touches) ? event.originalEvent.touches[0].pageY: event.originalEvent.clientY;
         if (this.longTouch === true) {
             if (this.verticalSwipe === false) {
                 this.movex = -this.touchSlideIndex*this.slideWidth + (this.touchmovex - this.touchstartx);
@@ -160,7 +192,7 @@ var SliderScreen = MutApp.Screen.extend({
                 }
                 if (this.isRightEdge === true && this.touchstartx-this.touchmovex > 0) {
                     // с правого края начинает постепенно выезжать экран результата
-                    app.result.$el.css('transform','translate3d(' + ((this.touchmovex-this.touchstartx)+this.slideWidth) + 'px,0,0)');
+                    this.model.application.result.$el.css('transform','translate3d(' + ((this.touchmovex-this.touchstartx)+this.slideWidth) + 'px,0,0)');
                     this.$el.css('position','absolute').css('transform','translate3d(' + (this.touchmovex-this.touchstartx) + 'px,0,0)');
 
                     //if (this.movex < (-this.touchSlideIndex*this.slideWidth-edgeWidth)) {
@@ -177,11 +209,11 @@ var SliderScreen = MutApp.Screen.extend({
                 event.originalEvent.preventDefault();
                 event.originalEvent.stopPropagation();
                 event.originalEvent.stopImmediatePropagation();
-                //console.log('onSlidesCntTouchMove: preventDefault');
+                console.log('onSlidesCntTouchMove: preventDefault');
             }
             else {
                 // vertical page scrolling enabled
-                //console.log('onSlidesCntTouchMove: return true');
+                console.log('onSlidesCntTouchMove: return true');
                 return true;
             }
         }
@@ -189,7 +221,7 @@ var SliderScreen = MutApp.Screen.extend({
             // по дефолту запрещаем пока не понято что это вертикальный свайп
             // TODO iOS Safari: но раз запретив потом разрешение уже не работает
             // event.originalEvent.preventDefault();
-            // console.log('onSlidesCntTouchMove: not loung touch preventDefault');
+            console.log('onSlidesCntTouchMove: not long touch preventDefault');
 
             // TODO если здесь в этом else ничего не писать: значит по умолчанию вертикальный свайп разрешен
             // это значит при быстром движении пальцами он уже будет начат когда определится this.verticalSwipe
@@ -198,48 +230,50 @@ var SliderScreen = MutApp.Screen.extend({
     },
 
     onSlidesCntTouchEnd: function(event) {
-        //console.log('onSlidesCntTouchEnd. movex='+this.movex);
+        console.log('onSlidesCntTouchEnd. movex='+this.movex);
         // дистанция на которую надо сделать тач, чтобы начался переход к другому слайду
-        var distanceToChange = this.slideWidth / 6;
-        if ((this.touchstartx - this.touchmovex) > distanceToChange) {
-            if (this.isRightEdge === true) {
-                // окончательный переход к экрану результата
-                app.result.move({
-                    action: 'show'
-                });
-                this.move({
-                    action: 'hide'
-                });
-                this.model.set({
-                    state: 'result'
-                });
+        this.longTouch = false;
+        if (this.pressed === true) {
+            var distanceToChange = this.slideWidth / 6;
+            if ((this.touchstartx - this.touchmovex) > distanceToChange) {
+                if (this.isRightEdge === true) {
+                    // окончательный переход к экрану результата
+                    this.model.application.result.move({
+                        action: 'show'
+                    });
+                    this.move({
+                        action: 'hide'
+                    });
+                    this.model.set({
+                        state: 'result'
+                    });
+                }
+                else {
+                    // переход вправо, movex отрицительный
+                    this.model.setSlideIndex(this.touchSlideIndex+1);
+                }
+            }
+            else if (-(this.touchstartx - this.touchmovex) > distanceToChange) {
+                // переход влево
+                this.model.setSlideIndex(this.touchSlideIndex-1);
             }
             else {
-                // переход вправо, movex отрицительный
-                this.model.setSlideIndex(this.touchSlideIndex+1);
+                // вернуть в исходное состояние
+                if (this.isRightEdge === true) {
+                    this.model.application.result.move({
+                        action: 'hide'
+                    });
+                    this.move({
+                        action: 'show'
+                    });
+                }
             }
+            var si = this.model.get('slideIndex');
+            this.slideCntTranslateX = (-si*this.slideWidth);
+            this.$slidesCnt.addClass('animate');
+            this.$slidesCnt.css('transform','translate3d(' + this.slideCntTranslateX + 'px,0,0)');
+            this.pressed = false;
         }
-        else if (-(this.touchstartx - this.touchmovex) > distanceToChange) {
-            // переход влево
-            this.model.setSlideIndex(this.touchSlideIndex-1);
-        }
-        else {
-            // вернуть в исходное состояние
-            if (this.isRightEdge === true) {
-                app.result.move({
-                    action: 'hide'
-                });
-                this.move({
-                    action: 'show'
-                });
-            }
-        }
-        var si = this.model.get('slideIndex');
-        this.slideCntTranslateX = (-si*this.slideWidth);
-        this.$slidesCnt.addClass('animate');
-        this.$slidesCnt.css('transform','translate3d(' + this.slideCntTranslateX + 'px,0,0)');
-
-
     },
 
     initialize: function (param) {
@@ -275,7 +309,7 @@ var SliderScreen = MutApp.Screen.extend({
                         this.move({
                             action: 'show'
                         });
-                        app.result.move({
+                        this.model.application.result.move({
                             action: 'hide'
                         });
                     }
@@ -345,7 +379,7 @@ var SliderScreen = MutApp.Screen.extend({
             this.fullImageLoadingRequested = true;
             var slides = this.model.get('slides').toArray();
             for (var i = 0; i < slides.length; i++) {
-                this.loadFullImage(slides[i].imgSrc.getValue());
+                this.loadFullImage(this.model.get('slides').getIdFromPosition(i));
             }
 //            for (var i = 0; i < items.length; i++) {
 //                this.loadFullImage(items[i]);
@@ -358,20 +392,21 @@ var SliderScreen = MutApp.Screen.extend({
      *
      * By https://www.sitepoint.com/how-to-build-your-own-progressive-image-loader/
      *
-     * @param item
+     * @param {string} slideDictionaryId
      */
-    loadFullImage: function(imgSrc) {
+    loadFullImage: function(slideDictionaryId) {
         console.log('Slider.loadFullImage');
 //        if (!item || !item.attributes['data-img-src']) return;
         // load image
-        var $item = $('.js-slides_cnt').find('[data-img-src="'+imgSrc+'"]');
+//        var $item = $('.js-slides_cnt').find('[data-img-src="'+imgSrc+'"]');
         var img = new Image();
 //        if (item.dataset) {
 //            img.srcset = item.dataset.srcset || '';
 //            img.sizes = item.dataset.sizes || '';
 //        }
 //        var imgSrcAttr = item.attributes['data-img-src'].value;
-        img.src = imgSrc; // важно использовать эту переменную для установки ниже в addImg(), так как в img.src путь потом будет уже с протоколом 'http'
+        var imgSrc = this.model.get('slides').getValue()[slideDictionaryId].imgSrc.getValue();
+        img.src = imgSrc;
         img.className = 'slider_img';
         if (img.complete) {
             addImg.call(this);
@@ -383,10 +418,10 @@ var SliderScreen = MutApp.Screen.extend({
         function addImg() {
             // Важный момент: во время загрузки картинки может произойти render() и дом-элементы изменятся. Поэтому поиск надо производить заново по атрибуту
             // add full image
-            var $item = $('.js-slides_cnt').find('[data-img-src="'+imgSrc+'"]');
+            var $item = $('.js-slides_cnt').find('[data-slide-dictionary-id="'+slideDictionaryId+'"]');
             $item.append(img);
             // сохраняем картинку для повторного использования при дальнейших рендерах
-            this.fullImagesMap[imgSrc] = img;
+            this.fullImagesMap[slideDictionaryId] = img;
             // remove preview image
             //var pImg = item.querySelector && item.querySelector('img.preview');
             $item.find('img.preview').remove();
@@ -429,7 +464,7 @@ var SliderScreen = MutApp.Screen.extend({
         var currentSlider = this.model.getSlideInfo(slideIndex);
 
         // текст для текущего слайда установить в интерфейс
-        this.$el.find('.js-slide_text').text(currentSlider.text.getValue());
+        this.$el.find('.js-slide_text').html(currentSlider.text.getValue());
 
         // числовой индекс слайда обновить
         this.$el.find('.js-slide_num').text((slideIndex+1)+'/'+slides.length);
@@ -486,20 +521,20 @@ var SliderScreen = MutApp.Screen.extend({
 
         for (var i = 0; i < slides.length; i++) {
             var sl = slides[i];
-
+            var dictionaryId = this.model.get('slides').getIdFromPosition(i);
             var $sliderItem = $(this.template['sliderItem']({
                 img: sl.imgSrc.getValue(),
                 img_thumb: sl.imgThumbSrc,
                 display: 'block',
                 slide_index: i,
-                dictionaryId: this.model.get('slides').getIdFromPosition(i)
+                dictionaryId: dictionaryId
             }));
 
-            if (this.fullImagesMap[sl.imgSrc.getValue()]) {
+            if (this.fullImagesMap[dictionaryId]) {
                 // для этой картинки уже создан объект Image
                 // Возможно, даже загружен полностью, надо использовать его
                 $sliderItem.find('img').remove();
-                $sliderItem.append(this.fullImagesMap[sl.imgSrc.getValue()]);
+                $sliderItem.append(this.fullImagesMap[dictionaryId]);
             }
             else {
 
@@ -520,7 +555,7 @@ var SliderScreen = MutApp.Screen.extend({
         }
 
         // текст текущего слайда поставить
-        this.$el.find('.js-slide_text').text(currentSlider.text.getValue());
+        this.$el.find('.js-slide_text').html(currentSlider.text.getValue());
         // числовой индекс слайда обновить
         this.$el.find('.js-slide_num').text((slideIndex+1)+'/'+slides.length);
 

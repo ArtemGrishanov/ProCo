@@ -869,6 +869,11 @@ var Editor = {};
             defaults: serializedProperties,
             appChangeCallbacks: [onAppChanged]
         });
+        $(editedApp.screenRoot).click(function() {
+            // клик на приложение (не контрол) должен приводить к сбросу выделения элемента
+            // как следствие: закрытию quickPanel и т.п.
+            Workspace.selectElementOnAppScreen(null);
+        });
     }
 
     /**

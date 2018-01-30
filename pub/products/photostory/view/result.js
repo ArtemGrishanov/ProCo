@@ -31,6 +31,10 @@ var ResultScreen = MutApp.Screen.extend({
      * Контейнер в котором будет происходить рендер этого вью
      */
     el: null,
+    /**
+     * Признак "нажатости" кнопки мыши либо тача
+     */
+    pressed: false,
 
     movex: undefined,
     verticalSwipe: undefined,
@@ -53,6 +57,35 @@ var ResultScreen = MutApp.Screen.extend({
         "touchstart .js-logo_cnt": "onSlidesCntTouchStart",
         "touchmove .js-logo_cnt": "onSlidesCntTouchMove",
         "touchend .js-logo_cnt": "onSlidesCntTouchEnd",
+        "mousedown .js-logo_cnt": "onMouseDown",
+        "mousemove .js-logo_cnt": "onMouseMove",
+        "mouseup .js-logo_cnt": "onMouseUp",
+        "mouseleave .js-logo_cnt": "onMouseLeave"
+    },
+
+    onMouseDown: function(event) {
+        if (this.model.application.mode !== 'edit') {
+            this.onSlidesCntTouchStart(event);
+        }
+    },
+
+    onMouseMove: function(event) {
+        if (this.model.application.mode !== 'edit') {
+            this.onSlidesCntTouchMove(event);
+        }
+    },
+
+    onMouseUp: function(event) {
+        if (this.model.application.mode !== 'edit') {
+            this.onSlidesCntTouchEnd(event);
+        }
+    },
+
+    onMouseLeave: function(event) {
+        if (this.model.application.mode !== 'edit') {
+            console.log('mouseleave');
+            this.onSlidesCntTouchEnd(event);
+        }
     },
 
     onSlidesCntTouchStart: function(event) {
@@ -63,14 +96,16 @@ var ResultScreen = MutApp.Screen.extend({
             clearTimeout(this.longTouchTimeoutId);
         }
         this.longTouchTimeoutId = setTimeout((function() {
-            // определяем долгий "уверенный" тач, исключая случайные касания
-            // в нативном исполнении это тоже так: легкие краткие касания не работают
-            this.longTouch = true;
-            // здесь мы решаем начинать или нет горизонтальный скрол
-            // является ли свайп вертикальным или горизонтальным
-            if (Math.abs(this.touchmovey - this.touchstarty) > Math.abs(this.touchmovex - this.touchstartx)) {
-                this.verticalSwipe = true;
-//                console.log('onSlidesCntTouchStart: Vertical swipe detected');
+            if (this.pressed === true) {
+                // определяем долгий "уверенный" тач, исключая случайные касания
+                // в нативном исполнении это тоже так: легкие краткие касания не работают
+                this.longTouch = true;
+                // здесь мы решаем начинать или нет горизонтальный скрол
+                // является ли свайп вертикальным или горизонтальным
+                if (Math.abs(this.touchmovey - this.touchstarty) > Math.abs(this.touchmovex - this.touchstartx)) {
+                    this.verticalSwipe = true;
+    //                console.log('onSlidesCntTouchStart: Vertical swipe detected');
+                }
             }
             this.longTouchTimeoutId = null;
         }).bind(this), 10);
@@ -78,30 +113,32 @@ var ResultScreen = MutApp.Screen.extend({
         // ширину слайда при первом таче определяем
         this.resultBackWidth = this.$resultScreenBack.width();
         this.$resultScreenBack.removeClass('animate');
-        this.touchstartx =  event.originalEvent.touches[0].pageX;
-        this.touchstarty =  event.originalEvent.touches[0].pageY;
+        this.touchstartx = (event.originalEvent.touches) ? event.originalEvent.touches[0].pageX: event.originalEvent.clientX;
+        this.touchstarty = (event.originalEvent.touches) ? event.originalEvent.touches[0].pageY: event.originalEvent.clientY;
 
         // начальная позиция экранов
         this.move({
             animation: false,
             action: 'show'
         });
-        app.slider.move({
+        this.model.application.slider.move({
             animation: false,
             action: 'hide'
         });
+
+        this.pressed = true;
     },
 
     onSlidesCntTouchMove: function(event) {
-        this.touchmovex = event.originalEvent.touches[0].pageX;
-        this.touchmovey = event.originalEvent.touches[0].pageY;
+        this.touchmovex = (event.originalEvent.touches) ? event.originalEvent.touches[0].pageX: event.originalEvent.clientX;
+        this.touchmovey = (event.originalEvent.touches) ? event.originalEvent.touches[0].pageY: event.originalEvent.clientY;
         if (this.longTouch === true) {
             if (this.verticalSwipe === false) {
                 this.movex = this.touchmovex-this.touchstartx;
                 if (this.movex > 0) {
                     // с левого края начинает постепенно выезжать экран slider
-                    app.result.$el.css('transform','translate3d(' + this.movex + 'px,0,0)');
-                    app.slider.$el.css('position','absolute').css('transform','translate3d(' + (this.movex-this.resultBackWidth) + 'px,0,0)');
+                    this.$el.css('transform','translate3d(' + this.movex + 'px,0,0)');
+                    this.model.application.slider.$el.css('position','absolute').css('transform','translate3d(' + (this.movex-this.resultBackWidth) + 'px,0,0)');
                 }
                 // для горизонтального свайпа запретить поведение по умолчанию: прокрутку страницы вертикально
                 event.originalEvent.preventDefault();
@@ -123,28 +160,32 @@ var ResultScreen = MutApp.Screen.extend({
 
     onSlidesCntTouchEnd: function(event) {
 //        console.log('onSlidesCntTouchEnd. movex='+this.movex);
-        // дистанция на которую надо сделать тач, чтобы начался переход к другому слайду
-        var distanceToChange = this.resultBackWidth / 6;
-        if (this.movex > distanceToChange) {
-            // окончательный переход к экрану slider
-            this.move({
-                action: 'hide'
-            });
-            app.slider.move({
-                action: 'show'
-            });
-            this.model.set({
-                state: 'slider'
-            });
-        }
-        else {
-            // вернуть в исходное состояние
-            this.move({
-                action: 'show'
-            });
-            app.slider.move({
-                action: 'hide'
-            });
+        this.longTouch = false;
+        if (this.pressed === true) {
+            // дистанция на которую надо сделать тач, чтобы начался переход к другому слайду
+            var distanceToChange = this.resultBackWidth / 6;
+            if (this.movex > distanceToChange) {
+                // окончательный переход к экрану slider
+                this.move({
+                    action: 'hide'
+                });
+                this.model.application.slider.move({
+                    action: 'show'
+                });
+                this.model.set({
+                    state: 'slider'
+                });
+            }
+            else {
+                // вернуть в исходное состояние
+                this.move({
+                    action: 'show'
+                });
+                this.model.application.slider.move({
+                    action: 'hide'
+                });
+            }
+            this.pressed = false;
         }
     },
 

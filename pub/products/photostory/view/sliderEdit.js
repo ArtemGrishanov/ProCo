@@ -28,7 +28,7 @@ var SlideEditScreen = MutApp.Screen.extend({
      */
     hideScreen: true,
     collapse: false,
-    draggable: false,
+    draggable: true,
     canAdd: true,
     canDelete: true,
     canClone: true,
@@ -124,8 +124,11 @@ var SlideEditScreen = MutApp.Screen.extend({
             this.$counters.push($counterItem);
         }
 
+        // нужно указать этот атрибут вручную для связки
+        this.$el.find('.js-slide_text').attr('data-app-property', 'id=psm slides.'+this.slideDictionaryId+'.text');
+
         // текст текущего слайда поставить
-        this.$el.find('.js-slide_text').text(thisSlide.text.getValue());
+        this.$el.find('.js-slide_text').html(thisSlide.text.getValue());
         // числовой индекс слайда обновить
         this.$el.find('.js-slide_num').text((slideIndex+1)+'/'+slides.length);
     },

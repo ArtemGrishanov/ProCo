@@ -660,15 +660,15 @@ var PersonalityApp = MutApp.extend({
             if (prbs.hasOwnProperty(resultId) === true) {
                 var r = this.model.getResultById(resultId);
                 //msg += 'Результат: \''+ r.title.getValue()+'\': '+Math.round(prbs[resultId]*100)+'%<br>';
-                visualizationData.push([r.title.getValue(), Math.round(prbs[resultId]*100)]);
+                visualizationData.push([MutApp.Util.clearHtmlSymbols(r.title.getValue()), Math.round(prbs[resultId]*100)]);
             }
         }
-        //var visualizationTitle = '{EN:\'Result propabilities\',RU:\'Вероятности результатов\'}';
         var visualizationTitle = 'Result propabilities';
         var visualizationType = 'PieChart';
         res.push({
+            title: {EN:'Result propabilities',RU:'Вероятности результатов'},
             type: 'info',
-            message: 'Below you can see result probabilities based on your option links',
+            message: {EN:'Below you can see result probabilities based on your option links', RU:'Диаграмма показывает вероятность, с которой пользователь получит тот или иной результат.'},
             html: null,
             visualization: {
                 data: visualizationData,
@@ -681,24 +681,44 @@ var PersonalityApp = MutApp.extend({
         // Информация о не связанных ни с чем опций
         // ==========================================
         var resultLinkingArr = this.model.attributes.resultLinking.toArray();
+        // смысл в том, чтобы все непривязанные к результатам картинки схлопнуть в одно событие
+        var imgCollapsedHtml = '';
+        var textCollapsedHtml = '';
         for (var k = 0; k < resultLinkingArr.length; k++) {
             var rl = resultLinkingArr[k];
             if (rl.strongLinks.length === 0 && rl.weakLinks.length === 0) {
                 var opt = this.model.getOptionById(rl.optionId);
                 if (opt.text) {
-                    res.push({
-                        type: 'warning',
-                        message: 'Option \''+opt.text.getValue()+'\' has no result links. Perhaps, you forgot to link it to result.'
-                    });
+                    textCollapsedHtml += '<li>«'+opt.text.getValue()+'»</li>';
+//                    res.push({
+//                        type: 'warning',
+//                        message: 'Option \''+opt.text.getValue()+'\' has no result links. Perhaps, you forgot to link it to result.'
+//                    });
                 }
                 else if (opt.img) {
-                    res.push({
-                        type: 'warning',
-                        message: 'Image option has no result links. Perhaps, you forgot to link it to result.',
-                        html: '<img src="'+opt.img.getValue()+'" width="200px" height="200px"/>'
-                    });
+                    imgCollapsedHtml += '<img src="'+opt.img.getValue()+'"/>';
+//                    res.push({
+//                        type: 'warning',
+//                        message: 'Image option has no result links. Perhaps, you forgot to link it to result.',
+//                        html: '<img src="'+opt.img.getValue()+'"/>'
+//                    });
                 }
             }
+        }
+        if (imgCollapsedHtml.length > 0) {
+            res.push({
+                type: 'warning',
+                message: {RU:'У вас есть изображения, не влияющие на результаты:',EN:'These image options has no result links. Perhaps, you forgot to link it to result:'},
+                html: imgCollapsedHtml
+            });
+        }
+        if (textCollapsedHtml.length > 0) {
+            textCollapsedHtml = '<ul>'+textCollapsedHtml+'</ul>';
+            res.push({
+                type: 'warning',
+                message: {RU:'У вас есть текстовые ответы, не влияющие на результаты:',EN:'These text options has no result links. Perhaps, you forgot to link it to result:'},
+                html: textCollapsedHtml
+            });
         }
 
         return res;

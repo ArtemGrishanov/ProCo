@@ -670,31 +670,6 @@ var TriviaApp = MutApp.extend({
         // ==========================================
         // Информация о распределении результатов
         // ==========================================
-//        var prbs = this.model.getResultProbabilities();
-//        // специальный табличный формат данных требуемый по https://developers.google.com/chart/interactive/docs/gallery/piechart
-//        var visualizationData = [
-//            ['Result', 'Probability']
-//            // ['Work',     11],
-//            // ['Eat',      2],
-//        ];
-//        for (var resultId in prbs) {
-//            if (prbs.hasOwnProperty(resultId) === true) {
-//                var r = this.model.getResultById(resultId);
-//                visualizationData.push([r.title.getValue(), Math.round(prbs[resultId]*100)]);
-//            }
-//        }
-//        var visualizationTitle = 'Result propabilities';
-//        var visualizationType = 'PieChart';
-//        res.push({
-//            type: 'info',
-//            message: 'Below you can see result probabilities based on your option links',
-//            html: null,
-//            visualization: {
-//                data: visualizationData,
-//                title: visualizationTitle,
-//                type: visualizationType
-//            }
-//        });
         var visualizationData = [
             // [points, resultId]
         ];
@@ -704,12 +679,13 @@ var TriviaApp = MutApp.extend({
             var result = this.model.getResultById(resultId);
             visualizationData.push([
                 points,
-                result.title.getValue()
+                MutApp.Util.clearHtmlSymbols(result.title.getValue())
             ]);
         }
         res.push({
             type: 'info',
-            message: 'Number of correct answers and results',
+            title: {RU:'Диаграмма результатов',EN:'Result diagram'},
+            message: {RU:'На диаграмме показано соответствие количества правильных ответов и результатов',EN:'Number of correct answers and results'},
             html: null,
             visualization: {
                 data: visualizationData,
@@ -721,6 +697,7 @@ var TriviaApp = MutApp.extend({
         // ==========================================
         // не назначенные верными ответы
         // ==========================================
+        var noCorrectOptionsHtml = '';
         var quizValue = this.model.attributes.quiz.toArray();
         for (var i = 0; i < quizValue.length; i++) {
             var options = quizValue[i].answer.options.toArray();
@@ -733,11 +710,16 @@ var TriviaApp = MutApp.extend({
                 }
             }
             if (correctOptionFound === false) {
-                res.push({
-                    type: 'warning',
-                    message: 'No correct options in question "' + quizValue[i].question.text.getValue().substr(0, 15) + '"'
-                });
+                noCorrectOptionsHtml += '<li>«'+quizValue[i].question.text.getValue().substr(0, 15)+'»</li>';
             }
+        }
+        if (noCorrectOptionsHtml.length > 0) {
+            noCorrectOptionsHtml = '<ul>'+noCorrectOptionsHtml+'</ul>';
+            res.push({
+                type: 'warning',
+                message: {RU:'Для этих вопросов не указан верный ответ:',EN:'No correct options in these questions:'},
+                html: noCorrectOptionsHtml
+            });
         }
 
         return res;

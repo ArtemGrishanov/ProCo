@@ -124,6 +124,7 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm quiz',
             value: []
         });
+
         this.attributes.startScreenBackgroundImg = new MutAppProperty({
             application: this.application,
             model: this,
@@ -715,7 +716,7 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.questionImage',
             model: this,
             application: this.application,
-            value: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/ocean.jpg'
+            value: '//p.testix.me/images/products/common/i/Placeholder.png'
         });
         var qBackgroundImage = new MutAppProperty({
             propertyString: 'id=pm quiz.'+questionDictionaryId+'.question.backgroundImage',
@@ -871,13 +872,13 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm results.'+resultDictionaryId+'.titleColor',
             model: this,
             application: this.application,
-            value: null
+            value: '#000' // обязательно ставить значение по умолчанию иначе в колорпикере баг
         });
         var descriptionColor = new MutAppProperty({
             propertyString: 'id=pm results.'+resultDictionaryId+'.descriptionColor',
             model: this,
             application: this.application,
-            value: null
+            value: '#000' // обязательно ставить значение по умолчанию иначе в колорпикере баг
         });
 
         var result = {
@@ -970,7 +971,7 @@ var PersonalityModel = MutApp.Model.extend({
             propertyString: 'id=pm quiz.'+param.questionDictionaryId+'.answer.options.'+optionId+'.img',
             model: this,
             application: this.application,
-            value: '//p.testix.me/images/products/common/i/image-sample1.jpg'
+            value: '//p.testix.me/images/products/common/i/Placeholder.png'
         });
 
         var option = {
@@ -1128,16 +1129,26 @@ var PersonalityModel = MutApp.Model.extend({
                     propertyString: 'id=pm results.'+dictionaryId+'.titleColor',
                     model: this,
                     application: this.application,
-                    value: null
+                    value: '#000' // обязательно ставить значение по умолчанию иначе в колорпикере баг
                 });
+            }
+            else {
+                if (r.titleColor.getValue() === null) {
+                    r.titleColor.setValue('#000'); // ранее не было установки значений по умолчанию
+                }
             }
             if (!r.descriptionColor) {
                 r.descriptionColor = new MutAppProperty({
                     propertyString: 'id=pm results.'+dictionaryId+'.descriptionColor',
                     model: this,
                     application: this.application,
-                    value: null
+                    value: '#000' // обязательно ставить значение по умолчанию иначе в колорпикере баг
                 });
+            }
+            else {
+                if (r.descriptionColor.getValue() === null) {
+                    r.descriptionColor.setValue('#000'); // ранее не было установки значений по умолчанию
+                }
             }
         }
     }

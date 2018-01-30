@@ -667,16 +667,28 @@ var TriviaModel = MutApp.Model.extend({
                     propertyString: 'id=tm results.'+dictionaryId+'.titleColor',
                     model: this,
                     application: this.application,
-                    value: null
+                    value: '#000' // цвет по умолчанию указать обязательно, иначе в колорпикере будет некорректное значение
                 });
+            }
+            else {
+                // раньше не устанавливал значение цвета по умолчанию. Колопикер работал некорректно
+                if (r.titleColor.getValue() === null) {
+                    r.titleColor.setValue('#000');
+                }
             }
             if (!r.descriptionColor) {
                 r.descriptionColor = new MutAppProperty({
                     propertyString: 'id=tm results.'+dictionaryId+'.descriptionColor',
                     model: this,
                     application: this.application,
-                    value: null
+                    value: '#000' // цвет по умолчанию указать обязательно, иначе в колорпикере будет некорректное значение
                 });
+            }
+            else {
+                // раньше не устанавливал значение цвета по умолчанию. Колопикер работал некорректно
+                if (r.descriptionColor.getValue() === null) {
+                    r.descriptionColor.setValue('#000');
+                }
             }
         }
 
@@ -841,7 +853,7 @@ var TriviaModel = MutApp.Model.extend({
             propertyString: 'id=tm quiz.'+questionDictionaryId+'.question.questionImage',
             model: this,
             application: this.application,
-            value: 'https://s3.eu-central-1.amazonaws.com/testix.me/i/samples/ocean.jpg'
+            value: '//p.testix.me/images/products/common/i/Placeholder.png'
         });
         var qBackgroundImage = new MutAppProperty({
             propertyString: 'id=tm quiz.'+questionDictionaryId+'.question.backgroundImage',
@@ -991,19 +1003,19 @@ var TriviaModel = MutApp.Model.extend({
             propertyString: 'id=tm results.'+resultDictionaryId+'.backgroundColor',
             model: this,
             application: this.application,
-            value: null
+            value: '#fff'
         });
         var titleColor = new MutAppProperty({
             propertyString: 'id=tm results.'+resultDictionaryId+'.titleColor',
             model: this,
             application: this.application,
-            value: null
+            value: '#000' // цвет по умолчанию указать обязательно, иначе в колорпикере будет некорректное значение
         });
         var descriptionColor = new MutAppProperty({
             propertyString: 'id=tm results.'+resultDictionaryId+'.descriptionColor',
             model: this,
             application: this.application,
-            value: null
+            value: '#000' // цвет по умолчанию указать обязательно, иначе в колорпикере будет некорректное значение
         });
 
         var result = {
@@ -1106,7 +1118,7 @@ var TriviaModel = MutApp.Model.extend({
             propertyString: 'id=tm quiz.'+param.questionDictionaryId+'.answer.options.'+optionId+'.img',
             model: this,
             application: this.application,
-            value: '//p.testix.me/images/products/common/i/image-sample1.jpg'
+            value: '//p.testix.me/images/products/common/i/Placeholder.png'
         });
 
         // Фидбек, который видит пользователь в отдельной всплывашке при выборе этой опции

@@ -228,14 +228,15 @@
 }
 .select_dialog_options_cnt {
     width: 100%;
-    height: 326px;
-    margin: 30px 0 12px 0;
-    padding: 20px 0 20px;
+    height: 380px;
+    margin: 18px 0 12px 0;
+    padding: 10px 40px;
     text-align: center;
     overflow-y: scroll;
     overflow-x: hidden;
     border-top: 1px solid #979797;
     border-bottom: 1px solid #979797;
+    box-sizing: border-box;
 }
 .select_dialog_loading_anim {
     width: 220px;
@@ -295,9 +296,72 @@
 .select_dialog_button_cnt {
     text-align: center;
 }
-.select_dialog_button_cnt .pbtn+.pbtn{
+.select_dialog_button_cnt .pbtn+.pbtn {
     margin-left: 16px;
 }
+select_dialog_back {
+
+}
+
+#id-assistent .select_dialog_back {
+    /* чуть выше окно для подсказок делаем */
+    height: 547px;
+}
+#id-assistent .select_dialog_options_cnt {
+    /* чуть выше окно для подсказок делаем */
+    height: 426px;
+}
+.assyst_i {
+    padding: 0;
+    text-align: left;
+    color: #414141;
+}
+.assyst_i + .assyst_i {
+    border-top: 1px solid #979797;
+}
+.assyst_i_title {
+    font-size: 20px;
+    margin: 12px 0 6px;
+}
+.assyst_i_msg_cnt {
+    font-size: 14px;
+    padding: 0;
+    margin: 12px 0 12px;
+}
+.assyst_i_msg_text {
+    vertical-align: top;
+}
+.assyst_i_html {
+    margin: 0;
+    padding: 0;
+}
+.assyst_i_html img {
+    display: inline-block;
+    width: 160px;
+    height: 110px;
+    margin: 0 16px 16px 0;
+    border-radius: 4px;
+}
+.assyst_i_html ul {
+    padding: 0;
+    margin: 0 0 0 18px;
+}
+.assyst_i_html li {
+    padding: 0;
+    margin: 0;
+    line-height: 20px;
+    font-size: 14px;
+}
+.assyst_i_warn_ico {
+    display: inline-block;
+    vertical-align: top;
+    width: 18px;
+    height: 18px;
+    background: url(../i/warning_red.jpg) center no-repeat;
+    margin-right: 4px;
+}
+
+
 .selection_border {
     position: absolute;
     width: 20px;

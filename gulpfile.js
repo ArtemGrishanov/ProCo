@@ -218,6 +218,14 @@ var productsConfig = [
             css: ['./pub/products/fbPanorama/**/*.css'],
             i: ['./pub/products/fbPanorama/**/*.+(png|jpg|jpeg|gif|svg)']
         }
+    },
+    {
+        productName: 'photostory',
+        src: {
+            js: ['./pub/products/photostory/**/*.js'],
+            html: ['./pub/products/photostory/*.html'],
+            css: ['./pub/products/photostory/**/*.css']
+        }
     }
 ];
 

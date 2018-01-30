@@ -370,7 +370,9 @@ var Workspace = {
         popupControlPanel = new PopupControlPanel({
             closeCallback: _onPopupControlNeedToClose
         });
-        $('#id-workspace').click(function(){
+        // этим новым селектором расширил области клика для сброса выделения. Должно работать на всем редакторе
+        $('#id-editor_view').click(function(){
+        // prev version $('#id-workspace').click(function(){
             // любой клик по документу сбрасывает фильтр контролов
             selectElementOnAppScreen(null);
         });
