@@ -292,7 +292,14 @@ if (window.textix === undefined) {
             iframe.onload = function() {
                 // надо сохранить ид приложения для связи
                 //var appId = iframe.contentWindow.app.id;
-                iframe.contentWindow.postMessage({method:'init'}, '*');
+                iframe.contentWindow.postMessage({
+                    method: 'init',
+                    initialSize: {
+                        // в приложение передается размер который был указан в embed-коде
+                        width: width,
+                        height: height
+                    }
+                }, '*');
                 testixApps.push({
                     width: width,
                     height: height,

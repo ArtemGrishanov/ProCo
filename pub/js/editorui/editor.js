@@ -525,10 +525,10 @@ var Editor = {};
     }
 
     function publish() {
-        if (config.common.buildStatus === 'dev') {
+        if (config.common.home === 'http://localhost:63342/ProCo/pub/') {
             // только сбилденный проект может публиковать
             // так как стилшком сложно поддерживать публикацию из каталога /pub, где структура проекта другая
-            Modal.showMessage({text: 'Publishing is only available in production mode'});
+            Modal.showMessage({text: 'Publishing is only available for builded Editor'});
         }
         else {
             Modal.showLoading();
@@ -551,8 +551,8 @@ var Editor = {};
                     var anonymUrl = 'https://p.testix.me/'+Auth.getUser().short_id+'/'+appId+'/';
                     var ap = editedApp.getProperty('appConstructor=mutapp projectPageUrl');
                     ap.setValue(anonymUrl);
-                    var appTitle = clearHtmlSymbols(editedApp.title);
-                    var appDescription = clearHtmlSymbols(editedApp.description);
+                    var appTitle = clearHtmlSymbols(editedApp.title || 'Set title for product');
+                    var appDescription = clearHtmlSymbols(editedApp.description || 'Set description for product');
 
                     // накрутить версию проекта при новой сборке, поможет сбросу кеша шаринга
                     bumpAppVersion();

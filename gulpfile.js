@@ -49,7 +49,7 @@ var buildUniqId = uniqid();
 buildUniqId = buildUniqId.substring(buildUniqId.length-6,buildUniqId.length);
 
 var buildConfig = {
-    uglifyJs: true,
+    uglifyJs: false,
     names: {
         distFolder: './build',
         styleFileName: 'css/style.css',
@@ -353,7 +353,6 @@ gulp.task('concat:common', function() {
     return gulp.src(buildConfig.src.js.srcCommon)
         .pipe(concat(buildConfig.names.commonFileName))
         .pipe(replace('http://localhost:63342/ProCo/pub/', 'http://localhost:63342/ProCo/build/'))
-        //.pipe(replace('buildStatus: "development"', 'buildStatus: "production"'))
         .pipe(replace('{{js_product_environment}}', environment))
         .pipe(replace('{{js_product_version}}', productVersion))
         .pipe(gulpIf(buildConfig.uglifyJs, uglify()))

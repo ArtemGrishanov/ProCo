@@ -169,8 +169,8 @@ var PhotostoryApp = MutApp.extend({
         }
 
         // способ указания этих атрибутов уникален для каждого проекта
-//        this.title = this.getPropertiesBySelector('id=startScr startHeaderText')[0].value.getValue();
-//        this.description = this.getPropertiesBySelector('id=startScr startDescription')[0].value.getValue();
+        this.title = this.model.get('resultTitle').getValue();
+        this.description = this.model.get('resultDescription').getValue();
 
     },
 
@@ -325,7 +325,7 @@ var PhotostoryApp = MutApp.extend({
      */
     getAutoPreviewHtml: function() {
         if (this._screens.length > 0) {
-            var v = this.getScreenById('startScr').$el;
+            var v = this.getScreenById('resultScr').$el;
             // выравнивание заголовка и пояснения по вертикали
             var viewForShare = MutApp.Util.clarifyElement(v, ['modal','modal_cnt','info_title','info_tx','b_title']);
             var titleView = viewForShare.find('.info_title').css('padding','0 50px 0 50px').css('margin','0');

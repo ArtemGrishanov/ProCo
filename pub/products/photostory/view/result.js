@@ -493,23 +493,48 @@ var ResultScreen = MutApp.Screen.extend({
         // метка которая показывается на контейнере внизу проекта
         var testixLabel = 30;
         var scrHeight = 0;
-        scrHeight += this.$el.find('.js-result_title').outerHeight();
-        scrHeight += this.$el.find('.js-result_description').outerHeight();
-        scrHeight += this.$el.find('.js-result_collage_wr').outerHeight();
+        //scrHeight += this.$el.find('.js-result_title').outerHeight();
+        //scrHeight += this.$el.find('.js-result_description').outerHeight();
+        //scrHeight += this.$el.find('.js-result_collage_wr').outerHeight();
+//        scrHeight += 220; // from .result_collage_cnt
+//        if (this.model.get('showDownload').getValue() === true) {
+//            scrHeight += this.$el.find('.js-download_btn_wr').outerHeight();
+//        }
+//        scrHeight += this.$el.find('.js-restart_btn_wr').outerHeight();
+//        if (this.model.get('vkSharingEnabled').getValue()===true) {
+//            scrHeight += this.$el.find('.js-mutapp_share_vk').outerHeight();
+//        }
+//        if (this.model.get('fbSharingEnabled').getValue()===true) {
+//            scrHeight += this.$el.find('.js-mutapp_share_fb').outerHeight();
+//        }
+//        if (this.model.get('showLogoInResults').getValue() === true) {
+//            //TODO а если лого расположен в абсолютных координатах?
+//            scrHeight += this.$el.find('.js-result_logo').outerHeight();
+//        }
+        scrHeight += testixLabel;
+        // элементы экрана, который участвуют в определении границ (высоты)
+        var elements = [
+            this.$el.find('.js-result_title'),
+            this.$el.find('.js-result_description'),
+            this.$el.find('.js-result_collage_wr'),
+            this.$el.find('.js-restart_btn_wr')
+        ];
         if (this.model.get('showDownload').getValue() === true) {
-            scrHeight += this.$el.find('.js-download_btn_wr').outerHeight();
+            elements.push(this.$el.find('.js-download_btn_wr'));
         }
-        scrHeight += this.$el.find('.js-restart_btn_wr').outerHeight();
-        if (this.model.get('vkSharingEnabled').getValue()===true) {
-            scrHeight += this.$el.find('.js-mutapp_share_vk').outerHeight();
+        if (this.model.get('vkSharingEnabled').getValue() === true) {
+            elements.push(this.$el.find('.js-mutapp_share_vk'));
         }
         if (this.model.get('fbSharingEnabled').getValue()===true) {
-            scrHeight += this.$el.find('.js-mutapp_share_fb').outerHeight();
+            elements.push(this.$el.find('.js-mutapp_share_fb'));
         }
-        if (this.model.get('showLogoInResults').getValue() === true) {
-            scrHeight += this.$el.find('.js-result_logo').outerHeight();
+        if (this.model.get('showLogoInResults').getValue()===true) {
+            elements.push(this.$el.find('.js-result_logo'));
         }
-        scrHeight += testixLabel;
+        // посчитать границы указанных элементов
+        var bounds = MutApp.Util.getElementsBounds(elements);
+        scrHeight += bounds.maxY;
+
         return scrHeight;
     },
 

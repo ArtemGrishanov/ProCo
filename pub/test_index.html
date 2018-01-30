@@ -8,6 +8,10 @@
     <link href="css/charts.css" rel="stylesheet"/>
     <script type="text/javascript" src="lib/jquery.js"></script>
     <script type="text/javascript" src="js/charts/TriviaResultChart.js"></script>
+    <script type="text/javascript" src="products/common/js/jquery.js"></script>
+    <script type="text/javascript" src="products/common/js/underscore.js"></script>
+    <script type="text/javascript" src="products/common/js/backbone-min.js"></script>
+    <script type="text/javascript" src="products/common/js/mutapp.js"></script>
     <style>
         body {
             background-color: #eee;
@@ -16,12 +20,25 @@
         }
         .test {
             font-family: Arial, sans-serif;
+            margin-left: 40px;
         }
     </style>
 </head>
 <body>
+    <p class="t">
+        Text sample вввцуа укаке еп ке ке
+    </p>
     <p class="test">
         Text sample
+    </p>
+    <p class="test">
+        Text sample
+    </p>
+    <p class="test">
+        Text sample
+    </p>
+    <p class="qqqq" style="position:absolute;top:400px;left:300px">
+        Text sample qqqqq qqqqq qq
     </p>
     <select data-filesize="152" id="theme" name="theme">
         <option value="none">No Theme</option>
@@ -81,44 +98,11 @@
 
 
     <script type="text/javascript">
-
-        function foo(param1 = 'str', param2 = 87) {
-            console.log("param1=" + param1 + ', param2=' + param2);
-        }
-        foo();
-
-        const first = 'Anton';
-        const last = 'Brown';
-        const id = 'aws233';
-        var name = `Your name is ${first} ${last}.`;
-        var url = `http://localhost:3000/api/messages/${id}`;
-        console.log(name);
-        console.log(url);
-
-        const poem = `я помню чудное многновв
-        перевод мной чявиллоата
-        каукшщп шукплуклд `;
-
-        document.getElementById('id-chart1').innerHTML = poem;
-
-
-        var obj = {
-            val1: 22,
-            val2: 'val2',
-            val3: 'val3'
-        };
-
-        const val1 = 1, val4 = 3;
-        //({val1} = obj);
-
-        //val1 = 32;
-
-
-        //TODO
-
-        // Object.create() in details
-        // what __proto__ means ?
-        // Once again% what closure is?
+        var elements = [
+            $('.test'),
+            $('.qqqq')
+        ];
+        console.log(MutApp.Util.getElementsBounds(elements));
 
 //        var data = [
 //            // [points, resultId]

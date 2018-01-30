@@ -13,18 +13,21 @@ var config = {
             config.common.home = 'http://localhost:63342/ProCo/pub/'; // меняется на 'http://localhost:63342/ProCo/build/' при сборке
             config.common.facebookAppId = '518819781624579';
             config.common.awsEnabled = true;
+            config.common.buildStatus = 'dev';
             return this;
         },
         test: function() {
             config.common.home = 'http://test.testix.me/';
             config.common.facebookAppId = '515132035326687';
             config.common.awsEnabled = true;
+            config.common.buildStatus = 'test';
             return this;
         },
         prod: function () {
             config.common.home = 'http://testix.me/';
             config.common.facebookAppId = '1734391910154130';
             config.common.awsEnabled = true;
+            config.common.buildStatus = 'prod';
             return this;
         },
         offline: function() {
@@ -44,10 +47,10 @@ var config = {
          */
         configurationSetsOnStart: ["{{js_product_environment}}"], //dev test prod
         /**
-         * Признак того, что проект собран gulp-ом
-         * 'production'
+         * 'prod' | 'test' | 'dev'
+         *  @type {string}
          */
-        buildStatus: "{{js_product_environment}}", // ! Значение меняется при сборке gulp
+        buildStatus: undefined,
         /**
          * Версия сборки, указывается в gulp файле вручную
          */
@@ -778,7 +781,7 @@ var config = {
             /**
              * Ширина по умолчанию, если не задана
              */
-            defaultWidth: 600,
+            defaultWidth: 620, // чуть больше чем 600 (это малая ширина уже идет в mutapp)
             /**
              * Высота по умолчанию, если не задана
              */

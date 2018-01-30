@@ -1226,6 +1226,21 @@ MutApp.prototype.receiveMessage = function(event) {
     // надо запомнить его, чтобы потом можно было отослать какое-то сообщение
     if (event.data && event.data.method === 'init') {
         this.loaderWindow = event.source;
+        // передается информация о размере, которые были встроены в ембед-кода (data-width="620" например)
+        if (event.data.initialSize) {
+            var size = null;
+            if (MutApp.Util.isNumeric(event.data.initialSize.width) === true) {
+                size = size || {};
+                size.width = event.data.initialSize.width;
+            }
+            if (MutApp.Util.isNumeric(event.data.initialSize.height) === true) {
+                size = size || {};
+                size.height = event.data.initialSize.height;
+            }
+            if (size) {
+                this.setSize(size);
+            }
+        }
         this.trigger(MutApp.EVENT_LOADER_INITED, {
             // no data
         });
@@ -2577,6 +2592,50 @@ MutApp.Util = {
     clearHtmlSymbols: function(str) {
         // два пробела заменить на один пробел в итоге
         return str.replace(/<br>/gi, ' ').replace(/&nbsp;/gi, ' ').replace('  ', ' ');
+    },
+
+    /**
+     * Вычислять общие границы группы элементов
+     * Минимальная и максимальная координата по каждой оси
+     *
+     * @param {Array} elements
+     */
+    getElementsBounds: function(elements) {
+        var bounds = {
+            minX: undefined,
+            minY: undefined,
+            maxX: undefined,
+            maxY: undefined
+        };
+        var offset, w, h;
+        for (var i = 0; i < elements.length; i++) {
+            // селектор может содержать несколько дом элементов
+            var $selector = $(elements[i]);
+            for (var j = 0; j < $selector.length; j++) {
+                var $e = $($selector[j]);
+                var offset = $e.offset();
+                if (offset) {
+                    if (bounds.minX === undefined || bounds.minX > offset.left) {
+                        bounds.minX = offset.left;
+                    }
+                    if (bounds.minY === undefined || bounds.minY > offset.top) {
+                        bounds.minY = offset.top;
+                    }
+                    var w = $e.outerWidth(false);
+                    if (bounds.maxX === undefined || bounds.maxX < (offset.left+w)) {
+                        bounds.maxX = offset.left+w;
+                    }
+                    var h = $e.outerHeight(false);
+                    if (bounds.maxY === undefined || bounds.maxY < (offset.top+h)) {
+                        bounds.maxY = offset.top+h;
+                    }
+                }
+                else {
+                    // empty selector
+                }
+            }
+        }
+        return bounds;
     }
 };
 
