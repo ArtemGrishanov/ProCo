@@ -103,7 +103,7 @@ SigninModal.prototype.render = function() {
     this.$ui.find('.js-email').keydown(this.onInputKeydown.bind(this));
     this.$ui.find('.js-password').keydown(this.onInputKeydown.bind(this));
 
-    this.$ui.find('.js-to_restore_pass').click(this.onRestoreClick);
+    this.$ui.find('.js-to_restore_pass').click(this.onRestoreClick.bind(this));
 
     if (this.canClose === true) {
         this.$ui.find('.js-close').show().click((function() {

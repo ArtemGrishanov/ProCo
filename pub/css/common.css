@@ -1801,7 +1801,14 @@ select {
         font-size: 18px;
     }
     .su-link {
+        display: block;
         font-size: 18px;
+        position: relative;
+        top: initial;
+        left: initial;
+        bottom: initial;
+        right: initial;
+        padding: 10px;
     }
     .su-bottom {
         position: relative;
@@ -1814,6 +1821,9 @@ select {
         height: 32px !important;
         background-size: 32px 32px !important;
         background-image: url(../i/Krestik-dark.png) !important;
+    }
+    .su-arr {
+        display: none;
     }
 }
 /* Small width screens */
