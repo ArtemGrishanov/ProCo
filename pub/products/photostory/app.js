@@ -130,9 +130,97 @@ var PhotostoryApp = MutApp.extend({
             label: {RU: 'Фоновая картинка', EN: 'Background image'},
             controls: 'ChooseImage',
             controlFilter: 'screen(type=results)'
+        },
+        ".js-result_title color, .js-result_description color, .js-download_btn color, .js-restart color, .js-slide_text color, js-slide_num color": {
+            label: {RU:'Цвет шрифта',EN:'Font color'},
+            controlFilter: 'onclick',
+            controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            }
+        },
+        ".js-result_back_color background-color": {
+            label: {RU:'Цвет фона экрана',EN:'Screen background color'},
+            controlFilter: 'screen(id=resultScr)',
+            controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            }
+        },
+        ".js-result_title font-size, .js-result_description font-size, .js-download_btn font-size, .js-restart font-size, .js-slide_text font-size, js-slide_num font-size": {
+            // css mutAppProperty описываются только схемой
+            label: {RU:'Размер шрифта',EN:'Font size'},
+            controls: "StringControl",
+            controlFilter: 'onclick',
+            valuePattern: '{{number}}px',
+            minValue: 8,
+            maxValue: 50
+        },
+        ".js-result_title padding-top, .js-result_description padding-top, js-download_btn_wr padding-top, .js-restart_btn_wr padding-top, js-result_collage_wr padding-top, .js-slide_text padding-top": {
+            label: {RU:'Отступ сверху',EN:'Padding top'},
+            controls: "StringControl",
+            controlFilter: 'onclick',
+            valuePattern: '{{number}}px',
+            minValue: 0,
+            maxValue: 200
+        },
+        ".js-result_title padding-bottom, .js-result_description padding-bottom, js-download_btn_wr padding-bottom, .js-restart_btn_wr padding-bottom, js-result_collage_wr padding-bottom, .js-slide_text padding-top": {
+            label: {RU:'Отступ снизу',EN:'Padding bottom'},
+            controls: "StringControl",
+            controlFilter: 'onclick',
+            valuePattern: '{{number}}px',
+            minValue: 0,
+            maxValue: 200
+        },
+        ".js-result_title padding-left, .js-result_description padding-left, .js-slide_text padding-left": {
+            label: {RU:'Отступ слева',EN:'Padding left'},
+            controls: "StringControl",
+            controlFilter: 'onclick',
+            valuePattern: '{{number}}px',
+            minValue: 0,
+            maxValue: 200
+        },
+        ".js-result_title text-align, .js-result_description text-align, .js-slide_text text-align": {
+            label: {RU:'Выравнивание текста',EN:'Text-align'},
+            controlFilter: 'onclick',
+            controls: {
+                name:"Alternative",
+                view: 'altbuttons',
+                param: {
+                    possibleValues: [
+                        {value:"left",icon:{
+                            normal:"i/altern/align-left.png", selected:"i/altern/align-left-selected.png"
+                        }},
+                        {value:"center",icon:{
+                            normal:"i/altern/align-center.png", selected:"i/altern/align-center-selected.png"
+                        }},
+                        {value:"right",icon:{
+                            normal:"i/altern/align-right.png", selected:"i/altern/align-right-selected.png"
+                        }}
+                    ],
+                }
+            }
+        },
+        ".js-result_title font-family, .js-result_description font-family, .js-download_btn font-family, .js-restart font-family, .js-slide_text font-family, js-slide_num font-family": {
+            label: {RU:'Шрифт',EN:'Font family'},
+            controlFilter: 'onclick',
+            controls: {
+                name:"Alternative",
+                view: 'dropdown',
+                param: {
+                    possibleValues: ["Arial","Times New Roman"]
+                }
+            }
+        },
+        ".js-download_btn background-color, .js-restart background-color": {
+            // css mutAppProperty описываются только схемой
+            label: {RU:'Цвет фона кнопки',EN:'Button background color'},
+            controlFilter: 'onclick',
+            controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            }
         }
-
-        //.js-result_title .js-result_description .js-result_back_color
     }),
     /**
      * Конструктор приложения: создание моделей и экранов

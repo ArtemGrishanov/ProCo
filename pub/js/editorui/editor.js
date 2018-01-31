@@ -511,7 +511,7 @@ var Editor = {};
             }
         }
         else {
-            Modal.showSignin();
+            Modal.showSignin({canClose: false});
         }
     }
 
@@ -520,7 +520,7 @@ var Editor = {};
             publish();
         }
         else {
-            Modal.showSignin();
+            Modal.showSignin({canClose: false});
         }
     }
 
@@ -690,7 +690,7 @@ var Editor = {};
             }, appId);
         }
         else {
-            Modal.showSignin();
+            Modal.showSignin({canClose: false});
         }
     }
 
@@ -730,7 +730,7 @@ var Editor = {};
             }
         }
         else {
-            Modal.showSignin();
+            Modal.showSignin({canClose: false});
         }
     }
 
