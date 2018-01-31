@@ -14,7 +14,7 @@
     </div>
 
     <script id="id-slider_template" type="text/template">
-        <div class="modal __active js-question_back_color js-question_back_img">
+        <div class="modal __active js-slide_back_color">
             <div class="modal_cnt js-back_shadow js-logo_cnt">
                 <div class="slider_wr js-slider_wr">
                     <ul class="animate slides_cnt js-slides_cnt">
@@ -44,10 +44,10 @@
     </script>
 
     <script id="id-result_template" type="text/template">
-        <div class="modal __active js-result_back_color js-result_back_img" data-app-property="id=psm resultBackgroundImage, id=psm resultBackgroundColor, id=psm shadowEnableInResults">
+        <div class="modal __active js-result_back_color js-result_back_img" data-app-property="id=psm shadowEnableInResults">
             <div class="modal_cnt info js-back_shadow js-logo_cnt">
-                <div class="info_title js-result_title" data-app-property="id=psm resultTitle, id=psm resultTitleColor"><%=title%></div>
-                <div class="info_tx js-result_description" data-app-property="id=psm resultDescription, id=psm resultDescriptionColor"><%=description%></div>
+                <div class="info_title js-result_title" data-app-property="id=psm resultTitle"><%=title%></div>
+                <div class="info_tx js-result_description" data-app-property="id=psm resultDescription"><%=description%></div>
                 <div class="result_collage_wr js-result_collage_wr">
                     <div class="result_collage_cnt js-collage_cnt">
 

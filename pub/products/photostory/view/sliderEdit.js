@@ -124,6 +124,8 @@ var SlideEditScreen = MutApp.Screen.extend({
             this.$counters.push($counterItem);
         }
 
+        // для фильтрации: при показе экране будет зафильтрован этот контрол
+        this.$el.attr('data-filter', 'id=psm slides.'+this.slideDictionaryId+'.imgSrc');
         // нужно указать этот атрибут вручную для связки
         this.$el.find('.js-slide_text').attr('data-app-property', 'id=psm slides.'+this.slideDictionaryId+'.text');
 

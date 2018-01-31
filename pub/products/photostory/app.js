@@ -38,7 +38,7 @@ var PhotostoryApp = MutApp.extend({
                     controls: "TextQuickInput"
                 },
                 "id=psm slides.{{id}}.imgSrc": {
-                    label: {RU:'Картинка вопроса',EN:'Question image'},
+                    label: {RU:'Картинка слайда',EN:'Slide image'},
                     controls: 'ChooseImage',
                     controlFilter: 'screenPropertyString'
                 }
@@ -131,7 +131,7 @@ var PhotostoryApp = MutApp.extend({
             controls: 'ChooseImage',
             controlFilter: 'screen(type=results)'
         },
-        ".js-result_title color, .js-result_description color, .js-download_btn color, .js-restart color, .js-slide_text color, js-slide_num color": {
+        ".js-result_title color, .js-result_description color, .js-download_btn color, .js-restart color, .js-slide_text color, .js-slide_num color": {
             label: {RU:'Цвет шрифта',EN:'Font color'},
             controlFilter: 'onclick',
             controls: {
@@ -147,7 +147,23 @@ var PhotostoryApp = MutApp.extend({
                 view: 'ColorPicker'
             }
         },
-        ".js-result_title font-size, .js-result_description font-size, .js-download_btn font-size, .js-restart font-size, .js-slide_text font-size, js-slide_num font-size": {
+        ".js-slide_back_color background-color": {
+            label: {RU:'Цвет фона',EN:'Background color'},
+            controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            },
+            controlFilter: 'screen(type=slideEdit)'
+        },
+        ".js-slider_item background-color": {
+            label: {RU:'Фон под картинкой',EN:'Background color under image'},
+            controls: {
+                name: "StringControl",
+                view: 'ColorPicker'
+            },
+            controlFilter: 'screen(type=slideEdit)'
+        },
+        ".js-result_title font-size, .js-result_description font-size, .js-download_btn font-size, .js-restart font-size, .js-slide_text font-size, .js-slide_num font-size": {
             // css mutAppProperty описываются только схемой
             label: {RU:'Размер шрифта',EN:'Font size'},
             controls: "StringControl",
@@ -164,7 +180,7 @@ var PhotostoryApp = MutApp.extend({
             minValue: 0,
             maxValue: 200
         },
-        ".js-result_title padding-bottom, .js-result_description padding-bottom, js-download_btn_wr padding-bottom, .js-restart_btn_wr padding-bottom, js-result_collage_wr padding-bottom, .js-slide_text padding-top": {
+        ".js-result_title padding-bottom, .js-result_description padding-bottom, js-download_btn_wr padding-bottom, .js-restart_btn_wr padding-bottom, js-result_collage_wr padding-bottom, .js-slide_text padding-bottom": {
             label: {RU:'Отступ снизу',EN:'Padding bottom'},
             controls: "StringControl",
             controlFilter: 'onclick',
@@ -201,7 +217,7 @@ var PhotostoryApp = MutApp.extend({
                 }
             }
         },
-        ".js-result_title font-family, .js-result_description font-family, .js-download_btn font-family, .js-restart font-family, .js-slide_text font-family, js-slide_num font-family": {
+        ".js-result_title font-family, .js-result_description font-family, .js-download_btn font-family, .js-restart font-family, .js-slide_text font-family, .js-slide_num font-family": {
             label: {RU:'Шрифт',EN:'Font family'},
             controlFilter: 'onclick',
             controls: {

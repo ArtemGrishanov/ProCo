@@ -1122,7 +1122,12 @@ var App = App || {};
         // доступен ли редактор для запуска или только по прямой ссылке
         if (config.common.editorIsUnderConstruction === false ||
             (window.Auth && Auth.getUser() !== null && config.common.editorIsUnderConstructionWhitelist.indexOf(Auth.getUser().id) >= 0)) {
-            if (isMobile() === true) {
+            if (window.Auth && Auth.getUser() === null) {
+                // первым делом идет проверка регистрации. Чтобы даже на мобе пользователь мог зарегистрироваться
+                // после регистрации пользователь останется на той же странице, где и пытался первый раз войти в редактор. Это норм вроде.
+                Modal.showSignin();
+            }
+            else if (isMobile() === true) {
                 // на мобе не запускаем редактор а показываем отдельный экран
                 window.location.href = 'blockeditor.html';
             }
