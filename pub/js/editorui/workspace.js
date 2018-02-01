@@ -371,8 +371,10 @@ var Workspace = {
             closeCallback: _onPopupControlNeedToClose
         });
         // этим новым селектором расширил области клика для сброса выделения. Должно работать на всем редакторе
-        $('#id-editor_view').click(function(){
-        // prev version $('#id-workspace').click(function(){
+        //  $('#id-editor_view').click(function(){
+        // Нельзя использовать #id-editor_view, так как сценарий "выделить текст" -> "изменить шрифт" не работает
+        // любой клик на боковую панель сбрасывает выделение
+        $('#id-workspace').click(function(){
             // любой клик по документу сбрасывает фильтр контролов
             selectElementOnAppScreen(null);
         });
