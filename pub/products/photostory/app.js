@@ -256,12 +256,6 @@ var PhotostoryApp = MutApp.extend({
             this.addScreen(this.slider);
         }
 
-        this.result = new ResultScreen({
-            model: psm,
-            screenRoot: this.screenRoot
-        });
-        this.addScreen(this.result);
-
         this.model.bind('change:slides', function() {
             this.updateEditSlideScreens();
         }, this);
@@ -271,6 +265,13 @@ var PhotostoryApp = MutApp.extend({
             // при десериализации нет событий change
             this.updateEditSlideScreens();
         }
+
+        // экран результата создается во вторую очередь, чтобы быть в конце списка в редакторе
+        this.result = new ResultScreen({
+            model: psm,
+            screenRoot: this.screenRoot
+        });
+        this.addScreen(this.result);
 
         // способ указания этих атрибутов уникален для каждого проекта
         this.title = this.model.get('resultTitle').getValue();

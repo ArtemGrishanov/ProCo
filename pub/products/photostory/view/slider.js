@@ -103,6 +103,8 @@ var SliderScreen = MutApp.Screen.extend({
     events: {
         "click .js-next": "onNextClick",
         "click .js-logo": "onLogoClick",
+        "click .js-slider_to_left": "toLeftClick",
+        "click .js-slider_to_right": "toRightClick",
         "touchstart .js-slides_cnt": "onSlidesCntTouchStart",
         "touchmove .js-slides_cnt": "onSlidesCntTouchMove",
         "touchend .js-slides_cnt": "onSlidesCntTouchEnd",
@@ -110,6 +112,42 @@ var SliderScreen = MutApp.Screen.extend({
         "mousemove .js-slides_cnt": "onMouseMove",
         "mouseup .js-slides_cnt": "onMouseUp",
         "mouseleave .js-slides_cnt": "onMouseLeave"
+    },
+
+    toLeftClick: function() {
+        var slideIndex = this.model.get('slideIndex');
+        this.model.setSlideIndex(slideIndex-1);
+    },
+
+    toRightClick: function() {
+        var slideIndex = this.model.get('slideIndex');
+        this.model.setSlideIndex(slideIndex+1);
+
+        // ширину слайда при первом таче определяем
+        this.slideWidth = this.$slidesCnt.width();
+        //Важный момент: выбрал вычисление индекса при начале перетаскивания не по модели а по положению контейнера
+        //так как бывает рассинхрон
+        this.touchSlideIndex = Math.round(-this.slideCntTranslateX / this.slideWidth);
+        this.isRightEdge = this.touchSlideIndex >= this.model.get('slides').toArray().length-1;
+        this.isLeftEdge = this.touchSlideIndex <= 0
+        if (this.isRightEdge === true) {
+            // предварительно показать/подготовить вью экрана с результатами
+            this.model.application.result.move({
+                animation: true,
+                action: 'show'
+            });
+            this.move({
+                animation: true,
+                action: 'hide'
+            });
+        }
+        else {
+            var si = this.model.get('slideIndex');
+            this.slideCntTranslateX = (-si*this.slideWidth);
+            this.$slidesCnt.addClass('animate');
+            this.$slidesCnt.css('transform','translate3d(' + this.slideCntTranslateX + 'px,0,0)');
+        }
+
     },
 
     onMouseDown: function(event) {
@@ -461,10 +499,10 @@ var SliderScreen = MutApp.Screen.extend({
     onSlideIndexChanged: function() {
         var slides = this.model.get('slides').toArray();
         var slideIndex = this.model.get('slideIndex');
-        var currentSlider = this.model.getSlideInfo(slideIndex);
+        var currentSlide = this.model.getSlideInfo(slideIndex);
 
         // текст для текущего слайда установить в интерфейс
-        this.$el.find('.js-slide_text').html(currentSlider.text.getValue());
+        this.$el.find('.js-slide_text').html(currentSlide.text.getValue());
 
         // числовой индекс слайда обновить
         this.$el.find('.js-slide_num').text((slideIndex+1)+'/'+slides.length);

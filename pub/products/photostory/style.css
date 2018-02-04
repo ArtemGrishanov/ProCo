@@ -151,6 +151,29 @@ img {
     white-space: normal;
 }
 
+.arrow {
+    display: block;
+    position: absolute;
+    width: 42px;
+    height: 65px;
+    top: 233px;
+    left: 0;
+    background: url(//p.testix.me/images/products/photostory/arrow-white-left.png) center no-repeat;
+    background-color: rgba(0,0,0,.1);
+    cursor: pointer;
+}
+.arrow:hover {
+    background-color: rgba(0,0,0,.5);
+}
+.arrow.__left {
+
+}
+.arrow.__right {
+    left: initial;
+    right: 0;
+    background-image: url(//p.testix.me/images/products/photostory/arrow-white-right.png);
+}
+
 .slider_wr {
     padding: 0;
     margin: 0;
@@ -382,6 +405,10 @@ li.progressive img.reveal {
         width: 100%;
         min-width: 250px;
     }
+    .arrow {
+        /* остается только тач */
+        display: none;
+    }
 }
 
 
@@ -401,5 +428,18 @@ li.progressive img.reveal {
     }
     .result_collage_cnt.__wide {
         width: 284px;
+    }
+}
+
+/* ============= */
+/* Retina styles */
+/* ============= */
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .arrow {
+        background-image: url(//p.testix.me/images/products/photostory/arrow-white-left@2x.png);
+        background-size: 16px 28px;
+    }
+    .arrow.__right {
+        background-image: url(//p.testix.me/images/products/photostory/arrow-white-right@2x.png);
     }
 }
