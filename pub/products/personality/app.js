@@ -64,7 +64,12 @@ var PersonalityApp = MutApp.extend({
                 },
                 "id=pm quiz.{{id}}.question.questionImage": {
                     label: {RU:'Картинка вопроса',EN:'Question image'},
-                    controls: 'ChooseImage',
+                    controls: {
+                        name:'ChooseImage',
+                        param: {
+                            deleteEnable: false
+                        }
+                    },
                     controlFilter: 'screenPropertyString'
                 },
                 "id=pm quiz.{{id}}.question.backgroundImage": {
@@ -100,7 +105,12 @@ var PersonalityApp = MutApp.extend({
                 },
                 "id=pm quiz.{{id}}.answer.options.{{id}}.img": {
                     label: {RU:'Картинка вопроса',EN:'Question image'},
-                    controls: 'ChooseImage',
+                    controls: {
+                        name:'ChooseImage',
+                        param: {
+                            deleteEnable: false
+                        }
+                    },
                     controlFilter: "onclick"
                 }
             }

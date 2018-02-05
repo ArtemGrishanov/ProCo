@@ -23,62 +23,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/photostory/app.js">
+      <file leaf-file-name="gulpfile.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/gulpfile.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="255" column="40" selection-start="10363" selection-end="10363" vertical-scroll-proportion="0.0" vertical-offset="3511" max-vertical-offset="6780">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/photostory/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="62" selection-start="873" selection-end="887" vertical-scroll-proportion="-12.333333" vertical-offset="34" max-vertical-offset="1755">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="slider.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/photostory/view/slider.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="336" column="17" selection-start="12746" selection-end="12746" vertical-scroll-proportion="0.0" vertical-offset="2639" max-vertical-offset="6060">
-              <folding>
-                <element signature="e#4861#7255#0" expanded="false" />
-                <element signature="e#7300#10090#0" expanded="false" />
-                <element signature="e#10134#11986#0" expanded="false" />
-                <element signature="e#19788#20566#0" expanded="false" />
-                <element signature="e#20873#23046#0" expanded="false" />
-                <element signature="e#23352#24503#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="psm.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/photostory/model/psm.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="207" column="17" selection-start="7695" selection-end="7708" vertical-scroll-proportion="-16.36" vertical-offset="2696" max-vertical-offset="5265">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="style.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pub/products/photostory/style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="425" column="25" selection-start="8761" selection-end="8761" vertical-scroll-proportion="0.0" vertical-offset="5988" max-vertical-offset="6750">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="style.css" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pub/controls/css/style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="20" selection-start="567" selection-end="567" vertical-scroll-proportion="0.46142858" vertical-offset="97" max-vertical-offset="6120">
+            <state line="15" column="28" selection-start="711" selection-end="711" vertical-scroll-proportion="-0.1474719" vertical-offset="330" max-vertical-offset="8580">
               <folding />
             </state>
           </provider>
@@ -94,22 +42,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/editor.html" />
-        <option value="$PROJECT_DIR$/build/products/photostory/index.html" />
-        <option value="$PROJECT_DIR$/pub/products/photostory/view/sliderEdit.js" />
-        <option value="$PROJECT_DIR$/pub/css/common.css" />
-        <option value="$PROJECT_DIR$/pub/my_templates.html" />
-        <option value="$PROJECT_DIR$/pub/storefront.html" />
-        <option value="$PROJECT_DIR$/pub/js/view/modals/signinModal.js" />
+        <option value="$PROJECT_DIR$/pub/products/personality/view/question.js" />
+        <option value="$PROJECT_DIR$/pub/products/personality/view/result.js" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/view/gamescreen.js" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/view/openedscreen.js" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/view/result.js" />
+        <option value="$PROJECT_DIR$/pub/products/memoriz/view/welcome.js" />
         <option value="$PROJECT_DIR$/pub/products/photostory/view/result.js" />
-        <option value="$PROJECT_DIR$/pub/products/photostory/model/collage.js" />
-        <option value="$PROJECT_DIR$/pub/js/editorui/workspace.js" />
-        <option value="$PROJECT_DIR$/gulpfile.js" />
-        <option value="$PROJECT_DIR$/pub/products/photostory/app.js" />
+        <option value="$PROJECT_DIR$/pub/products/trivia/view/start.js" />
+        <option value="$PROJECT_DIR$/pub/products/personality/view/start.js" />
+        <option value="$PROJECT_DIR$/pub/controls/ChooseImage.js" />
         <option value="$PROJECT_DIR$/pub/js/config.js" />
-        <option value="$PROJECT_DIR$/pub/products/photostory/index.html" />
-        <option value="$PROJECT_DIR$/pub/products/photostory/style.css" />
-        <option value="$PROJECT_DIR$/pub/products/photostory/view/slider.js" />
+        <option value="$PROJECT_DIR$/pub/products/trivia/app.js" />
+        <option value="$PROJECT_DIR$/pub/products/personality/app.js" />
+        <option value="$PROJECT_DIR$/pub/products/common/js/mutapp.js" />
+        <option value="$PROJECT_DIR$/pub/js/editorui/controlManager.js" />
+        <option value="$PROJECT_DIR$/gulpfile.js" />
       </list>
     </option>
   </component>
@@ -193,26 +141,8 @@
               <option name="myItemId" value="products" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="products" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="photostory" />
+              <option name="myItemId" value="trivia" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -233,12 +163,44 @@
               <option name="myItemId" value="products" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="photostory" />
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="products" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="personality" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ProCo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -275,28 +237,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="controls" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controls" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -440,10 +380,10 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32270917" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13413015" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.205165" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16140603" sideWeight="0.67729086" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20157818" sideWeight="0.8658699" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20549928" sideWeight="0.4555113" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32669324" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -471,92 +411,9 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/gulpfile.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="30" selection-start="713" selection-end="713" vertical-scroll-proportion="0.31601125" vertical-offset="0" max-vertical-offset="8580">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/editorui/workspace.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="373" column="24" selection-start="14346" selection-end="14346" vertical-scroll-proportion="0.34497815" vertical-offset="5358" max-vertical-offset="6105">
-          <folding>
-            <marker date="1517471678000" expanded="true" signature="-1:-1" placeholder="{...}" />
-            <marker date="1517471678000" expanded="true" signature="-1:-1" placeholder="//..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/photostory/view/result.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="420" column="9" selection-start="16017" selection-end="16017" vertical-scroll-proportion="0.3988355" vertical-offset="6026" max-vertical-offset="8490">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/photostory/model/collage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="72" column="34" selection-start="1947" selection-end="1947" vertical-scroll-proportion="-0.5724138" vertical-offset="1495" max-vertical-offset="2355">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/util/shareImagesService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="164" column="9" selection-start="5870" selection-end="5870" vertical-scroll-proportion="0.2514045" vertical-offset="2281" max-vertical-offset="4800">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="783" column="59" selection-start="34854" selection-end="34854" vertical-scroll-proportion="0.0" vertical-offset="11491" max-vertical-offset="17205">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/i/icon-arrow-left.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/i/arrow-left.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/css/common.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1487" column="139" selection-start="28452" selection-end="28651" vertical-scroll-proportion="-10.36" vertical-offset="22046" max-vertical-offset="27510">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/photostory/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="255" column="40" selection-start="10363" selection-end="10363" vertical-scroll-proportion="0.0" vertical-offset="3511" max-vertical-offset="6780">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/photostory/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="62" selection-start="873" selection-end="887" vertical-scroll-proportion="-12.333333" vertical-offset="34" max-vertical-offset="1755">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/photostory/model/psm.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="207" column="17" selection-start="7695" selection-end="7708" vertical-scroll-proportion="-16.36" vertical-offset="2696" max-vertical-offset="5265">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/products/photostory/view/slider.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="336" column="17" selection-start="12746" selection-end="12746" vertical-scroll-proportion="0.0" vertical-offset="2639" max-vertical-offset="6060">
+        <state line="117" column="54" selection-start="3108" selection-end="3108" vertical-scroll-proportion="0.6048387" vertical-offset="1530" max-vertical-offset="6060">
           <folding>
             <element signature="e#4861#7255#0" expanded="false" />
             <element signature="e#7300#10090#0" expanded="false" />
@@ -568,21 +425,109 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/photostory/style.css">
+    <entry file="file://$PROJECT_DIR$/pub/products/photostory/view/result.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="425" column="25" selection-start="8761" selection-end="8761" vertical-scroll-proportion="0.0" vertical-offset="5988" max-vertical-offset="6750">
+        <state line="548" column="3" selection-start="21065" selection-end="21065" vertical-scroll-proportion="0.43157893" vertical-offset="8015" max-vertical-offset="8490">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/i/icon-trash.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
+    <entry file="file://$PROJECT_DIR$/pub/products/personality/view/result.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="121" column="80" selection-start="4020" selection-end="4048" vertical-scroll-proportion="-9.6" vertical-offset="1575" max-vertical-offset="4305">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/controls/css/style.css">
+    <entry file="file://$PROJECT_DIR$/pub/products/trivia/view/start.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="20" selection-start="567" selection-end="567" vertical-scroll-proportion="0.46142858" vertical-offset="97" max-vertical-offset="6120">
+        <state line="160" column="0" selection-start="5180" selection-end="5180" vertical-scroll-proportion="-24.04" vertical-offset="1799" max-vertical-offset="2685">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/personality/view/start.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="153" column="20" selection-start="5103" selection-end="5103" vertical-scroll-proportion="0.0" vertical-offset="1999" max-vertical-offset="2610">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/Alternative.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="44" selection-start="844" selection-end="864" vertical-scroll-proportion="-7.96" vertical-offset="101" max-vertical-offset="2055">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/view/chooseimage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="43" selection-start="32" selection-end="49" vertical-scroll-proportion="0.025" vertical-offset="0" max-vertical-offset="600">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/util/utils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="376" column="11" selection-start="11368" selection-end="11370" vertical-scroll-proportion="0.80714285" vertical-offset="5075" max-vertical-offset="5775">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/trivia/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="67" column="32" selection-start="2908" selection-end="2908" vertical-scroll-proportion="0.0" vertical-offset="766" max-vertical-offset="11460">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/editorui/controlManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="79" column="18" selection-start="3162" selection-end="3162" vertical-scroll-proportion="0.33567417" vertical-offset="946" max-vertical-offset="9915">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/controls/ChooseImage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="0" selection-start="395" selection-end="395" vertical-scroll-proportion="0.28965518" vertical-offset="0" max-vertical-offset="1245">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="834" column="21" selection-start="33799" selection-end="33799" vertical-scroll-proportion="0.28966522" vertical-offset="12311" max-vertical-offset="23580">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="24" selection-start="1307" selection-end="1307" vertical-scroll-proportion="0.48455057" vertical-offset="105" max-vertical-offset="17205">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3758" column="13" selection-start="139558" selection-end="139558" vertical-scroll-proportion="0.627809" vertical-offset="55923" max-vertical-offset="57240">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/personality/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="114" column="17" selection-start="4941" selection-end="4941" vertical-scroll-proportion="0.4206696" vertical-offset="1421" max-vertical-offset="11445">
+          <folding>
+            <marker date="1517821245000" expanded="true" signature="-1:-1" placeholder="//..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="28" selection-start="711" selection-end="711" vertical-scroll-proportion="-0.1474719" vertical-offset="330" max-vertical-offset="8580">
           <folding />
         </state>
       </provider>

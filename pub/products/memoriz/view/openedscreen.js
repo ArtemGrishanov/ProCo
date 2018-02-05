@@ -136,7 +136,7 @@ var OpenedScreen = MutApp.Screen.extend({
 
         // установка свойств логотипа
         var $l = this.$el.find('.js-opened_logo');
-        if (this.model.get('showLogoInOpened').getValue() === true) {
+        if (this.model.get('showLogoInOpened').getValue() === true && this.model.get('logoUrl').getValue()) {
             var pos = this.model.get('logoPositionInOpened').getValue();
             $l.css('backgroundImage','url('+this.model.get('logoUrl').getValue()+')');
             $l.css('top', pos.top+'px').css('left', pos.left+'px');

@@ -90,7 +90,10 @@ var ControlManager = {
                 if (viewName && cfg.directives.indexOf(viewName) < 0) {
                     throw new Error('ControlManager.createControl: invalid viewName name \'' + viewName + '\' in property \'' + propertyString + '\'');
                 }
-                controlAdditionalParam = param.mutAppProperty.controls[i].param || {};
+                // параметры получаемые из приложения надо склонировать
+                // ниже в устанавливается controlAdditionalParam.appIframe и это лишнее и опасное свойство, если оно будет внутри mutapp свойства
+                // был баг, когда этот controlAdditionalParam.appIframe попал на десериализацию (вечный цикл)
+                controlAdditionalParam = JSON.parse(JSON.stringify(param.mutAppProperty.controls[i].param || {}));
             }
             if (!cfg) {
                 throw new Error('ControlManager.createControl: can not find info for control \'' + controlName + '\' in config.js');

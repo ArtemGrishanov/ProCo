@@ -198,7 +198,7 @@ var QuestionScreen = MutApp.Screen.extend({
 
         // установка свойств логотипа на экране вопросов
         var $l = this.$el.find('.js-question_logo');
-        if (this.model.get('showLogoInQuestions').getValue() === true) {
+        if (this.model.get('showLogoInQuestions').getValue() === true && this.model.get('logoUrl').getValue()) {
             $l.css('backgroundImage','url('+this.model.get('logoUrl').getValue()+')');
             $l.css('top',this.model.get('logoPositionInQuestions').getValue().top+'px')
                 .css('left',this.model.get('logoPositionInQuestions').getValue().left+'px');

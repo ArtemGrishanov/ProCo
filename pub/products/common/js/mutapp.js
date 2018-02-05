@@ -621,31 +621,11 @@ MutApp.prototype._regulateViews = function(domElem) {
     for (var i = 0; i < domElem.children.length; i++) {
         for (var k = 0; k < this._screens.length; k++) {
             var v = this._screens[k];
-            if (this._isElement(v.el) && domElem.children[i] == v.el) {
+            if (MutApp.Util.isDomElement(v.el) && domElem.children[i] == v.el) {
                 v['__domIndex'] = i;
                 this._viewsArr.push(v);
             }
         }
-    }
-};
-
-/**
- * todo
- * @param obj
- * @returns {boolean}
- */
-MutApp.prototype._isElement = function(obj) {
-    try {
-        //Using W3 DOM2 (works for FF, Opera and Chrom)
-        return obj instanceof HTMLElement;
-    }
-    catch(e){
-        //Browsers not supporting W3 DOM2 don't have HTMLElement and
-        //an exception is thrown and we end up here. Testing some
-        //properties that all elements have. (works on IE7)
-        return (typeof obj==="object") &&
-            (obj.nodeType===1) && (typeof obj.style === "object") &&
-            (typeof obj.ownerDocument ==="object");
     }
 };
 
@@ -2236,8 +2216,34 @@ MutApp.Util = {
      * @param {*} n
      * @returns {boolean}
      */
-    isNumeric: function isNumeric(n) {
+    isNumeric: function(n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
+    },
+
+    /**
+     * Определяет, является ли переданный объект dom-элементом
+     *
+     * @param {*} o
+     * @return {boolean}
+     */
+    isDomElement: function(o) {
+        return (
+            typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
+                o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
+            );
+    },
+
+    /**
+     * Определяет, является ли переданный объект нодой
+     *
+     * @param {*} o
+     * @return {boolean}
+     */
+    isDomNode: function(o) {
+        return (
+            typeof Node === "object" ? o instanceof Node :
+                o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName==="string"
+            );
     },
 
     /**
@@ -3717,8 +3723,16 @@ MutAppPropertyDictionary.prototype.deserialize = function(data) {
  * @param data
  * @private
  */
+var callStack = 0;
 MutAppPropertyDictionary.prototype._deserializeSubProperty = function(data) {
+    callStack++;
+    if (callStack == 1000) {
+        var stophere = 9;
+    }
     for (var key in data) {
+        if (key == 'appIframe') {
+            var stophere = 9;
+        }
         // data[key] can be 'undefined'
         if (data[key] && data[key].hasOwnProperty('_mutAppConstructor') === true) {
             // создаем новое MutAppProperty прямо в сериализации
@@ -3743,6 +3757,10 @@ MutAppPropertyDictionary.prototype._deserializeSubProperty = function(data) {
                 // когда десериализуется всё приложение целиком при старте, то н
                 this._deserializeSubProperty(ap._value);
             }
+        }
+        else if (MutApp.Util.isDomElement(data[key]) === true ||
+            MutApp.Util.isDomNode(data[key]) === true) {
+            console.error('MutAppPropertyDictionary.prototype._deserializeSubProperty: dom node deserialization was rejected');
         }
         else if (MutApp.Util.isPrimitive(data[key]) === false &&
             data[key] instanceof MutApp.Model === false &&

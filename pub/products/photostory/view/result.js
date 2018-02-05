@@ -372,7 +372,7 @@ var ResultScreen = MutApp.Screen.extend({
 
         // установка свойств логотипа
         var $l = this.$el.find('.js-result_logo');
-        if (this.model.get('showLogoInResults').getValue() === true) {
+        if (this.model.get('showLogoInResults').getValue() === true && this.model.get('logoUrl').getValue()) {
             $l.css('backgroundImage','url('+this.model.get('logoUrl').getValue()+')');
             $l.css('top',this.model.get('logoPositionInResults').getValue().top+'px')
                 .css('left',this.model.get('logoPositionInResults').getValue().left+'px');

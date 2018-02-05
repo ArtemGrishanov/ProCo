@@ -100,21 +100,15 @@ var StartScreen = MutApp.Screen.extend({
                 this.model.application.showScreen(this);
             }
         }, this);
-        this.model.bind("change:backgroundImg", function () {
-            this.render();
-        }, this);
-        this.model.bind("change:showLogoOnStartScreen", function () {
-            this.render();
-        }, this);
-        this.model.bind("change:startScreenBackgroundImg", function() {
-            this.render();
-        }, this);
-        this.model.bind("change:logoUrl", function() {
-            this.render();
-        }, this);
-        this.shadowEnable.bind('change', function() {
-            this.render();
-        }, this);
+        this.model.bind("change:backgroundImg", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:showLogoOnStartScreen", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:startScreenBackgroundImg", this.onMutAppPropertyChanged, this);
+        this.model.bind("change:logoUrl", this.onMutAppPropertyChanged, this);
+        this.shadowEnable.bind('change', this.onMutAppPropertyChanged, this);
+    },
+
+    onMutAppPropertyChanged: function() {
+        this.render();
     },
 
     render: function() {
@@ -122,7 +116,7 @@ var StartScreen = MutApp.Screen.extend({
 
         // установка свойств логотипа
         var $l = this.$el.find('.js-start_logo');
-        if (this.model.get('showLogoOnStartScreen').getValue() === true) {
+        if (this.model.get('showLogoOnStartScreen').getValue() === true && this.model.get('logoUrl').getValue()) {
             $l.css('backgroundImage','url('+this.model.get('logoUrl').getValue()+')');
             $l.css('top',this.logoPosition.getValue().top+'px').css('left',this.logoPosition.getValue().left+'px');
         }
@@ -158,5 +152,18 @@ var StartScreen = MutApp.Screen.extend({
 
         this.renderCompleted();
         return this;
+    },
+
+    /**
+     * Функция будет вызвана перед удалением экрана
+     * Надо позаботиться об удалении всех обработчиков
+     *
+     */
+    destroy: function() {
+        this.model.off("change:backgroundImg", this.onMutAppPropertyChanged, this);
+        this.model.off("change:showLogoOnStartScreen", this.onMutAppPropertyChanged, this);
+        this.model.off("change:startScreenBackgroundImg", this.onMutAppPropertyChanged, this);
+        this.model.off("change:logoUrl", this.onMutAppPropertyChanged, this);
+        this.shadowEnable.unbind('change', this.onMutAppPropertyChanged, this);
     }
 });

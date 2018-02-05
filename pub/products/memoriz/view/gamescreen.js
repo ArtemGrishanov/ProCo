@@ -141,7 +141,7 @@ var GameScreen = MutApp.Screen.extend({
 
         // установка свойств логотипа
         var $l = this.$el.find('.js-gamescreen_logo');
-        if (this.model.get('showLogoOnGamescreen').getValue() === true) {
+        if (this.model.get('showLogoOnGamescreen').getValue() === true && this.model.get('logoUrl').getValue()) {
             var pos = this.model.get('logoPositionInGamescreen').getValue();
             $l.css('backgroundImage','url('+this.model.get('logoUrl').getValue()+')');
             $l.css('top', pos.top+'px').css('left', pos.left+'px');

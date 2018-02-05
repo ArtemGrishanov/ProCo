@@ -63,7 +63,12 @@ var TriviaApp = MutApp.extend({
                 },
                 "id=tm quiz.{{id}}.question.questionImage": {
                     label: {RU:'Картинка вопроса',EN:'Question image'},
-                    controls: 'ChooseImage',
+                    controls: {
+                        name: 'ChooseImage',
+                        param: {
+                            deleteEnable: false
+                        }
+                    },
                     controlFilter: 'screenPropertyString'
                 },
                 "id=tm quiz.{{id}}.question.backgroundImage": {
@@ -99,7 +104,12 @@ var TriviaApp = MutApp.extend({
                 },
                 "id=tm quiz.{{id}}.answer.options.{{id}}.img": {
                     label: {RU:'Картинка вопроса',EN:'Question image'},
-                    controls: 'ChooseImage',
+                    controls: {
+                        name: 'ChooseImage',
+                        param: {
+                            deleteEnable: false
+                        }
+                    },
                     controlFilter: "onclick"
                 },
                 "id=tm quiz.{{id}}.answer.options.{{id}}.feedbackText": {

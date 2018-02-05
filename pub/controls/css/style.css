@@ -190,13 +190,28 @@ form input {
     line-height: 20px;
     color: #fff;
     text-align: center;
-    vertical-align: middle;
+    vertical-align: top;
     cursor: pointer;
     background-color: #4c99f7;
     border-radius: 4px;
 }
-
-
+.contr_btn.__with_extra_icon {
+    width: 112px;
+}
+.contr_btn_extra_icon {
+    display: inline-block;
+    vertical-align: top;
+    width: 34px;
+    height: 34px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #4c99f7;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.contr_btn_extra_icon.__delete {
+    background-image: url(../i/icon-trash.png);
+}
 
 /*
 Personality custom control
@@ -398,6 +413,10 @@ Personality custom control
     }
     .trivia_set_correct.__blue {
         background-image: url(../i/make_correct_blue@2x.png);
+        background-size: 16px 16px;
+    }
+    .contr_btn_extra_icon.__delete {
+        background-image: url(../i/icon-trash@2x.png);
         background-size: 16px 16px;
     }
 }
