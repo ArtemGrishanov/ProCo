@@ -169,12 +169,17 @@ form input {
 }
 .choose_image {
     width: 162px;
-    min-height: 122px;
+    height: 122px;
+    overflow: hidden;
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
     border: 1px solid #979797;
 }
+.choose_image canvas {
+    height: 100%;
+}
+
 .settings_panel .control_checkbox {
     width: 20px;
     height: 20px;

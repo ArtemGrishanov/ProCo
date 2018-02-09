@@ -77,6 +77,7 @@ ChooseSharingImage.prototype.updatePreview = function() {
         var canvas = shareImageService.getAppAutoPreviewCanvas();
         if (canvas) {
             this.$directive.find('.js-img').css('background-image', 'url('+canvas.toDataURL()+')');
+            // другой возможный вариант this.$directive.find('.js-img').empty().append(canvas);
         }
         else {
             shareImageService.generateAppAutoPreviewCanvas({

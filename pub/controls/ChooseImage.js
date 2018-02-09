@@ -21,10 +21,7 @@ function ChooseImage(param) {
         // по умолчанию иконка удаления доступна
         this.additionalParam.deleteEnable = true;
     }
-    if (this.additionalParam.deleteEnable !== true) {
-        this.$select.removeClass('__with_extra_icon');
-        this.$delete.hide();
-    }
+    this._updateDeleteIconVisibility();
 }
 _.extend(ChooseImage.prototype, AbstractControl);
 
@@ -34,12 +31,43 @@ ChooseImage.prototype.getValue = function() {
 
 ChooseImage.prototype.setValue = function(value) {
     this.imageUrl = value;
+    this._updateDeleteIconVisibility();
 };
 
 ChooseImage.prototype.destroy = function() {
     this.$select.off('click', this.selectClickHandler);
     this.$delete.off('click', this.deleteClickHandler);
     this.$directive.remove();
+};
+
+/**
+ * Показать иконку удаления
+ */
+ChooseImage.prototype._showDeleteIcon = function() {
+    this.$select.addClass('__with_extra_icon');
+    this.$delete.show();
+};
+
+/**
+ * Скрыть иконку удаления
+ */
+ChooseImage.prototype._hideDeleteIcon = function() {
+    this.$select.removeClass('__with_extra_icon');
+    this.$delete.hide();
+};
+
+/**
+ *
+ * @private
+ */
+ChooseImage.prototype._updateDeleteIconVisibility = function() {
+    if (!!this.imageUrl === false) {
+        // если картинки нет, то удалять нечего, иконку надо скрыть
+        this._hideDeleteIcon();
+    }
+    else if (this.additionalParam.deleteEnable === true) {
+        this._showDeleteIcon();
+    }
 };
 
 /**
@@ -50,6 +78,7 @@ ChooseImage.prototype.destroy = function() {
  */
 ChooseImage.prototype._onImageSelected = function(url) {
     this.imageUrl = url;
+    this._updateDeleteIconVisibility();
     this.controlEventCallback(ControlManager.EVENT_CHANGE_VALUE, this);
 };
 

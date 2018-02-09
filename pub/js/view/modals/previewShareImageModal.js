@@ -70,6 +70,7 @@ function PreviewShareImageModal(param) {
                 app: Editor.getEditedApp(),
                 callback: (function(canvas) {
                     this.$ui.find('.js-image').css('background-image', 'url('+canvas.toDataURL()+')');
+                    //другой возможный вариант this.$ui.find('.js-image').empty().append(canvas);
                 }).bind(this)
             });
         }

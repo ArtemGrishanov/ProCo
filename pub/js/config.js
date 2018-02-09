@@ -12,7 +12,7 @@ var config = {
         dev: function() {
             config.common.home = 'http://localhost:63342/ProCo/pub/'; // меняется на 'http://localhost:63342/ProCo/build/' при сборке
             config.common.facebookAppId = '518819781624579';
-            config.common.awsEnabled = true;
+            config.common.awsEnabled = true; // use 'false' for offline mode
             config.common.buildStatus = 'dev';
             return this;
         },
@@ -227,7 +227,12 @@ var config = {
         /**
          * Шаблон для кода встраивания
          */
-        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"{{custom_attributes}}><script src="//testix.me/js/loader.js" async></script></div>'
+        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"{{custom_attributes}}><script src="//testix.me/js/loader.js" async></script></div>',
+        /**
+         * Шаблон для встраивания кода в виде iframe
+         * некоторые CMS не позволяют встраивать теги <script>
+         */
+        embedCodeIframeTemplate: '<iframe src="{{published}}" style="display:block;margin:0 auto;border:0px;width:100%;height:{{height}};max-width:{{width}}"></iframe>'
         /**
          * Показывать нотификацию о помощи в моих проектах
          * Во время перехода с одной версии на другую

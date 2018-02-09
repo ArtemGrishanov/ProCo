@@ -295,7 +295,12 @@ var PersonalityApp = MutApp.extend({
         },
         "id=pm logoUrl": {
             label: {RU: 'Логотип', EN: 'Logo'},
-            controls: 'ChooseImage',
+            controls: {
+                name:'ChooseImage',
+                param: {
+                    deleteEnable: false
+                }
+            },
             controlFilter: 'always'
         },
 

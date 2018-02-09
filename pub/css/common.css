@@ -1234,6 +1234,10 @@ select {
     background-size: cover;
     background-repeat: no-repeat;
     border: 1px solid #979797;
+    overflow: hidden;
+}
+.shp_img canvas {
+    height: 100%;
 }
 .shp_bottom {
     position: absolute;

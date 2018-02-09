@@ -14,9 +14,22 @@
     <script type="text/javascript" src="products/common/js/mutapp.js"></script>
     <style>
         body {
-            background-color: #eee;
+            background-color: #aaa;
             padding: 0;
             margin: 0;
+        }
+        .content {
+            padding: 0;
+            margin: 0;
+            width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+        }
+        @media (min-width:1px) and (max-width:600px)  {
+            /* mobile styles */
+            .content {
+                width: 100%;
+            }
         }
         .test {
             font-family: Arial, sans-serif;
@@ -25,26 +38,26 @@
     </style>
 </head>
 <body>
-    <p class="t">
-        Text sample вввцуа укаке еп ке ке
-    </p>
-    <p class="test">
-        Text sample
-    </p>
-    <p class="test">
-        Text sample
-    </p>
-    <p class="test">
-        Text sample
-    </p>
-    <p class="qqqq" style="position:absolute;top:400px;left:300px">
-        Text sample qqqqq qqqqq qq
-    </p>
-    <select data-filesize="152" id="theme" name="theme">
-        <option value="none">No Theme</option>
-        <option value="ffDefault=Arial%2CHelvetica%2Csans-serif&amp;fsDefault=1em&amp;fwDefault=normal&amp;cornerRadius=3px&amp;bgColorHeader=e9e9e9&amp;bgTextureHeader=flat&amp;borderColorHeader=dddddd&amp;fcHeader=333333&amp;iconColorHeader=444444&amp;bgColorContent=ffffff&amp;bgTextureContent=flat&amp;borderColorContent=dddddd&amp;fcContent=333333&amp;iconColorContent=444444&amp;bgColorDefault=f6f6f6&amp;bgTextureDefault=flat&amp;borderColorDefault=c5c5c5&amp;fcDefault=454545&amp;iconColorDefault=777777&amp;bgColorHover=ededed&amp;bgTextureHover=flat&amp;borderColorHover=cccccc&amp;fcHover=2b2b2b&amp;iconColorHover=555555&amp;bgColorActive=007fff&amp;bgTextureActive=flat&amp;borderColorActive=003eff&amp;fcActive=ffffff&amp;iconColorActive=ffffff&amp;bgColorHighlight=fffa90&amp;bgTextureHighlight=flat&amp;borderColorHighlight=dad55e&amp;fcHighlight=777620&amp;iconColorHighlight=777620&amp;bgColorError=fddfdf&amp;bgTextureError=flat&amp;borderColorError=f1a899&amp;fcError=5f3f3f&amp;iconColorError=cc0000&amp;bgColorOverlay=aaaaaa&amp;bgTextureOverlay=flat&amp;bgImgOpacityOverlay=0&amp;opacityOverlay=30&amp;bgColorShadow=666666&amp;bgTextureShadow=flat&amp;bgImgOpacityShadow=0&amp;opacityShadow=30&amp;thicknessShadow=5px&amp;offsetTopShadow=0px&amp;offsetLeftShadow=0px&amp;cornerRadiusShadow=8px" selected="&quot;selected&quot;">Base</option>
-        <option value="ffDefault=Trebuchet%20MS%2CTahoma%2CVerdana%2CArial%2Csans-serif&amp;fwDefault=bold&amp;fsDefault=1.1em&amp;cornerRadius=4px&amp;bgColorHeader=f6a828&amp;bgTextureHeader=gloss_wave&amp;bgImgOpacityHeader=35&amp;borderColorHeader=e78f08&amp;fcHeader=ffffff&amp;iconColorHeader=ffffff&amp;bgColorContent=eeeeee&amp;bgTextureContent=highlight_soft&amp;bgImgOpacityContent=100&amp;borderColorContent=dddddd&amp;fcContent=333333&amp;iconColorContent=222222&amp;bgColorDefault=f6f6f6&amp;bgTextureDefault=glass&amp;bgImgOpacityDefault=100&amp;borderColorDefault=cccccc&amp;fcDefault=1c94c4&amp;iconColorDefault=ef8c08&amp;bgColorHover=fdf5ce&amp;bgTextureHover=glass&amp;bgImgOpacityHover=100&amp;borderColorHover=fbcb09&amp;fcHover=c77405&amp;iconColorHover=ef8c08&amp;bgColorActive=ffffff&amp;bgTextureActive=glass&amp;bgImgOpacityActive=65&amp;borderColorActive=fbd850&amp;fcActive=eb8f00&amp;iconColorActive=ef8c08&amp;bgColorHighlight=ffe45c&amp;bgTextureHighlight=highlight_soft&amp;bgImgOpacityHighlight=75&amp;borderColorHighlight=fed22f&amp;fcHighlight=363636&amp;iconColorHighlight=228ef1&amp;bgColorError=b81900&amp;bgTextureError=diagonals_thick&amp;bgImgOpacityError=18&amp;borderColorError=cd0a0a&amp;fcError=ffffff&amp;iconColorError=ffd27a&amp;bgColorOverlay=666666&amp;bgTextureOverlay=diagonals_thick&amp;bgImgOpacityOverlay=20&amp;opacityOverlay=50&amp;bgColorShadow=000000&amp;bgTextureShadow=flat&amp;bgImgOpacityShadow=10&amp;opacityShadow=20&amp;thicknessShadow=5px&amp;offsetTopShadow=-5px&amp;offsetLeftShadow=-5px&amp;cornerRadiusShadow=5px">UI lightness</option>
-    </select>
+    <!--<p class="t">-->
+        <!--Text sample вввцуа укаке еп ке ке-->
+    <!--</p>-->
+    <!--<p class="test">-->
+        <!--Text sample-->
+    <!--</p>-->
+    <!--<p class="test">-->
+        <!--Text sample-->
+    <!--</p>-->
+    <!--<p class="test">-->
+        <!--Text sample-->
+    <!--</p>-->
+    <!--<p class="qqqq" style="position:absolute;top:400px;left:300px">-->
+        <!--Text sample qqqqq qqqqq qq-->
+    <!--</p>-->
+    <!--<select data-filesize="152" id="theme" name="theme">-->
+        <!--<option value="none">No Theme</option>-->
+        <!--<option value="ffDefault=Arial%2CHelvetica%2Csans-serif&amp;fsDefault=1em&amp;fwDefault=normal&amp;cornerRadius=3px&amp;bgColorHeader=e9e9e9&amp;bgTextureHeader=flat&amp;borderColorHeader=dddddd&amp;fcHeader=333333&amp;iconColorHeader=444444&amp;bgColorContent=ffffff&amp;bgTextureContent=flat&amp;borderColorContent=dddddd&amp;fcContent=333333&amp;iconColorContent=444444&amp;bgColorDefault=f6f6f6&amp;bgTextureDefault=flat&amp;borderColorDefault=c5c5c5&amp;fcDefault=454545&amp;iconColorDefault=777777&amp;bgColorHover=ededed&amp;bgTextureHover=flat&amp;borderColorHover=cccccc&amp;fcHover=2b2b2b&amp;iconColorHover=555555&amp;bgColorActive=007fff&amp;bgTextureActive=flat&amp;borderColorActive=003eff&amp;fcActive=ffffff&amp;iconColorActive=ffffff&amp;bgColorHighlight=fffa90&amp;bgTextureHighlight=flat&amp;borderColorHighlight=dad55e&amp;fcHighlight=777620&amp;iconColorHighlight=777620&amp;bgColorError=fddfdf&amp;bgTextureError=flat&amp;borderColorError=f1a899&amp;fcError=5f3f3f&amp;iconColorError=cc0000&amp;bgColorOverlay=aaaaaa&amp;bgTextureOverlay=flat&amp;bgImgOpacityOverlay=0&amp;opacityOverlay=30&amp;bgColorShadow=666666&amp;bgTextureShadow=flat&amp;bgImgOpacityShadow=0&amp;opacityShadow=30&amp;thicknessShadow=5px&amp;offsetTopShadow=0px&amp;offsetLeftShadow=0px&amp;cornerRadiusShadow=8px" selected="&quot;selected&quot;">Base</option>-->
+        <!--<option value="ffDefault=Trebuchet%20MS%2CTahoma%2CVerdana%2CArial%2Csans-serif&amp;fwDefault=bold&amp;fsDefault=1.1em&amp;cornerRadius=4px&amp;bgColorHeader=f6a828&amp;bgTextureHeader=gloss_wave&amp;bgImgOpacityHeader=35&amp;borderColorHeader=e78f08&amp;fcHeader=ffffff&amp;iconColorHeader=ffffff&amp;bgColorContent=eeeeee&amp;bgTextureContent=highlight_soft&amp;bgImgOpacityContent=100&amp;borderColorContent=dddddd&amp;fcContent=333333&amp;iconColorContent=222222&amp;bgColorDefault=f6f6f6&amp;bgTextureDefault=glass&amp;bgImgOpacityDefault=100&amp;borderColorDefault=cccccc&amp;fcDefault=1c94c4&amp;iconColorDefault=ef8c08&amp;bgColorHover=fdf5ce&amp;bgTextureHover=glass&amp;bgImgOpacityHover=100&amp;borderColorHover=fbcb09&amp;fcHover=c77405&amp;iconColorHover=ef8c08&amp;bgColorActive=ffffff&amp;bgTextureActive=glass&amp;bgImgOpacityActive=65&amp;borderColorActive=fbd850&amp;fcActive=eb8f00&amp;iconColorActive=ef8c08&amp;bgColorHighlight=ffe45c&amp;bgTextureHighlight=highlight_soft&amp;bgImgOpacityHighlight=75&amp;borderColorHighlight=fed22f&amp;fcHighlight=363636&amp;iconColorHighlight=228ef1&amp;bgColorError=b81900&amp;bgTextureError=diagonals_thick&amp;bgImgOpacityError=18&amp;borderColorError=cd0a0a&amp;fcError=ffffff&amp;iconColorError=ffd27a&amp;bgColorOverlay=666666&amp;bgTextureOverlay=diagonals_thick&amp;bgImgOpacityOverlay=20&amp;opacityOverlay=50&amp;bgColorShadow=000000&amp;bgTextureShadow=flat&amp;bgImgOpacityShadow=10&amp;opacityShadow=20&amp;thicknessShadow=5px&amp;offsetTopShadow=-5px&amp;offsetLeftShadow=-5px&amp;cornerRadiusShadow=5px">UI lightness</option>-->
+    <!--</select>-->
     <!--<div class="rd">-->
         <!--<div class="rd_notation_cnt">-->
             <!--<div class="rd_notation_item">-->
@@ -83,20 +96,188 @@
         <!--</div>-->
     <!--</div>-->
 
-    <div id="id-chart1"></div>
-    <div id="id-chart2"></div>
-    <div id="id-chart3"></div>
-    <div id="id-chart4"></div>
-    <div id="id-chart5"></div>
-    <div id="id-chart6"></div>
-    <div id="id-chart7"></div>
-    <div id="id-chart8"></div>
-    <div id="id-chart9"></div>
-    <div id="id-chart10"></div>
-    <div id="id-chart11"></div>
-    <div id="id-chart12"></div>
+    <!--<div id="id-chart1"></div>-->
+    <!--<div id="id-chart2"></div>-->
+    <!--<div id="id-chart3"></div>-->
+    <!--<div id="id-chart4"></div>-->
+    <!--<div id="id-chart5"></div>-->
+    <!--<div id="id-chart6"></div>-->
+    <!--<div id="id-chart7"></div>-->
+    <!--<div id="id-chart8"></div>-->
+    <!--<div id="id-chart9"></div>-->
+    <!--<div id="id-chart10"></div>-->
+    <!--<div id="id-chart11"></div>-->
+    <!--<div id="id-chart12"></div>-->
 
-
+    <div class="content">
+        <div class="divider">
+            Website Development with WordPress
+            In the past, WordPress has been used mainly as a blogging platform, but nowadays with this CMS can be used not only for fully functional website development, but also for the creation of mobile applications.
+            The fact is that WordPress is a very easy and convenient system. This makes it one of the most popular CMSs for website development, as well as for their maintenance in consequence. Nowadays 22.5 % of all websites on the Internet are based on WordPress. Some of the most popular brands who use WordPress as CMS are:
+            Sony,eBay,Facebook,Disney,LinkedIN and many more
+            Basically this platform enables the construction of websites in any kind, such as:
+            Informative website,
+            eCommerse website,
+            Photographic website,
+            Adsense website,
+            Video collection website,
+            Membership website etc.
+            The best thing is, that WordPress is with open source software, preferred by Google, so as a consequence your site can benefit from certain ranking preferences. The great thing about WordPress as website development CMS is that it is written with the help of a standard high-quality code and produces semantic markup, making your WordPress site very attractive for the search engines.
+            WordPress is a SEO Friendly platform, but if you're using WordPress for a first time it is not a good idea to experiment with the optimisation of your website. It is highly recommended to appoint this task to a professional in order to avoid a potential ban by Google. WordPress is considered to be one of the best protected CMS, it can be used in many ways, and there are numerous free plugins that could be used on your website.
+            Website Development with Joomla
+            Joomla as well as most website development CMS is a open source platform. Joomla is PHP-based and uses MySQL database to store content. With the help of Joomla you or your web developers will be able to make your preferred website development project whether it will be for:
+            Informative website,
+            Corporate website,
+            Business website,
+            eCommerce website,
+            Small Business website.
+            Even with a small knowledge in this area you can manage the content of your website extremely easily without fiddling with the code behind the site. Joomla can be used for the developing of powerful online applications.
+        </div>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/DhI_evozO6A" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <div class="divider">
+            Website Development with WordPress
+            In the past, WordPress has been used mainly as a blogging platform, but nowadays with this CMS can be used not only for fully functional website development, but also for the creation of mobile applications.
+            The fact is that WordPress is a very easy and convenient system. This makes it one of the most popular CMSs for website development, as well as for their maintenance in consequence. Nowadays 22.5 % of all websites on the Internet are based on WordPress. Some of the most popular brands who use WordPress as CMS are:
+            Sony,eBay,Facebook,Disney,LinkedIN and many more
+            Basically this platform enables the construction of websites in any kind, such as:
+            Informative website,
+            eCommerse website,
+            Photographic website,
+            Adsense website,
+            Video collection website,
+            Membership website etc.
+            The best thing is, that WordPress is with open source software, preferred by Google, so as a consequence your site can benefit from certain ranking preferences. The great thing about WordPress as website development CMS is that it is written with the help of a standard high-quality code and produces semantic markup, making your WordPress site very attractive for the search engines.
+            WordPress is a SEO Friendly platform, but if you're using WordPress for a first time it is not a good idea to experiment with the optimisation of your website. It is highly recommended to appoint this task to a professional in order to avoid a potential ban by Google. WordPress is considered to be one of the best protected CMS, it can be used in many ways, and there are numerous free plugins that could be used on your website.
+            Website Development with Joomla
+            Joomla as well as most website development CMS is a open source platform. Joomla is PHP-based and uses MySQL database to store content. With the help of Joomla you or your web developers will be able to make your preferred website development project whether it will be for:
+            Informative website,
+            Corporate website,
+            Business website,
+            eCommerce website,
+            Small Business website.
+            Even with a small knowledge in this area you can manage the content of your website extremely easily without fiddling with the code behind the site. Joomla can be used for the developing of powerful online applications.
+        </div>
+        <div class="testix_project" data-width="800px" data-height="600px" data-published="75ce5bf698/e0ad6349f4"><script src="//testix.me/js/loader.js" async></script></div>
+        <div class="divider">
+            Website Development with WordPress
+            In the past, WordPress has been used mainly as a blogging platform, but nowadays with this CMS can be used not only for fully functional website development, but also for the creation of mobile applications.
+            The fact is that WordPress is a very easy and convenient system. This makes it one of the most popular CMSs for website development, as well as for their maintenance in consequence. Nowadays 22.5 % of all websites on the Internet are based on WordPress. Some of the most popular brands who use WordPress as CMS are:
+            Sony,eBay,Facebook,Disney,LinkedIN and many more
+            Basically this platform enables the construction of websites in any kind, such as:
+            Informative website,
+            eCommerse website,
+            Photographic website,
+            Adsense website,
+            Video collection website,
+            Membership website etc.
+            The best thing is, that WordPress is with open source software, preferred by Google, so as a consequence your site can benefit from certain ranking preferences. The great thing about WordPress as website development CMS is that it is written with the help of a standard high-quality code and produces semantic markup, making your WordPress site very attractive for the search engines.
+            WordPress is a SEO Friendly platform, but if you're using WordPress for a first time it is not a good idea to experiment with the optimisation of your website. It is highly recommended to appoint this task to a professional in order to avoid a potential ban by Google. WordPress is considered to be one of the best protected CMS, it can be used in many ways, and there are numerous free plugins that could be used on your website.
+            Website Development with Joomla
+            Joomla as well as most website development CMS is a open source platform. Joomla is PHP-based and uses MySQL database to store content. With the help of Joomla you or your web developers will be able to make your preferred website development project whether it will be for:
+            Informative website,
+            Corporate website,
+            Business website,
+            eCommerce website,
+            Small Business website.
+            Even with a small knowledge in this area you can manage the content of your website extremely easily without fiddling with the code behind the site. Joomla can be used for the developing of powerful online applications.
+        </div>
+        <iframe src="//p.testix.me/e4f34e395e/bf9ac8f43e/p_index.html" style="display:block;margin:0 auto;border:0px;width:100%;height:600px;max-width:800px"></iframe>
+        <div class="divider">
+            Website Development with WordPress
+            In the past, WordPress has been used mainly as a blogging platform, but nowadays with this CMS can be used not only for fully functional website development, but also for the creation of mobile applications.
+            The fact is that WordPress is a very easy and convenient system. This makes it one of the most popular CMSs for website development, as well as for their maintenance in consequence. Nowadays 22.5 % of all websites on the Internet are based on WordPress. Some of the most popular brands who use WordPress as CMS are:
+            Sony,eBay,Facebook,Disney,LinkedIN and many more
+            Basically this platform enables the construction of websites in any kind, such as:
+            Informative website,
+            eCommerse website,
+            Photographic website,
+            Adsense website,
+            Video collection website,
+            Membership website etc.
+            The best thing is, that WordPress is with open source software, preferred by Google, so as a consequence your site can benefit from certain ranking preferences. The great thing about WordPress as website development CMS is that it is written with the help of a standard high-quality code and produces semantic markup, making your WordPress site very attractive for the search engines.
+            WordPress is a SEO Friendly platform, but if you're using WordPress for a first time it is not a good idea to experiment with the optimisation of your website. It is highly recommended to appoint this task to a professional in order to avoid a potential ban by Google. WordPress is considered to be one of the best protected CMS, it can be used in many ways, and there are numerous free plugins that could be used on your website.
+            Website Development with Joomla
+            Joomla as well as most website development CMS is a open source platform. Joomla is PHP-based and uses MySQL database to store content. With the help of Joomla you or your web developers will be able to make your preferred website development project whether it will be for:
+            Informative website,
+            Corporate website,
+            Business website,
+            eCommerce website,
+            Small Business website.
+            Even with a small knowledge in this area you can manage the content of your website extremely easily without fiddling with the code behind the site. Joomla can be used for the developing of powerful online applications.
+        </div>
+        <script>(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id))return;js=d.createElement(s);js.id=id;js.src='//embed.playbuzz.com/sdk.js';fjs.parentNode.insertBefore(js,fjs);}(document,'script','playbuzz-sdk'));</script><div class="playbuzz" data-id="462706ab-48bd-4798-869f-1c94b2c1cd98"></div>
+        <div class="divider">
+            Website Development with WordPress
+            In the past, WordPress has been used mainly as a blogging platform, but nowadays with this CMS can be used not only for fully functional website development, but also for the creation of mobile applications.
+            The fact is that WordPress is a very easy and convenient system. This makes it one of the most popular CMSs for website development, as well as for their maintenance in consequence. Nowadays 22.5 % of all websites on the Internet are based on WordPress. Some of the most popular brands who use WordPress as CMS are:
+            Sony,eBay,Facebook,Disney,LinkedIN and many more
+            Basically this platform enables the construction of websites in any kind, such as:
+            Informative website,
+            eCommerse website,
+            Photographic website,
+            Adsense website,
+            Video collection website,
+            Membership website etc.
+            The best thing is, that WordPress is with open source software, preferred by Google, so as a consequence your site can benefit from certain ranking preferences. The great thing about WordPress as website development CMS is that it is written with the help of a standard high-quality code and produces semantic markup, making your WordPress site very attractive for the search engines.
+            WordPress is a SEO Friendly platform, but if you're using WordPress for a first time it is not a good idea to experiment with the optimisation of your website. It is highly recommended to appoint this task to a professional in order to avoid a potential ban by Google. WordPress is considered to be one of the best protected CMS, it can be used in many ways, and there are numerous free plugins that could be used on your website.
+            Website Development with Joomla
+            Joomla as well as most website development CMS is a open source platform. Joomla is PHP-based and uses MySQL database to store content. With the help of Joomla you or your web developers will be able to make your preferred website development project whether it will be for:
+            Informative website,
+            Corporate website,
+            Business website,
+            eCommerce website,
+            Small Business website.
+            Even with a small knowledge in this area you can manage the content of your website extremely easily without fiddling with the code behind the site. Joomla can be used for the developing of powerful online applications.
+        </div>
+        <div class="testix_project" data-width="800px" data-height="600px" data-published="75ce5bf698/782fec9df8"><script src="//testix.me/js/loader.js" async></script></div>
+        <div class="divider">
+            Website Development with WordPress
+            In the past, WordPress has been used mainly as a blogging platform, but nowadays with this CMS can be used not only for fully functional website development, but also for the creation of mobile applications.
+            The fact is that WordPress is a very easy and convenient system. This makes it one of the most popular CMSs for website development, as well as for their maintenance in consequence. Nowadays 22.5 % of all websites on the Internet are based on WordPress. Some of the most popular brands who use WordPress as CMS are:
+            Sony,eBay,Facebook,Disney,LinkedIN and many more
+            Basically this platform enables the construction of websites in any kind, such as:
+            Informative website,
+            eCommerse website,
+            Photographic website,
+            Adsense website,
+            Video collection website,
+            Membership website etc.
+            The best thing is, that WordPress is with open source software, preferred by Google, so as a consequence your site can benefit from certain ranking preferences. The great thing about WordPress as website development CMS is that it is written with the help of a standard high-quality code and produces semantic markup, making your WordPress site very attractive for the search engines.
+            WordPress is a SEO Friendly platform, but if you're using WordPress for a first time it is not a good idea to experiment with the optimisation of your website. It is highly recommended to appoint this task to a professional in order to avoid a potential ban by Google. WordPress is considered to be one of the best protected CMS, it can be used in many ways, and there are numerous free plugins that could be used on your website.
+            Website Development with Joomla
+            Joomla as well as most website development CMS is a open source platform. Joomla is PHP-based and uses MySQL database to store content. With the help of Joomla you or your web developers will be able to make your preferred website development project whether it will be for:
+            Informative website,
+            Corporate website,
+            Business website,
+            eCommerce website,
+            Small Business website.
+            Even with a small knowledge in this area you can manage the content of your website extremely easily without fiddling with the code behind the site. Joomla can be used for the developing of powerful online applications.
+        </div>
+        <iframe src="//p.testix.me/75ce5bf698/782fec9df8/p_index.html" style="display:block;margin:0 auto;border:0px;width:100%;height:600px;max-width:800px"></iframe>
+        <div class="divider">
+            Website Development with WordPress
+            In the past, WordPress has been used mainly as a blogging platform, but nowadays with this CMS can be used not only for fully functional website development, but also for the creation of mobile applications.
+            The fact is that WordPress is a very easy and convenient system. This makes it one of the most popular CMSs for website development, as well as for their maintenance in consequence. Nowadays 22.5 % of all websites on the Internet are based on WordPress. Some of the most popular brands who use WordPress as CMS are:
+            Sony,eBay,Facebook,Disney,LinkedIN and many more
+            Basically this platform enables the construction of websites in any kind, such as:
+            Informative website,
+            eCommerse website,
+            Photographic website,
+            Adsense website,
+            Video collection website,
+            Membership website etc.
+            The best thing is, that WordPress is with open source software, preferred by Google, so as a consequence your site can benefit from certain ranking preferences. The great thing about WordPress as website development CMS is that it is written with the help of a standard high-quality code and produces semantic markup, making your WordPress site very attractive for the search engines.
+            WordPress is a SEO Friendly platform, but if you're using WordPress for a first time it is not a good idea to experiment with the optimisation of your website. It is highly recommended to appoint this task to a professional in order to avoid a potential ban by Google. WordPress is considered to be one of the best protected CMS, it can be used in many ways, and there are numerous free plugins that could be used on your website.
+            Website Development with Joomla
+            Joomla as well as most website development CMS is a open source platform. Joomla is PHP-based and uses MySQL database to store content. With the help of Joomla you or your web developers will be able to make your preferred website development project whether it will be for:
+            Informative website,
+            Corporate website,
+            Business website,
+            eCommerce website,
+            Small Business website.
+            Even with a small knowledge in this area you can manage the content of your website extremely easily without fiddling with the code behind the site. Joomla can be used for the developing of powerful online applications.
+        </div>
+    </div>
     <script type="text/javascript">
         var elements = [
             $('.test'),

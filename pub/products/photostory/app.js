@@ -17,7 +17,7 @@ var PhotostoryApp = MutApp.extend({
             // это свойство описано в клиентской части а не в mutapp.js так как фильтр по экрану может указать только клиент
             label: {RU: 'Картинка для шаринга', EN: 'Sharing image'},
             controls: 'ChooseSharingImage',
-            controlFilter: 'screen(type=result)' // клиент знает какие экраны есть в приложении. А в мемори только один экран результата
+            controlFilter: 'screen(type=results)' // клиент знает какие экраны есть в приложении. А в мемори только один экран результата
         },
         "id=psm slides": {
             label: {RU:'Вопросы теста',EN:'Photostory quiz'},
@@ -357,6 +357,12 @@ var PhotostoryApp = MutApp.extend({
                         this.model.updateShareEntities();
                     }
                 }
+                if (MutApp.Util.matchPropertyString(data.propertyString, 'id=psm slides.{{id}}.imgSrc') === true) {
+                    // одна из картинок слайдов изменилась надо рендерить коллаж
+                    if (this.result) {
+                        this.result.renderCollage();
+                    }
+                }
                 break;
             }
         }
@@ -429,19 +435,47 @@ var PhotostoryApp = MutApp.extend({
      * @returns {*}
      */
     getAutoPreviewHtml: function() {
-        if (this._screens.length > 0) {
-            var v = this.getScreenById('resultScr').$el;
-            // выравнивание заголовка и пояснения по вертикали
-            var viewForShare = MutApp.Util.clarifyElement(v, ['modal','modal_cnt','info_title','info_tx','b_title']);
-            var titleView = viewForShare.find('.info_title').css('padding','0 50px 0 50px').css('margin','0');
-            var th = titleView.outerHeight(false);
-            var descView = viewForShare.find('.info_tx').css('padding','0 50px 0 50px').css('margin','0');
-            var dh = descView.outerHeight(false);
-            var freeVertSpace = (this.getSize().height-dh-th);
-            titleView.css('padding-top',freeVertSpace*0.35+'px');
-            descView.css('padding-top',freeVertSpace*0.1+'px');
-            return viewForShare.html();
+//        if (this._screens.length > 0) {
+//            var v = this.getScreenById('resultScr').$el;
+//            // выравнивание заголовка и пояснения по вертикали
+//            var viewForShare = MutApp.Util.clarifyElement(v, ['modal','modal_cnt','info_title','info_tx','b_title']);
+//            var titleView = viewForShare.find('.info_title').css('padding','0 50px 0 50px').css('margin','0');
+//            var th = titleView.outerHeight(false);
+//            var descView = viewForShare.find('.info_tx').css('padding','0 50px 0 50px').css('margin','0');
+//            var dh = descView.outerHeight(false);
+//            var freeVertSpace = (this.getSize().height-dh-th);
+//            titleView.css('padding-top',freeVertSpace*0.35+'px');
+//            descView.css('padding-top',freeVertSpace*0.1+'px');
+//            return viewForShare.html();
+//        }
+//        return '';
+
+        var slides = this.model.get('slides').toArray();
+        // коллаж рассчитан на 1 4 7 картинок, остальные варианты сводятся к этим наборам
+        // css стили также рассчитаны только на это количество
+        var possiblePhotoCounts = [1,4,7];
+        var photosInCollage = 0;
+        for (var i = possiblePhotoCounts.length-1; i >= 0; i--) {
+            if (slides.length >= possiblePhotoCounts[i]) {
+                photosInCollage = possiblePhotoCounts[i];
+                break;
+            }
         }
-        return '';
+
+        var images = [];
+        if (photosInCollage > 0) {
+            var savedImages = this.model.get('savedImages');
+            for (var i = 0; i < photosInCollage; i++) {
+                var si = savedImages[slides[i].imgSrc.getValue()]
+                if (si) {
+                    images.push(si);
+                }
+
+//                var img = new Image();
+//                img.src = slides[i].imgSrc.getValue();
+//                images.push(img);
+            }
+        }
+        return collage.draw(images);
     }
 });

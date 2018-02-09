@@ -19,7 +19,12 @@ var PhotostoryModel = MutApp.Model.extend({
         /**
          * Выбранный слайд для показа
          */
-        slideIndex: 0
+        slideIndex: 0,
+        /**
+         * Сохраненные картинки слайдов
+         * url: Image
+         */
+        savedImages: {}
     },
 
     initialize: function(param) {
@@ -342,5 +347,15 @@ var PhotostoryModel = MutApp.Model.extend({
             id: slideDictionaryId,
             element: element
         };
+    },
+
+    /**
+     * Закешировать объект картинку по ее урлу
+     *
+     * @param {string} url
+     * @param img
+     */
+    saveImage: function(url, img) {
+        this.attributes.savedImages[url] = img;
     }
 });

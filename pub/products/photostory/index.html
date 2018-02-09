@@ -37,7 +37,7 @@
     <script id="id-slider_item" type="text/template">
         <li class="slider_item js-slider_item progressive replace" style="display:<%=display%>" data-img-src="<%=img%>" data-slide-dictionary-id="<%=dictionaryId%>" data-slide_index="<%=slide_index%>" data-app-property="id=psm slides.<%=dictionaryId%>.imgSrc">
             <!-- notice: on one line to remove margin between inline-clock -->
-            <span class="slider_item_centerer"></span><img class="slider_img preview" src="<%=img_thumb%>"/>
+            <span class="slider_item_centerer"></span><img class="slider_img preview" crossorigin="anonymous" src="<%=img_thumb%>"/>
         </li>
     </script>
 
@@ -88,6 +88,7 @@
     <script type="text/javascript" src="../common/js/underscore.js"></script>
     <script type="text/javascript" src="../common/js/backbone.js"></script>
     <script type="text/javascript" src="../common/js/mutapp.js"></script>
+    <script type="text/javascript" src="model/collage.js"></script>
     <script type="text/javascript" src="model/psm.js"></script>
     <script type="text/javascript" src="view/slider.js"></script>
     <script type="text/javascript" src="view/result.js"></script>

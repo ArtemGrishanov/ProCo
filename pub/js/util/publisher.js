@@ -245,6 +245,26 @@ var Publisher = {};
     }
 
     /**
+     * Вернуть альтернативный код для вставки на сайт
+     * В некоторых CMS нельзя вставлять теги script
+     * Пример кода:
+     *
+     * <iframe allowfullscreen="" src="//p.testix.me/75ce5bf698/e0ad6349f4/p_index.html" style="border: 0px; width: 100%; height: 100%; max-width: 800px; max-height: 600px;"></iframe>
+     *
+     * @returns {string}
+     */
+    function getEmbedCodeIframe() {
+        var projectCustomAttr = config.products[appName].customEmbedCodeAttributes;
+        var embedCodeIframe = config.common.embedCodeIframeTemplate;
+        embedCodeIframe = embedCodeIframe.replace('{{width}}', appWidth+'px')
+            .replace('{{height}}', appHeight+'px')
+            .replace('{{published}}', '//p.testix.me/'+Auth.getUser().short_id+'/'+publishedAppId+'/p_index.html');
+//            .replace('{{custom_attributes}}', (projectCustomAttr) ? ' '+projectCustomAttr:'')
+//            .replace('{{logo_policy}}', (tariffIsBasic===true)?' data-l="no"':''); // space before 'data-l' is needed
+        return embedCodeIframe;
+    }
+
+    /**
      * Для указанного имени ресурса задать загруженные данные
      */
     function setDataToResource(url, data) {
@@ -610,6 +630,7 @@ var Publisher = {};
 
     global.publish = publish;
     global.getEmbedCode = getEmbedCode;
+    global.getEmbedCodeIframe = getEmbedCodeIframe;
     global.getAnonymLink = getAnonymLink;
     global.isError = function() {return errorInPublish;}
     global.isPublishing = function() {return isPublishing;}

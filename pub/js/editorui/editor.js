@@ -433,7 +433,7 @@ var Editor = {};
      */
     function setTariffPolicy() {
         if (Auth.isTariff('basic') === true) {
-            showProductPageBackgroungImage();
+            updateProductPageBackgroungImage();
         }
         else {
             var cntr = ControlManager.getControls({propertyString:'appConstructor=mutapp projectPageBackgroundImageUrl'})[0];
@@ -1011,7 +1011,7 @@ var Editor = {};
 
                 if (data.propertyString === 'appConstructor=mutapp projectPageBackgroundImageUrl') {
                     // специальное премиум свойство для смены фона проекта
-                    showProductPageBackgroungImage();
+                    updateProductPageBackgroungImage();
                 }
 
                 if (MutApp.Util.matchPropertyString(data.propertyString, 'appConstructor=mutapp shareEntities.{{id}}.imgUrl') === true) {
@@ -1370,7 +1370,8 @@ var Editor = {};
 
             showPublishDialog({
                 link: activePublisher.getAnonymLink(),
-                embedCode: activePublisher.getEmbedCode()
+                embedCode: activePublisher.getEmbedCode(),
+                embedCodeIframe: activePublisher.getEmbedCodeIframe()
             });
             // надо сохранить статус публикации
             sessionPublishDate = new Date().toString();
@@ -1512,18 +1513,16 @@ var Editor = {};
      * Функция реализующую предпросмотр платной фичи смены фона для страницы.
      * Картинка ставится и в редактировании и в предпросмотре
      */
-    function showProductPageBackgroungImage() {
+    function updateProductPageBackgroungImage() {
         // проверка что фича соответствует тарифу
         if (Auth.isTariff('basic') === true) {
             var ppBackUrl = editedApp.getProperty('appConstructor=mutapp projectPageBackgroundImageUrl').getValue();
-            if (ppBackUrl) {
-                $('#id-workspace').css('background-image', (ppBackUrl) ? 'url('+ppBackUrl+')': 'none')
-                    .css('background-repeat','no-repeat')
-                    .css('background-size','cover');
-                $('#id-preview_background-image').css('background-image', (ppBackUrl) ? 'url('+ppBackUrl+')': 'none')
-                    .css('background-repeat','no-repeat')
-                    .css('background-size','cover');
-            }
+            $('#id-workspace').css('background-image', (ppBackUrl) ? 'url('+ppBackUrl+')': 'none')
+                .css('background-repeat','no-repeat')
+                .css('background-size','cover');
+            $('#id-preview_background-image').css('background-image', (ppBackUrl) ? 'url('+ppBackUrl+')': 'none')
+                .css('background-repeat','no-repeat')
+                .css('background-size','cover');
         }
     }
 
@@ -1563,5 +1562,6 @@ var Editor = {};
     global.openTemplate = openTemplate;
     global.getEditedAppValueBySelector = getEditedAppValueBySelector;
     global.getAppTemplate = function() { return appTemplate; }
+    global.showPublishDialog = showPublishDialog;
 
 })(Editor);

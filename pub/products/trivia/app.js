@@ -303,7 +303,12 @@ var TriviaApp = MutApp.extend({
         },
         "id=tm logoUrl": {
             label: {RU: 'Логотип', EN: 'Logo'},
-            controls: 'ChooseImage',
+            controls: {
+                name: 'ChooseImage',
+                param: {
+                    deleteEnable: false
+                }
+            },
             controlFilter: 'always'
         },
 

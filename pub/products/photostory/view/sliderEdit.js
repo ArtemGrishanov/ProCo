@@ -112,7 +112,9 @@ var SlideEditScreen = MutApp.Screen.extend({
                     slide_index: i,
                     dictionaryId: this.slideDictionaryId,
                 }));
-                $sliderItem.find('img').removeClass('preview');
+                var $img = $sliderItem.find('img').removeClass('preview');
+                // сохранить в кеш для будущего использования. например для отрисовки коллажа
+                this.model.saveImage(sl.imgSrc.getValue(), $img[0]);
                 $slc.append($sliderItem);
             }
 

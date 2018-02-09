@@ -3,7 +3,8 @@
  * На момент создания тут было два таба в диалоге: таб для прямой ссылки и таб для кода встраивания
  *
  * @param {string} params.embedCode код для встраивания
- * @param {string} params.link
+ * @param {string} params.embedCodeIframe альтернативный код для встраивания с помощью iframe
+ * @param {string} params.link ссылка на проект, на анонимку
  * @param {string} params.tabId -
  */
 function PublishDialog(params) {
@@ -15,6 +16,9 @@ function PublishDialog(params) {
     }
     if (params && params.embedCode) {
         this.view.find('.js-embed_code').text(params.embedCode);
+    }
+    if (params && params.embedCodeIframe) {
+        this.view.find('.js-embed_code_iframe').text(params.embedCodeIframe);
     }
 
     this.showTab = function(tabId) {

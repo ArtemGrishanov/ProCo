@@ -81,6 +81,17 @@ function ResourceManager(params) {
     };
 
     /**
+     * Нормализовать имя файла, удалив невалидный символы
+     * Пример: круглые скобки нельзя оставлять в имени файла -> потом в стилях этот урл нельзя использовать
+     *
+     * @param {string} fileName
+     * @returns {string}
+     */
+    this.getNormalizedFileName = function(fileName) {
+        return fileName.replace('(','_').replace(')','_');
+    };
+
+    /**
      * Аплоад файла на сервер
      * Окно будет автоматически перерисовано с обновленным списком ресурсов
      *
@@ -93,8 +104,9 @@ function ResourceManager(params) {
             //if (file) {
                 // очищаем диалог от элементов на время аплоада, потом будет заново загрузка всех элементов
                 this.dialog.setOptions(null);
-                var objKey = Auth.getUser().id + '/res/' + file.name;
-                var objKeyThumb = Auth.getUser().id + '/res/' + config.editor.resourceManager.thumbPrefix + file.name;
+                var fileName = this.getNormalizedFileName(fileName);
+                var objKey = Auth.getUser().id + '/res/' + fileName;
+                var objKeyThumb = Auth.getUser().id + '/res/' + config.editor.resourceManager.thumbPrefix + fileName;
                 var params = {
                     Key: objKey,
                     ContentType: file.type,

@@ -4,45 +4,89 @@
 var collage = {};
 (function canvas(global) {
 
-    var COLLAGE_WIDTH = 800;
-    var COLLAGE_HEIGHT = 500;
-    var COLLAGE_BACK_COLOR = '#00ffff';
+    var COLLAGE_WIDTH = 1200;
+    var COLLAGE_HEIGHT = 710;
+    var COLLAGE_BACK_COLOR = '#ffffff';
 
     var collageSchema = {
         // расписано размещение картинок для каждого их количестве
         // в массиве столько элементов, сколько картинок указано в свойстве
         '1': [
             {
-                width: 210,
-                height: 210,
+                width: 710,
+                height: 710,
                 top: 0,
                 left: 0
             }
         ],
         '4': [
             {
-                width: 210,
-                height: 210,
+                width: 710,
+                height: 710,
                 top: 0,
                 left: 0
             },
             {
-                width: 76,
-                height: 76,
-                top: 50,
-                left: 50
+                width: 226,
+                height: 226,
+                top: 0,
+                left: 732
             },
             {
-                width: 76,
-                height: 76,
-                top: 50,
-                left: 50
+                width: 226,
+                height: 226,
+                top: 242,
+                left: 732
             },
             {
-                width: 76,
-                height: 76,
-                top: 50,
-                left: 50
+                width: 226,
+                height: 226,
+                top: 484,
+                left: 732
+            }
+        ],
+        '7': [
+            {
+                width: 710,
+                height: 710,
+                top: 0,
+                left: 0
+            },
+            { //2
+                width: 226,
+                height: 226,
+                top: 0,
+                left: 730
+            },
+            { //3
+                width: 226,
+                height: 226,
+                top: 242,
+                left: 730
+            },
+            { //4
+                width: 226,
+                height: 226,
+                top: 484,
+                left: 730
+            },
+            { //5
+                width: 226,
+                height: 226,
+                top: 0,
+                left: 972
+            },
+            { //6
+                width: 226,
+                height: 226,
+                top: 242,
+                left: 972
+            },
+            { //7
+                width: 226,
+                height: 226,
+                top: 484,
+                left: 972
             }
         ]
     };
@@ -69,9 +113,23 @@ var collage = {};
         if (images.length > 0) {
             var schemaImageIndex = 0;
             var schemaImage = getCollageSchema(images.length);
-            for (var i = 0; i < images.length; i++) {
+            for (var i = 0; i < images.length; i++, schemaImageIndex++) {
                 var img = images[i];
-                ctx.drawImage(img, schemaImage.left, schemaImage.top, schemaImage.width, schemaImage.height);
+                var s = schemaImage[schemaImageIndex];
+
+                var rw = s.width/img.width; // например, rw < 1 картинку надо уменьшить
+                var rh = s.height/img.height; // например, rh < 1 картинку надо уменьшить
+                var r = Math.max(rw, rh);
+                var dw = img.width * r;
+                var dh = img.height * r;
+                var dl = s.left + (s.width-dw)/2;
+                var dt = s.top + (s.height-dh)/2;
+                ctx.save();
+                ctx.beginPath();
+                ctx.rect(s.left, s.top, s.width, s.height);
+                ctx.clip();
+                ctx.drawImage(img, dl, dt, dw, dh);
+                ctx.restore();
 
                 // blur
 

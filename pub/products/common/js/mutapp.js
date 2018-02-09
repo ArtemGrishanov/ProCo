@@ -1970,7 +1970,6 @@ MutApp.Util = {
             for (var objkey in obj) {
                 var idMatchResult = objkey.match(/(^|\.|\s)([0-9abcdef]+)(\.|\s|$)/g);
                 if (idMatchResult && idMatchResult.length > 0) {
-                    var stophere = 0;
                     // нашли совпадение. objkey - это id вида '43ed01'
                     // у модели надо брать значение из атрибутов
                     var o = (isModel===true && obj.attributes[objkey]) ? obj.attributes[objkey]: obj[objkey];
@@ -2869,39 +2868,7 @@ MutAppSchema.prototype.initialize = function(clientSchema) {
         this._schema[key] = clientSchema[key];
     }
 };
-/**
- * Найти MutAppProperty в приложении mutapp согласно схеме
- *
- * Применение:
- * 1) Для подтверждения того что создаваемое свойство описано в схеме
- * 2) Найти элемент схемы для нового MutAppProperty и взять оттуда атрибуты: label и так далее
- *
- * @param mutAppProperty
- * @param treeElement
- * @private
- */
-//MutAppSchema.prototype.find = function(mutAppProperty, mutapp, treeElement) {
-//    treeElement = treeElement || this._schema;
-//    for (var propStr in treeElement) {
-//
-//        var sel = mutapp.getPropertiesBySelector(propStr);
-//        for (var i = 0; i < sel.length; i++) {
-//            if (mutAppProperty === sel[i].value) {
-//                return true;
-//            }
-//        }
-//
-//        var propDesc = treeElement[propStr];
-//
-//        if (typeof propDesc['children'] === 'object') {
-//            var subres = this.find(mutAppProperty, propDesc['children'], mutapp);
-//            if (subres) {
-//                return subres;
-//            }
-//        }
-//    }
-//    return null;
-//};
+
 /**
  * Найти описание MutAppProperty в схеме
  * Причем один селектор может быть составной и индивидуальный одновременно
@@ -3723,16 +3690,8 @@ MutAppPropertyDictionary.prototype.deserialize = function(data) {
  * @param data
  * @private
  */
-var callStack = 0;
 MutAppPropertyDictionary.prototype._deserializeSubProperty = function(data) {
-    callStack++;
-    if (callStack == 1000) {
-        var stophere = 9;
-    }
     for (var key in data) {
-        if (key == 'appIframe') {
-            var stophere = 9;
-        }
         // data[key] can be 'undefined'
         if (data[key] && data[key].hasOwnProperty('_mutAppConstructor') === true) {
             // создаем новое MutAppProperty прямо в сериализации

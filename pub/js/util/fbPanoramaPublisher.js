@@ -443,8 +443,16 @@ var fbPanoramaPublisher = {};
         return '';
     }
 
+    function getEmbedCodeIframe() {
+        if (photoViewerMode === true) {
+            return Publisher.getEmbedCodeIframe();
+        }
+        return '';
+    }
+
     global.publish = publish;
     global.getEmbedCode = getEmbedCode;
+    global.getEmbedCodeIframe = getEmbedCodeIframe;
     global.getAnonymLink = getAnonymLink;
     global.isInited = function() {return isInited;}
     global.isError = function() {return errorInPublish;}
