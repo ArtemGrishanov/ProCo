@@ -104,7 +104,7 @@ function ResourceManager(params) {
             //if (file) {
                 // очищаем диалог от элементов на время аплоада, потом будет заново загрузка всех элементов
                 this.dialog.setOptions(null);
-                var fileName = this.getNormalizedFileName(fileName);
+                var fileName = this.getNormalizedFileName(file.name);
                 var objKey = Auth.getUser().id + '/res/' + fileName;
                 var objKeyThumb = Auth.getUser().id + '/res/' + config.editor.resourceManager.thumbPrefix + fileName;
                 var params = {
