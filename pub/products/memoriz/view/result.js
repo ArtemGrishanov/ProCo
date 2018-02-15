@@ -179,6 +179,9 @@ var ResultScreen = MutApp.Screen.extend({
             this.$el.find('.js-back_img').css('backgroundImage','none');
         }
 
+        // отправить экран на перевод
+        this.model.application.localize(this.$el);
+
         this.renderCompleted();
 
         return this;

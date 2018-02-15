@@ -88,6 +88,7 @@ var editorLoader = {};
         var cfg = config.products[inf.appName];
         inf.app = new inf.appIframe.contentWindow[cfg.constructorName]({
             mode: param.mode,
+            locale: App.getLang(),
             width: cfg.defaultWidth,
             height: cfg.defaultHeight,
             defaults: param.defaults || null,

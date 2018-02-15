@@ -63,11 +63,11 @@
                 </div>
                 <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="id=psm fbSharingPosition">
                     <span class="tstx_share_i"></span>
-                    Поделиться
+                    <span class="pts_string pts_share">Поделиться</span>
                 </div>
                 <div class="tstx_share_btn __vk js-mutapp_share_vk" data-app-property="id=psm vkSharingPosition">
                     <span class="tstx_share_i __vk"></span>
-                    Поделиться
+                    <span class="pts_string pts_share">Поделиться</span>
                 </div>
                 <div class="logo js-logo js-result_logo" data-app-property="id=psm logoPositionInResults"></div>
             </div>
@@ -102,8 +102,8 @@
             var DEFAULT_PARAMS = {};
             app = new PhotostoryApp({
                 defaults: DEFAULT_PARAMS,
-                mode: 'published',
-                height: 600
+                locale: "{{locale}}",
+                mode: 'published'
             });
             app.start();
         });

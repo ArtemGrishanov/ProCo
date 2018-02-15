@@ -140,6 +140,10 @@ var SliderScreen = MutApp.Screen.extend({
                 animation: true,
                 action: 'hide'
             });
+            // переход 'slider' -> 'result'
+            this.model.set({
+                state: 'result'
+            });
         }
         else {
             var si = this.model.get('slideIndex');
@@ -282,6 +286,7 @@ var SliderScreen = MutApp.Screen.extend({
                     this.move({
                         action: 'hide'
                     });
+                    // переход 'slider' -> 'result'
                     this.model.set({
                         state: 'result'
                     });
@@ -343,6 +348,7 @@ var SliderScreen = MutApp.Screen.extend({
                     }
 
                     if (this.model.get('state') === 'slider' && this.model.previous('state') === 'result') {
+                        // click on 'restart'
                         // переход 'result' -> 'slider' путем сдвига экрана
                         this.move({
                             action: 'show'

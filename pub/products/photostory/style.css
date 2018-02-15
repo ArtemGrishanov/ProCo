@@ -126,7 +126,7 @@ img {
     background-position: center;
     box-sizing: border-box;
     /*border-top: 1px solid #e7e7e7;*/
-    border-bottom: 1px solid #e7e7e7;
+    /*border-bottom: 1px solid #e7e7e7;*/
 }
 .modal.__active {
     display: block;
@@ -352,6 +352,15 @@ li.progressive img.reveal {
     -o-filter: blur(1.5px);
     -ms-filter: blur(1.5px);
     filter: blur(1.5px);
+}
+
+.result_collage_i_wr.__first .result_collage_i {
+    /* для первой картинки коллажа по задумке не должно быть блюра */
+    -webkit-filter: none;
+    -moz-filter: none;
+    -o-filter: none;
+    -ms-filter: none;
+    filter: none;
 }
 
 /**

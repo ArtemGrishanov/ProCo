@@ -30,6 +30,11 @@ var Publisher = {};
      */
     var publishedAppId = null;
     /**
+     * Локаль приложения которое билдится
+     * @type {string}
+     */
+    var locale = 'EN';
+    /**
      * Строка сериализованные свойства для записи
      * @type {string}
      */
@@ -123,7 +128,8 @@ var Publisher = {};
      * 2) Затем они скачиваются
      * 3) Идет перезапись параметров app и стилей стилей приложения
      * 4) Загружаются в хранилище в персональный каталог пользователя
-     *
+
+     * @params.locale {string} - 'EN' | 'RU' ...
      * @params.appId {string} - уникальный ид проекта, типа c31ab01f0c
      * @params.appName {string} - тип проекта например test
      * @params.width {number} - ширина проекта, для ембед кода
@@ -141,6 +147,7 @@ var Publisher = {};
             App.stat('Testix.me', 'Publish_started');
             callback = params.callback;
             publishedAppId = params.appId;
+            locale = params.locale;
             appName = params.appName;
             appStr = params.appStr;
             cssStr = params.cssStr;
@@ -453,6 +460,9 @@ var Publisher = {};
 
                     // раскомментить код запуска приложения
                     indexResource.data = indexResource.data.replace('/*start_code','').replace('start_code*/','');
+
+                    // установить локаль приложения, будет передаваться при запуске
+                    indexResource.data = indexResource.data.replace('{{locale}}',locale);
 
                     // подставить default-параметры
                     overrideParamsStr = 'var DEFAULT_PARAMS = '+appStr+';';

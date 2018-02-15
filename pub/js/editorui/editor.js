@@ -564,6 +564,7 @@ var Editor = {};
 
                     var appStr = editedApp.serialize();
                     activePublisher.publish({
+                        locale: App.getLang(),
                         appId: appId,
                         appName: appName,
                         width: editedApp.getSize().width,
@@ -866,6 +867,7 @@ var Editor = {};
         editedApp = editorLoader.startApp({
             containerId: 'id-product_iframe_cnt',
             mode: 'edit',
+            locale: App.getLang(),
             defaults: serializedProperties,
             appChangeCallbacks: [onAppChanged]
         });
@@ -883,6 +885,7 @@ var Editor = {};
         previewApp = editorLoader.startApp({
             containerId: 'id-app_preview',
             mode: 'preview',
+            locale: App.getLang(),
             defaults: editedApp.serialize(), // передача значений mutappproperty в от редактируемого приложения
             appChangeCallbacks: [onPreviewAppChanged]
         });

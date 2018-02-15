@@ -252,6 +252,9 @@ var ResultScreen = MutApp.Screen.extend({
 
         this.$el.attr('data-filter', r.backgroundImage.propertyString+','+r.backgroundColor.propertyString+',appConstructor=mutapp shareEntities.'+this.dictionaryId+'.imgUrl');
 
+        // отправить экран на перевод
+        this.model.application.localize(this.$el);
+
         this.renderCompleted();
         return this;
     },

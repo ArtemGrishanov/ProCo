@@ -78,11 +78,11 @@
                 <div class="info_tx js-result_description" data-app-property="id=mm resultDescription"><%=description%></div>
                 <div class="tstx_share_btn js-mutapp_share_fb" data-app-property="id=mm fbSharingPosition">
                     <span class="tstx_share_i"></span>
-                    Поделиться
+                    <span class="pts_string pts_share">Поделиться</span>
                 </div>
                 <div class="tstx_share_btn __vk js-mutapp_share_vk" data-app-property="id=mm vkSharingPosition">
                     <span class="tstx_share_i __vk"></span>
-                    Поделиться
+                    <span class="pts_string pts_share">Поделиться</span>
                 </div>
                 <div class="js-btn_wr js-restart_btn_wr">
                     <div class="button js-next js-restart js-test_btn" data-app-property="id=mm restartButtonText">Пройти тест еще раз</div>
@@ -117,7 +117,8 @@
             var DEFAULT_PARAMS = {};
             app = new MemorizApp({
                 defaults: DEFAULT_PARAMS,
-                mode: 'published'
+                mode: 'published',
+                locale: "{{locale}}"
             });
             app.start();
         });

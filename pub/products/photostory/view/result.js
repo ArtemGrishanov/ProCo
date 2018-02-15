@@ -438,6 +438,9 @@ var ResultScreen = MutApp.Screen.extend({
         //
         this.renderCollage();
 
+        // отправить экран на перевод
+        this.model.application.localize(this.$el);
+
         this.renderCompleted();
         return this;
     },
@@ -463,10 +466,13 @@ var ResultScreen = MutApp.Screen.extend({
 
         if (photosInCollage > 0) {
             for (var i = 0; i < photosInCollage; i++) {
-                var $item = this.template['id-result_collage_item_template']({
+                var $item = $(this.template['id-result_collage_item_template']({
                     image: slides[i].imgSrc.getValue()
-                });
+                }));
                 $collageCnt.append($item);
+                if (i === 0) {
+                    $item.addClass('__first');
+                }
             }
             if (photosInCollage === 7) {
                 $collageCnt.addClass('__wide');

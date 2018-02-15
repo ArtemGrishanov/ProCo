@@ -203,6 +203,9 @@
     font-weight: 300;
     margin-top: 184px;
 }
+.blog_footer.__margintop0 {
+    margin-top: 0;
+}
 
 .blog_news {
     position: absolute;
@@ -253,6 +256,9 @@
     max-width: 1016px;
     text-align: center;
     padding-top: 174px;
+}
+.blog_footer_content.__paddingtop50 {
+    padding-top: 50px;
 }
 
 .blog_footer h3,

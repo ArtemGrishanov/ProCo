@@ -10,6 +10,17 @@ var PhotostoryApp = MutApp.extend({
     screenRoot: $('#id-mutapp_screens'),
     slidesEditScreens: [],
     /**
+     * Словарь текстов для локализации
+     */
+    dict: {
+        'RU': {
+            share: 'Поделиться'
+        },
+        'EN': {
+            share: 'Share'
+        }
+    },
+    /**
      * Схема свойств MutAppProperty в этом приложении
      */
     mutAppSchema: new MutAppSchema({

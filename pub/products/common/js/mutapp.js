@@ -72,6 +72,13 @@ var MutApp = function(param) {
      */
     this.mode = 'none';
     /**
+     * Локаль приложения. Передается при запуске приложения.
+     * Это не mutAppProperty
+     *
+     * @type {string} 'EN' | 'RU' | ...
+     */
+    this.locale = 'EN';
+    /**
      * Приложение запущено для автотестирования
      * Клиент может реализовать какую-то особую логику по этому поводу
      * @type {boolean}
@@ -209,6 +216,9 @@ var MutApp = function(param) {
     if (param) {
         if (param.mode) {
             this.mode = param.mode;
+        }
+        if (param.locale) {
+            this.locale = param.locale;
         }
         if (typeof param.autotesting === 'boolean') {
             this.autotesting = param.autotesting;
@@ -1495,6 +1505,37 @@ MutApp.prototype.isOK = function(param) {
 
     console.log('MutApp.isOK: Checking finished. See qunit log or console for details.');
 };
+
+/**
+ * Локализовать фрагмент html
+ * Для локализации используется текущий язык приложения (который устанавливается при публикации)
+ *
+ * @param {string | DomElement} html
+ */
+MutApp.prototype.localize = function(html) {
+    if (this.dict) {
+        html = html || $('body');
+        if (typeof html === 'string') {
+            throw new Error('MutApp.localize: param type "string" not emplemented yet.');
+        }
+        else {
+            if (this.dict[this.locale]) {
+                for (var key in this.dict[this.locale]) {
+                    if (this.dict[this.locale].hasOwnProperty(key)) {
+                        $(html).find('.pts_'+key).html(this.dict[this.locale][key]);
+                    }
+                }
+            }
+            else {
+                console.error('MutApp.localize: language \"'+this.locale+'\" not supported in the app');
+            }
+        }
+    }
+    else {
+        throw new Error('MutApp.localize: "dict" not defined in application');
+    }
+};
+
 /**
  * Returst information about app: errors, info, warnings etc
  * For personality it could be: probabilities of results, options without linking and etc

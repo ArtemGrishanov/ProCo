@@ -104,6 +104,9 @@ html, body {
     padding-left: 200px;
     margin: 0 auto;
 }
+.st_my_templates_wr {
+    margin: 0 auto;
+}
 .st_items_cnt {
     margin: 0 auto;
     text-align: left;
@@ -234,13 +237,13 @@ html, body {
     display: inline-block;
     vertical-align: top;
     min-width: 138px;
-    height: 22px;
+    height: 18px;
     border-radius: 99px;
     border: 1px solid #727272;
     font-size: 12px;
     color: #666;
     text-align: center;
-    padding: 0 7px;
+    padding: 4px 7px 0;
 }
 .st_item_publish.__published {
     background-color: #1cbe60;
