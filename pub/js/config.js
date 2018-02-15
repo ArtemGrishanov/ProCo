@@ -227,7 +227,7 @@ var config = {
         /**
          * Шаблон для кода встраивания
          */
-        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"{{custom_attributes}}><script src="//testix.me/js/loader.js" async></script></div>',
+        embedCodeTemplate: '<div class="testix_project" data-width="{{width}}" data-height="{{height}}" data-published="{{published}}"{{logo_policy}}{{custom_attributes}}><script src="//testix.me/js/loader.js" async></script></div>',
         /**
          * Шаблон для встраивания кода в виде iframe
          * некоторые CMS не позволяют встраивать теги <script>

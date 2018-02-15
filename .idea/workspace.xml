@@ -23,10 +23,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="test_index.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pub/test_index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="112" column="186" selection-start="7162" selection-end="7162" vertical-scroll-proportion="0.47965115" vertical-offset="1350" max-vertical-offset="5520">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="gulpfile.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gulpfile.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="66" column="30" selection-start="2388" selection-end="2388" vertical-scroll-proportion="0.0" vertical-offset="630" max-vertical-offset="8580">
+            <state line="22" column="24" selection-start="891" selection-end="891" vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="8580">
               <folding />
             </state>
           </provider>
@@ -41,10 +50,37 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="my_templates.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="my_templates.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/my_templates.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="63" column="88" selection-start="3502" selection-end="3502" vertical-scroll-proportion="0.35595778" vertical-offset="709" max-vertical-offset="2595">
+            <state line="72" column="26" selection-start="4060" selection-end="4060" vertical-scroll-proportion="-16.5" vertical-offset="684" max-vertical-offset="2595">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mutapp.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1137" column="18" selection-start="40514" selection-end="40514" vertical-scroll-proportion="-12.16" vertical-offset="16751" max-vertical-offset="57240">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="239" column="56" selection-start="9721" selection-end="9721" vertical-scroll-proportion="-9.76" vertical-offset="3341" max-vertical-offset="17280">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="publisher.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pub/js/util/publisher.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="249" column="37" selection-start="8617" selection-end="8632" vertical-scroll-proportion="-9.16" vertical-offset="3506" max-vertical-offset="9795">
               <folding />
             </state>
           </provider>
@@ -60,10 +96,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/blog/your_country_quiz/index.html" />
-        <option value="$PROJECT_DIR$/pub/products/common/js/mutapp.js" />
-        <option value="$PROJECT_DIR$/pub/js/editorui/editor.js" />
-        <option value="$PROJECT_DIR$/pub/js/util/publisher.js" />
         <option value="$PROJECT_DIR$/pub/products/photostory/index.html" />
         <option value="$PROJECT_DIR$/pub/products/trivia/app.js" />
         <option value="$PROJECT_DIR$/pub/products/personality/app.js" />
@@ -76,6 +108,10 @@
         <option value="$PROJECT_DIR$/pub/products/memoriz/index.html" />
         <option value="$PROJECT_DIR$/pub/css/storefront.css" />
         <option value="$PROJECT_DIR$/pub/my_templates.html" />
+        <option value="$PROJECT_DIR$/pub/products/common/js/mutapp.js" />
+        <option value="$PROJECT_DIR$/pub/js/config.js" />
+        <option value="$PROJECT_DIR$/gulpfile.js" />
+        <option value="$PROJECT_DIR$/pub/test_index.html" />
       </list>
     </option>
   </component>
@@ -338,8 +374,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="7" />
-    <editor active="false" />
+    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -375,37 +411,9 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/products/memoriz/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="6" selection-start="407" selection-end="407" vertical-scroll-proportion="0.4213483" vertical-offset="0" max-vertical-offset="7995">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/photostory/view/result.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="441" column="50" selection-start="16671" selection-end="16751" vertical-scroll-proportion="0.33333334" vertical-offset="6386" max-vertical-offset="8580">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/util/publisher.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="471" column="0" selection-start="18285" selection-end="18285" vertical-scroll-proportion="0.5042135" vertical-offset="6706" max-vertical-offset="9795">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/editorui/editor.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="566" column="30" selection-start="21263" selection-end="21269" vertical-scroll-proportion="0.3551674" vertical-offset="8246" max-vertical-offset="23625">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1518" column="42" selection-start="55049" selection-end="55049" vertical-scroll-proportion="0.125" vertical-offset="22681" max-vertical-offset="57240">
           <folding />
         </state>
       </provider>
@@ -466,13 +474,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="30" selection-start="2388" selection-end="2388" vertical-scroll-proportion="0.0" vertical-offset="630" max-vertical-offset="8580">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pub/css/storefront.css">
       <provider selected="true" editor-type-id="text-editor">
         <state line="107" column="19" selection-start="2267" selection-end="2267" vertical-scroll-proportion="-12.32" vertical-offset="1297" max-vertical-offset="6990">
@@ -482,7 +483,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/my_templates.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="88" selection-start="3502" selection-end="3502" vertical-scroll-proportion="0.35595778" vertical-offset="709" max-vertical-offset="2595">
+        <state line="72" column="26" selection-start="4060" selection-end="4060" vertical-scroll-proportion="-16.5" vertical-offset="684" max-vertical-offset="2595">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1137" column="18" selection-start="40514" selection-end="40514" vertical-scroll-proportion="-12.16" vertical-offset="16751" max-vertical-offset="57240">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/util/publisher.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="249" column="37" selection-start="8617" selection-end="8632" vertical-scroll-proportion="-9.16" vertical-offset="3506" max-vertical-offset="9795">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="239" column="56" selection-start="9721" selection-end="9721" vertical-scroll-proportion="-9.76" vertical-offset="3341" max-vertical-offset="17280">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gulpfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="24" selection-start="891" selection-end="891" vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="8580">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/test_index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="112" column="186" selection-start="7162" selection-end="7162" vertical-scroll-proportion="0.47965115" vertical-offset="1350" max-vertical-offset="5520">
           <folding />
         </state>
       </provider>
