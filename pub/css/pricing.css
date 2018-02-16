@@ -1,0 +1,235 @@
+.pricing_title {
+    position: relative;
+    height: 326px;
+    background: url(../i/pricing/general-header.jpg) no-repeat center;
+    background-size: cover;
+    text-align: center;
+}
+
+.pricing_cards_blk {
+    padding-top: 32px;
+    background-color: #f7f7f7;
+}
+
+.pricing_cards_cnt {
+    padding-top: 24px;
+    white-space: nowrap;
+}
+
+.pricing_title_content {
+    padding-top: 100px;
+}
+
+.pricing_card {
+    display: inline-block;
+    vertical-align: top;
+    background-color: #fff;
+    width: 320px;
+    /*height: 565px;*/
+    white-space: normal;
+    text-decoration: none;
+    padding: 0;
+}
+.pricing_card + .pricing_card {
+    margin-left: 24px;
+}
+.pricing_card .pbtn {
+    width: 246px;
+}
+
+.pricing_card_h {
+    position: relative;
+    width: 100%;
+    height: 165px;
+    padding: 30px;
+    color: #fff;
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 32px;
+    border-radius: 4px;
+    line-height: 24px;
+}
+.pricing_card_h.__free {
+    background-color: #4dc480;
+}
+.pricing_card_h.__business {
+    background-color: #ff4e4e;
+    color: #ff4e4e;
+}
+.pricing_card_h.__basic {
+    background-color: #4c99f7;
+    color: #4c99f7;
+}
+
+.pricing_card_h p {
+    margin: 0 0 20px;
+    padding: 0;
+}
+
+.pricing_card_desc {
+    padding: 28px;
+    text-align: left;
+    margin-top: -4px;
+    position: relative;
+    background-color: #fff;
+}
+
+.pricing_card_pro {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 46px;
+    height: 20px;
+    border-radius: 99px;
+    background-color: rgba(255,255,255,.7);
+    font-size: 15px;
+    padding: 2px 0 2px 2px;
+    box-sizing: border-box;
+    text-align: center;
+    line-height: initial;
+}
+
+.pricing_card_desc p {
+    margin: 0 0 18px;
+}
+
+.pricing_card_desc_i {
+    margin: 12px 0;
+    min-height: 36px;
+    white-space: nowrap;
+}
+
+.pricing_icon {
+    display: inline-block;
+    vertical-align: top;
+    width: 25px;
+    height: 25px;
+    background-size: contain;
+    background-position: center;
+}
+.pricing_icon.__eye {
+    background-image: url(../i/pricing/icons/eye.png);
+}
+.pricing_icon.__logo {
+    background-image: url(../i/pricing/icons/logo.png);
+}
+.pricing_icon.__1site {
+    background-image: url(../i/pricing/icons/1site.png);
+}
+.pricing_icon.__star {
+    background-image: url(../i/pricing/icons/star.png);
+}
+.pricing_icon.__cross {
+    background-image: url(../i/pricing/icons/cross.png);
+}
+.pricing_icon.__promopicture {
+    background-image: url(../i/pricing/icons/promo%20picture.png);
+}
+.pricing_icon.__3sites {
+    background-image: url(../i/pricing/icons/3sites.png);
+}
+.pricing_icon.__10sites {
+    background-image: url(../i/pricing/icons/10sites.png);
+}
+
+.pricing_desc_txt {
+    display: inline-block;
+    max-width: 220px;
+    white-space: normal;
+    vertical-align: top;
+    padding-left: 16px;
+    padding-top: 2px;
+}
+
+.pricing_large_card {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 43px;
+    background-color: #000;
+    color: #000;
+    text-align: left;
+    margin-top: 28px;
+}
+.pricing_large_card.__education {
+    background-color: #4dc480;
+    color: #4dc480;
+}
+.pricing_large_card_i {
+    display: inline-block;
+    vertical-align: top;
+    width: 220px;
+    height: 220px;
+    border-radius: 999px;
+    background-position: center;
+    background-size: cover;
+    margin-left: 30px;
+}
+.pricing_large_card_i.__enterprise {
+    background-image: url(../i/pricing/Main-web-dandelion.png);
+}
+.pricing_large_card_i.__education {
+    background-image: url(../i/pricing/Main-web-books.png);
+}
+.pricing_large_card_desc {
+    display: inline-block;
+    vertical-align: top;
+    width: 580px;
+    padding: 20px 0 0 70px;
+    line-height: 24px;
+}
+.pricing_large_card_desc p {
+    margin-bottom: 16px;
+}
+
+/* =================== */
+/* Small width screens */
+/* =================== */
+@media (max-width:1000px)  {
+    .content_wr.__pricing {
+        width: 100%;
+    }
+    .pricing_title {
+        background-image: url(../i/pricing/general-header-mob.jpg) no-repeat center;
+        height: 240px;
+    }
+    .pricing_title_content {
+        padding-top: 50px;
+    }
+    .pricing_cards_cnt {
+        white-space: normal;
+    }
+    .pricing_card {
+        display: block;
+        margin: 0 auto;
+    }
+    .pricing_card + .pricing_card {
+        margin: 20px auto;
+    }
+    .pricing_large_card {
+        text-align: center;
+    }
+    .pricing_large_card_i {
+        margin-left: 0;
+    }
+    .pricing_large_card_desc {
+        width: 100%;
+        padding: 30px 10px;
+        box-sizing: border-box;
+    }
+}
+
+/* ============= */
+/* Retina styles */
+/* ============= */
+@media (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .pricing_title {
+        background-image: url(../i/pricing/general-header-mob@2x.jpg) no-repeat center;
+    }
+    .pricing_large_card_i.__enterprise {
+        background-image: url(../i/pricing/Main-web-dandelion@2x.png);
+    }
+    .pricing_large_card_i.__education {
+        background-image: url(../i/pricing/Main-web-books@2x.png);
+    }
+}

@@ -532,6 +532,13 @@ select {
 .pbtn.__long {
     min-width: 258px;
 }
+.pbtn.__transparent {
+    border: 1px solid;
+    border-color: #fff;
+    color: #fff;
+    background-color: unset;
+    padding: 10px 7px 10px 7px;
+}
 .pbtn.__blue {
     background-color: #499cf3;
     color: #fff;
@@ -821,6 +828,9 @@ select {
     width: 900px;
     margin: 0 auto;
     text-align: center;
+}
+.content_wr.__pricing {
+    width: 1018px;
 }
 .main_title {
     position: relative;
