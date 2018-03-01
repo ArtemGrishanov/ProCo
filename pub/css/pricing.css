@@ -9,6 +9,10 @@
     background-image: url(../i/pricing/free-header.jpg);
     height: 270px;
 }
+.pricing_title.__basic {
+    background-image: url(../i/pricing/basic-header.jpg);
+    height: 270px;
+}
 
 .pricing_title_h {
     position: relative;
@@ -19,6 +23,11 @@
     padding-top: 12px;
     text-align: center;
     background-color: #4dc480;
+}
+.pricing_title_h.__basic {
+    padding-top: 12px;
+    text-align: center;
+    background-color: #4c99f7;
 }
 
 .pricing_title_h h1 {
@@ -258,6 +267,10 @@
     border: 1px solid #4dc480;
     box-sizing: border-box;
 }
+.pricing_tariff_signup_blk.__basic {
+    border-color: #4c99f7;
+    padding: 34px 0;
+}
 
 .pricing_tariff_signup_i {
     display: inline-block;
@@ -267,6 +280,9 @@
 
 .pricing_tariff_signup_i span {
     color: #4dc480;
+}
+.pricing_tariff_signup_i.__basic span {
+    color: #4c99f7;
 }
 
 .pricing_tariff_signup_i .pbtn {
@@ -282,6 +298,10 @@
 }
 .pricing_tariff_signup_i.__3 {
     text-align: right;
+}
+.pricing_tariff_signup_i.__4 {
+    text-align: center;
+    width: 200px;
 }
 
 .pricing_feature_card {
@@ -356,6 +376,38 @@
 }
 .pricing_write_us p {
     font-size: 22px;
+}
+
+.pricing_radio_btn_blk {
+    text-align: left;
+    color: #484848;
+    padding: 5px;
+}
+.pricing_radio_btn {
+    position: relative;
+    border: 2px solid #fff;
+    background-color: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 99px;
+    cursor: pointer;
+}
+.pricing_radio_btn:after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #4c99f7;
+    border-radius: 99px;
+}
+.pricing_radio_btn:checked {
+    background-color: #4c99f7;
 }
 
 
@@ -463,5 +515,8 @@
     }
     .pricing_title.__free {
         background-image: url(../i/pricing/free-header@2x.jpg);
+    }
+    .pricing_title.__basic {
+        background-image: url(../i/pricing/basic-header@2x.jpg);
     }
 }
