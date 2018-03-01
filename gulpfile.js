@@ -49,7 +49,7 @@ var buildUniqId = uniqid();
 buildUniqId = buildUniqId.substring(buildUniqId.length-6,buildUniqId.length);
 
 var buildConfig = {
-    uglifyJs: true,
+    uglifyJs: false,
     names: {
         distFolder: './build',
         styleFileName: 'css/style.css',

@@ -13,7 +13,7 @@
 .pricing_title_h {
     position: relative;
     width: 100%;
-    height: 56px;
+    height: 44px;
 }
 .pricing_title_h.__free {
     padding-top: 12px;
@@ -27,11 +27,11 @@
 
 .back_arr {
     position: absolute;
-    top: 12px;
+    top: 16px;
     left: 26px;
-    width: 28px;
-    height: 32px;
-    background: url(../i/arrow-left.png);
+    width: 13px;
+    height: 24px;
+    background: url(../i/pricing/icon-price-back.svg);
 }
 
 .pricing_cards_blk {
@@ -243,6 +243,7 @@
 
 .pricing_tariff_desc_blk h2 {
     padding-top: 40px;
+    font-size: 22px;
 }
 
 .pricing_tariff_desc_blk p {
@@ -318,12 +319,13 @@
 .pricing_faq h3 {
     color: #484848;
     margin-bottom: 40px;
-    font-size: 28px;
+    font-size: 22px;
 }
 .pricing_col {
     display: inline-block;
     vertical-align: top;
     width: 500px;
+    text-align: left;
 }
 .pricing_faq_q {
     padding: 0 0 40px;
@@ -343,11 +345,17 @@
     padding: 0;
     margin: 0;
 }
+.pricing_feature_h {
+    padding-bottom: 40px;
+}
 
 .pricing_write_us {
     background-color: #3175bc;
     padding: 60px;
     text-align: center;
+}
+.pricing_write_us p {
+    font-size: 22px;
 }
 
 
@@ -357,6 +365,8 @@
 @media (max-width:1000px)  {
     .content_wr.__pricing {
         width: 100%;
+        padding: 0 20px;
+        box-sizing: border-box;
     }
     .pricing_title {
         background-image: url(../i/pricing/general-header-mob.jpg) no-repeat center;
@@ -385,6 +395,56 @@
         width: 100%;
         padding: 30px 10px;
         box-sizing: border-box;
+    }
+    .pricing_tariff_signup_blk {
+        padding: 30px;
+    }
+    .pricing_tariff_signup_i {
+        display: block;
+        vertical-align: top;
+        width: 100%;
+        text-align: left;
+    }
+    .pricing_tariff_signup_i.__1,
+    .pricing_tariff_signup_i.__2,
+    .pricing_tariff_signup_i.__3 {
+        text-align: left;
+    }
+    .pricing_tariff_signup_i.__2 {
+        padding-bottom: 10px;
+    }
+    .pricing_title.__free {
+        height: 184px;
+    }
+    .pricing_feature_card {
+        box-sizing: border-box;
+        padding: 20px 0 6px;
+    }
+    .pricing_feature,
+    .pricing_feature.__left {
+        width: 100%;
+        padding-bottom: 14px;
+    }
+    .pricing_feature.__left p {
+        padding-left: 10px;
+    }
+    .pricing_feature p {
+        padding: 0;
+    }
+    .pricing_faq {
+        padding: 40px 0 0;
+    }
+    .pricing_col_wr {
+
+    }
+    .pricing_col {
+        width: 100%;
+    }
+    .pricing_faq_h {
+
+    }
+    .pricing_faq_q {
+
     }
 }
 

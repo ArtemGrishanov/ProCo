@@ -283,6 +283,16 @@ select {
 .lang_switcher {
     display: inline-block;
 }
+.mob_menu_items_cnt .lang_switcher span {
+    color: #fff;
+    font-weight: 400;
+    font-size: 26px;
+    padding: 16px;
+}
+.mob_menu_items_cnt .lang_switcher span.__active {
+    text-decoration: underline;
+}
+
 .lang_item {
     display: inline-block;
     padding: 5px;
