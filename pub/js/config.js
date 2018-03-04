@@ -17,14 +17,14 @@ var config = {
             return this;
         },
         test: function() {
-            config.common.home = 'http://test.testix.me/';
+            config.common.home = '//test.testix.me/';
             config.common.facebookAppId = '515132035326687';
             config.common.awsEnabled = true;
             config.common.buildStatus = 'test';
             return this;
         },
         prod: function () {
-            config.common.home = 'http://testix.me/';
+            config.common.home = '//testix.me/';
             config.common.facebookAppId = '1734391910154130';
             config.common.awsEnabled = true;
             config.common.buildStatus = 'prod';
@@ -103,7 +103,7 @@ var config = {
          * Максимальное время на выполнение задачи по загрузке изображения в bucket
          * s3util
          */
-        imageUploadToAWSMaxWaitTime: 15000,
+        imageUploadToAWSMaxWaitTime: 60000,
         /**
          * Доступен ли редактор для запуска всем пользователям.
          * Если нет, то будет покаано сообщение "пока в разработке"

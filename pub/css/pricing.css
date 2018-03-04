@@ -314,6 +314,9 @@
     font-size: 15px;
     line-height: 18px;
 }
+.pricing_feature_card.__no_bottom_border {
+    border-bottom: none;
+}
 .pricing_feature {
     display: inline-block;
     vertical-align: top;
@@ -409,7 +412,36 @@
 .pricing_radio_btn:checked {
     background-color: #4c99f7;
 }
-
+.blue {
+    color: #4c99f7;
+}
+.pricing_feature_pro_imgs {
+    text-align: center;
+    padding: 0;
+    border-bottom: 1px solid #4c99f7;
+    width: 1030px;
+    margin: 0 auto;
+}
+.pricing_feature_pro_imgs_col {
+    vertical-align: top;
+    width: 500px;
+    display: inline-block;
+    text-align: left;
+}
+.pricing_feature_pro_imgs_col + .pricing_feature_pro_imgs_col {
+    margin-left: 20px;
+}
+.pricing_feature_pro_imgs_col p {
+    color: #7d7d7d;
+    line-height: 20px;
+    font-size: 14px;
+    font-style: italic;
+    margin: 0;
+    padding: 15px 0 24px;
+}
+.pricing_feature_pro_imgs_col img {
+    width: 100%;
+}
 
 /* =================== */
 /* Small width screens */

@@ -13,7 +13,7 @@
  *          если я планирую склеить этот файл с общие стили style.css то по идее ссылка не нужна эта
  *
  */
-var productVersion = 'v2.1.6';
+var productVersion = 'v2.1.7';
 
 
 var gulp = require('gulp');
@@ -49,7 +49,7 @@ var buildUniqId = uniqid();
 buildUniqId = buildUniqId.substring(buildUniqId.length-6,buildUniqId.length);
 
 var buildConfig = {
-    uglifyJs: false,
+    uglifyJs: true,
     names: {
         distFolder: './build',
         styleFileName: 'css/style.css',
