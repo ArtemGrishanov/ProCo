@@ -10,8 +10,8 @@
     <!-- style:css -->
     <!-- endinject -->
     <!--build:remove-->
-    <link href="../css/common.css" rel="stylesheet"/>
-    <link href="../css/pricing.css" rel="stylesheet"/>
+    <link href="css/common.css" rel="stylesheet"/>
+    <link href="css/pricing.css" rel="stylesheet"/>
     <!--endbuild-->
     <meta property="og:url" content="http://testix.me" />
     <!--ga-->
@@ -60,7 +60,7 @@
         </div>
         <div class="scr_wr">
             <div class="pricing_title_h __basic">
-                <a href="../pricing.html" class="back_arr"></a>
+                <a href="pricing.html" class="back_arr"></a>
                 <h1 class="tx __white __28 __light">BASIC</h1>
             </div>
             <div class="pricing_title __basic">
@@ -80,11 +80,11 @@
                         <div class="pricing_tariff_signup_i __basic __4">
                             <div class="pricing_radio_btn_blk">
                                 <input id="id_rb_month" name="pricing" type="radio" class="pricing_radio_btn js-pricing_rb" data-price-pts-key="basic_price_month">
-                                <label for="id_rb_month">Подписка на месяц</label>
+                                <label for="id_rb_month" class="pts_string pts_monthly_subscription">Подписка на месяц</label>
                             </div>
                             <div class="pricing_radio_btn_blk">
                                 <input checked id="id_rb_year" name="pricing" type="radio" class="pricing_radio_btn js-pricing_rb" data-price-pts-key="basic_price">
-                                <label for="id_rb_year">Годовая подписка</label>
+                                <label for="id_rb_year" class="pts_string pts_annual_subscription">Годовая подписка</label>
                             </div>
                         </div>
                         <div class="pricing_tariff_signup_i __basic __4">
@@ -126,7 +126,7 @@
                     </div>
                     <div class="pricing_feature_card">
                         <div class="pricing_feature __left">
-                            <span class="pricing_icon __logo"></span>
+                            <span class="pricing_icon __cross"></span>
                             <p class="pts_string pts_basic_feature_h4 blue">Без рекламы и логотипа Testix</p>
                         </div>
                         <div class="pricing_feature">
@@ -151,15 +151,6 @@
                             <p class="pts_string pts_basic_feature_a6">Если у вас нет возможности встроить html-код на сайт, вы можете использовать прямую ссылку на ваш проект.</p>
                         </div>
                     </div>
-                    <div class="pricing_feature_card">
-                        <div class="pricing_feature __left">
-                            <span class="pricing_icon __share"></span>
-                            <p class="pts_string pts_basic_feature_h7">Доступ к проекту по прямой ссылке</p>
-                        </div>
-                        <div class="pricing_feature">
-                            <p class="pts_string pts_basic_feature_a7">Если у вас нет возможности встроить html-код на сайт, вы можете использовать прямую ссылку на ваш проект</p>
-                        </div>
-                    </div>
                     <div class="pricing_feature_card __no_bottom_border">
                         <div class="pricing_feature __left">
                             <span class="pricing_icon __statistics"></span>
@@ -172,12 +163,12 @@
                     <!---->
                     <div class="pricing_feature_pro_imgs">
                         <div class="pricing_feature_pro_imgs_col">
-                            <img src="../i/pricing/page-branding-1.jpg"/>
-                            <p>Страница проекта в бесплатной версии: стандартный фон и логотип Testix</p>
+                            <img src="i/pricing/page-branding-1.jpg"/>
+                            <p class="pts_string pts_basic_feature_example1">Страница проекта в бесплатной версии: стандартный фон и логотип Testix</p>
                         </div>
                         <div class="pricing_feature_pro_imgs_col">
-                            <img src="../i/pricing/page-branding-2.jpg"/>
-                            <p>Брендированная страница: тариф Basic позволяет загрузить фоновое изображение, которое превращает ваш тест или игру в полноценный спецпроект. Посмотреть пример</p>
+                            <img src="i/pricing/page-branding-2.jpg"/>
+                            <p class="pts_string pts_basic_feature_example2">Брендированная страница: тариф Basic позволяет загрузить фоновое изображение, которое превращает ваш тест или игру в полноценный спецпроект</p>
                         </div>
                     </div>
                     <!---->
@@ -211,15 +202,15 @@
                                     Что будет при превышении лимита просмотров?
                                 </p>
                                 <p class="pricing_faq_t pts_string pts_basic_faq_a1">
-                                    При превышении лимита просмотров может быть включен показ рекламы. При этом проект не исчезает и не блокируется.
+                                    При превышении лимита просмотров мы предложим вам перейти на тариф Business или выбрать показ рекламы. Наши специалисты свяжутся с вами, чтобы обсудить вариант, который подходит вам больше. В любом случае вы можете быть спокойны за ваш проект: публикация не будет отменена.
                                 </p>
                             </div>
                             <div class="pricing_feature_h">
                                 <p class="pricing_faq_h pts_string pts_basic_faq_q2">
-                                    Можно ли использовать бесплатный тариф для коммерческих проектов?
+                                    Если количество просмотров превысило лимит, по какому тарифу будут оплачиваться услуги, если мы не хотим ставить рекламу в тест?
                                 </p>
                                 <p class="pricing_faq_t pts_string pts_basic_faq_a2">
-                                    Да, вы можете использовать бесплатный тариф для создания коммерческих проектов или рекламы. Тем не менее, для этих целей лучше всего подходят наши платные тарифы.
+                                    Вы будете платить по предоплаченному тарифу, но в следующем месяце мы предложим вам доплатить за использованный по факту тариф.
                                 </p>
                             </div>
                         </div>
@@ -238,6 +229,14 @@
                                 </p>
                                 <p class="pricing_faq_t pts_string pts_basic_faq_a4">
                                     Нет, проекты не удаляются. Ваши публикации в безопасности.
+                                </p>
+                            </div>
+                            <div class="pricing_feature_h">
+                                <p class="pricing_faq_h pts_string pts_basic_faq_q5">
+                                    Если я решу не продлевать подписку для опубликованных тестов?
+                                </p>
+                                <p class="pricing_faq_t pts_string pts_basic_faq_a5">
+                                    Ваши проекты будут переведены на бесплатный тариф FREE: в углу появится логотип Testix, и может быть включена реклама.
                                 </p>
                             </div>
                         </div>
@@ -325,26 +324,26 @@
     <!-- common:js -->
     <!-- endinject -->
     <!-- build:remove -->
-    <script type="text/javascript" src="../lib/aws-cognito-sdk.min.js"></script>
-    <script type="text/javascript" src="../lib/amazon-cognito-identity.min.js"></script>
-    <script type="text/javascript" src="../lib/jquery.js"></script>
-    <script type="text/javascript" src="../js/config.js"></script>
-    <script type="text/javascript" src="../js/model/app.js"></script>
-    <script type="text/javascript" src="../js/model/auth.js"></script>
-    <script type="text/javascript" src="../js/util/utils.js"></script>
-    <script type="text/javascript" src="../js/view/modals/abstractModal.js"></script>
-    <script type="text/javascript" src="../js/view/modals/loadingModal.js"></script>
-    <script type="text/javascript" src="../js/view/modals/loginModal.js"></script>
-    <script type="text/javascript" src="../js/view/modals/messageModal.js"></script>
-    <script type="text/javascript" src="../js/view/modals/signupModal.js"></script>
-    <script type="text/javascript" src="../js/view/modals/signinModal.js"></script>
-    <script type="text/javascript" src="../js/view/modals/emailSentModal.js"></script>
-    <script type="text/javascript" src="../js/view/modals/changePasswordModal.js"></script>
-    <script type="text/javascript" src="../js/view/modals/restorePasswordModal.js"></script>
-    <script type="text/javascript" src="../js/view/modals/signup12_2017Modal.js"></script>
-    <script type="text/javascript" src="../js/view/modals/modal.js"></script>
-    <script type="text/javascript" src="../js/view/storefront.js"></script>
-    <script type="text/javascript" src="../js/view/pricing.js"></script>
+    <script type="text/javascript" src="lib/aws-cognito-sdk.min.js"></script>
+    <script type="text/javascript" src="lib/amazon-cognito-identity.min.js"></script>
+    <script type="text/javascript" src="lib/jquery.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/model/app.js"></script>
+    <script type="text/javascript" src="js/model/auth.js"></script>
+    <script type="text/javascript" src="js/util/utils.js"></script>
+    <script type="text/javascript" src="js/view/modals/abstractModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/loadingModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/loginModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/messageModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/signupModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/signinModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/emailSentModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/changePasswordModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/restorePasswordModal.js"></script>
+    <script type="text/javascript" src="js/view/modals/signup12_2017Modal.js"></script>
+    <script type="text/javascript" src="js/view/modals/modal.js"></script>
+    <script type="text/javascript" src="js/view/storefront.js"></script>
+    <script type="text/javascript" src="js/view/pricing.js"></script>
     <!-- endbuild -->
     <script>
         $(document).ready(function () {

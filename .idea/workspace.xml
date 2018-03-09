@@ -22,88 +22,7 @@
     <favorites_list name="ProCo" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.6090387">
-      <split-first>
-        <leaf>
-          <file leaf-file-name="basic.html" pinned="false" current="true" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/pub/pricing/basic.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="172" column="7" selection-start="10606" selection-end="10606" vertical-scroll-proportion="0.46656978" vertical-offset="2259" max-vertical-offset="5430">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="modal.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/js/view/modals/modal.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="34" column="34" selection-start="1249" selection-end="1249" vertical-scroll-proportion="-15.76" vertical-offset="116" max-vertical-offset="2190">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="DirectiveLoader.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/controls/DirectiveLoader.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="43" column="100" selection-start="1341" selection-end="1342" vertical-scroll-proportion="-25.8" vertical-offset="0" max-vertical-offset="1965">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="abstractModal.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/js/view/modals/abstractModal.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="29" column="5" selection-start="783" selection-end="783" vertical-scroll-proportion="0.0" vertical-offset="405" max-vertical-offset="1200">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="pricing.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/js/view/pricing.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="1" column="13" selection-start="17" selection-end="17" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="210">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="gulpfile.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/gulpfile.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="51" column="18" selection-start="1870" selection-end="1870" vertical-scroll-proportion="0.0" vertical-offset="495" max-vertical-offset="8580">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="369" column="0" selection-start="22990" selection-end="22990" vertical-scroll-proportion="-24.76" vertical-offset="4916" max-vertical-offset="21900">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="pricing.css" pinned="false" current="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/pub/css/pricing.css">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="442" column="16" selection-start="8826" selection-end="8826" vertical-scroll-proportion="0.44250363" vertical-offset="6326" max-vertical-offset="8385">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -113,22 +32,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pub/howitworks.html" />
-        <option value="$PROJECT_DIR$/pub/index.html" />
-        <option value="$PROJECT_DIR$/pub/info.html" />
-        <option value="$PROJECT_DIR$/pub/my_templates.html" />
-        <option value="$PROJECT_DIR$/pub/privacy_policy.html" />
         <option value="$PROJECT_DIR$/pub/storefront.html" />
         <option value="$PROJECT_DIR$/pub/terms.html" />
         <option value="$PROJECT_DIR$/pub/pricing/free.html" />
-        <option value="$PROJECT_DIR$/pub/pricing.html" />
         <option value="$PROJECT_DIR$/pub/js/view/pricing.js" />
-        <option value="$PROJECT_DIR$/pub/blog/who_are_you_in_the_marketing_forest/index.html" />
         <option value="$PROJECT_DIR$/gulpfile.js" />
         <option value="$PROJECT_DIR$/pub/js/config.js" />
+        <option value="$PROJECT_DIR$/pub/templates/changePasswordModal.html" />
+        <option value="$PROJECT_DIR$/pub/templates/emailSent.html" />
+        <option value="$PROJECT_DIR$/pub/templates/restorePasswordModal.html" />
+        <option value="$PROJECT_DIR$/pub/templates/signin.html" />
+        <option value="$PROJECT_DIR$/pub/templates/signup.html" />
         <option value="$PROJECT_DIR$/pub/js/model/app.js" />
         <option value="$PROJECT_DIR$/pub/pricing/basic.html" />
         <option value="$PROJECT_DIR$/pub/css/pricing.css" />
+        <option value="$PROJECT_DIR$/pub/pricing.html" />
+        <option value="$PROJECT_DIR$/pub/blog/who_are_you_in_the_marketing_forest/index.html" />
       </list>
     </option>
   </component>
@@ -195,42 +114,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pricing" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ProCo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pub" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="blog" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -267,11 +150,11 @@
       <recent name="$PROJECT_DIR$/pub/blog/your_country_quiz" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pub" />
       <recent name="$PROJECT_DIR$/pub/blog/who_are_you_in_the_marketing_forest/i" />
       <recent name="$PROJECT_DIR$/pub/blog/creating_interactive_infografics" />
       <recent name="$PROJECT_DIR$/pub/controls/i" />
       <recent name="$PROJECT_DIR$/pub/prices" />
-      <recent name="$PROJECT_DIR$/pub/js/util" />
     </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug.index.html">
@@ -365,16 +248,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="873" extended-state="7" />
-    <editor active="true" />
+    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1992032" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28950864" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.205165" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22955523" sideWeight="0.8007968" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2374462" sideWeight="0.71049136" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20549928" sideWeight="0.4555113" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32669324" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -387,26 +270,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1992032" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997344" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20549928" sideWeight="0.4555113" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32669324" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.205165" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22955523" sideWeight="0.8007968" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -422,116 +285,124 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pub/products/common/js/mutapp.js">
+    <entry file="file://$PROJECT_DIR$/pub/templates/requestFBPublishPermissionsModal.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1193" column="17" selection-start="42927" selection-end="42930" vertical-scroll-proportion="-8.84" vertical-offset="17674" max-vertical-offset="57240">
+        <state line="13" column="6" selection-start="745" selection-end="745" vertical-scroll-proportion="0.2932331" vertical-offset="0" max-vertical-offset="665">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/css/common.css">
+    <entry file="file://$PROJECT_DIR$/pub/templates/restorePasswordModal.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="291" column="39" selection-start="5349" selection-end="5349" vertical-scroll-proportion="0.5298399" vertical-offset="4001" max-vertical-offset="27945">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/products/trivia/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="655" column="26" selection-start="25989" selection-end="25989" vertical-scroll-proportion="0.91120815" vertical-offset="9199" max-vertical-offset="11700">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/pricing/free.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="258" column="38" selection-start="15082" selection-end="15084" vertical-scroll-proportion="0.33333334" vertical-offset="3649" max-vertical-offset="4950">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/pricing.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="134" column="106" selection-start="8984" selection-end="8984" vertical-scroll-proportion="0.3785822" vertical-offset="1759" max-vertical-offset="4485">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/view/pricing.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="13" selection-start="17" selection-end="17" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="210">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/blog/who_are_you_in_the_marketing_forest/i/share-issue.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/blog/who_are_you_in_the_marketing_forest/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="96" selection-start="1241" selection-end="1241" vertical-scroll-proportion="0.41424417" vertical-offset="15" max-vertical-offset="2355">
+        <state line="16" column="10" selection-start="1313" selection-end="1313" vertical-scroll-proportion="0.36090225" vertical-offset="0" max-vertical-offset="665">
           <folding>
-            <element signature="n#style#0;n#a#0;n#div#1;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#input#3;n#div#0;n#div#0;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#span#1;n#div#0;n#div#0;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/view/modals/modal.js">
+    <entry file="file://$PROJECT_DIR$/pub/templates/signup.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="34" selection-start="1249" selection-end="1249" vertical-scroll-proportion="-15.76" vertical-offset="116" max-vertical-offset="2190">
+        <state line="26" column="40" selection-start="1812" selection-end="1812" vertical-scroll-proportion="0.5864662" vertical-offset="0" max-vertical-offset="665">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/templates/signin.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="80" selection-start="230" selection-end="230" vertical-scroll-proportion="0.09022556" vertical-offset="0" max-vertical-offset="665">
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/view/modals/abstractModal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="5" selection-start="783" selection-end="783" vertical-scroll-proportion="0.043541364" vertical-offset="405" max-vertical-offset="1200">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/controls/DirectiveLoader.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="100" selection-start="1341" selection-end="1342" vertical-scroll-proportion="-25.8" vertical-offset="0" max-vertical-offset="1965">
+        <state line="43" column="100" selection-start="1341" selection-end="1342" vertical-scroll-proportion="0.93886465" vertical-offset="0" max-vertical-offset="1965">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js">
+    <entry file="file://$PROJECT_DIR$/pub/js/view/modals/modal.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="18" selection-start="1870" selection-end="1870" vertical-scroll-proportion="0.0" vertical-offset="495" max-vertical-offset="8580">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/view/modals/abstractModal.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="5" selection-start="783" selection-end="783" vertical-scroll-proportion="0.0" vertical-offset="405" max-vertical-offset="1200">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="113" column="10" selection-start="4464" selection-end="4464" vertical-scroll-proportion="0.58627087" vertical-offset="1379" max-vertical-offset="17280">
+        <state line="34" column="34" selection-start="1249" selection-end="1249" vertical-scroll-proportion="0.573508" vertical-offset="116" max-vertical-offset="2190">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/js/model/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="369" column="0" selection-start="22990" selection-end="22990" vertical-scroll-proportion="-24.76" vertical-offset="4916" max-vertical-offset="21900">
+        <state line="399" column="19" selection-start="25778" selection-end="25778" vertical-scroll-proportion="0.0" vertical-offset="5748" max-vertical-offset="23100">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/free.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="30" selection-start="769" selection-end="769" vertical-scroll-proportion="0.4360465" vertical-offset="0" max-vertical-offset="4950">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/basic.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="18" selection-start="723" selection-end="723" vertical-scroll-proportion="0.37063953" vertical-offset="0" max-vertical-offset="5415">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/pricing.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="95" column="41" selection-start="5603" selection-end="5603" vertical-scroll-proportion="0.33333334" vertical-offset="1204" max-vertical-offset="4485">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/js/view/pricing.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="3" selection-start="229" selection-end="229" vertical-scroll-proportion="0.16551724" vertical-offset="0" max-vertical-offset="725">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pub/css/pricing.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="442" column="16" selection-start="8826" selection-end="8826" vertical-scroll-proportion="0.44250363" vertical-offset="6326" max-vertical-offset="8385">
+        <state line="536" column="5" selection-start="10825" selection-end="10825" vertical-scroll-proportion="0.47598255" vertical-offset="7713" max-vertical-offset="8640">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/pricing/basic.html">
+    <entry file="file://$PROJECT_DIR$/gulpfile.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="172" column="7" selection-start="10606" selection-end="10606" vertical-scroll-proportion="0.46656978" vertical-offset="2259" max-vertical-offset="5430">
+        <state line="17" column="0" selection-start="715" selection-end="715" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="8580">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="51" selection-start="846" selection-end="846" vertical-scroll-proportion="0.37063953" vertical-offset="0" max-vertical-offset="4185">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pub/blog/who_are_you_in_the_marketing_forest/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="22" selection-start="502" selection-end="502" vertical-scroll-proportion="0.19622093" vertical-offset="0" max-vertical-offset="2355">
+          <folding>
+            <element signature="n#style#0;n#a#0;n#div#1;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
