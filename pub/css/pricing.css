@@ -1,3 +1,12 @@
+.enterprise .tx {
+    color: #fff;
+}
+.enterprise .pbtn.tx {
+    color: #000;
+}
+.enterprise .content_wr.__pricing {
+    padding-bottom: 100px;
+}
 .pricing_title {
     position: relative;
     height: 326px;
@@ -15,6 +24,10 @@
 }
 .pricing_title.__business {
     background-image: url(../i/pricing/business-header.jpg);
+    height: 270px;
+}
+.pricing_title.__enterprise {
+    background-image: url(../i/pricing/mob-enterprise-header.jpg);
     height: 270px;
 }
 
@@ -37,6 +50,11 @@
     padding-top: 12px;
     text-align: center;
     background-color: #ff4e4e;
+}
+.pricing_title_h.__enterprise {
+    padding-top: 12px;
+    text-align: center;
+    background-color: #000;
 }
 
 .pricing_title_h h1 {
@@ -270,15 +288,18 @@
 .pricing_tariff_desc_blk {
     background-color: #fff;
 }
+.pricing_tariff_desc_blk.__enterprise {
+    background-color: #000;
+}
 
 .pricing_tariff_desc_blk h2 {
     padding-top: 40px;
-    font-size: 22px;
+    font-size: 28px;
 }
 
 .pricing_tariff_desc_blk p {
     padding-top: 28px;
-    line-height: 20px;
+    line-height: 22px;
 }
 
 .pricing_tariff_signup_blk {
@@ -296,6 +317,10 @@
     border-color: #ff4e4e;
     padding: 34px 0;
 }
+.pricing_tariff_signup_blk.__enterprise {
+    border-color: #fff;
+    padding: 34px 0;
+}
 .pricing_tariff_signup_blk p {
     padding-top: 8px;
 }
@@ -308,6 +333,9 @@
 
 .pricing_tariff_signup_i span {
     color: #4dc480;
+}
+.pricing_tariff_signup_i.__enterprise span {
+    color: #fff;
 }
 .pricing_tariff_signup_i.__basic span {
     color: #4c99f7;
@@ -417,10 +445,13 @@
     color: #484848;
     padding: 5px;
 }
+.pricing_radio_btn_blk.__enterprise {
+    color: #fff;
+}
 .pricing_radio_btn {
     position: relative;
     border: 2px solid #fff;
-    background-color: #fff;
+    /*background-color: #fff;*/
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -429,6 +460,9 @@
     height: 12px;
     border-radius: 99px;
     cursor: pointer;
+}
+.pricing_radio_btn.__enterprise {
+    border: 2px solid #000;
 }
 .pricing_radio_btn:after {
     content: '';
@@ -440,11 +474,17 @@
     border: 1px solid #4c99f7;
     border-radius: 99px;
 }
+.pricing_radio_btn.__enterprise:after {
+    border-color: #fff;
+}
 .pricing_radio_btn.__business:after {
     border-color: #ff4e4e;
 }
 .pricing_radio_btn:checked {
     background-color: #4c99f7;
+}
+.pricing_radio_btn.__enterprise:checked {
+    background-color: #fff;
 }
 .pricing_radio_btn.__business:checked {
     background-color: #ff4e4e;
@@ -519,7 +559,9 @@
     }
     .pricing_tariff_signup_blk,
     .pricing_tariff_signup_blk.__basic,
-    .pricing_tariff_signup_blk.__business {
+    .pricing_tariff_signup_blk.__business,
+    .pricing_tariff_signup_blk.__enterprise
+    {
         padding: 30px;
     }
     .pricing_tariff_signup_i {

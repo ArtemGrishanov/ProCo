@@ -305,8 +305,10 @@ var App = App || {};
             sites10: 'До 10 сайтов',
             basic_price: '5 900 ₽',
             basic_price_month: '6 900 ₽',
-            business_price: '19 900 ₽',
-            business_price_month: '17 900 ₽',
+            business_price: '17 900 ₽',
+            business_price_month: '19 900 ₽',
+            enterprise_price: '59 900 ₽',
+            enterprise_price_month: '69 900 ₽',
             basic_desc_1: 'Профессиональный подход к созданию контента',
             basic_desc_2: 'Для маркетологов, небольших интернет-изданий и малого бизнеса.',
             upto_basic_views: 'До 100 000 просмотров в месяц',
@@ -435,8 +437,16 @@ var App = App || {};
             business_faq_q5: 'Если я решу не продлевать подписку для опубликованных тестов?',
             business_faq_a5: 'Ваши проекты будут переведены на бесплатный тариф FREE: в углу появится логотип Testix, и может быть включена реклама.',
 
+            enterprise_header: 'Индивидуальный подход',
+            enterprise_page_desc: 'Мы понимаем, что у каждого бизнеса свои особенности. Именно поэтому мы готовы предложить решения, которые подойдут именно вам.',
+            enterprise_header2: 'Ваши задачи - наши решения',
+            enterprise_page_desc2: 'В арсенале команды Testix десятки механик, проверенных при работе с крупными брендами и социальными сетями, а также более чем 7-летний опыт создания интерактивного контента.',
+            enterprise_page_desc3: 'Набор механик, доступных в редакторе Testix, постоянно пополняется. Новые форматы в первую очередь становятся доступны для пользователей тарифа Enterprise. Вместе с тем, новые механики Testix могут быть созданы для решения именно ваших задач.',
+            enterprise_header3: 'Напишите нам – мы подготовим для вас<br>уникальное предложение.',
+
             monthly_subscription: 'Подписка на месяц',
-            annual_subscription: 'Подписка на год'
+            annual_subscription: 'Подписка на год',
+            order: 'Заказать'
         },
         'EN': {
             main_desc: 'Interactive content builder',
@@ -692,6 +702,8 @@ var App = App || {};
             basic_price_month: '119 USD',
             business_price: '299 USD',
             business_price_month: '349 USD',
+            enterprise_price: '999 USD',
+            enterprise_price_month: '1299 USD',
             basic_desc_1: 'Professional way to creating content',
             basic_desc_2: 'For marketers, small online publications and small businesses.',
             upto_basic_views: 'Up to 100 000 views per month',
@@ -803,8 +815,16 @@ var App = App || {};
             business_faq_q5: 'If I will not to renew the subscription for published projects?',
             business_faq_a5: 'Your projects will be transferred to the FREE tariff: a Testix logo will appear in project, and advertising may be included.',
 
+            enterprise_header: 'Individual service',
+            enterprise_page_desc: 'We realise that each business has its own characteristics.<br>That\'s why we are ready to offer solutions that are right for you.',
+            enterprise_header2: 'Your tasks - our solutions',
+            enterprise_page_desc2: 'We work with large brands and social networks more then 7 year having dozens interactive formats in our baggage.',
+            enterprise_page_desc3: 'A set of interactive formats available in the Testix editor is constantly growing. New formats are primarily available to Enterprise tariff users. However, the new Testix interactive formats can be created to solve your business tasks.',
+            enterprise_header3: 'Send us a message – we will prepare<br>a special offer for you',
+
             monthly_subscription: 'Monthly subscription',
-            annual_subscription: 'Annual subscription'
+            annual_subscription: 'Annual subscription',
+            order: 'Purchase'
         }
     },
     /**
