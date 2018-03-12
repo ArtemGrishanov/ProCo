@@ -101,6 +101,7 @@ var App = App || {};
     var dict = {
         'RU': {
             menu_gallery: 'Галерея шаблонов',
+            testix_pro: 'Testix PRO',
             how_it_works: 'Как это работает',
             faq: 'FAQ',
             contacts: 'Контакты',
@@ -444,11 +445,49 @@ var App = App || {};
             enterprise_page_desc3: 'Набор механик, доступных в редакторе Testix, постоянно пополняется. Новые форматы в первую очередь становятся доступны для пользователей тарифа Enterprise. Вместе с тем, новые механики Testix могут быть созданы для решения именно ваших задач.',
             enterprise_header3: 'Напишите нам – мы подготовим для вас<br>уникальное предложение.',
 
+            education_header: 'Интерактивный контент для образовательных и социальных проектов',
+            education_desc_page: 'Специальный тариф для музеев, театров, образовательных и благотворительных проектов и некоммерческих организаций. Расширенные возможности Testix – бесплатно.',
+            education_feature_h1: 'Весь базовый функционал Testix',
+            education_feature_a1: 'Вам доступны все механики Testix',
+            education_feature_h2: 'Галерея шаблонов',
+            education_feature_a2: 'В вашем распоряжении галерея шаблонов Testix',
+            education_feature_h22: 'Некоммерческое использование',
+            education_feature_a22: 'Тариф не подходит для коммерческих проектов',
+            education_feature_h3: 'До 300 000 просмотров в месяц',
+            education_feature_a3: 'Считается сумма неуникальных просмотров проектов в месяц',
+            education_feature_h4: 'Логотип Testix',
+            education_feature_a4: 'Проекты публикуются с логотипом Testix. При этом вы можете добавить в проект ваш логотип.',
+            education_feature_h5: 'Без рекламы',
+            education_feature_a5: 'Реклама отключена на весь период действия проекта',
+            education_feature_h6: 'Помощь в создании проекта',
+            education_feature_a6: 'Специалисты Testix проконсультируют вас или помогут с созданием проекта',
+            education_feature_h8: 'Код для вставки на сайт',
+            education_feature_a8: 'Простая интеграция проекта в ваш сайт или блог.',
+            education_feature_h9: 'Доступ к проекту по прямой ссылке',
+            education_feature_a9: 'Если у вас нет возможности встроить html-код на сайт, вы можете использовать прямую ссылку на ваш проект.',
+            education_feature_h10: 'Брендирование страницы публикации',
+            education_feature_a10: 'Если у вас нет возможности встроить html-код на сайт, вы можете использовать прямую ссылку на ваш проект. Брендирование страницы публикации позволяет красиво оформить страницу с вашим проектом.',
+            education_feature_example1: 'Страница проекта в бесплатной версии (тариф Free): стандартный фон и шапка с логотипом Testix',
+            education_feature_example2: 'Брендированная страница: тариф Education позволяет загрузить фоновое изображение, которое превращает ваш тест или игру в полноценный спецпроект.',
+            education_feature_h11: 'Google аналитика',
+            education_feature_a11: 'Доступно подключение счетчика Google Analytics.',
+            education_feature_h12: 'Техническая поддержка в течение 2 рабочих дней',
+            education_feature_a12: 'В случае возникновения вопросов наши специалисты стараются оказывать техническую поддержку максимально быстро, но гарантированно свяжутся с вами в течение 2 рабочих дней.',
+            education_faq_q1: 'Как понять, подходит ли мой проект для бесплатного тарифа Education?',
+            education_faq_a1: 'Напишите нам. В письме расскажите о вашем проекте и о том, как бы вы хотели его реализовать. Наши специалисты обязательно свяжутся с вами.',
+            education_faq_q2: 'Что если мне потребуется помощь в создании проекта?',
+            education_faq_a2: 'Специалисты Testix могут проконсультировать или принять непосредственное участие в создании проекта. Такие вопросы решаются индивидуально и зависят от типа проекта и его социальной значимости.',
+            education_faq_q3: 'Есть ли ограничения по количеству опубликованных тестов в месяц?',
+            education_faq_a3: 'Нет, вы можете создавать неограниченное количество тестов или других проектов.',
+            education_faq_q4: 'Проекты удаляются со временем?',
+            education_faq_a4: 'Нет, проекты не удаляются. Ваши публикации в безопасности.',
+
             monthly_subscription: 'Подписка на месяц',
             annual_subscription: 'Подписка на год',
             order: 'Заказать'
         },
         'EN': {
+            testix_pro: 'Testix PRO',
             main_desc: 'Interactive content builder',
             special_what_is_it: 'What special project is?',
             business_solutions: 'Business solutions',
@@ -768,8 +807,8 @@ var App = App || {};
             basic_feature_example2: 'Branded page: Basic tariff allows you to download a background image that turns your test or game into a full-fledged special project.',
             basic_faq_q1: 'What happens when the view limit is exceeded?',
             basic_faq_a1: 'If you exceed the limit of views, we will suggest that you switch to the Business tariff or choose to show ads. Our account will contact you to discuss the option that suits you more. In any case, you can be calm for your project: the publication will not be canceled.',
-            basic_faq_q2: '-',
-            basic_faq_a2: '-',
+            basic_faq_q2: 'If the number of views exceeds the limit but I don\'t want advertising to appear in my test at what rate will the service be paid?',
+            basic_faq_a2: 'You will pay according to your tariff, but next month we will offer you to pay for the actual number of views in the previous month.',
             basic_faq_q3: 'Are there limits on the number of published projects per month?',
             basic_faq_a3: 'No, you can create an unlimited number of projects or other projects.',
             basic_faq_q4: 'Will be my projects deleted after some time?',
@@ -794,8 +833,6 @@ var App = App || {};
             business_feature_a5: 'Simple project integration into your website or blog',
             business_feature_h6: 'Project direct link',
             business_feature_a6: 'If you do not have the opportunity to embed html-code on the site, you can use a direct link to your project',
-            business_feature_h7: 'Project direct link',
-            business_feature_a7: 'Если у вас нет возможности встроить html-код на сайт, вы можете использовать прямую ссылку на ваш проект',
             business_feature_h8: 'Publish page branding',
             business_feature_a8: 'If you do not have the opportunity to embed html-code on the site, you can use a direct link to your project. The publication page branding allows you to beautifully design a page with your project.',
             business_feature_h9: 'Google analytics',
@@ -821,6 +858,43 @@ var App = App || {};
             enterprise_page_desc2: 'We work with large brands and social networks more then 7 year having dozens interactive formats in our baggage.',
             enterprise_page_desc3: 'A set of interactive formats available in the Testix editor is constantly growing. New formats are primarily available to Enterprise tariff users. However, the new Testix interactive formats can be created to solve your business tasks.',
             enterprise_header3: 'Send us a message – we will prepare<br>a special offer for you',
+
+            education_header: 'Interactive content for educational and social projects',
+            education_desc_page: 'Special tariff for museums, theaters, educational and charitable projects and non-profit organizations. The advanced Testix features are free.',
+            education_feature_h1: 'All Testix features',
+            education_feature_a1: 'All Testix interactive formats are available',
+            education_feature_h2: 'Template gallery',
+            education_feature_a2: 'At your disposal is the Testix template gallery',
+            education_feature_h22: 'Non-Commercial Use',
+            education_feature_a22: 'Tariff is not suitable for commercial projects',
+            education_feature_h3: 'Up to 300 000 views per month',
+            education_feature_a3: 'The amount of non-unique project views per month',
+            education_feature_h4: 'Testix logo',
+            education_feature_a4: 'Projects are published with the Testix logo. Also you can add your logo to the project',
+            education_feature_h5: 'No ads',
+            education_feature_a5: 'Advertising is disabled for the time of the project',
+            education_feature_h6: 'Project design assistance',
+            education_feature_a6: 'Testix experts will help you create up to three projects per month by your design',
+            education_feature_h8: 'Embed code',
+            education_feature_a8: 'Simple project integration into your website or blog',
+            education_feature_h9: 'Project direct link',
+            education_feature_a9: 'If you do not have the opportunity to embed html-code on the site, you can use a direct link to your project',
+            education_feature_h10: 'Publish page branding',
+            education_feature_a10: 'If you do not have the opportunity to embed html-code on the site, you can use a direct link to your project. The publication page branding allows you to beautifully design a page with your project.',
+            education_feature_example1: 'Project page in free tariff: common background and Testix header',
+            education_feature_example2: 'Branded page: Education tariff allows to set background image. That turns your quiz or game to special project',
+            education_feature_h11: 'Google analytics',
+            education_feature_a11: 'You can connect project to Google Analytics.',
+            education_feature_h12: 'Tech support within 2 working days',
+            education_feature_a12: 'In case of questions, our specialists try to provide technical support as quickly as possible, but they will surely contact you within 2 working days.',
+            education_faq_q1: 'Is my project suitable for free Education tariff?',
+            education_faq_a1: 'Write to us. Describe your idea and how you are going to implement it. Our accounts will answer you',
+            education_faq_q2: 'What if I need help creating a project?',
+            education_faq_a2: 'Testix accounts can consult or take a direct part in the project design. Such issues are discussed individually and depend on the type of project and its social significance.',
+            education_faq_q3: 'Are there limits on the number of published projects per month?',
+            education_faq_a3: 'No, you can create an unlimited number of projects or other projects.',
+            education_faq_q4: 'Will be my projects deleted after some time?',
+            education_faq_a4: 'No, projects are not deleted. Your work is in safe.',
 
             monthly_subscription: 'Monthly subscription',
             annual_subscription: 'Annual subscription',
@@ -1106,6 +1180,22 @@ var App = App || {};
 
         $('.js-card_pano').click(function() {
             stat('Testix.me/blog', 'Blog_card_pano_click');
+        });
+
+        $('.js-pricing_order_free').click(function() {
+            stat('Testix.me/pricing', 'Pricing_free_order');
+        });
+        $('.js-pricing_order_basic').click(function() {
+            stat('Testix.me/pricing', 'Pricing_basic_purchase');
+        });
+        $('.js-pricing_order_business').click(function() {
+            stat('Testix.me/pricing', 'Pricing_business_purchase');
+        });
+        $('.js-pricing_order_enterprise').click(function() {
+            stat('Testix.me/pricing', 'Pricing_enterprise_purchase');
+        });
+        $('.js-pricing_order_education').click(function() {
+            stat('Testix.me/pricing', 'Pricing_education_purchase');
         });
     }
 

@@ -26,6 +26,10 @@
     background-image: url(../i/pricing/business-header.jpg);
     height: 270px;
 }
+.pricing_title.__education {
+    background-image: url(../i/pricing/education-header.jpg);
+    height: 270px;
+}
 .pricing_title.__enterprise {
     background-image: url(../i/pricing/mob-enterprise-header.jpg);
     height: 270px;
@@ -50,6 +54,11 @@
     padding-top: 12px;
     text-align: center;
     background-color: #ff4e4e;
+}
+.pricing_title_h.__education {
+    padding-top: 12px;
+    text-align: center;
+    background-color: #4dc480;
 }
 .pricing_title_h.__enterprise {
     padding-top: 12px;
@@ -113,17 +122,17 @@
     border-radius: 4px;
     line-height: 24px;
 }
-/*.pricing_card_h.__free {*/
-    /*background-color: #4dc480;*/
-/*}*/
-/*.pricing_card_h.__business {*/
-    /*background-color: #ff4e4e;*/
-    /*color: #ff4e4e;*/
-/*}*/
-/*.pricing_card_h.__basic {*/
-    /*background-color: #4c99f7;*/
-    /*color: #4c99f7;*/
-/*}*/
+.pricing_card_h.__free {
+    background-color: #4dc480;
+}
+.pricing_card_h.__business {
+    background-color: #ff4e4e;
+    color: #ff4e4e;
+}
+.pricing_card_h.__basic {
+    background-color: #4c99f7;
+    color: #4c99f7;
+}
 
 .pricing_card_h p {
     margin: 0 0 20px;
@@ -233,6 +242,9 @@
 }
 .pricing_icon.__user {
     background-image: url(../i/pricing/icons/user.png);
+}
+.pricing_icon.__info {
+    background-image: url(../i/pricing/icons/info.png);
 }
 
 .pricing_desc_txt {
@@ -406,8 +418,11 @@
 .pricing_col {
     display: inline-block;
     vertical-align: top;
-    width: 500px;
+    width: 490px;
     text-align: left;
+}
+.pricing_col + .pricing_col {
+    margin-left: 20px;
 }
 .pricing_faq_q {
     padding: 0 0 40px;
@@ -560,6 +575,7 @@
     .pricing_tariff_signup_blk,
     .pricing_tariff_signup_blk.__basic,
     .pricing_tariff_signup_blk.__business,
+    .pricing_tariff_signup_blk.__education,
     .pricing_tariff_signup_blk.__enterprise
     {
         padding: 30px;
@@ -624,6 +640,12 @@
     .pricing_feature_pro_imgs_col + .pricing_feature_pro_imgs_col {
         margin-left: 0;
     }
+    .pricing_title.__education {
+        background-image: url(../i/pricing/mob-education-header.jpg);
+    }
+    .pricing_col + .pricing_col {
+        margin-left: 0;
+    }
 }
 
 /* ============= */
@@ -647,5 +669,14 @@
     }
     .pricing_title.__business {
         background-image: url(../i/pricing/business-header@2x.jpg);
+    }
+    .pricing_title.__education {
+        background-image: url(../i/pricing/education-header@2x.jpg);
+    }
+}
+
+@media (max-width:1000px) and (-webkit-min-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi), (min-resolution: 1.5dppx) {
+    .pricing_title.__education {
+        background-image: url(../i/pricing/mob-education-header@2x.jpg);
     }
 }

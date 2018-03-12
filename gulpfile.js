@@ -13,7 +13,7 @@
  *          если я планирую склеить этот файл с общие стили style.css то по идее ссылка не нужна эта
  *
  */
-var productVersion = 'v2.1.7';
+var productVersion = 'v2.1.8';
 
 
 var gulp = require('gulp');
