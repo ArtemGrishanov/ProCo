@@ -137,4 +137,9 @@ var Modal = {};
 //    };
 //    global.hideSignup12_2017Modal = function () { _hide(Signup12_2017Modal) };
 
+    global.showNotif04_2018Modal = function (data) {
+        _show(Notif04_2018Modal, data);
+    };
+    global.hideNotif04_2018Modal = function () { _hide(Notif04_2018Modal) };
+
 })(Modal);

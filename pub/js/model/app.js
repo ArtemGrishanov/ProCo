@@ -898,7 +898,7 @@ var App = App || {};
 
             monthly_subscription: 'Monthly subscription',
             annual_subscription: 'Annual subscription',
-            order: 'Purchase'
+            order: 'Order'
         }
     },
     /**
@@ -1038,6 +1038,15 @@ var App = App || {};
             Auth.tryRestoreSession();
         }
         initScripts();
+
+        // <TODO remove
+        if (window.localStorage.getItem('notif04_2018_status') != 'shown') {
+            Modal.showNotif04_2018Modal({
+                canClose: true
+            });
+            window.localStorage.setItem('notif04_2018_status', 'shown');
+        }
+        // <TODO remove
     }
 
     /**

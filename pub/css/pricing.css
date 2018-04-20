@@ -465,6 +465,7 @@
 }
 .pricing_radio_btn {
     position: relative;
+    margin-right: 8px;
     border: 2px solid #fff;
     /*background-color: #fff;*/
     appearance: none;

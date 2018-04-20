@@ -1099,6 +1099,10 @@ var config = {
         signup12_2017Modal: {
             templateUrl: 'templates/signup_12_2017.html',
             defZIndex: 95
+        },
+        notif04_2018Modal: {
+            templateUrl: 'templates/notif_04_2018.html',
+            defZIndex: 95
         }
     },
     scripts: {

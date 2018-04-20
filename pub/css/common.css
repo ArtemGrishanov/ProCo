@@ -24,6 +24,9 @@ input:focus {
 select {
     height: 20px;
 }
+.blue {
+    color: #499cf3 !important;
+}
 .narrow_width {
     display: none;
 }
