@@ -127,6 +127,8 @@ var App = App || {};
             cat_fbpano_header: 'Панорамы 360° для Facebook',
             cat_fbpano_header_start: 'Создайте панорамы, загрузив изображение',
             cat_pano_header: 'Панорамы',
+            cat_photostory: 'Фотоистории',
+            cat_photostory_desc: 'Расскажите своим читателям историю, которой пользователь сможет поделиться в соцсетях. Фотоистории подойдут для рассказа о фактах истории, ТОПов, обзоров продуктов и многого другого',
             cat_timeline: 'Таймлайн',
             timelines: 'Таймлайны',
             cat_timeline_desc: 'Лучший способ наглядно показать хронологию событий: эволюцию технологий, последовательность политических решений или этапы развития вашей компании.<br>Отправьте заявку, чтобы получить ранний доступ.',
@@ -158,6 +160,7 @@ var App = App || {};
             choose_pano_template: 'Выберите шаблон панорам',
             choose_memory_game: 'Выберите шаблон мемори',
             choose_fbpano_template: 'Выберите шаблон Facebook-панорамы',
+            choose_photostory_template: 'Выберите шаблон фотоистории',
             request_demo: 'Отправить заявку',
             write_message: 'Написать сообщение',
             new_formats_request: 'Хотите заранее узнавать о новых механиках?<br>Напишите нам!',
@@ -545,6 +548,8 @@ var App = App || {};
             cat_fbpano_header: 'Facebook 360 photos',
             cat_fbpano_header_start: 'Upload an image and create panorama',
             cat_pano_header: 'Panoramas',
+            cat_photostory: 'Photostories',
+            cat_photostory_desc: 'Tell a story to your users, and they can share it! Photostories are useful for discovering history facts, ratings, product reviews and many others.',
             cat_timeline: 'Timelines',
             timelines: 'Timelines',
             cat_timeline_desc: 'The best way to clearly show the chronology of events: the evolution of technology, policy decisions or your company growth.',
@@ -576,6 +581,7 @@ var App = App || {};
             choose_memory_game: 'Choose memory template',
             choose_pano_template: 'Choose panorama template',
             choose_fbpano_template: 'Choose panorama template',
+            choose_photostory_template: 'Choose photostory template',
             request_demo: 'Request demo',
             write_message: 'Write message',
             new_formats_request: 'Want to know in advance about new mechanics?<br>Contact us!',
@@ -1039,14 +1045,14 @@ var App = App || {};
         }
         initScripts();
 
-        // <TODO remove
-        if (window.localStorage.getItem('notif04_2018_status') != 'shown') {
-            Modal.showNotif04_2018Modal({
-                canClose: true
-            });
-            window.localStorage.setItem('notif04_2018_status', 'shown');
-        }
-        // <TODO remove
+        // removed 2018.05.10
+//        if (window.localStorage.getItem('notif04_2018_status') != 'shown') {
+//            Modal.showNotif04_2018Modal({
+//                canClose: true
+//            });
+//            window.localStorage.setItem('notif04_2018_status', 'shown');
+//        }
+        // /removed
     }
 
     /**

@@ -406,7 +406,7 @@ li.progressive img.reveal {
         padding: 0;
     }
     .modal {
-        overflow: auto;
+        /*overflow: auto; bad effects on mobile in preview mode */
         /*box-sizing: border-box;*/
         /*padding: 0 25px 0 25px;*/
     }

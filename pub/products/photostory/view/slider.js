@@ -117,6 +117,20 @@ var SliderScreen = MutApp.Screen.extend({
     toLeftClick: function() {
         var slideIndex = this.model.get('slideIndex');
         this.model.setSlideIndex(slideIndex-1);
+
+        // ширину слайда при первом таче определяем
+        this.slideWidth = this.$slidesCnt.width();
+        //Важный момент: выбрал вычисление индекса при начале перетаскивания не по модели а по положению контейнера
+        //так как бывает рассинхрон
+        this.touchSlideIndex = Math.round(-this.slideCntTranslateX / this.slideWidth);
+        this.isLeftEdge = this.touchSlideIndex <= 0
+
+        if (this.isLeftEdge === false) {
+            var si = this.model.get('slideIndex');
+            this.slideCntTranslateX = (-si*this.slideWidth);
+            this.$slidesCnt.addClass('animate');
+            this.$slidesCnt.css('transform','translate3d(' + this.slideCntTranslateX + 'px,0,0)');
+        }
     },
 
     toRightClick: function() {

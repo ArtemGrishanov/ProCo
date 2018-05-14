@@ -318,6 +318,22 @@ var config = {
                         height: '600px'
                     },
                     {
+                        name: {EN:'Guess the country',RU:'Guess the country'},
+                        img: 'http://p.testix.me/storefront/trivia/033f2e25e3.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/033f2e25e3/p_index.html',
+                        template: 'http://p.testix.me/storefront/trivia/033f2e25e3.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        name: {EN:'Guess the country by the sight',RU:'Guess the country by the sight'},
+                        img: 'http://p.testix.me/storefront/trivia/06b60e4ae6.jpg',
+                        published: 'http://p.testix.me/storefront/trivia/06b60e4ae6/p_index.html',
+                        template: 'http://p.testix.me/storefront/trivia/06b60e4ae6.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
                         name: {EN:'Books',RU:'Книга по цитате'},
                         img: 'http://p.testix.me/storefront/trivia/Trivia-Books.jpg',
                         published: 'http://p.testix.me/storefront/trivia/2dc078e94e/p_index.html',
@@ -373,6 +389,22 @@ var config = {
                         height: '600px'
                     },
                     {
+                        name: {EN:'What Kind Of Cat Personality Are You?',RU:'What Kind Of Cat Personality Are You?'},
+                        img: 'http://p.testix.me/storefront/personality/62a0f12c47.jpg',
+                        published: 'http://p.testix.me/storefront/personality/62a0f12c47/p_index.html',
+                        template: 'http://p.testix.me/storefront/personality/62a0f12c47.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        name: {EN:'What\'s your psycological age?',RU:'What\'s your psycological age?'},
+                        img: 'http://p.testix.me/storefront/personality/0d5986b09d.jpg',
+                        published: 'http://p.testix.me/storefront/personality/0d5986b09d/p_index.html',
+                        template: 'http://p.testix.me/storefront/personality/0d5986b09d.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
                         name: {EN:'Travel',RU:'Путешествия'},
                         img: 'http://p.testix.me/storefront/personality/Personality-Travel.jpg',
                         published: 'http://p.testix.me/storefront/personality/8a2e558523/p_index.html',
@@ -411,6 +443,14 @@ var config = {
 //                        width: '800px',
 //                        height: '600px'
 //                    },
+                    {
+                        name: {RU:'Countries and cuisines',EN:'Countries and cuisines'},
+                        img: 'http://p.testix.me/storefront/memoriz/0d54e681da.jpg',
+                        published: 'http://p.testix.me/storefront/memoriz/0d54e681da/p_index.html',
+                        template: 'http://p.testix.me/storefront/memoriz/0d54e681da.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
                     {
                         //Футболисты http://p.testix.me/1045302892173346/53b37bf1e9
                         name: {RU:'Футболисты',EN:'Soccer players'},
@@ -482,6 +522,47 @@ var config = {
                         height: '600px',
                         getParams: 'appStorage=ref:strf',
                         appName: 'fbPanorama'
+                    },
+                    {
+                        name: {RU:'Night London',EN:'Night London'},
+                        img: 'http://p.testix.me/storefront/fbPano/03b1ef3679.jpg',
+                        published: null,
+                        externalLink: 'https://www.facebook.com/photo.php?fbid=463355314093870&set=a.246638115765592.1073741832.100012582155261&type=3',
+                        template: 'http://p.testix.me/storefront/fbPano/03b1ef3679.txt',
+                        width: '800px',
+                        height: '600px',
+                        getParams: 'appStorage=ref:strf',
+                        appName: 'fbPanorama'
+                    }
+                ]
+            },
+            photostory: {
+                typeLabel: {EN:'Photostory',RU:'Фотоистории'},
+                enabled: true,
+                entities: [
+                    {
+                        name: {RU:'10 самых умных пород собак',EN:'10 of the smartest dog breeds'},
+                        img: 'http://p.testix.me/storefront/photostory/e1dd98a2fc.jpg',
+                        published: 'http://p.testix.me/storefront/photostory/e1dd98a2fc/p_index.html',
+                        template: 'http://p.testix.me/storefront/photostory/e1dd98a2fc.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        name: {RU:'Самые красивые актрисы России',EN:'The gorgeous Russian actress'},
+                        img: 'http://p.testix.me/storefront/photostory/73b7774600.jpg',
+                        published: 'http://p.testix.me/storefront/photostory/73b7774600/p_index.html',
+                        template: 'http://p.testix.me/storefront/photostory/73b7774600.txt',
+                        width: '800px',
+                        height: '600px'
+                    },
+                    {
+                        name: {RU:'10 самых популярных пород кошек',EN:'The most popular cat breeds'},
+                        img: 'http://p.testix.me/storefront/photostory/bcb07c9016.jpg',
+                        published: 'http://p.testix.me/storefront/photostory/bcb07c9016/p_index.html',
+                        template: 'http://p.testix.me/storefront/photostory/bcb07c9016.txt',
+                        width: '800px',
+                        height: '600px'
                     }
                 ]
             },

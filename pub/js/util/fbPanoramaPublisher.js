@@ -102,7 +102,8 @@ var fbPanoramaPublisher = {};
     }
 
     function initFB() {
-        window.fbAsyncInit = function() {
+
+        function __fbInited() {
             FB.init({
                 appId      : config.common.facebookAppId,
                 cookie     : true,  // enable cookies to allow the server to access
@@ -152,15 +153,24 @@ var fbPanoramaPublisher = {};
 
                 }
             });
-        };
-        // Load the SDK asynchronously
-        (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
+        }
+
+        if (window.FB) {
+            __fbInited();
+        }
+        else {
+            window.fbAsyncInit = function() {
+                __fbInited();
+            };
+            // Load the SDK asynchronously
+            (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        }
     }
 
     /**

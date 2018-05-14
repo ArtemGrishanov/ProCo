@@ -63,6 +63,9 @@ html, body {
 .st_tour_image.__fbPanorama {
     background-image: url(../i/preview-fbpanorama.png);
 }
+.st_tour_image.__photostory {
+    background-image: url(../i/products/photostory/storefront_preview.jpg);
+}
 .st_tour_image.__zoommap {
     background-image: url(../i/preview-zoom.png);
 }
@@ -449,6 +452,10 @@ html, body {
     .st_tour_image.__fbPanorama {
         background-image: url(../i/preview-fbpanorama@2x.png);
         background-size: 272px 204px;
+    }
+    .st_tour_image.__photostory {
+        background-image: url(../i/products/photostory/storefront_preview@2x.jpg);
+        background-size: 272px 205px;
     }
     .st_tour_image.__zoommap {
         background-image: url(../i/preview-zoom.png);
