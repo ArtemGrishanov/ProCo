@@ -217,7 +217,7 @@ var config = {
         anonymPageAnchorToEmbed: '<!--embed_code-->',
         /**
          * Если в прилжении стоит вот такая ссылка, то она будет автоматически заменена при старте редактора
-         * на ссылку вида http://p.testix.me/121947341568004/be169f9a66
+         * на ссылку вида https://p.testix.me/121947341568004/be169f9a66
          */
         defaultShareLinkToChange: 'https://testix.me/',
         /**
@@ -303,73 +303,73 @@ var config = {
                 entities: [
                     {
                         name: {EN:'Simple Trivia',RU:'Простой Тривиа'},
-                        img: 'http://p.testix.me/storefront/trivia/Cover-Trivia-Simple.jpg',
-                        published: 'http://p.testix.me/storefront/trivia/5cf03a1d61/p_index.html',
-                        template: 'http://p.testix.me/storefront/trivia/5cf03a1d61.txt',
+                        img: 'https://p.testix.me/storefront/trivia/Cover-Trivia-Simple.jpg',
+                        published: 'https://p.testix.me/storefront/trivia/5cf03a1d61/p_index.html',
+                        template: 'https://p.testix.me/storefront/trivia/5cf03a1d61.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {EN:'Simple Trivia with picture',RU:'Простой Тривиа с картинкой'},
-                        img: 'http://p.testix.me/storefront/trivia/Cover-Trivia-Simple-Black.jpg',
-                        published: 'http://p.testix.me/storefront/trivia/0c5710c9a5/p_index.html',
-                        template: 'http://p.testix.me/storefront/trivia/0c5710c9a5.txt',
+                        img: 'https://p.testix.me/storefront/trivia/Cover-Trivia-Simple-Black.jpg',
+                        published: 'https://p.testix.me/storefront/trivia/0c5710c9a5/p_index.html',
+                        template: 'https://p.testix.me/storefront/trivia/0c5710c9a5.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {EN:'Guess the country',RU:'Guess the country'},
-                        img: 'http://p.testix.me/storefront/trivia/033f2e25e3.jpg',
-                        published: 'http://p.testix.me/storefront/trivia/033f2e25e3/p_index.html',
-                        template: 'http://p.testix.me/storefront/trivia/033f2e25e3.txt',
+                        img: 'https://p.testix.me/storefront/trivia/033f2e25e3.jpg',
+                        published: 'https://p.testix.me/storefront/trivia/033f2e25e3/p_index.html',
+                        template: 'https://p.testix.me/storefront/trivia/033f2e25e3.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {EN:'Guess the country by the sight',RU:'Guess the country by the sight'},
-                        img: 'http://p.testix.me/storefront/trivia/06b60e4ae6.jpg',
-                        published: 'http://p.testix.me/storefront/trivia/06b60e4ae6/p_index.html',
-                        template: 'http://p.testix.me/storefront/trivia/06b60e4ae6.txt',
+                        img: 'https://p.testix.me/storefront/trivia/06b60e4ae6.jpg',
+                        published: 'https://p.testix.me/storefront/trivia/06b60e4ae6/p_index.html',
+                        template: 'https://p.testix.me/storefront/trivia/06b60e4ae6.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {EN:'Books',RU:'Книга по цитате'},
-                        img: 'http://p.testix.me/storefront/trivia/Trivia-Books.jpg',
-                        published: 'http://p.testix.me/storefront/trivia/2dc078e94e/p_index.html',
-                        template: 'http://p.testix.me/storefront/trivia/2dc078e94e.txt',
+                        img: 'https://p.testix.me/storefront/trivia/Trivia-Books.jpg',
+                        published: 'https://p.testix.me/storefront/trivia/2dc078e94e/p_index.html',
+                        template: 'https://p.testix.me/storefront/trivia/2dc078e94e.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {EN:'Geography',RU:'География'},
-                        img: 'http://p.testix.me/storefront/trivia/Trivia-Geography.jpg',
-                        published: 'http://p.testix.me/storefront/trivia/b2c0c99dbc/p_index.html',
-                        template: 'http://p.testix.me/storefront/trivia/b2c0c99dbc.txt',
+                        img: 'https://p.testix.me/storefront/trivia/Trivia-Geography.jpg',
+                        published: 'https://p.testix.me/storefront/trivia/b2c0c99dbc/p_index.html',
+                        template: 'https://p.testix.me/storefront/trivia/b2c0c99dbc.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {EN:'Russian',RU:'Русский язык'},
-                        img: 'http://p.testix.me/storefront/trivia/Trivia-Russian.jpg',
-                        published: 'http://p.testix.me/storefront/trivia/9c0691210a/p_index.html',
-                        template: 'http://p.testix.me/storefront/trivia/9c0691210a.txt',
+                        img: 'https://p.testix.me/storefront/trivia/Trivia-Russian.jpg',
+                        published: 'https://p.testix.me/storefront/trivia/9c0691210a/p_index.html',
+                        template: 'https://p.testix.me/storefront/trivia/9c0691210a.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {EN:'Artists',RU:'Художники'},
-                        img: 'http://p.testix.me/storefront/trivia/Trivia-Artists.jpg',
-                        published: 'http://p.testix.me/storefront/trivia/a280eed0ab/p_index.html',
-                        template: 'http://p.testix.me/storefront/trivia/a280eed0ab.txt',
+                        img: 'https://p.testix.me/storefront/trivia/Trivia-Artists.jpg',
+                        published: 'https://p.testix.me/storefront/trivia/a280eed0ab/p_index.html',
+                        template: 'https://p.testix.me/storefront/trivia/a280eed0ab.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {EN:'Presidents',RU:'Президенты'},
-                        img: 'http://p.testix.me/storefront/trivia/Trivia-Presidents.jpg',
-                        published: 'http://p.testix.me/storefront/trivia/289066a120/p_index.html',
-                        template: 'http://p.testix.me/storefront/trivia/289066a120.txt',
+                        img: 'https://p.testix.me/storefront/trivia/Trivia-Presidents.jpg',
+                        published: 'https://p.testix.me/storefront/trivia/289066a120/p_index.html',
+                        template: 'https://p.testix.me/storefront/trivia/289066a120.txt',
                         width: '800px',
                         height: '600px'
                     }
@@ -382,49 +382,49 @@ var config = {
                 entities: [
                     {
                         name: {EN:'First Personality',RU:'Мой первый тест «Узнай себя»'},
-                        img: 'http://p.testix.me/storefront/personality/Cover-Personality-Simple.jpg',
-                        published: 'http://p.testix.me/storefront/personality/7782ade9f9/p_index.html',
-                        template: 'http://p.testix.me/storefront/personality/7782ade9f9.txt',
+                        img: 'https://p.testix.me/storefront/personality/Cover-Personality-Simple.jpg',
+                        published: 'https://p.testix.me/storefront/personality/7782ade9f9/p_index.html',
+                        template: 'https://p.testix.me/storefront/personality/7782ade9f9.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {EN:'What Kind Of Cat Personality Are You?',RU:'What Kind Of Cat Personality Are You?'},
-                        img: 'http://p.testix.me/storefront/personality/62a0f12c47.jpg',
-                        published: 'http://p.testix.me/storefront/personality/62a0f12c47/p_index.html',
-                        template: 'http://p.testix.me/storefront/personality/62a0f12c47.txt',
+                        img: 'https://p.testix.me/storefront/personality/62a0f12c47.jpg',
+                        published: 'https://p.testix.me/storefront/personality/62a0f12c47/p_index.html',
+                        template: 'https://p.testix.me/storefront/personality/62a0f12c47.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {EN:'What\'s your psycological age?',RU:'What\'s your psycological age?'},
-                        img: 'http://p.testix.me/storefront/personality/0d5986b09d.jpg',
-                        published: 'http://p.testix.me/storefront/personality/0d5986b09d/p_index.html',
-                        template: 'http://p.testix.me/storefront/personality/0d5986b09d.txt',
+                        img: 'https://p.testix.me/storefront/personality/0d5986b09d.jpg',
+                        published: 'https://p.testix.me/storefront/personality/0d5986b09d/p_index.html',
+                        template: 'https://p.testix.me/storefront/personality/0d5986b09d.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {EN:'Travel',RU:'Путешествия'},
-                        img: 'http://p.testix.me/storefront/personality/Personality-Travel.jpg',
-                        published: 'http://p.testix.me/storefront/personality/8a2e558523/p_index.html',
-                        template: 'http://p.testix.me/storefront/personality/8a2e558523.txt',
+                        img: 'https://p.testix.me/storefront/personality/Personality-Travel.jpg',
+                        published: 'https://p.testix.me/storefront/personality/8a2e558523/p_index.html',
+                        template: 'https://p.testix.me/storefront/personality/8a2e558523.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {EN:'Money',RU:'Любят ли вас деньги'},
-                        img: 'http://p.testix.me/storefront/personality/Personality-Money.jpg',
-                        published: 'http://p.testix.me/storefront/personality/e9dad5f64f/p_index.html',
-                        template: 'http://p.testix.me/storefront/personality/e9dad5f64f.txt',
+                        img: 'https://p.testix.me/storefront/personality/Personality-Money.jpg',
+                        published: 'https://p.testix.me/storefront/personality/e9dad5f64f/p_index.html',
+                        template: 'https://p.testix.me/storefront/personality/e9dad5f64f.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {EN:'Friends',RU:'Душа компании'},
-                        img: 'http://p.testix.me/storefront/personality/Personality-Friends.jpg',
-                        published: 'http://p.testix.me/storefront/personality/1b640802c6/p_index.html',
-                        template: 'http://p.testix.me/storefront/personality/1b640802c6.txt',
+                        img: 'https://p.testix.me/storefront/personality/Personality-Friends.jpg',
+                        published: 'https://p.testix.me/storefront/personality/1b640802c6/p_index.html',
+                        template: 'https://p.testix.me/storefront/personality/1b640802c6.txt',
                         width: '800px',
                         height: '600px'
                     }
@@ -435,36 +435,36 @@ var config = {
                 typeLabel: {EN:'Memory Game',RU:'Игра мемори'},
                 entities: [
 //                    {
-//                        //Интернет мемы http://p.testix.me/1045302892173346/13e4d14521/
+//                        //Интернет мемы https://p.testix.me/1045302892173346/13e4d14521/
 //                        name: {RU:'Интернет-мемы',EN:'Online memes'},
-//                        img: 'http://p.testix.me/storefront/memoriz/13e4d14521.jpg',
-//                        published: 'http://p.testix.me/storefront/memoriz/13e4d14521/p_index.html',
+//                        img: 'https://p.testix.me/storefront/memoriz/13e4d14521.jpg',
+//                        published: 'https://p.testix.me/storefront/memoriz/13e4d14521/p_index.html',
 //                        template: 'storefront/memoriz/13e4d14521.txt',
 //                        width: '800px',
 //                        height: '600px'
 //                    },
                     {
                         name: {RU:'Countries and cuisines',EN:'Countries and cuisines'},
-                        img: 'http://p.testix.me/storefront/memoriz/0d54e681da.jpg',
-                        published: 'http://p.testix.me/storefront/memoriz/0d54e681da/p_index.html',
-                        template: 'http://p.testix.me/storefront/memoriz/0d54e681da.txt',
+                        img: 'https://p.testix.me/storefront/memoriz/0d54e681da.jpg',
+                        published: 'https://p.testix.me/storefront/memoriz/0d54e681da/p_index.html',
+                        template: 'https://p.testix.me/storefront/memoriz/0d54e681da.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
-                        //Футболисты http://p.testix.me/1045302892173346/53b37bf1e9
+                        //Футболисты https://p.testix.me/1045302892173346/53b37bf1e9
                         name: {RU:'Футболисты',EN:'Soccer players'},
-                        img: 'http://p.testix.me/storefront/memoriz/Memori-Football-18.jpg',
-                        published: 'http://p.testix.me/storefront/memoriz/f720897024/p_index.html',
-                        template: 'http://p.testix.me/storefront/memoriz/f720897024.txt',
+                        img: 'https://p.testix.me/storefront/memoriz/Memori-Football-18.jpg',
+                        published: 'https://p.testix.me/storefront/memoriz/f720897024/p_index.html',
+                        template: 'https://p.testix.me/storefront/memoriz/f720897024.txt',
                         width: '800px',
                         height: '600px'
                     },
 //                    {
-//                        //Фильмы и режиссеры  http://p.testix.me/121947341568004/6842f5cd6d/
+//                        //Фильмы и режиссеры  https://p.testix.me/121947341568004/6842f5cd6d/
 //                        name: {RU:'Кино и режиссеры',EN:'Movies and directors'},
-//                        img: 'http://p.testix.me/storefront/memoriz/6842f5cd6d.jpg',
-//                        published: 'http://p.testix.me/storefront/memoriz/6842f5cd6d/p_index.html',
+//                        img: 'https://p.testix.me/storefront/memoriz/6842f5cd6d.jpg',
+//                        published: 'https://p.testix.me/storefront/memoriz/6842f5cd6d/p_index.html',
 //                        // in proconstructor/storefront/memoriz
 //                        template: 'storefront/memoriz/6842f5cd6d.txt',
 //                        width: '800px',
@@ -473,18 +473,18 @@ var config = {
                     {
                         //Автомобили
                         name: {RU:'Автомобили',EN:'Cars'},
-                        img: 'http://p.testix.me/storefront/memoriz/Memori-Cars-12.jpg',
-                        published: 'http://p.testix.me/storefront/memoriz/5ae1ea7514/p_index.html',
-                        template: 'http://p.testix.me/storefront/memoriz/5ae1ea7514.txt',
+                        img: 'https://p.testix.me/storefront/memoriz/Memori-Cars-12.jpg',
+                        published: 'https://p.testix.me/storefront/memoriz/5ae1ea7514/p_index.html',
+                        template: 'https://p.testix.me/storefront/memoriz/5ae1ea7514.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         //Красотки
                         name: {RU:'Красотки',EN:'Beauty'},
-                        img: 'http://p.testix.me/storefront/memoriz/Memori-Girls-10.jpg',
-                        published: 'http://p.testix.me/storefront/memoriz/47ccfd9ec8/p_index.html',
-                        template: 'http://p.testix.me/storefront/memoriz/47ccfd9ec8.txt',
+                        img: 'https://p.testix.me/storefront/memoriz/Memori-Girls-10.jpg',
+                        published: 'https://p.testix.me/storefront/memoriz/47ccfd9ec8/p_index.html',
+                        template: 'https://p.testix.me/storefront/memoriz/47ccfd9ec8.txt',
                         width: '800px',
                         height: '600px'
                     }
@@ -495,10 +495,10 @@ var config = {
                 enabled: false,
                 entities: [
                     {
-                        //Сингапур http://p.testix.me/121947341568004/3396d27281/               deprecated: http://p.testix.me/121947341568004/1d1f4f3236/
+                        //Сингапур https://p.testix.me/121947341568004/3396d27281/               deprecated: https://p.testix.me/121947341568004/1d1f4f3236/
                         name: {RU:'Сингапур',EN:'Singapore'},
-                        img: 'http://p.testix.me/storefront/panorama/3396d27281.jpg',
-                        published: 'http://p.testix.me/storefront/panorama/3396d27281/p_index.html',
+                        img: 'https://p.testix.me/storefront/panorama/3396d27281.jpg',
+                        published: 'https://p.testix.me/storefront/panorama/3396d27281/p_index.html',
                         // in proconstructor/storefront/panorama
                         template: 'storefront/panorama/3396d27281.txt',
                         width: '800px',
@@ -514,10 +514,10 @@ var config = {
                 entities: [
                     {
                         name: {RU:'Римские руины',EN:'Roman ruins'},
-                        img: 'http://p.testix.me/storefront/fbPano/46f459ce11.jpg',
+                        img: 'https://p.testix.me/storefront/fbPano/46f459ce11.jpg',
                         published: null,
                         externalLink: 'https://www.facebook.com/photo.php?fbid=266745550421515&set=a.256225194806884.1073741833.100012582155261&type=3&theater',
-                        template: 'http://p.testix.me/storefront/fbPano/46f459ce11.txt',
+                        template: 'https://p.testix.me/storefront/fbPano/46f459ce11.txt',
                         width: '800px',
                         height: '600px',
                         getParams: 'appStorage=ref:strf',
@@ -525,10 +525,10 @@ var config = {
                     },
                     {
                         name: {RU:'Night London',EN:'Night London'},
-                        img: 'http://p.testix.me/storefront/fbPano/03b1ef3679.jpg',
+                        img: 'https://p.testix.me/storefront/fbPano/03b1ef3679.jpg',
                         published: null,
                         externalLink: 'https://www.facebook.com/photo.php?fbid=463355314093870&set=a.246638115765592.1073741832.100012582155261&type=3',
-                        template: 'http://p.testix.me/storefront/fbPano/03b1ef3679.txt',
+                        template: 'https://p.testix.me/storefront/fbPano/03b1ef3679.txt',
                         width: '800px',
                         height: '600px',
                         getParams: 'appStorage=ref:strf',
@@ -542,25 +542,25 @@ var config = {
                 entities: [
                     {
                         name: {RU:'10 самых умных пород собак',EN:'10 of the smartest dog breeds'},
-                        img: 'http://p.testix.me/storefront/photostory/e1dd98a2fc.jpg',
-                        published: 'http://p.testix.me/storefront/photostory/e1dd98a2fc/p_index.html',
-                        template: 'http://p.testix.me/storefront/photostory/e1dd98a2fc.txt',
+                        img: 'https://p.testix.me/storefront/photostory/e1dd98a2fc.jpg',
+                        published: 'https://p.testix.me/storefront/photostory/e1dd98a2fc/p_index.html',
+                        template: 'https://p.testix.me/storefront/photostory/e1dd98a2fc.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {RU:'Самые красивые актрисы России',EN:'The gorgeous Russian actress'},
-                        img: 'http://p.testix.me/storefront/photostory/73b7774600.jpg',
-                        published: 'http://p.testix.me/storefront/photostory/73b7774600/p_index.html',
-                        template: 'http://p.testix.me/storefront/photostory/73b7774600.txt',
+                        img: 'https://p.testix.me/storefront/photostory/73b7774600.jpg',
+                        published: 'https://p.testix.me/storefront/photostory/73b7774600/p_index.html',
+                        template: 'https://p.testix.me/storefront/photostory/73b7774600.txt',
                         width: '800px',
                         height: '600px'
                     },
                     {
                         name: {RU:'10 самых популярных пород кошек',EN:'The most popular cat breeds'},
-                        img: 'http://p.testix.me/storefront/photostory/bcb07c9016.jpg',
-                        published: 'http://p.testix.me/storefront/photostory/bcb07c9016/p_index.html',
-                        template: 'http://p.testix.me/storefront/photostory/bcb07c9016.txt',
+                        img: 'https://p.testix.me/storefront/photostory/bcb07c9016.jpg',
+                        published: 'https://p.testix.me/storefront/photostory/bcb07c9016/p_index.html',
+                        template: 'https://p.testix.me/storefront/photostory/bcb07c9016.txt',
                         width: '800px',
                         height: '600px'
                     }
@@ -1206,7 +1206,7 @@ var config = {
         },
         facebook_chat_widget: {
             enabled: true,
-            code: '<!-- facebook messenger widget --><style>.fb-livechat,.fb-widget{display:none}.ctrlq.fb-button,.ctrlq.fb-close{position:fixed;right:24px;cursor:pointer}.ctrlq.fb-button{z-index:1;background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDEyOCAxMjgiIGhlaWdodD0iMTI4cHgiIGlkPSJMYXllcl8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB3aWR0aD0iMTI4cHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxnPjxyZWN0IGZpbGw9IiMwMDg0RkYiIGhlaWdodD0iMTI4IiB3aWR0aD0iMTI4Ii8+PC9nPjxwYXRoIGQ9Ik02NCwxNy41MzFjLTI1LjQwNSwwLTQ2LDE5LjI1OS00Niw0My4wMTVjMCwxMy41MTUsNi42NjUsMjUuNTc0LDE3LjA4OSwzMy40NnYxNi40NjIgIGwxNS42OTgtOC43MDdjNC4xODYsMS4xNzEsOC42MjEsMS44LDEzLjIxMywxLjhjMjUuNDA1LDAsNDYtMTkuMjU4LDQ2LTQzLjAxNUMxMTAsMzYuNzksODkuNDA1LDE3LjUzMSw2NCwxNy41MzF6IE02OC44NDUsNzUuMjE0ICBMNTYuOTQ3LDYyLjg1NUwzNC4wMzUsNzUuNTI0bDI1LjEyLTI2LjY1N2wxMS44OTgsMTIuMzU5bDIyLjkxLTEyLjY3TDY4Ljg0NSw3NS4yMTR6IiBmaWxsPSIjRkZGRkZGIiBpZD0iQnViYmxlX1NoYXBlIi8+PC9zdmc+) center no-repeat #0084ff;width:60px;height:60px;text-align:center;bottom:24px;border:0;outline:0;border-radius:60px;-webkit-border-radius:60px;-moz-border-radius:60px;-ms-border-radius:60px;-o-border-radius:60px;box-shadow:0 1px 6px rgba(0,0,0,.06),0 2px 32px rgba(0,0,0,.16);-webkit-transition:box-shadow .2s ease;background-size:80%;transition:all .2s ease-in-out}.ctrlq.fb-button:focus,.ctrlq.fb-button:hover{transform:scale(1.1);box-shadow:0 2px 8px rgba(0,0,0,.09),0 4px 40px rgba(0,0,0,.24)}.fb-widget{background:#fff;z-index:2;position:fixed;width:360px;height:435px;overflow:hidden;opacity:0;bottom:0;right:24px;border-radius:6px;-o-border-radius:6px;-webkit-border-radius:6px;box-shadow:0 5px 40px rgba(0,0,0,.16);-webkit-box-shadow:0 5px 40px rgba(0,0,0,.16);-moz-box-shadow:0 5px 40px rgba(0,0,0,.16);-o-box-shadow:0 5px 40px rgba(0,0,0,.16)}.fb-credit{text-align:center;margin-top:8px}.fb-credit a{transition:none;color:#bec2c9;font-family:Helvetica,Arial,sans-serif;font-size:12px;text-decoration:none;border:0;font-weight:400}.ctrlq.fb-overlay{z-index:0;position:fixed;height:100vh;width:100vw;-webkit-transition:opacity .4s,visibility .4s;transition:opacity .4s,visibility .4s;top:0;left:0;background:rgba(0,0,0,.05);display:none}.ctrlq.fb-close{z-index:4;padding:0 6px;background:#365899;font-weight:700;font-size:11px;color:#fff;margin:8px;border-radius:3px}.ctrlq.fb-close::after{content:\'x\';font-family:sans-serif}</style><div class="fb-livechat"><div class="ctrlq fb-overlay"></div><div class="fb-widget"><div class="ctrlq fb-close"></div><div class="fb-page" data-href="https://www.facebook.com/testixme/" data-tabs="messages" data-width="360" data-height="400" data-small-header="true" data-hide-cover="true" data-show-facepile="false"><blockquote cite="https://www.facebook.com/testix.me/" class="fb-xfbml-parse-ignore"> </blockquote></div><div class="fb-credit"><a href="http://testix.me" target="_blank">Facebook Chat Widget by Testix</a></div><div id="fb-root"></div></div><a href="https://m.me/testix.me" title="Send us a message on Facebook" class="ctrlq fb-button"></a></div><script src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script><script>$(document).ready(function(){var t={delay:125,overlay:$(".fb-overlay"),widget:$(".fb-widget"),button:$(".fb-button")};setTimeout(function(){$("div.fb-livechat").fadeIn()},8*t.delay),$(".ctrlq").on("click",function(e){e.preventDefault(),t.overlay.is(":visible")?(t.overlay.fadeOut(t.delay),t.widget.stop().animate({bottom:0,opacity:0},2*t.delay,function(){$(this).hide("slow"),t.button.show()})):t.button.fadeOut("medium",function(){t.widget.stop().show().animate({bottom:"30px",opacity:1},2*t.delay),t.overlay.fadeIn(t.delay)})})});</script><!-- facebook messenger widget -->'
+            code: '<!-- facebook messenger widget --><style>.fb-livechat,.fb-widget{display:none}.ctrlq.fb-button,.ctrlq.fb-close{position:fixed;right:24px;cursor:pointer}.ctrlq.fb-button{z-index:1;background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDEyOCAxMjgiIGhlaWdodD0iMTI4cHgiIGlkPSJMYXllcl8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB3aWR0aD0iMTI4cHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxnPjxyZWN0IGZpbGw9IiMwMDg0RkYiIGhlaWdodD0iMTI4IiB3aWR0aD0iMTI4Ii8+PC9nPjxwYXRoIGQ9Ik02NCwxNy41MzFjLTI1LjQwNSwwLTQ2LDE5LjI1OS00Niw0My4wMTVjMCwxMy41MTUsNi42NjUsMjUuNTc0LDE3LjA4OSwzMy40NnYxNi40NjIgIGwxNS42OTgtOC43MDdjNC4xODYsMS4xNzEsOC42MjEsMS44LDEzLjIxMywxLjhjMjUuNDA1LDAsNDYtMTkuMjU4LDQ2LTQzLjAxNUMxMTAsMzYuNzksODkuNDA1LDE3LjUzMSw2NCwxNy41MzF6IE02OC44NDUsNzUuMjE0ICBMNTYuOTQ3LDYyLjg1NUwzNC4wMzUsNzUuNTI0bDI1LjEyLTI2LjY1N2wxMS44OTgsMTIuMzU5bDIyLjkxLTEyLjY3TDY4Ljg0NSw3NS4yMTR6IiBmaWxsPSIjRkZGRkZGIiBpZD0iQnViYmxlX1NoYXBlIi8+PC9zdmc+) center no-repeat #0084ff;width:60px;height:60px;text-align:center;bottom:24px;border:0;outline:0;border-radius:60px;-webkit-border-radius:60px;-moz-border-radius:60px;-ms-border-radius:60px;-o-border-radius:60px;box-shadow:0 1px 6px rgba(0,0,0,.06),0 2px 32px rgba(0,0,0,.16);-webkit-transition:box-shadow .2s ease;background-size:80%;transition:all .2s ease-in-out}.ctrlq.fb-button:focus,.ctrlq.fb-button:hover{transform:scale(1.1);box-shadow:0 2px 8px rgba(0,0,0,.09),0 4px 40px rgba(0,0,0,.24)}.fb-widget{background:#fff;z-index:2;position:fixed;width:360px;height:435px;overflow:hidden;opacity:0;bottom:0;right:24px;border-radius:6px;-o-border-radius:6px;-webkit-border-radius:6px;box-shadow:0 5px 40px rgba(0,0,0,.16);-webkit-box-shadow:0 5px 40px rgba(0,0,0,.16);-moz-box-shadow:0 5px 40px rgba(0,0,0,.16);-o-box-shadow:0 5px 40px rgba(0,0,0,.16)}.fb-credit{text-align:center;margin-top:8px}.fb-credit a{transition:none;color:#bec2c9;font-family:Helvetica,Arial,sans-serif;font-size:12px;text-decoration:none;border:0;font-weight:400}.ctrlq.fb-overlay{z-index:0;position:fixed;height:100vh;width:100vw;-webkit-transition:opacity .4s,visibility .4s;transition:opacity .4s,visibility .4s;top:0;left:0;background:rgba(0,0,0,.05);display:none}.ctrlq.fb-close{z-index:4;padding:0 6px;background:#365899;font-weight:700;font-size:11px;color:#fff;margin:8px;border-radius:3px}.ctrlq.fb-close::after{content:\'x\';font-family:sans-serif}</style><div class="fb-livechat"><div class="ctrlq fb-overlay"></div><div class="fb-widget"><div class="ctrlq fb-close"></div><div class="fb-page" data-href="https://www.facebook.com/testixme/" data-tabs="messages" data-width="360" data-height="400" data-small-header="true" data-hide-cover="true" data-show-facepile="false"><blockquote cite="https://www.facebook.com/testix.me/" class="fb-xfbml-parse-ignore"> </blockquote></div><div class="fb-credit"><a href="https://testix.me" target="_blank">Facebook Chat Widget by Testix</a></div><div id="fb-root"></div></div><a href="https://m.me/testix.me" title="Send us a message on Facebook" class="ctrlq fb-button"></a></div><script src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script><script>$(document).ready(function(){var t={delay:125,overlay:$(".fb-overlay"),widget:$(".fb-widget"),button:$(".fb-button")};setTimeout(function(){$("div.fb-livechat").fadeIn()},8*t.delay),$(".ctrlq").on("click",function(e){e.preventDefault(),t.overlay.is(":visible")?(t.overlay.fadeOut(t.delay),t.widget.stop().animate({bottom:0,opacity:0},2*t.delay,function(){$(this).hide("slow"),t.button.show()})):t.button.fadeOut("medium",function(){t.widget.stop().show().animate({bottom:"30px",opacity:1},2*t.delay),t.overlay.fadeIn(t.delay)})})});</script><!-- facebook messenger widget -->'
         }
     }
 };

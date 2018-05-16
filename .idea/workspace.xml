@@ -23,19 +23,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="gulpfile.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="gulpfile.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gulpfile.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="0" selection-start="1725" selection-end="1725" vertical-scroll-proportion="0.0" vertical-offset="375" max-vertical-offset="8580">
+            <state line="44" column="0" selection-start="1627" selection-end="1627" vertical-scroll-proportion="0.6530899" vertical-offset="195" max-vertical-offset="8580">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="config.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pub/js/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="512" column="24" selection-start="23882" selection-end="23882" vertical-scroll-proportion="0.29353932" vertical-offset="7471" max-vertical-offset="18555">
+            <state line="305" column="42" selection-start="11795" selection-end="11795" vertical-scroll-proportion="0.0" vertical-offset="4351" max-vertical-offset="18555">
               <folding />
             </state>
           </provider>
@@ -65,8 +65,8 @@
         <option value="$PROJECT_DIR$/pub/css/storefront.css" />
         <option value="$PROJECT_DIR$/pub/products/photostory/view/slider.js" />
         <option value="$PROJECT_DIR$/pub/products/photostory/style.css" />
-        <option value="$PROJECT_DIR$/gulpfile.js" />
         <option value="$PROJECT_DIR$/pub/js/config.js" />
+        <option value="$PROJECT_DIR$/gulpfile.js" />
       </list>
     </option>
   </component>
@@ -404,16 +404,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js">
+    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="0" selection-start="1725" selection-end="1725" vertical-scroll-proportion="0.0" vertical-offset="375" max-vertical-offset="8580">
+        <state line="305" column="42" selection-start="11795" selection-end="11795" vertical-scroll-proportion="0.0" vertical-offset="4351" max-vertical-offset="18555">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pub/js/config.js">
+    <entry file="file://$PROJECT_DIR$/gulpfile.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="512" column="24" selection-start="23882" selection-end="23882" vertical-scroll-proportion="0.29353932" vertical-offset="7471" max-vertical-offset="18555">
+        <state line="44" column="0" selection-start="1627" selection-end="1627" vertical-scroll-proportion="0.6530899" vertical-offset="195" max-vertical-offset="8580">
           <folding />
         </state>
       </provider>
