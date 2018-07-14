@@ -27,6 +27,26 @@ var Editor = {};
      */
     var appName = null;
     /**
+     * Урл на iframe для разработки проекта, можно открыть любой iframe в редакторе
+     * @type {string}
+     */
+    var devIframeUrl = null;
+    /**
+     * Имя конструктора. Для разработчиков
+     * @type {string}
+     */
+    var devConstructorName = null;
+    /**
+     * Разработчик может задать размер приложения
+     * @type {Number}
+     */
+    var devWidth = undefined;
+    /**
+     * Разработчик может задать размер приложения
+     * @type {Number}
+     */
+    var devHeight = undefined;
+    /**
      * текущий шаблон, который открыт. Шаблона может не быть, тогда используются свойства из кода проекта
      * @type {object} {appName: <string>, app: <object>, descriptor: <object>}
      */
@@ -203,8 +223,17 @@ var Editor = {};
             else {
                 // если ссылки на шаблон нет, то открываем по имени промо-проекта, если оно есть
                 var n = getQueryParams(document.location.search)[config.common.appNameParamName] || param[config.common.appNameParamName];
+                var dfr = getQueryParams(document.location.search)[config.common.devIframeParamName] || param[config.common.devIframeParamName];
+                var dcn = getQueryParams(document.location.search)[config.common.devConstructorParamName] || param[config.common.devConstructorParamName];
                 if (n) {
                     appName = n;
+                    loadApps();
+                }
+                else if (dfr && dcn) {
+                    devIframeUrl = dfr;
+                    devConstructorName = dcn;
+                    devWidth = getQueryParams(document.location.search)[config.common.devWidthParamName] || param[config.common.devWidthParamName];
+                    devHeight = getQueryParams(document.location.search)[config.common.devHeightParamName] || param[config.common.devHeightParamName];
                     loadApps();
                 }
                 else {
@@ -222,11 +251,19 @@ var Editor = {};
         editorLoader.load({
             containerId: 'id-product_iframe_cnt',
             appName: appName,
+            devIframeUrl: devIframeUrl,
+            devConstructorName: devConstructorName,
+            devWidth: devWidth,
+            devHeight: devHeight,
             onload: onProductIframeLoaded.bind(this)
         });
         editorLoader.load({
             containerId: 'id-app_preview',
-            appName: appName
+            appName: appName,
+            devIframeUrl: devIframeUrl,
+            devConstructorName: devConstructorName,
+            devWidth: devWidth,
+            devHeight: devHeight
         });
     }
 
@@ -317,10 +354,10 @@ var Editor = {};
      */
     function onProductIframeLoaded() {
         // скрыть контролы экранов для некоторых проектов. Например для панорам они не нужны
-        if (config.products[appName].hideScreenControls === true) {
+        if (appName && config.products[appName].hideScreenControls === true) {
             $('#id-screen_controls_cnt').hide();
         }
-        if (config.products[appName].mobPreviewEnabled === false) {
+        if (appName && config.products[appName].mobPreviewEnabled === false) {
             $('#id-to_mob_preview').hide();
         }
         ScreenManager.init({
@@ -1229,8 +1266,13 @@ var Editor = {};
      */
     function showScreen(screenId) {
         if (!screenId) {
-            // если не указан ид экрана показываем первый по умолчанию
-            screenId = editedApp._screens[0].id;
+            if (editedApp._screens && editedApp._screens.length > 0) {
+                // если не указан ид экрана показываем первый по умолчанию
+                screenId = editedApp._screens[0].id;
+            }
+            else {
+                throw new Error('Editor.showScreen: mutapp has no screens.');
+            }
         }
         if (activeScreen !== screenId) {
             var scr = editedApp.getScreenById(screenId);

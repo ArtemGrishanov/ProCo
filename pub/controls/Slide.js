@@ -9,7 +9,8 @@ function Slide(param) {
     this.previewScale = undefined;
     if (!this.additionalParam.appType) {
         // необходимо указать тип проекта например: memoriz, personality и тп
-        throw new Error('Slide: this.additionalParam.appType must be specified');
+        // он нужен для встраивания стилей проекта
+        console.warn('Slide: this.additionalParam.appType must be specified');
     }
     if (!this.additionalParam.onScreenEvents) {
         throw new Error('Slide: this.additionalParam.onScreenEvents must be specified');
@@ -66,16 +67,18 @@ Slide.prototype.setSettings = function(param) {
  */
 Slide.prototype.onPreviewIFrameLoaded = function() {
     var $previewDocument = this.$previewIFrame.contents();
-    var productConfig = config.products[this.additionalParam.appType];
-    if (productConfig) {
-        var $h = $previewDocument.find('head');
-        if (config.common.buildStatus === 'dev') {
-            $h.append(config.products.common.styles);
+    if (this.additionalParam.appType) {
+        var productConfig = config.products[this.additionalParam.appType];
+        if (productConfig) {
+            var $h = $previewDocument.find('head');
+            if (config.common.buildStatus === 'dev') {
+                $h.append(config.products.common.styles);
+            }
+            $h.append(productConfig.stylesForEmbed);
         }
-        $h.append(productConfig.stylesForEmbed);
-    }
-    else {
-        throw new Error('Slide.onPreviewIFrameLoaded: Unknown product type \'' + this.additionalParam.appType + '\'');
+        else {
+            throw new Error('Slide.onPreviewIFrameLoaded: Unknown product type \'' + this.additionalParam.appType + '\'');
+        }
     }
     this.$previewDocumentBody = $previewDocument.find('body').css('margin',0).css('overflow','hidden');
     // создание первого превью

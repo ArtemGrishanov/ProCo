@@ -253,7 +253,9 @@ var MutApp = function(param) {
         //TODO mob 'auto'
         if (this.screenRoot) {
             // при старте приложения надо обязательно очищать контейнер, Возможно, от результатов предыдущего запуска этого-ж самого приложения
-            this.screenRoot.empty();
+            while (this.screenRoot.firstChild) {
+                this.screenRoot.removeChild(this.screenRoot.firstChild);
+            }
         }
         this.setSize({
             width: (param && param.width > 0) ? param.width: 800,
@@ -314,8 +316,13 @@ var MutApp = function(param) {
         this.initStatistics(this.gaId.getValue());
     }
 
-    // вызов конструктора initialize, аналогично backbone
-    this.initialize.apply(this, arguments);
+    if (this.initialize) {
+        // вызов конструктора initialize, аналогично backbone
+        this.initialize.apply(this, arguments);
+    }
+    else {
+        throw new Error('MutApp.constructor: initialize() method is not defined in mutapp');
+    }
 
     // подписка на postMessage
     window.addEventListener("message", this.receiveMessage.bind(this), false);
@@ -360,11 +367,11 @@ MutApp.prototype.setSize = function(param) {
     }
     if (sizeChanged === true) {
         if (this.screenRoot) {
-            this.screenRoot.css('max-width',this._width+'px')
-                .css('width','100%')
-                .css('min-height',this._height+'px')
-                .css('position','relative')
-                .css('overflow','hidden');
+            this.screenRoot.style.maxWidth = this._width+'px';
+            this.screenRoot.style.width = '100%';
+            this.screenRoot.style.minHeight = this._height+'px';
+            this.screenRoot.style.position = 'relative';
+            this.screenRoot.style.overflow = 'hidden';
         }
         this.trigger(MutApp.EVENT_APP_SIZE_CHANGED, {
             width: this._width,
@@ -593,7 +600,12 @@ MutApp.prototype.hideAllScreens = function() {
  */
 MutApp.prototype._updateViewsZOrder = function() {
     if (!this._viewsArr) {
-        this._regulateViews(this.screenRoot);
+        if (this.screenRoot) {
+            this._regulateViews(this.screenRoot);
+        }
+        else {
+            throw new Error('MutApp._updateViewsZOrder: \"screenRoot\" must be defined in app. This a container for app screens.');
+        }
     }
     var zIndex = 0, v;
     // this.Views - находятся в порядке "снизу-вверх" в dom дереве

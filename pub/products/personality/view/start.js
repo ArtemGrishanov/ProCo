@@ -53,9 +53,9 @@ var StartScreen = MutApp.Screen.extend({
 
     onLogoClick: function(e) {
         if (this.model.application.mode !== 'edit') {
-            var ll = this.model.get('logoLink').getValue();
-            if (ll) {
-                var win = window.open(ll, '_blank');
+            var ll = this.model.get('logoLink');
+            if (ll && ll.getValue()) {
+                var win = window.open(ll.getValue(), '_blank');
                 win.focus();
                 this.model.application.stat('Personality', 'logoclick');
             }

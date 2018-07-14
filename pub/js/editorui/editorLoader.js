@@ -26,24 +26,41 @@ var editorLoader = {};
      *
      * @param {string} param.containerId - id (без '#'), куда помещать iframe с приложением*
      * @param {string} param.appName - одно из доступных приложений, например 'memoriz' или 'personality'
+     * @param {string} param.devIframeUrl - способ загрузки приложения по прямому урлу айфрейма
+     * @param {string} param.devConstructorName - при загрузке айфрейма надо указать имя конструктора
+     * @param {Number} param.devWidth - в режиме разработчика
+     * @param {Number} param.devHeight - в режиме разработчика
      * @param {function} onload
      */
     function load(param) {
         param = param || {};
-        if (param.appName && param.containerId) {
+        if ((param.appName && param.containerId) || param.devIframeUrl) {
             _loadedInfo[param.containerId] = {
-                appName: param.appName
+                appName: param.appName,
+                devIframeUrl: param.devIframeUrl,
+                devConstructorName: param.devConstructorName,
+                devWidth: param.devWidth,
+                devHeight: param.devHeight
             }
             if (param.onload) {
                 _loadedInfo[param.containerId].clbOnLoad = param.onload;
             }
             // по имени промо приложения получаем ссылку на его код
-            var src = config.products[param.appName].src;
+            var src = null;
+            if (param.appName && config.products[param.appName].src) {
+                // урл на приложение можно установить по разному в зависимости от параметров
+                // сначала пробуем установить на основе param.appName
+                src = config.common.home + config.products[param.appName].src;
+            }
+            else {
+                // далее пробуем установить по параметру для девелоперов
+                src = param.devIframeUrl;
+            }
             if (src) {
                 var fr = document.createElement('iframe');
                 fr.onload = _onIframeload;
                 $(fr).addClass('proto_cnt');
-                fr.src = config.common.home+src;
+                fr.src = src;
                 var $cnt = $('#'+param.containerId);
                 if ($cnt && $cnt.length > 0) {
                     $cnt.empty().append(fr);
@@ -85,23 +102,40 @@ var editorLoader = {};
         if (inf.app) {
             delete inf.app;
         }
-        var cfg = config.products[inf.appName];
-        inf.app = new inf.appIframe.contentWindow[cfg.constructorName]({
-            mode: param.mode,
-            locale: App.getLang(),
-            width: cfg.defaultWidth,
-            height: cfg.defaultHeight,
-            defaults: param.defaults || null,
-            appChangeCallbacks: param.appChangeCallbacks || null
-            //engineStorage: JSON.parse(JSON.stringify(appStorage)) todo?
-        });
-        inf.app.start();
-        $(inf.appIframe).css('border','0')
-            .css('width','100%')
-            .css('height','100%')
-            .css('max-width', inf.app.getSize().width)
-            .css('max-height', inf.app.getSize().height);
-        return inf.app;
+        // если у проекта есть имя (проект стандартный) то берем го настройки из конфига
+        // иначе пробуем применить режим разработчика
+        var cfg = (inf.appName) ? config.products[inf.appName]: {
+            constructorName: inf.devConstructorName,
+            defaultWidth: inf.devWidth || 800,
+            defaultHeight: inf.devHeight || 600
+        };
+        if (cfg.constructorName && inf.appIframe.contentWindow[cfg.constructorName]) {
+            inf.app = new inf.appIframe.contentWindow[cfg.constructorName]({
+                mode: param.mode,
+                locale: App.getLang(),
+                width: cfg.defaultWidth,
+                height: cfg.defaultHeight,
+                defaults: param.defaults || null,
+                appChangeCallbacks: param.appChangeCallbacks || null
+                //engineStorage: JSON.parse(JSON.stringify(appStorage)) todo?
+            });
+            if (inf.app.start) {
+                inf.app.start();
+            }
+            else {
+                throw new Error('editorLoader.startApp: start() method is not defined in app');
+            }
+            $(inf.appIframe).css('border','0')
+                .css('width','100%')
+                .css('height','100%')
+                .css('max-width', inf.app.getSize().width)
+                .css('max-height', inf.app.getSize().height);
+            return inf.app;
+        }
+        else {
+            throw new Error('editorLoader.startApp: constructor name is illegal or is not specified "'+cfg.constructorName+'"');
+        }
+        return null;
     }
 
     function _onIframeload(e) {

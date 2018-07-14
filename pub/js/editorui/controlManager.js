@@ -591,7 +591,8 @@ var ControlManager = {
                 }
             }
             else {
-                throw new Error('controlManager.handleShowScreen: screen \'' + param.screen.id + '\' does not have linkedMutAppProperties');
+                //throw new Error('controlManager.handleShowScreen: screen \'' + param.screen.id + '\' does not have linkedMutAppProperties');
+                console.warn('controlManager.handleShowScreen: screen \'' + param.screen.id + '\' does not have linkedMutAppProperties');
             }
         }
         else {

@@ -12,7 +12,7 @@ var config = {
         dev: function() {
             config.common.home = 'http://localhost:63342/ProCo/pub/'; // меняется на 'http://localhost:63342/ProCo/build/' при сборке
             config.common.facebookAppId = '518819781624579';
-            config.common.awsEnabled = true; // use 'false' for offline mode
+            config.common.awsEnabled = false; // use 'false' for offline mode
             config.common.buildStatus = 'dev';
             return this;
         },
@@ -163,6 +163,23 @@ var config = {
          * Имя get параметра для передачи ссылки открытие в редакторе
          */
         appNameParamName: 'app',
+        /**
+         * Имя get параметра для передачи ссылки открытие в редакторе в режиме разработчика
+         * по идее так можно открыть произвольный iframe, разработчик сможет оладить свой проект
+         */
+        devIframeParamName: 'deviframe',
+        /**
+         * Имя конструктора приложения. Передается обязательно вместе с devIframeParamName
+         */
+        devConstructorParamName: 'constructor',
+        /**
+         * для разработки. Можно указать размер проекта
+         */
+        devWidthParamName: 'width',
+        /**
+         * для разработки. Можно указать размер проекта
+         */
+        devHeightParamName: 'height',
         /**
          * Имя get параметра для указания, что проект надо клонировать
          */
