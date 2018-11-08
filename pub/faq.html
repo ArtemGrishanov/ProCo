@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>FAQ</title>
+    <title>{{i18n:faq}}</title>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
@@ -21,12 +21,12 @@
             <div class="toolbar_left">
                 <a class="logo ml24" href="index.html"></a>
                 <span class="logo_beta"></span>
-                <a href="storefront.html" class="menu_tab pts_string pts_menu_gallery"></a>
+                <a href="storefront.html" class="menu_tab pts_string pts_menu_gallery">{{i18n:menu_gallery}}</a>
                 <!--<a href="my_templates.html" class="menu_tab pts_string pts_my_projects"></a>-->
-                <a href="pricing.html" class="menu_tab pts_string pts_testix_pro blue"></a>
-                <a href="howitworks.html" class="menu_tab pts_string pts_how_it_works"></a>
-                <a href="faq.html" class="menu_tab __selected pts_string pts_faq"></a>
-                <a href="contact.html" class="menu_tab pts_string pts_contacts"></a>
+                <a href="pricing.html" class="menu_tab pts_string pts_testix_pro blue">{{i18n:testix_pro}}</a>
+                <a href="howitworks.html" class="menu_tab pts_string pts_how_it_works">{{i18n:how_it_works}}</a>
+                <a href="faq.html" class="menu_tab pts_string pts_faq">{{i18n:faq}}</a>
+                <a href="contact.html" class="menu_tab pts_string pts_contacts">{{i18n:contacts}}</a>
             </div>
             <div class="mob_menu_switcher js-mob_menu_switcher"></div>
             <div class="toolbar_right">
@@ -36,17 +36,17 @@
                 <div id="id-user_toolbar" class="toolbar_user ml12">
                     <!--<div style="display:none" class="user_avatar js-profile_picture"></div>-->
                     <div style="display:none" class="user_name js-user_name"></div>
-                    <span style="display:none" class="pbtn __blue __small mt4 js-show_login pts_string pts_sign_in">Войти</span>
+                    <span style="display:none" class="pbtn __blue __small mt4 js-show_login pts_string pts_sign_in">{{i18n:sign_in}}</span>
                     <div style="display:none" class="dropdown_btn js-user_ctx_menu">
                         <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
                             <div class="ctx_menu_item js-to_my_templates pts_string pts_my_projects">
-                                Мои проекты
+                                {{i18n:my_projects}}
                             </div>
                             <div class="ctx_menu_item js-change_password pts_string pts_change_password">
-                                Сменить пароль
+                                {{i18n:change_password}}
                             </div>
                             <div class="ctx_menu_item js-logout pts_string pts_sign_out">
-                                Выйти
+                                {{i18n:sign_out}}
                             </div>
                         </div>
                     </div>
@@ -59,48 +59,57 @@
             <div class="paper">
                 <div class="content_wr">
                     <h1 class="tx __28 __graphite __light pts_string pts_faq_header">
-                        Testix. Вопросы и ответы
+                        {{i18n:faq_header}}
                     </h1>
                     <div class="paper_block mt20">
-                        <h3 class="tx __black __18 pts_string pts_faq_q1">Что такое Testix?</h3>
-                        <p class="tx __grey __15 mt20 pts_string pts_faq_a1">Testix – это онлайн сервис для создания интерактивного контента: тестов, мини-игр, интерактивных панорам и других нестандартных форматов. Создать свой проект можно за 5 минут: просто выберите один из шаблонов и добавьте ваш контент.</p>
+                        <h3 class="tx __black __18 pts_string pts_faq_q1">{{i18n:faq_q1}}</h3>
+                        <p class="tx __grey __15 mt20 pts_string pts_faq_a1">{{i18n:faq_a1}}</p>
                     </div>
                     <div class="paper_block">
-                        <h3 class="tx __black __18 pts_string pts_faq_q2">Как работает Testix?</h3>
-                        <p class="tx __grey __15 mt20 pts_string pts_faq_a2">Testix позволяет использовать преимущества интерактивного контента без навыков программирования и затрат на дизайн. В основе Testix – работа с готовыми шаблонами. Выберите наиболее подходящий из Галереи шаблонов и настройте его при помощи редактора Testix. Каждый шаблон – это готовый проект, который можно опубликовать. При публикации вы получите прямую ссылку на ваш проект на платформе Testix, а также код для вставки проекта на ваш сайт или в блог. Каждый проект уже содержит настраиваемые социальные кнопки Facebook и Вконтакте. Также вы можете собирать статистику при помощи счетчика Google Analytics.</p>
+                        <h3 class="tx __black __18 pts_string pts_faq_q2">{{i18n:faq_q2}}</h3>
+                        <p class="tx __grey __15 mt20 pts_string pts_faq_a2">{{i18n:faq_a2}}</p>
                     </div>
                     <div class="paper_block">
-                        <h3 class="tx __black __18 pts_string pts_faq_q3">Сколько стоит создать проект на Testix?</h3>
-                        <p class="tx __grey __15 mt20 pts_string pts_faq_a3">Это бесплатно. Прямо сейчас вам доступны все возможности Testix. Создавайте и публикуйте проекты без ограничений.</p>
+                        <h3 class="tx __black __18 pts_string pts_faq_q3">{{i18n:faq_q3}}</h3>
+                        <p class="tx __grey __15 mt20 pts_string pts_faq_a3">{{i18n:faq_a3}}</p>
                     </div>
                     <div class="paper_block">
-                        <h3 class="tx __black __18 pts_string pts_faq_q4">Какие интерактивные форматы можно создать с помощью Testix?</h3>
-                        <p class="tx __grey __15 mt20 pts_string pts_faq_a4">На данный момент доступно создание тестов, мини игр типа «Мемори» и панорам. В ближайшее время количество форматов будет увеличиваться.</p>
+                        <h3 class="tx __black __18 pts_string pts_faq_q4">{{i18n:faq_q4}}</h3>
+                        <p class="tx __grey __15 mt20 pts_string pts_faq_a4">{{i18n:faq_a4}}</p>
                     </div>
                     <div class="paper_block">
-                        <h3 class="tx __black __18 pts_string pts_faq_q5">Как создать свой тест на Testix?</h3>
-                        <p class="tx __grey __15 mt20 pts_string pts_faq_a5">Специально для вас мы создали подробную <a href="https://medium.com/@Testix.me/%D0%BA%D0%B0%D0%BA-%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D1%82%D1%8C-%D0%B8-%D0%BE%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA%D0%BE%D0%B2%D0%B0%D1%82%D1%8C-%D1%81%D0%B2%D0%BE%D0%B9-%D1%82%D0%B5%D1%81%D1%82-%D1%81-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D1%8C%D1%8E-%D0%BF%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D1%8B-testix-fc02f5a962ae#.x6k96g62x" target="_blank" class="paper_link">пошаговую инструкцию</a> в нашем <a href="https://medium.com/@Testix.me" target="_blank" class="paper_link">блоге на Medium</a></p>
+                        <h3 class="tx __black __18 pts_string pts_faq_q5">{{i18n:faq_q5}}</h3>
+                        <p class="tx __grey __15 mt20 pts_string pts_faq_a5">{{i18n:faq_a5}}</p>
                     </div>
                     <div class="paper_block">
-                        <h3 class="tx __black __18 pts_string pts_faq_q6">Какие инструменты используются для сбора статистики?</h3>
-                        <p class="tx __grey __15 mt20 pts_string pts_faq_a6">Для каждого проекта есть возможность подключить сервис Google Analytics.</p>
+                        <h3 class="tx __black __18 pts_string pts_faq_q6">{{i18n:faq_q6}}</h3>
+                        <p class="tx __grey __15 mt20 pts_string pts_faq_a6">{{i18n:faq_a6}}</p>
                     </div>
                     <div class="paper_block">
-                        <h3 class="tx __black __18 pts_string pts_faq_q7">Что делать, если мне нужна помощь в создании проекта?</h3>
-                        <p class="tx __grey __15 mt20 pts_string pts_faq_a8">Воспользуйтесь формой для связи в правой нижней части экрана. Наши специалисты ответят вам максимально оперативно и помогут решить любые вопросы, связанные с созданием и публикацией проекта.</p>
+                        <h3 class="tx __black __18 pts_string pts_faq_q7">{{i18n:faq_q7}}</h3>
+                        <p class="tx __grey __15 mt20 pts_string pts_faq_a7">{{i18n:faq_a7}}</p>
                     </div>
                     <div class="paper_block">
-                        <h3 class="tx __black __18 pts_string pts_faq_q8">Что делать, если мне нужны дополнительные возможности?</h3>
-                        <p class="tx __grey __15 mt20 pts_string pts_faq_a8"><a href="mailto:info@testix.me" target="_top" class="paper_link">Напишите нам.</a> Мы обязательно придумаем лучшее решение вашей задачи.</p>
+                        <h3 class="tx __black __18 pts_string pts_faq_q8">{{i18n:faq_q8}}</h3>
+                        <p class="tx __grey __15 mt20 pts_string pts_faq_a8">{{i18n:faq_a8}}</p>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="write_us">
+            <div class="content_wr">
+                <div class="logo __big mt60"></div>
+                <p class="tx __light __28 __white mt32 pts_string pts_learn_more">{{i18n:learn_more}}</p>
+                <a href="mailto:info@testix.me" target="_top" class="pbtn __long __white mt32 pts_string pts_send_message">{{i18n:send_message}}</a>
             </div>
         </div>
         <div class="footer">
             <div class="footer_left">
                 <span class="tx __white __16 footer_left_item">© Testix 2016</span>
-                <a href="terms.html" class="tx __white __12 footer_left_item pts_string pts_terms">Пользовательское соглашение</a>
-                <a href="privacy_policy.html" class="tx __white __12 footer_left_item pts_string pts_privacy_policy">Политика Конфиденциальности</a>
+                <span class="tx __12 footer_left_item"><!--product_version--></span>
+                <span class="tx __12 footer_left_item js-version_hash"></span>
+                <a href="terms.html" class="tx __white __12 footer_left_item pts_string pts_terms">{{i18n:terms}}</a>
+                <a href="privacy_policy.html" class="tx __white __12 footer_left_item pts_string pts_privacy_policy">{{i18n:privacy_policy}}</a>
             </div>
             <div class="footer_right">
                 <a href="https://facebook.com/testix.me" target="_blank" class="icon_fb"></a>
@@ -130,13 +139,13 @@
                         <span class="tx __18 lang_item __light js-lang" data-lang="EN">EN</span>
                         <span class="tx __18 lang_item __leftborder __active __light js-lang" data-lang="RU">RU</span>
                     </div>
-                    <a href="storefront.html" class="mob_menu_item pts_string pts_menu_gallery"></a>
-                    <a href="pricing.html" class="mob_menu_item pts_string pts_testix_pro"></a>
-                    <a href="howitworks.html" class="mob_menu_item pts_string pts_how_it_works"></a>
-                    <a href="faq.html" class="mob_menu_item pts_string pts_faq"></a>
-                    <a href="contact.html" class="mob_menu_item pts_string pts_contacts"></a>
+                    <a href="storefront.html" class="mob_menu_item pts_string pts_menu_gallery">{{i18n:menu_gallery}}</a>
+                    <a href="pricing.html" class="mob_menu_item pts_string pts_testix_pro">{{i18n:testix_pro}}</a>
+                    <a href="howitworks.html" class="mob_menu_item pts_string pts_how_it_works">{{i18n:how_it_works}}</a>
+                    <a href="faq.html" class="mob_menu_item pts_string pts_faq">{{i18n:faq}}</a>
+                    <a href="contact.html" class="mob_menu_item pts_string pts_contacts">{{i18n:contacts}}</a>
                     <div class="mt40">
-                        <span class="pbtn __grey js-show_login pts_string pts_sign_in" style="display:none;width:226px;">Войти</span>
+                        <span class="pbtn __grey js-show_login pts_string pts_sign_in" style="display:none;width:226px;">{{i18n:sign_in}}</span>
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Создать тест бесплатно. Конструктор интерактивного контента Testix</title>
+    <title>{{i18n:indexTitle}}</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet'
@@ -24,34 +24,32 @@
                 <div class="toolbar_left">
                     <a class="logo ml24" href="index.html"></a>
                     <span class="logo_beta"></span>
-                    <a href="storefront.html" class="menu_tab pts_string pts_menu_gallery"></a>
+                    <a href="storefront.html" class="menu_tab pts_string pts_menu_gallery">{{i18n:menu_gallery}}</a>
                     <!--<a href="my_templates.html" class="menu_tab pts_string pts_my_projects"></a>-->
-                    <a href="pricing.html" class="menu_tab __selected pts_string pts_testix_pro blue"></a>
-                    <a href="howitworks.html" class="menu_tab pts_string pts_how_it_works"></a>
-                    <a href="faq.html" class="menu_tab pts_string pts_faq"></a>
-                    <a href="contact.html" class="menu_tab pts_string pts_contacts"></a>
+                    <a href="pricing.html" class="menu_tab pts_string pts_testix_pro blue">{{i18n:testix_pro}}</a>
+                    <a href="howitworks.html" class="menu_tab pts_string pts_how_it_works">{{i18n:how_it_works}}</a>
+                    <a href="faq.html" class="menu_tab pts_string pts_faq">{{i18n:faq}}</a>
+                    <a href="contact.html" class="menu_tab pts_string pts_contacts">{{i18n:contacts}}</a>
                 </div>
                 <div class="mob_menu_switcher js-mob_menu_switcher"></div>
                 <div class="toolbar_right">
                     <div class="lang_switcher mt6">
-                        <span class="tx __18 lang_item __active __light js-lang" data-lang="RU">RU</span><span
-                            class="tx __18 lang_item __leftborder __light js-lang" data-lang="EN">EN</span>
+                        <span class="tx __18 lang_item __active __light js-lang" data-lang="RU">RU</span><span class="tx __18 lang_item __leftborder __light js-lang" data-lang="EN">EN</span>
                     </div>
                     <div id="id-user_toolbar" class="toolbar_user ml12">
                         <!--<div style="display:none" class="user_avatar js-profile_picture"></div>-->
                         <div style="display:none" class="user_name js-user_name"></div>
-                        <span style="display:none" class="pbtn __blue __small mt4 js-show_login pts_string pts_sign_in">Войти</span>
-
+                        <span style="display:none" class="pbtn __blue __small mt4 js-show_login pts_string pts_sign_in">{{i18n:sign_in}}</span>
                         <div style="display:none" class="dropdown_btn js-user_ctx_menu">
                             <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
                                 <div class="ctx_menu_item js-to_my_templates pts_string pts_my_projects">
-                                    Мои проекты
+                                    {{i18n:my_projects}}
                                 </div>
                                 <div class="ctx_menu_item js-change_password pts_string pts_change_password">
-                                    Сменить пароль
+                                    {{i18n:change_password}}
                                 </div>
                                 <div class="ctx_menu_item js-logout pts_string pts_sign_out">
-                                    Выйти
+                                    {{i18n:sign_out}}
                                 </div>
                             </div>
                         </div>
@@ -69,10 +67,10 @@
             <div class="pricing_tariff_desc_blk">
                 <div class="content_wr __pricing">
                     <h2 class="tx __light pts_string pts_business_header">
-                        Максимум возможностей для вашего бизнеса
+                        {{i18n:business_header}}
                     </h2>
                     <p class="tx __15 pts_string pts_business_desc">
-                        Мы объединили все лучшие возможности платформы с высоким уровнем сервиса.  Тариф подойдет для интернет-изданий, популярных сайтов,  а также интернет-представительств брендов.
+                        {{i18n:business_desc}}
                     </p>
                     <div class="pricing_tariff_signup_blk __business">
                         <div class="pricing_tariff_signup_i __business __4">
@@ -81,18 +79,18 @@
                         <div class="pricing_tariff_signup_i __business __4">
                             <div class="pricing_radio_btn_blk">
                                 <input id="id_rb_month" name="pricing" type="radio" class="pricing_radio_btn __business js-pricing_rb_business" data-price-pts-key="business_price_month">
-                                <label for="id_rb_month" class="pts_string pts_monthly_subscription">Подписка на месяц</label>
+                                <label for="id_rb_month" class="pts_string pts_monthly_subscription">{{i18n:monthly_subscription}}</label>
                             </div>
                             <div class="pricing_radio_btn_blk">
                                 <input checked id="id_rb_year" name="pricing" type="radio" class="pricing_radio_btn __business js-pricing_rb_business" data-price-pts-key="business_price">
-                                <label for="id_rb_year" class="pts_string pts_annual_subscription">Годовая подписка</label>
+                                <label for="id_rb_year" class="pts_string pts_annual_subscription">{{i18n:annual_subscription}}</label>
                             </div>
                         </div>
                         <div class="pricing_tariff_signup_i __business __4">
-                            <p class="tx __light __white __28"><span class="pts_string pts_business_price js-business_tariff_price ">5 900 ₽</span><br><span class="tx __light __white __18 pts_string pts_month">/месяц</span></p>
+                            <p class="tx __light __white __28"><span class="pts_string pts_business_price js-business_tariff_price ">{{i18n:business_price}}</span><br><span class="tx __light __white __18 pts_string pts_month">{{i18n:month}}</span></p>
                         </div>
                         <div class="pricing_tariff_signup_i __business __3">
-                            <a href="mailto:info@testix.me" target="_top" class="pbtn __red pts_string pts_order js-pricing_order_business">Заказать</a>
+                            <a href="mailto:info@testix.me" target="_top" class="pbtn __red pts_string pts_order js-pricing_order_business">{{i18:order}}</a>
                         </div>
                     </div>
                 </div>
@@ -101,152 +99,152 @@
                     <div class="pricing_feature_card">
                         <div class="pricing_feature __left">
                             <span class="pricing_icon __settings2"></span>
-                            <p class="pts_string pts_business_feature_h1">Весь функционал Testix</p>
+                            <p class="pts_string pts_business_feature_h1">{{i18n:business_feature_h1}}</p>
                         </div>
                         <div class="pricing_feature">
-                            <p class="pts_string pts_business_feature_a1">Вам доступны все механики Testix</p>
+                            <p class="pts_string pts_business_feature_a1">{{i18n:business_feature_a1}}</p>
                         </div>
                     </div>
                     <div class="pricing_feature_card">
                         <div class="pricing_feature __left">
                             <span class="pricing_icon __templates"></span>
-                            <p class="pts_string pts_business_feature_h2">Галерея шаблонов</p>
+                            <p class="pts_string pts_business_feature_h2">{{i18n:business_feature_h2}}</p>
                         </div>
                         <div class="pricing_feature">
-                            <p class="pts_string pts_business_feature_a2">В вашем распоряжении галерея шаблонов Testix</p>
+                            <p class="pts_string pts_business_feature_a2">{{i18n:business_feature_a2}}</p>
                         </div>
                     </div>
                     <div class="pricing_feature_card">
                         <div class="pricing_feature __left">
                             <span class="pricing_icon __eye"></span>
-                            <p class="pts_string pts_business_feature_h3 blue">До 1 000 000 просмотров в месяц</p>
+                            <p class="pts_string pts_business_feature_h3 blue">{{i18n:business_feature_h3}}</p>
                         </div>
                         <div class="pricing_feature">
-                            <p class="pts_string pts_business_feature_a3">Считается сумма неуникальных просмотров проектов в месяц</p>
+                            <p class="pts_string pts_business_feature_a3">{{i18n:business_feature_a3}}</p>
                         </div>
                     </div>
                     <div class="pricing_feature_card">
                         <div class="pricing_feature __left">
                             <span class="pricing_icon __cross"></span>
-                            <p class="pts_string pts_business_feature_h4">Без рекламы и логотипа Testix</p>
+                            <p class="pts_string pts_business_feature_h4">{{i18n:business_feature_h4}}</p>
                         </div>
                         <div class="pricing_feature">
-                            <p class="pts_string pts_business_feature_a4">Все упоминания о Testix скрыты – только ваш брендинг.</p>
+                            <p class="pts_string pts_business_feature_a4">{{i18n:business_feature_a4}}</p>
                         </div>
                     </div>
                     <div class="pricing_feature_card">
                         <div class="pricing_feature __left">
                             <span class="pricing_icon __edit"></span>
-                            <p class="pts_string pts_business_feature_h44 blue">Помощь в создании проектов</p>
+                            <p class="pts_string pts_business_feature_h44 blue">{{i18n:business_feature_h44}}</p>
                         </div>
                         <div class="pricing_feature">
-                            <p class="pts_string pts_business_feature_a44">Специалисты Testix помогут вам создать до трех проектов в месяц по вашим макетам</p>
+                            <p class="pts_string pts_business_feature_a44">{{i18n:business_feature_a44}}</p>
                         </div>
                     </div>
                     <div class="pricing_feature_card">
                         <div class="pricing_feature __left">
                             <span class="pricing_icon __embed"></span>
-                            <p class="pts_string pts_business_feature_h5">Код для вставки на сайт</p>
+                            <p class="pts_string pts_business_feature_h5">{{i18n:business_feature_h5}}</p>
                         </div>
                         <div class="pricing_feature">
-                            <p class="pts_string pts_business_feature_a5">Простая интеграция проекта в ваш сайт или блог.</p>
+                            <p class="pts_string pts_business_feature_a5">{{i18n:business_feature_a5}}</p>
                         </div>
                     </div>
                     <div class="pricing_feature_card">
                         <div class="pricing_feature __left">
                             <span class="pricing_icon __share"></span>
-                            <p class="pts_string pts_business_feature_h6">Доступ к проекту по прямой ссылке</p>
+                            <p class="pts_string pts_business_feature_h6">{{i18n:business_feature_h6}}</p>
                         </div>
                         <div class="pricing_feature">
-                            <p class="pts_string pts_business_feature_a6">Если у вас нет возможности встроить html-код на сайт, вы можете использовать прямую ссылку на ваш проект.</p>
+                            <p class="pts_string pts_business_feature_a6">{{i18n:business_feature_a6}}</p>
                         </div>
                     </div>
                     <div class="pricing_feature_card __no_bottom_border">
                         <div class="pricing_feature __left">
                             <span class="pricing_icon __promopicture"></span>
-                            <p class="pts_string pts_business_feature_h8">Брендирование страницы публикации</p>
+                            <p class="pts_string pts_business_feature_h8">{{i18n:business_feature_h8}}</p>
                         </div>
                         <div class="pricing_feature">
-                            <p class="pts_string pts_business_feature_a8">Если у вас нет возможности встроить html-код на сайт, вы можете использовать прямую ссылку на ваш проект. Брендирование страницы публикации позволяет красиво оформить страницу с вашим проектом.</p>
+                            <p class="pts_string pts_business_feature_a8">{{i18n:business_feature_a8}}</p>
                         </div>
                     </div>
                     <!---->
                     <div class="pricing_feature_pro_imgs">
                         <div class="pricing_feature_pro_imgs_col">
                             <img src="i/pricing/page-branding-1.jpg"/>
-                            <p class="pts_string pts_business_feature_example1">Страница проекта в бесплатной версии: стандартный фон и логотип Testix</p>
+                            <p class="pts_string pts_business_feature_example1">{{i18n:business_feature_example1}}</p>
                         </div>
                         <div class="pricing_feature_pro_imgs_col">
                             <img src="i/pricing/page-branding-2.jpg"/>
-                            <p class="pts_string pts_business_feature_example2">Брендированная страница: тариф business позволяет загрузить фоновое изображение, которое превращает ваш тест или игру в полноценный спецпроект</p>
+                            <p class="pts_string pts_business_feature_example2">{{i18n:business_feature_example2}}</p>
                         </div>
                     </div>
                     <!---->
                     <div class="pricing_feature_card">
                         <div class="pricing_feature __left">
                             <span class="pricing_icon __statistics"></span>
-                            <p class="pts_string pts_business_feature_h9">Google аналитика</p>
+                            <p class="pts_string pts_business_feature_h9">{{i18n:business_feature_h9}}</p>
                         </div>
                         <div class="pricing_feature">
-                            <p class="pts_string pts_business_feature_a9">Доступно подключение счетчика Google Analytics.</p>
+                            <p class="pts_string pts_business_feature_a9">{{i18n:business_feature_a9}}</p>
                         </div>
                     </div>
                     <div class="pricing_feature_card">
                         <div class="pricing_feature __left">
                             <span class="pricing_icon __time"></span>
-                            <p class="pts_string pts_business_feature_h10 blue">Техническая поддержка в течение 3 часов</p>
+                            <p class="pts_string pts_business_feature_h10 blue">{{i18n:business_feature_h10}}</p>
                         </div>
                         <div class="pricing_feature">
-                            <p class="pts_string pts_business_feature_a10">В случае возникновения вопросов наши специалисты стараются оказывать техническую поддержку максимально быстро, но гарантированно свяжутся с вами в течение 3 часов.</p>
+                            <p class="pts_string pts_business_feature_a10">{{i18n:business_feature_a10}}</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="pricing_faq">
                 <div class="content_wr __pricing">
-                    <h3 class="tx __light pts_string pts_answers_questions">Вопросы и ответы</h3>
+                    <h3 class="tx __light pts_string pts_answers_questions">{{i18n:answers_questions}}</h3>
                     <div class="pricing_col_wr">
                         <div class="pricing_col">
                             <div class="pricing_feature_h">
                                 <p class="pricing_faq_h pts_string pts_business_faq_q1">
-                                    Что будет при превышении лимита просмотров?
+                                    {{i18n:business_faq_q1}}
                                 </p>
                                 <p class="pricing_faq_t pts_string pts_business_faq_a1">
-                                    При превышении лимита просмотров мы предложим вам перейти на тариф Enterprise. Наши специалисты свяжутся с вами, чтобы обсудить вариант, который подходит вам больше. В любом случае вы можете быть спокойны за ваш проект: публикация не будет отменена.
+                                    {{i18n:business_faq_a1}}
                                 </p>
                             </div>
                             <div class="pricing_feature_h">
                                 <p class="pricing_faq_h pts_string pts_business_faq_q2">
-                                    Как воспользоваться помощью в создании проектов?
+                                    {{i18n:business_faq_q2}}
                                 </p>
                                 <p class="pricing_faq_t pts_string pts_business_faq_a2">
-                                    Если вы уже используете тариф Business, просто напишите нам. Наши специалисты свяжутся с вами, чтобы уточнить детали. Создание проекта занимает от 3 до 5 рабочих дней после согласования макета и предоставления всех материалов.
+                                    {{i18n:business_faq_a2}}
                                 </p>
                             </div>
                         </div>
                         <div class="pricing_col">
                             <div class="pricing_feature_h">
                                 <p class="pricing_faq_h pts_string pts_business_faq_q3">
-                                    Есть ли ограничения по количеству опубликованных тестов в месяц?
+                                    {{i18n:business_faq_q3}}
                                 </p>
                                 <p class="pricing_faq_t pts_string pts_business_faq_a3">
-                                    Нет, вы можете создавать неограниченное количество тестов или других проектов.
+                                    {{i18n:business_faq_a3}}
                                 </p>
                             </div>
                             <div class="pricing_feature_h">
                                 <p class="pricing_faq_h pts_string pts_business_faq_q4">
-                                    Проекты удаляются со временем?
+                                    {{i18n:business_faq_q4}}
                                 </p>
                                 <p class="pricing_faq_t pts_string pts_business_faq_a4">
-                                    Нет, проекты не удаляются. Ваши публикации в безопасности.
+                                    {{i18n:business_faq_a4}}
                                 </p>
                             </div>
                             <div class="pricing_feature_h">
                                 <p class="pricing_faq_h pts_string pts_business_faq_q5">
-                                    Если я решу не продлевать подписку для опубликованных тестов?
+                                    {{i18n:business_faq_q5}}
                                 </p>
                                 <p class="pricing_faq_t pts_string pts_business_faq_a5">
-                                    Ваши проекты будут переведены на бесплатный тариф FREE: в углу появится логотип Testix, и может быть включена реклама.
+                                    {{i18n:business_faq_a5}}
                                 </p>
                             </div>
                         </div>
@@ -254,18 +252,16 @@
                 </div>
             </div>
             <div class="pricing_write_us">
-                <p class="tx __light __white pts_string pts_learn_more">Остались вопросы? Напишите нам!</p>
-                <a href="mailto:info@testix.me" target="_top" class="pbtn __long __white mt32 pts_string pts_send_message">Написать сообщение</a>
+                <p class="tx __light __white pts_string pts_learn_more">{{i18n:learn_more}}</p>
+                <a href="mailto:info@testix.me" target="_top" class="pbtn __long __white mt32 pts_string pts_send_message">{{i18n:send_message}}</a>
             </div>
             <div class="footer">
                 <div class="footer_left">
                     <span class="tx __white __16 footer_left_item">© Testix 2016</span>
                     <span class="tx __12 footer_left_item"><!--product_version--></span>
                     <span class="tx __12 footer_left_item js-version_hash"></span>
-                    <a href="terms.html" class="tx __white __12 footer_left_item pts_string pts_terms">Пользовательское
-                        соглашение</a>
-                    <a href="privacy_policy.html" class="tx __white __12 footer_left_item pts_string pts_privacy_policy">Политика
-                        Конфиденциальности</a>
+                    <a href="terms.html" class="tx __white __12 footer_left_item pts_string pts_terms">{{i18n:terms}}</a>
+                    <a href="privacy_policy.html" class="tx __white __12 footer_left_item pts_string pts_privacy_policy">{{i18n:privacy_policy}}</a>
                 </div>
                 <div class="footer_right">
                     <a href="https://facebook.com/testix.me" target="_blank" class="icon_fb"></a>
@@ -280,11 +276,9 @@
         <div class="st_preview_app_wr">
             <div class="st_preview_app">
                 <div class="st_preview_top_panel">
-                    <div class="st_preview_header pts_string pts_like_temp_create">Понравился шаблон? Создайте свой
-                        проект!
-                    </div>
+                    <div class="st_preview_header pts_string pts_like_temp_create">{{i18n:like_temp_create}}</div>
                     <div class="st_icon_arrow_left ml24"></div>
-                    <div class="pbtn __red st_preview_edit_btn js-edit_active pts_string pts_edit">Редактировать</div>
+                    <div class="pbtn __red st_preview_edit_btn js-edit_active pts_string pts_edit_template">{{i18n:edit_template}}</div>
                 </div>
                 <div id="id-app_iframe_cnt" class="st_preview_iframe_cnt"></div>
                 <div class="close_dialog_btn __ext js-close"></div>
@@ -306,19 +300,17 @@
             </div>
             <div class="mob_menu">
                 <div class="mob_menu_items_cnt">
-                    <!-- mobile lang switcher -->
                     <div class="mob_menu_item lang_switcher mt6">
                         <span class="tx __18 lang_item __light js-lang" data-lang="EN">EN</span>
                         <span class="tx __18 lang_item __leftborder __active __light js-lang" data-lang="RU">RU</span>
                     </div>
-                    <a href="storefront.html" class="mob_menu_item pts_string pts_menu_gallery"></a>
-                    <a href="pricing.html" class="mob_menu_item pts_string pts_testix_pro"></a>
-                    <a href="howitworks.html" class="mob_menu_item pts_string pts_how_it_works"></a>
-                    <a href="faq.html" class="mob_menu_item pts_string pts_faq"></a>
-                    <a href="contact.html" class="mob_menu_item pts_string pts_contacts"></a>
-
+                    <a href="storefront.html" class="mob_menu_item pts_string pts_menu_gallery">{{i18n:menu_gallery}}</a>
+                    <a href="pricing.html" class="mob_menu_item pts_string pts_testix_pro">{{i18n:testix_pro}}</a>
+                    <a href="howitworks.html" class="mob_menu_item pts_string pts_how_it_works">{{i18n:how_it_works}}</a>
+                    <a href="faq.html" class="mob_menu_item pts_string pts_faq">{{i18n:faq}}</a>
+                    <a href="contact.html" class="mob_menu_item pts_string pts_contacts">{{i18n:contacts}}</a>
                     <div class="mt40">
-                        <span class="pbtn __grey js-show_login pts_string pts_sign_in" style="display:none;width:226px;">Войти</span>
+                        <span class="pbtn __grey js-show_login pts_string pts_sign_in" style="display:none;width:226px;">{{i18n:sign_in}}</span>
                     </div>
                 </div>
             </div>

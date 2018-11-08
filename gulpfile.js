@@ -13,8 +13,7 @@
  *          если я планирую склеить этот файл с общие стили style.css то по идее ссылка не нужна эта
  *
  */
-var productVersion = 'v2.1.13';
-
+var productVersion = 'v2.1.14';
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
@@ -35,6 +34,7 @@ var injectString = require('gulp-inject-string');
 var replace = require('gulp-string-replace');
 var uniqid = require('uniqid');
 var argv = require('yargs').argv;
+var fs = require('fs');
 
 /**
  * Pass environment into this script: 'gulp build --prod'
@@ -52,6 +52,7 @@ var buildConfig = {
     uglifyJs: false,
     names: {
         distFolder: './build',
+        distENFolder: './build/en',
         styleFileName: 'css/style.css',
         commonFileName: 'common.js',
         editorFileName: 'editor.js',
@@ -237,7 +238,7 @@ var productsConfig = [
  */
 var productTasks = [];
 
-// создать динамис=чески таски для сборки MutApp приложений
+// создать динамически таски для сборки MutApp приложений
 productsConfig.forEach(function (e) {
     console.log('Creating task for build product: ' + e.productName);
 
@@ -510,6 +511,55 @@ gulp.task('images:blog', function(){
         .pipe(gulp.dest('build/blog'))
 });
 
+/**
+ * Copy EN version of site
+ */
+gulp.task('copy:en', function() {
+    return gulp.src('./build/**')
+        .pipe(gulp.dest(buildConfig.names.distENFolder));
+});
+
+/**
+ * Only in top level htmls: ./build/*.html
+ * You may define keys in html or js code like this: "{{RU:testix_pro}}"
+ * Note: I split localization into two different task localization:ru and localization:en because of stack size error.
+ */
+gulp.task('localization:ru', function() {
+    var lang = 'RU';
+    var dict = JSON.parse(fs.readFileSync('./dictionary.json'));
+    var stream = gulp.src('./build/*.html'); //из-за такой сложенности таск не завершается почему то
+    var langDictionary = dict[lang];
+    for (var key in langDictionary) {
+        if (langDictionary.hasOwnProperty(key)) {
+            stream = stream.pipe(replace('{{i18n:'+key+'}}', langDictionary[key]));
+        }
+    }
+    return stream.pipe(gulp.dest(buildConfig.names.distFolder));
+});
+/**
+ * You may define keys in html or js code like this: "{{RU:testix_pro}}"
+ * Note: I split localization into two different task localization:ru and localization:en because of stack size error.
+ */
+gulp.task('localization:en', function() {
+    var lang = 'EN';
+    var dict = JSON.parse(fs.readFileSync('./dictionary.json'));
+    var stream = gulp.src('./build/en/*.html');
+    var langDictionary = dict[lang];
+    for (var key in langDictionary) {
+        if (langDictionary.hasOwnProperty(key)) {
+            stream = stream.pipe(replace('{{i18n:'+key+'}}', langDictionary[key]));
+        }
+    }
+    return stream.pipe(gulp.dest(buildConfig.names.distENFolder));
+});
+
+gulp.task('embeddict', function() {
+    var dictText = fs.readFileSync('./dictionary.json');
+    var stream = gulp.src('./build/**/*.js');
+    stream = stream.pipe(replace('//{{dict}}', 'var dict = '+dictText));
+    return stream.pipe(gulp.dest(buildConfig.names.distFolder));
+});
+
 //gulp.task('controls', function() {
 //    return gulp.src('pub/controls/**/*')
 //        .pipe(gulp.dest('build/controls'))
@@ -562,6 +612,10 @@ gulp.task('build', function (callback) {
         'version',
         'products:lib',
         'products',
+        'embeddict',
+        'copy:en',
+        'localization:en',
+        'localization:ru', // localization:ru - строго в последнюю очередь
         callback
     )
 });

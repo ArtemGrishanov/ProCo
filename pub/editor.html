@@ -2,7 +2,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-    <title>Редактор</title>
+    <title>{{i18n:editor}}</title>
     <meta charset="UTF-8"/>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
@@ -40,28 +40,28 @@
                             <img src="i/add-slide-big.png"/>
                         </i>
                     </span>
-                    <span class="tico js-app_save_template mt2"><i class="tico_img i_eye"><img src="i/save.png"/></i><span class="pts_string pts_save_template">Сохранить</span></span>
+                    <span class="tico js-app_save_template mt2"><i class="tico_img i_eye"><img src="i/save.png"/></i><span class="pts_string pts_save_template">{{i18n:save_template}}</span></span>
                     <div class="delimeter mt6"></div>
                     <span class="tico js-app_preview mt2">
-                        <i class="tico_img"><img src="i/i_eye.png"/></i><span class="pts_string pts_preview">Просмотр</span>
+                        <i class="tico_img"><img src="i/i_eye.png"/></i><span class="pts_string pts_preview">{{i18n:preview}}</span>
                     </span>
                     <span class="pbtn __blue __small ml24 js-app_publish">
-                        <i class="tico_img"><img src="i/publish.png"/></i><span class="pts_string pts_publish">Опубликовать</span>
+                        <i class="tico_img"><img src="i/publish.png"/></i><span class="pts_string pts_publish">{{i18n:publish}}</span>
                     </span>
                     <div id="id-user_toolbar" class="toolbar_user ml12">
                         <!--<div style="display:none" class="user_avatar js-profile_picture"></div>-->
                         <div style="display:none" class="user_name js-user_name"></div>
-                        <span style="display:none" class="pbtn __blue __small mt4 js-show_login pts_string pts_sign_in">Войти</span>
+                        <span style="display:none" class="pbtn __blue __small mt4 js-show_login pts_string pts_sign_in">{{i18n:sign_in}}</span>
                         <div style="display:none" class="dropdown_btn js-user_ctx_menu">
                             <div id="id-user_ctx_menu" style="display:none" class="ctx_menu_wr">
                                 <div class="ctx_menu_item js-to_my_templates pts_string pts_my_projects">
-                                    Мои проекты
+                                    {{i18n:my_projects}}
                                 </div>
                                 <div class="ctx_menu_item js-change_password pts_string pts_change_password">
-                                    Сменить пароль
+                                    {{i18n:change_password}}
                                 </div>
                                 <div class="ctx_menu_item js-logout pts_string pts_sign_out">
-                                    Выйти
+                                    {{i18n:sign_out}}
                                 </div>
                             </div>
                         </div>
@@ -103,6 +103,7 @@
             <div id="id-share_previews_test" style="display:none;"></div>
         </div>
     </div>
+
     <div id="id-preview_view" style="display:none;height:100%;">
         <div class="top">
             <div class="top_toolbar">
@@ -113,8 +114,8 @@
                 <div class="toolbar_right">
                     <div id="id-to_mob_preview" class="pre_mob mt2"></div>
                     <div id="id-to_desktop_preview" class="pre_desk ml12"></div>
-                    <a class="pbtn __small js-back_to_editor ml16 pts_string pts_back">Назад</a>
-                    <span class="pbtn __blue __small ml16 js-app_publish"><i class="tico_img"><img src="i/publish.png"/></i><span class="pts_string pts_publish">Опубликовать</span></span>
+                    <a class="pbtn __small js-back_to_editor ml16 pts_string pts_back">{{i18n:back}}</a>
+                    <span class="pbtn __blue __small ml16 js-app_publish"><i class="tico_img"><img src="i/publish.png"/></i><span class="pts_string pts_publish">{{i18n:publish}}</span></span>
                 </div>
             </div>
         </div>
@@ -145,14 +146,14 @@
         <div class="modal_wr">
             <div class="select_dialog_back">
                 <div class="select_dialog_caption">
-                    <span class="js-caption pts_string pts_hints">Подсказки</span>
+                    <span class="js-caption pts_string pts_hints">{{i18n:hints}}</span>
                 </div>
                 <div id="id-assistent_cnt" class="select_dialog_options_cnt">
                     <!-- сюда добавляется информация -->
                 </div>
                 <div class="select_dialog_button_cnt">
-                    <span class="pbtn __white-gray js-cancel pts_string pts_cancel">Отмена</span>
-                    <span class="pbtn __blue js-continue pts_string pts_cont">Продолжить</span>
+                    <span class="pbtn __white-gray js-cancel pts_string pts_cancel">{{i18n:cancel}}</span>
+                    <span class="pbtn __blue js-continue pts_string pts_cont">{{i18n:cont}}</span>
                 </div>
                 <div class="close_dialog_btn __grey js-close"></div>
             </div>
@@ -212,7 +213,7 @@
         <div class="modal_wr">
             <div class="select_dialog_back">
                 <div class="select_dialog_caption">
-                    <span class="js-caption pts_string pts_choose">Выбрать</span>
+                    <span class="js-caption pts_string pts_choose">{{i18n:choose}}</span>
                 </div>
                 <div class="loading_anim_wr js-loader" style="display:none;margin-top:50px;margin-bottom:250px;">
                     <div class="loading_anim"></div>
@@ -221,8 +222,8 @@
                     <!-- Сюда будут программно добавлять опции -->
                 </div>
                 <div class="select_dialog_button_cnt">
-                    <span class="pbtn __white-gray js-cancel pts_string pts_cancel">Отмена</span>
-                    <span class="pbtn __blue js-confirm pts_string pts_select_dialog_ok">Добавить</span>
+                    <span class="pbtn __white-gray js-cancel pts_string pts_cancel">{{i18n:cancel}}</span>
+                    <span class="pbtn __blue js-confirm pts_string pts_select_dialog_ok">{{i18n:select_dialog_ok}}</span>
                 </div>
             </div>
         </div>
@@ -275,15 +276,15 @@
     <div class="pd_wr">
         <div class="pd">
             <div class="pd_top">
-                <p class="pd_header pts_string pts_proj_published">Ваш проект опубликован!</p>
+                <p class="pd_header pts_string pts_proj_published">{{i18n:proj_published}}</p>
                 <div class="pd_tab_switcher js-tab_btns">
                     <div class="pd_tab_btn js-tab_btn __selected" data-tab-id="1">
                         <div><span class="pd_icon_link"></span></div>
-                        <div class="pts_string pts_proj_link">Ссылка на проект</div>
+                        <div class="pts_string pts_proj_link">{{i18n:proj_link}}</div>
                     </div>
                     <div class="pd_tab_btn js-tab_btn" data-tab-id="2">
                         <div><span class="pd_icon_embed"></span></div>
-                        <div class="pts_string pts_embed_code">Код для вставки на сайт или блог</div>
+                        <div class="pts_string pts_embed_code">{{i18n:embed_code}}</div>
                     </div>
                 </div>
             </div>
@@ -292,8 +293,8 @@
                     <br><br>
                     <div>
                         <input id="id-copy_link_input" class="pd_link_input js-project_link" readonly="readonly" value="http://example.com"/>
-                        <span class="pbtn __blue js-copy_link pts_string pts_copy" data-clipboard-target="#id-copy_link_input">Копировать</span>
-                        <a href="#" target="_blank" class="pbtn js-view pts_string pts_show_proj">Посмотреть</a>
+                        <span class="pbtn __blue js-copy_link pts_string pts_copy" data-clipboard-target="#id-copy_link_input">{{i18n:copy}}</span>
+                        <a href="#" target="_blank" class="pbtn js-view pts_string pts_show_proj">{{i18n:show_proj}}</a>
                     </div>
                     <!--<div class="pd_annotation_wr">-->
                         <!--<p class="pd_ann">Поделитесь вашим тестом в социальный сетях</p>-->
@@ -311,13 +312,13 @@
                         <textarea id="id-copy_embedcode_input" class="pd_embed_area js-embed_code" readonly="readonly"></textarea>
                     </div>
                     <div class="pd_col __w150">
-                        <span class="pbtn __blue js-copy_embed_code pts_string pts_copy" data-clipboard-target="#id-copy_embedcode_input">Копировать</span>
+                        <span class="pbtn __blue js-copy_embed_code pts_string pts_copy" data-clipboard-target="#id-copy_embedcode_input">{{i18n:copy}}</span>
                         <div class="pd_annotation_wr __b0">
-                            <span class="tx pts_string pts_have_problems">Не получается?</span>
-                            <a href="mailto:info@testix.me" target="_top" class="link pts_string pts_contact_us">Свяжитесь с нами</a>
+                            <span class="tx pts_string pts_have_problems">{{i18n:have_problems}}</span>
+                            <a href="mailto:info@testix.me" target="_top" class="link pts_string pts_contact_us">{{i18n:contact_us}}</a>
                         </div>
                     </div>
-                    <p class="pd_small_header pts_string pts_use_alternaive_code">Или используйте альтенативный код вставки с помощью iframe</p>
+                    <p class="pd_small_header pts_string pts_use_alternaive_code">{{i18n:use_alternaive_code}}</p>
                     <div class="pd_col">
                         <textarea class="pd_embed_area js-embed_code_iframe" readonly="readonly"></textarea>
                     </div>
