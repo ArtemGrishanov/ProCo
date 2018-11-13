@@ -367,11 +367,11 @@ MutApp.prototype.setSize = function(param) {
     }
     if (sizeChanged === true) {
         if (this.screenRoot) {
-            this.screenRoot.style.maxWidth = this._width+'px';
-            this.screenRoot.style.width = '100%';
-            this.screenRoot.style.minHeight = this._height+'px';
-            this.screenRoot.style.position = 'relative';
-            this.screenRoot.style.overflow = 'hidden';
+            this.screenRoot.css('max-width',this._width+'px')
+                .css('width','100%')
+                .css('min-height',this._height+'px')
+                .css('position','relative')
+                .css('overflow','hidden');
         }
         this.trigger(MutApp.EVENT_APP_SIZE_CHANGED, {
             width: this._width,

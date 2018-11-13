@@ -231,9 +231,13 @@ var Publisher = {};
      * @returns {string}
      */
     function getAnonymLink(appId) {
-        var appId = appId || publishedAppId;
-        // https надо - так как эту ссылку видит пользователь в окне публикаии, может скопировать ее и использовать руками
-        return 'https:'+config.common.publishedProjectsHostName+Auth.getUser().short_id+'/'+appId+'/';
+        if (Auth.getUser()) {
+            var appId = appId || publishedAppId;
+            // https надо - так как эту ссылку видит пользователь в окне публикаии, может скопировать ее и использовать руками
+            return 'https:'+config.common.publishedProjectsHostName+Auth.getUser().short_id+'/'+appId+'/';
+        }
+        console.warn('publisher.getAnonymLink(): anonym link can not be generated, since user is not authorized');
+        return '';
     }
 
     /**

@@ -10,7 +10,7 @@ var config = {
      */
     congigurationSet: {
         dev: function() {
-            config.common.home = 'http://localhost:63342/ProCo/pub/'; // меняется на 'http://localhost:63342/ProCo/build/' при сборке
+            config.common.home = 'http://localhost:63343/ProCo/pub/'; // меняется на 'http://localhost:63342/ProCo/build/' при сборке
             config.common.facebookAppId = '518819781624579';
             config.common.awsEnabled = false; // use 'false' for offline mode
             config.common.buildStatus = 'dev';
@@ -498,7 +498,7 @@ var config = {
                     },
                     {
                         //Красотки
-                        name: {RU:'Красотки',EN:'Beauty'},
+                        name: {RU:'Красотки',EN:'Beauties'},
                         img: 'https://p.testix.me/storefront/memoriz/Memori-Girls-10.jpg',
                         published: 'https://p.testix.me/storefront/memoriz/47ccfd9ec8/p_index.html',
                         template: 'https://p.testix.me/storefront/memoriz/47ccfd9ec8.txt',
@@ -566,7 +566,7 @@ var config = {
                         height: '600px'
                     },
                     {
-                        name: {RU:'Самые красивые актрисы России',EN:'The gorgeous Russian actress'},
+                        name: {RU:'Самые красивые актрисы России',EN:'The gorgeous Russian actresses'},
                         img: 'https://p.testix.me/storefront/photostory/73b7774600.jpg',
                         published: 'https://p.testix.me/storefront/photostory/73b7774600/p_index.html',
                         template: 'https://p.testix.me/storefront/photostory/73b7774600.txt',

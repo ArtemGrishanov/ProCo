@@ -57,15 +57,15 @@ var ScreenManager = {
         if (_findSlideByScreenName(sgPropertyString) === true) {
             throw new Error('ScreenManager._createScreenGroup: Slide with name \''+sgPropertyString+' exists. Can not create ScreenGroupControl with the same name');
         }
-        if (typeof screen.id !== 'string') {
-            throw new Error('ScreenManager._createScreenGroup: Screen must has "id" string property');
-        }
-        if (typeof screen.group !== 'string') {
-            throw new Error('ScreenManager._createScreenGroup: Screen must has "group" string property');
-        }
-        if (typeof screen.name !== 'string') {
-            throw new Error('ScreenManager._createScreenGroup: Screen must has "name" string property');
-        }
+//        if (typeof screen.id !== 'string') {
+//            throw new Error('ScreenManager._createScreenGroup: Screen must has "id" string property');
+//        }
+//        if (typeof screen.group !== 'string') {
+//            throw new Error('ScreenManager._createScreenGroup: Screen must has "group" string property');
+//        }
+//        if (typeof screen.name !== 'string') {
+//            throw new Error('ScreenManager._createScreenGroup: Screen must has "name" string property');
+//        }
         var sgc = new SlideGroupControl({
             propertyString: sgPropertyString,
             controlName: 'SlideGroupControl',
