@@ -13,7 +13,7 @@
  *          если я планирую склеить этот файл с общие стили style.css то по идее ссылка не нужна эта
  *
  */
-var productVersion = 'v2.1.15';
+var productVersion = 'v2.1.16';
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
@@ -53,6 +53,7 @@ var buildConfig = {
     names: {
         distFolder: './build',
         distENFolder: './build/en',
+        distPLFolder: './build/pl',
         styleFileName: 'css/style.css',
         commonFileName: 'common.js',
         editorFileName: 'editor.js',
@@ -520,6 +521,14 @@ gulp.task('copy:en', function() {
 });
 
 /**
+ * Copy PL version of site
+ */
+gulp.task('copy:pl', function() {
+    return gulp.src('./build/**')
+        .pipe(gulp.dest(buildConfig.names.distPLFolder));
+});
+
+/**
  * Only in top level htmls: ./build/*.html
  * You may define keys in html or js code like this: "{{RU:testix_pro}}"
  * Note: I split localization into two different task localization:ru and localization:en because of stack size error.
@@ -551,6 +560,22 @@ gulp.task('localization:en', function() {
         }
     }
     return stream.pipe(gulp.dest(buildConfig.names.distENFolder));
+});
+
+/**
+ * TODO create currying function
+ */
+gulp.task('localization:pl', function() {
+    var lang = 'PL';
+    var dict = JSON.parse(fs.readFileSync('./dictionary.json'));
+    var stream = gulp.src('./build/pl/*.html');
+    var langDictionary = dict[lang];
+    for (var key in langDictionary) {
+        if (langDictionary.hasOwnProperty(key)) {
+            stream = stream.pipe(replace('{{i18n:'+key+'}}', langDictionary[key]));
+        }
+    }
+    return stream.pipe(gulp.dest(buildConfig.names.distPLFolder));
 });
 
 gulp.task('embeddict', function() {
@@ -615,6 +640,8 @@ gulp.task('build', function (callback) {
         'embeddict',
         'copy:en',
         'localization:en',
+        'copy:pl',
+        'localization:pl',
         'localization:ru', // localization:ru - строго в последнюю очередь
         callback
     )
