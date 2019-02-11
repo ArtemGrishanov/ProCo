@@ -1,1 +1,0 @@
-Engine.appProperties - лишнее. Почему бы сразу не использовать app
