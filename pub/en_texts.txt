@@ -226,7 +226,7 @@
         "ready": "Done",
         "sign_up": "Sign up",
         "signin_header": "Welcome back! &#128522;",
-        "forgot_pass": "Fordot password?",
+        "forgot_pass": "Forgot password?",
         "news_subscr": "I agree to receive rarely news about the project and new formats",
         "apply_terms": "I agree with the <a href=\"terms.html\" target=\"_blank\">terms of use<\/a> and the <a href=\"privacy_policy.html\" target=\"_blank\">privacy policy<\/a>",
         "have_account": "Already have an account?",

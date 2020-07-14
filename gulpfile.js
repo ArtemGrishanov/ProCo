@@ -13,7 +13,7 @@
  *          если я планирую склеить этот файл с общие стили style.css то по идее ссылка не нужна эта
  *
  */
-var productVersion = 'v2.1.16';
+var productVersion = 'v2.1.18';
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
@@ -354,7 +354,7 @@ gulp.task('concat:common', function() {
     // в рамках сборки основного js, заменим путь для локальной сборки
     return gulp.src(buildConfig.src.js.srcCommon)
         .pipe(concat(buildConfig.names.commonFileName))
-        .pipe(replace('http://localhost:63342/ProCo/pub/', 'http://localhost:63342/ProCo/build/'))
+        .pipe(replace('/ProCo/pub/', '/ProCo/build/'))
         .pipe(replace('{{js_product_environment}}', environment))
         .pipe(replace('{{js_product_version}}', productVersion))
         .pipe(gulpIf(buildConfig.uglifyJs, uglify()))

@@ -10,9 +10,9 @@ var config = {
      */
     congigurationSet: {
         dev: function() {
-            config.common.home = 'http://localhost:63343/ProCo/pub/'; // меняется на 'http://localhost:63342/ProCo/build/' при сборке
+            config.common.home = 'http://localhost:63342/ProCo/pub/'; // меняется на 'http://localhost:63342/ProCo/build/' при сборке
             config.common.facebookAppId = '518819781624579';
-            config.common.awsEnabled = false; // use 'false' for offline mode
+            config.common.awsEnabled = true; // use 'false' for offline mode
             config.common.buildStatus = 'dev';
             return this;
         },
@@ -254,7 +254,7 @@ var config = {
          * Показывать нотификацию о помощи в моих проектах
          * Во время перехода с одной версии на другую
          */
-//        showHelpNotificationInMyProjects_12_2017: true
+        // showHelpNotificationInMyProjects_12_2017: true,
     },
     tariff: {
         /**
