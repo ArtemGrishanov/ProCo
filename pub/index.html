@@ -4,8 +4,7 @@
     <title>{{i18n:indexTitle}}</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <meta charset="UTF-8">
-    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
     <meta name='viewport' content='width=device-width,initial-scale=1,user-scalable=no'>
     <!-- style:css -->
     <!-- endinject -->
@@ -65,21 +64,6 @@
             </div>
         </div>
         <div class="scr_wr">
-            <!-- migration banner -->
-            <div class="migration_banner">
-                <div class="migration_banner__col migration_banner__col--logo">
-                    <img src="./i/mirgationbanner/leads.png" alt="leads">
-                </div>
-                <div class="migration_banner__col migration_banner__col--text">
-                    <div class="migration_banner--title">{{i18n:migration__big_update}}</div>
-                    <div class="migration_banner--subtitle">{{i18n:migration__best_of_testix}}</div>
-                </div>
-                <div class="migration_banner__col migration_banner__col--buttons">
-                    <button class="pbtn __transparent migration-modal-event" data-action="open" data-target="1">{{i18n:migration__want_promo}}</button>
-                    <button class="pbtn __white migration-modal-event" data-action="open" data-target="2">{{i18n:migration__more}}</button>
-                </div>
-            </div>
-
             <div class="main_title">
                 <div class="main_title_shadow"></div>
                 <div class="main_title_content_wr">
@@ -257,50 +241,6 @@
         <!-- Сюда динамически подгружаются модальные окна из шаблонов -->
     </div>
 
-    <!-- модалка миграции -->
-    <div id="migration_modal">
-        <div class="migration_modal--wrapper migration-modal-event" data-action="close"></div>
-        <div class="migration_modal--content">
-            <div class="migration_modal--content-inner" data-target="1">
-                <div class="migration_modal--1__title">{{i18n:migration__how_get_promo}}</div>
-                <div class="migration_modal--1__text">
-                    {{i18n:migration__big_sale}}
-                    <p>{{i18n:migration__in_new_service}}</p>
-                </div>
-                <ul class="migration_modal--1__steps">
-                    <li><span>1.</span><p><a href="https://interacty.me/auth?action=registration" rel="noopener noreferrer" target="_blank">{{i18n:migration__text_1_1}}</a> {{i18n:migration__text_1_2}} <a href="https://interacty.me/" rel="noopener noreferrer" target="_blank">Interacty.me</a></p></li>
-                    <li><span>2.</span><p>{{i18n:migration__text_2_1}} <a href="https://www.facebook.com/interacty" rel="noopener noreferrer" target="_blank">@Interacty</a> {{i18n:migration__text_2_2}}</p></li>
-                    <li><span>3.</span><p>{{i18n:migration__text_3_1}} <a href="https://www.facebook.com/interacty" rel="noopener noreferrer" target="_blank">@Interacty</a> {{i18n:migration__text_3_2}}.<br>{{i18n:migration__text_3_3}}</p></li>
-                </ul>
-                <ul class="migration_modal--1__buttons">
-                    <li><a href="https://www.facebook.com/interacty" class="pbtn __blue" rel="noopener noreferrer" target="_blank">{{i18n:migration__open_facebook_page}}</a></li>
-                    <li><button class="pbtn __white migration-modal-event" data-action="close">{{i18n:migration__not_now}}</button></li>
-                </ul>
-            </div>
-            <div class="migration_modal--content-inner" data-target="2">
-                <div class="migration_modal--2__title">
-                    <span>{{i18n:migration__hello}}</span>
-                    <p>{{i18n:migration__we_updated}}</p>
-                </div>
-                <div class="migration_modal--2__text-1">
-                    {{i18n:migration__text_4_1}} <span>{{i18n:migration__text_4_2}}</span>, {{i18n:migration__text_4_3}} <span>{{i18n:migration__text_4_4}}</span> {{i18n:migration__text_4_5}} <span>{{i18n:migration__text_4_6}}</span>, {{i18n:migration__text_4_7}} <span>{{i18n:migration__text_4_8}}</span>, {{i18n:migration__text_4_9}} <span>{{i18n:migration__text_4_10}}</span> {{i18n:migration__text_4_11}} <span>{{i18n:migration__text_4_12}}</span>.
-                </div>
-                <div class="migration_modal--2__text-2">
-                    {{i18n:migration__text_5_1}} <span>99,99%</span> {{i18n:migration__text_5_2}}
-                </div>
-                <ul class="migration_modal--2__buttons">
-                    <li>
-                        <button class="pbtn __white migration-modal-event" data-action="close">{{i18n:migration__not_now}}</button>
-                    </li>
-                    <li>
-                        <button class="pbtn __blue __transparent migration-modal-event" data-action="open" data-target="1">{{i18n:migration__want_promo}}</button>
-                        <a href="https://interacty.me/" class="pbtn __white" rel="noopener noreferrer" target="_blank">{{i18n:migration__go_interacty}}</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.139.0.min.js"></script>
     <!-- commonlib:js -->
     <!-- endinject -->
@@ -329,31 +269,9 @@
     <script type="text/javascript" src="js/view/storefront.js"></script>
     <!-- endbuild -->
     <script>
-        function changeMigrationModal(action, target) {
-            console.log('changeMigrationModal', action, target);
-            switch (action) {
-                case 'open':
-                    $('.migration_modal--content-inner').removeClass('active');
-                    $(`.migration_modal--content-inner[data-target="${target}"]`).addClass('active');
-                    $('#migration_modal').addClass('visible');
-                    break;
-                case 'close':
-                    $('#migration_modal').removeClass('visible');
-                    break;
-                default:
-                    break;
-            }
-        }
-
         $(document).ready(function() {
             App.start();
             storefrontView.init();
-
-            $(".migration-modal-event").on( "click", function(){
-                const action = $(this).attr("data-action");
-                const target = $(this).attr("data-target");
-                changeMigrationModal(action, target);
-            });
         });
     </script>
     <!--yametrika-->
