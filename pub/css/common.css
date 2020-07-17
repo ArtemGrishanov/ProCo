@@ -836,6 +836,354 @@ select {
     }
 }
 
+/* migration */
+.migration_banner {
+    display: none;
+    position: relative;
+    height: 120px;
+    width: 100%;
+    padding: 0 40px;
+    box-sizing: border-box;
+    background-color: #EC5C55;
+    align-items: center;
+    justify-content: space-between;
+}
+@media (min-width: 1260px)  {
+    .migration_banner {
+        display: flex;
+    }
+}
+.migration_banner__col {}
+.migration_banner__col--logo {
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+}
+.migration_banner__col--logo img {
+    max-height: 113px;
+}
+.migration_banner__col--text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    text-align: center;
+}
+.migration_banner__col--buttons {
+    display: flex;
+}
+.migration_banner__col--buttons button {
+    margin-right: 12px;
+    outline: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    opacity: 1;
+    transition: opacity .2s;
+}
+.migration_banner__col--buttons button:hover {
+    opacity: .7;
+}
+.migration_banner__col--buttons button.__white {
+    border-color: #FFFFFF;
+    color: #EC5C55;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+}
+.migration_banner__col--buttons button:last-child {
+    margin-right: 0;
+}
+.migration_banner--title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    text-transform: uppercase;
+    font-size: 24px;
+    letter-spacing: 0.055em;
+    color: #FFFFFF;
+    padding-bottom: 6px;
+}
+.migration_banner--subtitle {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+#migration_modal {
+    opacity: 0;
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .2s, visibility .2s;
+}
+#migration_modal.visible {
+    opacity: 1;
+    visibility: visible;
+}
+.migration_modal--wrapper {
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.migration_modal--content {
+    position: relative;
+    z-index: 6;
+    width: 860px;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.migration_modal--content-inner {
+    display: none;
+    color: black;
+    height: 594px;
+    position: relative;
+}
+.migration_modal--content-inner.active {
+    display: block;
+}
+.migration_modal--content-inner[data-target="1"] {
+    background-image: url("../i/mirgationbanner/man.png");
+    background-repeat: no-repeat;
+    background-position: 30px calc(100% - 26px);
+}
+/* want promo */
+.migration_modal--1__title {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    color: #FFFFFF;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #5E9CEC;
+    font-size: 40px;
+    letter-spacing: 0.02em;
+    margin-bottom: 32px;
+}
+.migration_modal--1__text {
+    font-family: 'Ubuntu', sans-serif;
+    font-style: normal;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #000000;
+    text-align: center;
+    margin-bottom: 24px;
+}
+.migration_modal--1__text > p {
+    font-weight: 400;
+    margin: 10px 0 0 0;
+}
+.migration_modal--1__steps {
+    margin: 0 0 54px 0;
+    padding: 0 80px 0 170px;
+}
+.migration_modal--1__steps > li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+.migration_modal--1__steps > li:last-child {
+    margin-bottom: 0;
+}
+.migration_modal--1__steps > li > p {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    font-style: italic;
+    color: #000000;
+    padding: 0;
+    margin: 0;
+}
+.migration_modal--1__steps > li > span {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+    width: 34px;
+    padding-top: 2px;
+}
+.migration_modal--1__steps > li > p a {
+    color: #5E9CEC;
+    text-decoration: underline;
+}
+.migration_modal--1__buttons {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+.migration_modal--1__buttons > li {
+    margin-bottom: 16px;
+}
+.migration_modal--1__buttons > li:last-child {
+    margin-bottom: 0;
+}
+.migration_modal--1__buttons > li button, .migration_modal--1__buttons > li a {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    outline: none;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    opacity: 1;
+    transition: opacity .2s;
+}
+.migration_modal--1__buttons > li button:hover, .migration_modal--1__buttons > li a:hover {
+    opacity: .7;
+}
+.migration_modal--1__buttons > li button {
+    border-color: #E7E7E7 !important;
+    background-color: #E7E7E7 !important;
+    color: #000000 !important;
+}
+/* more info */
+.migration_modal--2__title {
+    background-color: #5E9CEC;
+    height: 240px;
+    text-align: center;
+    padding-top: 68px;
+    position: relative;
+    box-sizing: border-box;
+}
+.migration_modal--2__title:before {
+    content: '';
+    position: absolute;
+    background-image: url("../i/mirgationbanner/leads2.png");
+    background-repeat: no-repeat;
+    width: 176px;
+    height: 154px;
+    background-size: contain;
+    bottom: -17px;
+    left: 25px;
+}
+.migration_modal--2__title > span {
+    font-family: 'Ubuntu', sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 24px;
+    color: #FFFFFF;
+    position: relative;
+}
+.migration_modal--2__title > span:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("../i/mirgationbanner/hello.png");
+    top: -45px;
+    left: 0;
+}
+.migration_modal--2__title > p {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 42px;
+    color: #FFFFFF;
+    letter-spacing: 0.02em;
+    margin: 0;
+    padding: 5px 0 0 0;
+    position: relative;
+}
+.migration_modal--2__title > p:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 34px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("../i/mirgationbanner/testixtointeracty.png");
+    bottom: -54px;
+    left: 0;
+}
+.migration_modal--2__text-1 {
+    margin: 36px auto 0;
+    width: 500px;
+    font-family: 'Ubuntu', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    color: #000000;
+    line-height: 32px;
+    font-size: 18px;
+    text-align: center;
+    text-transform: uppercase;
+}
+.migration_modal--2__text-1 > span {
+    text-decoration: underline;
+    font-weight: 700;
+}
+.migration_modal--2__text-2 {
+    width: 500px;
+    margin: 36px auto 0;
+    font-family: 'Ubuntu', sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: #000000;
+}
+.migration_modal--2__buttons {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    right: 40px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+}
+.migration_modal--2__buttons > li {
+    display: flex;
+}
+.migration_modal--2__buttons > li button, .migration_modal--2__buttons > li a {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    outline: none;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    opacity: 1;
+    transition: opacity .2s;
+}
+.migration_modal--2__buttons > li button:hover, .migration_modal--2__buttons > li a:hover {
+    opacity: .7;
+}
+.migration_modal--2__buttons > li:first-child button {
+    padding-left: 35px !important;
+    padding-right: 35px !important;
+    border-color: #E7E7E7 !important;
+    background-color: #E7E7E7 !important;
+    color: #000000 !important;
+}
+.migration_modal--2__buttons > li:last-child button {
+    margin-right: 16px;
+}
+.migration_modal--2__buttons > li:last-child a {
+    border-color: #EC5C55 !important;
+    background-color: #EC5C55 !important;
+    color: #FFFFFF !important;
+}
+
+
+
+
+
 
 .content_wr {
     width: 900px;
