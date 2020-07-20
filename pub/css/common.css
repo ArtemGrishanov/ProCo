@@ -848,7 +848,7 @@ select {
     align-items: center;
     justify-content: space-between;
 }
-@media (min-width: 1260px)  {
+@media (min-width: 800px)  {
     .migration_banner {
         display: flex;
     }
