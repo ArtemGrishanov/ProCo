@@ -268,7 +268,7 @@
                     <p>{{i18n:migration__in_new_service}}</p>
                 </div>
                 <ul class="migration_modal--1__steps">
-                    <li><span>1.</span><p><a href="https://interacty.me/auth?action=registration" rel="noopener noreferrer" target="_blank">{{i18n:migration__text_1_1}}</a> {{i18n:migration__text_1_2}} <a href="https://interacty.me/" rel="noopener noreferrer" target="_blank">Interacty.me</a></p></li>
+                    <li><span>1.</span><p><a href="https://interacty.me/auth?action=registration&utm_source=testix&utm_medium=update_banner&utm_campaign=20200720" rel="noopener noreferrer" target="_blank">{{i18n:migration__text_1_1}}</a> {{i18n:migration__text_1_2}} <a href="https://interacty.me/?utm_source=testix&utm_medium=update_banner&utm_campaign=20200720" rel="noopener noreferrer" target="_blank">Interacty.me</a></p></li>
                     <li><span>2.</span><p>{{i18n:migration__text_2_1}} <a href="https://www.facebook.com/interacty" rel="noopener noreferrer" target="_blank">@Interacty</a> {{i18n:migration__text_2_2}}</p></li>
                     <li><span>3.</span><p>{{i18n:migration__text_3_1}} <a href="https://www.facebook.com/interacty" rel="noopener noreferrer" target="_blank">@Interacty</a> {{i18n:migration__text_3_2}}.<br>{{i18n:migration__text_3_3}}</p></li>
                 </ul>
@@ -294,7 +294,7 @@
                     </li>
                     <li>
                         <button class="pbtn __blue __transparent migration-modal-event" data-action="open" data-target="1">{{i18n:migration__want_promo}}</button>
-                        <a href="https://interacty.me/" class="pbtn __white" rel="noopener noreferrer" target="_blank">{{i18n:migration__go_interacty}}</a>
+                        <a href="https://interacty.me/?utm_source=testix&utm_medium=update_banner&utm_campaign=20200720" class="pbtn __white" rel="noopener noreferrer" target="_blank">{{i18n:migration__go_interacty}}</a>
                     </li>
                 </ul>
             </div>
@@ -335,6 +335,12 @@
                     $('.migration_modal--content-inner').removeClass('active');
                     $(`.migration_modal--content-inner[data-target="${target}"]`).addClass('active');
                     $('#migration_modal').addClass('visible');
+                    try {
+                        ga('send', 'pageview', 'interacty_update_modal')
+                    }
+                    catch(err) {
+                        console.error(err)
+                    }
                     break;
                 case 'close':
                     $('#migration_modal').removeClass('visible');
